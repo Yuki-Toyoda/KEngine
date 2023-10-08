@@ -7,7 +7,7 @@ void SamplePlayer::Initialize(std::string name, Tag tag)
 	isActive_ = true;
 
 	// モデル読み込み
-	objects_.push_back(OBJ::Create({ 1.0f, 1.0f, 1.0f, 1.0f }, "./Resources", "Box.obj"));
+	objects_.push_back( OBJ::Create(&transform_, { 1.0f, 1.0f, 1.0f, 1.0f }, "./Resources", "Box.obj"));
 
 	// 入力状態取得
 	input_ = Input::GetInstance();
@@ -70,7 +70,6 @@ void SamplePlayer::Draw()
 	// オブジェクトの描画
 	for (OBJ* obj : objects_) {
 		if (isActive_) {
-			obj->SetWorldTransform(transform_);
 			obj->Draw();
 		}
 	}

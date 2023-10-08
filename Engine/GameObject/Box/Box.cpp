@@ -7,7 +7,7 @@ void Box::Initialize(std::string name, Tag tag)
 	isActive_ = true;
 
 	// モデル読み込み
-	objects_.push_back(OBJ::Create({ 1.0f, 1.0f, 1.0f, 1.0f }, "./Resources", "Box.obj"));
+	objects_.push_back(OBJ::Create(&transform_, { 1.0f, 1.0f, 1.0f, 1.0f }, "./Resources", "Box.obj"));
 
 	// 音声ファイル読み込み
 	testSound_ = Audio::GetInstance()->LoadWave("Alarm01.wav");
@@ -82,7 +82,7 @@ void Box::Draw()
 	// オブジェクトの描画
 	for (OBJ* obj : objects_) {
 		if (isActive_) {
-			obj->SetWorldTransform(transform_);
+			obj->SetWorldTransform(&transform_);
 			obj->Draw();
 		}
 	}

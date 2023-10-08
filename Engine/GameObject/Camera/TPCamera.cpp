@@ -24,6 +24,12 @@ void TPCamera::Update()
 	// 基底クラス更新
 	BaseObject::Update();
 
+	// オブジェクトの描画座標設定
+	for (OBJ* obj : objects_) {
+		obj->SetWorldTransform(&transform_);
+		obj->Draw();
+	}
+
 	// 入力取得
 	preJoyState_ = joyState_; // 前フレームの入力取得
 	input_->GetJoystickState(0, joyState_); // 現在フレームの入力取得
@@ -114,7 +120,6 @@ void TPCamera::Draw()
 	// カメラオブジェクトの描画
 	for (OBJ* obj : objects_) {
 		if (isActive_) {
-			obj->SetWorldTransform(transform_);
 			obj->Draw();
 		}
 	}

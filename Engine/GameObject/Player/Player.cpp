@@ -6,12 +6,6 @@ void MyPlayer::Initialize(std::string name, Tag tag)
 	BaseObject::Initialize(name, tag);
 	isActive_ = true;
 
-	// モデル読み込み
-	objects_.push_back(OBJ::Create({ 1.0f, 1.0f, 1.0f, 1.0f }, "./Resources", "float_Body.obj"));
-	objects_.push_back(OBJ::Create({ 1.0f, 1.0f, 1.0f, 1.0f }, "./Resources", "float_Head.obj"));
-	objects_.push_back(OBJ::Create({ 1.0f, 1.0f, 1.0f, 1.0f }, "./Resources", "float_L_arm.obj"));
-	objects_.push_back(OBJ::Create({ 1.0f, 1.0f, 1.0f, 1.0f }, "./Resources", "float_R_arm.obj"));
-
 	// ワールド座標初期化
 	bodyTransform_.Initialize(); // 体
 	bodyTransform_.translate_ = { 0.0f, 0.0f, 0.0f }; // 初期座標設定
@@ -25,6 +19,12 @@ void MyPlayer::Initialize(std::string name, Tag tag)
 	armTransform_R_.Initialize(); // 右腕
 	armTransform_R_.translate_ = { 0.35f, 1.25f, 0.0f }; // 初期座標設定
 	armTransform_R_.SetParent(&bodyTransform_); // 親子付け
+
+	// モデル読み込み
+	objects_.push_back(OBJ::Create(&bodyTransform_, { 1.0f, 1.0f, 1.0f, 1.0f }, "./Resources", "float_Body.obj"));
+	objects_.push_back(OBJ::Create(&headTransform_, { 1.0f, 1.0f, 1.0f, 1.0f }, "./Resources", "float_Head.obj"));
+	objects_.push_back(OBJ::Create(&armTransform_L_, { 1.0f, 1.0f, 1.0f, 1.0f }, "./Resources", "float_L_arm.obj"));
+	objects_.push_back( OBJ::Create(&armTransform_R_, { 1.0f, 1.0f, 1.0f, 1.0f }, "./Resources", "float_R_arm.obj"));
 
 	// 入力状態取得
 	input_ = Input::GetInstance();
@@ -125,13 +125,9 @@ void MyPlayer::Draw()
 {
 	// オブジェクトの描画
 	if (isActive_) {
-		objects_[0]->SetWorldTransform(bodyTransform_);
 		objects_[0]->Draw();
-		objects_[1]->SetWorldTransform(headTransform_);
 		objects_[1]->Draw();
-		objects_[2]->SetWorldTransform(armTransform_L_);
 		objects_[2]->Draw();
-		objects_[3]->SetWorldTransform(armTransform_R_);
 		objects_[3]->Draw();
 
 	}

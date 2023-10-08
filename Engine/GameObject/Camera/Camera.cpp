@@ -86,7 +86,6 @@ void Camera::Draw()
 	// カメラオブジェクトの描画
 	for (OBJ* obj : objects_) {
 		if (isActive_) {
-			obj->SetWorldTransform(transform_);
 			obj->Draw();
 		}
 	}
