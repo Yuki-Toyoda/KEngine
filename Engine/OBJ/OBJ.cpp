@@ -461,6 +461,9 @@ bool OBJ::Initialize(const std::string& directoryPath, const std::string& fileNa
 	// マッピングできているかを確認する
 	assert(SUCCEEDED(result));
 
+	// ライティングは初期設定で有効
+	constMap_->enableLighting = true;
+
 	// 初期化が完了したらTrueを返す
 	return true;
 }
@@ -483,8 +486,6 @@ void OBJ::Draw()
 	// 行列を設定
 	constMap_->mat = matWorld_;
 	constMap_->world = worldMatrix;
-	// ライティングを有効
-	constMap_->enableLighting = true;
 
 	// 頂点バッファの設定
 	sCommandList_->IASetVertexBuffers(0, 1, &vbView_);

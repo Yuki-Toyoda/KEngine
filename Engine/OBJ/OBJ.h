@@ -210,6 +210,12 @@ public: // パブリックなメンバ関数
 	/// <param name="color">セットする色</param>
 	void SetColor(Vector4 color) { color_ = color; }
 
+	/// <summary>
+	/// ライトのセッター
+	/// </summary>
+	/// <param name="enable">有効非有効</param>
+	void SetEnableLighting(bool enable) { constMap_->enableLighting = enable; }
+
 private: // メンバ変数
 
 	// 頂点バッファ
