@@ -3,6 +3,7 @@
 #include <cmath>
 #include <ctime>
 #include <math.h>
+#include <numbers>
 #include "Vector2.h"
 #include "Vector3.h"
 #include "Vector4.h"
@@ -193,6 +194,15 @@ public:	// メンバ関数
 	/// <param name="v">ベクトル</param>
 	/// <returns>ベクトル長さ</returns>
 	static float Length(const Vector3& v);
+
+	/// <summary>
+	/// 最短角度補間関数
+	/// </summary>
+	/// <param name="a">角度a</param>
+	/// <param name="b">角度b</param>
+	/// <param name="t">補間割合(0 ~ 1)</param>
+	/// <returns></returns>
+	static float LerpShortAngle(float a, float b, float t);
 
 	/// <summary>
 	/// ベクトル正規化関数

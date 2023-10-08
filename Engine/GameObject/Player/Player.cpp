@@ -18,6 +18,9 @@ void MyPlayer::Initialize(std::string name, Tag tag)
 	// 色初期設定
 	color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
 
+	// 目標角度初期化
+	targetAngle_ = 0.0f;
+
 	// 衝突属性を設定
 	collider_->SetCollisionAttribute(0xfffffffe);
 	// 衝突対象を自分の属性以外に設定
@@ -45,28 +48,39 @@ void MyPlayer::Update()
 
 	// 移動速度
 	const float speed = 0.3f;
+	// デッドゾーン
+	const float deadZone = 0.7f;
+	// 移動フラグ
+	bool isMoving = false;
 
 	// スティックの入力に応じて移動
 	Vector3 move = {
 		(float)joyState_.Gamepad.sThumbLX / SHRT_MAX, 0.0f,
 		(float)joyState_.Gamepad.sThumbLY / SHRT_MAX };
+	if (Math::Length(move) > deadZone)
+		isMoving = true;
 
-	// 移動量を正規化、スピードを加算
-	move = Math::Normalize(move) * speed;
+	if (isMoving) {
+		// 移動量を正規化、スピードを加算
+		move = Math::Normalize(move) * speed;
 
-	// カメラ回転角がセットされている場合
-	if (cameraRotation_ != nullptr) {
-		// カメラの角度から回転行列を生成
-		Matrix4x4 rotateMat = Math::MakeRotateXYZMatrix(*cameraRotation_);
-		// 移動ベクトルをカメラの角度に応じて回転させる
-		move = Math::Transform(move, rotateMat);
+		// カメラ回転角がセットされている場合
+		if (cameraRotation_ != nullptr) {
+			// カメラの角度から回転行列を生成
+			Matrix4x4 rotateMat = Math::MakeRotateXYZMatrix(*cameraRotation_);
+			// 移動ベクトルをカメラの角度に応じて回転させる
+			move = Math::Transform(move, rotateMat);
+		}
+
+		// 移動
+		transform_.translate_ = transform_.translate_ + move;
+
+		// 移動時の目標角度を求める
+		targetAngle_ = atan2(move.x, move.z);
 	}
 
-	// 移動
-	transform_.translate_ = transform_.translate_ + move;
-
-	// 移動方向にオブジェクトの向きを合わせる
-	transform_.rotate_.y = atan2(move.x, move.z);
+	transform_.rotate_.y =
+		Math::LerpShortAngle(transform_.rotate_.y, targetAngle_, 0.1f);
 
 	if (!isDestroy_) {
 		// 当たり判定更新

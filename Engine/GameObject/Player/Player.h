@@ -51,5 +51,8 @@ private: // メンバ変数
 	// カメラ回転角
 	const Vector3* cameraRotation_ = nullptr;
 
+	// 移動時の目標角度
+	float targetAngle_;
+
 };
 

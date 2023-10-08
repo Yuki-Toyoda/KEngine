@@ -138,6 +138,30 @@ float Math::Length(const Vector3& v)
 	return sqrtf(Dot(v, v));
 }
 
+float Math::LerpShortAngle(float a, float b, float t)
+{
+	// 結果格納用
+	float result;
+
+	// 角度差分を求める
+	float diff = b - a;
+
+	// 角度差分が-2πを下回る、または上回る時
+	if(diff <= (float)(-std::numbers::pi * 2.0f) || diff >= (float)(std::numbers::pi * 2.0f))
+	diff = std::fmod(a, b); // 角度差分を補正する
+
+	// -πからπに補正する
+	if (diff >= (float)std::numbers::pi) {
+		diff -= (float)std::numbers::pi * 2.0f;
+	}
+	else if (diff <= (float)-std::numbers::pi)
+		diff += (float)std::numbers::pi * 2.0f;
+	
+	// 求めた角度を元に線形補間を行う
+	return result = a + (diff * t);
+
+}
+
 Vector3 Math::Normalize(const Vector3& v)
 {
 	// 正規化するベクトルの長さを求める
