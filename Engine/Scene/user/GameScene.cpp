@@ -6,7 +6,6 @@ void GameScene::Initialize() {
 	Box* box = new Box();
 	box->Initialize("box", BaseObject::Other);
 	gameObjectManager_->AddGameObject(box);
-
 	// プレイヤー生成
 	SamplePlayer* player = new SamplePlayer();
 	player->Initialize("player", BaseObject::Player);
