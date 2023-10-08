@@ -7,7 +7,24 @@ void MyPlayer::Initialize(std::string name, Tag tag)
 	isActive_ = true;
 
 	// モデル読み込み
-	objects_.push_back(OBJ::Create({ 1.0f, 1.0f, 1.0f, 1.0f }, "./Resources", "Box.obj"));
+	objects_.push_back(OBJ::Create({ 1.0f, 1.0f, 1.0f, 1.0f }, "./Resources", "float_Body.obj"));
+	objects_.push_back(OBJ::Create({ 1.0f, 1.0f, 1.0f, 1.0f }, "./Resources", "float_Head.obj"));
+	objects_.push_back(OBJ::Create({ 1.0f, 1.0f, 1.0f, 1.0f }, "./Resources", "float_L_arm.obj"));
+	objects_.push_back(OBJ::Create({ 1.0f, 1.0f, 1.0f, 1.0f }, "./Resources", "float_R_arm.obj"));
+
+	// ワールド座標初期化
+	bodyTransform_.Initialize(); // 体
+	bodyTransform_.translate_ = { 0.0f, 0.0f, 0.0f }; // 初期座標設定
+	bodyTransform_.SetParent(&transform_); // 親子付け
+	headTransform_.Initialize(); // 頭
+	headTransform_.translate_ = { 0.0f, 1.5f, 0.0f }; // 初期座標設定
+	headTransform_.SetParent(&bodyTransform_); // 親子付け
+	armTransform_L_.Initialize(); // 左腕
+	armTransform_L_.translate_ = { -0.35f, 1.25f, 0.0f }; // 初期座標設定
+	armTransform_L_.SetParent(&bodyTransform_); // 親子付け
+	armTransform_R_.Initialize(); // 右腕
+	armTransform_R_.translate_ = { 0.35f, 1.25f, 0.0f }; // 初期座標設定
+	armTransform_R_.SetParent(&bodyTransform_); // 親子付け
 
 	// 入力状態取得
 	input_ = Input::GetInstance();
@@ -18,8 +35,15 @@ void MyPlayer::Initialize(std::string name, Tag tag)
 	// 色初期設定
 	color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
 
-	// 目標角度初期化
-	targetAngle_ = 0.0f;
+	// 浮遊ギミック初期化
+	InitializeFloatingGimmick();
+	// 腕振りギミック初期化
+	InitializeArmSwingGimmick();
+
+	// 腕振りサイクル
+	armSwingCycle_ = 60;
+	// 腕振りギミック用変数
+	armSwingParameter_ = 0.0f;
 
 	// 衝突属性を設定
 	collider_->SetCollisionAttribute(0xfffffffe);
@@ -79,8 +103,14 @@ void MyPlayer::Update()
 		targetAngle_ = atan2(move.x, move.z);
 	}
 
+	// 角度を補正する
 	transform_.rotate_.y =
 		Math::LerpShortAngle(transform_.rotate_.y, targetAngle_, 0.1f);
+
+	// 浮遊ギミック更新
+	UpdateFloatingGimmick();
+	// 腕振りギミック更新
+	UpdateArmSwingGimmick();
 
 	if (!isDestroy_) {
 		// 当たり判定更新
@@ -94,11 +124,16 @@ void MyPlayer::Update()
 void MyPlayer::Draw()
 {
 	// オブジェクトの描画
-	for (OBJ* obj : objects_) {
-		if (isActive_) {
-			obj->SetWorldTransform(transform_);
-			obj->Draw();
-		}
+	if (isActive_) {
+		objects_[0]->SetWorldTransform(bodyTransform_);
+		objects_[0]->Draw();
+		objects_[1]->SetWorldTransform(headTransform_);
+		objects_[1]->Draw();
+		objects_[2]->SetWorldTransform(armTransform_L_);
+		objects_[2]->Draw();
+		objects_[3]->SetWorldTransform(armTransform_R_);
+		objects_[3]->Draw();
+
 	}
 }
 
@@ -125,4 +160,51 @@ void MyPlayer::OnCollision(BaseObject* object)
 	default:
 		break;
 	}
+}
+
+void MyPlayer::InitializeFloatingGimmick()
+{
+	// 浮遊移動サイクル
+	floatingCycle_ = 60;
+	// 浮遊の振幅
+	floatingAmpritude_ = 0.01f;
+	// 変数初期化
+	floatingParameter_ = 0.0f;
+}
+
+void MyPlayer::UpdateFloatingGimmick()
+{
+	// 1フレームごとの加算値
+	const float step = (float)(2.0f * std::numbers::pi / floatingCycle_);
+
+	// パラメータを1ステップ分加算する
+	floatingParameter_ += step;
+	// 2πを超えたら0に戻す
+	floatingParameter_ = (float)(std::fmod(floatingParameter_, 2.0f * std::numbers::pi));
+
+	// 浮遊を座標に反映させる
+	bodyTransform_.translate_.y = std::sin(floatingParameter_) * floatingAmpritude_;
+}
+
+void MyPlayer::InitializeArmSwingGimmick()
+{
+	// 腕振りサイクル
+	armSwingCycle_ = 60;
+	// 腕振りギミック用変数
+	armSwingParameter_ = 0.0f;
+}
+
+void MyPlayer::UpdateArmSwingGimmick()
+{
+	// 1フレームごとの加算値
+	const float step = (float)(2.0f * std::numbers::pi / armSwingCycle_);
+
+	// パラメータを1ステップ分加算する
+	armSwingParameter_ += step;
+	// 2πを超えたら0に戻す
+	armSwingParameter_ = (float)(std::fmod(armSwingParameter_, 2.0f * std::numbers::pi));
+
+	// 腕振りを座標に反映させる
+	armTransform_L_.rotate_.x = std::cos(armSwingParameter_) / 2.0f;
+	armTransform_R_.rotate_.x = std::cos(armSwingParameter_) / 2.0f;
 }
