@@ -67,6 +67,12 @@
     <Filter Include="Engine\ImGui">
       <UniqueIdentifier>{8a6be271-d072-4fe2-8329-882451aaa498}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\GameObject\Ambient">
+      <UniqueIdentifier>{bc9c9dfe-449c-444a-93af-5530dca8bca3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GameObject\Player">
+      <UniqueIdentifier>{37b0d73d-75e5-4b88-a89e-715fe087a8d8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Base\DirectXCommon.cpp">
@@ -157,6 +163,15 @@
       <Filter>Engine\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Engine\GameObject\Ambient\Ambient.cpp">
+      <Filter>Engine\GameObject\Ambient</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\Player\Player.cpp">
+      <Filter>Engine\GameObject\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\Camera\TPCamera.cpp">
+      <Filter>Engine\GameObject\Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Base\DirectXCommon.h">
@@ -296,6 +311,15 @@
     </ClInclude>
     <ClInclude Include="Engine\externals\imgui\imstb_truetype.h">
       <Filter>Engine\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\Ambient\Ambient.h">
+      <Filter>Engine\GameObject\Ambient</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\Player\Player.h">
+      <Filter>Engine\GameObject\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\Camera\TPCamera.h">
+      <Filter>Engine\GameObject\Camera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
