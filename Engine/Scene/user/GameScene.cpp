@@ -2,24 +2,29 @@
 
 void GameScene::Initialize() {
 	// 環境生成
-	Ambient* ambient = new Ambient();
-	ambient->Initialize("ambient", BaseObject::Other);
-	gameObjectManager_->AddGameObject(ambient);
+	Ambient* ambient = new Ambient(); // インスタンス生成
+	ambient->Initialize("ambient", BaseObject::Other); // 初期化
+	gameObjectManager_->AddGameObject(ambient); // ゲームオブジェクトマネージャーに追加
+	// 床生成
+	Floor* floor = new Floor(); // インスタンス生成
+	floor->Initialize("floor", BaseObject::Floor); // 初期化
+	gameObjectManager_->AddGameObject(floor); // ゲームオブジェクトマネージャーに追加
 	// 箱生成
-	Box* box = new Box();
-	box->Initialize("box", BaseObject::Other);
-	gameObjectManager_->AddGameObject(box);
+	Box* box = new Box(); // インスタンス生成
+	box->Initialize("box", BaseObject::Other); // 初期化
+	gameObjectManager_->AddGameObject(box); // ゲームオブジェクトマネージャーに追加
 	// プレイヤー生成
 	MyPlayer* player = new MyPlayer();
-	player->Initialize("player", BaseObject::Player);
-	gameObjectManager_->AddGameObject(player);
+	player->Initialize("player", BaseObject::Player); // 初期化
+	player->transform_.translate_ = { 0.0f, 5.0f, 0.0f };
+	gameObjectManager_->AddGameObject(player); // ゲームオブジェクトマネージャーに追加
 	// 三人称カメラ生成
 	TPCamera* camera = new TPCamera(); // インスタンス生成
 	camera->Initialize("TPCamera", BaseObject::Camera); // 初期化
-	camera->SetTarget(&player->transform_); // プレイヤーを追従対象に設定
+	camera->SetUseThisCamera(true); // プレイヤーを追従対象に設定
+	camera->SetTarget(&player->transform_); // このカメラを使用対象に
 	player->SetCameraRotation(&camera->transform_.rotate_); // プレイヤーにカメラ角度を渡す
 	gameObjectManager_->AddGameObject(camera); // ゲームオブジェクトマネージャーに追加
-
 }
 
 void GameScene::Update() {

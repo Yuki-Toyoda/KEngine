@@ -22,6 +22,7 @@ public: // サブクラス
 		Camera, // カメラ
 		Player, // プレイヤー
 		Enemy, // 敵
+		Floor, // 床
 		Other, // その他
 	};
 
@@ -136,6 +137,12 @@ public: // アクセッサ等
 	/// <param name="enable">有効非有効</param>
 	void EnableDebug(bool enable) { isDebug_ = enable; }
 
+	/// <summary>
+	/// 衝突判定ゲッター
+	/// </summary>
+	/// <returns>衝突判定</returns>
+	Collider* GetCollider() { return collider_; }
+
 public: // その他関数群
 
 	/// <summary>
@@ -152,7 +159,13 @@ public: // その他関数群
 	/// 衝突時コールバック関数
 	/// </summary>
 	/// <param name="object">衝突したオブジェクト</param>
-	virtual void OnCollision( BaseObject* object) { object; };
+	virtual void OnCollisionEnter(BaseObject* object) { object; };
+
+	/// <summary>
+	/// 非衝突時コールバック関数
+	/// </summary>
+	/// <param name="object">前フレーム衝突していたオブジェクト</param>
+	virtual void OnCollisionExit(BaseObject* object) { object; }
 
 public: // パブリックメンバ変数
 

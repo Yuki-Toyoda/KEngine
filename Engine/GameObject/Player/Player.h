@@ -32,7 +32,7 @@ public: // その他関数群
 	/// 衝突時コールバック関数
 	/// </summary>
 	/// <param name="object">衝突したオブジェクト</param>
-	void OnCollision(BaseObject* object) override;
+	void OnCollisionEnter(BaseObject* object) override;
 
 	/// <summary>
 	/// カメラ回転角セッター
@@ -79,6 +79,24 @@ private: // メンバ変数
 
 	// 移動時の目標角度
 	float targetAngle_;
+
+	// 接地判定
+	bool isLanding_;
+	// 最大落下速度
+	float kMaxFallSpeed_;
+	// 現在落下速度
+	float fallSpeed_;
+	// 落下加速度
+	float kFallAcceleration_;
+
+	// ジャンプできるか
+	bool canJump_;
+	// ジャンプ速度
+	float jumpSpeed_;
+	// 最大ジャンプ高度
+	float kMaxJumpHeight_;
+	// ジャンプ減衰速度
+	float kJumpDecayRate_;
 
 	// 浮遊移動サイクル
 	int32_t floatingCycle_;

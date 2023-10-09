@@ -1,4 +1,5 @@
 #pragma once
+#include <list>
 #include "../Math/Math.h"
 #include "ShapeList.h"
 
@@ -55,6 +56,31 @@ public: // アクセッサ等
 	void SetGameObject(BaseObject* gameObject) { gameObject_ = gameObject; }
 
 	/// <summary>
+	/// 前フレーム衝突したオブジェクトがあるかどうかのゲッター
+	/// </summary>
+	/// <returns>前フレーム衝突したオブジェクトがあるかどうか</returns>
+	bool GetPrevCollisionObject() {
+		for (Collider* object : prevCollisionObjects_) // 要素が1つでもあった場合Trueを返す
+			return true;
+		// 要素が1つもなかった場合False
+		return false;
+	}
+	/// <summary>
+	/// 前フレーム衝突したオブジェクトリストのゲッター
+	/// </summary>
+	/// <returns></returns>
+	std::list<Collider*> GetPrevCollisionObjectList() { return prevCollisionObjects_; }
+	/// <summary>
+	/// 前フレーム衝突したオブジェクトのリストに追加する関数
+	/// </summary>
+	/// <param name="gameObject">前フレーム衝突したオブジェクト</param>
+	void AddPrevCollisionObject(Collider* gameObject) { prevCollisionObjects_.push_back(gameObject); };
+	/// <summary>
+	/// 前フレーム衝突したオブジェクトリストをクリアする関数
+	/// </summary>
+	void ClearPrevCollisionObjectList() { prevCollisionObjects_.clear(); }
+
+	/// <summary>
 	/// 衝突属性(自分)ゲッター
 	/// </summary>
 	/// <returns>衝突属性(自分)</returns>
@@ -76,13 +102,16 @@ public: // アクセッサ等
 	/// <param name="collisionMask">設定する衝突マスク</param>
 	void SetCollisionMask(uint32_t collisionMask) { collisionMask_ = collisionMask; }
 
-protected: // メンバ変数
+private: // メンバ変数
 
 	// 当たり判定形状
 	BaseShape* colliderShape_;
 
 	// このコライダーを持つゲームオブジェクト
 	BaseObject* gameObject_;
+
+	// このゲームオブジェクトが前フレーム衝突したゲームオブジェクト達
+	std::list<Collider*> prevCollisionObjects_;
 
 	// 衝突属性(自分)
 	uint32_t collisionAttribute_ = 0xffffffff;

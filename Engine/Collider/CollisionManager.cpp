@@ -27,6 +27,11 @@ void CollisionManager::CheckAllCollision()
 	for (; itrA != colliders_.end(); itrA++) {
 		// イテレータAからコライダーAを取得する
 		Collider* colliderA = *itrA;
+		// 前フレーム衝突していたオブジェクトがあった場合
+		if (colliderA->GetPrevCollisionObject())
+			CheckCollisionExit(colliderA);
+		// 上の検証が終わった段階でリストをクリア
+		colliderA->ClearPrevCollisionObjectList();
 
 		// イテレータBはイテレータAの次の要素から回すことで重複判定を回避する
 		std::list<Collider*>::iterator itrB = itrA;
@@ -35,6 +40,11 @@ void CollisionManager::CheckAllCollision()
 		for (; itrB != colliders_.end(); itrB++) {
 			// イテレータBからコライダーBを取得
 			Collider* colliderB = *itrB;
+			// 前フレーム衝突していたオブジェクトがあった場合
+			if (colliderB->GetPrevCollisionObject())
+				CheckCollisionExit(colliderB);
+			// 上の検証が終わった段階でリストをクリア
+			colliderB->ClearPrevCollisionObjectList();
 
 			// ペアの当たり判定を検証する
 			CheckCollisionPair(colliderA, colliderB);
@@ -85,12 +95,39 @@ bool CollisionManager::CheckCollisionPair(Collider* colliderA, Collider* collide
 
 	// 衝突時の関数を呼び出す
 	if (result) {
-		colliderA->GetGameObject()->OnCollision(colliderB->GetGameObject()); // A
-		colliderB->GetGameObject()->OnCollision(colliderA->GetGameObject()); // B
+		colliderA->GetGameObject()->OnCollisionEnter(colliderB->GetGameObject()); // A
+		colliderA->AddPrevCollisionObject(colliderB); // 前フレーム衝突したオブジェクトリストに衝突しているオブジェクトを追加
+		colliderB->GetGameObject()->OnCollisionEnter(colliderA->GetGameObject()); // B
+		colliderB->AddPrevCollisionObject(colliderA); // 前フレーム衝突したオブジェクトリストに衝突しているオブジェクトを追加
 	}
 
 	return result;
 
+}
+
+bool CollisionManager::CheckCollisionExit(Collider* collider)
+{
+	// リスト内の全てのコライダーのペアを検証する
+	std::list<Collider*> objectList = collider->GetPrevCollisionObjectList();
+	std::list<Collider*>::iterator itr = objectList.begin();
+	for (; itr != objectList.end(); itr++) {
+		// イテレータAからコライダーAを取得する
+		Collider* colliderA = *itr;
+		if (collider == nullptr || collider->GetGameObject() == nullptr) // 
+			continue;
+
+		// そのオブジェクトが衝突していなかった場合
+		if (!CheckCollisionPair(collider, colliderA)) {
+			// 非衝突時関数を呼び出す
+			collider->GetGameObject()->OnCollisionExit(colliderA->GetGameObject());
+			colliderA->GetGameObject()->OnCollisionExit(collider->GetGameObject());
+
+			// 衝突していない
+			return true;
+		}
+	}
+	// 衝突している
+	return false;
 }
 
 bool CollisionManager::IsCollisionSphere(BaseShape* shapeA, BaseShape* shapeB)

@@ -1,11 +1,10 @@
 #pragma once
 #include "../BaseObject.h"
-#include "../../Input/Input.h"
 
 /// <summary>
-/// プレイヤーのサンプル
+/// 床クラス
 /// </summary>
-class SamplePlayer : public BaseObject
+class Floor : public BaseObject
 {
 public: // メンバ関数
 
@@ -16,7 +15,7 @@ public: // メンバ関数
 	// 描画処理
 	void Draw() override;
 
-public: // その他関数群
+public: // その他関数
 
 	/// <summary>
 	/// グローバル変数に値を追加する関数
@@ -33,11 +32,6 @@ public: // その他関数群
 	/// </summary>
 	/// <param name="object">衝突したオブジェクト</param>
 	void OnCollisionEnter(BaseObject* object) override;
-
-private: // メンバ変数
-
-	// 入力状態検知
-	Input* input_ = nullptr;
-
 };
+
 

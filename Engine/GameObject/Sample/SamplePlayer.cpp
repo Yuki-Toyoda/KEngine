@@ -85,7 +85,7 @@ void SamplePlayer::ApplyGlobalVariables()
 	
 }
 
-void SamplePlayer::OnCollision(BaseObject* object)
+void SamplePlayer::OnCollisionEnter(BaseObject* object)
 {
 	switch (object->GetObjectTag())
 	{

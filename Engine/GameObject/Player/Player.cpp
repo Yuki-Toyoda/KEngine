@@ -40,6 +40,27 @@ void MyPlayer::Initialize(std::string name, Tag tag)
 	// 腕振りギミック初期化
 	InitializeArmSwingGimmick();
 
+	// 目標角度リセット
+	targetAngle_ = 0.0f;
+
+	// 接地判定
+	isLanding_ = false;
+	// 最大落下速度
+	kMaxFallSpeed_ = -0.49f;
+	// 現在落下速度
+	fallSpeed_ = 0.0f;
+	// 落下加速度
+	kFallAcceleration_ = 0.0098f;
+
+	// ジャンプ不可能に
+	canJump_ = false;
+	// ジャンプ速度初期化
+	jumpSpeed_ = 0.0f;
+	// 最大ジャンプ速度設定
+	kMaxJumpHeight_ = 1.25f;
+	// ジャンプ減衰速度を設定
+	kJumpDecayRate_ = 0.098f;
+
 	// 腕振りサイクル
 	armSwingCycle_ = 60;
 	// 腕振りギミック用変数
@@ -112,24 +133,87 @@ void MyPlayer::Update()
 	// 腕振りギミック更新
 	UpdateArmSwingGimmick();
 
+	// 接地していないなら
+	if (!isLanding_) {
+		// 最大落下速度を超過するまで
+		if (fallSpeed_ >= kMaxFallSpeed_) {
+			// 落下速度加算
+			fallSpeed_ -= kFallAcceleration_;
+		}
+		else {
+			// 超過していた場合は落下速度を最大速度に設定
+			fallSpeed_ = kMaxFallSpeed_;
+		}
+	}
+	else {
+		// 接地しているなら落下速度初期化
+		fallSpeed_ = 0.0f;
+	}
+
+	// 落下スピード加算
+	transform_.translate_.y += fallSpeed_;
+
+	// 落下したら初期位置に戻す
+	if (transform_.translate_.y <= -100.0f) {
+		fallSpeed_ = 0.0f;
+		transform_.translate_ = { 0.0f, 5.0f, 0.0f };
+	}
+
+	// ジャンプ可能なら
+	if (canJump_) {
+		// Aボタンが押されたら
+		if (joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A &&
+			!(preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A)) {
+			// ジャンプさせる
+			jumpSpeed_ = kMaxJumpHeight_;
+			// ジャンプ不可に
+			canJump_ = false;
+			// 接地していない状態に
+			isLanding_ = false;
+		}
+	}
+	else {
+		// 接地しているなら
+		if (isLanding_) {
+			// ジャンプ可能に
+			canJump_ = true;
+		}
+	}
+
+	// 接地していないなら
+	if (!isLanding_) {
+		// ジャンプ処理
+		transform_.translate_.y += jumpSpeed_;
+	}
+
+	// ジャンプ速度がでないなら
+	if (jumpSpeed_ >= 0.0f) {
+		// ジャンプ速度減衰
+		jumpSpeed_ -= kJumpDecayRate_;
+	}
+	else {
+		// ジャンプ速度を0に
+		jumpSpeed_ = 0.0f;
+	}
+
+	// 着地判定リセット
+	isLanding_ = false;
+
 	if (!isDestroy_) {
 		// 当たり判定更新
 		collider_->Update(transform_.GetWorldPos(), {1.0f, 1.0f, 1.0f});
 		// リストに自身を登録
 		collisionManager_->RegisterCollider(collider_);
 	}
-
 }
 
 void MyPlayer::Draw()
 {
 	// オブジェクトの描画
-	if (isActive_) {
-		objects_[0]->Draw();
-		objects_[1]->Draw();
-		objects_[2]->Draw();
-		objects_[3]->Draw();
-
+	for (OBJ* obj : objects_) {
+		if (isActive_) {
+			obj->Draw();
+		}
 	}
 }
 
@@ -143,17 +227,20 @@ void MyPlayer::ApplyGlobalVariables()
 
 }
 
-void MyPlayer::OnCollision(BaseObject* object)
+void MyPlayer::OnCollisionEnter(BaseObject* object)
 {
 	switch (object->GetObjectTag())
 	{
-	case Camera:
+	case Enemy: // 衝突したオブジェクトが敵であった場合
+
 		break;
-	case Enemy:
-		break;
-	case Other:
-		break;
-	default:
+	case Floor: // 衝突したオブジェクトが床の場合
+
+		// とりあえず床の高さに補正
+		transform_.translate_.y = object->transform_.translate_.y + object->transform_.scale_.y;
+		// 接地判定On
+		isLanding_ = true;
+
 		break;
 	}
 }

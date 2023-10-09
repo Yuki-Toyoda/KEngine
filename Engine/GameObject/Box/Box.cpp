@@ -100,7 +100,7 @@ void Box::ApplyGlobalVariables()
 	colliderRadius_ = globalVariables_->GetVector3Value(objectName_.c_str(), "AABBRadius");
 }
 
-void Box::OnCollision(BaseObject* object)
+void Box::OnCollisionEnter(BaseObject* object)
 {
 	switch (object->GetObjectTag())
 	{
@@ -117,4 +117,10 @@ void Box::OnCollision(BaseObject* object)
 	}
 
 	isCollision_ = true;
+}
+
+void Box::OnCollisionExit(BaseObject* object)
+{
+	object;
+
 }

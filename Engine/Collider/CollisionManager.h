@@ -50,6 +50,13 @@ private: // プライベートなメンバ関数
 	bool CheckCollisionPair(Collider* colliderA, Collider* colliderB);
 	
 	/// <summary>
+	/// 引数で指定されたコライダーの非衝突を検証する関数
+	/// </summary>
+	/// <param name="collider">コライダー</param>
+	/// <returns>非衝突か</returns>
+	bool CheckCollisionExit(Collider* collider);
+
+	/// <summary>
 	/// 球同士の衝突検証関数
 	/// </summary>
 	/// <param name="shapeA">形状A</param>
