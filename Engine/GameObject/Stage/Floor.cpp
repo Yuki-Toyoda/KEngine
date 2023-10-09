@@ -1,6 +1,6 @@
 #include "Floor.h"
 
-void Floor::Initialize(std::string name, Tag tag)
+void StageFloor::Initialize(std::string name, Tag tag)
 {
 	// 基底クラス初期化
 	BaseObject::Initialize(name, tag);
@@ -10,7 +10,7 @@ void Floor::Initialize(std::string name, Tag tag)
 	objects_.push_back(OBJ::Create(&transform_, { 1.0f, 1.0f, 1.0f, 1.0f }, "./Resources", "Stage.obj"));
 
 	// 
-	transform_.scale_ = { 1.0f, 1.0f, 1.0f };
+	transform_.scale_ = { 25.0f, 0.5f, 25.0f };
 
 	// 衝突属性を設定
 	collider_->SetCollisionAttribute(0xfffffffd);
@@ -28,7 +28,7 @@ void Floor::Initialize(std::string name, Tag tag)
 	AddGlobalVariables();
 }
 
-void Floor::Update()
+void StageFloor::Update()
 {
 	// 基底クラス更新
 	BaseObject::Update();
@@ -41,7 +41,7 @@ void Floor::Update()
 	}
 }
 
-void Floor::Draw()
+void StageFloor::Draw()
 {
 	// カメラオブジェクトの描画
 	for (OBJ* obj : objects_) {
@@ -51,17 +51,21 @@ void Floor::Draw()
 	}
 }
 
-void Floor::AddGlobalVariables()
+void StageFloor::AddGlobalVariables()
 {
-
+	// 調整したい項目をグローバル変数に追加
+	//globalVariables_->AddItem(objectName_.c_str(), "FloorTranslate", transform_.translate_); // 床の座標
+	//globalVariables_->AddItem(objectName_.c_str(), "FloorScale", transform_.scale_); // 床の大きさ
 }
 
-void Floor::ApplyGlobalVariables()
+void StageFloor::ApplyGlobalVariables()
 {
-
+	// 調整した値を適用
+	//transform_.translate_ = globalVariables_->GetVector3Value(objectName_.c_str(), "FloorTranslate"); // 床の座標
+	//transform_.scale_ = globalVariables_->GetVector3Value(objectName_.c_str(), "FloorScale"); // 床の大きさ
 }
 
-void Floor::OnCollisionEnter(BaseObject* object)
+void StageFloor::OnCollisionEnter(BaseObject* object)
 {
 
 }

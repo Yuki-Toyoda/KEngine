@@ -1,0 +1,35 @@
+{
+    "StageManager": {
+        "FloorCount": 3,
+        "StageFloor2scale": [
+            25.0,
+            0.5,
+            25.0
+        ],
+        "StageFloor2translate": [
+            0.0,
+            0.0,
+            53.29999923706055
+        ],
+        "StageFloor3scale": [
+            25.0,
+            0.5,
+            25.0
+        ],
+        "StageFloor3translate": [
+            -54.099998474121094,
+            0.0,
+            0.0
+        ],
+        "StageFloorscale": [
+            25.0,
+            0.5,
+            25.0
+        ],
+        "StageFloortranslate": [
+            0.0,
+            0.0,
+            0.0
+        ]
+    }
+}

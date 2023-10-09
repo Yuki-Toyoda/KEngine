@@ -11,4 +11,4 @@
 #include "Player/Player.h"
 #include "Camera/TPCamera.h"
 #include "Ambient/Ambient.h"
-#include "Stage/Floor.h"
+#include "Stage/StageManager.h"

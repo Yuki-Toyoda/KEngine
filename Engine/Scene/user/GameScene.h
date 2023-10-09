@@ -20,5 +20,8 @@ public: // メンバ関数
 
 private: // メンバ変数
 
+	// ステージのマネージャー
+	std::unique_ptr<StageManager> stageManager_;
+
 };
 

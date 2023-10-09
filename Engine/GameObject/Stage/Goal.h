@@ -2,9 +2,9 @@
 #include "../BaseObject.h"
 
 /// <summary>
-/// 床クラス
+/// ゴールオブジェクト
 /// </summary>
-class StageFloor : public BaseObject
+class Goal : public BaseObject
 {
 public: // メンバ関数
 
@@ -15,7 +15,7 @@ public: // メンバ関数
 	// 描画処理
 	void Draw() override;
 
-public: // その他関数
+public: // その他関数群
 
 	/// <summary>
 	/// グローバル変数に値を追加する関数
@@ -32,6 +32,19 @@ public: // その他関数
 	/// </summary>
 	/// <param name="object">衝突したオブジェクト</param>
 	void OnCollisionEnter(BaseObject* object) override;
-};
 
+public: // アクセッサ等
+	
+	/// <summary>
+	/// ゴール状態ゲッター
+	/// </summary>
+	/// <returns>ゴールしているか</returns>
+	bool GetIsGoaled() { return isGoaled_; }
+
+private: // メンバ変数
+
+	// ゴールしたか
+	bool isGoaled_;
+
+};
 

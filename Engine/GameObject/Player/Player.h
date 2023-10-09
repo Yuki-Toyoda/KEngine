@@ -35,6 +35,12 @@ public: // その他関数群
 	void OnCollisionEnter(BaseObject* object) override;
 
 	/// <summary>
+	/// 非衝突時コールバック関数
+	/// </summary>
+	/// <param name="object">前フレーム衝突していたオブジェクト</param>
+	void OnCollisionExit(BaseObject* object) override;
+
+	/// <summary>
 	/// カメラ回転角セッター
 	/// </summary>
 	/// <param name="rotation">カメラ回転角</param>

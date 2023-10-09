@@ -350,7 +350,6 @@ void GlobalVariables::AddItem(const std::string& groupName, const std::string& k
 }
 
 int32_t GlobalVariables::GetIntValue(const std::string& groupName, const std::string& key){
-	
 	// 指定グループがいない場合エラー
 	assert(datas_.find(groupName) != datas_.end());
 

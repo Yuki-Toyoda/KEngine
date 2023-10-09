@@ -199,8 +199,6 @@ void MyPlayer::Update()
 	// 着地判定リセット
 	isLanding_ = false;
 
-	transform_.SetParent(nullptr);
-
 	if (!isDestroy_) {
 		// 当たり判定更新
 		collider_->Update(transform_.GetWorldPos(), {1.0f, 1.0f, 1.0f});
@@ -242,8 +240,17 @@ void MyPlayer::OnCollisionEnter(BaseObject* object)
 		transform_.translate_.y = object->transform_.translate_.y + object->transform_.scale_.y;
 		// 接地判定On
 		isLanding_ = true;
-		transform_.SetParent(&object->transform_);
 
+		break;
+	}
+}
+
+void MyPlayer::OnCollisionExit(BaseObject* object)
+{
+	switch (object->GetObjectTag())
+	{
+	case Floor:
+		
 		break;
 	}
 }

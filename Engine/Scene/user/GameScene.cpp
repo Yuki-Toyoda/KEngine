@@ -5,10 +5,6 @@ void GameScene::Initialize() {
 	Ambient* ambient = new Ambient(); // インスタンス生成
 	ambient->Initialize("ambient", BaseObject::Other); // 初期化
 	gameObjectManager_->AddGameObject(ambient); // ゲームオブジェクトマネージャーに追加
-	// 床生成
-	Floor* floor = new Floor(); // インスタンス生成
-	floor->Initialize("floor", BaseObject::Floor); // 初期化
-	gameObjectManager_->AddGameObject(floor); // ゲームオブジェクトマネージャーに追加
 	// 箱生成
 	Box* box = new Box(); // インスタンス生成
 	box->Initialize("box", BaseObject::Other); // 初期化
@@ -25,9 +21,16 @@ void GameScene::Initialize() {
 	camera->SetTarget(&player->transform_); // このカメラを使用対象に
 	player->SetCameraRotation(&camera->transform_.rotate_); // プレイヤーにカメラ角度を渡す
 	gameObjectManager_->AddGameObject(camera); // ゲームオブジェクトマネージャーに追加
+
+	// ステージマネージャー生成
+	stageManager_ = std::make_unique<StageManager>(); // インスタンス生成
+	stageManager_->Initialize(); // 初期化
 }
 
 void GameScene::Update() {
+
+	// ステージマネージャー更新
+	stageManager_->Update();
 
 	// 右シフトが押されたら次のシーンへ
 	if (input_->TriggerKey(DIK_RSHIFT)) {
