@@ -27,9 +27,21 @@ void StageManager::Initialize()
 
 void StageManager::Update()
 {
+
+	// ステージ床リストをクリア
+	stageFloorList_.clear();
+
+	// ステージの床を取得
+	stageFloorList_ = gameObjectManager_->GetGameObject(BaseObject::Floor);
+
+	// 床の数を取得
+	floorCount_ = (int)stageFloorList_.size();
+	globalVariables_->SetValue("StageManager", "FloorCount", floorCount_); // 調整項目クラスに値を追加
+
 	// 全ての床の座標をjsonファイルにて調整
-	for (StageFloor* floor : stageFloorList_) {
+	for (BaseObject* floor : stageFloorList_) {
 		// 調整項目クラスで調整した値を適用する
+		Vector3 test = globalVariables_->GetVector3Value("StageManager", floor->GetObjectName() + "translate");
 		floor->transform_.translate_ = globalVariables_->GetVector3Value("StageManager", floor->GetObjectName() + "translate");
 		floor->transform_.scale_ = globalVariables_->GetVector3Value("StageManager", floor->GetObjectName() + "scale");
 	}
@@ -42,9 +54,16 @@ void StageManager::Update()
 	if (ImGui::Button("AddStageFloor")) {
 		// 床を生成
 		AddStageFloor(AddFloorTranslate_, AddFloorScale_);
-		floorCount_++;
-		globalVariables_->SetValue("StageManager", "FloorCount", floorCount_); // 調整項目クラスに値を追加
 	}
+
+	// 床が2個以上ある場合
+	if (floorCount_ > 1) {
+		if (ImGui::Button("DeleteFloor")) {
+			std::string objectName = "StageFloor" + std::to_string(floorCount_);
+			gameObjectManager_->DeleteGameObject(objectName);
+		}
+	}
+
 	ImGui::End();
 #endif // _DEBUG
 }
@@ -54,8 +73,9 @@ void StageManager::AddStageFloor(Vector3 translate, Vector3 scale)
 	// 新しい床のインスタンス生成
 	StageFloor* floor = new StageFloor(); // インスタンス生成
 	floor->Initialize("StageFloor", BaseObject::Floor); // 初期化
+	floor->transform_.translate_ = translate; // 座標設定
+	floor->transform_.scale_ = scale; // 座標設定
 	gameObjectManager_->AddGameObject(floor); // 生成したインスタンスをマネージャーに追加
-	stageFloorList_.push_back(floor); // ステージの床リストにインスタンスを追加
 	globalVariables_->AddItem("StageManager", floor->GetObjectName() + "translate", floor->transform_.translate_); // 調整項目クラスに値を追加
 	globalVariables_->AddItem("StageManager", floor->GetObjectName() + "scale", floor->transform_.scale_); // 調整項目クラスに値を追加
 }

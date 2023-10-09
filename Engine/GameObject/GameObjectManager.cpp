@@ -111,10 +111,10 @@ BaseObject* GameObjectManager::GetGameObject(std::string objectName)
 
 }
 
-std::vector<BaseObject*> GameObjectManager::GetGameObject(BaseObject::Tag tag)
+std::list<BaseObject*> GameObjectManager::GetGameObject(BaseObject::Tag tag)
 {
 	// 取得したオブジェクトリスト
-	std::vector<BaseObject*> objectlist;
+	std::list<BaseObject*> objectlist;
 	// 全オブジェクトから探す
 	for (BaseObject* object : objects_) {
 		// 引数のオブジェクトタグと同じタグのオブジェクトを見つけた場合それを返す

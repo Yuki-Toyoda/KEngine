@@ -53,16 +53,10 @@ void StageFloor::Draw()
 
 void StageFloor::AddGlobalVariables()
 {
-	// 調整したい項目をグローバル変数に追加
-	//globalVariables_->AddItem(objectName_.c_str(), "FloorTranslate", transform_.translate_); // 床の座標
-	//globalVariables_->AddItem(objectName_.c_str(), "FloorScale", transform_.scale_); // 床の大きさ
 }
 
 void StageFloor::ApplyGlobalVariables()
 {
-	// 調整した値を適用
-	//transform_.translate_ = globalVariables_->GetVector3Value(objectName_.c_str(), "FloorTranslate"); // 床の座標
-	//transform_.scale_ = globalVariables_->GetVector3Value(objectName_.c_str(), "FloorScale"); // 床の大きさ
 }
 
 void StageFloor::OnCollisionEnter(BaseObject* object)

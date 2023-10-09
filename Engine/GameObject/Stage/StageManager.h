@@ -1,5 +1,6 @@
 #pragma once
 #include <list>
+#include <string>
 #include "Floor.h"
 #include "Goal.h"
 
@@ -22,17 +23,6 @@ public: // メンバ関数
 
 public: // その他関数
 
-
-	/// <summary>
-	/// グローバル変数に値を追加する関数
-	/// </summary>
-	void AddGlobalVariables();
-
-	/// <summary>
-	/// グローバル変数の値を適用する関数
-	/// </summary>
-	void ApplyGlobalVariables();
-
 	/// <summary>
 	/// ステージ床を生成する関数
 	/// </summary>
@@ -48,7 +38,7 @@ private: // メンバ変数
 	GlobalVariables* globalVariables_ = nullptr;
 
 	// 床のリスト
-	std::vector<StageFloor*> stageFloorList_;
+	std::list<BaseObject*> stageFloorList_;
 	// 床個数
 	int32_t floorCount_;
 
