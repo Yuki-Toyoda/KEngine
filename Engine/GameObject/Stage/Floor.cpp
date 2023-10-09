@@ -10,7 +10,7 @@ void Floor::Initialize(std::string name, Tag tag)
 	objects_.push_back(OBJ::Create(&transform_, { 1.0f, 1.0f, 1.0f, 1.0f }, "./Resources", "Stage.obj"));
 
 	// 
-	transform_.scale_ = { 25.0f, 0.25f, 25.0f };
+	transform_.scale_ = { 1.0f, 1.0f, 1.0f };
 
 	// 衝突属性を設定
 	collider_->SetCollisionAttribute(0xfffffffd);

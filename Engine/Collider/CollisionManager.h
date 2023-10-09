@@ -47,7 +47,7 @@ private: // プライベートなメンバ関数
 	/// <param name="colliderA">コライダーA</param>
 	/// <param name="colliderB">コライダーB</param>
 	/// <returns></returns>
-	bool CheckCollisionPair(Collider* colliderA, Collider* colliderB);
+	bool CheckCollisionPair(Collider* colliderA, Collider* colliderB, bool isCheckExit);
 	
 	/// <summary>
 	/// 引数で指定されたコライダーの非衝突を検証する関数
