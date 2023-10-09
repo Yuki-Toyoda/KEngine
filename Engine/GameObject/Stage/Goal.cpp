@@ -7,8 +7,9 @@ void Goal::Initialize(std::string name, Tag tag)
 	isActive_ = true;
 
 	// モデル読み込み
-	objects_.push_back(OBJ::Create(&transform_, { 1.0f, 1.0f, 1.0f, 1.0f }, "./Resources", "Stage.obj"));
-	
+	objects_.push_back(OBJ::Create(&transform_, { 1.0f, 1.0f, 1.0f, 1.0f }, "./Resources", "box.obj"));
+	objects_[0]->SetColor({ 0.8f, 0.65f, 0.0f, 1.0f });
+
 	// ゴールトリガーリセット
 	isGoaled_ = false;
 
@@ -30,10 +31,25 @@ void Goal::Initialize(std::string name, Tag tag)
 
 void Goal::Update()
 {
+	// 基底クラス更新
+	BaseObject::Update();
+
+	if (!isDestroy_) {
+		// 当たり判定更新
+		collider_->Update(transform_.GetWorldPos(), transform_.scale_);
+		// リストに自身を登録
+		collisionManager_->RegisterCollider(collider_);
+	}
 }
 
 void Goal::Draw()
 {
+	// カメラオブジェクトの描画
+	for (OBJ* obj : objects_) {
+		if (isActive_) {
+			obj->Draw();
+		}
+	}
 }
 
 void Goal::AddGlobalVariables()
@@ -46,5 +62,7 @@ void Goal::ApplyGlobalVariables()
 
 void Goal::OnCollisionEnter(BaseObject* object)
 {
-
+	// プレイヤーと衝突した場合
+	if (object->GetObjectTag() == Player)
+		isGoaled_ = true; // ゴールしている状態に
 }

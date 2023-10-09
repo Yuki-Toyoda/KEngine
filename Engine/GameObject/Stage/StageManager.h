@@ -30,12 +30,23 @@ public: // その他関数
 	/// <param name="scale">生成する床の大きさ</param>
 	void AddStageFloor(Vector3 translate, Vector3 scale);
 
+	/// <summary>
+	/// ゴール状態の取得
+	/// </summary>
+	/// <returns>ゴールしているか</returns>
+	bool GetIsGoal() {return goal_->GetIsGoaled();}
+
 private: // メンバ変数
 
 	// ゲームオブジェクトマネージャー
 	GameObjectManager* gameObjectManager_ = nullptr;
 	// 調整項目クラス
 	GlobalVariables* globalVariables_ = nullptr;
+
+	// ゴール座標
+	Vector3 goalPos_;
+	// ステージのゴール
+	std::unique_ptr<Goal> goal_;
 
 	// 床のリスト
 	std::list<BaseObject*> stageFloorList_;

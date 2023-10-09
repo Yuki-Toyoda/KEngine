@@ -9,6 +9,15 @@ void StageManager::Initialize()
 	// 調整項目クラスのインスタンス取得
 	globalVariables_ = GlobalVariables::GetInstance();
 	
+	// とりあえず初期設定
+	goalPos_ = { 0.0f, 1.5f, 30.0f };
+
+	// ゴール生成
+	goal_ = std::make_unique<Goal>(); // インスタンス生成
+	goal_->Initialize("goal", BaseObject::StageGoal); // 初期化
+	goal_->transform_.translate_ = goalPos_; // 座標初期化
+	gameObjectManager_->AddGameObject(goal_.get()); // リストに追加
+
 	// 床のリストをクリア
 	stageFloorList_.clear();
 
@@ -31,8 +40,11 @@ void StageManager::Update()
 	// ステージ床リストをクリア
 	stageFloorList_.clear();
 
-	// ステージの床を取得
+	// オブジェクトマネージャーからステージの床を取得
 	stageFloorList_ = gameObjectManager_->GetGameObject(BaseObject::Floor);
+
+	// ゴールの座標取得
+	goal_->transform_.translate_ = globalVariables_->GetVector3Value("StageManager", goal_->GetObjectName() + "translate");
 
 	// 床の数を取得
 	floorCount_ = (int)stageFloorList_.size();

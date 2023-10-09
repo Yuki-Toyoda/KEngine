@@ -5,10 +5,6 @@ void GameScene::Initialize() {
 	Ambient* ambient = new Ambient(); // インスタンス生成
 	ambient->Initialize("ambient", BaseObject::Other); // 初期化
 	gameObjectManager_->AddGameObject(ambient); // ゲームオブジェクトマネージャーに追加
-	// 箱生成
-	Box* box = new Box(); // インスタンス生成
-	box->Initialize("box", BaseObject::Other); // 初期化
-	gameObjectManager_->AddGameObject(box); // ゲームオブジェクトマネージャーに追加
 	// プレイヤー生成
 	MyPlayer* player = new MyPlayer();
 	player->Initialize("player", BaseObject::Player); // 初期化
@@ -32,9 +28,8 @@ void GameScene::Update() {
 	// ステージマネージャー更新
 	stageManager_->Update();
 
-	// 右シフトが押されたら次のシーンへ
-	if (input_->TriggerKey(DIK_RSHIFT)) {
-		nextScene_ = new TitleScene();
+	if (stageManager_->GetIsGoal()) {
+		nextScene_ = new GameScene();
 		gameObjectManager_->Initialize();
 	}
 }
