@@ -246,13 +246,13 @@ void MyPlayer::OnCollisionEnter(BaseObject* object)
 		// 接地判定On
 		transform_.translate_.y = object->transform_.translate_.y + object->transform_.scale_.y;
 		isLanding_ = true;
-		if (transform_.parent_ == nullptr) {
+		if (transform_.GetParent() == nullptr) {
 
-			if (transform_.parent_ != nullptr) {
+			/*if (transform_.GetParent() != nullptr) {
 				Matrix4x4 world = transform_.GetMatWorld();
 				transform_.translate_ = { world.m[3][0], world.m[3][1], world.m[3][2] };
 				transform_.SetParent(nullptr);
-			}
+			}*/
 
 			Vector3 myWorldPos = transform_.GetWorldPos();
 			Vector3 objectWorldPos = object->transform_.GetWorldPos();
@@ -274,7 +274,7 @@ void MyPlayer::OnCollisionExit(BaseObject* object)
 	switch (object->GetObjectTag())
 	{
 	case MoveFloor:
-		if (transform_.parent_ != nullptr) {
+		if (transform_.GetParent() != nullptr) {
 			transform_.translate_ = transform_.GetWorldPos();
 			transform_.SetParent(nullptr);
 		}

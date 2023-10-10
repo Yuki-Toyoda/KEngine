@@ -13,9 +13,6 @@ public: // パブリックメンバ変数
 	// 位置
 	Vector3 translate_;
 
-	// 親子関係
-	const WorldTransform* parent_;
-
 public: // パブリックメンバ関数
 
 	/// <summary>
@@ -48,7 +45,13 @@ public: // パブリックメンバ関数
 
 private: // メンバ変数
 
-	
+	// 親子関係
+	const WorldTransform* parent_;
+
+	// 親子関係タイプ
+	// 0x111 ... scale, rotate, translate 全て
+	// それぞれ scale rotate translate
+	uint8_t parentType_;
 
 public: // アクセッサ等
 
@@ -56,7 +59,13 @@ public: // アクセッサ等
 	/// 親子関係のセッター
 	/// </summary>
 	/// <param name="parent">セットするワールド座標</param>
-	void SetParent(WorldTransform* parent);
+	/// <param name="parentType">親子関係フラグ</param>
+	void SetParent(WorldTransform* parent, uint8_t parentType = 0b111);
+	/// <summary>
+	/// 親のゲッター
+	/// </summary>
+	/// <returns>親</returns>
+	const WorldTransform* GetParent();
 
 	/// <summary>
 	/// 現在のワールド行列のゲッター
