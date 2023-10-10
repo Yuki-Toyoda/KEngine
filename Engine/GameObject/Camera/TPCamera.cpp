@@ -51,8 +51,15 @@ void TPCamera::Update()
 		// オフセットをカメラの回転に合わせて回転させる
 		offset = Math::Transform(offset, rotateMat);
 
+		Matrix4x4 parentWorld = target_->GetMatWorld();
+		Vector3 parentPosition = {
+			parentWorld.m[3][0],
+			parentWorld.m[3][1],
+			parentWorld.m[3][2]
+		};
+
 		// 座標コピーからオフセット分ずらす
-		transform_.translate_ = target_->translate_ + offset;
+		transform_.translate_ = parentPosition + offset;
 	}
 
 	// カメラのワールド行列の取得

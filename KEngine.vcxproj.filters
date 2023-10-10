@@ -184,6 +184,9 @@
     <ClCompile Include="Engine\GameObject\Stage\StageManager.cpp">
       <Filter>Engine\GameObject\Stage</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\GameObject\Stage\MoveFloor.cpp">
+      <Filter>Engine\GameObject\Stage</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Base\DirectXCommon.h">
@@ -340,6 +343,9 @@
       <Filter>Engine\GameObject\Stage</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\Stage\StageManager.h">
+      <Filter>Engine\GameObject\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\Stage\MoveFloor.h">
       <Filter>Engine\GameObject\Stage</Filter>
     </ClInclude>
   </ItemGroup>

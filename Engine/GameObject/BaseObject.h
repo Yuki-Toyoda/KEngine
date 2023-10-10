@@ -23,6 +23,7 @@ public: // サブクラス
 		Player, // プレイヤー
 		Enemy, // 敵
 		Floor, // 床
+		MoveFloor, // 移動床
 		StageGoal, // ゴール
 		Other, // その他
 	};

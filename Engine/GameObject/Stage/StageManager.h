@@ -2,6 +2,7 @@
 #include <list>
 #include <string>
 #include "Floor.h"
+#include "MoveFloor.h"
 #include "Goal.h"
 
 // クラスの前方宣言
@@ -47,6 +48,9 @@ private: // メンバ変数
 	Vector3 goalPos_;
 	// ステージのゴール
 	std::unique_ptr<Goal> goal_;
+
+	std::unique_ptr<StageMoveFloor> moveFloor1_;
+	std::unique_ptr<StageMoveFloor> moveFloor2_;
 
 	// 床のリスト
 	std::list<BaseObject*> stageFloorList_;

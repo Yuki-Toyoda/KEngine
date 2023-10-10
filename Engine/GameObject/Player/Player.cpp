@@ -235,13 +235,37 @@ void MyPlayer::OnCollisionEnter(BaseObject* object)
 
 		break;
 	case Floor: // 衝突したオブジェクトが床の場合
-
 		// とりあえず床の高さに補正
 		transform_.translate_.y = object->transform_.translate_.y + object->transform_.scale_.y;
 		// 接地判定On
 		isLanding_ = true;
-
 		break;
+	case MoveFloor: // 衝突したオブジェクトが動く床の場合
+
+		// とりあえず床の高さに補正
+		// 接地判定On
+		transform_.translate_.y = object->transform_.translate_.y + object->transform_.scale_.y;
+		isLanding_ = true;
+		if (transform_.parent_ == nullptr) {
+
+			if (transform_.parent_ != nullptr) {
+				Matrix4x4 world = transform_.GetMatWorld();
+				transform_.translate_ = { world.m[3][0], world.m[3][1], world.m[3][2] };
+				transform_.SetParent(nullptr);
+			}
+
+			Vector3 myWorldPos = transform_.GetWorldPos();
+			Vector3 objectWorldPos = object->transform_.GetWorldPos();
+
+			Vector3 position = myWorldPos - objectWorldPos;
+
+			// 親の角度から回転行列を計算
+			Matrix4x4 rotateMatrix = Math::MakeRotateXYZMatrix({ -object->transform_.rotate_.x , -object->transform_.rotate_.y,-object->transform_.rotate_.z });
+			position = Math::TransformNormal(position, rotateMatrix);
+
+			transform_.translate_ = position;
+			transform_.SetParent(&object->transform_);
+		}
 	}
 }
 
@@ -249,8 +273,11 @@ void MyPlayer::OnCollisionExit(BaseObject* object)
 {
 	switch (object->GetObjectTag())
 	{
-	case Floor:
-		
+	case MoveFloor:
+		if (transform_.parent_ != nullptr) {
+			transform_.translate_ = transform_.GetWorldPos();
+			transform_.SetParent(nullptr);
+		}
 		break;
 	}
 }

@@ -212,6 +212,19 @@ Vector3 Math::Transform(const Vector3& v, const Matrix4x4& m)
 	return result;
 }
 
+Vector3 Math::TransformNormal(const Vector3& v, const Matrix4x4& m)
+{
+	// 結果格納用
+	Vector3 result;
+
+	// 生成処理
+	result.x = (v.x * m.m[0][0]) + (v.y * m.m[1][0]) + (v.z * m.m[2][0]);
+	result.y = (v.x * m.m[0][1]) + (v.y * m.m[1][1]) + (v.z * m.m[2][1]);
+	result.z = (v.x * m.m[0][2]) + (v.y * m.m[1][2]) + (v.z * m.m[2][2]);
+
+	return result;
+}
+
 Matrix4x4 Math::Inverse(const Matrix4x4 m)
 {
 	// 結果格納用

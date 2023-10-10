@@ -220,6 +220,14 @@ public:	// メンバ関数
 	static Vector3 Transform(const Vector3& v, const Matrix4x4& m);
 
 	/// <summary>
+	/// ワールド座標変換関数(平行移動を考慮しない)
+	/// </summary>
+	/// <param name="v">ベクトル</param>
+	/// <param name="m">4x4行列</param>
+	/// <returns>ワールド座標</returns>
+	static Vector3 TransformNormal(const Vector3& v, const Matrix4x4& m);
+
+	/// <summary>
 	/// 逆行列計算関数
 	/// </summary>
 	/// <param name="m"></param>

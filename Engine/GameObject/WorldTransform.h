@@ -13,6 +13,9 @@ public: // パブリックメンバ変数
 	// 位置
 	Vector3 translate_;
 
+	// 親子関係
+	const WorldTransform* parent_;
+
 public: // パブリックメンバ関数
 
 	/// <summary>
@@ -44,8 +47,8 @@ public: // パブリックメンバ関数
 	void Initialize();
 
 private: // メンバ変数
-	// 親子関係
-	const WorldTransform* parent_;
+
+	
 
 public: // アクセッサ等
 

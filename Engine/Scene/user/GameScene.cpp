@@ -30,6 +30,5 @@ void GameScene::Update() {
 
 	if (stageManager_->GetIsGoal()) {
 		nextScene_ = new GameScene();
-		gameObjectManager_->Initialize();
 	}
 }

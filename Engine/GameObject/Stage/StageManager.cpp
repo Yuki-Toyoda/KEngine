@@ -29,6 +29,10 @@ void StageManager::Initialize()
 		AddStageFloor({ 0.0f, 0.0f, 0.0f }, { 25.0f, 0.25f, 25.0f });
 	}
 
+	moveFloor1_ = std::make_unique<StageMoveFloor>(); // インスタンス生成
+	moveFloor1_->Initialize("moveFloor", BaseObject::MoveFloor); // 初期化
+	gameObjectManager_->AddGameObject(moveFloor1_.get()); // リストに追加
+
 	// ImGui用変数リセット
 	AddFloorTranslate_ = {0.0f, 0.0f, 0.0f}; // 追加する床の座標
 	AddFloorScale_ = {1.0f, 1.0f, 1.0f}; // 追加する床の大きさ
