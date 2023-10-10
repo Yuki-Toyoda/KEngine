@@ -66,6 +66,8 @@ void MyPlayer::Initialize(std::string name, Tag tag)
 	// 腕振りギミック用変数
 	armSwingParameter_ = 0.0f;
 
+	onCollision_ = false;
+
 	// 衝突属性を設定
 	collider_->SetCollisionAttribute(0xfffffffe);
 	// 衝突対象を自分の属性以外に設定
@@ -133,8 +135,16 @@ void MyPlayer::Update()
 	// 腕振りギミック更新
 	UpdateArmSwingGimmick();
 
+	if (!onCollision_ || !isLanding_) {
+		if (transform_.GetParent() != nullptr) {
+			transform_.translate_ = transform_.GetWorldPos();
+			transform_.SetParent(nullptr);
+		}
+	}
+
 	// 接地していないなら
 	if (!isLanding_) {
+
 		// 最大落下速度を超過するまで
 		if (fallSpeed_ >= kMaxFallSpeed_) {
 			// 落下速度加算
@@ -198,6 +208,7 @@ void MyPlayer::Update()
 
 	// 着地判定リセット
 	isLanding_ = false;
+	onCollision_ = false;
 
 	if (!isDestroy_) {
 		// 当たり判定更新
@@ -229,6 +240,11 @@ void MyPlayer::ApplyGlobalVariables()
 
 void MyPlayer::OnCollisionEnter(BaseObject* object)
 {
+	object;
+}
+
+void MyPlayer::OnCollision(BaseObject* object)
+{
 	switch (object->GetObjectTag())
 	{
 	case Enemy: // 衝突したオブジェクトが敵であった場合
@@ -246,13 +262,8 @@ void MyPlayer::OnCollisionEnter(BaseObject* object)
 		// 接地判定On
 		transform_.translate_.y = object->transform_.translate_.y + object->transform_.scale_.y;
 		isLanding_ = true;
+		onCollision_ = true;
 		if (transform_.GetParent() == nullptr) {
-
-			/*if (transform_.GetParent() != nullptr) {
-				Matrix4x4 world = transform_.GetMatWorld();
-				transform_.translate_ = { world.m[3][0], world.m[3][1], world.m[3][2] };
-				transform_.SetParent(nullptr);
-			}*/
 
 			Vector3 myWorldPos = transform_.GetWorldPos();
 			Vector3 objectWorldPos = object->transform_.GetWorldPos();
@@ -264,15 +275,23 @@ void MyPlayer::OnCollisionEnter(BaseObject* object)
 			position = Math::TransformNormal(position, rotateMatrix);
 
 			transform_.translate_ = position;
-			transform_.SetParent(&object->transform_);
+			transform_.SetParent(&object->transform_, 0b011);
 		}
+
 	}
 }
 
 void MyPlayer::OnCollisionExit(BaseObject* object)
 {
+
 	switch (object->GetObjectTag())
 	{
+	case Floor:
+
+		// ジャンプ減衰速度を設定
+		kJumpDecayRate_ = 0.098f;
+		break;
+
 	case MoveFloor:
 		if (transform_.GetParent() != nullptr) {
 			transform_.translate_ = transform_.GetWorldPos();
@@ -280,6 +299,7 @@ void MyPlayer::OnCollisionExit(BaseObject* object)
 		}
 		break;
 	}
+
 }
 
 void MyPlayer::InitializeFloatingGimmick()

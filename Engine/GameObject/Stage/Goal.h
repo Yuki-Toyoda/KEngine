@@ -31,7 +31,13 @@ public: // その他関数群
 	/// 衝突時コールバック関数
 	/// </summary>
 	/// <param name="object">衝突したオブジェクト</param>
-	void OnCollisionEnter(BaseObject* object) override;
+	void OnCollision(BaseObject* object) override;
+
+	/// <summary>
+	/// 非衝突時コールバック関数
+	/// </summary>
+	/// <param name="object">前フレーム衝突していたオブジェクト</param>
+	void OnCollisionExit(BaseObject* object) override;
 
 public: // アクセッサ等
 	

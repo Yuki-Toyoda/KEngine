@@ -60,9 +60,14 @@ void Goal::ApplyGlobalVariables()
 {
 }
 
-void Goal::OnCollisionEnter(BaseObject* object)
+void Goal::OnCollision(BaseObject* object)
 {
 	// プレイヤーと衝突した場合
 	if (object->GetObjectTag() == Player)
 		isGoaled_ = true; // ゴールしている状態に
+}
+
+void Goal::OnCollisionExit(BaseObject* object)
+{
+	object;
 }

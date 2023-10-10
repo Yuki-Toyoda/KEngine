@@ -32,7 +32,7 @@ public: // その他関数群
 	/// 衝突時コールバック関数
 	/// </summary>
 	/// <param name="object">衝突したオブジェクト</param>
-	void OnCollisionEnter(BaseObject* object) override;
+	void OnCollision(BaseObject* object) override;
 
 private: // メンバ変数
 

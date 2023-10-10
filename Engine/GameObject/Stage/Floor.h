@@ -28,10 +28,22 @@ public: // その他関数
 	void ApplyGlobalVariables() override;
 
 	/// <summary>
+	/// 衝突した瞬間にコールバックされる関数
+	/// </summary>
+	/// <param name="object">衝突したオブジェクト</param>
+	void OnCollisionEnter(BaseObject* object)override;
+
+	/// <summary>
 	/// 衝突時コールバック関数
 	/// </summary>
 	/// <param name="object">衝突したオブジェクト</param>
-	void OnCollisionEnter(BaseObject* object) override;
+	void OnCollision(BaseObject* object) override;
+
+	/// <summary>
+	/// 非衝突時コールバック関数
+	/// </summary>
+	/// <param name="object">前フレーム衝突していたオブジェクト</param>
+	void OnCollisionExit(BaseObject* object) override;
 };
 
 

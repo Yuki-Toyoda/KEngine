@@ -60,5 +60,15 @@ void StageFloor::ApplyGlobalVariables()
 
 void StageFloor::OnCollisionEnter(BaseObject* object)
 {
+	object;
+}
 
+void StageFloor::OnCollision(BaseObject* object)
+{
+	object;
+}
+
+void StageFloor::OnCollisionExit(BaseObject* object)
+{
+	object;
 }

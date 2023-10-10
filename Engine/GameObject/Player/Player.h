@@ -29,10 +29,16 @@ public: // その他関数群
 	void ApplyGlobalVariables() override;
 
 	/// <summary>
+	/// 衝突した瞬間にコールバックされる関数
+	/// </summary>
+	/// <param name="object">衝突したオブジェクト</param>
+	void OnCollisionEnter(BaseObject* object)override;
+
+	/// <summary>
 	/// 衝突時コールバック関数
 	/// </summary>
 	/// <param name="object">衝突したオブジェクト</param>
-	void OnCollisionEnter(BaseObject* object) override;
+	void OnCollision(BaseObject* object) override;
 
 	/// <summary>
 	/// 非衝突時コールバック関数
@@ -115,6 +121,8 @@ private: // メンバ変数
 	int32_t armSwingCycle_;
 	// 腕振りギミック用変数
 	float armSwingParameter_;
+
+	bool onCollision_;
 
 };
 

@@ -7,10 +7,8 @@ void StageMoveFloor::Initialize(std::string name, Tag tag)
 	isActive_ = true;
 
 	// モデル読み込み
-	objects_.push_back(OBJ::Create(&transform_, { 1.0f, 1.0f, 1.0f, 1.0f }, "./Resources", "Stage.obj"));
-
-	startPos_ = { 0.0f, 0.0f, 15.0f };
-	endPos_ = { 0.0f, 0.0f, 85.0f };
+	objects_.push_back(OBJ::Create(&transform_, { 1.0f, 1.0f, 1.0f, 1.0f }, "./Resources", "Box.obj"));
+	objects_[0]->SetColor({ 0.0f, 0.15f, 0.75f, 1.0f });
 
 	// 衝突属性を設定
 	collider_->SetCollisionAttribute(0xfffffffd);
@@ -19,7 +17,7 @@ void StageMoveFloor::Initialize(std::string name, Tag tag)
 
 	// 当たり判定用aabb生成
 	AABB* aabb = new AABB();
-	aabb->Initialize(transform_.GetWorldPos(), {10.0f, 0.25f, 10.0f});
+	aabb->Initialize(transform_.GetWorldPos(), transform_.scale_);
 	// 当たり判定設定
 	collider_->SetColliderShape(aabb);
 	collider_->SetGameObject(this);
@@ -56,7 +54,7 @@ void StageMoveFloor::Update()
 
 	if (!isDestroy_) {
 		// 当たり判定更新
-		collider_->Update(transform_.GetWorldPos(), { 10.0f, 0.25f, 10.0f });
+		collider_->Update(transform_.GetWorldPos(), transform_.scale_);
 		// リストに自身を登録
 		collisionManager_->RegisterCollider(collider_);
 	}
@@ -81,7 +79,12 @@ void StageMoveFloor::ApplyGlobalVariables()
 
 }
 
-void StageMoveFloor::OnCollisionEnter(BaseObject* object)
+void StageMoveFloor::OnCollision(BaseObject* object)
 {
+	object;
+}
 
+void StageMoveFloor::OnCollisionExit(BaseObject* object)
+{
+	object;
 }

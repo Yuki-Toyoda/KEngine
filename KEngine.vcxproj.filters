@@ -187,6 +187,9 @@
     <ClCompile Include="Engine\GameObject\Stage\MoveFloor.cpp">
       <Filter>Engine\GameObject\Stage</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Collider\Collider.cpp">
+      <Filter>Engine\Collider</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Base\DirectXCommon.h">

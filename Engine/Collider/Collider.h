@@ -1,5 +1,6 @@
 #pragma once
 #include <list>
+#include <string>
 #include "../Math/Math.h"
 #include "ShapeList.h"
 
@@ -59,26 +60,27 @@ public: // アクセッサ等
 	/// 前フレーム衝突したオブジェクトがあるかどうかのゲッター
 	/// </summary>
 	/// <returns>前フレーム衝突したオブジェクトがあるかどうか</returns>
-	bool GetPrevCollisionObject() {
-		for (Collider* object : prevCollisionObjects_) // 要素が1つでもあった場合Trueを返す
-			return true;
-		// 要素が1つもなかった場合False
-		return false;
-	}
+	bool GetPrevCollisionObject();
 	/// <summary>
 	/// 前フレーム衝突したオブジェクトリストのゲッター
 	/// </summary>
 	/// <returns></returns>
-	std::list<Collider*> GetPrevCollisionObjectList() { return prevCollisionObjects_; }
+	std::list<BaseObject*> GetPrevCollisionObjectList() { return prevCollisionObjects_; }
 	/// <summary>
 	/// 前フレーム衝突したオブジェクトのリストに追加する関数
 	/// </summary>
 	/// <param name="gameObject">前フレーム衝突したオブジェクト</param>
-	void AddPrevCollisionObject(Collider* gameObject) { prevCollisionObjects_.push_back(gameObject); };
+	void AddPrevCollisionObject(BaseObject* gameObject) { prevCollisionObjects_.push_back(gameObject); };
 	/// <summary>
 	/// 前フレーム衝突したオブジェクトリストをクリアする関数
 	/// </summary>
 	void ClearPrevCollisionObjectList() { prevCollisionObjects_.clear(); }
+
+	/// <summary>
+	/// 前フレーム衝突したオブジェクトにその名前のオブジェクトがあるかどうか調べる関数
+	/// </summary>
+	/// <param name="name">オブジェクト名</param>
+	bool GetPrevCollisionObject(std::string name);
 
 	/// <summary>
 	/// 衝突属性(自分)ゲッター
@@ -111,7 +113,7 @@ private: // メンバ変数
 	BaseObject* gameObject_;
 
 	// このゲームオブジェクトが前フレーム衝突したゲームオブジェクト達
-	std::list<Collider*> prevCollisionObjects_;
+	std::list<BaseObject*> prevCollisionObjects_;
 
 	// 衝突属性(自分)
 	uint32_t collisionAttribute_ = 0xffffffff;

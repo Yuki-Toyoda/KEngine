@@ -158,15 +158,21 @@ public: // その他関数群
 	virtual void ApplyGlobalVariables() = 0;
 
 	/// <summary>
+	/// 衝突した瞬間にコールバックされる関数
+	/// </summary>
+	/// <param name="object">衝突したオブジェクト</param>
+	virtual void OnCollisionEnter(BaseObject* object) { object; }
+
+	/// <summary>
 	/// 衝突時コールバック関数
 	/// </summary>
 	/// <param name="object">衝突したオブジェクト</param>
-	virtual void OnCollisionEnter(BaseObject* object) { object; };
+	virtual void OnCollision(BaseObject* object) { object; }
 
 	/// <summary>
-	/// 非衝突時コールバック関数
+	/// 衝突していたオブジェクトから離れた時のコールバック関数
 	/// </summary>
-	/// <param name="object">前フレーム衝突していたオブジェクト</param>
+	/// <param name="object">衝突していたオブジェクト</param>
 	virtual void OnCollisionExit(BaseObject* object) { object; }
 
 public: // パブリックメンバ変数

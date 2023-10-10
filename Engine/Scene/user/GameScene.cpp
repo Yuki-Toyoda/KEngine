@@ -18,17 +18,49 @@ void GameScene::Initialize() {
 	player->SetCameraRotation(&camera->transform_.rotate_); // プレイヤーにカメラ角度を渡す
 	gameObjectManager_->AddGameObject(camera); // ゲームオブジェクトマネージャーに追加
 
-	// ステージマネージャー生成
-	stageManager_ = std::make_unique<StageManager>(); // インスタンス生成
-	stageManager_->Initialize(); // 初期化
+	StageFloor* floor1 = new StageFloor(); // インスタンス生成
+	floor1->Initialize("StageFloor", BaseObject::Floor); // 初期化
+	floor1->transform_.translate_ = { 0.0f, 0.0f, 0.0f };
+	floor1->transform_.scale_ = { 15.0f, 0.5f, 15.0f };
+	gameObjectManager_->AddGameObject(floor1); // リストに追加
+
+	StageFloor* floor2 = new StageFloor(); // インスタンス生成
+	floor2->Initialize("StageFloor", BaseObject::Floor); // 初期化
+	floor2->transform_.translate_ = { 0.0f, 0.0f, 100.0f };
+	floor2->transform_.scale_ = { 15.0f, 0.5f, 15.0f };
+	gameObjectManager_->AddGameObject(floor2); // リストに追加
+
+	StageFloor* floor3 = new StageFloor(); // インスタンス生成
+	floor3->Initialize("StageFloor", BaseObject::Floor); // 初期化
+	floor3->transform_.translate_ = { 100.0f, 0.0f, 100.0f };
+	floor3->transform_.scale_ = { 15.0f, 0.5f, 15.0f };
+	gameObjectManager_->AddGameObject(floor3); // リストに追加
+
+	// ステージの動く床生成
+	StageMoveFloor* moveFloor1 = new StageMoveFloor(); // インスタンス生成
+	moveFloor1->Initialize("moveFloor", BaseObject::MoveFloor); // 初期化
+	moveFloor1->transform_.scale_ = { 10.0f, 0.5f, 10.0f };
+	moveFloor1->SetStartPos({ 0.0f, 0.0f, 25.0f });
+	moveFloor1->SetEndPos({ 0.0f, 0.0f, 75.0f });
+	gameObjectManager_->AddGameObject(moveFloor1); // リストに追加
+
+	StageMoveFloor* moveFloor2 = new StageMoveFloor(); // インスタンス生成
+	moveFloor2->Initialize("moveFloor", BaseObject::MoveFloor); // 初期化
+	moveFloor2->transform_.scale_ = { 10.0f, 0.5f, 10.0f };
+	moveFloor2->SetStartPos({ 25.0f, 0.0f, 100.0f });
+	moveFloor2->SetEndPos({ 75.0f, 0.0f, 100.0f });
+	gameObjectManager_->AddGameObject(moveFloor2); // リストに追加
+
+	// ゴールのインスタンス生成
+	goal_ = std::make_unique<Goal>();
+	goal_->Initialize("goal", BaseObject::StageGoal);
+	goal_->transform_.translate_ = { 100.0f, 1.5f, 100.0f };
+	gameObjectManager_->AddGameObject(goal_.get()); // リストに追加
 }
 
 void GameScene::Update() {
 
-	// ステージマネージャー更新
-	stageManager_->Update();
-
-	if (stageManager_->GetIsGoal()) {
+	if (goal_->GetIsGoaled()) {
 		nextScene_ = new GameScene();
 	}
 }
