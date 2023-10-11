@@ -10,7 +10,7 @@ CollisionManager* CollisionManager::GetInstance()
 
 void CollisionManager::ListClear()
 {
-
+	// 全てのコライダーに関して
 	for (Collider* collider : colliders_) {
 		// 前フレーム衝突したオブジェクトリストをクリア
 		collider->ClearPrevCollisionObjectList();
@@ -48,11 +48,11 @@ void CollisionManager::CheckAllCollision()
 
 			// 前フレーム衝突していたオブジェクトがあった場合
 			if (colliderA->GetPrevCollisionObject())
-				CheckCollisionExit(colliderA);
+				CheckCollisionExit(colliderA); // 非衝突判定検証
 
 			// 前フレーム衝突していたオブジェクトがあった場合
 			if (colliderB->GetPrevCollisionObject())
-				CheckCollisionExit(colliderB);
+				CheckCollisionExit(colliderB); // 非衝突判定検証
 
 			// 衝突した瞬間を検証
 			CheckCollisionEnter(colliderA, colliderB);
@@ -118,7 +118,7 @@ bool CollisionManager::CheckCollisionPair(Collider* colliderA, Collider* collide
 
 void CollisionManager::CheckCollisionEnter(Collider* colliderA, Collider* colliderB)
 {
-	// どちらのコライダーにもそのオブジェクトが衝突していれば
+	// 前フレームにそのオブジェクトが衝突していなければ
 	if (CheckCollisionPair(colliderA, colliderB, true)) {
 		if (!colliderA->GetPrevCollisionObject(colliderB->GetGameObject()->GetObjectName()) &&
 			!colliderB->GetPrevCollisionObject(colliderA->GetGameObject()->GetObjectName())) {

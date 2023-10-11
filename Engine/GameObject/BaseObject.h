@@ -183,6 +183,7 @@ public: // パブリックメンバ変数
 	std::vector<OBJ*> objects_;
 
 protected: // メンバ変数
+
 	// 調整項目クラス
 	GlobalVariables* globalVariables_ = nullptr;
 	// 衝突マネージャー			
@@ -190,8 +191,6 @@ protected: // メンバ変数
 
 	// 衝突判定
 	Collider* collider_;
-	// 衝突判定有効トリガー
-	bool enableCollision_;
 
 	// 表示、非表示
 	bool isActive_;

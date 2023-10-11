@@ -67,7 +67,7 @@ public: // アクセッサ等
 	/// <param name="object">衝突しているオブジェクト</param>
 	void AddNowCollisionObject(BaseObject* object) { nowCollisionObjects_.push_back(object); }
 	/// <summary>
-	/// 現在フレームで衝突しているオブジェクトリストを削除する
+	/// 現在フレームで衝突しているオブジェクトリストをクリアする関数
 	/// </summary>
 	void ClearNowCollisionObjectList() { nowCollisionObjects_.clear(); }
 

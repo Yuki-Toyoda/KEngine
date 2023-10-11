@@ -52,9 +52,6 @@
     <Filter Include="Engine\GameObject\Camera">
       <UniqueIdentifier>{bb1a2925-5f95-436f-b4f7-f65a1b82fe6d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\GameObject\Sample">
-      <UniqueIdentifier>{78bc8735-9ca6-46f6-9c32-354544a616ad}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\Resource\Shader">
       <UniqueIdentifier>{84f284be-39e4-4dae-b4d0-e8c1c01a263f}</UniqueIdentifier>
     </Filter>
@@ -75,9 +72,6 @@
     </Filter>
     <Filter Include="Engine\GameObject\Stage">
       <UniqueIdentifier>{f2628f82-5a74-4a2c-a985-76900253e11f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\GameObject\Enemy">
-      <UniqueIdentifier>{50bea6e7-2374-4d45-8ea5-0564ad1e7e0f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -107,9 +101,6 @@
     </ClCompile>
     <ClCompile Include="Engine\GameObject\Camera\Camera.cpp">
       <Filter>Engine\GameObject\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject\Sample\SamplePlayer.cpp">
-      <Filter>Engine\GameObject\Sample</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GlobalVariables\GlobalVariables.cpp">
       <Filter>Engine\GlobalVariables</Filter>
@@ -181,20 +172,8 @@
     <ClCompile Include="Engine\GameObject\Stage\Floor.cpp">
       <Filter>Engine\GameObject\Stage</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\GameObject\Stage\Goal.cpp">
-      <Filter>Engine\GameObject\Stage</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject\Stage\StageManager.cpp">
-      <Filter>Engine\GameObject\Stage</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject\Stage\MoveFloor.cpp">
-      <Filter>Engine\GameObject\Stage</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Collider\Collider.cpp">
       <Filter>Engine\Collider</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject\Enemy\Enemy.cpp">
-      <Filter>Engine\GameObject\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -248,9 +227,6 @@
     </ClInclude>
     <ClInclude Include="Engine\GameObject\Camera\Camera.h">
       <Filter>Engine\GameObject\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameObject\Sample\SamplePlayer.h">
-      <Filter>Engine\GameObject\Sample</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GlobalVariables\GlobalVariables.h">
       <Filter>Engine\GlobalVariables</Filter>
@@ -347,18 +323,6 @@
     </ClInclude>
     <ClInclude Include="Engine\GameObject\Stage\Floor.h">
       <Filter>Engine\GameObject\Stage</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameObject\Stage\Goal.h">
-      <Filter>Engine\GameObject\Stage</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameObject\Stage\StageManager.h">
-      <Filter>Engine\GameObject\Stage</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameObject\Stage\MoveFloor.h">
-      <Filter>Engine\GameObject\Stage</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameObject\Enemy\Enemy.h">
-      <Filter>Engine\GameObject\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

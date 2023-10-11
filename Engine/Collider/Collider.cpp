@@ -3,9 +3,9 @@
 
 bool Collider::GetPrevCollisionObject()
 {
-	if ((int)prevCollisionObjects_.size() > 0) {
+	// 前フレーム衝突していたオブジェクトが1つでもあればTrue
+	if ((int)prevCollisionObjects_.size() > 0)
 		return true;
-	}
 	// 要素が1つもなかった場合False
 	return false;
 }
@@ -37,5 +37,6 @@ bool Collider::GetPrevCollisionObject(std::string name)
 		// 同名オブジェクトを場合False
 		return false;
 	}
+	// そもそも前フレーム衝突していたオブジェクトが存在しない
 	return false;
 }

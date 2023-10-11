@@ -9,9 +9,6 @@ void StageFloor::Initialize(std::string name, Tag tag)
 	// モデル読み込み
 	objects_.push_back(OBJ::Create(&transform_, { 1.0f, 1.0f, 1.0f, 1.0f }, "./Resources", "Stage.obj"));
 
-	// 
-	transform_.scale_ = { 25.0f, 0.5f, 25.0f };
-
 	// 当たり判定用aabb生成
 	AABB* aabb = new AABB();
 	aabb->Initialize(transform_.GetWorldPos(), transform_.scale_);
