@@ -10,13 +10,13 @@ void GameScene::Initialize() {
 	player->Initialize("player", BaseObject::Player); // 初期化
 	player->transform_.translate_ = { 0.0f, 5.0f, 0.0f };
 	gameObjectManager_->AddGameObject(player); // ゲームオブジェクトマネージャーに追加
-	// 三人称カメラ生成
-	TPCamera* camera = new TPCamera(); // インスタンス生成
-	camera->Initialize("TPCamera", BaseObject::Camera); // 初期化
-	camera->SetUseThisCamera(true); // プレイヤーを追従対象に設定
-	camera->SetTarget(&player->transform_); // このカメラを使用対象に
-	player->SetCameraRotation(&camera->transform_.rotate_); // プレイヤーにカメラ角度を渡す
-	gameObjectManager_->AddGameObject(camera); // ゲームオブジェクトマネージャーに追加
+	// 追従カメラ初期化
+	TPCamera* tpCamera = new TPCamera(); // インスタンス生成
+	tpCamera->Initialize("TPCamera", BaseObject::Camera); // 初期化
+	tpCamera->UseThisCamera(); // プレイヤーを追従対象に設定
+	tpCamera->SetTarget(&player ->transform_); // このカメラを使用対象に
+	gameObjectManager_->AddGameObject(tpCamera); // ゲームオブジェクトマネージャーに追加
+	player->SetTPCamera(tpCamera); // プレイヤーにカメラ角度を渡す
 
 	StageFloor* floor1 = new StageFloor(); // インスタンス生成
 	floor1->Initialize("StageFloor", BaseObject::Floor); // 初期化
@@ -59,6 +59,10 @@ void GameScene::Initialize() {
 }
 
 void GameScene::Update() {
+
+	if (input_->TriggerKey(DIK_RSHIFT)) {
+		nextScene_ = new TitleScene();
+	}
 
 	if (goal_->GetIsGoaled()) {
 		nextScene_ = new GameScene();

@@ -120,7 +120,7 @@ public: // 静的なメンバ関数
 	/// 描画に使うビュープロジェクション行列のセッター
 	/// </summary>
 	/// <param name="ViewProjectionMatrix">ビュープロジェクション行列</param>
-	static void SetViewProjection(Matrix4x4 ViewProjectionMatrix) { ViewProjectionMatrix_ = ViewProjectionMatrix; }
+	static void SetViewProjection(Matrix4x4* ViewProjectionMatrix) { ViewProjectionMatrix_ = ViewProjectionMatrix; }
 
 	/// <summary>
 	/// ライト有効セッター
@@ -167,7 +167,7 @@ private: // 静的なメンバ変数
 	static Microsoft::WRL::ComPtr<IDxcIncludeHandler> dxcIncludeHandler_;
 
 	// ビュープロジェクション行列
-	static Matrix4x4 ViewProjectionMatrix_;
+	static Matrix4x4* ViewProjectionMatrix_;
 
 	// ライト
 	static std::unique_ptr<LightGroup> lightGroup_;

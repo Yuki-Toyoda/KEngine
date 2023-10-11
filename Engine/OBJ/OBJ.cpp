@@ -26,7 +26,7 @@ ComPtr<IDxcCompiler3> OBJ::dxcCompiler_ = nullptr;
 // InludeHandler
 ComPtr<IDxcIncludeHandler> OBJ::dxcIncludeHandler_ = nullptr;
 
-Matrix4x4 OBJ::ViewProjectionMatrix_;
+Matrix4x4* OBJ::ViewProjectionMatrix_;
 
 // ライト
 std::unique_ptr<LightGroup> OBJ::lightGroup_;
@@ -479,7 +479,11 @@ void OBJ::Draw()
 
 	// 行列変換
 	Matrix4x4 worldMatrix = transform_->GetMatWorld();
-	matWorld_ = worldMatrix * ViewProjectionMatrix_;
+
+	if(ViewProjectionMatrix_ != nullptr)
+		matWorld_ = worldMatrix * *ViewProjectionMatrix_;
+	else
+		matWorld_ = worldMatrix;
 
 	// 色を設定
 	constMap_->color = color_;

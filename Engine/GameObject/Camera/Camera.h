@@ -24,10 +24,9 @@ public: // アクセッサ等
 	Matrix4x4 GetViewProjectionMatrix() { return viewProjectionMatrix_; }
 
 	/// <summary>
-	/// このカメラを使用するかどうかのセッター
+	/// このカメラを使用するようにする関数
 	/// </summary>
-	/// <param name="useThisCamera">カメラを使用するかしないか</param>
-	void SetUseThisCamera(bool useThisCamera) { useThisCamera_ = useThisCamera; }
+	void UseThisCamera();
 
 public: // その他関数群
 
@@ -45,10 +44,6 @@ private: // メンバ変数
 
 	// カメラ用ビュープロジェクション行列
 	Matrix4x4 viewProjectionMatrix_;
-
-	// 使用するカメラの設定トリガー
-	// 複数のこのトリガーがTrueの場合は最後に生成されたカメラを参照する
-	bool useThisCamera_;
 
 	// 入力
 	Input* input_;

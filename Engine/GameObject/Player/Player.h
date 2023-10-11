@@ -2,6 +2,9 @@
 #include "../BaseObject.h"
 #include "../../Input/Input.h"
 
+// クラスの前方宣言
+class TPCamera;
+
 /// <summary>
 /// プレイヤー
 /// </summary>
@@ -47,10 +50,10 @@ public: // その他関数群
 	void OnCollisionExit(BaseObject* object) override;
 
 	/// <summary>
-	/// カメラ回転角セッター
+	/// 追従カメラセッター
 	/// </summary>
-	/// <param name="rotation">カメラ回転角</param>
-	void SetCameraRotation(const Vector3* rotation) { cameraRotation_ = rotation; }
+	/// <param name="tpCamera">追従カメラ</param>
+	void SetTPCamera(TPCamera* tpCamera) { tpCamera_ = tpCamera; }
 
 	/// <summary>
 	/// 浮遊ギミック初期化関数
@@ -80,14 +83,13 @@ private: // メンバ変数
 	XINPUT_STATE joyState_; // 現在フレーム用
 	XINPUT_STATE preJoyState_; // 前フレーム用
 
+	TPCamera* tpCamera_ = nullptr;
+
 	// ワールド座標
 	WorldTransform bodyTransform_; // 体
 	WorldTransform headTransform_; // 頭
 	WorldTransform armTransform_L_; // 左腕
 	WorldTransform armTransform_R_; // 右腕
-
-	// カメラ回転角
-	const Vector3* cameraRotation_ = nullptr;
 
 	// 移動時の目標角度
 	float targetAngle_;

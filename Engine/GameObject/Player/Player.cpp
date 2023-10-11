@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "../Camera/TPCamera.h"
 
 void MyPlayer::Initialize(std::string name, Tag tag)
 {
@@ -46,7 +47,7 @@ void MyPlayer::Initialize(std::string name, Tag tag)
 	// 接地判定
 	isLanding_ = false;
 	// 最大落下速度
-	kMaxFallSpeed_ = -0.49f;
+	kMaxFallSpeed_ = -0.98f;
 	// 現在落下速度
 	fallSpeed_ = 0.0f;
 	// 落下加速度
@@ -88,7 +89,6 @@ void MyPlayer::Update()
 {
 	// 基底クラス更新
 	BaseObject::Update();
-
 	// 入力取得
 	preJoyState_ = joyState_; // 前フレームの入力取得
 	input_->GetJoystickState(0, joyState_); // 現在フレームの入力取得
@@ -112,9 +112,9 @@ void MyPlayer::Update()
 		move = Math::Normalize(move) * speed;
 
 		// カメラ回転角がセットされている場合
-		if (cameraRotation_ != nullptr) {
+		if (tpCamera_ != nullptr) {
 			// カメラの角度から回転行列を生成
-			Matrix4x4 rotateMat = Math::MakeRotateXYZMatrix(*cameraRotation_);
+			Matrix4x4 rotateMat = Math::MakeRotateXYZMatrix(tpCamera_->transform_.rotate_);
 			// 移動ベクトルをカメラの角度に応じて回転させる
 			move = Math::Transform(move, rotateMat);
 		}
@@ -135,16 +135,13 @@ void MyPlayer::Update()
 	// 腕振りギミック更新
 	UpdateArmSwingGimmick();
 
-	if (!onCollision_ || !isLanding_) {
+	// 接地していないなら
+	if (!isLanding_) {
+
 		if (transform_.GetParent() != nullptr) {
 			transform_.translate_ = transform_.GetWorldPos();
 			transform_.SetParent(nullptr);
 		}
-	}
-
-	// 接地していないなら
-	if (!isLanding_) {
-
 		// 最大落下速度を超過するまで
 		if (fallSpeed_ >= kMaxFallSpeed_) {
 			// 落下速度加算
@@ -240,7 +237,19 @@ void MyPlayer::ApplyGlobalVariables()
 
 void MyPlayer::OnCollisionEnter(BaseObject* object)
 {
-	object;
+	if (object->GetObjectTag() == Floor || object->GetObjectTag() == MoveFloor) {
+
+		// とりあえず床の高さに補正
+		transform_.translate_.y = object->transform_.translate_.y + object->transform_.scale_.y;
+		// 接地判定On
+		isLanding_ = true;
+
+		// 追従カメラがセットされていたら
+		if (tpCamera_ != nullptr) {
+			// 追従座標更新
+			tpCamera_->UpdateTarget();
+		}
+	}
 }
 
 void MyPlayer::OnCollision(BaseObject* object)

@@ -10,6 +10,16 @@ CollisionManager* CollisionManager::GetInstance()
 
 void CollisionManager::ListClear()
 {
+
+	for (Collider* collider : colliders_) {
+		// 前フレーム衝突したオブジェクトリストをクリア
+		collider->ClearPrevCollisionObjectList();
+		// 前フレーム衝突したオブジェクトリストを上書き
+		collider->OverridePrevCollisionObjectList(collider->GetNowCollisionObjectList());
+		// 現在フレーム触れているオブジェクトリストをクリア
+		collider->ClearNowCollisionObjectList();
+	}
+
 	// コライダーリストをクリアする
 	colliders_.clear();
 }
@@ -43,19 +53,14 @@ void CollisionManager::CheckAllCollision()
 			// 前フレーム衝突していたオブジェクトがあった場合
 			if (colliderB->GetPrevCollisionObject())
 				CheckCollisionExit(colliderB);
+
 			// 衝突した瞬間を検証
 			CheckCollisionEnter(colliderA, colliderB);
-
-			// 上の検証が終わった段階でリストをクリア
-			colliderB->ClearPrevCollisionObjectList();
 
 			// ペアの当たり判定を検証する
 			CheckCollisionPair(colliderA, colliderB, false);
 
 		}
-
-		// 上の検証が終わった段階でリストをクリア
-		colliderA->ClearPrevCollisionObjectList();
 	}
 }
 
@@ -102,9 +107,9 @@ bool CollisionManager::CheckCollisionPair(Collider* colliderA, Collider* collide
 	// 衝突時の関数を呼び出す
 	if (result && !isCheckExit) {
 		colliderA->GetGameObject()->OnCollision(colliderB->GetGameObject()); // A
-		colliderA->AddPrevCollisionObject(colliderB->GetGameObject()); // 前フレーム衝突したオブジェクトリストに衝突しているオブジェクトを追加
+		colliderA->AddNowCollisionObject(colliderB->GetGameObject()); // 前フレーム衝突したオブジェクトリストに衝突しているオブジェクトを追加
 		colliderB->GetGameObject()->OnCollision(colliderA->GetGameObject()); // B
-		colliderB->AddPrevCollisionObject(colliderA->GetGameObject()); // 前フレーム衝突したオブジェクトリストに衝突しているオブジェクトを追加
+		colliderB->AddNowCollisionObject(colliderA->GetGameObject()); // 前フレーム衝突したオブジェクトリストに衝突しているオブジェクトを追加
 
 	}
 
@@ -114,9 +119,9 @@ bool CollisionManager::CheckCollisionPair(Collider* colliderA, Collider* collide
 
 void CollisionManager::CheckCollisionEnter(Collider* colliderA, Collider* colliderB)
 {
-	// どちらのコライダーにもそのオブジェクトが衝突していなければ
+	// どちらのコライダーにもそのオブジェクトが衝突していれば
 	if (CheckCollisionPair(colliderA, colliderB, true)) {
-		if (!colliderA->GetPrevCollisionObject(colliderB->GetGameObject()->GetObjectName()) ||
+		if (!colliderA->GetPrevCollisionObject(colliderB->GetGameObject()->GetObjectName()) &&
 			!colliderB->GetPrevCollisionObject(colliderA->GetGameObject()->GetObjectName())) {
 			// 衝突した関数を呼び出す
 			colliderA->GetGameObject()->OnCollisionEnter(colliderB->GetGameObject());
@@ -140,7 +145,7 @@ bool CollisionManager::CheckCollisionExit(Collider* collider)
 		if (!CheckCollisionPair(collider, colliderA->GetCollider(), true)) {
 			// 非衝突時関数を呼び出す
 			collider->GetGameObject()->OnCollisionExit(colliderA);
-			colliderA->OnCollisionExit(collider->GetGameObject());
+			collider->DeletePrevCollisionObject(colliderA->GetObjectName());
 
 			// 衝突していない
 			return true;

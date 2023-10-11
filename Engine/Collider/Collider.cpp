@@ -10,6 +10,21 @@ bool Collider::GetPrevCollisionObject()
 	return false;
 }
 
+void Collider::DeletePrevCollisionObject(const std::string& name)
+{
+	// リスト内の全てのコライダーのペアを検証する
+	std::list<BaseObject*>::iterator itr = prevCollisionObjects_.begin();
+	for (; itr != prevCollisionObjects_.end(); itr++) {
+		// イテレータAからコライダーAを取得する
+		BaseObject* object = *itr;
+		// 同名オブジェクトを見つけた場合それを削除
+		if (name == object->GetObjectName()) {
+			prevCollisionObjects_.erase(itr);
+			break;
+		}
+	}
+}
+
 bool Collider::GetPrevCollisionObject(std::string name)
 {
 	// 要素がある場合
@@ -22,5 +37,5 @@ bool Collider::GetPrevCollisionObject(std::string name)
 		// 同名オブジェクトを場合False
 		return false;
 	}
-	return true;
+	return false;
 }
