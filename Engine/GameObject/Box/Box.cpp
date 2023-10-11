@@ -18,11 +18,6 @@ void Box::Initialize(std::string name, Tag tag)
 	// 色初期設定
 	color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
 
-	// 衝突属性を設定
-	collider_->SetCollisionAttribute(0xfffffffd);
-	// 衝突対象を自分の属性以外に設定
-	collider_->SetCollisionMask(0x00000002);
-
 	// 当たり判定用aabb生成
 	colliderRadius_ = { 1.0f, 1.0f, 1.0f };
 	AABB* aabb = new AABB();

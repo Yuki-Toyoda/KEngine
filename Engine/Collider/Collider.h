@@ -103,28 +103,6 @@ public: // アクセッサ等
 	/// <param name="name">オブジェクト名</param>
 	bool GetPrevCollisionObject(std::string name);
 
-	/// <summary>
-	/// 衝突属性(自分)ゲッター
-	/// </summary>
-	/// <returns>衝突属性(自分)</returns>
-	uint32_t GetCollisionAttribute() { return collisionAttribute_; }
-	/// <summary>
-	/// 衝突属性(自分)セッター
-	/// </summary>
-	/// <param name="collisionAttribute">設定する衝突属性</param>
-	void SetCollisionAttribute(uint32_t collisionAttribute) { collisionAttribute_ = collisionAttribute; }
-
-	/// <summary>
-	/// 衝突マスク(相手)ゲッター
-	/// </summary>
-	/// <returns>衝突マスク(相手)</returns>
-	uint32_t GetCollisionMask() { return collisionMask_; }
-	/// <summary>
-	/// 衝突マスク(相手)セッター
-	/// </summary>
-	/// <param name="collisionMask">設定する衝突マスク</param>
-	void SetCollisionMask(uint32_t collisionMask) { collisionMask_ = collisionMask; }
-
 private: // メンバ変数
 
 	// 当たり判定形状
@@ -137,11 +115,6 @@ private: // メンバ変数
 	std::list<BaseObject*> nowCollisionObjects_;
 	// 前フレーム衝突したゲームオブジェクト達
 	std::list<BaseObject*> prevCollisionObjects_;
-
-	// 衝突属性(自分)
-	uint32_t collisionAttribute_ = 0xffffffff;
-	// 衝突マスク(相手)
-	uint32_t collisionMask_ = 0xffffffff;
 
 };
 

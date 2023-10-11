@@ -76,6 +76,9 @@
     <Filter Include="Engine\GameObject\Stage">
       <UniqueIdentifier>{f2628f82-5a74-4a2c-a985-76900253e11f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\GameObject\Enemy">
+      <UniqueIdentifier>{50bea6e7-2374-4d45-8ea5-0564ad1e7e0f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Base\DirectXCommon.cpp">
@@ -189,6 +192,9 @@
     </ClCompile>
     <ClCompile Include="Engine\Collider\Collider.cpp">
       <Filter>Engine\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\Enemy\Enemy.cpp">
+      <Filter>Engine\GameObject\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -350,6 +356,9 @@
     </ClInclude>
     <ClInclude Include="Engine\GameObject\Stage\MoveFloor.h">
       <Filter>Engine\GameObject\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\Enemy\Enemy.h">
+      <Filter>Engine\GameObject\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

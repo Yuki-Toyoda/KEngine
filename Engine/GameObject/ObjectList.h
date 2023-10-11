@@ -12,3 +12,4 @@
 #include "Camera/TPCamera.h"
 #include "Ambient/Ambient.h"
 #include "Stage/StageManager.h"
+#include "Enemy/Enemy.h"

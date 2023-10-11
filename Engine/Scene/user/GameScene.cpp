@@ -43,13 +43,18 @@ void GameScene::Initialize() {
 	moveFloor1->SetStartPos({ 0.0f, 0.0f, 25.0f });
 	moveFloor1->SetEndPos({ 0.0f, 0.0f, 75.0f });
 	gameObjectManager_->AddGameObject(moveFloor1); // リストに追加
-
 	StageMoveFloor* moveFloor2 = new StageMoveFloor(); // インスタンス生成
 	moveFloor2->Initialize("moveFloor", BaseObject::MoveFloor); // 初期化
 	moveFloor2->transform_.scale_ = { 10.0f, 0.5f, 10.0f };
 	moveFloor2->SetStartPos({ 25.0f, 0.0f, 100.0f });
 	moveFloor2->SetEndPos({ 75.0f, 0.0f, 100.0f });
 	gameObjectManager_->AddGameObject(moveFloor2); // リストに追加
+
+	// 敵
+	MyEnemy* enemy = new MyEnemy(); // インスタンス生成
+	enemy->Initialize("enemy", BaseObject::Enemy); // 初期化
+	enemy->transform_.translate_ = { 0.0f, 5.0f, 100.0f }; // 座標設定
+	gameObjectManager_->AddGameObject(enemy); // リストに追加
 
 	// ゴールのインスタンス生成
 	goal_ = std::make_unique<Goal>();

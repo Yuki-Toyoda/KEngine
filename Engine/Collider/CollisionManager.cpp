@@ -66,9 +66,8 @@ void CollisionManager::CheckAllCollision()
 
 bool CollisionManager::CheckCollisionPair(Collider* colliderA, Collider* colliderB, bool isCheckExit)
 {
-	// コライダーの属性とマスクが1つも一致しない場合は判定をとらない
-	if (!(colliderA->GetCollisionAttribute() & colliderB->GetCollisionMask()) ||
-		!(colliderB->GetCollisionAttribute() & colliderA->GetCollisionMask()))
+	// コライダーのゲームオブジェクトタグが一致した場合は判定をとらない
+	if (colliderA->GetGameObject()->GetObjectTag() == colliderB->GetGameObject()->GetObjectTag())
 		return false;
 
 	// 結果格納用

@@ -69,11 +69,6 @@ void MyPlayer::Initialize(std::string name, Tag tag)
 
 	onCollision_ = false;
 
-	// 衝突属性を設定
-	collider_->SetCollisionAttribute(0xfffffffe);
-	// 衝突対象を自分の属性以外に設定
-	collider_->SetCollisionMask(0x00000001);
-
 	// 当たり判定用aabb生成
 	AABB* aabb = new AABB();
 	aabb->Initialize(transform_.GetWorldPos(), { 1.0f, 1.0f, 1.0f });
@@ -164,6 +159,7 @@ void MyPlayer::Update()
 	if (transform_.translate_.y <= -100.0f) {
 		fallSpeed_ = 0.0f;
 		transform_.translate_ = { 0.0f, 5.0f, 0.0f };
+		transform_.rotate_ = { 0.0f, 0.0f, 0.0f };
 	}
 
 	// ジャンプ可能なら
@@ -292,23 +288,13 @@ void MyPlayer::OnCollision(BaseObject* object)
 
 void MyPlayer::OnCollisionExit(BaseObject* object)
 {
-
-	switch (object->GetObjectTag())
-	{
-	case Floor:
-
-		// ジャンプ減衰速度を設定
-		kJumpDecayRate_ = 0.098f;
-		break;
-
-	case MoveFloor:
+	// 動く床から離れたなら
+	if (object->GetObjectTag() == MoveFloor) {
 		if (transform_.GetParent() != nullptr) {
 			transform_.translate_ = transform_.GetWorldPos();
 			transform_.SetParent(nullptr);
 		}
-		break;
 	}
-
 }
 
 void MyPlayer::InitializeFloatingGimmick()

@@ -104,6 +104,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\GameObject\Box\Box.cpp" />
     <ClCompile Include="Engine\GameObject\Camera\Camera.cpp" />
     <ClCompile Include="Engine\GameObject\Camera\TPCamera.cpp" />
+    <ClCompile Include="Engine\GameObject\Enemy\Enemy.cpp" />
     <ClCompile Include="Engine\GameObject\GameObjectManager.cpp" />
     <ClCompile Include="Engine\GameObject\Player\Player.cpp" />
     <ClCompile Include="Engine\GameObject\Sample\SamplePlayer.cpp" />
@@ -151,6 +152,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\GameObject\Box\Box.h" />
     <ClInclude Include="Engine\GameObject\Camera\Camera.h" />
     <ClInclude Include="Engine\GameObject\Camera\TPCamera.h" />
+    <ClInclude Include="Engine\GameObject\Enemy\Enemy.h" />
     <ClInclude Include="Engine\GameObject\GameObjectManager.h" />
     <ClInclude Include="Engine\GameObject\ObjectList.h" />
     <ClInclude Include="Engine\GameObject\Player\Player.h" />

@@ -24,4 +24,3 @@ private: // メンバ変数
 	std::unique_ptr<Goal> goal_;
 
 };
-
