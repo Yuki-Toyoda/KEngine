@@ -138,6 +138,30 @@ float Math::Length(const Vector3& v)
 	return sqrtf(Dot(v, v));
 }
 
+float Math::LerpShortAngle(float a, float b, float t)
+{
+	// 結果格納用
+	float result;
+
+	// 角度差分を求める
+	float diff = b - a;
+
+	// 角度差分が-2πを下回る、または上回る時
+	if(diff <= (float)(-std::numbers::pi * 2.0f) || diff >= (float)(std::numbers::pi * 2.0f))
+	diff = std::fmod(a, b); // 角度差分を補正する
+
+	// -πからπに補正する
+	if (diff >= (float)std::numbers::pi) {
+		diff -= (float)std::numbers::pi * 2.0f;
+	}
+	else if (diff <= (float)-std::numbers::pi)
+		diff += (float)std::numbers::pi * 2.0f;
+	
+	// 求めた角度を元に線形補間を行う
+	return result = a + (diff * t);
+
+}
+
 Vector3 Math::Normalize(const Vector3& v)
 {
 	// 正規化するベクトルの長さを求める
@@ -184,6 +208,19 @@ Vector3 Math::Transform(const Vector3& v, const Matrix4x4& m)
 	result.x /= w;
 	result.y /= w;
 	result.z /= w;
+
+	return result;
+}
+
+Vector3 Math::TransformNormal(const Vector3& v, const Matrix4x4& m)
+{
+	// 結果格納用
+	Vector3 result;
+
+	// 生成処理
+	result.x = (v.x * m.m[0][0]) + (v.y * m.m[1][0]) + (v.z * m.m[2][0]);
+	result.y = (v.x * m.m[0][1]) + (v.y * m.m[1][1]) + (v.z * m.m[2][1]);
+	result.z = (v.x * m.m[0][2]) + (v.y * m.m[1][2]) + (v.z * m.m[2][2]);
 
 	return result;
 }

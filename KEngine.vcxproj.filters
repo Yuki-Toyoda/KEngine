@@ -52,9 +52,6 @@
     <Filter Include="Engine\GameObject\Camera">
       <UniqueIdentifier>{bb1a2925-5f95-436f-b4f7-f65a1b82fe6d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\GameObject\Sample">
-      <UniqueIdentifier>{78bc8735-9ca6-46f6-9c32-354544a616ad}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\Resource\Shader">
       <UniqueIdentifier>{84f284be-39e4-4dae-b4d0-e8c1c01a263f}</UniqueIdentifier>
     </Filter>
@@ -66,6 +63,15 @@
     </Filter>
     <Filter Include="Engine\ImGui">
       <UniqueIdentifier>{8a6be271-d072-4fe2-8329-882451aaa498}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GameObject\Ambient">
+      <UniqueIdentifier>{bc9c9dfe-449c-444a-93af-5530dca8bca3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GameObject\Player">
+      <UniqueIdentifier>{37b0d73d-75e5-4b88-a89e-715fe087a8d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GameObject\Stage">
+      <UniqueIdentifier>{f2628f82-5a74-4a2c-a985-76900253e11f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -95,9 +101,6 @@
     </ClCompile>
     <ClCompile Include="Engine\GameObject\Camera\Camera.cpp">
       <Filter>Engine\GameObject\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject\Sample\SamplePlayer.cpp">
-      <Filter>Engine\GameObject\Sample</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GlobalVariables\GlobalVariables.cpp">
       <Filter>Engine\GlobalVariables</Filter>
@@ -157,6 +160,21 @@
       <Filter>Engine\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Engine\GameObject\Ambient\Ambient.cpp">
+      <Filter>Engine\GameObject\Ambient</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\Player\Player.cpp">
+      <Filter>Engine\GameObject\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\Camera\TPCamera.cpp">
+      <Filter>Engine\GameObject\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\Stage\Floor.cpp">
+      <Filter>Engine\GameObject\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Collider\Collider.cpp">
+      <Filter>Engine\Collider</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Base\DirectXCommon.h">
@@ -209,9 +227,6 @@
     </ClInclude>
     <ClInclude Include="Engine\GameObject\Camera\Camera.h">
       <Filter>Engine\GameObject\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameObject\Sample\SamplePlayer.h">
-      <Filter>Engine\GameObject\Sample</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GlobalVariables\GlobalVariables.h">
       <Filter>Engine\GlobalVariables</Filter>
@@ -296,6 +311,18 @@
     </ClInclude>
     <ClInclude Include="Engine\externals\imgui\imstb_truetype.h">
       <Filter>Engine\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\Ambient\Ambient.h">
+      <Filter>Engine\GameObject\Ambient</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\Player\Player.h">
+      <Filter>Engine\GameObject\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\Camera\TPCamera.h">
+      <Filter>Engine\GameObject\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\Stage\Floor.h">
+      <Filter>Engine\GameObject\Stage</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

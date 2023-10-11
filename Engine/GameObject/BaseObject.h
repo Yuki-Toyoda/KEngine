@@ -22,6 +22,9 @@ public: // サブクラス
 		Camera, // カメラ
 		Player, // プレイヤー
 		Enemy, // 敵
+		Floor, // 床
+		MoveFloor, // 移動床
+		StageGoal, // ゴール
 		Other, // その他
 	};
 
@@ -136,6 +139,12 @@ public: // アクセッサ等
 	/// <param name="enable">有効非有効</param>
 	void EnableDebug(bool enable) { isDebug_ = enable; }
 
+	/// <summary>
+	/// 衝突判定ゲッター
+	/// </summary>
+	/// <returns>衝突判定</returns>
+	Collider* GetCollider() { return collider_; }
+
 public: // その他関数群
 
 	/// <summary>
@@ -149,10 +158,22 @@ public: // その他関数群
 	virtual void ApplyGlobalVariables() = 0;
 
 	/// <summary>
+	/// 衝突した瞬間にコールバックされる関数
+	/// </summary>
+	/// <param name="object">衝突したオブジェクト</param>
+	virtual void OnCollisionEnter(BaseObject* object) { object; }
+
+	/// <summary>
 	/// 衝突時コールバック関数
 	/// </summary>
 	/// <param name="object">衝突したオブジェクト</param>
-	virtual void OnCollision( BaseObject* object) { object; };
+	virtual void OnCollision(BaseObject* object) { object; }
+
+	/// <summary>
+	/// 衝突していたオブジェクトから離れた時のコールバック関数
+	/// </summary>
+	/// <param name="object">衝突していたオブジェクト</param>
+	virtual void OnCollisionExit(BaseObject* object) { object; }
 
 public: // パブリックメンバ変数
 
@@ -162,6 +183,7 @@ public: // パブリックメンバ変数
 	std::vector<OBJ*> objects_;
 
 protected: // メンバ変数
+
 	// 調整項目クラス
 	GlobalVariables* globalVariables_ = nullptr;
 	// 衝突マネージャー			
@@ -169,8 +191,6 @@ protected: // メンバ変数
 
 	// 衝突判定
 	Collider* collider_;
-	// 衝突判定有効トリガー
-	bool enableCollision_;
 
 	// 表示、非表示
 	bool isActive_;

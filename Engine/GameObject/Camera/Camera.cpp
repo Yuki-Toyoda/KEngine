@@ -30,10 +30,6 @@ void Camera::Update()
 	// ビュープロジェクション行列の計算
 	viewProjectionMatrix_ = viewMatrix * projectionMatrix;
 
-	// このカメラを使用する場合、カメラのビュープロジェクション行列をOBJにセット
-	if(useThisCamera_)
-	OBJ::SetViewProjection(viewProjectionMatrix_);
-
 #ifdef _DEBUG
 
 	// デバックトリガーがTrueの時
@@ -73,9 +69,9 @@ void Camera::Update()
 
 	}
 
-	// Imgui
 	ImGui::Begin(objectName_.c_str());
-	ImGui::Checkbox("useThisCamera", &useThisCamera_);
+	if (ImGui::Button("UseThisCamera"))
+		UseThisCamera();
 	ImGui::End();
 
 #endif // _DEBUG
@@ -86,10 +82,15 @@ void Camera::Draw()
 	// カメラオブジェクトの描画
 	for (OBJ* obj : objects_) {
 		if (isActive_) {
-			obj->SetWorldTransform(transform_);
 			obj->Draw();
 		}
 	}
+}
+
+void Camera::UseThisCamera()
+{
+	// OBJクラスにビュープロジェクション行列をセット
+	OBJ::SetViewProjection(&viewProjectionMatrix_);
 }
 
 void Camera::AddGlobalVariables()

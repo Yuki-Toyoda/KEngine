@@ -1,11 +1,10 @@
 #pragma once
 #include "../BaseObject.h"
-#include "../../Input/Input.h"
 
 /// <summary>
-/// プレイヤーのサンプル
+/// 環境クラス
 /// </summary>
-class SamplePlayer : public BaseObject
+class Ambient : public BaseObject
 {
 public: // メンバ関数
 
@@ -28,16 +27,6 @@ public: // その他関数群
 	/// </summary>
 	void ApplyGlobalVariables() override;
 
-	/// <summary>
-	/// 衝突時コールバック関数
-	/// </summary>
-	/// <param name="object">衝突したオブジェクト</param>
-	void OnCollision(BaseObject* object) override;
-
 private: // メンバ変数
-
-	// 入力状態検知
-	Input* input_ = nullptr;
-
 };
 

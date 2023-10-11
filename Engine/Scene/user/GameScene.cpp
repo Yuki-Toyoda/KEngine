@@ -1,24 +1,14 @@
 #include "GameScene.h"
 
 void GameScene::Initialize() {
-	
-	// 箱生成
-	Box* box = new Box();
-	box->Initialize("box", BaseObject::Other);
-	gameObjectManager_->AddGameObject(box);
-
-	// プレイヤー生成
-	SamplePlayer* player = new SamplePlayer();
-	player->Initialize("player", BaseObject::Player);
-	gameObjectManager_->AddGameObject(player);
-
+	// 環境生成
+	Ambient* ambient = new Ambient(); // インスタンス生成
+	ambient->Initialize("ambient", BaseObject::Other); // 初期化
+	gameObjectManager_->AddGameObject(ambient); // ゲームオブジェクトマネージャーに追加
 }
 
 void GameScene::Update() {
-
-	// 右シフトが押されたら次のシーンへ
 	if (input_->TriggerKey(DIK_RSHIFT)) {
 		nextScene_ = new TitleScene();
-		gameObjectManager_->Initialize();
 	}
 }

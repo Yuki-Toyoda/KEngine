@@ -45,12 +45,13 @@
   <PropertyGroup Label="UserMacros" />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 /ignore:4049 /ignore:4048 %(AdditionalOptions)</AdditionalOptions>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -63,7 +64,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
@@ -71,6 +72,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 /ignore:4049 /ignore:4048 %(AdditionalOptions)</AdditionalOptions>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -87,6 +89,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Audio\Audio.cpp" />
     <ClCompile Include="Engine\Base\DirectXCommon.cpp" />
     <ClCompile Include="Engine\Base\WinApp.cpp" />
+    <ClCompile Include="Engine\Collider\Collider.cpp" />
     <ClCompile Include="Engine\Collider\CollisionManager.cpp" />
     <ClCompile Include="Engine\Debug\Debug.cpp" />
     <ClCompile Include="Engine\externals\imgui\imgui.cpp" />
@@ -97,10 +100,13 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\externals\imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="Engine\externals\imgui\imgui_tables.cpp" />
     <ClCompile Include="Engine\externals\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Engine\GameObject\Ambient\Ambient.cpp" />
     <ClCompile Include="Engine\GameObject\Box\Box.cpp" />
     <ClCompile Include="Engine\GameObject\Camera\Camera.cpp" />
+    <ClCompile Include="Engine\GameObject\Camera\TPCamera.cpp" />
     <ClCompile Include="Engine\GameObject\GameObjectManager.cpp" />
-    <ClCompile Include="Engine\GameObject\Sample\SamplePlayer.cpp" />
+    <ClCompile Include="Engine\GameObject\Player\Player.cpp" />
+    <ClCompile Include="Engine\GameObject\Stage\Floor.cpp" />
     <ClCompile Include="Engine\GameObject\WorldTransform.cpp" />
     <ClCompile Include="Engine\GlobalVariables\GlobalVariables.cpp" />
     <ClCompile Include="Engine\Input\Input.cpp" />
@@ -136,12 +142,15 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\externals\imgui\imstb_rectpack.h" />
     <ClInclude Include="Engine\externals\imgui\imstb_textedit.h" />
     <ClInclude Include="Engine\externals\imgui\imstb_truetype.h" />
+    <ClInclude Include="Engine\GameObject\Ambient\Ambient.h" />
     <ClInclude Include="Engine\GameObject\BaseObject.h" />
     <ClInclude Include="Engine\GameObject\Box\Box.h" />
     <ClInclude Include="Engine\GameObject\Camera\Camera.h" />
+    <ClInclude Include="Engine\GameObject\Camera\TPCamera.h" />
     <ClInclude Include="Engine\GameObject\GameObjectManager.h" />
     <ClInclude Include="Engine\GameObject\ObjectList.h" />
-    <ClInclude Include="Engine\GameObject\Sample\SamplePlayer.h" />
+    <ClInclude Include="Engine\GameObject\Player\Player.h" />
+    <ClInclude Include="Engine\GameObject\Stage\Floor.h" />
     <ClInclude Include="Engine\GameObject\WorldTransform.h" />
     <ClInclude Include="Engine\GlobalVariables\GlobalVariables.h" />
     <ClInclude Include="Engine\Input\Input.h" />

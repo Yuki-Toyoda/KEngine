@@ -3,6 +3,7 @@
 #include <cmath>
 #include <ctime>
 #include <math.h>
+#include <numbers>
 #include "Vector2.h"
 #include "Vector3.h"
 #include "Vector4.h"
@@ -195,6 +196,15 @@ public:	// メンバ関数
 	static float Length(const Vector3& v);
 
 	/// <summary>
+	/// 最短角度補間関数
+	/// </summary>
+	/// <param name="a">角度a</param>
+	/// <param name="b">角度b</param>
+	/// <param name="t">補間割合(0 ~ 1)</param>
+	/// <returns></returns>
+	static float LerpShortAngle(float a, float b, float t);
+
+	/// <summary>
 	/// ベクトル正規化関数
 	/// </summary>
 	/// <param name="v">ベクトル</param>
@@ -208,6 +218,14 @@ public:	// メンバ関数
 	/// <param name="m">4x4行列</param>
 	/// <returns>ワールド座標</returns>
 	static Vector3 Transform(const Vector3& v, const Matrix4x4& m);
+
+	/// <summary>
+	/// ワールド座標変換関数(平行移動を考慮しない)
+	/// </summary>
+	/// <param name="v">ベクトル</param>
+	/// <param name="m">4x4行列</param>
+	/// <returns>ワールド座標</returns>
+	static Vector3 TransformNormal(const Vector3& v, const Matrix4x4& m);
 
 	/// <summary>
 	/// 逆行列計算関数

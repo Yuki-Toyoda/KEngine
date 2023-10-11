@@ -7,7 +7,7 @@ void Box::Initialize(std::string name, Tag tag)
 	isActive_ = true;
 
 	// モデル読み込み
-	objects_.push_back(OBJ::Create({ 1.0f, 1.0f, 1.0f, 1.0f }, "./Resources", "Box.obj"));
+	objects_.push_back(OBJ::Create(&transform_, { 1.0f, 1.0f, 1.0f, 1.0f }, "./Resources", "Box.obj"));
 
 	// 音声ファイル読み込み
 	testSound_ = Audio::GetInstance()->LoadWave("Alarm01.wav");
@@ -17,11 +17,6 @@ void Box::Initialize(std::string name, Tag tag)
 
 	// 色初期設定
 	color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
-
-	// 衝突属性を設定
-	collider_->SetCollisionAttribute(0xfffffffd);
-	// 衝突対象を自分の属性以外に設定
-	collider_->SetCollisionMask(0x00000002);
 
 	// 当たり判定用aabb生成
 	colliderRadius_ = { 1.0f, 1.0f, 1.0f };
@@ -82,7 +77,7 @@ void Box::Draw()
 	// オブジェクトの描画
 	for (OBJ* obj : objects_) {
 		if (isActive_) {
-			obj->SetWorldTransform(transform_);
+			obj->SetWorldTransform(&transform_);
 			obj->Draw();
 		}
 	}
@@ -117,4 +112,10 @@ void Box::OnCollision(BaseObject* object)
 	}
 
 	isCollision_ = true;
+}
+
+void Box::OnCollisionExit(BaseObject* object)
+{
+	object;
+
 }

@@ -55,7 +55,7 @@ public: // メンバ関数
 	/// 引数で指定したタグのオブジェクト全てを取得する関数
 	/// </summary>
 	/// <returns>取得したいゲームオブジェクトリスト</returns>
-	std::vector<BaseObject*> GetGameObject(BaseObject::Tag tag);
+	std::list<BaseObject*> GetGameObject(BaseObject::Tag tag);
 
 	/// <summary>
 	/// 引数で指定した名前のオブジェクトを削除する関数

@@ -1,5 +1,6 @@
 #pragma once
 #include <list>
+#include <string>
 #include "Collider.h"
 
 /// <summary>
@@ -47,8 +48,22 @@ private: // プライベートなメンバ関数
 	/// <param name="colliderA">コライダーA</param>
 	/// <param name="colliderB">コライダーB</param>
 	/// <returns></returns>
-	bool CheckCollisionPair(Collider* colliderA, Collider* colliderB);
+	bool CheckCollisionPair(Collider* colliderA, Collider* colliderB, bool isCheckExit);
 	
+	/// <summary>
+	/// 引数で指定されたコライダーの衝突した瞬間を検証する関数
+	/// </summary>
+	/// <param name="colliderA">コライダーA</param>
+	/// <param name="colliderB">コライダーB</param>
+	void CheckCollisionEnter(Collider* colliderA, Collider* colliderB);
+
+	/// <summary>
+	/// 引数で指定されたコライダーの非衝突を検証する関数
+	/// </summary>
+	/// <param name="collider">コライダー</param>
+	/// <returns>非衝突か</returns>
+	bool CheckCollisionExit(Collider* collider);
+
 	/// <summary>
 	/// 球同士の衝突検証関数
 	/// </summary>

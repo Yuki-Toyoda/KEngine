@@ -1,12 +1,10 @@
 #pragma once
 #include "../BaseObject.h"
-#include "../../Audio/Audio.h"
-#include "../../Input/Input.h"
 
 /// <summary>
-/// 描画テスト用の箱オブジェクト
+/// 床クラス
 /// </summary>
-class Box : public BaseObject
+class StageFloor : public BaseObject
 {
 public: // メンバ関数
 
@@ -30,6 +28,12 @@ public: // その他関数
 	void ApplyGlobalVariables() override;
 
 	/// <summary>
+	/// 衝突した瞬間にコールバックされる関数
+	/// </summary>
+	/// <param name="object">衝突したオブジェクト</param>
+	void OnCollisionEnter(BaseObject* object)override;
+
+	/// <summary>
 	/// 衝突時コールバック関数
 	/// </summary>
 	/// <param name="object">衝突したオブジェクト</param>
@@ -39,23 +43,7 @@ public: // その他関数
 	/// 非衝突時コールバック関数
 	/// </summary>
 	/// <param name="object">前フレーム衝突していたオブジェクト</param>
-	void OnCollisionExit(BaseObject* object)override;
-
-private: // メンバ変数
-
-	// サンプルサウンド
-	uint32_t testSound_ = 0u;
-	int voiceHundle = -1;
-
-	// 入力状態検知
-	Input* input_ = nullptr;
-
-	bool isInput_ = false;
-
-	// 衝突判定半径
-	Vector3 colliderRadius_;
-
-	// 衝突しているか
-	bool isCollision_;
-
+	void OnCollisionExit(BaseObject* object) override;
 };
+
+

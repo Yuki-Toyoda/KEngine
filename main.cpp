@@ -61,6 +61,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// サンプルテクスチャロード
 	TextureManager::Load("white1x1.png");
 
+	// グローバル変数の読み込み
+	GlobalVariables::GetInstance()->LoadFiles();
+
 	// ゲームオブジェクトマネージャーの初期化
 	gameObjectManager = GameObjectManager::GetInstance();
 	gameObjectManager->Initialize();

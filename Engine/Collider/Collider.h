@@ -1,4 +1,6 @@
 #pragma once
+#include <list>
+#include <string>
 #include "../Math/Math.h"
 #include "ShapeList.h"
 
@@ -55,28 +57,53 @@ public: // アクセッサ等
 	void SetGameObject(BaseObject* gameObject) { gameObject_ = gameObject; }
 
 	/// <summary>
-	/// 衝突属性(自分)ゲッター
+	/// 現在フレーム触れているオブジェクトを全て取得する関数
 	/// </summary>
-	/// <returns>衝突属性(自分)</returns>
-	uint32_t GetCollisionAttribute() { return collisionAttribute_; }
+	/// <returns>全ての現在フレーム触れているオブジェクト</returns>
+	std::list<BaseObject*> GetNowCollisionObjectList() { return nowCollisionObjects_; }
 	/// <summary>
-	/// 衝突属性(自分)セッター
+	/// 現在フレームで衝突しているオブジェクトを追加する関数
 	/// </summary>
-	/// <param name="collisionAttribute">設定する衝突属性</param>
-	void SetCollisionAttribute(uint32_t collisionAttribute) { collisionAttribute_ = collisionAttribute; }
+	/// <param name="object">衝突しているオブジェクト</param>
+	void AddNowCollisionObject(BaseObject* object) { nowCollisionObjects_.push_back(object); }
+	/// <summary>
+	/// 現在フレームで衝突しているオブジェクトリストをクリアする関数
+	/// </summary>
+	void ClearNowCollisionObjectList() { nowCollisionObjects_.clear(); }
 
 	/// <summary>
-	/// 衝突マスク(相手)ゲッター
+	/// 前フレーム衝突したオブジェクトがあるかどうかのゲッター
 	/// </summary>
-	/// <returns>衝突マスク(相手)</returns>
-	uint32_t GetCollisionMask() { return collisionMask_; }
-	/// <summary>
-	/// 衝突マスク(相手)セッター
-	/// </summary>
-	/// <param name="collisionMask">設定する衝突マスク</param>
-	void SetCollisionMask(uint32_t collisionMask) { collisionMask_ = collisionMask; }
+	/// <returns>前フレーム衝突したオブジェクトがあるかどうか</returns>
+	bool GetPrevCollisionObject();
 
-protected: // メンバ変数
+	/// <summary>
+	/// 前フレーム衝突したオブジェクトリストの上書き関数
+	/// </summary>
+	/// <param name="objectList">前フレーム衝突したオブジェクトリスト</param>
+	void OverridePrevCollisionObjectList(std::list<BaseObject*> objectList) { prevCollisionObjects_ = objectList; }
+	/// <summary>
+	/// 前フレーム衝突したオブジェクトリストのゲッター
+	/// </summary>
+	/// <returns></returns>
+	std::list<BaseObject*> GetPrevCollisionObjectList() { return prevCollisionObjects_; }
+	/// <summary>
+	/// 前フレーム衝突したオブジェクトリストをクリアする関数
+	/// </summary>
+	void ClearPrevCollisionObjectList() { prevCollisionObjects_.clear(); }
+
+	/// <summary>
+	/// 引数で指定した名前の前フレーム衝突したオブジェクトを削除する関数
+	/// </summary>
+	/// <param name="name">消したいオブジェクト</param>
+	void DeletePrevCollisionObject(const std::string& name);
+	/// <summary>
+	/// 前フレーム衝突したオブジェクトにその名前のオブジェクトがあるかどうか調べる関数
+	/// </summary>
+	/// <param name="name">オブジェクト名</param>
+	bool GetPrevCollisionObject(std::string name);
+
+private: // メンバ変数
 
 	// 当たり判定形状
 	BaseShape* colliderShape_;
@@ -84,10 +111,10 @@ protected: // メンバ変数
 	// このコライダーを持つゲームオブジェクト
 	BaseObject* gameObject_;
 
-	// 衝突属性(自分)
-	uint32_t collisionAttribute_ = 0xffffffff;
-	// 衝突マスク(相手)
-	uint32_t collisionMask_ = 0xffffffff;
+	// 現在フレームで衝突したオブジェクト達
+	std::list<BaseObject*> nowCollisionObjects_;
+	// 前フレーム衝突したゲームオブジェクト達
+	std::list<BaseObject*> prevCollisionObjects_;
 
 };
 

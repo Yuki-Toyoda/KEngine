@@ -1,5 +1,6 @@
 #include "SceneManager.h"
 #include "user/SceneList.h"
+#include "../GameObject/GameObjectManager.h"
 
 SceneManager* SceneManager::GetInstance()
 {
@@ -17,8 +18,18 @@ void SceneManager::Initialize()
 
 void SceneManager::Update()
 {
+#ifdef _DEBUG
+
+	// FPSカウンターの表示
+	ImGui::Begin("Control panel");
+	ImGui::Text("Frame rate: %6.2f fps", ImGui::GetIO().Framerate);
+	ImGui::End();
+
+#endif // _DEBUG
+
 	// 現在のシーンから次のシーンへ遷移するよう指示されたら
 	if (currentScene_->nextScene_ != nullptr) {
+		GameObjectManager::GetInstance()->Initialize();
 		// シーン初期化
 		currentScene_ = currentScene_->nextScene_; // 次のシーンを取得
 		currentScene_->commonInitialize(); // 取得したシーンの共通初期化を行う
