@@ -101,6 +101,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\externals\imgui\imgui_tables.cpp" />
     <ClCompile Include="Engine\externals\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Engine\GameObject\Ambient\Ambient.cpp" />
+    <ClCompile Include="Engine\GameObject\BaseObject.cpp" />
     <ClCompile Include="Engine\GameObject\Box\Box.cpp" />
     <ClCompile Include="Engine\GameObject\Camera\Camera.cpp" />
     <ClCompile Include="Engine\GameObject\Camera\TPCamera.cpp" />

@@ -19,19 +19,17 @@ public: // サブクラス
 	/// </summary>
 	enum Tag
 	{
-		Camera, // カメラ
-		Player, // プレイヤー
-		Enemy, // 敵
-		Floor, // 床
-		MoveFloor, // 移動床
-		StageGoal, // ゴール
-		Other, // その他
+		tagCamera, // カメラ
+		tagPlayer, // プレイヤー
+		tagEnemy, // 敵
+		tagFloor, // 床
+		tagOther, // その他
 	};
 
 public: // デストラクタ
 
 	// 暗黙定義されるデストラクタの挙動を行う
-	virtual ~BaseObject() = default;
+	virtual ~BaseObject();
 
 public: // パブリックメンバ関数
 
@@ -40,47 +38,10 @@ public: // パブリックメンバ関数
 	/// </summary>
 	/// <param name="name">オブジェクトの名前</param>
 	/// <param name="tag">オブジェクトのタグ</param>
-	virtual void Initialize(std::string name, Tag tag) {
-		globalVariables_ = GlobalVariables::GetInstance(); // 調整項目クラス取得
-		collisionManager_ = CollisionManager::GetInstance(); // 衝突マネージャー取得
-		collider_ = new Collider(); // コライダーのインスタンス生成
-		isDestroy_ = false;
-		objectName_ = name;
-		objectTag_ = tag;
-		transform_.Initialize();
-	}
+	virtual void Initialize(std::string name, Tag tag);
 
 	// 更新
-	virtual void Update() {
-
-		// グローバル変数の値を適用させる
-		ApplyGlobalVariables();
-
-		// 回転角のリセット
-		if (transform_.rotate_.x >= (float)std::numbers::pi * 2.0f || (float)-std::numbers::pi * 2.0f >= transform_.rotate_.x)
-			transform_.rotate_.x = 0.0f;
-		if (transform_.rotate_.y >= (float)std::numbers::pi * 2.0f || (float)-std::numbers::pi * 2.0f >= transform_.rotate_.y)
-			transform_.rotate_.y = 0.0f;
-		if (transform_.rotate_.z >= (float)std::numbers::pi * 2.0f || (float)-std::numbers::pi * 2.0f >= transform_.rotate_.z)
-			transform_.rotate_.z = 0.0f;
-
-		#ifdef _DEBUG
-		// Imgui
-		ImGui::Begin(objectName_.c_str());
-		ImGui::Checkbox("Active", &isActive_);
-		if (ImGui::TreeNode("Transform")) {
-			ImGui::DragFloat3("scale", &transform_.scale_.x, 0.5f);
-			ImGui::DragFloat3("rotatate", &transform_.rotate_.x, 0.05f);
-			ImGui::DragFloat3("translate", &transform_.translate_.x, 0.5f);
-			ImGui::TreePop();
-		}
-		if (ImGui::Button("Destroy")) {
-			Destroy();
-		}
-		ImGui::Checkbox("debug", &isDebug_);
-		ImGui::End();
-		#endif // _DEBUG
-	};
+	virtual void Update();
 	
 	/// <summary>
 	/// objの描画
@@ -143,7 +104,7 @@ public: // アクセッサ等
 	/// 衝突判定ゲッター
 	/// </summary>
 	/// <returns>衝突判定</returns>
-	Collider* GetCollider() { return collider_; }
+	Collider* GetCollider() { return collider_.get(); }
 
 public: // その他関数群
 
@@ -175,12 +136,27 @@ public: // その他関数群
 	/// <param name="object">衝突していたオブジェクト</param>
 	virtual void OnCollisionExit(BaseObject* object) { object; }
 
+	/// <summary>
+	/// obj作成関数
+	/// </summary>
+	/// <param name="wt">ワールドトランスフォーム</param>
+	/// <param name="color">色</param>
+	/// <param name="directoryPath">ディレクトリパス</param>
+	/// <param name="fileName">ファイル名</param>
+	/// <param name="enableLighting">ライティング有効非有効</param>
+	void AddOBJ(WorldTransform* wt, const Vector4& color, const std::string& directoryPath, const std::string& fileName, bool enableLighting = true);
+
+	/// <summary>
+	/// objects_内の全てのobjを描画する関数
+	/// </summary>
+	void DrawAllOBJ();
+
 public: // パブリックメンバ変数
 
 	// ワールド座標計算
 	WorldTransform transform_;
 	// OBJのリスト
-	std::vector<OBJ*> objects_;
+	std::vector<std::unique_ptr<OBJ>> objects_;
 
 protected: // メンバ変数
 
@@ -190,7 +166,7 @@ protected: // メンバ変数
 	CollisionManager* collisionManager_ = nullptr;
 
 	// 衝突判定
-	Collider* collider_;
+	std::unique_ptr<Collider> collider_;
 
 	// 表示、非表示
 	bool isActive_;
@@ -204,5 +180,5 @@ protected: // メンバ変数
 	bool isDebug_ = false;
 
 	// 色設定用
-	Vector4 color_;
+	Vector4 color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
 };

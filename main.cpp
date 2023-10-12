@@ -123,6 +123,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	}
 
+	// 全オブジェクト削除
+	gameObjectManager->Initialize();
 	// 音解放処理
 	audio->Finalize();
 

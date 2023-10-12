@@ -3,6 +3,11 @@
 #include "../Base/DirectXCommon.h"
 #include "BaseObject.h"
 
+// オブジェクトのテンプレート定義
+template <class GameObject>
+// これはベースオブジェクトを継承したものである必要がある
+concept IsGameObject = std::is_base_of<BaseObject, GameObject>::value;
+
 /// <summary>
 /// 全てのゲームオブジェクトの管理マネージャ
 /// </summary>
@@ -50,7 +55,8 @@ public: // メンバ関数
 	/// </summary>
 	/// <param name="objectName">取得するオブジェクト名</param>
 	/// <returns>取得したいゲームオブジェクト</returns>
-	BaseObject* GetGameObject(std::string objectName);
+	template <IsGameObject GameObject>
+	GameObject* GetGameObject(std::string objectName);
 	/// <summary>
 	/// 引数で指定したタグのオブジェクト全てを取得する関数
 	/// </summary>

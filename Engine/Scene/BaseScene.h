@@ -25,7 +25,7 @@ public: // 共通メンバ関数
 
 		// デバックカメラの生成
 		Camera* debugCamera = new Camera();
-		debugCamera->Initialize("DebugCamera", BaseObject::Camera);
+		debugCamera->Initialize("DebugCamera", BaseObject::tagCamera);
 		debugCamera->UseThisCamera(); // メインカメラに設定
 		debugCamera->EnableDebug(true); // デバック有効
 		// 生成したカメラをオブジェクトマネージャーに追加

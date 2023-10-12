@@ -7,7 +7,7 @@ void StageFloor::Initialize(std::string name, Tag tag)
 	isActive_ = true;
 
 	// モデル読み込み
-	objects_.push_back(OBJ::Create(&transform_, { 1.0f, 1.0f, 1.0f, 1.0f }, "./Resources", "Stage.obj"));
+	AddOBJ(&transform_, color_, "./Resources", "Stage.obj");
 
 	// 当たり判定用aabb生成
 	AABB* aabb = new AABB();
@@ -29,17 +29,13 @@ void StageFloor::Update()
 		// 当たり判定更新
 		collider_->Update(transform_.GetWorldPos(), transform_.scale_);
 		// リストに自身を登録
-		collisionManager_->RegisterCollider(collider_);
+		collisionManager_->RegisterCollider(collider_.get());
 	}
 }
 
 void StageFloor::Draw()
 {
-	for (OBJ* obj : objects_) {
-		if (isActive_) {
-			obj->Draw();
-		}
-	}
+	DrawAllOBJ();
 }
 
 void StageFloor::AddGlobalVariables()

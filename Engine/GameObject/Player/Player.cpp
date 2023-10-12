@@ -22,10 +22,10 @@ void MyPlayer::Initialize(std::string name, Tag tag)
 	armTransform_R_.SetParent(&bodyTransform_); // 親子付け
 
 	// モデル読み込み
-	objects_.push_back(OBJ::Create(&bodyTransform_, { 1.0f, 1.0f, 1.0f, 1.0f }, "./Resources", "float_Body.obj"));
-	objects_.push_back(OBJ::Create(&headTransform_, { 1.0f, 1.0f, 1.0f, 1.0f }, "./Resources", "float_Head.obj"));
-	objects_.push_back(OBJ::Create(&armTransform_L_, { 1.0f, 1.0f, 1.0f, 1.0f }, "./Resources", "float_L_arm.obj"));
-	objects_.push_back( OBJ::Create(&armTransform_R_, { 1.0f, 1.0f, 1.0f, 1.0f }, "./Resources", "float_R_arm.obj"));
+	AddOBJ(&bodyTransform_, color_, "./Resources", "float_Body.obj");
+	AddOBJ(&headTransform_, color_, "./Resources", "float_Head.obj");
+	AddOBJ(&armTransform_L_, color_, "./Resources", "float_L_arm.obj");
+	AddOBJ(&armTransform_R_, color_, "./Resources", "float_R_arm.obj");
 
 	// 入力状態取得
 	input_ = Input::GetInstance();
@@ -207,18 +207,13 @@ void MyPlayer::Update()
 		// 当たり判定更新
 		collider_->Update(transform_.GetWorldPos(), {1.0f, 1.0f, 1.0f});
 		// リストに自身を登録
-		collisionManager_->RegisterCollider(collider_);
+		collisionManager_->RegisterCollider(collider_.get());
 	}
 }
 
 void MyPlayer::Draw()
 {
-	// オブジェクトの描画
-	for (OBJ* obj : objects_) {
-		if (isActive_) {
-			obj->Draw();
-		}
-	}
+	DrawAllOBJ();
 }
 
 void MyPlayer::AddGlobalVariables()
@@ -233,7 +228,7 @@ void MyPlayer::ApplyGlobalVariables()
 
 void MyPlayer::OnCollisionEnter(BaseObject* object)
 {
-	if (object->GetObjectTag() == Floor || object->GetObjectTag() == MoveFloor) {
+	if (object->GetObjectTag() == tagFloor) {
 
 		// とりあえず床の高さに補正
 		transform_.translate_.y = object->transform_.translate_.y + object->transform_.scale_.y;
@@ -252,49 +247,21 @@ void MyPlayer::OnCollision(BaseObject* object)
 {
 	switch (object->GetObjectTag())
 	{
-	case Enemy: // 衝突したオブジェクトが敵であった場合
+	case tagEnemy: // 衝突したオブジェクトが敵であった場合
 
 		break;
-	case Floor: // 衝突したオブジェクトが床の場合
+	case tagFloor: // 衝突したオブジェクトが床の場合
 		// とりあえず床の高さに補正
 		transform_.translate_.y = object->transform_.translate_.y + object->transform_.scale_.y;
 		// 接地判定On
 		isLanding_ = true;
 		break;
-	case MoveFloor: // 衝突したオブジェクトが動く床の場合
-
-		// とりあえず床の高さに補正
-		// 接地判定On
-		transform_.translate_.y = object->transform_.translate_.y + object->transform_.scale_.y;
-		isLanding_ = true;
-		onCollision_ = true;
-		if (transform_.GetParent() == nullptr) {
-
-			Vector3 myWorldPos = transform_.GetWorldPos();
-			Vector3 objectWorldPos = object->transform_.GetWorldPos();
-
-			Vector3 position = myWorldPos - objectWorldPos;
-
-			// 親の角度から回転行列を計算
-			Matrix4x4 rotateMatrix = Math::MakeRotateXYZMatrix({ -object->transform_.rotate_.x , -object->transform_.rotate_.y,-object->transform_.rotate_.z });
-			position = Math::TransformNormal(position, rotateMatrix);
-
-			transform_.translate_ = position;
-			transform_.SetParent(&object->transform_, 0b011);
-		}
-
 	}
 }
 
 void MyPlayer::OnCollisionExit(BaseObject* object)
 {
-	// 動く床から離れたなら
-	if (object->GetObjectTag() == MoveFloor) {
-		if (transform_.GetParent() != nullptr) {
-			transform_.translate_ = transform_.GetWorldPos();
-			transform_.SetParent(nullptr);
-		}
-	}
+	object;
 }
 
 void MyPlayer::InitializeFloatingGimmick()

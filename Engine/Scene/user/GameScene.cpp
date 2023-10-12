@@ -3,7 +3,7 @@
 void GameScene::Initialize() {
 	// 環境生成
 	Ambient* ambient = new Ambient(); // インスタンス生成
-	ambient->Initialize("ambient", BaseObject::Other); // 初期化
+	ambient->Initialize("ambient", BaseObject::tagOther); // 初期化
 	gameObjectManager_->AddGameObject(ambient); // ゲームオブジェクトマネージャーに追加
 }
 

@@ -1,6 +1,7 @@
 #pragma once
 #include <list>
 #include <string>
+#include <memory>
 #include "../Math/Math.h"
 #include "ShapeList.h"
 
@@ -38,12 +39,12 @@ public: // アクセッサ等
 	/// コライダー形状のゲッター
 	/// </summary>
 	/// <returns>コライダー形状</returns>
-	BaseShape* GetColliderShape() { return colliderShape_; }
+	BaseShape* GetColliderShape() { return colliderShape_.get(); }
 	/// <summary>
 	/// コライダー形状のセッター
 	/// </summary>
 	/// <param name="colliderShape">セットする形状</param>
-	void SetColliderShape(BaseShape* colliderShape) { colliderShape_ = colliderShape; }
+	void SetColliderShape(BaseShape* colliderShape) { colliderShape_.reset(colliderShape); }
 
 	/// <summary>
 	/// このコライダーを持つゲームオブジェクトゲッター
@@ -106,7 +107,7 @@ public: // アクセッサ等
 private: // メンバ変数
 
 	// 当たり判定形状
-	BaseShape* colliderShape_;
+	std::unique_ptr<BaseShape> colliderShape_;
 
 	// このコライダーを持つゲームオブジェクト
 	BaseObject* gameObject_;

@@ -97,10 +97,11 @@ void GameObjectManager::AddGameObject(BaseObject* gameObject)
 	objects_.push_back(gameObject);
 }
 
-BaseObject* GameObjectManager::GetGameObject(std::string objectName)
+template <IsGameObject GameObject>
+GameObject* GameObjectManager::GetGameObject(std::string objectName)
 {
 	// 全オブジェクトから探す
-	for (BaseObject* object : objects_) {
+	for (GameObject* object : objects_) {
 		// 引数のオブジェクト名と同じ名前のオブジェクトを見つけた場合それを返す
 		if (object->GetObjectName() == objectName)
 			return object;

@@ -79,12 +79,7 @@ void Camera::Update()
 
 void Camera::Draw()
 {
-	// カメラオブジェクトの描画
-	for (OBJ* obj : objects_) {
-		if (isActive_) {
-			obj->Draw();
-		}
-	}
+	DrawAllOBJ();
 }
 
 void Camera::UseThisCamera()

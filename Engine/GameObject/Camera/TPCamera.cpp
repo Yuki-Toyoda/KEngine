@@ -86,12 +86,7 @@ void TPCamera::Update()
 
 void TPCamera::Draw()
 {
-	// カメラオブジェクトの描画
-	for (OBJ* obj : objects_) {
-		if (isActive_) {
-			obj->Draw();
-		}
-	}
+	DrawAllOBJ();
 }
 
 void TPCamera::UseThisCamera()

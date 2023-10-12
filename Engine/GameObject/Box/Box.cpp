@@ -7,7 +7,7 @@ void Box::Initialize(std::string name, Tag tag)
 	isActive_ = true;
 
 	// モデル読み込み
-	objects_.push_back(OBJ::Create(&transform_, { 1.0f, 1.0f, 1.0f, 1.0f }, "./Resources", "Box.obj"));
+	AddOBJ(&transform_, color_, "./Resources", "Box.obj");
 
 	// 音声ファイル読み込み
 	testSound_ = Audio::GetInstance()->LoadWave("Alarm01.wav");
@@ -40,7 +40,7 @@ void Box::Update()
 		// 当たり判定更新
 		collider_->Update(transform_.GetWorldPos(), colliderRadius_);
 		// リストに自身を登録
-		collisionManager_->RegisterCollider(collider_);
+		collisionManager_->RegisterCollider(collider_.get());
 	}
 
 	if (isCollision_) {
@@ -74,13 +74,7 @@ void Box::Update()
 
 void Box::Draw()
 {
-	// オブジェクトの描画
-	for (OBJ* obj : objects_) {
-		if (isActive_) {
-			obj->SetWorldTransform(&transform_);
-			obj->Draw();
-		}
-	}
+	DrawAllOBJ();
 }
 
 void Box::AddGlobalVariables()
@@ -99,13 +93,13 @@ void Box::OnCollision(BaseObject* object)
 {
 	switch (object->GetObjectTag())
 	{
-	case Camera:
+	case tagCamera:
 		break;
-	case Player:
+	case tagPlayer:
 		break;
-	case Enemy:
+	case tagEnemy:
 		break;
-	case Other:
+	case tagOther:
 		break;
 	default:
 		break;

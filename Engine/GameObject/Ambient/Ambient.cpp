@@ -7,8 +7,7 @@ void Ambient::Initialize(std::string name, Tag tag)
 	isActive_ = true;
 
 	// モデル読み込み
-	objects_.push_back(OBJ::Create(&transform_, { 1.0f, 1.0f, 1.0f, 1.0f }, "./Resources", "SkyDome.obj"));
-	objects_[0]->SetEnableLighting(false);
+	AddOBJ(&transform_, color_, "./Resources", "SkyDome.obj",false);
 
 	// グローバル変数に調整したい値を追加
 	AddGlobalVariables();
@@ -22,12 +21,7 @@ void Ambient::Update()
 
 void Ambient::Draw()
 {
-	// オブジェクトの描画
-	for (OBJ* obj : objects_) {
-		if (isActive_) {
-			obj->Draw();
-		}
-	}
+	DrawAllOBJ();
 }
 
 void Ambient::AddGlobalVariables()
