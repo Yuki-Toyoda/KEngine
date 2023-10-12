@@ -1,13 +1,13 @@
-#include "Floor.h"
+#include "SampleFloor.h"
 
-void StageFloor::Initialize(std::string name, Tag tag)
+void SampleFloor::Initialize(std::string name, Tag tag)
 {
 	// 基底クラス初期化
 	BaseObject::Initialize(name, tag);
 	isActive_ = true;
 
 	// モデル読み込み
-	AddOBJ(&transform_, color_, "./Resources", "Stage.obj");
+	AddOBJ(&transform_, color_, "./Engine/Resource/Samples/Stage", "Stage.obj");
 
 	// 当たり判定用aabb生成
 	AABB* aabb = new AABB();
@@ -20,7 +20,7 @@ void StageFloor::Initialize(std::string name, Tag tag)
 	AddGlobalVariables();
 }
 
-void StageFloor::Update()
+void SampleFloor::Update()
 {
 	// 基底クラス更新
 	BaseObject::Update();
@@ -33,30 +33,30 @@ void StageFloor::Update()
 	}
 }
 
-void StageFloor::Draw()
+void SampleFloor::Draw()
 {
 	DrawAllOBJ();
 }
 
-void StageFloor::AddGlobalVariables()
+void SampleFloor::AddGlobalVariables()
 {
 }
 
-void StageFloor::ApplyGlobalVariables()
+void SampleFloor::ApplyGlobalVariables()
 {
 }
 
-void StageFloor::OnCollisionEnter(BaseObject* object)
-{
-	object;
-}
-
-void StageFloor::OnCollision(BaseObject* object)
+void SampleFloor::OnCollisionEnter(BaseObject* object)
 {
 	object;
 }
 
-void StageFloor::OnCollisionExit(BaseObject* object)
+void SampleFloor::OnCollision(BaseObject* object)
+{
+	object;
+}
+
+void SampleFloor::OnCollisionExit(BaseObject* object)
 {
 	object;
 }

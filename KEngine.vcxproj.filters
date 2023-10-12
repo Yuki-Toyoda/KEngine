@@ -46,9 +46,6 @@
     <Filter Include="Engine\Collider\Shape">
       <UniqueIdentifier>{8435e582-6609-4afd-a125-63d88c1762ab}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\GameObject\Box">
-      <UniqueIdentifier>{98b16447-7f0e-49bc-a54d-aef1c3374e58}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\GameObject\Camera">
       <UniqueIdentifier>{bb1a2925-5f95-436f-b4f7-f65a1b82fe6d}</UniqueIdentifier>
     </Filter>
@@ -67,11 +64,20 @@
     <Filter Include="Engine\GameObject\Ambient">
       <UniqueIdentifier>{bc9c9dfe-449c-444a-93af-5530dca8bca3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\GameObject\Player">
-      <UniqueIdentifier>{37b0d73d-75e5-4b88-a89e-715fe087a8d8}</UniqueIdentifier>
+    <Filter Include="Engine\GameObject\Samples">
+      <UniqueIdentifier>{be3a707b-e030-4120-a3fa-82fbf747bcf2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\GameObject\Stage">
-      <UniqueIdentifier>{f2628f82-5a74-4a2c-a985-76900253e11f}</UniqueIdentifier>
+    <Filter Include="Engine\GameObject\Samples\Player">
+      <UniqueIdentifier>{d8229b28-1712-4e45-bc1a-5ff63c0a1a36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GameObject\Samples\Floor">
+      <UniqueIdentifier>{150871d4-3557-47db-b77e-b9baa5430e51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GameObject\Samples\Box">
+      <UniqueIdentifier>{6c60a99f-b7a0-479c-a379-eb8972d723db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GameObject\Samples\TPCamera">
+      <UniqueIdentifier>{009c9d50-fef2-4b7a-8bb9-05e246dfc22c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -95,9 +101,6 @@
     </ClCompile>
     <ClCompile Include="Engine\GameObject\WorldTransform.cpp">
       <Filter>Engine\GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject\Box\Box.cpp">
-      <Filter>Engine\GameObject\Box</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\Camera\Camera.cpp">
       <Filter>Engine\GameObject\Camera</Filter>
@@ -163,20 +166,23 @@
     <ClCompile Include="Engine\GameObject\Ambient\Ambient.cpp">
       <Filter>Engine\GameObject\Ambient</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\GameObject\Player\Player.cpp">
-      <Filter>Engine\GameObject\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject\Camera\TPCamera.cpp">
-      <Filter>Engine\GameObject\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject\Stage\Floor.cpp">
-      <Filter>Engine\GameObject\Stage</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Collider\Collider.cpp">
       <Filter>Engine\Collider</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\BaseObject.cpp">
       <Filter>Engine\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\Samples\Player\SamplePlayer.cpp">
+      <Filter>Engine\GameObject\Samples\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\Samples\Stage\SampleFloor.cpp">
+      <Filter>Engine\GameObject\Samples\Floor</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\Samples\Box\SampleBox.cpp">
+      <Filter>Engine\GameObject\Samples\Box</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\Samples\TPCamera\TPCamera.cpp">
+      <Filter>Engine\GameObject\Samples\TPCamera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -224,9 +230,6 @@
     </ClInclude>
     <ClInclude Include="Engine\GameObject\WorldTransform.h">
       <Filter>Engine\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameObject\Box\Box.h">
-      <Filter>Engine\GameObject\Box</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\Camera\Camera.h">
       <Filter>Engine\GameObject\Camera</Filter>
@@ -318,14 +321,20 @@
     <ClInclude Include="Engine\GameObject\Ambient\Ambient.h">
       <Filter>Engine\GameObject\Ambient</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\GameObject\Player\Player.h">
-      <Filter>Engine\GameObject\Player</Filter>
+    <ClInclude Include="Engine\GameObject\Samples\Player\SamplePlayer.h">
+      <Filter>Engine\GameObject\Samples\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\GameObject\Camera\TPCamera.h">
-      <Filter>Engine\GameObject\Camera</Filter>
+    <ClInclude Include="Engine\GameObject\Samples\Stage\SampleFloor.h">
+      <Filter>Engine\GameObject\Samples\Floor</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\GameObject\Stage\Floor.h">
-      <Filter>Engine\GameObject\Stage</Filter>
+    <ClInclude Include="Engine\GameObject\Samples\Box\SampleBox.h">
+      <Filter>Engine\GameObject\Samples\Box</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\Samples\TPCamera\TPCamera.h">
+      <Filter>Engine\GameObject\Samples\TPCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\SampleList.h">
+      <Filter>Engine\GameObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

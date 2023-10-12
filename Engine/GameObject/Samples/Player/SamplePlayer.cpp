@@ -1,7 +1,7 @@
-#include "Player.h"
-#include "../Camera/TPCamera.h"
+#include "SamplePlayer.h"
+#include "../TPCamera/TPCamera.h"
 
-void MyPlayer::Initialize(std::string name, Tag tag)
+void SamplePlayer::Initialize(std::string name, Tag tag)
 {
 	// 基底クラス初期化
 	BaseObject::Initialize(name, tag);
@@ -22,10 +22,10 @@ void MyPlayer::Initialize(std::string name, Tag tag)
 	armTransform_R_.SetParent(&bodyTransform_); // 親子付け
 
 	// モデル読み込み
-	AddOBJ(&bodyTransform_, color_, "./Resources", "float_Body.obj");
-	AddOBJ(&headTransform_, color_, "./Resources", "float_Head.obj");
-	AddOBJ(&armTransform_L_, color_, "./Resources", "float_L_arm.obj");
-	AddOBJ(&armTransform_R_, color_, "./Resources", "float_R_arm.obj");
+	AddOBJ(&bodyTransform_, color_, "./Engine/Resource/Samples/Player/Body", "float_Body.obj");
+	AddOBJ(&headTransform_, color_, "./Engine/Resource/Samples/Player/Head", "float_Head.obj");
+	AddOBJ(&armTransform_L_, color_, "./Engine/Resource/Samples/Player/L_Arm", "float_L_arm.obj");
+	AddOBJ(&armTransform_R_, color_, "./Engine/Resource/Samples/Player/R_Arm", "float_R_arm.obj");
 
 	// 入力状態取得
 	input_ = Input::GetInstance();
@@ -80,7 +80,7 @@ void MyPlayer::Initialize(std::string name, Tag tag)
 	AddGlobalVariables();
 }
 
-void MyPlayer::Update()
+void SamplePlayer::Update()
 {
 	// 基底クラス更新
 	BaseObject::Update();
@@ -211,22 +211,22 @@ void MyPlayer::Update()
 	}
 }
 
-void MyPlayer::Draw()
+void SamplePlayer::Draw()
 {
 	DrawAllOBJ();
 }
 
-void MyPlayer::AddGlobalVariables()
+void SamplePlayer::AddGlobalVariables()
 {
 
 }
 
-void MyPlayer::ApplyGlobalVariables()
+void SamplePlayer::ApplyGlobalVariables()
 {
 
 }
 
-void MyPlayer::OnCollisionEnter(BaseObject* object)
+void SamplePlayer::OnCollisionEnter(BaseObject* object)
 {
 	if (object->GetObjectTag() == tagFloor) {
 
@@ -243,7 +243,7 @@ void MyPlayer::OnCollisionEnter(BaseObject* object)
 	}
 }
 
-void MyPlayer::OnCollision(BaseObject* object)
+void SamplePlayer::OnCollision(BaseObject* object)
 {
 	switch (object->GetObjectTag())
 	{
@@ -259,12 +259,12 @@ void MyPlayer::OnCollision(BaseObject* object)
 	}
 }
 
-void MyPlayer::OnCollisionExit(BaseObject* object)
+void SamplePlayer::OnCollisionExit(BaseObject* object)
 {
 	object;
 }
 
-void MyPlayer::InitializeFloatingGimmick()
+void SamplePlayer::InitializeFloatingGimmick()
 {
 	// 浮遊移動サイクル
 	floatingCycle_ = 60;
@@ -274,7 +274,7 @@ void MyPlayer::InitializeFloatingGimmick()
 	floatingParameter_ = 0.0f;
 }
 
-void MyPlayer::UpdateFloatingGimmick()
+void SamplePlayer::UpdateFloatingGimmick()
 {
 	// 1フレームごとの加算値
 	const float step = (float)(2.0f * std::numbers::pi / floatingCycle_);
@@ -288,7 +288,7 @@ void MyPlayer::UpdateFloatingGimmick()
 	bodyTransform_.translate_.y = std::sin(floatingParameter_) * floatingAmpritude_;
 }
 
-void MyPlayer::InitializeArmSwingGimmick()
+void SamplePlayer::InitializeArmSwingGimmick()
 {
 	// 腕振りサイクル
 	armSwingCycle_ = 60;
@@ -296,7 +296,7 @@ void MyPlayer::InitializeArmSwingGimmick()
 	armSwingParameter_ = 0.0f;
 }
 
-void MyPlayer::UpdateArmSwingGimmick()
+void SamplePlayer::UpdateArmSwingGimmick()
 {
 	// 1フレームごとの加算値
 	const float step = (float)(2.0f * std::numbers::pi / armSwingCycle_);

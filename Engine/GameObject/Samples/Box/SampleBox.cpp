@@ -1,16 +1,16 @@
-#include "Box.h"
+#include "SampleBox.h"
 
-void Box::Initialize(std::string name, Tag tag)
+void SampleBox::Initialize(std::string name, Tag tag)
 {
 	// 基底クラス初期化
 	BaseObject::Initialize(name, tag);
 	isActive_ = true;
 
 	// モデル読み込み
-	AddOBJ(&transform_, color_, "./Resources", "Box.obj");
+	AddOBJ(&transform_, color_, "./Engine/Resource/Samples/Box", "Box.obj");
 
 	// 音声ファイル読み込み
-	testSound_ = Audio::GetInstance()->LoadWave("Alarm01.wav");
+	testSound_ = Audio::GetInstance()->LoadWave("./Engine/Resource/Samples/Audio/Alarm01.wav");
 
 	// 入力状態取得
 	input_ = Input::GetInstance();
@@ -30,7 +30,7 @@ void Box::Initialize(std::string name, Tag tag)
 	AddGlobalVariables();
 }
 
-void Box::Update()
+void SampleBox::Update()
 {
 
 	// 基底クラス更新
@@ -72,24 +72,24 @@ void Box::Update()
 #endif // _DEBUG
 }
 
-void Box::Draw()
+void SampleBox::Draw()
 {
 	DrawAllOBJ();
 }
 
-void Box::AddGlobalVariables()
+void SampleBox::AddGlobalVariables()
 {
 	// 調整したい項目をグローバル変数に追加
 	globalVariables_->AddItem(objectName_.c_str(), "AABBRadius", colliderRadius_);
 }
 
-void Box::ApplyGlobalVariables()
+void SampleBox::ApplyGlobalVariables()
 {
 	// 調整した値を適用
 	colliderRadius_ = globalVariables_->GetVector3Value(objectName_.c_str(), "AABBRadius");
 }
 
-void Box::OnCollision(BaseObject* object)
+void SampleBox::OnCollision(BaseObject* object)
 {
 	switch (object->GetObjectTag())
 	{
@@ -108,7 +108,7 @@ void Box::OnCollision(BaseObject* object)
 	isCollision_ = true;
 }
 
-void Box::OnCollisionExit(BaseObject* object)
+void SampleBox::OnCollisionExit(BaseObject* object)
 {
 	object;
 

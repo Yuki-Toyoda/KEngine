@@ -432,7 +432,7 @@ bool OBJ::Initialize(const std::string& directoryPath, const std::string& fileNa
 	// モデルデータ読み込み
 	myModelData_ = ModelManager::GetInstance()->LoadModel(directoryPath, fileName);
 
-	textureHandle_ = TextureManager::Load(myModelData_.material.textureFilePath);
+	textureHandle_ = TextureManager::Load(directoryPath, myModelData_.material.textureFilePath);
 
 	// テクスチャのリソース情報を取得
 	resourceDesc_ = TextureManager::GetInstance()->GetResourceDesc(textureHandle_);

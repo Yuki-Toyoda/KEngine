@@ -1,6 +1,6 @@
 #pragma once
-#include "../BaseObject.h"
-#include "../../Input/Input.h"
+#include "../../BaseObject.h"
+#include "../../../Input/Input.h"
 
 // クラスの前方宣言
 class TPCamera;
@@ -8,7 +8,7 @@ class TPCamera;
 /// <summary>
 /// プレイヤー
 /// </summary>
-class MyPlayer : public BaseObject
+class SamplePlayer : public BaseObject
 {
 public: // メンバ関数
 

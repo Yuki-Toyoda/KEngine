@@ -1,7 +1,7 @@
 #pragma once
-#include "../BaseObject.h"
-#include "../../Input/Input.h"
-#include "../../externals/imgui/imgui.h"
+#include "../../BaseObject.h"
+#include "../../../Input/Input.h"
+#include "../../../externals/imgui/imgui.h"
 
 /// <summary>
 /// 三人称カメラ
