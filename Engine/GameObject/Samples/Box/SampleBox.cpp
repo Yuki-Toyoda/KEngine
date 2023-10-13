@@ -21,12 +21,16 @@ void SampleBox::Initialize(std::string name, Tag tag)
 
 	// 番号
 	num_ = 0.0f;
+	testNum_ = 0;
 
 	backGroundColor_ = { 0.25f, 0.25f, 0.25f, 1.0f };
 	gageColor_ = { 1.0f, 1.0f, 1.0f, 1.0f };
 
 	gage_ = std::make_unique<Gage>();
 	gage_->Initialize(&num_, 0.0f, 100.0f, backGroundColor_, gageColor_, { 100.0f, 100.0f }, { 100.0f, 16.0f }, {0.0f, 0.0f});
+
+	counter_ = std::make_unique<Counter>();
+	counter_->Initialize(&testNum_, { 300.0f, 300.0f }, { 96.0f, 96.0f }, -32.0f);
 
 	// 当たり判定用aabb生成
 	colliderRadius_ = { 1.0f, 1.0f, 1.0f };
@@ -83,11 +87,17 @@ void SampleBox::Update()
 	ImGui::DragFloat2("gageSize", &gage_->size_.x, 0.5f);
 	ImGui::ColorEdit4("gageBackGroundColor", &backGroundColor_.x);
 	ImGui::ColorEdit4("gageColor", &gageColor_.x);
-	
+
 	// ゲージ更新
 	gage_->Update();
 	gage_->SetBackGroundColor(backGroundColor_);
 	gage_->SetGageColor(gageColor_);
+
+	ImGui::DragInt("Intnum", &testNum_, 0.5f);
+	ImGui::DragFloat2("counterPosition", &counter_->position_.x, 0.5f);
+	ImGui::DragFloat2("counterSize", &counter_->size_.x, 0.5f);
+
+	counter_->Update();
 
 	ImGui::ColorEdit4("color", &color_.x);
 	ImGui::End();
@@ -103,6 +113,7 @@ void SampleBox::Draw()
 void SampleBox::SpriteDraw()
 {
 	gage_->Draw();
+	counter_->Draw();
 }
 
 void SampleBox::AddGlobalVariables()

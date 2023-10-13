@@ -190,6 +190,9 @@
     <ClCompile Include="Engine\Sprite\template\Gage.cpp">
       <Filter>Engine\Sprite\template</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Sprite\template\Counter.cpp">
+      <Filter>Engine\Sprite\template</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Base\DirectXCommon.h">
@@ -343,6 +346,9 @@
       <Filter>Engine\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Sprite\template\Gage.h">
+      <Filter>Engine\Sprite\template</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Sprite\template\Counter.h">
       <Filter>Engine\Sprite\template</Filter>
     </ClInclude>
   </ItemGroup>

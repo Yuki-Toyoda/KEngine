@@ -128,10 +128,6 @@ public: // パブリックなメンバ変数
 
 private: // メンバ変数
 
-	// ゲージ用テクスチャ
-	uint32_t textureHandleGageBackGround_; // ゲージ背景
-	uint32_t textureHandleGage_; // ゲージ本体
-
 	// ゲージ用スプライト
 	std::unique_ptr<Sprite> spriteGageBackGround_; // ゲージ背景
 	std::unique_ptr<Sprite> spriteGage_; // ゲージ本体

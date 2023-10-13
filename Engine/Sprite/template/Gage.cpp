@@ -23,15 +23,11 @@ void Gage::Initialize(float* num, float min, float max, Vector4 backEndColor, Ve
 	// 表示
 	isActive_ = true;
 
-	// テクスチャ読み込み
-	textureHandleGageBackGround_ = TextureManager::Load("./Resources", "white1x1.png");
-	textureHandleGage_ = textureHandleGageBackGround_;
-
 	// 座標設定
 	Vector2 anchorPosition = { (1.0f - anchorPoint_.x) * position_.x, (1.0f - anchorPoint_.y) * position_.y };
-	spriteGageBackGround_.reset(Sprite::Create(textureHandleGageBackGround_, anchorPosition, backGroundColor_, { 0.0f, 0.0f }));
+	spriteGageBackGround_.reset(Sprite::Create(TextureManager::Load("./Resources", "white1x1.png"), anchorPosition, backGroundColor_, { 0.0f, 0.0f }));
 	spriteGageBackGround_->size_ = size;
-	spriteGage_.reset(Sprite::Create(textureHandleGage_, anchorPosition, gageColor_, { 0.0f, 0.0f }));
+	spriteGage_.reset(Sprite::Create(TextureManager::Load("./Resources", "white1x1.png"), anchorPosition, gageColor_, { 0.0f, 0.0f }));
 	spriteGage_->size_ = { 0.0f, size.y };
 }
 
@@ -57,15 +53,11 @@ void Gage::Initialize(float* num, float min, float max, uint32_t backEnd, Vector
 	// 表示
 	isActive_ = true;
 
-	// テクスチャ読み込み
-	textureHandleGageBackGround_ = backEnd;
-	textureHandleGage_ = gage;
-
 	// 座標設定
 	Vector2 anchorPosition = { (1.0f - anchorPoint_.x) * position_.x, (1.0f - anchorPoint_.y) * position_.y };
-	spriteGageBackGround_.reset(Sprite::Create(textureHandleGageBackGround_, anchorPosition, backGroundColor_, { 0.0f, 0.0f }));
+	spriteGageBackGround_.reset(Sprite::Create(backEnd, anchorPosition, backGroundColor_, { 0.0f, 0.0f }));
 	spriteGageBackGround_->size_ = size;
-	spriteGage_.reset(Sprite::Create(textureHandleGage_, anchorPosition, gageColor_, { 0.0f, 0.0f }));
+	spriteGage_.reset(Sprite::Create(gage, anchorPosition, gageColor_, { 0.0f, 0.0f }));
 	spriteGage_->size_ = { 0.0f, size.y };
 }
 

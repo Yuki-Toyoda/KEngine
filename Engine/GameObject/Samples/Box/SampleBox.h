@@ -63,9 +63,12 @@ private: // メンバ変数
 
 	// 参照テスト用値
 	float num_;
+	int testNum_;
 
 	// ゲージ
 	std::unique_ptr<Gage> gage_;
+
+	std::unique_ptr<Counter> counter_;
 
 	Vector4 backGroundColor_;
 	Vector4 gageColor_;

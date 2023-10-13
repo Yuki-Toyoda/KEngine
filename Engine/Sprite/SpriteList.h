@@ -5,3 +5,4 @@
 
 #include "Sprite.h"
 #include "template/Gage.h"
+#include "template/Counter.h"
