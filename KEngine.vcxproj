@@ -120,6 +120,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Scene\user\GameScene.cpp" />
     <ClCompile Include="Engine\Scene\user\TitleScene.cpp" />
     <ClCompile Include="Engine\Sprite\Sprite.cpp" />
+    <ClCompile Include="Engine\Sprite\template\Gage.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -173,6 +174,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Scene\user\TitleScene.h" />
     <ClInclude Include="Engine\Sprite\Sprite.h" />
     <ClInclude Include="Engine\Sprite\SpriteList.h" />
+    <ClInclude Include="Engine\Sprite\template\Gage.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\externals\imgui\.editorconfig" />

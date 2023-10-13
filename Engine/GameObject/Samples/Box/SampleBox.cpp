@@ -19,10 +19,14 @@ void SampleBox::Initialize(std::string name, Tag tag)
 	// 色初期設定
 	color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
 
-	// テクスチャロード
-	textureHandle_ = TextureManager::Load("./Resources", "uvChecker.png");
-	// スプライト初期化
-	testSprite_.reset(Sprite::Create(textureHandle_, setTranslate_, { 1.0f, 1.0f, 1.0f, 1.0f }, { 0.5f, 0.5f }));
+	// 番号
+	num_ = 0.0f;
+
+	backGroundColor_ = { 0.25f, 0.25f, 0.25f, 1.0f };
+	gageColor_ = { 1.0f, 1.0f, 1.0f, 1.0f };
+
+	gage_ = std::make_unique<Gage>();
+	gage_->Initialize(&num_, 0.0f, 100.0f, backGroundColor_, gageColor_, { 100.0f, 100.0f }, { 100.0f, 16.0f }, {0.0f, 0.0f});
 
 	// 当たり判定用aabb生成
 	colliderRadius_ = { 1.0f, 1.0f, 1.0f };
@@ -73,17 +77,17 @@ void SampleBox::Update()
 		}
 	}
 
-	ImGui::DragFloat2("SetTranslate", &setTranslate_.x, 0.5f);
-	ImGui::DragFloat2("drawStart", &drawStart_.x, 0.5f);
-	ImGui::DragFloat2("drawEnd", &drawEnd_.x, 0.5f);
-	if (ImGui::Button("ResetRect")) {
-		testSprite_->ResetTextureRect();
-	}
-
-	if (ImGui::Button("Set")) {
-		testSprite_->SetPosition(setTranslate_);
-		testSprite_->SetTextureRect(drawStart_, drawEnd_);
-	}
+	ImGui::DragFloat("num", &num_, 0.5f);
+	ImGui::Checkbox("gage - isActive", &gage_->isActive_);
+	ImGui::DragFloat2("gagePosition", &gage_->position_.x, 0.5f);
+	ImGui::DragFloat2("gageSize", &gage_->size_.x, 0.5f);
+	ImGui::ColorEdit4("gageBackGroundColor", &backGroundColor_.x);
+	ImGui::ColorEdit4("gageColor", &gageColor_.x);
+	
+	// ゲージ更新
+	gage_->Update();
+	gage_->SetBackGroundColor(backGroundColor_);
+	gage_->SetGageColor(gageColor_);
 
 	ImGui::ColorEdit4("color", &color_.x);
 	ImGui::End();
@@ -98,7 +102,7 @@ void SampleBox::Draw()
 
 void SampleBox::SpriteDraw()
 {
-	testSprite_->Draw();
+	gage_->Draw();
 }
 
 void SampleBox::AddGlobalVariables()

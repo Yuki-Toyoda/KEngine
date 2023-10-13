@@ -435,6 +435,9 @@ bool Sprite::Initialize()
 void Sprite::Draw()
 {
 
+	// 頂点更新
+	TransferVertices();
+
 	matWorld_ = Math::MakeIdentity4x4();
 	matWorld_ = matWorld_ * Math::MakeRotateZMatrix(rotation_);
 	matWorld_ = matWorld_ * Math::MakeTranslateMatrix({ position_.x, position_.y, 0.0f });
