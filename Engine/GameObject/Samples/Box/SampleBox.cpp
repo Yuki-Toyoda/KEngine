@@ -1,4 +1,5 @@
 #include "SampleBox.h"
+#include "../../../Resource/Texture/TextureManager.h"
 
 void SampleBox::Initialize(std::string name, Tag tag)
 {
@@ -17,6 +18,11 @@ void SampleBox::Initialize(std::string name, Tag tag)
 
 	// 色初期設定
 	color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
+
+	// テクスチャロード
+	textureHandle_ = TextureManager::Load("./Resources", "uvChecker.png");
+	// スプライト初期化
+	testSprite_.reset(Sprite::Create(textureHandle_, setTranslate_, { 1.0f, 1.0f, 1.0f, 1.0f }, { 0.5f, 0.5f }));
 
 	// 当たり判定用aabb生成
 	colliderRadius_ = { 1.0f, 1.0f, 1.0f };
@@ -66,6 +72,19 @@ void SampleBox::Update()
 			voiceHundle = Audio::GetInstance()->PlayWave(testSound_);
 		}
 	}
+
+	ImGui::DragFloat2("SetTranslate", &setTranslate_.x, 0.5f);
+	ImGui::DragFloat2("drawStart", &drawStart_.x, 0.5f);
+	ImGui::DragFloat2("drawEnd", &drawEnd_.x, 0.5f);
+	if (ImGui::Button("ResetRect")) {
+		testSprite_->ResetTextureRect();
+	}
+
+	if (ImGui::Button("Set")) {
+		testSprite_->SetPosition(setTranslate_);
+		testSprite_->SetTextureRect(drawStart_, drawEnd_);
+	}
+
 	ImGui::ColorEdit4("color", &color_.x);
 	ImGui::End();
 
@@ -75,6 +94,11 @@ void SampleBox::Update()
 void SampleBox::Draw()
 {
 	DrawAllOBJ();
+}
+
+void SampleBox::SpriteDraw()
+{
+	testSprite_->Draw();
 }
 
 void SampleBox::AddGlobalVariables()

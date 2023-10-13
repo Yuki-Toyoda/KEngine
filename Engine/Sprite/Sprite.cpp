@@ -389,6 +389,7 @@ Sprite::Sprite(uint32_t textureHandle, Vector2 position, Vector2 size, Vector4 c
 	matWorld_ = Math::MakeIdentity4x4();
 	color_ = color;
 	textureHandle_ = textureHandle;
+	texBase_ = { 0.0f, 0.0f };
 	texSize_ = size;
 }
 
@@ -486,10 +487,15 @@ void Sprite::TransferVertices()
 	vertices[RB].position = { right, bottom, 0.0f, 1.0f }; // 右下
 	vertices[RT].position = { right, top, 0.0f, 1.0f };    // 右上
 
-	vertices[LB].uv = { 0.0f, 1.0f };  // 左下
-	vertices[LT].uv = { 0.0f, 0.0f };     // 左上
-	vertices[RB].uv = { 1.0f, 1.0f }; // 右下
-	vertices[RT].uv = { 1.0f, 0.0f };    // 右上
+	float tex_left = texBase_.x / resourceDesc_.Width;
+	float tex_right = (texBase_.x + texSize_.x) / resourceDesc_.Width;
+	float tex_top = texBase_.y / resourceDesc_.Height;
+	float tex_bottom = (texBase_.y + texSize_.y) / resourceDesc_.Height;
+
+	vertices[LB].uv = { tex_left, tex_bottom };  // 左下
+	vertices[LT].uv = { tex_left, tex_top };     // 左上
+	vertices[RB].uv = { tex_right, tex_bottom }; // 右下
+	vertices[RT].uv = { tex_right, tex_top };    // 右上
 
 	// 頂点バッファへのデータ転送
 	memcpy(vertMap_, vertices, sizeof(vertices));

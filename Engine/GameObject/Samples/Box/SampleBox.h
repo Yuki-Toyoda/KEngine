@@ -2,6 +2,7 @@
 #include "../../BaseObject.h"
 #include "../../../Audio/Audio.h"
 #include "../../../Input/Input.h"
+#include "../../../Sprite/Sprite.h"
 
 /// <summary>
 /// 描画テスト用の箱オブジェクト
@@ -16,6 +17,8 @@ public: // メンバ関数
 	void Update() override;
 	// 描画処理
 	void Draw() override;
+	// スプライト描画処理
+	void SpriteDraw()override;
 
 public: // その他関数
 
@@ -57,5 +60,18 @@ private: // メンバ変数
 
 	// 衝突しているか
 	bool isCollision_;
+
+	// テスト用スプライト
+	std::unique_ptr<Sprite> testSprite_;
+
+	// テスト用テクスチャ
+	uint32_t textureHandle_ = 0u;
+
+	// 描画中心座標
+	Vector2 setTranslate_ = { 0.0f, 0.0f };
+	// 描画開始範囲
+	Vector2 drawStart_ = { 0.0f, 0.0f };
+	// 描画終了範囲
+	Vector2 drawEnd_ = { 512.0f, 512.0f };
 
 };

@@ -178,6 +178,23 @@ public: // メンバ関数
 	}
 
 	/// <summary>
+	/// テクスチャの描画範囲セッター
+	/// </summary>
+	/// <param name="start">開始左上座標</param>
+	/// <param name="end">終了右下座標</param>
+	void SetTextureRect(Vector2 start, Vector2 end) {
+		texBase_ = start;
+		texSize_ = end;
+		TransferVertices();
+	}
+
+	void ResetTextureRect(){
+		texBase_ = { 0.0f, 0.0f };
+		texSize_ = { (float)resourceDesc_.Width, (float)resourceDesc_.Height };
+		TransferVertices();
+	}
+
+	/// <summary>
 	/// 色のセッター
 	/// </summary>
 	/// <param name="color">設定する色</param>
