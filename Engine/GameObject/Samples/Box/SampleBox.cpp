@@ -1,4 +1,5 @@
 #include "SampleBox.h"
+#include "../../../Resource/Texture/TextureManager.h"
 
 void SampleBox::Initialize(std::string name, Tag tag)
 {
@@ -17,6 +18,23 @@ void SampleBox::Initialize(std::string name, Tag tag)
 
 	// 色初期設定
 	color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
+
+	// 番号
+	intNum_ = 0.0f;
+	testNum_ = 0;
+
+	min_ = 0.0f;
+	max_ = 100.0f;
+
+	backGroundColor_ = { 0.25f, 0.25f, 0.25f, 1.0f };
+	gageColor_ = { 1.0f, 1.0f, 1.0f, 1.0f };
+
+	gage_ = std::make_unique<Gage>();
+	gage_->Initialize(&intNum_, 0.0f, 100.0f, backGroundColor_, gageColor_, { 100.0f, 100.0f }, { 100.0f, 16.0f }, {0.0f, 0.0f});
+
+	textureHandleNumberSheets_ = TextureManager::Load("NumberSheetsA.png");
+	counter_ = std::make_unique<Counter>();
+	counter_->Initialize(textureHandleNumberSheets_, {256.0f, 256.0f}, &testNum_, { 300.0f, 300.0f }, { 96.0f, 96.0f }, -32.0f);
 
 	// 当たり判定用aabb生成
 	colliderRadius_ = { 1.0f, 1.0f, 1.0f };
@@ -61,12 +79,34 @@ void SampleBox::Update()
 	// Imgui
 	ImGui::Begin(objectName_.c_str());
 	if (!Audio::GetInstance()->IsPlaying(voiceHundle) || voiceHundle == -1) {
-		ImGui::Checkbox("input?", &isInput_);
 		if (ImGui::Button("PlayTestSound")) {
 			voiceHundle = Audio::GetInstance()->PlayWave(testSound_);
 		}
 	}
-	ImGui::ColorEdit4("color", &color_.x);
+
+	// ゲージ更新
+	ImGui::DragFloat("num", &intNum_, 0.5f);
+	ImGui::Checkbox("gage - isActive", &gage_->isActive_);
+	ImGui::DragFloat2("gagePosition", &gage_->position_.x, 0.5f);
+	ImGui::DragFloat2("gageSize", &gage_->size_.x, 0.5f);
+	ImGui::DragFloat("gageMin_", &min_, 0.5f);
+	ImGui::DragFloat("gageMax_", &max_, 0.5f);
+	ImGui::ColorEdit4("gageBackGroundColor", &backGroundColor_.x);
+	ImGui::ColorEdit4("gageColor", &gageColor_.x);
+	gage_->Update();
+	gage_->SetBackGroundColor(backGroundColor_);
+	gage_->SetGageColor(gageColor_);
+	gage_->SetMin(min_);
+	gage_->SetMax(max_);
+
+	// カウンター更新
+	ImGui::Checkbox("counter - isActive", &counter_->isActive_);
+	ImGui::DragInt("Intnum", &testNum_, 0.5f);
+	ImGui::DragFloat2("counterPosition", &counter_->position_.x, 0.5f);
+	ImGui::DragFloat2("counterSize", &counter_->size_.x, 0.5f);
+	ImGui::DragFloat("counterLineSpace", &counter_->lineSpace_, 0.5f);
+	counter_->Update();
+
 	ImGui::End();
 
 #endif // _DEBUG
@@ -75,6 +115,12 @@ void SampleBox::Update()
 void SampleBox::Draw()
 {
 	DrawAllOBJ();
+}
+
+void SampleBox::SpriteDraw()
+{
+	gage_->Draw();
+	counter_->Draw();
 }
 
 void SampleBox::AddGlobalVariables()

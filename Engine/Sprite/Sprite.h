@@ -134,27 +134,11 @@ public: // メンバ関数
 	void Draw();
 
 	/// <summary>
-	/// スプライト中心座標のセッター
-	/// </summary>
-	/// /// <param name="translation">セットする座標</param>
-	void SetPosition(const Vector2& translation) {
-		position_ = translation;
-		TransferVertices();
-	}
-	/// <summary>
 	/// スプライト中心座標のゲッター
 	/// </summary>
 	/// <returns>中心座標</returns>
 	Vector2 GetPosition() { return position_; }
 
-	/// <summary>
-	/// 回転角のセッター
-	/// </summary>
-	/// <param name="rotation"></param>
-	void SetRotation(const float& rotation) {
-		rotation_ = rotation;
-		TransferVertices();
-	}
 	/// <summary>
 	/// 回転角のゲッター
 	/// </summary>
@@ -162,19 +146,26 @@ public: // メンバ関数
 	float GetRotation() { return rotation_; }
 
 	/// <summary>
-	/// サイズのセッター
-	/// </summary>
-	/// <param name="size">設定するサイズ</param>
-	void SetSize(const Vector2& size) {
-		size_ = size;
-		TransferVertices();
-	}
-	/// <summary>
 	/// サイズのゲッター
 	/// </summary>
 	/// <returns>サイズ</returns>
 	Vector2 GetSize() {
 		return size_;
+	}
+
+	/// <summary>
+	/// テクスチャの描画範囲セッター
+	/// </summary>
+	/// <param name="start">開始左上座標</param>
+	/// <param name="end">終了右下座標</param>
+	void SetTextureRect(Vector2 start, Vector2 end) {
+		texBase_ = start;
+		texSize_ = end;
+	}
+
+	void ResetTextureRect(){
+		texBase_ = { 0.0f, 0.0f };
+		texSize_ = { (float)resourceDesc_.Width, (float)resourceDesc_.Height };
 	}
 
 	/// <summary>
@@ -194,6 +185,15 @@ public: // メンバ関数
 	/// <param name="textureHandle">テクスチャハンドル</param>
 	void SetTextureHandle(uint32_t textureHandle);
 
+public: // パブリックなメンバ変数
+
+	// スプライト起点座標
+	Vector2 position_{};
+	// スプライトの幅と高さ
+	Vector2 size_ = { 100.0f, 100.0f };
+	// 回転角
+	float rotation_ = 0.0f;
+
 private: // メンバ変数
 
 	// 頂点バッファ
@@ -208,12 +208,6 @@ private: // メンバ変数
 	// 頂点バッファビュー
 	D3D12_VERTEX_BUFFER_VIEW vbView_{};
 
-	// スプライト起点座標
-	Vector2 position_{};
-	// スプライトの幅と高さ
-	Vector2 size_ = { 100.0f, 100.0f };
-	// 回転角
-	float rotation_ = 0.0f;
 	// アンカーポイント
 	Vector2 anchorPoint_ = { 0, 0 };
 	// ワールド行列

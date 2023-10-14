@@ -79,6 +79,9 @@
     <Filter Include="Engine\GameObject\Samples\TPCamera">
       <UniqueIdentifier>{009c9d50-fef2-4b7a-8bb9-05e246dfc22c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Sprite\template">
+      <UniqueIdentifier>{2c8cb29b-8cde-49d0-ab37-147dfa48e8f0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Base\DirectXCommon.cpp">
@@ -183,6 +186,12 @@
     </ClCompile>
     <ClCompile Include="Engine\GameObject\Samples\TPCamera\TPCamera.cpp">
       <Filter>Engine\GameObject\Samples\TPCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Sprite\template\Gage.cpp">
+      <Filter>Engine\Sprite\template</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Sprite\template\Counter.cpp">
+      <Filter>Engine\Sprite\template</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -335,6 +344,12 @@
     </ClInclude>
     <ClInclude Include="Engine\GameObject\SampleList.h">
       <Filter>Engine\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Sprite\template\Gage.h">
+      <Filter>Engine\Sprite\template</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Sprite\template\Counter.h">
+      <Filter>Engine\Sprite\template</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -2,6 +2,7 @@
 #include "../../BaseObject.h"
 #include "../../../Audio/Audio.h"
 #include "../../../Input/Input.h"
+#include "../../../Sprite/SpriteList.h"
 
 /// <summary>
 /// 描画テスト用の箱オブジェクト
@@ -16,6 +17,8 @@ public: // メンバ関数
 	void Update() override;
 	// 描画処理
 	void Draw() override;
+	// スプライト描画処理
+	void SpriteDraw()override;
 
 public: // その他関数
 
@@ -57,5 +60,22 @@ private: // メンバ変数
 
 	// 衝突しているか
 	bool isCollision_;
+
+	// 参照テスト用値
+	float intNum_;
+	int testNum_;
+
+	float min_;
+	float max_;
+
+	// テスト用番号シート
+	uint32_t textureHandleNumberSheets_ = 0u;
+	// ゲージ
+	std::unique_ptr<Gage> gage_;
+
+	std::unique_ptr<Counter> counter_;
+
+	Vector4 backGroundColor_;
+	Vector4 gageColor_;
 
 };
