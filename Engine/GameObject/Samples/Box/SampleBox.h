@@ -62,9 +62,14 @@ private: // メンバ変数
 	bool isCollision_;
 
 	// 参照テスト用値
-	float num_;
+	float intNum_;
 	int testNum_;
 
+	float min_;
+	float max_;
+
+	// テスト用番号シート
+	uint32_t textureHandleNumberSheets_ = 0u;
 	// ゲージ
 	std::unique_ptr<Gage> gage_;
 

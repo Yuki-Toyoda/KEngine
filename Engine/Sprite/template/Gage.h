@@ -140,7 +140,7 @@ private: // メンバ変数
 	Vector2 anchorPoint_;
 
 	// 参照値
-	float* num_ = nullptr;
+	float* intNum_ = nullptr;
 	// 参照値最小値
 	float min_;
 	// 参照値最大値

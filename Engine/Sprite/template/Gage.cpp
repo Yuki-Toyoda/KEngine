@@ -4,7 +4,7 @@
 void Gage::Initialize(float* num, float min, float max, Vector4 backEndColor, Vector4 gageColor, Vector2 position, Vector2 size, Vector2 anchorPoint)
 {
 	// 参照値取得
-	num_ = num;
+	intNum_ = num;
 	// 最小値と最大値の設定
 	min_ = min;
 	max_ = max;
@@ -34,7 +34,7 @@ void Gage::Initialize(float* num, float min, float max, Vector4 backEndColor, Ve
 void Gage::Initialize(float* num, float min, float max, uint32_t backEnd, Vector4 backEndColor, uint32_t gage, Vector4 gageColor, Vector2 position, Vector2 size, Vector2 anchorPoint)
 {
 	// 参照値取得
-	num_ = num;
+	intNum_ = num;
 	// 最小値と最大値の設定
 	min_ = min;
 	max_ = max;
@@ -75,8 +75,8 @@ void Gage::Update()
 	spriteGage_->size_.y = size_.y;
 
 	// 参照値によってサイズを変更
-	if (*num_ < max_)
-		spriteGage_->size_.x = Math::Linear(*num_, min_, size_.x, max_);
+	if (*intNum_ < max_)
+		spriteGage_->size_.x = Math::Linear(*intNum_, min_, size_.x, max_);
 	else {
 		spriteGage_->size_.x = size_.x;
 	}
