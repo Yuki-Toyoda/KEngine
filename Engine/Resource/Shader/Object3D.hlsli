@@ -4,6 +4,7 @@ cbuffer constBuffer : register(b0)
     float4x4 mat;
     float4x4 world;
     int enableLighting;
+    float4x4 uvTransform;
 }
 
 // 

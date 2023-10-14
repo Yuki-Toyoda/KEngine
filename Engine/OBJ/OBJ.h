@@ -43,6 +43,8 @@ public: // サブクラス
 		Matrix4x4 mat;
 		Matrix4x4 world;
 		int32_t enableLighting;
+		float padding[3];
+		Matrix4x4 uvTransform;
 	};
 
 	struct MaterialData {
@@ -215,6 +217,11 @@ public: // パブリックなメンバ関数
 	/// </summary>
 	/// <param name="enable">有効非有効</param>
 	void SetEnableLighting(bool enable) { constMap_->enableLighting = enable; }
+
+public:
+
+	// uv用ワールド座標
+	WorldTransform uvTransform_;
 
 private: // メンバ変数
 

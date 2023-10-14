@@ -412,6 +412,7 @@ OBJ::OBJ(Vector4 color)
 {
 	transform_->Initialize();
 	color_ = color;
+	uvTransform_.Initialize();
 }
 
 OBJ::OBJ( WorldTransform* transform, Vector4 color)
@@ -419,6 +420,7 @@ OBJ::OBJ( WorldTransform* transform, Vector4 color)
 	// 引数の値をメンバ変数に代入
 	transform_ = transform;
 	color_ = color;
+	uvTransform_.Initialize();
 }
 
 bool OBJ::Initialize(const std::string& directoryPath, const std::string& fileName)
@@ -490,6 +492,7 @@ void OBJ::Draw()
 	// 行列を設定
 	constMap_->mat = matWorld_;
 	constMap_->world = worldMatrix;
+	constMap_->uvTransform = uvTransform_.GetMatWorld();
 
 	// 頂点バッファの設定
 	sCommandList_->IASetVertexBuffers(0, 1, &vbView_);

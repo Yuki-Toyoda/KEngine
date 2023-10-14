@@ -10,7 +10,8 @@ PixelShaderOutput main(VertexShaderOutput input)
     // 
     PixelShaderOutput output;
     
-    float4 textureColor = gTexture.Sample(gSampler, input.texcoord);
+    float4 transformedUV = mul(float4(input.texcoord, 0.0f, 1.0f), uvTransform);
+    float4 textureColor = gTexture.Sample(gSampler, transformedUV.xy);
     // テクスチャの透明度が0.5以下ならピクセルを棄却
     if (textureColor.a <= 0.5f)
         discard;

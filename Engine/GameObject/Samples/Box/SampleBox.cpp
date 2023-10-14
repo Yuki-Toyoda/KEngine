@@ -84,6 +84,10 @@ void SampleBox::Update()
 		}
 	}
 
+	ImGui::DragFloat3("uvScale", &objects_[0]->uvTransform_.scale_.x, 0.01f);
+	ImGui::DragFloat3("uvRotate", &objects_[0]->uvTransform_.rotate_.x, 0.01f);
+	ImGui::DragFloat3("uvTranslate", &objects_[0]->uvTransform_.translate_.x, 0.01f);
+
 	// ゲージ更新
 	ImGui::DragFloat("num", &intNum_, 0.5f);
 	ImGui::Checkbox("gage - isActive", &gage_->isActive_);
