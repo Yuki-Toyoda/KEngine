@@ -68,9 +68,6 @@ private: // メンバ変数
 	float min_;
 	float max_;
 
-	// タイマーテスト用
-	int time_;
-
 	// テスト用番号シート
 	uint32_t textureHandleNumberSheets_ = 0u;
 	// ゲージ
@@ -78,7 +75,11 @@ private: // メンバ変数
 	// カウンター
 	std::unique_ptr<Counter> counter_;
 
-	std::unique_ptr<Timer> timer_;
+	// アニメーションスプライト用テクスチャ
+	uint32_t animSpriteTexture1_ = 0u;
+	uint32_t animSpriteTexture2_ = 0u;
+	// アニメーションスプライト
+	std::unique_ptr<AnimationSprite> animationSprite_;
 
 	Vector4 backGroundColor_;
 	Vector4 gageColor_;

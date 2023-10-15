@@ -26,9 +26,6 @@ void SampleBox::Initialize(std::string name, Tag tag)
 	min_ = 0.0f;
 	max_ = 100.0f;
 
-	// タイマーテスト用
-	time_ = 3600;
-
 	backGroundColor_ = { 0.25f, 0.25f, 0.25f, 1.0f };
 	gageColor_ = { 1.0f, 1.0f, 1.0f, 1.0f };
 
@@ -38,8 +35,10 @@ void SampleBox::Initialize(std::string name, Tag tag)
 	counter_ = std::make_unique<Counter>();
 	counter_->Initialize(&testNum_, { 300.0f, 300.0f }, { 96.0f, 96.0f }, -32.0f);
 
-	timer_ = std::make_unique<Timer>();
-	timer_->Initialize(&time_, { 100.0f, 100.0f }, { 64.0f, 64.0f }, -32.0f);
+	animSpriteTexture1_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "NumberSheets.png");
+	animSpriteTexture2_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "ColorSample.png");
+	animationSprite_ = std::make_unique<AnimationSprite>();
+	animationSprite_->Initialize(animSpriteTexture1_, { 100.0f, 100.0f }, { 64.0f, 64.0f }, {0.5f, 0.5f}, {1.0f, 1.0f, 1.0f, 1.0f}, {512.0f, 512.0f}, true);
 
 	// 当たり判定用aabb生成
 	colliderRadius_ = { 1.0f, 1.0f, 1.0f };
@@ -116,13 +115,16 @@ void SampleBox::Update()
 	ImGui::DragFloat("counterLineSpace", &counter_->lineSpace_, 0.5f);
 	counter_->Update();
 
-	// タイマー更新
-	ImGui::Checkbox("timer - isActive", &timer_->isActive_);
-	ImGui::DragInt("time", &time_, 0.5f);
-	ImGui::DragFloat2("timerPosition", &timer_->position_.x, 0.5f);
-	ImGui::DragFloat2("timerSize", &timer_->size_.x, 0.5f);
-	ImGui::DragFloat("timerLineSpace", &timer_->lineSpace_, 0.5f);
-	timer_->Update();
+	// アニメーションスプライト更新
+	ImGui::Checkbox("animationSprite - isActive", &animationSprite_->isActive_);
+	ImGui::DragFloat2("animPosition", &animationSprite_->position_.x, 0.5f);
+	ImGui::DragFloat2("animSize", &animationSprite_->size_.x, 0.5f);
+	if (ImGui::Button("ChangeTex1"))
+		animationSprite_->ChangeAnimationSheets(animSpriteTexture1_, {512.0f, 512.0f}, true);
+
+	if (ImGui::Button("ChangeTex2"))
+		animationSprite_->ChangeAnimationSheets(animSpriteTexture2_, { 256.0f, 256.0f }, false);
+	animationSprite_->Update();
 
 	ImGui::End();
 
@@ -138,7 +140,7 @@ void SampleBox::SpriteDraw()
 {
 	gage_->Draw();
 	counter_->Draw();
-	timer_->Draw();
+	animationSprite_->Draw();
 }
 
 void SampleBox::AddGlobalVariables()
