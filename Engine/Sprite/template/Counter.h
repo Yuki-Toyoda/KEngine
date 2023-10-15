@@ -62,6 +62,8 @@ public: // パブリックなメンバ変数
 	Vector2 size_;
 	// 行間
 	float lineSpace_;
+	// 色
+	Vector4 color_;
 
 	// 表示トリガー
 	bool isActive_;
@@ -73,6 +75,9 @@ private: // メンバ変数
 
 	// 1つ1つの番号テクスチャサイズ
 	Vector2 numberTextureSize_;
+
+	// スプライトごとの座標
+	Vector2 spritePosition_[10];
 
 	// スプライト表示トリガー
 	bool isSpritesActive_[10];

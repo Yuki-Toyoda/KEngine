@@ -26,15 +26,20 @@ void SampleBox::Initialize(std::string name, Tag tag)
 	min_ = 0.0f;
 	max_ = 100.0f;
 
+	// タイマーテスト用
+	time_ = 3600;
+
 	backGroundColor_ = { 0.25f, 0.25f, 0.25f, 1.0f };
 	gageColor_ = { 1.0f, 1.0f, 1.0f, 1.0f };
 
 	gage_ = std::make_unique<Gage>();
 	gage_->Initialize(&intNum_, 0.0f, 100.0f, backGroundColor_, gageColor_, { 100.0f, 100.0f }, { 100.0f, 16.0f }, {0.0f, 0.0f});
 
-	textureHandleNumberSheets_ = TextureManager::Load("NumberSheetsA.png");
 	counter_ = std::make_unique<Counter>();
-	counter_->Initialize(textureHandleNumberSheets_, {256.0f, 256.0f}, &testNum_, { 300.0f, 300.0f }, { 96.0f, 96.0f }, -32.0f);
+	counter_->Initialize(&testNum_, { 300.0f, 300.0f }, { 96.0f, 96.0f }, -32.0f);
+
+	timer_ = std::make_unique<Timer>();
+	timer_->Initialize(&time_, { 100.0f, 100.0f }, { 64.0f, 64.0f }, -32.0f);
 
 	// 当たり判定用aabb生成
 	colliderRadius_ = { 1.0f, 1.0f, 1.0f };
@@ -98,8 +103,8 @@ void SampleBox::Update()
 	ImGui::ColorEdit4("gageBackGroundColor", &backGroundColor_.x);
 	ImGui::ColorEdit4("gageColor", &gageColor_.x);
 	gage_->Update();
-	gage_->SetBackGroundColor(backGroundColor_);
-	gage_->SetGageColor(gageColor_);
+	gage_->backGroundColor_ = backGroundColor_;
+	gage_->gageColor_ = gageColor_;
 	gage_->SetMin(min_);
 	gage_->SetMax(max_);
 
@@ -110,6 +115,14 @@ void SampleBox::Update()
 	ImGui::DragFloat2("counterSize", &counter_->size_.x, 0.5f);
 	ImGui::DragFloat("counterLineSpace", &counter_->lineSpace_, 0.5f);
 	counter_->Update();
+
+	// タイマー更新
+	ImGui::Checkbox("timer - isActive", &timer_->isActive_);
+	ImGui::DragInt("time", &time_, 0.5f);
+	ImGui::DragFloat2("timerPosition", &timer_->position_.x, 0.5f);
+	ImGui::DragFloat2("timerSize", &timer_->size_.x, 0.5f);
+	ImGui::DragFloat("timerLineSpace", &timer_->lineSpace_, 0.5f);
+	timer_->Update();
 
 	ImGui::End();
 
@@ -125,6 +138,7 @@ void SampleBox::SpriteDraw()
 {
 	gage_->Draw();
 	counter_->Draw();
+	timer_->Draw();
 }
 
 void SampleBox::AddGlobalVariables()

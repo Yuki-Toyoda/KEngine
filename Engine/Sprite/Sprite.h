@@ -52,11 +52,12 @@ public:// 静的なメンバ関数
 	/// </summary>
 	/// <param name="textureHandle">テクスチャ</param>
 	/// <param name="position">座標</param>
+	/// <param name="size">大きさ</param>
 	/// <param name="color">色</param>
 	/// <param name="anchorPoint">アンカーポイント</param>
 	/// <returns>生成されたスプライト</returns>
 	static Sprite* Create(
-		uint32_t textureHandle, Vector2 position, Vector4 color = { 1,1,1,1 },
+		uint32_t textureHandle, Vector2* position, Vector2* size, Vector4* color,
 		Vector2 anchorPoint = { 0.0f, 0.0f }
 	);
 
@@ -119,8 +120,8 @@ public: // メンバ関数
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	Sprite(uint32_t textureHandle, Vector2 position, Vector2 size,
-		Vector4 color, Vector2 anchorPoint);
+	Sprite(uint32_t textureHandle, Vector2* position, Vector2* size,
+		Vector4* color, Vector2 anchorPoint);
 
 	/// <summary>
 	/// 初期化
@@ -137,7 +138,7 @@ public: // メンバ関数
 	/// スプライト中心座標のゲッター
 	/// </summary>
 	/// <returns>中心座標</returns>
-	Vector2 GetPosition() { return position_; }
+	Vector2 GetPosition() { return *position_; }
 
 	/// <summary>
 	/// 回転角のゲッター
@@ -150,7 +151,7 @@ public: // メンバ関数
 	/// </summary>
 	/// <returns>サイズ</returns>
 	Vector2 GetSize() {
-		return size_;
+		return *size_;
 	}
 
 	/// <summary>
@@ -163,21 +164,28 @@ public: // メンバ関数
 		texSize_ = end;
 	}
 
+	/// <summary>
+	/// テクスチャ描画範囲リセット
+	/// </summary>
 	void ResetTextureRect(){
 		texBase_ = { 0.0f, 0.0f };
 		texSize_ = { (float)resourceDesc_.Width, (float)resourceDesc_.Height };
 	}
 
 	/// <summary>
-	/// 色のセッター
+	/// テクスチャの元サイズ取得
 	/// </summary>
-	/// <param name="color">設定する色</param>
-	void SetColor(Vector4 color) { color_ = color; }
+	/// <returns>テクスチャサイズ</returns>
+	Vector2 GetTextureSize() {
+		Vector2 result = { (float)resourceDesc_.Width, (float)resourceDesc_.Height };
+		return result;
+	}
+
 	/// <summary>
 	/// 色のゲッター
 	/// </summary>
 	/// <returns>色</returns>
-	Vector4 GetColor() { return color_; }
+	Vector4 GetColor() { return *color_; }
 
 	/// <summary>
 	/// テクスチャハンドルの設定
@@ -188,11 +196,14 @@ public: // メンバ関数
 public: // パブリックなメンバ変数
 
 	// スプライト起点座標
-	Vector2 position_{};
+	Vector2* position_;
 	// スプライトの幅と高さ
-	Vector2 size_ = { 100.0f, 100.0f };
+	Vector2* size_;
 	// 回転角
-	float rotation_ = 0.0f;
+	float rotation_;
+
+	// 色
+	Vector4* color_ = nullptr;
 
 private: // メンバ変数
 
@@ -222,9 +233,6 @@ private: // メンバ変数
 
 	// リソース設定
 	D3D12_RESOURCE_DESC resourceDesc_;
-
-	// 色
-	Vector4 color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
 
 private: // メンバ関数
 
