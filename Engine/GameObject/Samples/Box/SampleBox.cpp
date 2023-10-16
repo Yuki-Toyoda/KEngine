@@ -36,9 +36,9 @@ void SampleBox::Initialize(std::string name, Tag tag)
 	counter_->Initialize(&testNum_, { 300.0f, 300.0f }, { 96.0f, 96.0f }, -32.0f);
 
 	animSpriteTexture1_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "NumberSheets.png");
-	animSpriteTexture2_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "ColorSample.png");
+	animSpriteTexture2_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "AlphabetSheet.png");
 	animationSprite_ = std::make_unique<AnimationSprite>();
-	animationSprite_->Initialize(animSpriteTexture1_, { 100.0f, 100.0f }, { 64.0f, 64.0f }, {0.5f, 0.5f}, {1.0f, 1.0f, 1.0f, 1.0f}, {512.0f, 512.0f}, true);
+	animationSprite_->Initialize(animSpriteTexture2_, { 100.0f, 100.0f }, { 64.0f, 64.0f }, {0.5f, 0.5f}, {1.0f, 1.0f, 1.0f, 1.0f}, 29, {512.0f, 512.0f}, true, 0.5f);
 
 	// 当たり判定用aabb生成
 	colliderRadius_ = { 1.0f, 1.0f, 1.0f };

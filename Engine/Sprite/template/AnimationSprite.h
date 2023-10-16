@@ -16,10 +16,11 @@ public: // メンバ関数
 	/// <param name="size">大きさ</param>
 	/// <param name="anchorPoint">中心点</param>
 	/// <param name="color">色</param>
+	/// <param name="animationFrame">アニメーション全体のフレーム数</param>
 	/// <param name="textureHandleSize">１フレームごとのテクスチャサイズ</param>
 	/// <param name="isLoop">ループするか</param>
 	/// <param name="drawTime">(任意)1フレームの描画秒数(初期値 : 1.0f / 60.0f)</param>
-	void Initialize(uint32_t animationSheet, Vector2 position, Vector2 size, Vector2 anchorPoint, Vector4 color, Vector2 textureHandleSize, bool isLoop, float drawTime = 1.0f);
+	void Initialize(uint32_t animationSheet, Vector2 position, Vector2 size, Vector2 anchorPoint, Vector4 color, int animationFrame, Vector2 textureHandleSize, bool isLoop, float drawTime = 1.0f/ 60.0f);
 
 	/// <summary>
 	/// 更新関数
@@ -39,13 +40,21 @@ public: // アクセッサ等
 	/// <param name="animationSheet">変更するテクスチャ</param>
 	/// <param name="textureSize">変更するテクスチャサイズ</param>
 	/// <param name="isReplay">最初から再生するか</param>
-	void ChangeAnimationSheets(uint32_t animationSheet, Vector2 textureSize, bool isReplay);
+	void ChangeAnimationSheets(uint32_t animationSheet, Vector2 textureSize, int animationFrame, int x, int y);
 
+	/// <summary>
+	/// １フレームの描画秒数セッター
+	/// </summary>
+	/// <param name="drawTime">1フレーム事の描画秒数</param>
+	void SetDrawTime(float drawTime) { drawTime_ = drawTime; }
+
+	
 	/// <summary>
 	/// 開始フレームセッター
 	/// </summary>
-	/// <param name="frame"></param>
-	void SetBeginFrame(int frame);
+	/// <param name="x">読み込んでいるテクスチャの横何列目か</param>
+	/// <param name="y">読み込んでいるテクスチャの縦何列目か</param>
+	void SetBeginFrame(int x, int y);
 
 	/// <summary>
 	/// 描画フレームゲッター
@@ -62,7 +71,7 @@ public: // アクセッサ等
 	/// <summary>
 	/// 再生トリガー
 	/// </summary>
-	/// <param name="isPlay">再生か体しか</param>
+	/// <param name="isPlay">再生か停止か</param>
 	void SetIsPlay(bool isPlay) { isPlay_ = isPlay; }
 
 	/// <summary>
@@ -81,8 +90,9 @@ public: // その他関数
 	/// <summary>
 	/// 選択したフレームに移動する関数
 	/// </summary>
-	/// <param name="frame"></param>
-	void ChangeSelectedFrame(int frame);
+	/// <param name="x">読み込んでいるテクスチャの横何列目か</param>
+	/// <param name="y">読み込んでいるテクスチャの縦何列目か</param>
+	void ChangeSelectedFrame(int x, int y);
 
 public: // パブリックなメンバ変数
 
@@ -112,6 +122,11 @@ private: // メンバ変数
 	// １フレームごとの画像サイズ
 	Vector2 textureHandleSize_;
 
+	// フレーム列サイズ
+	Vector2 playFrameColumn_;
+	// 再生中フレーム列
+	Vector2 nowPlayFrameColumn_;
+
 	// アニメーション用t
 	float animT_;
 	// １フレームを何秒描画するか
@@ -120,6 +135,8 @@ private: // メンバ変数
 	int beginDrawFrame_;
 	// 現在描画フレーム
 	int drawFrame_;
+	// 前フレーム描画フレーム数
+	int prevDrawFrame_;
 	// 全体のアニメーションフレーム数
 	int animationFrame_;
 
@@ -131,6 +148,9 @@ private: // メンバ変数
 	bool isLoop_;
 	// 終了トリガー
 	bool isEnd_;
+
+	// リセットトリガー
+	bool isReset_;
 
 };
 
