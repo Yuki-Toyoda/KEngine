@@ -1,18 +1,18 @@
 #include "TitleScene.h"
+#include "../SceneManager.h"
 
 void TitleScene::Initialize()
 {
 
 	Camera* camera = new Camera();
 	camera->Initialize("camera", BaseObject::tagCamera);
-	camera->transform_.translate_ = {0.0f, 0.25f, -16.0f};
 	camera->UseThisCamera();
 	gameObjectManager_->AddGameObject(camera); // ゲームオブジェクトマネージャーに追加
 
 	// タイトルマネージャーオブジェクト生成生成
 	TitleManagerObject* titleManager = new TitleManagerObject(); // インスタンス生成
-	titleManager->Initialize("titleManagerObject", BaseObject::tagOther); // 初期化
 	titleManager->SetCamera(camera);
+	titleManager->Initialize("titleManagerObject", BaseObject::tagOther); // 初期化
 	gameObjectManager_->AddGameObject(titleManager); // ゲームオブジェクトマネージャーに追加
 }
 
@@ -45,7 +45,7 @@ void TitleScene::Update()
 
 	// 右シフトが押されたら次のシーンへ
 	if (input_->TriggerKey(DIK_RSHIFT)) {
-		nextScene_ = new GameScene();
-		gameObjectManager_->Initialize();
+		BaseScene* nextScene = new GameScene();
+		SceneManager::GetInstance()->SetNextScene(nextScene);
 	}
 }

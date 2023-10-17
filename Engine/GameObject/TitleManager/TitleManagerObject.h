@@ -3,11 +3,25 @@
 
 // クラスの前方宣言
 class Camera;
+class Input;
 
 /// <summary>
 /// タイトルのオブジェクト達
 /// </summary>
 class TitleManagerObject : public BaseObject {
+private: // サブクラス
+
+	/// <summary>
+	/// 演出中間地点列挙子
+	/// </summary>
+	enum StagingWayPoint {
+		WayPoint1,
+		WayPoint2,
+		WayPoint3,
+		WayPoint4,
+		WayPoint5,
+	};
+
 public: // メンバ関数
 
 	// 固有の初期化処理
@@ -40,6 +54,9 @@ public: // その他関数群
 
 private: // メンバ変数
 
+	// 入力取得用
+	Input* input_ = nullptr;
+
 	// タイトルで使用するカメラのポインタ
 	Camera* camera_ = nullptr;
 
@@ -57,10 +74,32 @@ private: // メンバ変数
 	// タイトルロゴテクスチャ
 	uint32_t textureHandleTitleLogo_ = 0u;
 	std::unique_ptr<Sprite> titleLogo_;
+	bool logoIsActive_;
 	Vector2 logoPosition_;
 	Vector2 logoSize_;
 	Vector4 logoColor_;
 	Vector2 logoAnchorPoint_;
+
+	// 演出中間地点
+	int stagingWayPoint_;
+	// 演出t
+	float stagingT_;
+	// カメラ演出用t
+	float cameraStagingT_;
+	// カメラ演出用tのループトリガー
+	bool cameraStagingTReturn_;
+	// カメラ演出用t2
+	float cameraStagingT2_;
+	// カメラ演出用t2のループトリガー
+	bool cameraStagingT2Return_;
+	// 演出時間
+	float stagingTime_;
+
+	// タイトルロゴ演出スキップトリガー
+	bool skipTitleStaging_;
+
+	// カメラ手振れ演出トリガー
+	bool enableCameraShake_;
 
 };
 

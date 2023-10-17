@@ -1,5 +1,7 @@
 #include "TitleManagerObject.h"
 #include "../../Resource/Texture/TextureManager.h"
+#include "../../Input/Input.h"
+#include "../Camera/Camera.h"
 
 void TitleManagerObject::Initialize(std::string name, Tag tag)
 {
@@ -7,7 +9,17 @@ void TitleManagerObject::Initialize(std::string name, Tag tag)
 	BaseObject::Initialize(name, tag);
 	isActive_ = true;
 
+	// 見た目を合わるために初期座標を設定
 	transform_.translate_ = { 1.25f, 0.0f, 0.0f };
+
+	// 入力取得
+	input_ = Input::GetInstance();
+
+	// カメラがセットされていれば
+	if (camera_ != nullptr) {
+		camera_->transform_.translate_ = { 0.0f, 10.0f, -50.0f };
+		camera_->transform_.rotate_ = { (float)std::numbers::pi / 16.0f, 0.0f , 0.0f };
+	}
 
 	// オブジェクト座標初期化
 	ｍainGearTransform_.Initialize();
@@ -33,9 +45,10 @@ void TitleManagerObject::Initialize(std::string name, Tag tag)
 	AddOBJ(&titleGearTransform_, color_, "./Resources/TitleGear", "TitleGear.obj", false);
 
 	// ロゴ用変数初期化
+	logoIsActive_ = false;
 	logoPosition_ = { 640.0f, 290.0f };
 	logoSize_ = { 1280.0f, 170.0f };
-	logoColor_ = { 1.0f, 1.0f, 1.0f, 1.0f };
+	logoColor_ = { 1.0f, 1.0f, 1.0f, 0.0f };
 	logoAnchorPoint_ = { 0.5f, 0.5f };
 
 	// テクスチャ読み込み
@@ -43,25 +56,166 @@ void TitleManagerObject::Initialize(std::string name, Tag tag)
 	// スプライト読み込み
 	titleLogo_.reset(Sprite::Create(textureHandleTitleLogo_, &logoPosition_, &logoSize_, &logoColor_, logoAnchorPoint_));
 
+	// 演出中間地点リセット
+	stagingWayPoint_ = 0;
+	// 演出t
+	stagingT_ = 0.0f;
+	// カメラ手振れ演出無効
+	enableCameraShake_ = false;
+	cameraStagingT_ = (3.0f / 2.0f) / 2.0f;
+	cameraStagingT2_ = (3.0f / 2.0f);
+	// カメラ演出用tのループトリガー
+	cameraStagingTReturn_ = false;
+	// カメラ演出用tのループトリガー
+	cameraStagingT2Return_ = false;
+	// 演出時間リセット
+	stagingTime_ = 2.5f;
+
+	// タイトル演出スキップトリガーリセット
+	skipTitleStaging_ = false;
+
 }
 
 void TitleManagerObject::Update()
 {
 
+	// 基底クラス更新
 	BaseObject::Update();
 
+	// ギアの回転
 	ｍainGearTransform_.rotate_.z += (0.025f * (6.0f / 8.0f)) * (8.0f / 12.0f);
 	mGearTransform_.rotate_.z -= 0.025f * (6.0f / 8.0f);
 	mGearTransform2_.rotate_.z -= 0.025f * (6.0f / 8.0f);
 	sGearTransform_.rotate_.z += 0.025f * (6.0f / 8.0f);
 	titleGearTransform_.rotate_.z -= 0.025f;
 
+	switch (stagingWayPoint_)
+	{
+	case TitleManagerObject::WayPoint1: // 最初は
+		if (stagingT_ <= stagingTime_) { 
+			// カメラをイージングで移動させる
+			camera_->transform_.translate_ = Math::EaseOut(stagingT_, { 0.0f, 10.0f, -50.0f }, { 0.0f, 0.25f, -16.0f }, stagingTime_);
+			camera_->transform_.rotate_ = Math::EaseInOut(stagingT_, { (float)std::numbers::pi / 16.0f, 0.0f , 0.0f }, { 0.0f, 0.0f, 0.0f }, stagingTime_);
+
+			// 演出用tを加算
+			stagingT_ += 1.0f / 60.0f;
+		}
+		else {
+
+			// カメラを終端地点まで強制的に移動
+			camera_->transform_.translate_ = { 0.0f, 0.25f, -16.0f };
+			camera_->transform_.rotate_ = { 0.0f, 0.0f, 0.0f };
+
+			enableCameraShake_ = true;
+
+			// 演出用tをリセット
+			stagingT_ = 0.0f;
+			// 演出時間設定
+			stagingTime_ = 1.5f;
+
+			// 次の演出に
+			stagingWayPoint_++;
+		}
+		break;
+	case TitleManagerObject::WayPoint2:
+		if (stagingT_ <= stagingTime_) {
+			// タイトルロゴを表示
+			logoColor_.w = Math::EaseIn(stagingT_, 0.0f, 1.0f, stagingTime_);
+
+			// 演出用tを加算
+			stagingT_ += 1.0f / 60.0f;
+		}
+		else {
+
+			// タイトルロゴができったため、スキップトリガーをtrueに
+			skipTitleStaging_ = true;
+
+			// a値を強制的に変更
+			logoColor_.w = 1.0f;
+
+			// 演出時間設定
+			stagingTime_ = 3.0f;
+			// 演出用tをリセット
+			stagingT_ = 0.0f;
+
+			// 次の演出に
+			stagingWayPoint_++;
+		}
+		break;
+	case TitleManagerObject::WayPoint3:
+
+		break;
+	case TitleManagerObject::WayPoint4:
+
+		break;
+	case TitleManagerObject::WayPoint5:
+
+		break;
+	}
+
+	if (enableCameraShake_) {
+		if (cameraStagingT_ <= 3.0f / 2.0f) {
+			// カメラを横に少し動かす
+			if (!cameraStagingTReturn_)
+				camera_->transform_.translate_.y = Math::EaseInOut(cameraStagingT_, 0.25f - 0.05f, 0.25f + 0.05f, 3.0f / 2.0f);
+			else
+				camera_->transform_.translate_.y = Math::EaseInOut(cameraStagingT_, 0.25f + 0.05f, 0.25f - 0.05f, 3.0f / 2.0f);
+
+			// 演出用tを加算
+			cameraStagingT_ += 1.0f / 60.0f;
+		}
+		else {
+			cameraStagingT_ = 0.0f;
+			if (!cameraStagingTReturn_)
+				cameraStagingTReturn_ = true;
+			else
+				cameraStagingTReturn_ = false;
+
+		}
+
+		if (cameraStagingT2_ <= 3.0f) {
+			// カメラを横に少し動かす
+			if (!cameraStagingT2Return_)
+				camera_->transform_.translate_.x = Math::EaseInOut(cameraStagingT2_, -0.05f, 0.05f, 3.0f);
+			else
+				camera_->transform_.translate_.x = Math::EaseInOut(cameraStagingT2_, 0.05f, -0.05f, 3.0f);
+
+			// 演出用tを加算
+			cameraStagingT2_ += 1.0f / 60.0f;
+		}
+		else {
+			cameraStagingT2_ = 0.0f;
+			if (!cameraStagingT2Return_)
+				cameraStagingT2Return_ = true;
+			else
+				cameraStagingT2Return_ = false;
+
+		}
+	}
+
+	if (input_->TriggerKey(DIK_SPACE)) {
+		if (!skipTitleStaging_) {
+			// カメラを終端地点まで強制的に移動
+			camera_->transform_.translate_ = { 0.0f, 0.25f, -16.0f };
+			camera_->transform_.rotate_ = { 0.0f, 0.0f, 0.0f };
+			// a値を強制的に変更
+			logoColor_.w = 1.0f;
+			stagingWayPoint_ = WayPoint2;
+			stagingTime_ = 0.0f;
+			enableCameraShake_ = true;
+			skipTitleStaging_ = true;
+		}
+	}
+
 #ifdef _DEBUG
 
 	// Imgui
 	ImGui::Begin(objectName_.c_str());
 
-	ImGui::DragFloat2("SpritePos", &logoPosition_.x, 1.0f);
+	if (ImGui::TreeNode("TitleLogo")) {
+		ImGui::DragFloat2("SpritePos", &logoPosition_.x, 1.0f);
+		ImGui::TreePop();
+	}
 	if (ImGui::TreeNode("mainGear")) {
 		ImGui::DragFloat3("scale", &ｍainGearTransform_.scale_.x, 0.5f);
 		ImGui::DragFloat3("rotatate", &ｍainGearTransform_.rotate_.x, 0.05f);
