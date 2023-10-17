@@ -256,12 +256,11 @@ void Player::UpdateGear()
 			if ((-pi - kGearAmplitude) / 2.0f < playerTheta_ &&
 				playerTheta_ < (0 - kGearAmplitude) / 2.0f) {
 				// 範囲内に入った瞬間の時振り子フラグ true
-				if (!isPendulum_) {
+				if (0) {
 					isPendulum_ = true;
 					wasRotateRight_ = isRotateRight_;
-					// 振り子範囲に入った瞬間の速度を保存する
 					// 速度が足りない時は速度をプラスする
-					if (gearRotateSpeed_ < kMinGearPendulumSpeed_) {
+					if (-kMinGearPendulumSpeed_ < gearRotateSpeed_ && gearRotateSpeed_ < kMinGearPendulumSpeed_) {
 						if (isRotateRight_) {
 							gearRotateSpeed_ = kMinGearPendulumSpeed_;
 						}
@@ -270,10 +269,19 @@ void Player::UpdateGear()
 						}
 					}
 				}
+				// 速度が足りない時は速度をプラスする
+				if (-kMinGearPendulumSpeed_ < gearRotateSpeed_ && gearRotateSpeed_ < kMinGearPendulumSpeed_) {
+					if (isRotateRight_) {
+						gearRotateSpeed_ += kMinGearRollSpeed_;;
+					}
+					else {
+						gearRotateSpeed_ -= kMinGearRollSpeed_;
+					}
+				}
 			}
 			// 範囲外の時
 			if (playerTheta_ < (-pi - kGearAmplitude) / 2.0f ||
-				(0 - kGearAmplitude) / 2.0f < playerTheta_){
+				(0 - kGearAmplitude) / 2.0f < playerTheta_) {
 				isPendulum_ = false;
 			}
 		}
@@ -411,6 +419,7 @@ void Player::CheckGearCollision()
 		isLanding_ = true;
 		playerVelocity_ = { 0.0f,0.0f,0.0f };
 		playerTheta_ = radian;
+		CheckDirectionRotate();
 	}
 }
 
