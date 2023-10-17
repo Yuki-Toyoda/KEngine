@@ -79,7 +79,7 @@ void Player::AddGlobalVariables()
 {
 	globalVariables_->AddItem("Gear", "kMaxGearRotateSpeed", kMaxGearRotateSpeed_);
 	globalVariables_->AddItem("Gear", "kMinGearRollSpeed", kMinGearRollSpeed_);
-	globalVariables_->AddItem("Gear", "kGearFriction", kGearFriction_);
+	//globalVariables_->AddItem("Gear", "kGearFriction", kGearFriction_);
 	globalVariables_->AddItem("Gear", "kGearInnerRadius", kGearInnerRadius_);
 	globalVariables_->AddItem("Gear", "kGearAmplitude", kGearAmplitude);
 	globalVariables_->AddItem("Gear", "kGearDecreaseRate", kGearDecreaseRate_);
@@ -148,6 +148,7 @@ void Player::InitializeVariables()
 	// 白色不透明
 	gearColor_ = color_;
 	gearRotateSpeed_ = 0.0f;
+	gearRollRatio_ = 1.0f;
 	//preGearRotateSpeed_ = 0.0f;
 
 	// フラグ初期化
@@ -163,7 +164,7 @@ void Player::InitializeVariables()
 	kMaxGearRotateSpeed_ = 0.1f;
 	kMinGearRollSpeed_ = 0.005f;
 	kMinGearPendulumSpeed_ = 1.0f;
-	kGearFriction_ = 0.001f;
+	//kGearFriction_ = 0.001f;
 	kGearAmplitude = 1.4f;
 	kGearDecreaseRate_ = 0.90f;
 	kFallDirection_ = { 0.0f,-1.0f,0.0f };
@@ -256,26 +257,26 @@ void Player::UpdateGear()
 			if ((-pi - kGearAmplitude) / 2.0f < playerTheta_ &&
 				playerTheta_ < (0 - kGearAmplitude) / 2.0f) {
 				// 範囲内に入った瞬間の時振り子フラグ true
-				if (0) {
-					isPendulum_ = true;
-					wasRotateRight_ = isRotateRight_;
-					// 速度が足りない時は速度をプラスする
-					if (-kMinGearPendulumSpeed_ < gearRotateSpeed_ && gearRotateSpeed_ < kMinGearPendulumSpeed_) {
-						if (isRotateRight_) {
-							gearRotateSpeed_ = kMinGearPendulumSpeed_;
-						}
-						else {
-							gearRotateSpeed_ = -kMinGearPendulumSpeed_;
-						}
-					}
-				}
+				//if (0) {
+				//	isPendulum_ = true;
+				//	wasRotateRight_ = isRotateRight_;
+				//	// 速度が足りない時は速度をプラスする
+				//	if (-kMinGearPendulumSpeed_ < gearRotateSpeed_ && gearRotateSpeed_ < kMinGearPendulumSpeed_) {
+				//		if (isRotateRight_) {
+				//			gearRotateSpeed_ = kMinGearPendulumSpeed_;
+				//		}
+				//		else {
+				//			gearRotateSpeed_ = -kMinGearPendulumSpeed_;
+				//		}
+				//	}
+				//}
 				// 速度が足りない時は速度をプラスする
 				if (-kMinGearPendulumSpeed_ < gearRotateSpeed_ && gearRotateSpeed_ < kMinGearPendulumSpeed_) {
 					if (isRotateRight_) {
-						gearRotateSpeed_ += kMinGearRollSpeed_;;
+						gearRotateSpeed_ += kMinGearRollSpeed_ * gearRollRatio_;
 					}
 					else {
-						gearRotateSpeed_ -= kMinGearRollSpeed_;
+						gearRotateSpeed_ -= kMinGearRollSpeed_ * gearRollRatio_;
 					}
 				}
 			}
@@ -289,31 +290,20 @@ void Player::UpdateGear()
 		// プレイヤーがくっついている時
 		//if (isLanding_) {
 			// 速度を加算する
-		// 振り子運動をさせる
-		if (isPendulum_) {
-			if (isRotateRight_) {
-				gearRotateSpeed_ += kMinGearRollSpeed_;
-			}
-			else {
-				gearRotateSpeed_ -= kMinGearRollSpeed_;
-			}
-		}
 		// 通常の挙動
+		if (isRotateRight_) {
+			gearRotateSpeed_ += kMinGearRollSpeed_;
+		}
 		else {
-			if (isRotateRight_) {
-				gearRotateSpeed_ += kMinGearRollSpeed_;
-			}
-			else {
-				gearRotateSpeed_ -= kMinGearRollSpeed_;
-			}
+			gearRotateSpeed_ -= kMinGearRollSpeed_;
 		}
 	}
 	else {
-		if (0 < gearRotateSpeed_) {
-			gearRotateSpeed_ -= kGearFriction_ * 0.01f;
+		if (isRotateRight_) {
+			gearRotateSpeed_ -= kMinGearRollSpeed_ * 0.01f;
 		}
-		else if (gearRotateSpeed_ < 0) {
-			gearRotateSpeed_ += kGearFriction_ * 0.01f;
+		else {
+			gearRotateSpeed_ += kMinGearRollSpeed_ * 0.01f;
 		}
 
 	}
@@ -367,6 +357,7 @@ float Player::ConvertSpeedToRadian(float rotateSpeed) {
 
 	return result;
 }
+
 void Player::CheckDirectionRotate()
 {
 	if (isLanding_) {
@@ -424,7 +415,7 @@ void Player::CheckGearCollision()
 }
 
 void Player::AirJump() {
-	playerVelocity_.y += 2.0f;
+	playerVelocity_.y += kPlayerJumpPower_ / 2.0f;
 }
 
 void Player::DebugGui() {
@@ -436,7 +427,7 @@ void Player::DebugGui() {
 
 	ImGui::Checkbox("isLanding", &isLanding_);
 	ImGui::Checkbox("isJumping", &isJumpTrigger_);
-	ImGui::Checkbox("isPendulum", &isPendulum_);
+	//ImGui::Checkbox("isPendulum", &isPendulum_);
 	ImGui::Checkbox("wasRight", &wasRotateRight_);
 	//float degree = playerTheta_ * 180 / static_cast<float>(std::numbers::pi);
 	//ImGui::SliderAngle("playerTheta", &playerTheta_);
@@ -451,7 +442,7 @@ void Player::DebugGui() {
 		transform_.translate_ = Vector3(direct.x, direct.y, transform_.translate_.z);
 	}
 	ImGui::DragFloat("kMinRotate", &kMinGearRollSpeed_, 0.00001f, -0.01f, 0.01f, "%.5f");
-	ImGui::DragFloat("kFriction", &kGearFriction_, 0.00001f, -0.01f, 0.01f, "%.5f");
+	//ImGui::DragFloat("kFriction", &kGearFriction_, 0.00001f, -0.01f, 0.01f, "%.5f");
 	ImGui::DragFloat("kGravity", &kGravity_, 0.00001f, -1.0f, 1.0f, "%.5f");
 
 

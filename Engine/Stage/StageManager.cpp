@@ -13,6 +13,8 @@ void StageManager::Initialize()
 	// ステージ初期化
 	currentStage_ = nullptr;
 
+	items_.clear();
+
 	for (size_t i = 0; i < kMaxItem_; i++)
 	{
 		items_.emplace_back(new Item);
@@ -45,6 +47,12 @@ void StageManager::Update()
 	// 現在のシーンの更新
 	currentStage_->Update();
 
+}
+
+void StageManager::SetStage(BaseStage* stage)
+{
+	currentStage_ = stage;
+	currentStage_->Initialize();
 }
 
 void StageManager::LoadStage()

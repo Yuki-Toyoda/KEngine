@@ -121,7 +121,7 @@ private: // メンバ変数
 	float kMinGearRollSpeed_ = 0;
 
 	// 歯車の抵抗力
-	float kGearFriction_ = 0;
+	//float kGearFriction_ = 0;
 
 	// 歯車の振り子する幅
 	float kGearAmplitude = 0;
@@ -147,9 +147,8 @@ private: // メンバ変数
 	// 歯車の回転速度
 	float gearRotateSpeed_;
 
-
-	// 振り子運動の時の速度
-	//float preGearRotateSpeed_ = 0;
+	// 歯車の加算の割合
+	float gearRollRatio_ = 1.0f;
 
 	/*--------------------------------------//
 	//	フラグによって操作も管理するために、		//

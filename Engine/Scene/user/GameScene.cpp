@@ -11,9 +11,13 @@ void GameScene::Initialize() {
 	Player* player = new Player();
 	player->Initialize("player", BaseObject::tagPlayer);
 	gameObjectManager_->AddGameObject(player); // ゲームオブジェクトマネージャーに追加
+
+	stageManager_ = StageManager::GetInstance();
+	stageManager_->Initialize();
 }
 
 void GameScene::Update() {
+	//stageManager_->Update();
 	// 右シフトが押されたら次のシーンへ
 	if (input_->TriggerKey(DIK_RSHIFT)) {
 		BaseScene* nextScene = new TitleScene();

@@ -34,6 +34,9 @@ public: // メンバ関数
 	/// </summary>
 	void Update();
 
+	// ステージを設定
+	void SetStage(BaseStage* stage);
+
 private: // メンバ関数
 
 	/// <summary>

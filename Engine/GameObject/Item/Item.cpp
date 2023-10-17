@@ -13,7 +13,7 @@ void Item::Initialize(std::string name, Tag tag)
 {
 	// 基底クラス初期化
 	BaseObject::Initialize(name, tag);
-	isActive_ = false;
+	isActive_ = true;
 
 	// 色初期設定
 	color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
