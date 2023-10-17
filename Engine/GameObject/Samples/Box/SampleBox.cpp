@@ -26,6 +26,9 @@ void SampleBox::Initialize(std::string name, Tag tag)
 	min_ = 0.0f;
 	max_ = 100.0f;
 
+	playX_ = 1;
+	playY_ = 1;
+
 	backGroundColor_ = { 0.25f, 0.25f, 0.25f, 1.0f };
 	gageColor_ = { 1.0f, 1.0f, 1.0f, 1.0f };
 
@@ -38,7 +41,7 @@ void SampleBox::Initialize(std::string name, Tag tag)
 	animSpriteTexture1_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "NumberSheets.png");
 	animSpriteTexture2_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "AlphabetSheet.png");
 	animationSprite_ = std::make_unique<AnimationSprite>();
-	animationSprite_->Initialize(animSpriteTexture2_, { 100.0f, 100.0f }, { 64.0f, 64.0f }, {0.5f, 0.5f}, {1.0f, 1.0f, 1.0f, 1.0f}, 29, {512.0f, 512.0f}, true, 0.5f);
+	animationSprite_->Initialize(animSpriteTexture1_, { 100.0f, 100.0f }, { 64.0f, 64.0f }, {0.5f, 0.5f}, {1.0f, 1.0f, 1.0f, 1.0f}, 13, {512.0f, 512.0f}, true, 0.5f);
 
 	// 当たり判定用aabb生成
 	colliderRadius_ = { 1.0f, 1.0f, 1.0f };
@@ -119,11 +122,19 @@ void SampleBox::Update()
 	ImGui::Checkbox("animationSprite - isActive", &animationSprite_->isActive_);
 	ImGui::DragFloat2("animPosition", &animationSprite_->position_.x, 0.5f);
 	ImGui::DragFloat2("animSize", &animationSprite_->size_.x, 0.5f);
+	ImGui::SliderInt("playX", &playX_, 1 , 10);
+	ImGui::SliderInt("playY", &playY_, 1 , 10);
 	if (ImGui::Button("ChangeTex1"))
-		animationSprite_->ChangeAnimationSheets(animSpriteTexture1_, {512.0f, 512.0f}, true);
+		animationSprite_->ChangeAnimationSheets(animSpriteTexture1_, {512.0f, 512.0f}, 13, 0, 0);
 
 	if (ImGui::Button("ChangeTex2"))
-		animationSprite_->ChangeAnimationSheets(animSpriteTexture2_, { 256.0f, 256.0f }, false);
+		animationSprite_->ChangeAnimationSheets(animSpriteTexture2_, { 512.0f, 512.0f }, 29 ,0 , 0);
+	if (ImGui::Button("Replay"))
+		animationSprite_->Replay();
+	if (ImGui::Button("moveSelectFrame"))
+		animationSprite_->ChangeSelectedFrame(playX_, playY_);
+	if (ImGui::Button("setBeginFrame"))
+		animationSprite_->SetBeginFrame(playX_, playY_);
 	animationSprite_->Update();
 
 	ImGui::End();

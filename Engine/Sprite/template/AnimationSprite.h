@@ -124,6 +124,8 @@ private: // メンバ変数
 
 	// フレーム列サイズ
 	Vector2 playFrameColumn_;
+	// 再生開始列
+	Vector2 beginPlayFrameColumn_;
 	// 再生中フレーム列
 	Vector2 nowPlayFrameColumn_;
 

@@ -60,6 +60,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	TextureManager::GetInstance()->Intialize(dxCommon->GetDevice());
 	// サンプルテクスチャロード
 	TextureManager::Load("white1x1.png");
+	TextureManager::Load("./Engine/Resource/Samples/Texture", "ColorSample.png");
+	TextureManager::Load("./Engine/Resource/Samples/Texture", "AlphabetSheet.png");
 
 	// グローバル変数の読み込み
 	GlobalVariables::GetInstance()->LoadFiles();

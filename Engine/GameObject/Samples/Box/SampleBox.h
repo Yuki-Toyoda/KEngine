@@ -68,6 +68,9 @@ private: // メンバ変数
 	float min_;
 	float max_;
 
+	int playX_;
+	int playY_;
+
 	// テスト用番号シート
 	uint32_t textureHandleNumberSheets_ = 0u;
 	// ゲージ

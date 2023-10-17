@@ -47,6 +47,7 @@ void AnimationSprite::Initialize(uint32_t animationSheet, Vector2 position, Vect
 	playFrameColumn_ = textureMap / textureHandleSize_;
 
 	// 最初のフレーム列に指定
+	beginPlayFrameColumn_ = { 0.0f, 0.0f };
 	nowPlayFrameColumn_ = { 0.0f, 0.0f };
 
 }
@@ -108,9 +109,7 @@ void AnimationSprite::Update()
 
 			// ループトリガーがTrueならループさせる
 			if (isLoop_) {
-				animT_ = 0.0f;
-				nowPlayFrameColumn_ = { 0.0f, 0.0f };
-				isReset_ = true;
+				Replay();
 			}
 		}
 	}
@@ -128,6 +127,8 @@ void AnimationSprite::ChangeAnimationSheets(uint32_t animationSheet, Vector2 tex
 	// スプライトのテクスチャ変更
 	sprite_->SetTextureHandle(animationSheet);
 
+	animT_ = 0.0f;
+
 	// １フレームごとの画像サイズ設定
 	textureHandleSize_ = textureSize;
 
@@ -136,26 +137,9 @@ void AnimationSprite::ChangeAnimationSheets(uint32_t animationSheet, Vector2 tex
 	// 全体のフレーム数取得
 	int playFrame = x + y;
 
-	// 開始フレーム設定
-	if (playFrame <= animationFrame_) {
-		beginDrawFrame_ = playFrame;
-		nowPlayFrameColumn_ = { (float)x, (float)y };
-	}
-	else {
-		// 選択した列がスプライトを超過していた場合最後の場所に固定する
-		beginDrawFrame_ = animationFrame_;
-		nowPlayFrameColumn_ = playFrameColumn_;
-	}
-
-	isReset_ = true;
-
-}
-
-void AnimationSprite::SetBeginFrame(int x, int y)
-{
-
-	// 全体のフレーム数取得
-	int playFrame = x + y;
+	// シートの縦、横列取得
+	Vector2 textureMap = sprite_->GetTextureSize();
+	playFrameColumn_ = textureMap / textureHandleSize_;
 
 	// 開始フレーム設定
 	if (playFrame <= animationFrame_) {
@@ -168,7 +152,6 @@ void AnimationSprite::SetBeginFrame(int x, int y)
 		nowPlayFrameColumn_ = playFrameColumn_;
 	}
 
-	// 変更しない
 	isReset_ = true;
 
 }
@@ -178,30 +161,36 @@ void AnimationSprite::Replay()
 	// tリセット
 	animT_ = 0.0f;
 	// スプライトの描画範囲を最初のフレームに設定
-	sprite_->SetTextureRect({ textureHandleSize_.x * (float)beginDrawFrame_, 0.0f }, textureHandleSize_);
+	nowPlayFrameColumn_ = beginPlayFrameColumn_;
+	// 次のフレームは変更しない
+	isReset_ = true;
 }
 
 void AnimationSprite::ChangeSelectedFrame(int x, int y)
 {
 
+	int playX = x - 1;
+	int playY = y - 1;
+
 	// 全体のフレーム数取得
-	int playFrame = x + y;
+	int playFrame = playX + playY;
 
 	// 選択フレームが最大フレームを超過していなければ
 	if (playFrame <= animationFrame_) {
 		// 描画フレームを取得
 		animT_ = Math::Linear((float)playFrame, 0.0f, drawTime_ * animationFrame_, (float)animationFrame_);
 		// スプライトの描画範囲を最初のフレームに設定
-		nowPlayFrameColumn_ = { (float)x, (float)y };
+		nowPlayFrameColumn_ = { (float)playX, (float)playY };
 	}
 	else {
 		// 最後のフレームに
 		animT_ = drawTime_ * animationFrame_;
 		// スプライトの描画範囲を最初のフレームに設定
 		sprite_->SetTextureRect({ textureHandleSize_.x * (float)beginDrawFrame_, 0.0f }, textureHandleSize_);
+		nowPlayFrameColumn_ = playFrameColumn_;
 	}
 
-	// 変更しない
+	// 次のフレームは変更しない
 	isReset_ = true;
 
 }
