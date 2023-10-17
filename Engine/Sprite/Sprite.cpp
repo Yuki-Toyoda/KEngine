@@ -226,17 +226,8 @@ void Sprite::PostDraw()
 	Sprite::sCommandList_ = nullptr;
 }
 
-Sprite* Sprite::Create(uint32_t textureHandle, Vector2 position, Vector4 color, Vector2 anchorPoint)
+Sprite* Sprite::Create(uint32_t textureHandle, Vector2* position, Vector2* size, Vector4* color, Vector2 anchorPoint)
 {
-	// 仮サイズ設定
-	Vector2 size = { 100.0f, 100.0f };
-
-	// テクスチャの情報を取得
-	const D3D12_RESOURCE_DESC& resDesc =
-		TextureManager::GetInstance()->GetResourceDesc(textureHandle);
-	// 三角形のサイズをテクスチャサイズに設定
-	size = { (float)resDesc.Width, (float)resDesc.Height };
-
 	// スプライトのインスタンスを生成する
 	Sprite* sprite =
 		new Sprite(textureHandle, position, size, color, anchorPoint);
@@ -388,7 +379,7 @@ Microsoft::WRL::ComPtr<ID3D12Resource> Sprite::CreateBufferResource(ID3D12Device
 
 Sprite::Sprite(){}
 
-Sprite::Sprite(uint32_t textureHandle, Vector2 position, Vector2 size, Vector4 color, Vector2 anchorPoint)
+Sprite::Sprite(uint32_t textureHandle, Vector2* position, Vector2* size, Vector4* color, Vector2 anchorPoint)
 {
 	// 引数の値をメンバ変数に代入する
 	position_ = position;
@@ -398,7 +389,12 @@ Sprite::Sprite(uint32_t textureHandle, Vector2 position, Vector2 size, Vector4 c
 	color_ = color;
 	textureHandle_ = textureHandle;
 	texBase_ = { 0.0f, 0.0f };
-	texSize_ = size;
+	// テクスチャの情報を取得
+	const D3D12_RESOURCE_DESC& resDesc =
+		TextureManager::GetInstance()->GetResourceDesc(textureHandle);
+	// 三角形のサイズをテクスチャサイズに設定
+	Vector2 texSize = { (float)resDesc.Width, (float)resDesc.Height };
+	texSize_ = texSize;
 }
 
 bool Sprite::Initialize()
@@ -448,10 +444,10 @@ void Sprite::Draw()
 
 	matWorld_ = Math::MakeIdentity4x4();
 	matWorld_ = matWorld_ * Math::MakeRotateZMatrix(rotation_);
-	matWorld_ = matWorld_ * Math::MakeTranslateMatrix({ position_.x, position_.y, 0.0f });
+	matWorld_ = matWorld_ * Math::MakeTranslateMatrix({ position_->x, position_->y, 0.0f });
 
 	// 色を設定
-	constMap_->color = color_;
+	constMap_->color = *color_;
 	// 行列を設定
 	constMap_->mat = matWorld_ * sMatProjection_;
 	//constMap_->mat = matWorld_;
@@ -485,10 +481,10 @@ void Sprite::TransferVertices()
 	};
 
 	// 4頂点の座標を設定
-	float left = (0.0f - anchorPoint_.x) * size_.x;
-	float right = (1.0f - anchorPoint_.x) * size_.x;
-	float top = (0.0f - anchorPoint_.y) * size_.y;
-	float bottom = (1.0f - anchorPoint_.y) * size_.y;
+	float left = (0.0f - anchorPoint_.x) * size_->x;
+	float right = (1.0f - anchorPoint_.x) * size_->x;
+	float top = (0.0f - anchorPoint_.y) * size_->y;
+	float bottom = (1.0f - anchorPoint_.y) * size_->y;
 
 	// 頂点データ
 	VertexData vertices[kVertexNum];

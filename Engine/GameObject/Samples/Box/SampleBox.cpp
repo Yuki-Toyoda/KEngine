@@ -26,15 +26,22 @@ void SampleBox::Initialize(std::string name, Tag tag)
 	min_ = 0.0f;
 	max_ = 100.0f;
 
+	playX_ = 1;
+	playY_ = 1;
+
 	backGroundColor_ = { 0.25f, 0.25f, 0.25f, 1.0f };
 	gageColor_ = { 1.0f, 1.0f, 1.0f, 1.0f };
 
 	gage_ = std::make_unique<Gage>();
 	gage_->Initialize(&intNum_, 0.0f, 100.0f, backGroundColor_, gageColor_, { 100.0f, 100.0f }, { 100.0f, 16.0f }, {0.0f, 0.0f});
 
-	textureHandleNumberSheets_ = TextureManager::Load("NumberSheetsA.png");
 	counter_ = std::make_unique<Counter>();
-	counter_->Initialize(textureHandleNumberSheets_, {256.0f, 256.0f}, &testNum_, { 300.0f, 300.0f }, { 96.0f, 96.0f }, -32.0f);
+	counter_->Initialize(&testNum_, { 300.0f, 300.0f }, { 96.0f, 96.0f }, -32.0f);
+
+	animSpriteTexture1_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "NumberSheets.png");
+	animSpriteTexture2_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "AlphabetSheet.png");
+	animationSprite_ = std::make_unique<AnimationSprite>();
+	animationSprite_->Initialize(animSpriteTexture1_, { 100.0f, 100.0f }, { 64.0f, 64.0f }, {0.5f, 0.5f}, {1.0f, 1.0f, 1.0f, 1.0f}, 13, {512.0f, 512.0f}, true, 0.5f);
 
 	// 当たり判定用aabb生成
 	colliderRadius_ = { 1.0f, 1.0f, 1.0f };
@@ -98,8 +105,8 @@ void SampleBox::Update()
 	ImGui::ColorEdit4("gageBackGroundColor", &backGroundColor_.x);
 	ImGui::ColorEdit4("gageColor", &gageColor_.x);
 	gage_->Update();
-	gage_->SetBackGroundColor(backGroundColor_);
-	gage_->SetGageColor(gageColor_);
+	gage_->backGroundColor_ = backGroundColor_;
+	gage_->gageColor_ = gageColor_;
 	gage_->SetMin(min_);
 	gage_->SetMax(max_);
 
@@ -110,6 +117,25 @@ void SampleBox::Update()
 	ImGui::DragFloat2("counterSize", &counter_->size_.x, 0.5f);
 	ImGui::DragFloat("counterLineSpace", &counter_->lineSpace_, 0.5f);
 	counter_->Update();
+
+	// アニメーションスプライト更新
+	ImGui::Checkbox("animationSprite - isActive", &animationSprite_->isActive_);
+	ImGui::DragFloat2("animPosition", &animationSprite_->position_.x, 0.5f);
+	ImGui::DragFloat2("animSize", &animationSprite_->size_.x, 0.5f);
+	ImGui::SliderInt("playX", &playX_, 1 , 10);
+	ImGui::SliderInt("playY", &playY_, 1 , 10);
+	if (ImGui::Button("ChangeTex1"))
+		animationSprite_->ChangeAnimationSheets(animSpriteTexture1_, {512.0f, 512.0f}, 13, 0, 0);
+
+	if (ImGui::Button("ChangeTex2"))
+		animationSprite_->ChangeAnimationSheets(animSpriteTexture2_, { 512.0f, 512.0f }, 29 ,0 , 0);
+	if (ImGui::Button("Replay"))
+		animationSprite_->Replay();
+	if (ImGui::Button("moveSelectFrame"))
+		animationSprite_->ChangeSelectedFrame(playX_, playY_);
+	if (ImGui::Button("setBeginFrame"))
+		animationSprite_->SetBeginFrame(playX_, playY_);
+	animationSprite_->Update();
 
 	ImGui::End();
 
@@ -125,6 +151,7 @@ void SampleBox::SpriteDraw()
 {
 	gage_->Draw();
 	counter_->Draw();
+	animationSprite_->Draw();
 }
 
 void SampleBox::AddGlobalVariables()

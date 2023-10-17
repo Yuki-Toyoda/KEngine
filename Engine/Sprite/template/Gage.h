@@ -74,28 +74,6 @@ public: // アクセッサ等
 	void SetAnchorPoint(Vector2 anchorPoint) { anchorPoint_ = anchorPoint; }
 
 	/// <summary>
-	/// ゲージ背景色ゲッター
-	/// </summary>
-	/// <returns>ゲージ背景色</returns>
-	Vector4 GetBackGroundColor() { return backGroundColor_; }
-	/// <summary>
-	/// ゲージ背景色セッター
-	/// </summary>
-	/// <param name="color">ゲージ背景色</param>
-	void SetBackGroundColor(Vector4 color) { backGroundColor_ = color; }
-
-	/// <summary>
-	/// ゲージ色ゲッター
-	/// </summary>
-	/// <returns>ゲージ色</returns>
-	Vector4 GetGageColor() { return gageColor_; }
-	/// <summary>
-	/// ゲージ色セッター
-	/// </summary>
-	/// <param name="color">ゲージ色</param>
-	void SetGageColor(Vector4 color) { gageColor_ = color; }
-
-	/// <summary>
 	/// 最小値ゲッター
 	/// </summary>
 	/// <returns>最小値</returns>
@@ -126,18 +104,21 @@ public: // パブリックなメンバ変数
 	// 表示非表示
 	bool isActive_;
 
+	// ゲージ色
+	Vector4 backGroundColor_; // 背景
+	Vector4 gageColor_; // 本体
+
 private: // メンバ変数
 
 	// ゲージ用スプライト
 	std::unique_ptr<Sprite> spriteGageBackGround_; // ゲージ背景
 	std::unique_ptr<Sprite> spriteGage_; // ゲージ本体
 
-	// ゲージ色
-	Vector4 backGroundColor_; // 背景
-	Vector4 gageColor_; // 本体
-
 	// 中心点
 	Vector2 anchorPoint_;
+
+	// ゲージサイズ
+	Vector2 gageSize_;
 
 	// 参照値
 	float* intNum_ = nullptr;

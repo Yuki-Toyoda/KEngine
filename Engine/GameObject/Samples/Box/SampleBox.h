@@ -68,12 +68,21 @@ private: // メンバ変数
 	float min_;
 	float max_;
 
+	int playX_;
+	int playY_;
+
 	// テスト用番号シート
 	uint32_t textureHandleNumberSheets_ = 0u;
 	// ゲージ
 	std::unique_ptr<Gage> gage_;
-
+	// カウンター
 	std::unique_ptr<Counter> counter_;
+
+	// アニメーションスプライト用テクスチャ
+	uint32_t animSpriteTexture1_ = 0u;
+	uint32_t animSpriteTexture2_ = 0u;
+	// アニメーションスプライト
+	std::unique_ptr<AnimationSprite> animationSprite_;
 
 	Vector4 backGroundColor_;
 	Vector4 gageColor_;

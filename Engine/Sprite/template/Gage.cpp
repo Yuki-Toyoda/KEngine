@@ -20,15 +20,15 @@ void Gage::Initialize(float* num, float min, float max, Vector4 backEndColor, Ve
 	backGroundColor_ = backEndColor;
 	gageColor_ = gageColor;
 
+	// ゲージの大きさ設定
+	gageSize_ = { 0.0f, size_.y };
+
 	// 表示
 	isActive_ = true;
 
 	// 座標設定
-	Vector2 anchorPosition = { (1.0f - anchorPoint_.x) * position_.x, (1.0f - anchorPoint_.y) * position_.y };
-	spriteGageBackGround_.reset(Sprite::Create(TextureManager::Load("./Resources", "white1x1.png"), anchorPosition, backGroundColor_, { 0.0f, 0.0f }));
-	spriteGageBackGround_->size_ = size;
-	spriteGage_.reset(Sprite::Create(TextureManager::Load("./Resources", "white1x1.png"), anchorPosition, gageColor_, { 0.0f, 0.0f }));
-	spriteGage_->size_ = { 0.0f, size.y };
+	spriteGageBackGround_.reset(Sprite::Create(TextureManager::Load("./Resources", "white1x1.png"), &position_, &size_, &backGroundColor_, { 0.0f, 0.0f }));
+	spriteGage_.reset(Sprite::Create(TextureManager::Load("./Resources", "white1x1.png"), &position_, &gageSize_, &gageColor_, { 0.0f, 0.0f }));
 }
 
 void Gage::Initialize(float* num, float min, float max, uint32_t backEnd, Vector4 backEndColor, uint32_t gage, Vector4 gageColor, Vector2 position, Vector2 size, Vector2 anchorPoint)
@@ -50,35 +50,28 @@ void Gage::Initialize(float* num, float min, float max, uint32_t backEnd, Vector
 	backGroundColor_ = backEndColor;
 	gageColor_ = gageColor;
 
+	// ゲージの大きさ設定
+	gageSize_ = { 0.0f, size_.y };
+
 	// 表示
 	isActive_ = true;
 
 	// 座標設定
-	Vector2 anchorPosition = { (1.0f - anchorPoint_.x) * position_.x, (1.0f - anchorPoint_.y) * position_.y };
-	spriteGageBackGround_.reset(Sprite::Create(backEnd, anchorPosition, backGroundColor_, { 0.0f, 0.0f }));
-	spriteGageBackGround_->size_ = size;
-	spriteGage_.reset(Sprite::Create(gage, anchorPosition, gageColor_, { 0.0f, 0.0f }));
-	spriteGage_->size_ = { 0.0f, size.y };
+	spriteGageBackGround_.reset(Sprite::Create(backEnd, &position_, &size_, &backGroundColor_, { 0.0f, 0.0f }));
+	spriteGage_.reset(Sprite::Create(gage, &position_, &gageSize_, &gageColor_, { 0.0f, 0.0f }));
 }
 
 void Gage::Update()
 {
-	// 座標設定
-	Vector2 anchorPosition = { (1.0f - anchorPoint_.x) * position_.x, (1.0f - anchorPoint_.y) * position_.y };
-	spriteGageBackGround_->position_ = anchorPosition;
-	spriteGageBackGround_->SetColor(backGroundColor_);
-	spriteGage_->position_ = anchorPosition;
-	spriteGage_->SetColor(gageColor_);
 
 	// 大きさ設定
-	spriteGageBackGround_->size_ = size_;
-	spriteGage_->size_.y = size_.y;
+	gageSize_.y = size_.y;
 
 	// 参照値によってサイズを変更
 	if (*intNum_ < max_)
-		spriteGage_->size_.x = Math::Linear(*intNum_, min_, size_.x, max_);
+		gageSize_.x = Math::Linear(*intNum_, min_, size_.x, max_);
 	else {
-		spriteGage_->size_.x = size_.x;
+		gageSize_.x = size_.x;
 	}
 }
 
