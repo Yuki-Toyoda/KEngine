@@ -82,6 +82,9 @@
     <Filter Include="Engine\Sprite\template">
       <UniqueIdentifier>{2c8cb29b-8cde-49d0-ab37-147dfa48e8f0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\GameObject\TitleObjects">
+      <UniqueIdentifier>{895ad2cd-06d4-47fd-a300-18c7d3453234}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Base\DirectXCommon.cpp">
@@ -198,6 +201,9 @@
     </ClCompile>
     <ClCompile Include="Engine\Sprite\template\AnimationSprite.cpp">
       <Filter>Engine\Sprite\template</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\TitleObjects\TitleObjects.cpp">
+      <Filter>Engine\GameObject\TitleObjects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -362,6 +368,9 @@
     </ClInclude>
     <ClInclude Include="Engine\Sprite\template\AnimationSprite.h">
       <Filter>Engine\Sprite\template</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\TitleObjects\TitleObjects.h">
+      <Filter>Engine\GameObject\TitleObjects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

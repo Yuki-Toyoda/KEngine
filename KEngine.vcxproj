@@ -108,6 +108,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\GameObject\Samples\Player\SamplePlayer.cpp" />
     <ClCompile Include="Engine\GameObject\Samples\Stage\SampleFloor.cpp" />
     <ClCompile Include="Engine\GameObject\Samples\TPCamera\TPCamera.cpp" />
+    <ClCompile Include="Engine\GameObject\TitleObjects\TitleObjects.cpp" />
     <ClCompile Include="Engine\GameObject\WorldTransform.cpp" />
     <ClCompile Include="Engine\GlobalVariables\GlobalVariables.cpp" />
     <ClCompile Include="Engine\Input\Input.cpp" />
@@ -157,6 +158,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\GameObject\Samples\Player\SamplePlayer.h" />
     <ClInclude Include="Engine\GameObject\Samples\Stage\SampleFloor.h" />
     <ClInclude Include="Engine\GameObject\Samples\TPCamera\TPCamera.h" />
+    <ClInclude Include="Engine\GameObject\TitleObjects\TitleObjects.h" />
     <ClInclude Include="Engine\GameObject\WorldTransform.h" />
     <ClInclude Include="Engine\GlobalVariables\GlobalVariables.h" />
     <ClInclude Include="Engine\Input\Input.h" />
