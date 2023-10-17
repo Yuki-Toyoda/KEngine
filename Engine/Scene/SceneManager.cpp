@@ -28,10 +28,18 @@ void SceneManager::Update()
 #endif // _DEBUG
 
 	// 現在のシーンから次のシーンへ遷移するよう指示されたら
-	if (currentScene_->nextScene_ != nullptr) {
+	if (nextScene_ != nullptr) {
 		GameObjectManager::GetInstance()->Initialize();
+
+		// 現在のシーンがあるなら
+		if (currentScene_) {
+			// 現在のシーンを削除
+			delete currentScene_;
+		}
+
 		// シーン初期化
-		currentScene_ = currentScene_->nextScene_; // 次のシーンを取得
+		currentScene_ = nextScene_; // 次のシーンを取得
+		nextScene_ = nullptr; // 次のシーンにNULLを代入
 		currentScene_->commonInitialize(); // 取得したシーンの共通初期化を行う
 		currentScene_->Initialize(); // 取得したシーンの初期化を行う
 	}

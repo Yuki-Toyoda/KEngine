@@ -1,5 +1,6 @@
 #include "GameScene.h"
 #include "../../GameObject/SampleList.h"
+#include "../SceneManager.h"
 
 void GameScene::Initialize() {
 	// 環境生成
@@ -13,7 +14,9 @@ void GameScene::Initialize() {
 }
 
 void GameScene::Update() {
+	// 右シフトが押されたら次のシーンへ
 	if (input_->TriggerKey(DIK_RSHIFT)) {
-		nextScene_ = new TitleScene();
+		BaseScene* nextScene = new TitleScene();
+		SceneManager::GetInstance()->SetNextScene(nextScene);
 	}
 }
