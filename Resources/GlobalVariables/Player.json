@@ -1,7 +1,7 @@
 {
     "Player": {
-        "kGravity": 0.004999999888241291,
+        "kGravity": 0.05000000074505806,
         "kMaxPlayerVelocity": 1.0,
-        "kPlayerJumpPower": 0.7900000214576721
+        "kPlayerJumpPower": 1.149999976158142
     }
 }

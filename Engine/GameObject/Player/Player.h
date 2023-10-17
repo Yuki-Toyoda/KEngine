@@ -129,6 +129,12 @@ private: // メンバ変数
 	// 歯車の減少率
 	float kGearDecreaseRate_ = 0.90f;
 
+	// 歯車の内円の半径
+	float kGearInnerRadius_;
+
+	// 振り子範囲に入った時の速度最低値
+	float kMinGearPendulumSpeed_ = 0.0f;
+
 	// 歯車用のトランスフォーム
 	WorldTransform gearTransform_;
 
@@ -141,9 +147,9 @@ private: // メンバ変数
 	// 歯車の回転速度
 	float gearRotateSpeed_;
 
-	// 歯車の内円の半径
-	float kGearInnerRadius_;
 
+	// 振り子運動の時の速度
+	//float preGearRotateSpeed_ = 0;
 
 	/*--------------------------------------//
 	//	フラグによって操作も管理するために、		//

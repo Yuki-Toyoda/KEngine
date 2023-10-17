@@ -83,6 +83,7 @@ void Player::AddGlobalVariables()
 	globalVariables_->AddItem("Gear", "kGearInnerRadius", kGearInnerRadius_);
 	globalVariables_->AddItem("Gear", "kGearAmplitude", kGearAmplitude);
 	globalVariables_->AddItem("Gear", "kGearDecreaseRate", kGearDecreaseRate_);
+	globalVariables_->AddItem("Gear", "kMinGearPendulumSpeed", kMinGearPendulumSpeed_);
 	globalVariables_->AddItem("Gear", "GearScale", Vector2(gearTransform_.scale_.x, gearTransform_.scale_.z));
 	globalVariables_->AddItem("Player", "kMaxPlayerVelocity", kMaxPlayerVelocity_);
 	globalVariables_->AddItem("Player", "kGravity", kGravity_);
@@ -92,16 +93,16 @@ void Player::AddGlobalVariables()
 void Player::ApplyGlobalVariables()
 {
 	kMaxGearRotateSpeed_ = globalVariables_->GetFloatValue("Gear", "kMaxGearRotateSpeed");
-	//kMinGearRollSpeed_ = globalVariables_->GetFloatValue("Gear", "kMinGearRollSpeed");
-	//kGearFriction_ = globalVariables_->GetFloatValue("Gear", "kGearFriction");
 	kGearInnerRadius_ = globalVariables_->GetFloatValue("Gear", "kGearInnerRadius");
 	kGearAmplitude = globalVariables_->GetFloatValue("Gear", "kGearAmplitude");
 	kGearDecreaseRate_ = globalVariables_->GetFloatValue("Gear", "kGearDecreaseRate");
+	kMinGearPendulumSpeed_ = globalVariables_->GetFloatValue("Gear", "kMinGearPendulumSpeed");
+	kMinGearRollSpeed_ = globalVariables_->GetFloatValue("Gear", "kMinGearRollSpeed");
 	Vector2 temp = globalVariables_->GetVector2Value("Gear", "GearScale");
 	gearTransform_.scale_ = Vector3(temp.x, temp.x, temp.y);
 	kMaxPlayerVelocity_ = globalVariables_->GetFloatValue("Player", "kMaxPlayerVelocity");
-	//kGravity_ = globalVariables_->GetFloatValue("Player", "kGravity");
 	kPlayerJumpPower_ = globalVariables_->GetFloatValue("Player", "kPlayerJumpPower");
+	kGravity_ = globalVariables_->GetFloatValue("Player", "kGravity");
 }
 
 void Player::OnCollisionEnter(BaseObject* object)
@@ -147,6 +148,7 @@ void Player::InitializeVariables()
 	// 白色不透明
 	gearColor_ = color_;
 	gearRotateSpeed_ = 0.0f;
+	//preGearRotateSpeed_ = 0.0f;
 
 	// フラグ初期化
 	isJumpTrigger_ = false;
@@ -160,6 +162,7 @@ void Player::InitializeVariables()
 	// さすがに半回転以上は行かない
 	kMaxGearRotateSpeed_ = 0.1f;
 	kMinGearRollSpeed_ = 0.005f;
+	kMinGearPendulumSpeed_ = 1.0f;
 	kGearFriction_ = 0.001f;
 	kGearAmplitude = 1.4f;
 	kGearDecreaseRate_ = 0.90f;
@@ -251,20 +254,27 @@ void Player::UpdateGear()
 			}
 			// 振り子範囲内の時
 			if ((-pi - kGearAmplitude) / 2.0f < playerTheta_ &&
-				playerTheta_ < (pi - kGearAmplitude) / 2.0f) {
+				playerTheta_ < (0 - kGearAmplitude) / 2.0f) {
 				// 範囲内に入った瞬間の時振り子フラグ true
 				if (!isPendulum_) {
 					isPendulum_ = true;
 					wasRotateRight_ = isRotateRight_;
+					// 振り子範囲に入った瞬間の速度を保存する
+					// 速度が足りない時は速度をプラスする
+					if (gearRotateSpeed_ < kMinGearPendulumSpeed_) {
+						if (isRotateRight_) {
+							gearRotateSpeed_ = kMinGearPendulumSpeed_;
+						}
+						else {
+							gearRotateSpeed_ = -kMinGearPendulumSpeed_;
+						}
+					}
 				}
 			}
 			// 範囲外の時
-			if (playerTheta_ < (-pi - kGearAmplitude) &&
-				(pi - kGearAmplitude) < playerTheta_){
-					// もし振り子挙動していたら、フラグ false
-					if (isPendulum_) {
-						isPendulum_ = false;
-					}
+			if (playerTheta_ < (-pi - kGearAmplitude) / 2.0f ||
+				(0 - kGearAmplitude) / 2.0f < playerTheta_){
+				isPendulum_ = false;
 			}
 		}
 

@@ -9,6 +9,7 @@
         "kGearFriction": 0.0010000000474974513,
         "kGearInnerRadius": 13.880000114440918,
         "kMaxGearRotateSpeed": 1.3799999952316284,
+        "kMinGearPendulumSpeed": 0.23000000417232513,
         "kMinGearRollSpeed": 0.004999999888241291
     }
 }
