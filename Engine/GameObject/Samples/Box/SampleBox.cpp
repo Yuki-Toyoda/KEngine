@@ -133,8 +133,6 @@ void SampleBox::Update()
 		animationSprite_->Replay();
 	if (ImGui::Button("moveSelectFrame"))
 		animationSprite_->ChangeSelectedFrame(playX_, playY_);
-	if (ImGui::Button("setBeginFrame"))
-		animationSprite_->SetBeginFrame(playX_, playY_);
 	animationSprite_->Update();
 
 	ImGui::End();

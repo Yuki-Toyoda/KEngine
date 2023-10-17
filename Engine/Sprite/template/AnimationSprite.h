@@ -48,14 +48,6 @@ public: // アクセッサ等
 	/// <param name="drawTime">1フレーム事の描画秒数</param>
 	void SetDrawTime(float drawTime) { drawTime_ = drawTime; }
 
-	
-	/// <summary>
-	/// 開始フレームセッター
-	/// </summary>
-	/// <param name="x">読み込んでいるテクスチャの横何列目か</param>
-	/// <param name="y">読み込んでいるテクスチャの縦何列目か</param>
-	void SetBeginFrame(int x, int y);
-
 	/// <summary>
 	/// 描画フレームゲッター
 	/// </summary>
