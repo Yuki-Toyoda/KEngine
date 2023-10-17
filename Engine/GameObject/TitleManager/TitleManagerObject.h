@@ -1,10 +1,13 @@
 #pragma once
 #include "../BaseObject.h"
 
+// クラスの前方宣言
+class Camera;
+
 /// <summary>
 /// タイトルのオブジェクト達
 /// </summary>
-class TitleObjects : public BaseObject {
+class TitleManagerObject : public BaseObject {
 public: // メンバ関数
 
 	// 固有の初期化処理
@@ -13,10 +16,15 @@ public: // メンバ関数
 	void Update() override;
 	// 描画処理
 	void Draw() override;
-
+	// スプライト描画
+	void SpriteDraw() override;
 public: // アクセッサ等
 
-
+	/// <summary>
+	/// 使用するカメラのセッター
+	/// </summary>
+	/// <param name="camera">カメラ</param>
+	void SetCamera(Camera* camera) { camera_ = camera; }
 
 public: // その他関数群
 
@@ -32,12 +40,27 @@ public: // その他関数群
 
 private: // メンバ変数
 
+	// タイトルで使用するカメラのポインタ
+	Camera* camera_ = nullptr;
+
 	// メインギア座標
 	WorldTransform ｍainGearTransform_;
 	// 中サイズギア座標
 	WorldTransform mGearTransform_;
+	// 中サイズギア座標
+	WorldTransform mGearTransform2_;
 	// 小サイズギア座標
 	WorldTransform sGearTransform_;
+	// タイトルギア座標
+	WorldTransform titleGearTransform_;
+
+	// タイトルロゴテクスチャ
+	uint32_t textureHandleTitleLogo_ = 0u;
+	std::unique_ptr<Sprite> titleLogo_;
+	Vector2 logoPosition_;
+	Vector2 logoSize_;
+	Vector4 logoColor_;
+	Vector2 logoAnchorPoint_;
 
 };
 
