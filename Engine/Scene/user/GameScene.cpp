@@ -8,9 +8,9 @@ void GameScene::Initialize() {
 	ambient->Initialize("ambient", BaseObject::tagOther); // 初期化
 	gameObjectManager_->AddGameObject(ambient); // ゲームオブジェクトマネージャーに追加
 
-	SampleBox* sampleBox = new SampleBox();
-	sampleBox->Initialize("sampleBox", BaseObject::tagOther);
-	gameObjectManager_->AddGameObject(sampleBox); // ゲームオブジェクトマネージャーに追加
+	Player* player = new Player();
+	player->Initialize("player", BaseObject::tagPlayer);
+	gameObjectManager_->AddGameObject(player); // ゲームオブジェクトマネージャーに追加
 }
 
 void GameScene::Update() {

@@ -13,6 +13,7 @@
 #include "Engine/GlobalVariables/GlobalVariables.h"
 #include "Engine/Input/Input.h"
 #include "Engine/Audio/Audio.h"
+#include "Engine/Stage/StageManager.h"
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
@@ -25,6 +26,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	SceneManager* sceneManager = nullptr;
 	Input* input = nullptr;
 	Audio* audio = nullptr;
+	StageManager* stageManager = nullptr;
 
 	// ウィンドウズアプリケーションクラスのインスタンスを取得
 	winApp = WinApp::GetInstance();
@@ -76,6 +78,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// シーンマネージャ初期化
 	sceneManager = SceneManager::GetInstance();
 	sceneManager->Initialize();
+
+	// ステージマネージャー初期化
+	stageManager = StageManager::GetInstance();
+	stageManager->Initialize();
+
 
 	// メインループ
 	while (true) {
