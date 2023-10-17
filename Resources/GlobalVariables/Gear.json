@@ -1,9 +1,13 @@
 {
     "Gear": {
+        "GearScale": [
+            6.0,
+            5.0
+        ],
         "kGearAmplitude": 1.399999976158142,
         "kGearDecreaseRate": 0.8999999761581421,
         "kGearFriction": 0.0010000000474974513,
-        "kGearInnerRadius": 11.390000343322754,
+        "kGearInnerRadius": 13.880000114440918,
         "kMaxGearRotateSpeed": 1.3799999952316284,
         "kMinGearRollSpeed": 0.004999999888241291
     }

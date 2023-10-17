@@ -83,6 +83,7 @@ void Player::AddGlobalVariables()
 	globalVariables_->AddItem("Gear", "kGearInnerRadius", kGearInnerRadius_);
 	globalVariables_->AddItem("Gear", "kGearAmplitude", kGearAmplitude);
 	globalVariables_->AddItem("Gear", "kGearDecreaseRate", kGearDecreaseRate_);
+	globalVariables_->AddItem("Gear", "GearScale", Vector2(gearTransform_.scale_.x, gearTransform_.scale_.z));
 	globalVariables_->AddItem("Player", "kMaxPlayerVelocity", kMaxPlayerVelocity_);
 	globalVariables_->AddItem("Player", "kGravity", kGravity_);
 	globalVariables_->AddItem("Player", "kPlayerJumpPower", kPlayerJumpPower_);
@@ -96,6 +97,8 @@ void Player::ApplyGlobalVariables()
 	kGearInnerRadius_ = globalVariables_->GetFloatValue("Gear", "kGearInnerRadius");
 	kGearAmplitude = globalVariables_->GetFloatValue("Gear", "kGearAmplitude");
 	kGearDecreaseRate_ = globalVariables_->GetFloatValue("Gear", "kGearDecreaseRate");
+	Vector2 temp = globalVariables_->GetVector2Value("Gear", "GearScale");
+	gearTransform_.scale_ = Vector3(temp.x, temp.x, temp.y);
 	kMaxPlayerVelocity_ = globalVariables_->GetFloatValue("Player", "kMaxPlayerVelocity");
 	//kGravity_ = globalVariables_->GetFloatValue("Player", "kGravity");
 	kPlayerJumpPower_ = globalVariables_->GetFloatValue("Player", "kPlayerJumpPower");
@@ -139,7 +142,7 @@ void Player::InitializeVariables()
 
 	// 歯車変数初期化
 	gearTransform_.Initialize();
-	gearTransform_.scale_ = { 5.0f,5.0f,5.0f };
+	gearTransform_.scale_ = { 8.0f,8.0f,5.0f };
 	gearTheta_ = gearTransform_.rotate_.z;
 	// 白色不透明
 	gearColor_ = color_;
@@ -149,6 +152,8 @@ void Player::InitializeVariables()
 	isJumpTrigger_ = false;
 	isRotateRight_ = true;
 	isLanding_ = true;
+	isPendulum_ = false;
+	wasRotateRight_ = true;
 
 	// 定数の再定義
 	kGearInnerRadius_ = 0.5f;
@@ -194,17 +199,18 @@ void Player::UpdatePlayer()
 			playerAcceleration_ = { 0.0f,0.0f,0.0f };
 			isJumpTrigger_ = false;
 			isLanding_ = false;
+			isPendulum_ = false;
 		}
 		// 歯車の回転は歯車の更新内
 	}
-	else{
+	else {
 		// 重力減算
 		Vector3 fallVelocity{};
 		fallVelocity.x = kFallDirection_.x * kGravity_;
 		fallVelocity.y = kFallDirection_.y * kGravity_;
 		fallVelocity.z = 0.0f;
-		playerAcceleration_.x += fallVelocity.x;
-		playerAcceleration_.y += fallVelocity.y;
+		playerAcceleration_.x = fallVelocity.x;
+		playerAcceleration_.y = fallVelocity.y;
 		playerVelocity_.x += playerAcceleration_.x;
 		playerVelocity_.y += playerAcceleration_.y;
 		// プレイヤーの位置を更新する
@@ -236,11 +242,51 @@ void Player::UpdateGear()
 			else if (directionRotate < -pi) {
 				directionRotate = pi + (pi + directionRotate);
 			}
+			// 振り子の運動をさせる
 			if (kGearAmplitude < directionRotate) {
-				gearRotateSpeed_ -= kGearFriction_;
+				//gearRotateSpeed_ -= kGearFriction_;
 			}
 			else if (directionRotate < -kGearAmplitude) {
-				gearRotateSpeed_ += kGearFriction_;
+				//gearRotateSpeed_ += kGearFriction_;
+			}
+			// 振り子範囲内の時
+			if ((-pi - kGearAmplitude) / 2.0f < playerTheta_ &&
+				playerTheta_ < (pi - kGearAmplitude) / 2.0f) {
+				// 範囲内に入った瞬間の時振り子フラグ true
+				if (!isPendulum_) {
+					isPendulum_ = true;
+					wasRotateRight_ = isRotateRight_;
+				}
+			}
+			// 範囲外の時
+			if (playerTheta_ < (-pi - kGearAmplitude) &&
+				(pi - kGearAmplitude) < playerTheta_){
+					// もし振り子挙動していたら、フラグ false
+					if (isPendulum_) {
+						isPendulum_ = false;
+					}
+			}
+		}
+
+		// プレイヤーがくっついている時
+		//if (isLanding_) {
+			// 速度を加算する
+		// 振り子運動をさせる
+		if (isPendulum_) {
+			if (isRotateRight_) {
+				gearRotateSpeed_ += kMinGearRollSpeed_;
+			}
+			else {
+				gearRotateSpeed_ -= kMinGearRollSpeed_;
+			}
+		}
+		// 通常の挙動
+		else {
+			if (isRotateRight_) {
+				gearRotateSpeed_ += kMinGearRollSpeed_;
+			}
+			else {
+				gearRotateSpeed_ -= kMinGearRollSpeed_;
 			}
 		}
 	}
@@ -252,16 +298,6 @@ void Player::UpdateGear()
 			gearRotateSpeed_ += kGearFriction_ * 0.01f;
 		}
 
-	}
-	// プレイヤーがくっついている時
-	if (isLanding_) {
-		// 速度を加算する
-		if (isRotateRight_) {
-			gearRotateSpeed_ += kMinGearRollSpeed_;
-		}
-		else {
-			gearRotateSpeed_ -= kMinGearRollSpeed_;
-		}
 	}
 	// 最大速度
 	gearRotateSpeed_ = Math::Clamp(gearRotateSpeed_, -kMaxGearRotateSpeed_, kMaxGearRotateSpeed_);
@@ -298,9 +334,18 @@ void Player::UpdatePlayerRotate()
 
 float Player::ConvertSpeedToRadian(float rotateSpeed) {
 	float result = 0;
-	// 回転速度(力)を角度に変える
-	result = rotateSpeed / kGearInnerRadius_;
 
+	float pi = static_cast<float>(std::numbers::pi);
+
+	float circle = 2 * pi * kGearInnerRadius_;
+
+	float arc = rotateSpeed;
+
+	float theta = arc / circle;
+	theta = theta * 2 * pi;
+	// 回転速度(力)を角度に変える
+	//result = rotateSpeed / kGearInnerRadius_;
+	result = theta;
 
 	return result;
 }
@@ -360,7 +405,7 @@ void Player::CheckGearCollision()
 }
 
 void Player::AirJump() {
-
+	playerVelocity_.y += 2.0f;
 }
 
 void Player::DebugGui() {
@@ -372,9 +417,11 @@ void Player::DebugGui() {
 
 	ImGui::Checkbox("isLanding", &isLanding_);
 	ImGui::Checkbox("isJumping", &isJumpTrigger_);
+	ImGui::Checkbox("isPendulum", &isPendulum_);
+	ImGui::Checkbox("wasRight", &wasRotateRight_);
 	//float degree = playerTheta_ * 180 / static_cast<float>(std::numbers::pi);
 	//ImGui::SliderAngle("playerTheta", &playerTheta_);
-	ImGui::SliderFloat("playerTheta", &playerTheta_,-3.14f,3.14f);
+	ImGui::SliderFloat("playerTheta", &playerTheta_, -3.14f, 3.14f);
 	ImGui::SliderFloat("rotateSpeed", &gearRotateSpeed_, -kMaxGearRotateSpeed_, kMaxGearRotateSpeed_);
 	//playerTheta_ = degree * static_cast<float>(std::numbers::pi) / 180;
 	ImGui::Checkbox("isUpdateRotate", &isUpdateRotate);
@@ -386,10 +433,8 @@ void Player::DebugGui() {
 	}
 	ImGui::DragFloat("kMinRotate", &kMinGearRollSpeed_, 0.00001f, -0.01f, 0.01f, "%.5f");
 	ImGui::DragFloat("kFriction", &kGearFriction_, 0.00001f, -0.01f, 0.01f, "%.5f");
-	ImGui::DragFloat("kGravity", &kGravity_, 0.00001f, -0.01f, 0.01f, "%.5f");
+	ImGui::DragFloat("kGravity", &kGravity_, 0.00001f, -1.0f, 1.0f, "%.5f");
 
-	ImGui::DragFloat3("velocity", &playerVelocity_.x, 0.01f);
-	ImGui::DragFloat3("acceleration", &playerAcceleration_.x, 0.01f);
 
 	ImGui::End();
 

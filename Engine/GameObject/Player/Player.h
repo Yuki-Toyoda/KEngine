@@ -144,9 +144,6 @@ private: // メンバ変数
 	// 歯車の内円の半径
 	float kGearInnerRadius_;
 
-	// 歯車の回転方向
-	// 右回転 : true, 左回転 : false
-	bool isRotateRight_ = true;	
 
 	/*--------------------------------------//
 	//	フラグによって操作も管理するために、		//
@@ -158,6 +155,15 @@ private: // メンバ変数
 
 	// 歯車と設置しているかどうか
 	bool isLanding_ = false;
+
+	// 歯車の回転方向
+	// 右回転 : true, 左回転 : false
+	bool isRotateRight_ = true;	
+
+	// 振り子する範囲に入っていたかどうか
+	bool isPendulum_ = false;
+	// 振り子するためのバッファ
+	bool wasRotateRight_ = true;
 
 	/*------------------//
 	//	デバッグ用の変数	//
