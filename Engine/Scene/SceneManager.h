@@ -32,10 +32,20 @@ public: // メンバ関数
 	/// </summary>
 	void Update();
 
+public: // アクセッサ等
+
+	/// <summary>
+	/// 次のシーンのセッター
+	/// </summary>
+	/// <param name="nextScene">次のシーンの実体</param>
+	void SetNextScene(BaseScene* nextScene) { nextScene_ = nextScene; }
+
 private: // メンバ変数
 	
 	// 現在のシーン
-	BaseScene* currentScene_;
+	BaseScene* currentScene_ = nullptr;
+	// 次のシーン
+	BaseScene* nextScene_ = nullptr;
 
 };
 
