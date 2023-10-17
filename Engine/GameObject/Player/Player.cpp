@@ -27,7 +27,7 @@ void Player::Initialize(std::string name, Tag tag)
 	// 用意した変数の初期化
 	InitializeVariables();
 
-	AddOBJ(&gearTransform_, gearColor_, "./Resources/Gear", "Gear.obj");
+	AddOBJ(&gearTransform_, gearColor_, "./Resources/Gear", "Gear_l.obj");
 	AddOBJ(&transform_, color_, "./Resources/Player", "Player.obj");
 
 	// 衝突判定を取る図形を設定する
@@ -135,10 +135,11 @@ void Player::InitializeVariables()
 	color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
 	playerTheta_ = 0.0f;
 	radius_ = 1.0f;
+	transform_.scale_ = { 1.0f,1.0f,5.0f };
 
 	// 歯車変数初期化
 	gearTransform_.Initialize();
-	gearTransform_.scale_ = { 10.0f,10.0f,1.0f };
+	gearTransform_.scale_ = { 5.0f,5.0f,5.0f };
 	gearTheta_ = gearTransform_.rotate_.z;
 	// 白色不透明
 	gearColor_ = color_;
