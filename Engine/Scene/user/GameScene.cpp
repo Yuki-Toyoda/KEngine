@@ -14,9 +14,11 @@ void GameScene::Initialize() {
 }
 
 void GameScene::Update() {
+
 	// 右シフトが押されたら次のシーンへ
 	if (input_->TriggerKey(DIK_RSHIFT)) {
 		BaseScene* nextScene = new TitleScene();
 		SceneManager::GetInstance()->SetNextScene(nextScene);
 	}
+
 }

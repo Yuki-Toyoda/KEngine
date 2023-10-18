@@ -41,11 +41,9 @@ public: // アクセッサ等
 	void SetNextScene(BaseScene* nextScene) { nextScene_ = nextScene; }
 
 private: // メンバ変数
-	
 	// 現在のシーン
 	BaseScene* currentScene_ = nullptr;
 	// 次のシーン
 	BaseScene* nextScene_ = nullptr;
-
 };
 

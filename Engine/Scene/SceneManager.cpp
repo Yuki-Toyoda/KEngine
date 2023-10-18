@@ -30,13 +30,11 @@ void SceneManager::Update()
 	// 現在のシーンから次のシーンへ遷移するよう指示されたら
 	if (nextScene_ != nullptr) {
 		GameObjectManager::GetInstance()->Initialize();
-
 		// 現在のシーンがあるなら
 		if (currentScene_) {
 			// 現在のシーンを削除
 			delete currentScene_;
 		}
-
 		// シーン初期化
 		currentScene_ = nextScene_; // 次のシーンを取得
 		nextScene_ = nullptr; // 次のシーンにNULLを代入
