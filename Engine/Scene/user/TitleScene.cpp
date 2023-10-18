@@ -3,7 +3,6 @@
 
 void TitleScene::Initialize()
 {
-
 	// カメラ生成
 	Camera* camera = new Camera(); // インスタンス生成
 	camera->Initialize("camera", BaseObject::tagCamera); // 初期化

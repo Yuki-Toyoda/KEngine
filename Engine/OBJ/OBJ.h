@@ -218,6 +218,12 @@ public: // パブリックなメンバ関数
 	/// <param name="enable">有効非有効</param>
 	void SetEnableLighting(bool enable) { constMap_->enableLighting = enable; }
 
+	/// <summary>
+	/// テクスチャハンドルの設定
+	/// </summary>
+	/// <param name="textureHandle">テクスチャハンドル</param>
+	void SetTextureHandle(uint32_t textureHandle);
+
 public:
 
 	// uv用ワールド座標

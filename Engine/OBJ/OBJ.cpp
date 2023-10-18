@@ -506,6 +506,12 @@ void OBJ::Draw()
 	sCommandList_->DrawInstanced((UINT)myModelData_.vertices.size(), 1, 0, 0);
 }
 
+void OBJ::SetTextureHandle(uint32_t textureHandle)
+{
+	textureHandle_ = textureHandle;
+	resourceDesc_ = TextureManager::GetInstance()->GetResourceDesc(textureHandle_);
+}
+
 void OBJ::TransferVertices()
 {
 	// 頂点バッファへのデータ転送
