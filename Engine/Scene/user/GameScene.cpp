@@ -13,6 +13,7 @@ void GameScene::Initialize() {
 }
 
 void GameScene::Update() {
+
 	if (input_->TriggerKey(DIK_RSHIFT)) {
 		nextScene_ = new TitleScene();
 	}

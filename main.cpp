@@ -77,6 +77,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	sceneManager = SceneManager::GetInstance();
 	sceneManager->Initialize();
 
+	ImGui::CreateContext();
+	auto& io = ImGui::GetIO();
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+
 	// メインループ
 	while (true) {
 
