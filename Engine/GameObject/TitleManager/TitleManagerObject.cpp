@@ -186,7 +186,7 @@ void TitleManagerObject::Update()
 	case TitleManagerObject::WayPoint4:
 		if (stagingT_ <= stagingTime_) {
 			// カメラをイージングで移動させる
-			camera_->transform_.translate_ = Math::EaseOut(stagingT_, cameraStartTranslate_, cameraEndTranslate_, stagingTime_);
+			camera_->transform_.translate_ = Math::EaseInOut(stagingT_, cameraStartTranslate_, cameraEndTranslate_, stagingTime_);
 			// タイトルロゴを表示
 			logoColor_.w = Math::EaseOut(stagingT_, 1.0f, 0.0f, stagingTime_);
 			buttonColor_.w = Math::EaseOut(stagingT_, 1.0f, 0.0f, stagingTime_);
@@ -204,7 +204,7 @@ void TitleManagerObject::Update()
 			cameraEndTranslate_ = { 0.0f, 0.25f, -1.0f };
 
 			// 演出時間設定
-			stagingTime_ = 1.5f;
+			stagingTime_ = 2.5f;
 			// 演出用tをリセット
 			stagingT_ = 0.0f;
 
