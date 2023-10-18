@@ -11,6 +11,9 @@ void GameScene::Initialize() {
 	SampleBox* sampleBox = new SampleBox();
 	sampleBox->Initialize("sampleBox", BaseObject::tagOther);
 	gameObjectManager_->AddGameObject(sampleBox); // ゲームオブジェクトマネージャーに追加
+
+	// フェードイン
+	SceneManager::GetInstance()->StartFadeEffect(2.5f, { 0.0f, 0.0f, 0.0f, 1.0f }, { 0.0f, 0.0f, 0.0f, 0.0f });
 }
 
 void GameScene::Update() {

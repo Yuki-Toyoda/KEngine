@@ -4,16 +4,22 @@
 void TitleScene::Initialize()
 {
 
-	Camera* camera = new Camera();
-	camera->Initialize("camera", BaseObject::tagCamera);
-	camera->UseThisCamera();
+	// カメラ生成
+	Camera* camera = new Camera(); // インスタンス生成
+	camera->Initialize("camera", BaseObject::tagCamera); // 初期化
+	camera->UseThisCamera(); // 使用カメラに設定
 	gameObjectManager_->AddGameObject(camera); // ゲームオブジェクトマネージャーに追加
 
-	// タイトルマネージャーオブジェクト生成生成
-	TitleManagerObject* titleManager = new TitleManagerObject(); // インスタンス生成
-	titleManager->SetCamera(camera);
-	titleManager->Initialize("titleManagerObject", BaseObject::tagOther); // 初期化
-	gameObjectManager_->AddGameObject(titleManager); // ゲームオブジェクトマネージャーに追加
+	// 環境生成
+	Ambient* ambient = new Ambient(); // インスタンス生成
+	ambient->Initialize("ambient", BaseObject::tagOther); // 初期化
+	gameObjectManager_->AddGameObject(ambient); // ゲームオブジェクトマネージャーに追加
+
+	// タイトルマネージャーオブジェクト生成
+	titleManager_ = new TitleManagerObject(); // インスタンス生成
+	titleManager_->SetCamera(camera);
+	titleManager_->Initialize("titleManagerObject", BaseObject::tagOther); // 初期化
+	gameObjectManager_->AddGameObject(titleManager_); // ゲームオブジェクトマネージャーに追加
 }
 
 void TitleScene::Update()
@@ -41,10 +47,8 @@ void TitleScene::Update()
 	ImGui::End();
 
 #endif // _DEBUG
-
-
-	// 右シフトが押されたら次のシーンへ
-	if (input_->TriggerKey(DIK_RSHIFT)) {
+	// タイトルからゲームシーンへの遷移を行うよう命令されたら遷移する
+	if (input_->TriggerKey(DIK_RSHIFT) || titleManager_->GetIsGoGameScene()) {
 		BaseScene* nextScene = new GameScene();
 		SceneManager::GetInstance()->SetNextScene(nextScene);
 	}

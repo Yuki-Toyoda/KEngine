@@ -20,6 +20,7 @@ private: // サブクラス
 		WayPoint3,
 		WayPoint4,
 		WayPoint5,
+		WayPoint6,
 	};
 
 public: // メンバ関数
@@ -39,6 +40,12 @@ public: // アクセッサ等
 	/// </summary>
 	/// <param name="camera">カメラ</param>
 	void SetCamera(Camera* camera) { camera_ = camera; }
+
+	/// <summary>
+	/// ゲームシーンへのトリガーゲッター
+	/// </summary>
+	/// <returns>ゲームシーンに行くかどうか</returns>
+	bool GetIsGoGameScene() { return isGoGameScene_; }
 
 public: // その他関数群
 
@@ -73,17 +80,33 @@ private: // メンバ変数
 
 	// タイトルロゴテクスチャ
 	uint32_t textureHandleTitleLogo_ = 0u;
+	// タイトルロゴスプライト
 	std::unique_ptr<Sprite> titleLogo_;
-	bool logoIsActive_;
 	Vector2 logoPosition_;
 	Vector2 logoSize_;
 	Vector4 logoColor_;
 	Vector2 logoAnchorPoint_;
 
+	// タイトルボタンテクスチャ
+	uint32_t textureHandleTitleButton_ = 0u;
+	// タイトルボタンスプライト
+	bool buttonIsActive_;
+	std::unique_ptr<Sprite> titleButton_;
+	Vector2 buttonPosition_;
+	Vector2 buttonSize_;
+	Vector4 buttonColor_;
+	Vector2 buttonAnchorPoint_;
+
 	// 演出中間地点
 	int stagingWayPoint_;
 	// 演出t
 	float stagingT_;
+
+	// イージング用カメラ始端座標
+	Vector3 cameraStartTranslate_;
+	// イージング用カメラ終端座標
+	Vector3 cameraEndTranslate_;
+
 	// カメラ演出用t
 	float cameraStagingT_;
 	// カメラ演出用tのループトリガー
@@ -100,6 +123,9 @@ private: // メンバ変数
 
 	// カメラ手振れ演出トリガー
 	bool enableCameraShake_;
+
+	// ゲームシーンへのトリガー
+	bool isGoGameScene_;
 
 };
 

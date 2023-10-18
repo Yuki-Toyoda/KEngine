@@ -1,7 +1,7 @@
 #include "TitleManagerObject.h"
 #include "../../Resource/Texture/TextureManager.h"
 #include "../../Input/Input.h"
-#include "../Camera/Camera.h"
+#include "../../Scene/SceneManager.h"
 
 void TitleManagerObject::Initialize(std::string name, Tag tag)
 {
@@ -45,7 +45,6 @@ void TitleManagerObject::Initialize(std::string name, Tag tag)
 	AddOBJ(&titleGearTransform_, color_, "./Resources/TitleGear", "TitleGear.obj", false);
 
 	// ロゴ用変数初期化
-	logoIsActive_ = false;
 	logoPosition_ = { 640.0f, 290.0f };
 	logoSize_ = { 1280.0f, 170.0f };
 	logoColor_ = { 1.0f, 1.0f, 1.0f, 0.0f };
@@ -56,10 +55,26 @@ void TitleManagerObject::Initialize(std::string name, Tag tag)
 	// スプライト読み込み
 	titleLogo_.reset(Sprite::Create(textureHandleTitleLogo_, &logoPosition_, &logoSize_, &logoColor_, logoAnchorPoint_));
 
+	// ボタン用変数初期化
+	buttonIsActive_ = false;
+	buttonPosition_ = { 640.0f, 650.0f };
+	buttonSize_ = { 960.0f, 128.0f };
+	buttonColor_ = { 1.0f, 1.0f, 1.0f, 0.0f };
+	buttonAnchorPoint_ = { 0.5f, 0.5f };
+
+	// テクスチャ読み込み
+	textureHandleTitleButton_ = TextureManager::Load("./Resources/Image/Title", "titleButton.png");
+	// スプライト読み込み
+	titleButton_.reset(Sprite::Create(textureHandleTitleButton_, &buttonPosition_, &buttonSize_, &buttonColor_, buttonAnchorPoint_));
+
 	// 演出中間地点リセット
 	stagingWayPoint_ = 0;
 	// 演出t
 	stagingT_ = 0.0f;
+
+	// イージング座標リセット
+	cameraStartTranslate_ = { 0.0f, 10.0f, -50.0f };
+	cameraEndTranslate_ = { 0.0f, 0.25f, -16.0f };
 	// カメラ手振れ演出無効
 	enableCameraShake_ = false;
 	cameraStagingT_ = (3.0f / 2.0f) / 2.0f;
@@ -73,6 +88,12 @@ void TitleManagerObject::Initialize(std::string name, Tag tag)
 
 	// タイトル演出スキップトリガーリセット
 	skipTitleStaging_ = false;
+
+	// ゲームシーンへのトリガーリセット
+	isGoGameScene_ = false;
+
+	// フェードイン
+	SceneManager::GetInstance()->StartFadeEffect(1.0f, { 0.0f, 0.0f, 0.0f, 1.0f }, { 0.0f, 0.0f, 0.0f, 0.0f });
 
 }
 
@@ -89,12 +110,13 @@ void TitleManagerObject::Update()
 	sGearTransform_.rotate_.z += 0.025f * (6.0f / 8.0f);
 	titleGearTransform_.rotate_.z -= 0.025f;
 
+	// カメラ演出
 	switch (stagingWayPoint_)
 	{
-	case TitleManagerObject::WayPoint1: // 最初は
+	case TitleManagerObject::WayPoint1: // カメラをタイトルロゴの位置まで移動させる
 		if (stagingT_ <= stagingTime_) { 
 			// カメラをイージングで移動させる
-			camera_->transform_.translate_ = Math::EaseOut(stagingT_, { 0.0f, 10.0f, -50.0f }, { 0.0f, 0.25f, -16.0f }, stagingTime_);
+			camera_->transform_.translate_ = Math::EaseOut(stagingT_, cameraStartTranslate_, cameraEndTranslate_, stagingTime_);
 			camera_->transform_.rotate_ = Math::EaseInOut(stagingT_, { (float)std::numbers::pi / 16.0f, 0.0f , 0.0f }, { 0.0f, 0.0f, 0.0f }, stagingTime_);
 
 			// 演出用tを加算
@@ -103,9 +125,13 @@ void TitleManagerObject::Update()
 		else {
 
 			// カメラを終端地点まで強制的に移動
-			camera_->transform_.translate_ = { 0.0f, 0.25f, -16.0f };
+			camera_->transform_.translate_ = cameraEndTranslate_;
 			camera_->transform_.rotate_ = { 0.0f, 0.0f, 0.0f };
 
+			cameraStartTranslate_ = cameraEndTranslate_;
+			cameraEndTranslate_ = { 0.0f, 0.25f, -14.0f };
+
+			// カメラ手振れ演出有効
 			enableCameraShake_ = true;
 
 			// 演出用tをリセット
@@ -117,7 +143,7 @@ void TitleManagerObject::Update()
 			stagingWayPoint_++;
 		}
 		break;
-	case TitleManagerObject::WayPoint2:
+	case TitleManagerObject::WayPoint2: // タイトルロゴを徐々に表示させる
 		if (stagingT_ <= stagingTime_) {
 			// タイトルロゴを表示
 			logoColor_.w = Math::EaseIn(stagingT_, 0.0f, 1.0f, stagingTime_);
@@ -130,11 +156,14 @@ void TitleManagerObject::Update()
 			// タイトルロゴができったため、スキップトリガーをtrueに
 			skipTitleStaging_ = true;
 
+			// タイトルボタン表示
+			buttonIsActive_ = true;
+
 			// a値を強制的に変更
 			logoColor_.w = 1.0f;
 
 			// 演出時間設定
-			stagingTime_ = 3.0f;
+			stagingTime_ = 1.0f;
 			// 演出用tをリセット
 			stagingT_ = 0.0f;
 
@@ -142,24 +171,95 @@ void TitleManagerObject::Update()
 			stagingWayPoint_++;
 		}
 		break;
-	case TitleManagerObject::WayPoint3:
-
+	case TitleManagerObject::WayPoint3: // スペースを押すとシーン遷移開始
+		if (input_->TriggerKey(DIK_SPACE)) {
+			// カメラシェイク無効
+			enableCameraShake_ = false;
+			// カメラの始端座標を現在のカメラ座標に変更
+			cameraStartTranslate_ = camera_->transform_.translate_;
+			// カメラの終端座標を設定
+			cameraEndTranslate_ = { 0.0f, 0.25f, -18.0f };
+			// 次の演出に
+			stagingWayPoint_++;
+		}
 		break;
 	case TitleManagerObject::WayPoint4:
+		if (stagingT_ <= stagingTime_) {
+			// カメラをイージングで移動させる
+			camera_->transform_.translate_ = Math::EaseOut(stagingT_, cameraStartTranslate_, cameraEndTranslate_, stagingTime_);
+			// タイトルロゴを表示
+			logoColor_.w = Math::EaseOut(stagingT_, 1.0f, 0.0f, stagingTime_);
+			buttonColor_.w = Math::EaseOut(stagingT_, 1.0f, 0.0f, stagingTime_);
+			// 演出用tを加算
+			stagingT_ += 1.0f / 60.0f;
+		}
+		else {
 
+			// 終端座標に補正
+			camera_->transform_.translate_ = cameraEndTranslate_;
+
+			// 始端座標設定
+			cameraStartTranslate_ = cameraEndTranslate_;
+			// 終端座標設定
+			cameraEndTranslate_ = { 0.0f, 0.25f, -1.0f };
+
+			// 演出時間設定
+			stagingTime_ = 1.5f;
+			// 演出用tをリセット
+			stagingT_ = 0.0f;
+
+			// フェードアウト
+			SceneManager::GetInstance()->StartFadeEffect(stagingTime_, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f, 1.0f });
+			// 次の演出に
+			stagingWayPoint_++;
+		}
 		break;
 	case TitleManagerObject::WayPoint5:
+		if (stagingT_ <= stagingTime_) {
+			// カメラをイージングで移動させる
+			camera_->transform_.translate_ = Math::EaseInOut(stagingT_, cameraStartTranslate_, cameraEndTranslate_, stagingTime_);
+			// 演出用tを加算
+			stagingT_ += 1.0f / 60.0f;
+		}
+		else {
 
+			// 終端座標に補正
+			camera_->transform_.translate_ = cameraEndTranslate_;
+
+			// 始端座標設定
+			cameraStartTranslate_ = cameraEndTranslate_;
+			// 終端座標設定
+			cameraEndTranslate_ = { 0.0f, 0.25f, -1.0f };
+
+			// 演出時間設定
+			stagingTime_ = 1.5f;
+			// 演出用tをリセット
+			stagingT_ = 0.0f;
+
+			// 次の演出に
+			stagingWayPoint_++;
+		}
+		break;
+	case TitleManagerObject::WayPoint6:
+		// ゲームシーンへ
+		isGoGameScene_ = true;
 		break;
 	}
 
+	// カメラ手振れ演出処理
 	if (enableCameraShake_) {
 		if (cameraStagingT_ <= 3.0f / 2.0f) {
 			// カメラを横に少し動かす
-			if (!cameraStagingTReturn_)
+			if (!cameraStagingTReturn_) {
+				if(buttonIsActive_)
+					buttonColor_.w = Math::EaseOut(cameraStagingT_, 0.01f, 1.0f, 3.0f / 2.0f);
 				camera_->transform_.translate_.y = Math::EaseInOut(cameraStagingT_, 0.25f - 0.05f, 0.25f + 0.05f, 3.0f / 2.0f);
-			else
+			}
+			else {
+				if(buttonIsActive_)
+					buttonColor_.w = Math::EaseOut(cameraStagingT_, 1.0f, 0.01f, 3.0f / 2.0f);
 				camera_->transform_.translate_.y = Math::EaseInOut(cameraStagingT_, 0.25f + 0.05f, 0.25f - 0.05f, 3.0f / 2.0f);
+			}
 
 			// 演出用tを加算
 			cameraStagingT_ += 1.0f / 60.0f;
@@ -175,10 +275,13 @@ void TitleManagerObject::Update()
 
 		if (cameraStagingT2_ <= 3.0f) {
 			// カメラを横に少し動かす
-			if (!cameraStagingT2Return_)
+			if (!cameraStagingT2Return_) {
 				camera_->transform_.translate_.x = Math::EaseInOut(cameraStagingT2_, -0.05f, 0.05f, 3.0f);
-			else
+			}
+			else {
 				camera_->transform_.translate_.x = Math::EaseInOut(cameraStagingT2_, 0.05f, -0.05f, 3.0f);
+			}
+				
 
 			// 演出用tを加算
 			cameraStagingT2_ += 1.0f / 60.0f;
@@ -193,6 +296,7 @@ void TitleManagerObject::Update()
 		}
 	}
 
+	// タイトルロゴ演出スキップ
 	if (input_->TriggerKey(DIK_SPACE)) {
 		if (!skipTitleStaging_) {
 			// カメラを終端地点まで強制的に移動
@@ -261,6 +365,7 @@ void TitleManagerObject::Draw()
 
 void TitleManagerObject::SpriteDraw()
 {
+	titleButton_->Draw();
 	titleLogo_->Draw();
 }
 
