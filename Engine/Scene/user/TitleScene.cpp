@@ -47,8 +47,8 @@ void TitleScene::Update()
 
 #endif // _DEBUG
 	// タイトルからゲームシーンへの遷移を行うよう命令されたら遷移する
-	if (input_->TriggerKey(DIK_RSHIFT) || titleManager_->GetIsGoGameScene()) {
-		BaseScene* nextScene = new GameScene();
+	if (input_->TriggerKey(DIK_RSHIFT) || titleManager_->GetIsGoStageSelectSceneScene()) {
+		BaseScene* nextScene = new StageSelectScene();
 		SceneManager::GetInstance()->SetNextScene(nextScene);
 	}
 }

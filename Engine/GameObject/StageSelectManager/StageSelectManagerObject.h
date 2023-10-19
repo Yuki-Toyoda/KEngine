@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 #include "../BaseObject.h"
 
 /// <summary>
@@ -43,8 +44,9 @@ public: // その他関数群
 	void ApplyGlobalVariables() override;
 
 private: // メンバ変数
-
-
+	
+	// ステージのプレビューモデルを表示させる座標配列
+	WorldTransform previewStageTransforms_[5];
 
 };
 

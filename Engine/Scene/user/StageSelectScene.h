@@ -21,7 +21,7 @@ public: // メンバ関数
 private: // メンバ変数
 
 	// タイトルマネージャー
-	TitleManagerObject* titleManager_ = nullptr;
+	StageSelectManagerObject* stageSelectManager_ = nullptr;
 
 };
 

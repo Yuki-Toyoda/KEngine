@@ -1,4 +1,5 @@
 #include "StageSelectScene.h"
+#include "../SceneManager.h"
 
 void StageSelectScene::Initialize()
 {
@@ -12,6 +13,12 @@ void StageSelectScene::Initialize()
 	Ambient* ambient = new Ambient(); // インスタンス生成
 	ambient->Initialize("ambient", BaseObject::tagOther); // 初期化
 	gameObjectManager_->AddGameObject(ambient); // ゲームオブジェクトマネージャーに追加
+
+	// ステージ選択シーンマネージャー生成
+	stageSelectManager_ = new StageSelectManagerObject(); // インスタンス生成
+
+	// フェードイン
+	SceneManager::GetInstance()->StartFadeEffect(1.0f, { 0.0f, 0.0f, 0.0f, 1.0f }, { 0.0f, 0.0f, 0.0f, 0.0f });
 }
 
 void StageSelectScene::Update()

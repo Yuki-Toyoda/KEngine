@@ -57,8 +57,8 @@ void TitleManagerObject::Initialize(std::string name, Tag tag)
 
 	// ボタン用変数初期化
 	buttonIsActive_ = false;
-	buttonPosition_ = { 640.0f, 650.0f };
-	buttonSize_ = { 960.0f, 128.0f };
+	buttonPosition_ = { 640.0f, 600.0f };
+	buttonSize_ = { 640.0f, 85.0f };
 	buttonColor_ = { 1.0f, 1.0f, 1.0f, 0.0f };
 	buttonAnchorPoint_ = { 0.5f, 0.5f };
 
@@ -90,10 +90,12 @@ void TitleManagerObject::Initialize(std::string name, Tag tag)
 	skipTitleStaging_ = false;
 
 	// ゲームシーンへのトリガーリセット
-	isGoGameScene_ = false;
+	isGoStageSelectScene_ = false;
 
 	// フェードイン
 	SceneManager::GetInstance()->StartFadeEffect(1.0f, { 0.0f, 0.0f, 0.0f, 1.0f }, { 0.0f, 0.0f, 0.0f, 0.0f });
+
+	AddGlobalVariables();
 
 }
 
@@ -204,7 +206,7 @@ void TitleManagerObject::Update()
 			cameraEndTranslate_ = { 0.0f, 0.25f, -1.0f };
 
 			// 演出時間設定
-			stagingTime_ = 2.5f;
+			stagingTime_ = 1.5f;
 			// 演出用tをリセット
 			stagingT_ = 0.0f;
 
@@ -241,8 +243,8 @@ void TitleManagerObject::Update()
 		}
 		break;
 	case TitleManagerObject::WayPoint6:
-		// ゲームシーンへ
-		isGoGameScene_ = true;
+		// ステージセレクトシーンへ
+		isGoStageSelectScene_ = true;
 		break;
 	}
 

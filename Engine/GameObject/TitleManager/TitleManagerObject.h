@@ -45,7 +45,7 @@ public: // アクセッサ等
 	/// ゲームシーンへのトリガーゲッター
 	/// </summary>
 	/// <returns>ゲームシーンに行くかどうか</returns>
-	bool GetIsGoGameScene() { return isGoGameScene_; }
+	bool GetIsGoStageSelectSceneScene() { return isGoStageSelectScene_; }
 
 public: // その他関数群
 
@@ -125,7 +125,7 @@ private: // メンバ変数
 	bool enableCameraShake_;
 
 	// ゲームシーンへのトリガー
-	bool isGoGameScene_;
+	bool isGoStageSelectScene_;
 
 };
 
