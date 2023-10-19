@@ -19,6 +19,7 @@ void StageSelectScene::Initialize()
 	// ステージ選択シーンマネージャー生成
 	stageSelectManager_ = new StageSelectManagerObject(); // インスタンス生成
 	stageSelectManager_->Initialize("stageSelectManager", BaseObject::tagOther); // 初期化
+	stageSelectManager_->SetCamera(camera);
 	gameObjectManager_->AddGameObject(stageSelectManager_);
 
 	// フェードイン

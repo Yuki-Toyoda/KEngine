@@ -4,6 +4,7 @@
 
 // クラスの前方宣言
 class Input;
+class Camera;
 
 /// <summary>
 /// ステージセレクト画面のマネージャー
@@ -47,6 +48,12 @@ public: // その他関数群
 	void ApplyGlobalVariables() override;
 
 	/// <summary>
+	/// カメラセッター
+	/// </summary>
+	/// <param name="camera"></param>
+	void SetCamera(Camera* camera) { camera_ = camera; }
+
+	/// <summary>
 	/// ステージプレビュー回転開始
 	/// </summary>
 	/// <param name="isRight">右方向に回転するか</param>
@@ -75,9 +82,25 @@ private: // メンバ変数
 	int pressCount_;
 
 	// 演出用t
-	float stagingT_;
-	// 演出時点での回転開始角度
+	float rotateStagingT_;
+	// 演出時間
+	float rotateStagingTime_;
+	// 演出中トリガー
+	bool isRotateStaging_;
+
+	// 角度
 	float startAngle_;
 	float endAngle_;
+
+	// カメラ
+	Camera* camera_ = nullptr;
+	// カメラ演出用t
+	float cameraStagingT_;
+	// カメラ演出用tのループトリガー
+	bool cameraStagingTReturn_;
+	// カメラ演出用t2
+	float cameraStagingT2_;
+	// カメラ演出用t2のループトリガー
+	bool cameraStagingT2Return_;
 };
 

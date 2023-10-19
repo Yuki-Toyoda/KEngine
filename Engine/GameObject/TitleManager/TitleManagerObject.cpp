@@ -70,7 +70,7 @@ void TitleManagerObject::Initialize(std::string name, Tag tag)
 	// 演出中間地点リセット
 	stagingWayPoint_ = 0;
 	// 演出t
-	stagingT_ = 0.0f;
+	rotateStagingT_ = 0.0f;
 
 	// イージング座標リセット
 	cameraStartTranslate_ = { 0.0f, 10.0f, -50.0f };
@@ -84,7 +84,7 @@ void TitleManagerObject::Initialize(std::string name, Tag tag)
 	// カメラ演出用tのループトリガー
 	cameraStagingT2Return_ = false;
 	// 演出時間リセット
-	stagingTime_ = 2.5f;
+	rotateStagingTime_ = 2.5f;
 
 	// タイトル演出スキップトリガーリセット
 	skipTitleStaging_ = false;
@@ -116,13 +116,13 @@ void TitleManagerObject::Update()
 	switch (stagingWayPoint_)
 	{
 	case TitleManagerObject::WayPoint1: // カメラをタイトルロゴの位置まで移動させる
-		if (stagingT_ <= stagingTime_) { 
+		if (rotateStagingT_ <= rotateStagingTime_) { 
 			// カメラをイージングで移動させる
-			camera_->transform_.translate_ = Math::EaseOut(stagingT_, cameraStartTranslate_, cameraEndTranslate_, stagingTime_);
-			camera_->transform_.rotate_ = Math::EaseInOut(stagingT_, { (float)std::numbers::pi / 16.0f, 0.0f , 0.0f }, { 0.0f, 0.0f, 0.0f }, stagingTime_);
+			camera_->transform_.translate_ = Math::EaseOut(rotateStagingT_, cameraStartTranslate_, cameraEndTranslate_, rotateStagingTime_);
+			camera_->transform_.rotate_ = Math::EaseInOut(rotateStagingT_, { (float)std::numbers::pi / 16.0f, 0.0f , 0.0f }, { 0.0f, 0.0f, 0.0f }, rotateStagingTime_);
 
 			// 演出用tを加算
-			stagingT_ += 1.0f / 60.0f;
+			rotateStagingT_ += 1.0f / 60.0f;
 		}
 		else {
 
@@ -137,21 +137,21 @@ void TitleManagerObject::Update()
 			enableCameraShake_ = true;
 
 			// 演出用tをリセット
-			stagingT_ = 0.0f;
+			rotateStagingT_ = 0.0f;
 			// 演出時間設定
-			stagingTime_ = 1.5f;
+			rotateStagingTime_ = 1.5f;
 
 			// 次の演出に
 			stagingWayPoint_++;
 		}
 		break;
 	case TitleManagerObject::WayPoint2: // タイトルロゴを徐々に表示させる
-		if (stagingT_ <= stagingTime_) {
+		if (rotateStagingT_ <= rotateStagingTime_) {
 			// タイトルロゴを表示
-			logoColor_.w = Math::EaseIn(stagingT_, 0.0f, 1.0f, stagingTime_);
+			logoColor_.w = Math::EaseIn(rotateStagingT_, 0.0f, 1.0f, rotateStagingTime_);
 
 			// 演出用tを加算
-			stagingT_ += 1.0f / 60.0f;
+			rotateStagingT_ += 1.0f / 60.0f;
 		}
 		else {
 
@@ -165,9 +165,9 @@ void TitleManagerObject::Update()
 			logoColor_.w = 1.0f;
 
 			// 演出時間設定
-			stagingTime_ = 1.0f;
+			rotateStagingTime_ = 1.0f;
 			// 演出用tをリセット
-			stagingT_ = 0.0f;
+			rotateStagingT_ = 0.0f;
 
 			// 次の演出に
 			stagingWayPoint_++;
@@ -186,14 +186,14 @@ void TitleManagerObject::Update()
 		}
 		break;
 	case TitleManagerObject::WayPoint4:
-		if (stagingT_ <= stagingTime_) {
+		if (rotateStagingT_ <= rotateStagingTime_) {
 			// カメラをイージングで移動させる
-			camera_->transform_.translate_ = Math::EaseInOut(stagingT_, cameraStartTranslate_, cameraEndTranslate_, stagingTime_);
+			camera_->transform_.translate_ = Math::EaseInOut(rotateStagingT_, cameraStartTranslate_, cameraEndTranslate_, rotateStagingTime_);
 			// タイトルロゴを表示
-			logoColor_.w = Math::EaseOut(stagingT_, 1.0f, 0.0f, stagingTime_);
-			buttonColor_.w = Math::EaseOut(stagingT_, 1.0f, 0.0f, stagingTime_);
+			logoColor_.w = Math::EaseOut(rotateStagingT_, 1.0f, 0.0f, rotateStagingTime_);
+			buttonColor_.w = Math::EaseOut(rotateStagingT_, 1.0f, 0.0f, rotateStagingTime_);
 			// 演出用tを加算
-			stagingT_ += 1.0f / 60.0f;
+			rotateStagingT_ += 1.0f / 60.0f;
 		}
 		else {
 
@@ -206,22 +206,22 @@ void TitleManagerObject::Update()
 			cameraEndTranslate_ = { 0.0f, 0.25f, -1.0f };
 
 			// 演出時間設定
-			stagingTime_ = 1.5f;
+			rotateStagingTime_ = 1.5f;
 			// 演出用tをリセット
-			stagingT_ = 0.0f;
+			rotateStagingT_ = 0.0f;
 
 			// フェードアウト
-			SceneManager::GetInstance()->StartFadeEffect(stagingTime_, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f, 1.0f });
+			SceneManager::GetInstance()->StartFadeEffect(rotateStagingTime_, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f, 1.0f });
 			// 次の演出に
 			stagingWayPoint_++;
 		}
 		break;
 	case TitleManagerObject::WayPoint5:
-		if (stagingT_ <= stagingTime_) {
+		if (rotateStagingT_ <= rotateStagingTime_) {
 			// カメラをイージングで移動させる
-			camera_->transform_.translate_ = Math::EaseInOut(stagingT_, cameraStartTranslate_, cameraEndTranslate_, stagingTime_);
+			camera_->transform_.translate_ = Math::EaseInOut(rotateStagingT_, cameraStartTranslate_, cameraEndTranslate_, rotateStagingTime_);
 			// 演出用tを加算
-			stagingT_ += 1.0f / 60.0f;
+			rotateStagingT_ += 1.0f / 60.0f;
 		}
 		else {
 
@@ -234,9 +234,9 @@ void TitleManagerObject::Update()
 			cameraEndTranslate_ = { 0.0f, 0.25f, -1.0f };
 
 			// 演出時間設定
-			stagingTime_ = 1.5f;
+			rotateStagingTime_ = 1.5f;
 			// 演出用tをリセット
-			stagingT_ = 0.0f;
+			rotateStagingT_ = 0.0f;
 
 			// 次の演出に
 			stagingWayPoint_++;
@@ -307,7 +307,7 @@ void TitleManagerObject::Update()
 			// a値を強制的に変更
 			logoColor_.w = 1.0f;
 			stagingWayPoint_ = WayPoint2;
-			stagingTime_ = 0.0f;
+			rotateStagingTime_ = 0.0f;
 			enableCameraShake_ = true;
 			skipTitleStaging_ = true;
 		}

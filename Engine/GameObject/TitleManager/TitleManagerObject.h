@@ -100,7 +100,7 @@ private: // メンバ変数
 	// 演出中間地点
 	int stagingWayPoint_;
 	// 演出t
-	float stagingT_;
+	float rotateStagingT_;
 
 	// イージング用カメラ始端座標
 	Vector3 cameraStartTranslate_;
@@ -116,7 +116,7 @@ private: // メンバ変数
 	// カメラ演出用t2のループトリガー
 	bool cameraStagingT2Return_;
 	// 演出時間
-	float stagingTime_;
+	float rotateStagingTime_;
 
 	// タイトルロゴ演出スキップトリガー
 	bool skipTitleStaging_;
