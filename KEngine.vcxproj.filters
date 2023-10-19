@@ -220,7 +220,7 @@
     <ClCompile Include="Engine\Stage\user\FirstStage.cpp">
       <Filter>Engine\Stage\user</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Stage\user\SecondStage.cpp">
+    <ClCompile Include="Engine\Stage\user\DebugStage.cpp">
       <Filter>Engine\Stage\user</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\Item\Item.cpp">
@@ -403,7 +403,7 @@
     <ClInclude Include="Engine\Stage\user\FirstStage.h">
       <Filter>Engine\Stage\user</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Stage\user\SecondStage.h">
+    <ClInclude Include="Engine\Stage\user\DebugStage.h">
       <Filter>Engine\Stage\user</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Stage\user\StageList.h">

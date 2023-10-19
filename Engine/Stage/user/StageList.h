@@ -4,4 +4,6 @@
 ==================================*/
 
 #include "FirstStage.h"
-#include "SecondStage.h"
+#ifdef _DEBUG
+#include "DebugStage.h"
+#endif // _DEBUG

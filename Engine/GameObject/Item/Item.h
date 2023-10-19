@@ -50,6 +50,7 @@ public: // その他関数群
 	void OnCollisionExit(BaseObject* object) override;
 
 	void SetPosition(const Vector3& pos) { transform_.translate_ = pos; }
+	void SetIsRePop(bool isRePop) { isRePop_ = isRePop; }
 
 private: // メンバ関数
 

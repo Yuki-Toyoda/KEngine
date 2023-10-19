@@ -5,7 +5,7 @@
 /// <summary>
 /// ゲームシーン
 /// </summary>
-class SecondeStage final : public BaseStage {
+class DebugStage final : public BaseStage {
 public: // メンバ関数
 
 	/// <summary>
@@ -17,6 +17,11 @@ public: // メンバ関数
 	/// 更新関数
 	/// </summary>
 	void Update() override;
+
+public:
+
+	// デバッグウィンドウを出す
+	void DebugGUI();
 
 private: // メンバ変数
 

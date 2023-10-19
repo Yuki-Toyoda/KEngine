@@ -59,12 +59,12 @@ void Item::Draw()
 
 void Item::AddGlobalVariables()
 {
-
+	globalVariables_->AddItem("Item", "CollisionRadius", radius_);
 }
 
 void Item::ApplyGlobalVariables()
 {
-
+	radius_ = globalVariables_->GetFloatValue("Item", "CollisionRadius");
 }
 
 void Item::OnCollisionEnter(BaseObject* object)

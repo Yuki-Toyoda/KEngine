@@ -28,12 +28,12 @@ public: // 共通メンバ関数
 		bool isRePop_;
 	};
 
-	struct GearInfo 
+	struct GearInfo
 	{
 		float clearCondition_;
 	};
 
-	struct StageInfo 
+	struct StageInfo
 	{
 		std::vector<ItemInfo> itemInfo_;
 		GearInfo gearInfo_;
@@ -51,6 +51,9 @@ public: // メンバ関数
 	/// 更新
 	/// </summary>
 	virtual void Update() = 0;
+
+
+	StageInfo GetStageInfo()const { return stageInfo_; }
 
 public: // パブリックなメンバ変数
 
@@ -78,7 +81,7 @@ protected: // メンバ変数
 
 	StageInfo stageInfo_;
 
-	Player* player_ = nullptr;
+	//Player* player_ = nullptr;
 
 	// 歯車の回転量
 	float gearCondition_;

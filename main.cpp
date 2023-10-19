@@ -13,7 +13,6 @@
 #include "Engine/GlobalVariables/GlobalVariables.h"
 #include "Engine/Input/Input.h"
 #include "Engine/Audio/Audio.h"
-#include "Engine/Stage/StageManager.h"
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {

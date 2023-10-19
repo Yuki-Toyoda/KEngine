@@ -129,7 +129,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Stage\BaseStage.cpp" />
     <ClCompile Include="Engine\Stage\StageManager.cpp" />
     <ClCompile Include="Engine\Stage\user\FirstStage.cpp" />
-    <ClCompile Include="Engine\Stage\user\SecondStage.cpp" />
+    <ClCompile Include="Engine\Stage\user\DebugStage.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -192,7 +192,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Stage\BaseStage.h" />
     <ClInclude Include="Engine\Stage\StageManager.h" />
     <ClInclude Include="Engine\Stage\user\FirstStage.h" />
-    <ClInclude Include="Engine\Stage\user\SecondStage.h" />
+    <ClInclude Include="Engine\Stage\user\DebugStage.h" />
     <ClInclude Include="Engine\Stage\user\StageList.h" />
   </ItemGroup>
   <ItemGroup>

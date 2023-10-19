@@ -4,7 +4,7 @@
 
 
 /// <summary>
-/// 全てのシーンの管理マネージャ
+/// 全てのステージの管理マネージャ
 /// </summary>
 class StageManager
 {
@@ -28,25 +28,26 @@ public: // メンバ関数
 	/// 初期化関数
 	/// </summary>
 	void Initialize();
-
-	/// <summary>
-	/// リセット
-	/// </summary>
-	void Reset();
-
+	
 	/// <summary>
 	/// 更新関数
 	/// </summary>
 	void Update();
 
 	// ステージを設定
-	void SetStage(size_t index);
+	void SetStage(size_t commitIndex);
 
 	size_t GetStageMaxIndex() { return infos_.size(); }
 
 	std::vector<Item*>& GetItems() { return items_; }
 
+	void AddStageInfo(const BaseStage::StageInfo& info);
+
+	const int& GetItemMax() { return kMaxItem_; }
+
 private: // メンバ関数
+
+	void AddlyGloavalVariables();
 
 	/// <summary>
 	/// ステージの情報を読み込む
@@ -59,6 +60,10 @@ private: // メンバ関数
 	void SaveStages();
 
 	void SaveInfo(size_t num);
+
+	// デバッグ用GUIを出す
+	void DebugGUI();
+
 
 private: // メンバ変数
 
@@ -73,10 +78,14 @@ private: // メンバ変数
 	// 使用されるアイテムを保存
 	std::vector<Item*> items_;
 
-	int32_t kMaxStaegNum_ = 0;
+	// 計算する
+	int32_t kMaxStageNum_ = 0;
 
 	// ステージ毎の情報
 	std::vector<BaseStage::StageInfo> infos_;
+
+	int commitIndex = 0;
+	int loadIndex = 0;
 };
 
 /*
