@@ -12,12 +12,10 @@ void GameScene::Initialize() {
 	player->Initialize("player", BaseObject::tagPlayer);
 	gameObjectManager_->AddGameObject(player); // ゲームオブジェクトマネージャーに追加
 
-
 	//Item* item = new Item();
 	//item->Initialize("Item", BaseObject::tagItem);
 	//gameObjectManager_->AddGameObject(item);
 
-	
 	Camera* camera = new Camera();
 	camera->Initialize("camera", BaseObject::tagCamera);
 	camera->UseThisCamera();
@@ -27,6 +25,10 @@ void GameScene::Initialize() {
 	stageManager_ = StageManager::GetInstance();
 	stageManager_->Initialize();
 	stageManager_->SetStage(0);
+  
+	// フェードイン
+	SceneManager::GetInstance()->StartFadeEffect(2.5f, { 0.0f, 0.0f, 0.0f, 1.0f }, { 0.0f, 0.0f, 0.0f, 0.0f });
+
 }
 
 void GameScene::Update() {

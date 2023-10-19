@@ -110,6 +110,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\GameObject\Samples\Player\SamplePlayer.cpp" />
     <ClCompile Include="Engine\GameObject\Samples\Stage\SampleFloor.cpp" />
     <ClCompile Include="Engine\GameObject\Samples\TPCamera\TPCamera.cpp" />
+    <ClCompile Include="Engine\GameObject\StageSelectManager\StageSelectManagerObject.cpp" />
+    <ClCompile Include="Engine\GameObject\TitleManager\TitleManagerObject.cpp" />
     <ClCompile Include="Engine\GameObject\WorldTransform.cpp" />
     <ClCompile Include="Engine\GlobalVariables\GlobalVariables.cpp" />
     <ClCompile Include="Engine\Input\Input.cpp" />
@@ -120,6 +122,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Resource\Texture\TextureManager.cpp" />
     <ClCompile Include="Engine\Scene\SceneManager.cpp" />
     <ClCompile Include="Engine\Scene\user\GameScene.cpp" />
+    <ClCompile Include="Engine\Scene\user\StageSelectScene.cpp" />
     <ClCompile Include="Engine\Scene\user\TitleScene.cpp" />
     <ClCompile Include="Engine\Sprite\Sprite.cpp" />
     <ClCompile Include="Engine\Sprite\template\AnimationSprite.cpp" />
@@ -165,6 +168,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\GameObject\Samples\Player\SamplePlayer.h" />
     <ClInclude Include="Engine\GameObject\Samples\Stage\SampleFloor.h" />
     <ClInclude Include="Engine\GameObject\Samples\TPCamera\TPCamera.h" />
+    <ClInclude Include="Engine\GameObject\StageSelectManager\StageSelectManagerObject.h" />
+    <ClInclude Include="Engine\GameObject\TitleManager\TitleManagerObject.h" />
     <ClInclude Include="Engine\GameObject\WorldTransform.h" />
     <ClInclude Include="Engine\GlobalVariables\GlobalVariables.h" />
     <ClInclude Include="Engine\Input\Input.h" />
@@ -182,6 +187,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Scene\SceneManager.h" />
     <ClInclude Include="Engine\Scene\user\GameScene.h" />
     <ClInclude Include="Engine\Scene\user\SceneList.h" />
+    <ClInclude Include="Engine\Scene\user\StageSelectScene.h" />
     <ClInclude Include="Engine\Scene\user\TitleScene.h" />
     <ClInclude Include="Engine\Sprite\Sprite.h" />
     <ClInclude Include="Engine\Sprite\SpriteList.h" />

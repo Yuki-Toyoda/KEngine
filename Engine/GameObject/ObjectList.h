@@ -9,3 +9,5 @@
 #include "Ambient/Ambient.h"
 #include "Player/Player.h"
 #include "Item/Item.h"
+#include "TitleManager/TitleManagerObject.h"
+#include "StageSelectManager/StageSelectManagerObject.h"

@@ -93,6 +93,11 @@
     </Filter>
     <Filter Include="Engine\GameObject\Item">
       <UniqueIdentifier>{3d5c9670-5db7-4de5-9191-56edb13a6e61}</UniqueIdentifier>
+    <Filter Include="Engine\GameObject\TitleManager">
+      <UniqueIdentifier>{895ad2cd-06d4-47fd-a300-18c7d3453234}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GameObject\StageSelectManager">
+      <UniqueIdentifier>{c4242b70-3a79-49d8-89b2-79943e274a51}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -227,6 +232,15 @@
       <Filter>Engine\GameObject\Item</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Stage\BaseStage.cpp" />
+    <ClCompile Include="Engine\GameObject\TitleManager\TitleManagerObject.cpp">
+      <Filter>Engine\GameObject\TitleManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\StageSelectManager\StageSelectManagerObject.cpp">
+      <Filter>Engine\GameObject\StageSelectManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Scene\user\StageSelectScene.cpp">
+      <Filter>Engine\Scene\User</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Base\DirectXCommon.h">
@@ -411,6 +425,14 @@
     </ClInclude>
     <ClInclude Include="Engine\GameObject\Item\Item.h">
       <Filter>Engine\GameObject\Item</Filter>
+    <ClInclude Include="Engine\GameObject\TitleManager\TitleManagerObject.h">
+      <Filter>Engine\GameObject\TitleManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\StageSelectManager\StageSelectManagerObject.h">
+      <Filter>Engine\GameObject\StageSelectManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Scene\user\StageSelectScene.h">
+      <Filter>Engine\Scene\User</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

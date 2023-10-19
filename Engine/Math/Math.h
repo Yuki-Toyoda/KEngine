@@ -149,6 +149,50 @@ public:	// メンバ関数
 	static int EaseOut(float t, int start, int end);
 
 	/// <summary>
+	/// 線形補間関数(EaseInOut)(float)
+	/// </summary>
+	/// <param name="t">現在のt</param>
+	/// <param name="start">開始値</param>
+	/// <param name="end">終了値</param>
+	/// <param name="time">かかる秒数</param>
+	/// <returns>イージングされた値(float)</returns>
+	static float EaseInOut(float t, float start, float end, float time);
+	/// <summary>
+	/// 線形補間関数(EaseInOut)(int)
+	/// </summary>
+	/// <param name="t">現在のt</param>
+	/// <param name="start">開始値</param>
+	/// <param name="end">終了値</param>
+	/// <param name="time">かかる秒数</param>
+	/// <returns>イージングされた値(float)</returns>
+	static int EaseInOut(float t, int start, int end, float time);
+	/// <summary>
+	/// 線形補間関数(EaseInOut)(Vector3)
+	/// </summary>
+	/// <param name="t">現在のt</param>
+	/// <param name="start">開始値</param>
+	/// <param name="end">終了値</param>
+	/// <param name="time">かかる秒数</param>
+	/// <returns>イージングされた値(Vector3)</returns>
+	static Vector3 EaseInOut(float t, Vector3 start, Vector3 end, float time);
+	/// <summary>
+	/// イージングにかかる秒数を指定しない線形補間関数(EaseInOut)(float)
+	/// </summary>
+	/// <param name="t">現在のt</param>
+	/// <param name="start">開始値</param>
+	/// <param name="end">終了値</param>
+	/// <returns>イージングされた値(float)</returns>
+	static float EaseInOut(float t, float start, float end);
+	/// <summary>
+	/// イージングにかかる秒数を指定しない線形補間関数(EaseInOut)(int)
+	/// </summary>
+	/// <param name="t">現在のt</param>
+	/// <param name="start">開始値</param>
+	/// <param name="end">終了値</param>
+	/// <returns>イージングされた値(float)</returns>
+	static int EaseInOut(float t, int start, int end);
+
+	/// <summary>
 	/// 引数の値を 最小値 から 最大値 の値に収める関数
 	/// </summary>
 	/// <param name="a">値を設定する関数</param>
