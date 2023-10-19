@@ -2,6 +2,9 @@
 #include <string>
 #include "../BaseObject.h"
 
+// クラスの前方宣言
+class Input;
+
 /// <summary>
 /// ステージセレクト画面のマネージャー
 /// </summary>
@@ -43,10 +46,38 @@ public: // その他関数群
 	/// </summary>
 	void ApplyGlobalVariables() override;
 
-private: // メンバ変数
-	
-	// ステージのプレビューモデルを表示させる座標配列
-	WorldTransform previewStageTransforms_[5];
+	/// <summary>
+	/// ステージプレビュー回転開始
+	/// </summary>
+	/// <param name="isRight">右方向に回転するか</param>
+	void RotateStart(bool isRight);
 
+	/// <summary>
+	/// ステージプレビュー回転関数
+	/// </summary>
+	void RotateStagePreview();
+
+private: // メンバ変数
+
+	// 入力
+	Input* input_ = nullptr;
+
+	// 全体のステージ数
+	int stageCount_;
+
+	// ステージのプレビューモデルを表示させる座標配列
+	WorldTransform mainGearTransform_;
+	WorldTransform previewStageTransforms_[4];
+
+	// 選択中のステージ番号
+	int selectedStageNumber_;
+	// 切り替えボタン押下回数デクリメント
+	int pressCount_;
+
+	// 演出用t
+	float stagingT_;
+	// 演出時点での回転開始角度
+	float startAngle_;
+	float endAngle_;
 };
 

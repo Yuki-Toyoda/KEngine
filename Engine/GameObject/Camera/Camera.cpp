@@ -13,6 +13,9 @@ void Camera::Initialize(std::string name, Tag tag)
 	// カメラ初期位置の設定
 	transform_.translate_ = { 0.0f, 1.0f, -10.0f };
 
+	// 視野角初期値設定
+	fov_ = 0.45f;
+
 	// グローバル変数に調整したい値を追加
 	AddGlobalVariables();
 }
@@ -26,7 +29,7 @@ void Camera::Update()
 	// ビュー行列計算
 	Matrix4x4 viewMatrix = Math::Inverse(cameraMatrix);
 	// プロジェクション行列の計算
-	Matrix4x4 projectionMatrix = Math::MakePerspectiveFovMatrix(0.45f, float(WinApp::kWindowWidth) / float(WinApp::kwindowHeight), 0.1f, 100.0f);
+	Matrix4x4 projectionMatrix = Math::MakePerspectiveFovMatrix(fov_, float(WinApp::kWindowWidth) / float(WinApp::kwindowHeight), 0.1f, 100.0f);
 	// ビュープロジェクション行列の計算
 	viewProjectionMatrix_ = viewMatrix * projectionMatrix;
 
@@ -70,6 +73,7 @@ void Camera::Update()
 	}
 
 	ImGui::Begin(objectName_.c_str());
+	ImGui::SliderFloat("FOV", &fov_, 0.45f, 1.2f);
 	if (ImGui::Button("UseThisCamera"))
 		UseThisCamera();
 	ImGui::End();
