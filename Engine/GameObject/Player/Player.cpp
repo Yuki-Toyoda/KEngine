@@ -123,7 +123,7 @@ void Player::OnCollision(BaseObject* object)
 {
 	object;
 	// 衝突しているのが Item だった時
-	if (object->GetObjectTag() == tagItem) {
+	if (object->GetIsActive() && object->GetObjectTag() == tagItem) {
 		// ボタンの再入力があった時
 		if (input_->PushKey(DIK_Q)) {
 			AirJump();

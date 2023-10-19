@@ -18,9 +18,10 @@ void StageManager::Initialize()
 
 	// ステージ初期化
 	currentStage_ = nullptr;
-	
-	commitIndex = 0;
-	loadIndex = 0;
+
+	commitIndex_ = 0;
+	loadIndex_ = 0;
+	nowStageNum_ = 0;
 
 	items_.clear();
 	items_.resize(kMaxItem_);
@@ -35,6 +36,16 @@ void StageManager::Initialize()
 	AddlyGloavalVariables();
 	// ステージの設定を読み込む
 	LoadStages();
+}
+
+void StageManager::Reset()
+{
+	for (size_t i = 0; i < items_.size(); i++)
+	{
+		items_[i]->Initialize("Item", BaseObject::tagItem);
+		items_[i]->SetIsActive(false);
+	}
+
 }
 
 void StageManager::Update()
@@ -52,9 +63,11 @@ void StageManager::Update()
 
 void StageManager::SetStage(size_t stageIndex)
 {
+	nowStageNum_ = static_cast<int>(stageIndex);
 #ifdef _DEBUG
 
-	if (1) {
+	Reset();
+	if (infos_.empty()) {
 		StageInfo info{};
 		info.gearInfo_.clearCondition_ = 100.0f;
 		info.itemInfo_.clear();
@@ -63,12 +76,18 @@ void StageManager::SetStage(size_t stageIndex)
 		currentStage_->Initialize(info);
 		return;
 	}
+	else {
+		currentStage_ = new DebugStage();
+		currentStage_->commonInitialize();
+		currentStage_->Initialize(infos_[stageIndex]);
+		return;
+	}
 
 #endif // _DEBUG
 
-	currentStage_ = new DebugStage();
-	currentStage_->commonInitialize();
-	currentStage_->Initialize(infos_[stageIndex]);
+	//currentStage_ = new DebugStage();
+	//currentStage_->commonInitialize();
+	//currentStage_->Initialize(infos_[stageIndex]);
 
 }
 
@@ -86,7 +105,7 @@ void StageManager::LoadStages()
 	infos_.resize(kMaxStageNum_);
 	for (size_t i = 0; i < infos_.size(); i++)
 	{
-		infos_.push_back(LoadInfo(i));
+		infos_[i] = LoadInfo(i);
 	}
 }
 
@@ -169,15 +188,15 @@ void StageManager::DebugGUI()
 	}
 	if (ImGui::Button("CommitAs")) {
 		kMaxStageNum_ = static_cast<int32_t>(infos_.size());
-		SaveInfo(commitIndex);
+		SaveInfo(commitIndex_);
 	}
 	ImGui::SameLine();
-	ImGui::InputInt("index", &commitIndex, 1, 5);
-	if (commitIndex < 0) {
-		commitIndex = 0;
+	ImGui::InputInt("index", &commitIndex_, 1, 5);
+	if (commitIndex_ < 0) {
+		commitIndex_ = 0;
 	}
-	else if (infos_.size() - 1 < commitIndex) {
-		commitIndex = static_cast<int>(infos_.size()) - 1;
+	else if (infos_.size() - 1 < commitIndex_) {
+		commitIndex_ = static_cast<int>(infos_.size()) - 1;
 	}
 	ImGui::Separator();
 	ImGui::Separator();
@@ -185,12 +204,12 @@ void StageManager::DebugGUI()
 		LoadStages();
 	}
 	if (ImGui::Button("LoadAs")) {
-		infos_.push_back(LoadInfo(loadIndex));
+		AddStageInfo(LoadInfo(loadIndex_));
 	}
 	ImGui::SameLine();
-	ImGui::InputInt("index", &loadIndex, 1, 5);
-	if (loadIndex < 0) {
-		loadIndex = 0;
+	ImGui::InputInt("index", &loadIndex_, 1, 5);
+	if (loadIndex_ < 0) {
+		loadIndex_ = 0;
 	}
 	ImGui::Separator();
 
@@ -198,6 +217,21 @@ void StageManager::DebugGUI()
 		if (infos_.size() != 0) {
 			infos_.pop_back();
 		}
+	}
+
+	ImGui::Separator();
+
+	ImGui::Text("NowStage:%d", nowStageNum_);
+	if (ImGui::Button("ChangeStage")) {
+		SetStage(nextStageNum_);
+	}
+	ImGui::SameLine();
+	ImGui::InputInt("NextStage", &nextStageNum_, 1, 5);
+	if (nextStageNum_ < 0) {
+		nextStageNum_ = 0;
+	}
+	else if (infos_.size() - 1 < nextStageNum_) {
+		nextStageNum_ = static_cast<int>(infos_.size()) - 1;
 	}
 
 	ImGui::End();

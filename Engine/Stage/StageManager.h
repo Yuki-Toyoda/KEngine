@@ -30,6 +30,11 @@ public: // メンバ関数
 	void Initialize();
 	
 	/// <summary>
+	/// リセット
+	/// </summary>
+	void Reset();
+
+	/// <summary>
 	/// 更新関数
 	/// </summary>
 	void Update();
@@ -84,8 +89,11 @@ private: // メンバ変数
 	// ステージ毎の情報
 	std::vector<BaseStage::StageInfo> infos_;
 
-	int commitIndex = 0;
-	int loadIndex = 0;
+	int nowStageNum_ = 0;
+	int nextStageNum_ = 0;
+
+	int commitIndex_ = 0;
+	int loadIndex_ = 0;
 };
 
 /*

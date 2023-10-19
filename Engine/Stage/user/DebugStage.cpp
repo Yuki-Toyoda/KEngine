@@ -40,16 +40,16 @@ void DebugStage::DebugGUI()
 	// 一番後ろのアイテムを非表示にする
 	if (ImGui::Button("DeleteItem")) {
 		if (iInfo.size() != 0) {
-			items.back()->SetIsActive(false);
+			items[iInfo.size() - 1]->SetIsActive(false);
 			iInfo.pop_back();
 		}
 	}
 	ImGui::Separator();
-	std::string commitIndex = "info";
+	std::string commitIndex_ = "info";
 	ImGui::Text("index:%d", iInfo.size());
 	for (size_t i = 0; i < iInfo.size(); i++)
 	{
-		std::string treeName = commitIndex + std::to_string(i);
+		std::string treeName = commitIndex_ + std::to_string(i);
 		if (ImGui::TreeNode(treeName.c_str())) {
 			ImGui::DragFloat2("positon", &iInfo[i].position_.x, 0.01f);
 			ImGui::Checkbox("isRePop", &iInfo[i].isRePop_);
