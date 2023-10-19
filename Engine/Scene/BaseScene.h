@@ -7,6 +7,7 @@
 #include "../GameObject/ObjectList.h"
 #include "../Sprite/SpriteList.h"
 #include "../Input/Input.h"
+#include "../Stage/StageManager.h"
 
 /// <summary>
 /// 基底シーン

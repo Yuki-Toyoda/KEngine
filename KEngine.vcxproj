@@ -104,6 +104,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\GameObject\BaseObject.cpp" />
     <ClCompile Include="Engine\GameObject\Camera\Camera.cpp" />
     <ClCompile Include="Engine\GameObject\GameObjectManager.cpp" />
+    <ClCompile Include="Engine\GameObject\Item\Item.cpp" />
+    <ClCompile Include="Engine\GameObject\Player\Player.cpp" />
     <ClCompile Include="Engine\GameObject\Samples\Box\SampleBox.cpp" />
     <ClCompile Include="Engine\GameObject\Samples\Player\SamplePlayer.cpp" />
     <ClCompile Include="Engine\GameObject\Samples\Stage\SampleFloor.cpp" />
@@ -127,6 +129,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Sprite\template\Counter.cpp" />
     <ClCompile Include="Engine\Sprite\template\Gage.cpp" />
     <ClCompile Include="Engine\Sprite\template\Timer.cpp" />
+    <ClCompile Include="Engine\Stage\BaseStage.cpp" />
+    <ClCompile Include="Engine\Stage\StageManager.cpp" />
+    <ClCompile Include="Engine\Stage\user\FirstStage.cpp" />
+    <ClCompile Include="Engine\Stage\user\DebugStage.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -154,7 +160,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\GameObject\BaseObject.h" />
     <ClInclude Include="Engine\GameObject\Camera\Camera.h" />
     <ClInclude Include="Engine\GameObject\GameObjectManager.h" />
+    <ClInclude Include="Engine\GameObject\Item\Item.h" />
     <ClInclude Include="Engine\GameObject\ObjectList.h" />
+    <ClInclude Include="Engine\GameObject\Player\Player.h" />
     <ClInclude Include="Engine\GameObject\SampleList.h" />
     <ClInclude Include="Engine\GameObject\Samples\Box\SampleBox.h" />
     <ClInclude Include="Engine\GameObject\Samples\Player\SamplePlayer.h" />
@@ -187,6 +195,11 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Sprite\template\Counter.h" />
     <ClInclude Include="Engine\Sprite\template\Gage.h" />
     <ClInclude Include="Engine\Sprite\template\Timer.h" />
+    <ClInclude Include="Engine\Stage\BaseStage.h" />
+    <ClInclude Include="Engine\Stage\StageManager.h" />
+    <ClInclude Include="Engine\Stage\user\FirstStage.h" />
+    <ClInclude Include="Engine\Stage\user\DebugStage.h" />
+    <ClInclude Include="Engine\Stage\user\StageList.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\externals\imgui\.editorconfig" />

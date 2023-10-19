@@ -90,10 +90,10 @@ OBJ::ModelData ModelManager::LoadModel(const std::string& directoryPath, const s
 					std::stringstream v(vertexDefinition);
 					uint32_t elementIndices[3];
 					for (int32_t element = 0; element < 3; element++) {
-						std::string index;
+						std::string commitIndex;
 						// 区切りのインデックスを読む
-						std::getline(v, index, '/');
-						elementIndices[element] = std::stoi(index);
+						std::getline(v, commitIndex, '/');
+						elementIndices[element] = std::stoi(commitIndex);
 					}
 					// 要素へのIndexから実際の要素の値を取得して、頂点を構築する
 					Vector4 position = positions_[elementIndices[0] - 1];

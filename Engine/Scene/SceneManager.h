@@ -36,7 +36,7 @@ public: // メンバ関数
 	/// 描画関数
 	/// </summary>
 	void Draw();
-
+  
 public: // アクセッサ等
 
 	/// <summary>

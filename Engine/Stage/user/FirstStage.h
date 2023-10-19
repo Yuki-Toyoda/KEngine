@@ -1,18 +1,20 @@
 #pragma once
-#include "../BaseScene.h"
-#include "SceneList.h"
-#include "../../Stage/user/StageList.h"
+#include "../BaseStage.h"
+#include "StageList.h"
 
 /// <summary>
-/// ゲームシーン
+/// タイトルシーン
 /// </summary>
-class GameScene final : public BaseScene {
+class FirstStage final : public BaseStage {
 public: // メンバ関数
+
+	FirstStage();
+	~FirstStage() = default;
 
 	/// <summary>
 	/// 初期化関数
 	/// </summary>
-	void Initialize() override;
+	void Initialize(const StageInfo& info) override;
 
 	/// <summary>
 	/// 更新関数
@@ -21,6 +23,5 @@ public: // メンバ関数
 
 private: // メンバ変数
 
-	StageManager* stageManager_ = nullptr;
-
 };
+

@@ -115,40 +115,40 @@ void LightGroup::DefaultLightSetting()
 	directionalLights_[0].SetLightDirection({ 0.0f, -1.0f, 0.0f});
 }
 
-void LightGroup::SetDirectionalLightActive(int index, bool active)
+void LightGroup::SetDirectionalLightActive(int commitIndex, bool active)
 {
 	// 配列番号の範囲外を選択した場合エラー
-	assert(0 <= index && index < kDirectionalLight);
+	assert(0 <= commitIndex && commitIndex < kDirectionalLight);
 	// 有効状態をセット
-	directionalLights_[index].SetActive(active);
+	directionalLights_[commitIndex].SetActive(active);
 }
 
-void LightGroup::SetDirectionalLightDirection(int index, Vector3 direction)
+void LightGroup::SetDirectionalLightDirection(int commitIndex, Vector3 direction)
 {
 	// 配列番号の範囲外を選択した場合エラー
-	assert(0 <= index && index < kDirectionalLight);
+	assert(0 <= commitIndex && commitIndex < kDirectionalLight);
 	// 角度をセット
-	directionalLights_[index].SetLightDirection(direction);
+	directionalLights_[commitIndex].SetLightDirection(direction);
 	// 値が変更されたことを通知
 	dirty_ = true;
 }
 
-void LightGroup::SetDirectionalLightColor(int index, Vector4 color)
+void LightGroup::SetDirectionalLightColor(int commitIndex, Vector4 color)
 {
 	// 配列番号の範囲外を選択した場合エラー
-	assert(0 <= index && index < kDirectionalLight);
+	assert(0 <= commitIndex && commitIndex < kDirectionalLight);
 	// 色をセット
-	directionalLights_[index].SetLightColor(color);
+	directionalLights_[commitIndex].SetLightColor(color);
 	// 値が変更されたことを通知
 	dirty_ = true;
 }
 
-void LightGroup::SetDirectionalLightIntensity(int index, float intensity)
+void LightGroup::SetDirectionalLightIntensity(int commitIndex, float intensity)
 {
 	// 配列番号の範囲外を選択した場合エラー
-	assert(0 <= index && index < kDirectionalLight);
+	assert(0 <= commitIndex && commitIndex < kDirectionalLight);
 	// 輝度をセット
-	directionalLights_[index].SetIntensity(intensity);
+	directionalLights_[commitIndex].SetIntensity(intensity);
 	// 値が変更されたことを通知
 	dirty_ = true;
 }

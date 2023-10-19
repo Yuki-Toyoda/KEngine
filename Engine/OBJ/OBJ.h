@@ -129,25 +129,25 @@ public: // 静的なメンバ関数
 	/// </summary>
 	/// <param name="index">ライト番号</param>
 	/// <param name="active">有効非有効</param>
-	static void SetLightActive(int index, bool active) { lightGroup_->SetDirectionalLightActive(index, active); }
+	static void SetLightActive(int commitIndex, bool active) { lightGroup_->SetDirectionalLightActive(commitIndex, active); }
 
 	/// <summary>
 	/// ライト角度のセッター
 	/// </summary>
-	static void SetLightRotation(int index, Vector3 rotation) { lightGroup_->SetDirectionalLightDirection(index, rotation); }
+	static void SetLightRotation(int commitIndex, Vector3 rotation) { lightGroup_->SetDirectionalLightDirection(commitIndex, rotation); }
 
 	/// <summary>
 	/// ライト輝度セッター
 	/// </summary>
 	/// <param name="intensity"></param>
-	static void SetLightIntensity(int index, float intensity) { lightGroup_->SetDirectionalLightIntensity(index, intensity); }
+	static void SetLightIntensity(int commitIndex, float intensity) { lightGroup_->SetDirectionalLightIntensity(commitIndex, intensity); }
 
 	/// <summary>
 	/// ライト色セッター
 	/// </summary>
 	/// <param name="index">ライト番号</param>
 	/// <param name="color">色</param>
-	static void SetLightColor(int index, Vector4 color) { lightGroup_->SetDirectionalLightColor(index, color); }
+	static void SetLightColor(int commitIndex, Vector4 color) { lightGroup_->SetDirectionalLightColor(commitIndex, color); }
 
 private: // 静的なメンバ変数
 
