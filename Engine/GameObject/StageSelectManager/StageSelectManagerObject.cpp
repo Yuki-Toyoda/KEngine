@@ -1,6 +1,6 @@
 #include "StageSelectManagerObject.h"
 #include "../../Input/Input.h"
-#include "../Camera/Camera.h"
+#include "../../Scene/SceneManager.h"
 
 void StageSelectManagerObject::Initialize(std::string name, Tag tag)
 {
@@ -51,12 +51,31 @@ void StageSelectManagerObject::Initialize(std::string name, Tag tag)
 	isRotateStaging_ = false;
 
 	// カメラ手振れ演出無効
+	enableCameraShake_ = false;
 	cameraStagingT_ = (3.0f / 2.0f) / 2.0f;
 	cameraStagingT2_ = (3.0f / 2.0f);
 	// カメラ演出用tのループトリガー
 	cameraStagingTReturn_ = false;
 	// カメラ演出用tのループトリガー
 	cameraStagingT2Return_ = false;
+
+	// 遷移演出中である
+	isTransitionStaging_ = true;
+	// 遷移演出用t
+	transitionStagingT_ = 0.0f;
+	// 遷移演出時間
+	transitionStagingTime_ = 2.5f;
+
+	// カメラ演出始端座標設定
+	cameraStartTranslate_ = camera_->transform_.translate_;
+	// カメラ演出終端座標設定
+	cameraEndTranslate_ = { 0.0f, 0.0f, -13.5f };
+
+	// ゲームシーンへは遷移させない
+	isGoGameScene_ = false;
+
+	// フェードイン
+	SceneManager::GetInstance()->StartFadeEffect(transitionStagingTime_, { 0.0f, 0.0f, 0.0f, 1.0f }, { 0.0f, 0.0f, 0.0f, 0.0f });
 }
 
 void StageSelectManagerObject::Update()
@@ -73,77 +92,43 @@ void StageSelectManagerObject::Update()
 	previewStageTransforms_[2].rotate_.z = (transform_.rotate_.z * (18.0f / 12.0f)) + 0.125f;
 	previewStageTransforms_[3].rotate_.z = (transform_.rotate_.z * (18.0f / 12.0f)) - 0.125f;
 
-	// キーを押すとステージを選択
-	if (input_->TriggerKey(DIK_D) || input_->TriggerKey(DIK_RIGHTARROW)) {
-		if (pressCount_ < 0)
-			pressCount_ = 0;
+	// 遷移中でなければ
+	if (!isTransitionStaging_) {
+		// キーを押すとステージを選択
+		if (input_->TriggerKey(DIK_D) || input_->TriggerKey(DIK_RIGHTARROW)) {
+			if (pressCount_ < 0)
+				pressCount_ = 0;
 
-		if (pressCount_ < 3)
-			pressCount_++;
-	}	
-	else if (input_->TriggerKey(DIK_A) || input_->TriggerKey(DIK_LEFTARROW)) {
-		if (pressCount_ > 0)
-			pressCount_ = 0;
-		
-		if (pressCount_ > -3)
-			pressCount_--;
-	}
-		
-	if (!isRotateStaging_) {
-		if (pressCount_ > 0) {
-			// 押下回数デクリメント
-			pressCount_--;
-			RotateStart(true);
+			if (pressCount_ < 3)
+				pressCount_++;
 		}
-		else if (pressCount_ < 0) {
-			// 押下回数インクリメント
-			pressCount_++;
-			RotateStart(false);
-		}
-	}
+		else if (input_->TriggerKey(DIK_A) || input_->TriggerKey(DIK_LEFTARROW)) {
+			if (pressCount_ > 0)
+				pressCount_ = 0;
 
-	if (cameraStagingT_ <= 3.0f / 2.0f) {
-		// カメラを横に少し動かす
-		if (!cameraStagingTReturn_) {
-			camera_->transform_.translate_.y = Math::EaseInOut(cameraStagingT_, -0.05f, 0.05f, 3.0f / 2.0f);
+			if (pressCount_ > -3)
+				pressCount_--;
 		}
-		else {
-			camera_->transform_.translate_.y = Math::EaseInOut(cameraStagingT_, 0.05f, -0.05f, 3.0f / 2.0f);
+		// 回転演出中でなければ
+		if (!isRotateStaging_) {
+			if (pressCount_ > 0) {
+				// 押下回数デクリメント
+				pressCount_--;
+				RotateStart(true);
+			}
+			else if (pressCount_ < 0) {
+				// 押下回数インクリメント
+				pressCount_++;
+				RotateStart(false);
+			}
 		}
-
-		// 演出用tを加算
-		cameraStagingT_ += 1.0f / 60.0f;
-	}
-	else {
-		cameraStagingT_ = 0.0f;
-		if (!cameraStagingTReturn_)
-			cameraStagingTReturn_ = true;
-		else
-			cameraStagingTReturn_ = false;
-
 	}
 
-	if (cameraStagingT2_ <= 3.0f) {
-		// カメラを横に少し動かす
-		if (!cameraStagingT2Return_) {
-			camera_->transform_.translate_.x = Math::EaseInOut(cameraStagingT2_, -0.05f, 0.05f, 3.0f);
-		}
-		else {
-			camera_->transform_.translate_.x = Math::EaseInOut(cameraStagingT2_, 0.05f, -0.05f, 3.0f);
-		}
+	// 遷移演出
+	TransitionStaging();
 
-
-		// 演出用tを加算
-		cameraStagingT2_ += 1.0f / 60.0f;
-	}
-	else {
-		cameraStagingT2_ = 0.0f;
-		if (!cameraStagingT2Return_)
-			cameraStagingT2Return_ = true;
-		else
-			cameraStagingT2Return_ = false;
-
-	}
+	// カメラ手振れ演出
+	CameraShake();
 
 #ifdef _DEBUG
 
@@ -184,6 +169,157 @@ void StageSelectManagerObject::AddGlobalVariables()
 void StageSelectManagerObject::ApplyGlobalVariables()
 {
 
+}
+
+void StageSelectManagerObject::TransitionStaging()
+{
+	switch (stagingWayPoint_)
+	{
+	case StageSelectManagerObject::WayPoint1:
+		if (transitionStagingT_ <= transitionStagingTime_) {
+			// カメラ座標を動かす
+			camera_->transform_.translate_ = Math::EaseOut(transitionStagingT_, cameraStartTranslate_, cameraEndTranslate_, transitionStagingTime_);
+			// 視野角を広げる
+			camera_->fov_ = Math::EaseOut(transitionStagingT_, 0.4f, 0.55f, transitionStagingTime_);
+			// tを加算
+			transitionStagingT_ += 1.0f / 60.0f;
+
+			// 遷移中である
+			isTransitionStaging_ = true;
+		}
+		else {
+			// tをリセット
+			transitionStagingT_ = 0.0f;
+			// 秒数設定
+			transitionStagingTime_ = 1.0f;
+
+			// 遷移中ではない
+			isTransitionStaging_ = false;
+
+			// 手振れ演出開始
+			enableCameraShake_ = true;
+
+			// 次の演出へ
+			stagingWayPoint_++;
+		}
+		break;
+	case StageSelectManagerObject::WayPoint2:
+		if (input_->TriggerKey(DIK_SPACE)) {
+			// カメラシェイク無効
+			enableCameraShake_ = false;
+			// カメラの始端座標を現在のカメラ座標に変更
+			cameraStartTranslate_ = camera_->transform_.translate_;
+			// カメラの終端座標を設定
+			cameraEndTranslate_ = { 0.0f, 0.0f, -17.0f };
+			// 次の演出に
+			stagingWayPoint_++;
+		}
+		break;
+	case StageSelectManagerObject::WayPoint3:
+		if (transitionStagingT_ <= transitionStagingTime_) {
+			// カメラ座標を動かす
+			camera_->transform_.translate_ = Math::EaseInOut(transitionStagingT_, cameraStartTranslate_, cameraEndTranslate_, transitionStagingTime_);
+			// tを加算
+			transitionStagingT_ += 1.0f / 60.0f;
+
+			// 遷移中である
+			isTransitionStaging_ = true;
+		}
+		else {
+			// カメラの始端座標を現在のカメラ座標に変更
+			cameraStartTranslate_ = cameraEndTranslate_;
+			// カメラの終端座標を設定
+			cameraEndTranslate_ = { 0.0f, 0.0f, -3.0f };
+
+			// tをリセット
+			transitionStagingT_ = 0.0f;
+			// 秒数設定
+			transitionStagingTime_ = 1.0f;
+
+			// フェードアウト
+			SceneManager::GetInstance()->StartFadeEffect(transitionStagingTime_, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f, 1.0f });
+
+			// 次の演出へ
+			stagingWayPoint_++;
+		}
+		break;
+	case StageSelectManagerObject::WayPoint4:
+		if (transitionStagingT_ <= transitionStagingTime_) {
+			// カメラ座標を動かす
+			camera_->transform_.translate_ = Math::EaseInOut(transitionStagingT_, cameraStartTranslate_, cameraEndTranslate_, transitionStagingTime_);
+			// 視野角を広げる
+			camera_->fov_ = Math::EaseOut(transitionStagingT_, 0.55f, 0.35f, transitionStagingTime_);
+			// tを加算
+			transitionStagingT_ += 1.0f / 60.0f;
+
+			// 遷移中である
+			isTransitionStaging_ = true;
+		}
+		else {
+
+			// tをリセット
+			transitionStagingT_ = 0.0f;
+			// 秒数設定
+			transitionStagingTime_ = 1.0f;
+
+			// 次の演出へ
+			stagingWayPoint_++;
+		}
+		break;
+	case StageSelectManagerObject::WayPoint5:
+		// ゲームシーンへ遷移させる
+		isGoGameScene_ = true;
+		break;
+	}
+}
+
+void StageSelectManagerObject::CameraShake()
+{
+	// カメラ手振れ演出有効なら
+	if (enableCameraShake_) {
+		if (cameraStagingT_ <= 3.0f / 2.0f) {
+			// カメラを横に少し動かす
+			if (!cameraStagingTReturn_) {
+				camera_->transform_.translate_.y = Math::EaseInOut(cameraStagingT_, -0.05f, 0.05f, 3.0f / 2.0f);
+			}
+			else {
+				camera_->transform_.translate_.y = Math::EaseInOut(cameraStagingT_, 0.05f, -0.05f, 3.0f / 2.0f);
+			}
+
+			// 演出用tを加算
+			cameraStagingT_ += 1.0f / 60.0f;
+		}
+		else {
+			cameraStagingT_ = 0.0f;
+			if (!cameraStagingTReturn_)
+				cameraStagingTReturn_ = true;
+			else
+				cameraStagingTReturn_ = false;
+
+		}
+
+		if (cameraStagingT2_ <= 3.0f) {
+			// カメラを横に少し動かす
+			if (!cameraStagingT2Return_) {
+				camera_->transform_.translate_.x = Math::EaseInOut(cameraStagingT2_, -0.05f, 0.05f, 3.0f);
+			}
+			else {
+				camera_->transform_.translate_.x = Math::EaseInOut(cameraStagingT2_, 0.05f, -0.05f, 3.0f);
+			}
+
+
+			// 演出用tを加算
+			cameraStagingT2_ += 1.0f / 60.0f;
+		}
+		else {
+			cameraStagingT2_ = 0.0f;
+			if (!cameraStagingT2Return_)
+				cameraStagingT2Return_ = true;
+			else
+				cameraStagingT2Return_ = false;
+
+		}
+	}
 }
 
 void StageSelectManagerObject::RotateStart(bool isRight)

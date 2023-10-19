@@ -6,8 +6,8 @@ void StageSelectScene::Initialize()
 	// カメラ生成
 	Camera* camera = new Camera(); // インスタンス生成
 	camera->Initialize("camera", BaseObject::tagCamera); // 初期化
-	camera->transform_.translate_ = { 0.0f, 0.0f, -15.0f };
-	camera->fov_ = 0.55f;
+	camera->transform_.translate_ = { 0.0f, 0.0f, -12.5f };
+	camera->fov_ = 0.4f;
 	camera->UseThisCamera(); // 使用カメラに設定
 	gameObjectManager_->AddGameObject(camera); // ゲームオブジェクトマネージャーに追加
 
@@ -18,15 +18,23 @@ void StageSelectScene::Initialize()
 
 	// ステージ選択シーンマネージャー生成
 	stageSelectManager_ = new StageSelectManagerObject(); // インスタンス生成
+	stageSelectManager_->SetCamera(camera); // カメラをセット
 	stageSelectManager_->Initialize("stageSelectManager", BaseObject::tagOther); // 初期化
-	stageSelectManager_->SetCamera(camera);
 	gameObjectManager_->AddGameObject(stageSelectManager_);
 
-	// フェードイン
-	SceneManager::GetInstance()->StartFadeEffect(1.0f, { 0.0f, 0.0f, 0.0f, 1.0f }, { 0.0f, 0.0f, 0.0f, 0.0f });
 }
 
 void StageSelectScene::Update()
 {
 
+	// ゲームシーンへ遷移させるなら
+	if (stageSelectManager_->IsGoGameScene()) {
+		BaseScene* nextScene = new GameScene();
+		SceneManager::GetInstance()->SetNextScene(nextScene);
+	}
+
+	if (input_->TriggerKey(DIK_RSHIFT)) {
+		BaseScene* nextScene = new TitleScene();
+		SceneManager::GetInstance()->SetNextScene(nextScene);
+	}
 }

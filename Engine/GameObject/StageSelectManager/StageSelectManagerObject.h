@@ -54,6 +54,16 @@ public: // その他関数群
 	void SetCamera(Camera* camera) { camera_ = camera; }
 
 	/// <summary>
+	/// 遷移演出関数
+	/// </summary>
+	void TransitionStaging();
+
+	/// <summary>
+	/// カメラ手振れ演出関数
+	/// </summary>
+	void CameraShake();
+
+	/// <summary>
 	/// ステージプレビュー回転開始
 	/// </summary>
 	/// <param name="isRight">右方向に回転するか</param>
@@ -63,6 +73,12 @@ public: // その他関数群
 	/// ステージプレビュー回転関数
 	/// </summary>
 	void RotateStagePreview();
+
+	/// <summary>
+	/// ゲームシーンへの遷移トリガーゲッター
+	/// </summary>
+	/// <returns>ゲームシーンへ遷移するか</returns>
+	bool IsGoGameScene() { return isGoGameScene_; }
 
 private: // メンバ変数
 
@@ -94,6 +110,8 @@ private: // メンバ変数
 
 	// カメラ
 	Camera* camera_ = nullptr;
+	// カメラ手振れ演出トリガー
+	bool enableCameraShake_;
 	// カメラ演出用t
 	float cameraStagingT_;
 	// カメラ演出用tのループトリガー
@@ -102,5 +120,23 @@ private: // メンバ変数
 	float cameraStagingT2_;
 	// カメラ演出用t2のループトリガー
 	bool cameraStagingT2Return_;
+
+	// 演出中間地点
+	int stagingWayPoint_;
+
+	// 遷移演出トリガー
+	bool isTransitionStaging_;
+	// 遷移演出用t
+	float transitionStagingT_;
+	// 遷移演出時間
+	float transitionStagingTime_;
+
+	// カメラ演出始端座標
+	Vector3 cameraStartTranslate_;
+	// カメラ演出終端座標
+	Vector3 cameraEndTranslate_;
+
+	// ゲームシーンへの遷移トリガー
+	bool isGoGameScene_;
 };
 
