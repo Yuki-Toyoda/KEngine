@@ -40,7 +40,11 @@ public: // メンバ関数
 	void Update();
 
 	// ステージを設定
-	void SetStage(BaseStage* stage);
+	void SetStage(size_t index);
+
+	size_t GetStageMaxIndex() { return infos_.size(); }
+
+	std::vector<Item*>& GetItems() { return items_; }
 
 private: // メンバ関数
 
@@ -49,7 +53,12 @@ private: // メンバ関数
 	/// </summary>
 	void LoadStages();
 
-	void LoadStageInfo();
+	BaseStage::StageInfo LoadInfo(size_t num);
+
+
+	void SaveStages();
+
+	void SaveInfo(size_t num);
 
 private: // メンバ変数
 

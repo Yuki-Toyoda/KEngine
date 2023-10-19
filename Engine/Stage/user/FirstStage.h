@@ -8,6 +8,9 @@
 class FirstStage final : public BaseStage {
 public: // メンバ関数
 
+	FirstStage();
+	~FirstStage() = default;
+
 	/// <summary>
 	/// 初期化関数
 	/// </summary>

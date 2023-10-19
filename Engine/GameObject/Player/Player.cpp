@@ -162,7 +162,7 @@ void Player::InitializeVariables()
 
 	// フラグ初期化
 	isJumpTrigger_ = false;
-	isRotateRight_ = true;
+	isLandLeft_ = true;
 	isLanding_ = true;
 	isPendulum_ = false;
 	wasRotateRight_ = true;
@@ -213,7 +213,7 @@ void Player::UpdatePlayer()
 			direct.z = 0.0f;
 			direct = Math::Normalize(direct) * kPlayerJumpPower_;
 			playerVelocity_ = direct;
-			playerAcceleration_ = { 0.0f,0.0f,0.0f }; 
+			playerAcceleration_ = { 0.0f,0.0f,0.0f };
 			isJumpTrigger_ = false;
 			isLanding_ = false;
 			isPendulum_ = false;
@@ -285,7 +285,7 @@ void Player::UpdateGear()
 				//}
 				// 速度が足りない時は速度をプラスする
 				if (-kMinGearPendulumSpeed_ < gearRotateSpeed_ && gearRotateSpeed_ < kMinGearPendulumSpeed_) {
-					if (isRotateRight_) {
+					if (isLandLeft_) {
 						gearRotateSpeed_ += kMinGearRollSpeed_ * gearRollRatio_;
 					}
 					else {
@@ -304,7 +304,7 @@ void Player::UpdateGear()
 		//if (isLanding_) {
 			// 速度を加算する
 		// 通常の挙動
-		if (isRotateRight_) {
+		if (isLandLeft_) {
 			gearRotateSpeed_ += kMinGearRollSpeed_;
 		}
 		else {
@@ -312,7 +312,7 @@ void Player::UpdateGear()
 		}
 	}
 	else {
-		if (isRotateRight_) {
+		if (isLandLeft_) {
 			gearRotateSpeed_ -= kMinGearRollSpeed_ * 0.01f;
 		}
 		else {
@@ -393,13 +393,13 @@ void Player::CheckDirectionRotate()
 		//float downStartTheta = 0;
 
 
-		// 左側にくっついている時
-		if (directionRotate < 0) {
-			isRotateRight_ = false;
-		}
 		// 右側にくっついている時
+		if (directionRotate < 0) {
+			isLandLeft_ = false;
+		}
+		// 左側にくっついている時
 		else {
-			isRotateRight_ = true;
+			isLandLeft_ = true;
 		}
 	}
 }
@@ -428,7 +428,17 @@ void Player::CheckGearCollision()
 }
 
 void Player::AirJump() {
-	playerVelocity_.y = kAirJumpPower_;
+	Vector3 direct{};
+	float pi = static_cast<float>(std::numbers::pi);
+	float pi4 = pi / 4.0f;
+	// 左にくっついている時
+	if (isLandLeft_) {
+		direct = { std::cosf(pi4),std::sinf(pi4),0.0f };
+	}
+	else {
+		direct = { std::cosf(pi - pi4),std::sinf(pi - pi4),0.0f };
+	}
+	playerVelocity_ = direct * kAirJumpPower_;
 }
 
 void Player::DebugGui() {
@@ -441,7 +451,7 @@ void Player::DebugGui() {
 	ImGui::Checkbox("isLanding", &isLanding_);
 	ImGui::Checkbox("isJumping", &isJumpTrigger_);
 	//ImGui::Checkbox("isPendulum", &isPendulum_);
-	ImGui::Checkbox("wasRight", &wasRotateRight_);
+	ImGui::Checkbox("isLandLeft", &isLandLeft_);
 	//float degree = playerTheta_ * 180 / static_cast<float>(std::numbers::pi);
 	//ImGui::SliderAngle("playerTheta", &playerTheta_);
 	ImGui::SliderFloat("playerTheta", &playerTheta_, -3.14f, 3.14f);

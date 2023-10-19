@@ -30,7 +30,7 @@ public: // 共通メンバ関数
 
 	struct GearInfo 
 	{
-		int32_t clearCondition_;
+		float clearCondition_;
 	};
 
 	struct StageInfo 
@@ -66,10 +66,20 @@ public: // パブリックなメンバ変数
 	// 入力取得
 	//Input* input_ = nullptr;
 
-private: // プライベートなメンバ変数
+protected: // メンバ関数
+
+	void ApplyStageInfo();
+
+
+
+protected: // メンバ変数
 
 	StageManager* stageManager_ = nullptr;
 
 	StageInfo stageInfo_;
 
+	Player* player_ = nullptr;
+
+	// 歯車の回転量
+	float gearCondition_;
 };

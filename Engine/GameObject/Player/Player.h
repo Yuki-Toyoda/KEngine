@@ -75,6 +75,10 @@ private: // メンバ関数
 	// 空中でジャンプする関数
 	void AirJump();
 
+public:
+
+	float& GetGearRotateSpeed() { return gearRotateSpeed_; }
+
 	// デバッグ時にのみ動くGUI
 	void DebugGui();
 
@@ -95,7 +99,7 @@ private: // メンバ変数
 
 	// プレイヤーにかかる重力
 	float kGravity_ = 0;
-	
+
 	// プレイヤーの落下方向
 	Vector3 kFallDirection_ = { 0.0f,-1.0f,0.0f };
 
@@ -158,14 +162,14 @@ private: // メンバ変数
 	/*----------------------//
 	//	アイテムに関係する変数	//
 	//----------------------*/
-	
+
 	float kAirJumpPower_ = 0;
 
 	/*--------------------------------------//
 	//	フラグによって操作も管理するために、		//
 	//	一度クッションをはさむ					//
 	//--------------------------------------*/
-	
+
 	// ジャンプするかどうかのフラグ
 	bool isJumpTrigger_ = false;
 
@@ -174,7 +178,7 @@ private: // メンバ変数
 
 	// 歯車の回転方向
 	// 右回転 : true, 左回転 : false
-	bool isRotateRight_ = true;	
+	bool isLandLeft_ = true;
 
 	// 振り子する範囲に入っていたかどうか
 	bool isPendulum_ = false;
@@ -188,7 +192,7 @@ private: // メンバ変数
 #ifdef _DEBUG
 
 	bool isUpdateRotate = false;
-	
+
 
 #endif // _DEBUG
 
@@ -198,5 +202,5 @@ private: // メンバ変数
 /*	作る処理
 * ・回転方法を角度そのままではなく、回転力から回転する角度へと変換してから回転させる
 * ・歯車についていない時の挙動が可笑しいので直す
-* 
+*
 */
