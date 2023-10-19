@@ -40,6 +40,7 @@ void Player::Initialize(std::string name, Tag tag)
 	// グローバル変数に調整したい値を追加
 	AddGlobalVariables();
 	ApplyGlobalVariables();
+
 }
 
 void Player::Update()
@@ -86,8 +87,10 @@ void Player::AddGlobalVariables()
 	globalVariables_->AddItem("Gear", "kMinGearPendulumSpeed", kMinGearPendulumSpeed_);
 	globalVariables_->AddItem("Gear", "GearScale", Vector2(gearTransform_.scale_.x, gearTransform_.scale_.z));
 	globalVariables_->AddItem("Player", "kMaxPlayerVelocity", kMaxPlayerVelocity_);
+	globalVariables_->AddItem("Player", "kJumpPoint", Vector2(kJumpPoint_.x, kJumpPoint_.y));
 	globalVariables_->AddItem("Player", "kGravity", kGravity_);
 	globalVariables_->AddItem("Player", "kPlayerJumpPower", kPlayerJumpPower_);
+	globalVariables_->AddItem("Player", "kAirJumpPower", kAirJumpPower_);
 }
 
 void Player::ApplyGlobalVariables()
@@ -103,6 +106,12 @@ void Player::ApplyGlobalVariables()
 	kMaxPlayerVelocity_ = globalVariables_->GetFloatValue("Player", "kMaxPlayerVelocity");
 	kPlayerJumpPower_ = globalVariables_->GetFloatValue("Player", "kPlayerJumpPower");
 	kGravity_ = globalVariables_->GetFloatValue("Player", "kGravity");
+	temp = globalVariables_->GetVector2Value("Player", "kJumpPoint");
+	kJumpPoint_ = Vector3(temp.x, temp.y, 0.0f);
+
+	kAirJumpPower_ = globalVariables_->GetFloatValue("Player", "kAirJumpPower");
+
+
 }
 
 void Player::OnCollisionEnter(BaseObject* object)
@@ -139,11 +148,11 @@ void Player::InitializeVariables()
 	color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
 	playerTheta_ = 0.0f;
 	radius_ = 1.0f;
-	transform_.scale_ = { 1.0f,1.0f,5.0f };
+	transform_.scale_ = { 1.0f,1.0f,1.0f };
 
 	// 歯車変数初期化
 	gearTransform_.Initialize();
-	gearTransform_.scale_ = { 8.0f,8.0f,5.0f };
+	gearTransform_.scale_ = { 8.0f,8.0f,1.0f };
 	gearTheta_ = gearTransform_.rotate_.z;
 	// 白色不透明
 	gearColor_ = color_;
@@ -168,6 +177,7 @@ void Player::InitializeVariables()
 	kGearAmplitude = 1.4f;
 	kGearDecreaseRate_ = 0.90f;
 	kFallDirection_ = { 0.0f,-1.0f,0.0f };
+	kJumpPoint_ = { 0.0f,0.0f,0.0f };
 	kPlayerJumpPower_ = 0.05f;
 	kMaxPlayerVelocity_ = 1.0f;
 	kGravity_ = 0.005f;
@@ -197,10 +207,13 @@ void Player::UpdatePlayer()
 		// ジャンプ入力があった場合
 		if (isJumpTrigger_) {
 			// ジャンプさせる
-			playerVelocity_ = { -std::cosf(playerTheta_),-std::sinf(playerTheta_),0.0f };
-			playerVelocity_.x *= kPlayerJumpPower_;
-			playerVelocity_.y *= kPlayerJumpPower_;
-			playerAcceleration_ = { 0.0f,0.0f,0.0f };
+			//playerVelocity_ = { -std::cosf(playerTheta_),-std::sinf(playerTheta_),0.0f };
+			Vector3 direct = transform_.translate_ * -1;
+			direct = direct + kJumpPoint_;
+			direct.z = 0.0f;
+			direct = Math::Normalize(direct) * kPlayerJumpPower_;
+			playerVelocity_ = direct;
+			playerAcceleration_ = { 0.0f,0.0f,0.0f }; 
 			isJumpTrigger_ = false;
 			isLanding_ = false;
 			isPendulum_ = false;
@@ -415,7 +428,7 @@ void Player::CheckGearCollision()
 }
 
 void Player::AirJump() {
-	playerVelocity_.y += kPlayerJumpPower_ / 2.0f;
+	playerVelocity_.y = kAirJumpPower_;
 }
 
 void Player::DebugGui() {

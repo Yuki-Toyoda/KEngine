@@ -91,7 +91,7 @@ void Item::InitializeVariables()
 	color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
 
 	// 半径
-	radius_ = 1.0f;
+	radius_ = 2.0f;
 
 }
 

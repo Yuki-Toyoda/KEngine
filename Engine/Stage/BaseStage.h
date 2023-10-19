@@ -7,6 +7,9 @@
 #include "../GameObject/ObjectList.h"
 #include "../Sprite/SpriteList.h"
 #include "../Input/Input.h"
+#include "../GlobalVariables/GlobalVariables.h"
+
+class StageManager;
 
 /// <summary>
 /// 基底シーン
@@ -17,41 +20,11 @@ public: // 共通メンバ関数
 	/// <summary>
 	/// 共通初期化関数
 	/// </summary>
-	virtual void commonInitialize() {
-		// ゲームオブジェクトマネージャーのインスタンス取得
-		gameObjectManager_ = GameObjectManager::GetInstance();
-		// 入力取得
-		input_ = Input::GetInstance();
-
-	}
-
-public: // メンバ関数
-
-	/// <summary>
-	/// 初期化関数
-	/// </summary>
-	virtual void Initialize() = 0;
-
-	/// <summary>
-	/// 更新
-	/// </summary>
-	virtual void Update() = 0;
-
-public: // パブリックなメンバ変数
-
-	// 次のステージ
-	// 代入値がnullptrの場合はステージ変更しない
-	BaseStage* nextStage_ = nullptr;
-
-	// ゲームオブジェクトマネージャー
-	GameObjectManager* gameObjectManager_ = nullptr;
-
-	// 入力取得
-	Input* input_ = nullptr;
+	void commonInitialize();
 
 	struct ItemInfo
 	{
-		Vector2 position_;
+		Vector3 position_;
 		bool isRePop_;
 	};
 
@@ -66,7 +39,36 @@ public: // パブリックなメンバ変数
 		GearInfo gearInfo_;
 	};
 
+
+public: // メンバ関数
+
+	/// <summary>
+	/// 初期化関数
+	/// </summary>
+	virtual void Initialize(const StageInfo& info) = 0;
+
+	/// <summary>
+	/// 更新
+	/// </summary>
+	virtual void Update() = 0;
+
+public: // パブリックなメンバ変数
+
+	GlobalVariables* globalVariables_ = nullptr;
+
+	// 次のステージ
+	// 代入値がnullptrの場合はステージ変更しない
+	//BaseStage* nextStage_ = nullptr;
+
+	// ゲームオブジェクトマネージャー
+	GameObjectManager* gameObjectManager_ = nullptr;
+
+	// 入力取得
+	//Input* input_ = nullptr;
+
 private: // プライベートなメンバ変数
+
+	StageManager* stageManager_ = nullptr;
 
 	StageInfo stageInfo_;
 

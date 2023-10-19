@@ -49,6 +49,8 @@ public: // その他関数群
 	/// <param name="object">前フレーム衝突していたオブジェクト</param>
 	void OnCollisionExit(BaseObject* object) override;
 
+	void SetPosition(const Vector3& pos) { transform_.translate_ = pos; }
+
 private: // メンバ関数
 
 	// 作成した関数等の初期化

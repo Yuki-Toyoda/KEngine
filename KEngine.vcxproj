@@ -126,6 +126,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Sprite\template\Counter.cpp" />
     <ClCompile Include="Engine\Sprite\template\Gage.cpp" />
     <ClCompile Include="Engine\Sprite\template\Timer.cpp" />
+    <ClCompile Include="Engine\Stage\BaseStage.cpp" />
     <ClCompile Include="Engine\Stage\StageManager.cpp" />
     <ClCompile Include="Engine\Stage\user\FirstStage.cpp" />
     <ClCompile Include="Engine\Stage\user\SecondStage.cpp" />

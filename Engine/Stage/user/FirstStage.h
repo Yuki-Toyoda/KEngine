@@ -11,7 +11,7 @@ public: // メンバ関数
 	/// <summary>
 	/// 初期化関数
 	/// </summary>
-	void Initialize() override;
+	void Initialize(const StageInfo& info) override;
 
 	/// <summary>
 	/// 更新関数

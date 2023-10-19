@@ -12,8 +12,19 @@ void GameScene::Initialize() {
 	player->Initialize("player", BaseObject::tagPlayer);
 	gameObjectManager_->AddGameObject(player); // ゲームオブジェクトマネージャーに追加
 
-	stageManager_ = StageManager::GetInstance();
-	stageManager_->Initialize();
+
+	Item* item = new Item();
+	item->Initialize("Item", BaseObject::tagItem);
+	gameObjectManager_->AddGameObject(item);
+
+	Camera* camera = new Camera();
+	camera->Initialize("camera", BaseObject::tagCamera);
+	camera->UseThisCamera();
+	camera->transform_.translate_ = { 0.0f,0.0f,-100.0f };
+	gameObjectManager_->AddGameObject(camera);
+
+	/*stageManager_ = StageManager::GetInstance();
+	stageManager_->Initialize();*/
 }
 
 void GameScene::Update() {

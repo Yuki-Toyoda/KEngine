@@ -1,11 +1,11 @@
 #include "SecondStage.h"
 
-void SecondeStage::Initialize() {
-
+void SecondeStage::Initialize(const StageInfo& info) 
+{
+	info;
 }
 
-void SecondeStage::Update() {
-	if (input_->TriggerKey(DIK_RCONTROL)) {
-		nextStage_ = new FirstStage();
-	}
+void SecondeStage::Update() 
+{
+
 }

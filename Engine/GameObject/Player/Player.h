@@ -99,8 +99,13 @@ private: // メンバ変数
 	// プレイヤーの落下方向
 	Vector3 kFallDirection_ = { 0.0f,-1.0f,0.0f };
 
+	// ジャンプするときの中心からの差異
+	Vector3 kJumpPoint_ = { 0.0f,0.0f,0.0f };
+
+	// 歯車からのジャンプ力
 	float kPlayerJumpPower_ = 0;
 
+	// 当たり判定 Sphere の半径
 	float radius_ = 1.0f;
 
 	// プレイヤーの移動速度
@@ -150,6 +155,12 @@ private: // メンバ変数
 	// 歯車の加算の割合
 	float gearRollRatio_ = 1.0f;
 
+	/*----------------------//
+	//	アイテムに関係する変数	//
+	//----------------------*/
+	
+	float kAirJumpPower_ = 0;
+
 	/*--------------------------------------//
 	//	フラグによって操作も管理するために、		//
 	//	一度クッションをはさむ					//
@@ -177,6 +188,7 @@ private: // メンバ変数
 #ifdef _DEBUG
 
 	bool isUpdateRotate = false;
+	
 
 #endif // _DEBUG
 

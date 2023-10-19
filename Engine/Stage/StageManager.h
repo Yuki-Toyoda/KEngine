@@ -30,6 +30,11 @@ public: // メンバ関数
 	void Initialize();
 
 	/// <summary>
+	/// リセット
+	/// </summary>
+	void Reset();
+
+	/// <summary>
 	/// 更新関数
 	/// </summary>
 	void Update();
@@ -42,9 +47,13 @@ private: // メンバ関数
 	/// <summary>
 	/// ステージの情報を読み込む
 	/// </summary>
-	void LoadStage();
+	void LoadStages();
+
+	void LoadStageInfo();
 
 private: // メンバ変数
+
+	GlobalVariables* globalVariables_ = nullptr;
 
 	// 現在のシーン
 	BaseStage* currentStage_;
@@ -53,8 +62,12 @@ private: // メンバ変数
 	static const int kMaxItem_ = 10;
 
 	// 使用されるアイテムを保存
-	std::vector<std::unique_ptr<Item>> items_;
+	std::vector<Item*> items_;
 
+	int32_t kMaxStaegNum_ = 0;
+
+	// ステージ毎の情報
+	std::vector<BaseStage::StageInfo> infos_;
 };
 
 /*

@@ -40,6 +40,11 @@ public: // その他関数群
 	/// </summary>
 	void ApplyGlobalVariables() override;
 
+public: // パブリックなメンバ変数
+
+	// カメラ視野角
+	float fov_;
+
 private: // メンバ変数
 
 	// カメラ用ビュープロジェクション行列

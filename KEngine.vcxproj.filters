@@ -226,6 +226,7 @@
     <ClCompile Include="Engine\GameObject\Item\Item.cpp">
       <Filter>Engine\GameObject\Item</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Stage\BaseStage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Base\DirectXCommon.h">
