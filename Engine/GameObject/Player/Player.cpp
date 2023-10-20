@@ -125,6 +125,7 @@ void Player::OnCollision(BaseObject* object)
 	//object;
 	Item* item = dynamic_cast<Item*>(object);
 	// 衝突しているのが Item だった時
+	// ジャンプできる状態の時
 	if (item && item->GetJumpEnable()) {
 		// ボタンの再入力があった時
 		if (input_->TriggerKey(DIK_Q)) {

@@ -415,7 +415,7 @@ OBJ::OBJ(Vector4 color)
 	uvTransform_.Initialize();
 }
 
-OBJ::OBJ( WorldTransform* transform, Vector4 color)
+OBJ::OBJ(WorldTransform* transform, Vector4 color)
 {
 	// 引数の値をメンバ変数に代入
 	transform_ = transform;
@@ -482,7 +482,7 @@ void OBJ::Draw()
 	// 行列変換
 	Matrix4x4 worldMatrix = transform_->GetMatWorld();
 
-	if(ViewProjectionMatrix_ != nullptr)
+	if (ViewProjectionMatrix_ != nullptr)
 		matWorld_ = worldMatrix * *ViewProjectionMatrix_;
 	else
 		matWorld_ = worldMatrix;
