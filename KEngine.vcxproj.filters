@@ -222,7 +222,7 @@
     <ClCompile Include="Engine\Stage\StageManager.cpp">
       <Filter>Engine\Stage</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Stage\user\FirstStage.cpp">
+    <ClCompile Include="Engine\Stage\user\Stage.cpp">
       <Filter>Engine\Stage\user</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Stage\user\DebugStage.cpp">
@@ -414,7 +414,7 @@
     <ClInclude Include="Engine\Stage\StageManager.h">
       <Filter>Engine\Stage</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Stage\user\FirstStage.h">
+    <ClInclude Include="Engine\Stage\user\Stage.h">
       <Filter>Engine\Stage\user</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Stage\user\DebugStage.h">

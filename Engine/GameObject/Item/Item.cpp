@@ -39,6 +39,14 @@ void Item::Update()
 	// 基底クラス更新
 	BaseObject::Update();
 
+	if (isActive_ && !isJumpEnable_) {
+		rePopTime_--;
+		if (rePopTime_ <= 0) {
+			isJumpEnable_ = true;
+			rePopTime_ = 0;
+			color_.w = 1.0f;
+		}
+	}
 
 	// デバッグ表示
 	DebugGui();
@@ -82,6 +90,28 @@ void Item::OnCollisionExit(BaseObject* object)
 	object;
 }
 
+void Item::SetItemInfo(const BaseStage::ItemInfo& info)
+{
+	transform_.translate_ = info.position_;
+	isRePop_ = info.isRePop_;
+	kPopTime_ = info.popTime_;
+	isActive_ = true;
+}
+
+void Item::AirJump()
+{
+	// アイテムがもう一度踏めないタイプなら
+	if (!isRePop_) {
+		isActive_ = false;
+		isJumpEnable_ = false;
+	}
+	else {
+		rePopTime_ = kPopTime_;
+		isJumpEnable_ = false;
+		color_.w = 0.01f;
+	}
+}
+
 /// プライべート関数
 
 void Item::InitializeVariables()
@@ -93,6 +123,8 @@ void Item::InitializeVariables()
 	// 半径
 	radius_ = 2.0f;
 
+	rePopTime_ = 0;
+	isJumpEnable_ = true;
 }
 
 void Item::DebugGui() {

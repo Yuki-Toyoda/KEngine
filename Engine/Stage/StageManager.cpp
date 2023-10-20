@@ -1,6 +1,7 @@
 #include "StageManager.h"
 #include "user/StageList.h"
 #include "../GameObject/GameObjectManager.h"
+#include "../GameObject/Item/Item.h"
 
 using StageInfo = BaseStage::StageInfo;
 using ItemInfo = BaseStage::ItemInfo;
@@ -33,7 +34,7 @@ void StageManager::Initialize()
 		GameObjectManager::GetInstance()->AddGameObject(items_[i]);
 	}
 
-	AddlyGloavalVariables();
+	AddGloavalVariables();
 	// ステージの設定を読み込む
 	LoadStages();
 }
@@ -63,20 +64,14 @@ void StageManager::Update()
 
 void StageManager::SetStage(size_t stageIndex)
 {
+	if (kMaxStageNum_ <= stageIndex) {
+		return;
+	}
 	nowStageNum_ = static_cast<int>(stageIndex);
 #ifdef _DEBUG
 
 	Reset();
-	if (infos_.empty()) {
-		StageInfo info{};
-		info.gearInfo_.clearCondition_ = 100.0f;
-		info.itemInfo_.clear();
-		currentStage_ = new DebugStage();
-		currentStage_->commonInitialize();
-		currentStage_->Initialize(info);
-		return;
-	}
-	else {
+	if (1) {
 		currentStage_ = new DebugStage();
 		currentStage_->commonInitialize();
 		currentStage_->Initialize(infos_[stageIndex]);
@@ -85,9 +80,9 @@ void StageManager::SetStage(size_t stageIndex)
 
 #endif // _DEBUG
 
-	//currentStage_ = new DebugStage();
-	//currentStage_->commonInitialize();
-	//currentStage_->Initialize(infos_[stageIndex]);
+	currentStage_ = new Stage();
+	currentStage_->commonInitialize();
+	currentStage_->Initialize(infos_[stageIndex]);
 
 }
 
@@ -109,7 +104,7 @@ void StageManager::LoadStages()
 	}
 }
 
-void StageManager::AddlyGloavalVariables()
+void StageManager::AddGloavalVariables()
 {
 	// グループを作っておく
 	globalVariables_->CreateGroup("Stage");
@@ -134,11 +129,22 @@ StageInfo StageManager::LoadInfo(size_t num)
 	std::vector<ItemInfo>& iInfo = info.itemInfo_;
 	iInfo.resize(kMaxInfoNum);
 	for (size_t i = 0; i < iInfo.size(); i++) {
-		iInfo[i].isRePop_ = static_cast<bool>(globalVariables_->GetIntValue(strStage, indexNum + "isRePop:" + std::to_string(i)));
-		iInfo[i].position_ = globalVariables_->GetVector3Value(strStage, indexNum + "ItemPosition:" + std::to_string(i));
+		//iInfo[i].isRePop_ = static_cast<bool>(globalVariables_->GetIntValue(strStage, indexNum + "isRePop:" + std::to_string(i)));
+		//iInfo[i].position_ = globalVariables_->GetVector3Value(strStage, indexNum + "ItemPosition:" + std::to_string(i));
+		iInfo[i] = LoadItem(indexNum, i);
 	}
 	return info;
 }
+
+ItemInfo StageManager::LoadItem(const std::string& indexNum, size_t i) {
+
+	ItemInfo iInfo{};
+	iInfo.isRePop_ = static_cast<bool>(globalVariables_->GetIntValue("StageInfo", indexNum + "isRePop:" + std::to_string(i)));
+	iInfo.position_ = globalVariables_->GetVector3Value("StageInfo", indexNum + "ItemPosition:" + std::to_string(i));
+	iInfo.popTime_ = globalVariables_->GetIntValue("StageInfo", indexNum + "PopTime" + std::to_string(i));
+	return iInfo;
+}
+
 
 void StageManager::SaveStages()
 {
@@ -170,6 +176,8 @@ void StageManager::SaveInfo(size_t num)
 		globalVariables_->SetValue(strStage, indexNum + "isRePop:" + std::to_string(i), static_cast<int32_t>(iInfo[i].isRePop_));
 		globalVariables_->AddItem(strStage, indexNum + "position:" + std::to_string(i), iInfo[i].position_);
 		globalVariables_->SetValue(strStage, indexNum + "position:" + std::to_string(i), iInfo[i].position_);
+		globalVariables_->AddItem(strStage, indexNum + "popTime:" + std::to_string(i), iInfo[i].popTime_);
+		globalVariables_->SetValue(strStage, indexNum + "popTime:" + std::to_string(i), iInfo[i].popTime_);
 	}
 }
 
@@ -181,6 +189,17 @@ void StageManager::DebugGUI()
 
 	ImGui::Text("StageNum:%d", infos_.size());
 	ImGui::Text("kStageMaxNum:%d", kMaxStageNum_);
+	ImGui::Separator();
+
+	ImGui::Text("NowStageIndex:%d", nowStageNum_);
+	if (ImGui::Button("ChangeStage")) {
+		SetStage(nextStageNum_);
+	}
+	ImGui::SameLine();
+	ImGui::InputInt("NextStageIndex", &nextStageNum_, 1, 5);
+	if (nextStageNum_ < 0) {
+		nextStageNum_ = 0;
+	}
 	ImGui::Separator();
 
 	if (ImGui::Button("CommitAll")) {
@@ -219,17 +238,6 @@ void StageManager::DebugGUI()
 		}
 	}
 
-	ImGui::Separator();
-
-	ImGui::Text("NowStage:%d", nowStageNum_);
-	if (ImGui::Button("ChangeStage")) {
-		SetStage(nextStageNum_);
-	}
-	ImGui::SameLine();
-	ImGui::InputInt("NextStage", &nextStageNum_, 1, 5);
-	if (nextStageNum_ < 0) {
-		nextStageNum_ = 0;
-	}
 	else if (infos_.size() - 1 < nextStageNum_) {
 		nextStageNum_ = static_cast<int>(infos_.size()) - 1;
 	}

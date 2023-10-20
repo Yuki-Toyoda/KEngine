@@ -2,6 +2,7 @@
 #include "BaseStage.h"
 #include <memory>
 
+class Item;
 
 /// <summary>
 /// 全てのステージの管理マネージャ
@@ -50,9 +51,15 @@ public: // メンバ関数
 
 	const int& GetItemMax() { return kMaxItem_; }
 
+	bool GetIsClear() const { return currentStage_->GetIsClear(); };
+	
+
 private: // メンバ関数
 
-	void AddlyGloavalVariables();
+	/// <summary>
+	/// 設定を作る
+	/// </summary>
+	void AddGloavalVariables();
 
 	/// <summary>
 	/// ステージの情報を読み込む
@@ -61,6 +68,7 @@ private: // メンバ関数
 
 	BaseStage::StageInfo LoadInfo(size_t num);
 
+	BaseStage::ItemInfo LoadItem(const std::string& indexNum, size_t i);
 
 	void SaveStages();
 

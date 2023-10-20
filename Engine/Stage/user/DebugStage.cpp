@@ -1,9 +1,11 @@
 #include "DebugStage.h"
 #include "../StageManager.h"
+#include "../../GameObject/Item/Item.h"
 
 void DebugStage::Initialize(const StageInfo& info)
 {
 	stageInfo_ = info;
+	ApplyStageInfo();
 }
 
 void DebugStage::Update()
@@ -30,6 +32,7 @@ void DebugStage::DebugGUI()
 			ItemInfo info{};
 			info.isRePop_ = true;
 			info.position_ = { 0.0f,0.0f,0.0f };
+			info.popTime_ = 10;
 			items[iInfo.size()]->SetIsRePop(info.isRePop_);
 			items[iInfo.size()]->SetPosition(info.position_);
 			items[iInfo.size()]->SetIsActive(true);
@@ -53,6 +56,7 @@ void DebugStage::DebugGUI()
 		if (ImGui::TreeNode(treeName.c_str())) {
 			ImGui::DragFloat2("positon", &iInfo[i].position_.x, 0.01f);
 			ImGui::Checkbox("isRePop", &iInfo[i].isRePop_);
+			ImGui::SliderInt("popTIme", &iInfo[i].popTime_, 10, 1000);
 
 			ImGui::TreePop();
 		}

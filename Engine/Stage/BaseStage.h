@@ -1,13 +1,13 @@
 #pragma once
-#include "../Base/DirectXCommon.h"
-#include "../Resource/Texture/TextureManager.h"
+#include <string>
 #include "../externals/imgui/imgui.h"
-#include "../GameObject/GameObjectManager.h"
-#include "../Collider/CollisionManager.h"
-#include "../GameObject/ObjectList.h"
+#include "../OBJ/OBJ.h"
+#include "../GameObject/WorldTransform.h"
 #include "../Sprite/SpriteList.h"
-#include "../Input/Input.h"
+#include "../Collider/Collider.h"
+#include "../Collider/CollisionManager.h"
 #include "../GlobalVariables/GlobalVariables.h"
+#include "../GameObject/GameObjectManager.h"
 
 class StageManager;
 
@@ -26,6 +26,7 @@ public: // 共通メンバ関数
 	{
 		Vector3 position_;
 		bool isRePop_;
+		int32_t popTime_;
 	};
 
 	struct GearInfo
@@ -54,6 +55,11 @@ public: // メンバ関数
 
 
 	StageInfo GetStageInfo()const { return stageInfo_; }
+	int GetItemInfoNum() const { return static_cast<int>(stageInfo_.itemInfo_.size()); }
+
+	bool GetIsClear()const { return stageInfo_.gearInfo_.clearCondition_ <= gearCondition_; }
+
+
 
 public: // パブリックなメンバ変数
 
@@ -71,6 +77,9 @@ public: // パブリックなメンバ変数
 
 protected: // メンバ関数
 
+	/// <summary>
+	/// ステージの情報を反映する
+	/// </summary>
 	void ApplyStageInfo();
 
 
@@ -85,4 +94,8 @@ protected: // メンバ変数
 
 	// 歯車の回転量
 	float gearCondition_;
+
+	// 現在のアイテム使用数
+	int usedItem_ = 0;
+
 };

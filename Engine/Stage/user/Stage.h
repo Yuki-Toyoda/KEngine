@@ -5,11 +5,11 @@
 /// <summary>
 /// タイトルシーン
 /// </summary>
-class FirstStage final : public BaseStage {
+class Stage final : public BaseStage {
 public: // メンバ関数
 
-	FirstStage();
-	~FirstStage() = default;
+	Stage();
+	~Stage() = default;
 
 	/// <summary>
 	/// 初期化関数

@@ -131,7 +131,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Sprite\template\Timer.cpp" />
     <ClCompile Include="Engine\Stage\BaseStage.cpp" />
     <ClCompile Include="Engine\Stage\StageManager.cpp" />
-    <ClCompile Include="Engine\Stage\user\FirstStage.cpp" />
+    <ClCompile Include="Engine\Stage\user\Stage.cpp" />
     <ClCompile Include="Engine\Stage\user\DebugStage.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -197,7 +197,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Sprite\template\Timer.h" />
     <ClInclude Include="Engine\Stage\BaseStage.h" />
     <ClInclude Include="Engine\Stage\StageManager.h" />
-    <ClInclude Include="Engine\Stage\user\FirstStage.h" />
+    <ClInclude Include="Engine\Stage\user\Stage.h" />
     <ClInclude Include="Engine\Stage\user\DebugStage.h" />
     <ClInclude Include="Engine\Stage\user\StageList.h" />
   </ItemGroup>

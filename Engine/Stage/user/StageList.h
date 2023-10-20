@@ -3,7 +3,7 @@
 	インクルードするシーンリスト
 ==================================*/
 
-#include "FirstStage.h"
+#include "Stage.h"
 #ifdef _DEBUG
 #include "DebugStage.h"
 #endif // _DEBUG
