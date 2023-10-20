@@ -68,7 +68,7 @@ void TitleManagerObject::Initialize(std::string name, Tag tag)
 	titleButton_.reset(Sprite::Create(textureHandleTitleButton_, &buttonPosition_, &buttonSize_, &buttonColor_, buttonAnchorPoint_));
 
 	// 演出中間地点リセット
-	stagingWayPoint_ = 0;
+	cameraStagingWayPoint_ = 0;
 	// 演出t
 	rotateStagingT_ = 0.0f;
 
@@ -106,14 +106,14 @@ void TitleManagerObject::Update()
 	BaseObject::Update();
 
 	// ギアの回転
-	ｍainGearTransform_.rotate_.z += (0.025f * (6.0f / 8.0f)) * (8.0f / 12.0f);
-	mGearTransform_.rotate_.z -= 0.025f * (6.0f / 8.0f);
-	mGearTransform2_.rotate_.z -= 0.025f * (6.0f / 8.0f);
-	sGearTransform_.rotate_.z += 0.025f * (6.0f / 8.0f);
-	titleGearTransform_.rotate_.z -= 0.025f;
+	ｍainGearTransform_.rotate_.z += (0.02f * (6.0f / 8.0f)) * (8.0f / 12.0f);
+	mGearTransform_.rotate_.z -= 0.02f * (6.0f / 8.0f);
+	mGearTransform2_.rotate_.z -= 0.02f * (6.0f / 8.0f);
+	sGearTransform_.rotate_.z += 0.02f;
+	titleGearTransform_.rotate_.z -= 0.02f;
 
 	// カメラ演出
-	switch (stagingWayPoint_)
+	switch (cameraStagingWayPoint_)
 	{
 	case TitleManagerObject::WayPoint1: // カメラをタイトルロゴの位置まで移動させる
 		if (rotateStagingT_ <= rotateStagingTime_) { 
@@ -142,7 +142,7 @@ void TitleManagerObject::Update()
 			rotateStagingTime_ = 1.5f;
 
 			// 次の演出に
-			stagingWayPoint_++;
+			cameraStagingWayPoint_++;
 		}
 		break;
 	case TitleManagerObject::WayPoint2: // タイトルロゴを徐々に表示させる
@@ -170,7 +170,7 @@ void TitleManagerObject::Update()
 			rotateStagingT_ = 0.0f;
 
 			// 次の演出に
-			stagingWayPoint_++;
+			cameraStagingWayPoint_++;
 		}
 		break;
 	case TitleManagerObject::WayPoint3: // スペースを押すとシーン遷移開始
@@ -180,15 +180,15 @@ void TitleManagerObject::Update()
 			// カメラの始端座標を現在のカメラ座標に変更
 			cameraStartTranslate_ = camera_->transform_.translate_;
 			// カメラの終端座標を設定
-			cameraEndTranslate_ = { 0.0f, 0.25f, -18.0f };
+			cameraEndTranslate_ = { 1.25f, 0.25f, -18.0f };
 			// 次の演出に
-			stagingWayPoint_++;
+			cameraStagingWayPoint_++;
 		}
 		break;
 	case TitleManagerObject::WayPoint4:
 		if (rotateStagingT_ <= rotateStagingTime_) {
 			// カメラをイージングで移動させる
-			camera_->transform_.translate_ = Math::EaseInOut(rotateStagingT_, cameraStartTranslate_, cameraEndTranslate_, rotateStagingTime_);
+			camera_->transform_.translate_ = Math::EaseOut(rotateStagingT_, cameraStartTranslate_, cameraEndTranslate_, rotateStagingTime_);
 			// タイトルロゴを表示
 			logoColor_.w = Math::EaseOut(rotateStagingT_, 1.0f, 0.0f, rotateStagingTime_);
 			buttonColor_.w = Math::EaseOut(rotateStagingT_, 1.0f, 0.0f, rotateStagingTime_);
@@ -203,7 +203,7 @@ void TitleManagerObject::Update()
 			// 始端座標設定
 			cameraStartTranslate_ = cameraEndTranslate_;
 			// 終端座標設定
-			cameraEndTranslate_ = { 0.0f, 0.25f, -1.0f };
+			cameraEndTranslate_ = { 1.25f, 0.25f, -1.0f };
 
 			// 演出時間設定
 			rotateStagingTime_ = 1.5f;
@@ -213,7 +213,7 @@ void TitleManagerObject::Update()
 			// フェードアウト
 			SceneManager::GetInstance()->StartFadeEffect(rotateStagingTime_, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f, 1.0f });
 			// 次の演出に
-			stagingWayPoint_++;
+			cameraStagingWayPoint_++;
 		}
 		break;
 	case TitleManagerObject::WayPoint5:
@@ -239,7 +239,7 @@ void TitleManagerObject::Update()
 			rotateStagingT_ = 0.0f;
 
 			// 次の演出に
-			stagingWayPoint_++;
+			cameraStagingWayPoint_++;
 		}
 		break;
 	case TitleManagerObject::WayPoint6:
@@ -306,7 +306,7 @@ void TitleManagerObject::Update()
 			camera_->transform_.rotate_ = { 0.0f, 0.0f, 0.0f };
 			// a値を強制的に変更
 			logoColor_.w = 1.0f;
-			stagingWayPoint_ = WayPoint2;
+			cameraStagingWayPoint_ = WayPoint2;
 			rotateStagingTime_ = 0.0f;
 			enableCameraShake_ = true;
 			skipTitleStaging_ = true;

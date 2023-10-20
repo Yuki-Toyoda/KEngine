@@ -157,6 +157,9 @@
     <ClCompile Include="Engine\Stage\user\FirstStage.cpp">
       <Filter>Stage\user</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\GameObject\GameManager\GameManagerObject.cpp">
+      <Filter>GameObject\GameManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -351,6 +354,9 @@
     <ClInclude Include="Engine\Stage\user\StageList.h">
       <Filter>Stage\user</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\GameObject\GameManager\GameManagerObject.h">
+      <Filter>GameObject\GameManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\externals\imgui\.editorconfig">
@@ -453,6 +459,9 @@
     </Filter>
     <Filter Include="Stage\user">
       <UniqueIdentifier>{75250df3-5018-425c-8346-8960c32a4628}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\GameManager">
+      <UniqueIdentifier>{47339912-ca75-4c36-85c0-2265960598e6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

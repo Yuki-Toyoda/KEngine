@@ -12,22 +12,23 @@ void GameScene::Initialize() {
 	player->Initialize("player", BaseObject::tagPlayer);
 	gameObjectManager_->AddGameObject(player); // ゲームオブジェクトマネージャーに追加
 
-	//Item* item = new Item();
-	//item->Initialize("Item", BaseObject::tagItem);
-	//gameObjectManager_->AddGameObject(item);
-
-	Camera* camera = new Camera();
-	camera->Initialize("camera", BaseObject::tagCamera);
-	camera->UseThisCamera();
-	camera->transform_.translate_ = { 0.0f,0.0f,-100.0f };
+	Camera* camera = new Camera(); // インスタンス生成
+	camera->Initialize("camera", BaseObject::tagCamera); // 初期化
+	camera->UseThisCamera(); // 使用中のカメラに設定
+	camera->transform_.translate_ = { -100.0f,0.0f,-75.0f };
 	gameObjectManager_->AddGameObject(camera);
 
+	// ステージマネージャーのインスタンス取得
 	stageManager_ = StageManager::GetInstance();
-	stageManager_->Initialize();
+	stageManager_->Initialize(); // 初期化
 	stageManager_->SetStage(0);
-  
-	// フェードイン
-	SceneManager::GetInstance()->StartFadeEffect(2.5f, { 0.0f, 0.0f, 0.0f, 1.0f }, { 0.0f, 0.0f, 0.0f, 0.0f });
+	
+	// ゲームマネージャー生成
+	gameManager_ = new GameManagerObject(); // インスタンス生成
+	gameManager_->SetCamera(camera); // カメラをセット
+	gameManager_->SetGearTransform(&player->GetGearTransform()); // ギアのワールドトランスフォーム取得
+	gameManager_->Initialize("gameManager", BaseObject::tagOther); // 初期化
+	gameObjectManager_->AddGameObject(gameManager_); // マネージャーに追加
 
 }
 
@@ -37,5 +38,6 @@ void GameScene::Update() {
 		BaseScene* nextScene = new TitleScene();
 		SceneManager::GetInstance()->SetNextScene(nextScene);
 	}
+	// ステージマネージャー更新
 	stageManager_->Update();
 }
