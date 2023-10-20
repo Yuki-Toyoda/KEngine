@@ -42,11 +42,7 @@ void StageManager::Initialize()
 void StageManager::Reset()
 {
 	for (size_t i = 0; i < items_.size(); i++)
-	{
-		items_[i]->Initialize("Item", BaseObject::tagItem);
 		items_[i]->SetIsActive(false);
-	}
-
 }
 
 void StageManager::Update()
