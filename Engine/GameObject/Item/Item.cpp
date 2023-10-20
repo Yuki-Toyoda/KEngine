@@ -1,4 +1,5 @@
 #include "Item.h"
+#include "../../Resource/Texture/TextureManager.h"
 
 Item::Item()
 {
@@ -45,6 +46,7 @@ void Item::Update()
 			isJumpEnable_ = true;
 			rePopTime_ = 0;
 			color_.w = 1.0f;
+			objects_[0]->SetColor(color_);
 		}
 	}
 
@@ -96,6 +98,10 @@ void Item::SetItemInfo(const BaseStage::ItemInfo& info)
 	isRePop_ = info.isRePop_;
 	kPopTime_ = info.popTime_;
 	isActive_ = true;
+	isUsed_ = false;
+	if (!isRePop_) {
+		objects_[0]->SetTextureHandle(TextureManager::Load("./Item/NoneItemTex.png"));;
+	}
 }
 
 void Item::AirJump()
@@ -104,11 +110,14 @@ void Item::AirJump()
 	if (!isRePop_) {
 		isActive_ = false;
 		isJumpEnable_ = false;
+		isUsed_ = true;
 	}
 	else {
 		rePopTime_ = kPopTime_;
 		isJumpEnable_ = false;
 		color_.w = 0.01f;
+		isUsed_ = true;
+		objects_[0]->SetColor(color_);
 	}
 }
 
@@ -125,6 +134,7 @@ void Item::InitializeVariables()
 
 	rePopTime_ = 0;
 	isJumpEnable_ = true;
+	isUsed_ = false;
 }
 
 void Item::DebugGui() {

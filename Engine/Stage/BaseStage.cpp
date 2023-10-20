@@ -18,6 +18,27 @@ void BaseStage::commonInitialize()
 	usedItem_ = 0;
 }
 
+bool BaseStage::GetIsClear() const
+{
+	// 歯車の回転条件
+	bool gearClear = false;
+	// 設定した値以上回っていたら
+	if (stageInfo_.gearInfo_.clearCondition_ <= gearCondition_) {
+		gearClear = true;
+	}
+	// アイテムでのクリア条件
+	bool itemClear = false;
+	std::vector<Item*>& items = stageManager_->GetItems();	
+	const std::vector<ItemInfo>& iInfo = stageInfo_.itemInfo_;
+	// 一つでも使われていなかったらクリアではない
+	for (size_t i = 0; i < iInfo.size(); i++)
+	{
+		itemClear = items[i]->GetIsUsed();
+	}
+
+	return gearClear && itemClear;
+}
+
 void BaseStage::ApplyStageInfo()
 {
 	// ステージのクリア条件は設定しなくてもいい

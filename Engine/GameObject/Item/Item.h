@@ -61,6 +61,8 @@ public: // その他関数群
 
 	void AirJump();
 
+	bool GetIsUsed()const { return isUsed_; }
+
 private: // メンバ関数
 
 	// 作成した関数等の初期化
@@ -74,6 +76,9 @@ private: // メンバ変数
 	/*----------------------//
 	//	アイテム自体の変数		//
 	//----------------------*/
+
+	// 自分が何番目の数字なのか
+	//int kIndex_ = 0;
 
 	// アイテムの当たり判定の半径
 	float radius_ = 1.0f;
@@ -94,6 +99,7 @@ private: // メンバ変数
 	// 踏まれて消えるか消えないか
 	bool isRePop_ = false;
 
+	bool isUsed_ = false;
 
 #ifdef _DEBUG
 

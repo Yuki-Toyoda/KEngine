@@ -24,6 +24,7 @@ public: // 共通メンバ関数
 
 	struct ItemInfo
 	{
+		int index_;
 		Vector3 position_;
 		bool isRePop_;
 		int32_t popTime_;
@@ -57,7 +58,7 @@ public: // メンバ関数
 	StageInfo GetStageInfo()const { return stageInfo_; }
 	int GetItemInfoNum() const { return static_cast<int>(stageInfo_.itemInfo_.size()); }
 
-	bool GetIsClear()const { return stageInfo_.gearInfo_.clearCondition_ <= gearCondition_; }
+	bool GetIsClear()const;
 
 
 

@@ -20,18 +20,25 @@ void StageManager::Initialize()
 	// ステージ初期化
 	currentStage_ = nullptr;
 
+#ifdef _DEBUG
+
 	commitIndex_ = 0;
 	loadIndex_ = 0;
+
+#endif // DEBUG
+
 	nowStageNum_ = 0;
+	gameTime_ = 0;
 
 	items_.clear();
 	items_.resize(kMaxItem_);
+	GameObjectManager* manager = GameObjectManager::GetInstance();
 	for (size_t i = 0; i < items_.size(); i++)
 	{
 		items_[i] = new Item();
 		items_[i]->Initialize("Item", BaseObject::tagItem);
 		items_[i]->SetIsActive(false);
-		GameObjectManager::GetInstance()->AddGameObject(items_[i]);
+		manager->AddGameObject(items_[i]);
 	}
 
 	AddGloavalVariables();
@@ -59,7 +66,7 @@ void StageManager::Update()
 
 	// 現在のシーンの更新
 	currentStage_->Update();
-
+	gameTime_++;
 }
 
 void StageManager::SetStage(size_t stageIndex)
@@ -68,9 +75,10 @@ void StageManager::SetStage(size_t stageIndex)
 		return;
 	}
 	nowStageNum_ = static_cast<int>(stageIndex);
+	Reset();
+
 #ifdef _DEBUG
 
-	Reset();
 	if (1) {
 		currentStage_ = new DebugStage();
 		currentStage_->commonInitialize();
@@ -89,6 +97,19 @@ void StageManager::SetStage(size_t stageIndex)
 void StageManager::AddStageInfo(const BaseStage::StageInfo& info) {
 	infos_.push_back(info);
 	kMaxStageNum_ = static_cast<int32_t>(infos_.size());
+}
+
+int StageManager::GetUsedItem()const {
+	int usedItemNum = 0;
+
+	const std::vector<ItemInfo>& iInfo = infos_[nowStageNum_].itemInfo_;
+	for (size_t i = 0; i < iInfo.size(); i++)
+	{
+		if (items_[i]->GetIsUsed()) {
+			usedItemNum++;
+		}
+	}
+	return usedItemNum;
 }
 
 void StageManager::LoadStages()
