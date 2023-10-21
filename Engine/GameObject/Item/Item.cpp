@@ -45,7 +45,7 @@ void Item::Update()
 		if (rePopTime_ <= 0) {
 			isJumpEnable_ = true;
 			rePopTime_ = 0;
-			color_.w = 1.0f;
+			//color_.w = 1.0f;
 			objects_[0]->SetColor(color_);
 		}
 	}
@@ -72,11 +72,18 @@ void Item::Draw()
 void Item::AddGlobalVariables()
 {
 	globalVariables_->AddItem("Item", "CollisionRadius", radius_);
+	globalVariables_->AddItem("Item", "UsedRGB", Vector3(usedColor_.x, usedColor_.y, usedColor_.z));
+	globalVariables_->AddItem("Item", "UsedAlpha", usedColor_.w);
+	globalVariables_->SetValue("Item", "UsedRGB", Vector3(usedColor_.x, usedColor_.y, usedColor_.z));
+	globalVariables_->SetValue("Item", "UsedAlpha", usedColor_.w);
 }
 
 void Item::ApplyGlobalVariables()
 {
 	radius_ = globalVariables_->GetFloatValue("Item", "CollisionRadius");
+	Vector3 RGB = globalVariables_->GetVector3Value("Item", "UsedRGB");
+	float A = globalVariables_->GetFloatValue("Item", "UsedAlpha");
+	usedColor_ = { RGB.x,RGB.y,RGB.z,A };
 }
 
 void Item::OnCollisionEnter(BaseObject* object)
@@ -117,9 +124,8 @@ void Item::AirJump()
 	else {
 		rePopTime_ = kPopTime_;
 		isJumpEnable_ = false;
-		color_.w = 0.01f;
 		isUsed_ = true;
-		objects_[0]->SetColor(color_);
+		objects_[0]->SetColor(usedColor_);
 	}
 }
 
@@ -130,6 +136,7 @@ void Item::InitializeVariables()
 
 	// 色初期設定
 	color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
+	usedColor_ = { 0.5f,0.5f,0.5f,0.5f };
 
 	// 半径
 	radius_ = 2.0f;
@@ -146,6 +153,16 @@ void Item::DebugGui() {
 
 	ImGui::Separator();
 
+	if (ImGui::ColorPicker4("UsedColor", &usedColor_.x)) {
+		AddGlobalVariables();
+	}
+
+	if (isRePop_) {
+		objects_[0]->SetTextureHandle(TextureManager::Load("./Item/ItemTex.png"));;
+	}
+	else {
+		objects_[0]->SetTextureHandle(TextureManager::Load("./Item/NoneItemTex.png"));;
+	}
 	ImGui::End();
 
 #endif // _DEBUG
