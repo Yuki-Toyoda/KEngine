@@ -56,19 +56,13 @@ void GameManagerObject::Initialize(std::string name, Tag tag)
 	textureHandleTextLeftItem_ = TextureManager::Load("./Resources/Image/Game", "LeftItem.png"); // 残りアイテムテキスト
 	textureHandleSlash_ = TextureManager::Load("./Resources/Image/Game", "Slash.png"); // /テクスチャ
 	textureHandleTextClearPercent_ = TextureManager::Load("./Resources/Image/Game", "ClearPercent.png"); // クリア進捗テキスト
-	for (int i = 0; i < 10; i++) {
-		std::string fileName = "Wave" + std::to_string(i + 1);
-		std::string extension = ".png";
-		std::string filePath = fileName + extension;
-		textureHandleTextClearGage_[i] = TextureManager::Load("./Resources/ClearGage", filePath);
-	}
 
 	// UI全体の色リセット
 	spriteUIColor_ = { 1.0f, 1.0f, 1.0f, 0.0f };
 
 	/// スプライト生成
 	// 残りアイテム数テキストUI
-	leftItemTextPosition_ = { 300.0f, 520.0f }; // 座標
+	leftItemTextPosition_ = { 307.5f, 520.0f }; // 座標
 	leftItemTextSize_ = { 284.0f, 56.0f }; // 大きさ
 	leftItemTextSprite_.reset(Sprite::Create(
 			textureHandleTextLeftItem_, 
@@ -267,15 +261,6 @@ void GameManagerObject::CameraStaging()
 
 void GameManagerObject::ClearGageAnimation()
 {
-	// ゲージのモデルのテクスチャを変更
-	objects_[3]->SetTextureHandle(textureHandleTextClearGage_[clearGageDrawFrame_]);
-	if (clearGageStagingT_ <= clearGageDrawTime_ * 11) {
-		clearGageDrawFrame_ = Math::Linear(clearGageStagingT_, 0, 10, clearGageDrawTime_ * 11);
-		clearGageStagingT_ += 1.0f / 60.0f;
-	}
-	else
-		clearGageStagingT_ = 0.0f;
-
 	// ゲージを動かす
-	objects_[3]->uvTransform_.rotate_.x = Math::Linear((float)stageClearPercent_, -1.0f, -0.225f, 100);
+	objects_[3]->uvTransform_.rotate_.x = Math::EaseIn((float)stageClearPercent_, -1.05f, -0.3f, 100);
 }

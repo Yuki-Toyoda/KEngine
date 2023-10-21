@@ -63,13 +63,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	TextureManager::Load("./Engine/Resource/Samples/Texture", "ColorSample.png");
 	TextureManager::Load("./Engine/Resource/Samples/Texture", "AlphabetSheet.png");
 
-	for (int i = 0; i < 10; i++) {
-		std::string fileName = "Wave" + std::to_string(i + 1);
-		std::string extension = ".png";
-		std::string filePath = fileName + extension;
-		TextureManager::Load("./Resources/ClearGage", filePath);
-	}
-
 	// グローバル変数の読み込み
 	GlobalVariables::GetInstance()->LoadFiles();
 
