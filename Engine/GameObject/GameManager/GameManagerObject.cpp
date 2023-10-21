@@ -289,6 +289,7 @@ void GameManagerObject::CameraStaging()
 		if (cameraStagingT_ <= cameraStagingTime_) {
 
 			
+
 			// tを加算
 			cameraStagingT_ += 1.0f / 60.0f;
 		}
