@@ -97,13 +97,6 @@ private: // メンバ変数
 	// ステージのクリア進捗パーセント
 	int stageClearPercent_;
 
-	// クリアゲージの描画フレーム
-	int clearGageDrawFrame_;
-	// クリアゲージの演出用t
-	float clearGageStagingT_;
-	// 1フレームごとの表示秒数
-	float clearGageDrawTime_;
-
 	// UIテクスチャ群
 	int32_t textureHandleNumberSheets_ = 0u; // 数字のシート
 	int32_t textureHandleTextLeftItem_ = 0u; // 残りアイテム数テキスト

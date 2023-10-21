@@ -44,13 +44,6 @@ void GameManagerObject::Initialize(std::string name, Tag tag)
 	// ステージクリア進捗(仮置き)
 	stageClearPercent_ = 0;
 
-	// クリアゲージの描画フレーム
-	clearGageDrawFrame_ = 0;
-	// クリアゲージの演出用t
-	clearGageStagingT_ = 0.0f;
-	// 1フレームごとの表示秒数
-	clearGageDrawTime_ = 0.075f;
-
 	/// テクスチャ読み込み
 	textureHandleNumberSheets_ = TextureManager::Load("./Resources/Image", "MyNumberSheets.png"); // 番号シート
 	textureHandleTextLeftItem_ = TextureManager::Load("./Resources/Image/Game", "LeftItem.png"); // 残りアイテムテキスト
@@ -151,7 +144,6 @@ void GameManagerObject::Update()
 		ImGui::DragFloat3("UVscale", &objects_[3]->uvTransform_.scale_.x, 0.5f);
 		ImGui::DragFloat3("UVrotatate", &objects_[3]->uvTransform_.rotate_.x, 0.05f);
 		ImGui::DragFloat3("UVtranslate", &objects_[3]->uvTransform_.translate_.x, 0.5f);
-		ImGui::DragFloat("clearGageDrawTime_", &clearGageDrawTime_, 0.5f);
 		ImGui::TreePop();
 	}
 
