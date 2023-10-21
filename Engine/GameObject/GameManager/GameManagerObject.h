@@ -62,6 +62,11 @@ public: // その他関数群
 	/// </summary>
 	void CameraStaging();
 
+	/// <summary>
+	/// クリアゲージのアニメーション
+	/// </summary>
+	void ClearGageAnimation();
+
 private: // メンバ変数
 
 	// プレイヤーがいるギアのワールドトランスフォーム
@@ -92,11 +97,19 @@ private: // メンバ変数
 	// ステージのクリア進捗パーセント
 	int stageClearPercent_;
 
+	// クリアゲージの描画フレーム
+	int clearGageDrawFrame_;
+	// クリアゲージの演出用t
+	float clearGageStagingT_;
+	// 1フレームごとの表示秒数
+	float clearGageDrawTime_;
+
 	// UIテクスチャ群
 	int32_t textureHandleNumberSheets_ = 0u; // 数字のシート
 	int32_t textureHandleTextLeftItem_ = 0u; // 残りアイテム数テキスト
 	int32_t textureHandleSlash_ = 0u; // /テクスチャ
 	int32_t textureHandleTextClearPercent_ = 0u; // クリア進捗テキスト
+	int32_t textureHandleTextClearGage_[10] = { 0u }; // クリア進捗テキスト
 
 	/// UIスプライト群
 

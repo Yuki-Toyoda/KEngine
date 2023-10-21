@@ -44,14 +44,27 @@ void GameManagerObject::Initialize(std::string name, Tag tag)
 	// ステージクリア進捗(仮置き)
 	stageClearPercent_ = 0;
 
+	// クリアゲージの描画フレーム
+	clearGageDrawFrame_ = 0;
+	// クリアゲージの演出用t
+	clearGageStagingT_ = 0.0f;
+	// 1フレームごとの表示秒数
+	clearGageDrawTime_ = 0.075f;
+
 	/// テクスチャ読み込み
 	textureHandleNumberSheets_ = TextureManager::Load("./Resources/Image", "MyNumberSheets.png"); // 番号シート
 	textureHandleTextLeftItem_ = TextureManager::Load("./Resources/Image/Game", "LeftItem.png"); // 残りアイテムテキスト
 	textureHandleSlash_ = TextureManager::Load("./Resources/Image/Game", "Slash.png"); // /テクスチャ
 	textureHandleTextClearPercent_ = TextureManager::Load("./Resources/Image/Game", "ClearPercent.png"); // クリア進捗テキスト
+	for (int i = 0; i < 10; i++) {
+		std::string fileName = "Wave" + std::to_string(i + 1);
+		std::string extension = ".png";
+		std::string filePath = fileName + extension;
+		textureHandleTextClearGage_[i] = TextureManager::Load("./Resources/ClearGage", filePath);
+	}
 
 	// UI全体の色リセット
-	spriteUIColor_ = { 1.0f, 1.0f, 1.0f, 1.0f };
+	spriteUIColor_ = { 1.0f, 1.0f, 1.0f, 0.0f };
 
 	/// スプライト生成
 	// 残りアイテム数テキストUI
@@ -114,8 +127,14 @@ void GameManagerObject::Update()
 
 	// UIの更新
 	stageItemCounter_->Update();
+	stageItemCounter_->color_ = spriteUIColor_;
 	stageNowItemCounter_->Update();
+	stageNowItemCounter_->color_ = spriteUIColor_;
 	stageClearCounter_->Update();
+	stageClearCounter_->color_ = spriteUIColor_;
+
+	// クリアゲージの更新
+	ClearGageAnimation();
 
 #ifdef _DEBUG
 
@@ -138,6 +157,7 @@ void GameManagerObject::Update()
 		ImGui::DragFloat3("UVscale", &objects_[3]->uvTransform_.scale_.x, 0.5f);
 		ImGui::DragFloat3("UVrotatate", &objects_[3]->uvTransform_.rotate_.x, 0.05f);
 		ImGui::DragFloat3("UVtranslate", &objects_[3]->uvTransform_.translate_.x, 0.5f);
+		ImGui::DragFloat("clearGageDrawTime_", &clearGageDrawTime_, 0.5f);
 		ImGui::TreePop();
 	}
 
@@ -156,7 +176,7 @@ void GameManagerObject::Update()
 		ImGui::DragInt("stageNowItemCount_", &stageNowItemCount_, 0.5f);
 		ImGui::DragFloat2("stageClearCounterPosition", &stageClearCounter_->position_.x, 0.5f);
 		ImGui::DragFloat2("stageClearCounterSize", &stageClearCounter_->size_.x, 0.5f);
-		ImGui::DragInt("stageClearPercent_", &stageClearPercent_, 0.5f);
+		ImGui::SliderInt("stageClearPercent_", &stageClearPercent_, 0, 100);
 
 		ImGui::TreePop();
 	}
@@ -204,10 +224,28 @@ void GameManagerObject::CameraStaging()
 		// 次の演出へ
 		cameraStagingWayPoint_++;
 		break;
-	case GameManagerObject::WayPoint2:
+	case GameManagerObject::WayPoint2: // カメラ移動
 		if (cameraStagingT_ <= cameraStagingTime_) {
 			// カメラ座標設定
 			camera_->transform_.translate_ = Math::EaseOut(cameraStagingT_, cameraStartTranslate_, cameraEndTranslate_, cameraStagingTime_);
+
+			// tを加算
+			cameraStagingT_ += 1.0f / 60.0f;
+		}
+		else {
+			// tリセット
+			cameraStagingT_ = 0.0f;
+			// 演出時間設定
+			cameraStagingTime_ = 1.0f;
+
+			// 次の演出に
+			cameraStagingWayPoint_++;
+		}
+		break;
+	case GameManagerObject::WayPoint3: // UI透明度設定
+		if (cameraStagingT_ <= cameraStagingTime_) {
+			// スプライト透明度設定
+			spriteUIColor_.w = Math::EaseInOut(cameraStagingT_, 0.0f, 1.0f, cameraStagingTime_);
 
 			// tを加算
 			cameraStagingT_ += 1.0f / 60.0f;
@@ -220,11 +258,23 @@ void GameManagerObject::CameraStaging()
 			cameraStagingWayPoint_++;
 		}
 		break;
-	case GameManagerObject::WayPoint3:
-		break;
 	case GameManagerObject::WayPoint4:
 		break;
 	case GameManagerObject::WayPoint5:
 		break;
 	}
+}
+
+void GameManagerObject::ClearGageAnimation()
+{
+	// ゲージのモデルのテクスチャを変更
+	objects_[3]->SetTextureHandle(textureHandleTextClearGage_[clearGageDrawFrame_]);
+	if (clearGageStagingT_ <= clearGageDrawTime_ * 11) {
+		clearGageDrawFrame_ = Math::Linear(clearGageStagingT_, 0, 10, clearGageDrawTime_ * 11);
+		clearGageStagingT_ += 1.0f / 60.0f;
+	}
+	else
+		clearGageStagingT_ = 0.0f;
+
+	objects_[3]->uvTransform_.rotate_.x = Math::EaseInOut((float)stageClearPercent_, -1.0f, -0.25f, 100);
 }

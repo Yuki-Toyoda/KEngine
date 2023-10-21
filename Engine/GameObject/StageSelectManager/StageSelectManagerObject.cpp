@@ -207,6 +207,25 @@ void StageSelectManagerObject::TransitionStaging()
 			// 次の演出へ
 			cameraStagingWayPoint_++;
 		}
+
+		if (input_->TriggerKey(DIK_SPACE)) {
+
+			// カメラ座標を動かす
+			camera_->transform_.translate_.z = cameraEndTranslate_.z;
+			// 視野角を広げる
+			camera_->fov_ = 0.55f;
+
+			// tをリセット
+			transitionStagingT_ = 0.0f;
+			// 秒数設定
+			transitionStagingTime_ = 1.0f;
+
+			// 遷移中ではない
+			isTransitionStaging_ = false;
+
+			// 次の演出へ
+			cameraStagingWayPoint_++;
+		}
 		break;
 	case StageSelectManagerObject::WayPoint2: // スペースを押したらシーン遷移開始
 		if (input_->TriggerKey(DIK_SPACE)) {
