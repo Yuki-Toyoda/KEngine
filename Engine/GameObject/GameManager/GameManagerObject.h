@@ -77,6 +77,8 @@ private: // メンバ変数
 	WorldTransform gearTransforms_[3];
 	// クリアゲージのワールドトランスフォーム
 	WorldTransform clearGageTransform_;
+	// クリア時のチェックマークワールド座標
+	WorldTransform clearCheckTransform_;
 
 	// カメラ
 	Camera* camera_ = nullptr;

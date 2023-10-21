@@ -20,12 +20,17 @@ void GameManagerObject::Initialize(std::string name, Tag tag)
 	// クリアゲージの初期化
 	clearGageTransform_.Initialize();
 	clearGageTransform_.scale_ = {14.5f, 14.5f, 1.0f};
+	// クリア時のチェックマークワールド座標
+	clearCheckTransform_.Initialize();
+	clearCheckTransform_.translate_ = { 0.0f, -100.0f, 0.0f };
+	clearCheckTransform_.scale_ = { 0.0f, 0.0f, 1.0f };
 
 	// モデル読み込み
 	AddOBJ(&gearTransforms_[0], color_, "./Resources/Gear", "Gear_UI.obj", true);
 	AddOBJ(&gearTransforms_[1], color_, "./Resources/Gear", "Gear_UI_S.obj", true);
 	AddOBJ(&gearTransforms_[2], color_, "./Resources/Gear", "Gear_M.obj", true);
 	AddOBJ(&clearGageTransform_, color_, "./Resources/ClearGage", "ClearGage.obj", false);
+	AddOBJ(&clearCheckTransform_, color_, "./Resources/Plane", "Plane.obj", false);
 
 	// 始端、終端座標設定
 	cameraStartTranslate_ = camera_->transform_.translate_;
@@ -279,7 +284,7 @@ void GameManagerObject::CameraStaging()
 			camera_->transform_.translate_ = cameraEndTranslate_;
 
 			// カメラの演出時間設定
-			cameraStagingTime_ = 0.5f;
+			cameraStagingTime_ = 1.25f;
 
 			// 次の演出に
 			cameraStagingWayPoint_++;
@@ -288,7 +293,8 @@ void GameManagerObject::CameraStaging()
 	case GameManagerObject::WayPoint6:
 		if (cameraStagingT_ <= cameraStagingTime_) {
 
-			
+			clearCheckTransform_.translate_ = Math::EaseInOut(cameraStagingT_, { 0.0f, -100.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, cameraStagingTime_);
+			clearCheckTransform_.scale_ = Math::EaseIn(cameraStagingT_, { 0.0f, 0.0f, 1.0f }, clearGageTransform_.scale_, cameraStagingTime_);
 
 			// tを加算
 			cameraStagingT_ += 1.0f / 60.0f;
@@ -296,6 +302,9 @@ void GameManagerObject::CameraStaging()
 		else {
 			// tリセット
 			cameraStagingT_ = 0.0f;
+
+			clearCheckTransform_.translate_ = { 0.0f, 0.0f, 0.0f };
+			clearCheckTransform_.scale_ = clearGageTransform_.scale_;
 
 			// カメラの演出時間設定
 			cameraStagingTime_ = 0.1f;
