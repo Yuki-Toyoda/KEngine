@@ -55,6 +55,12 @@ public: // その他関数
 	/// <param name="endColor"></param>
 	void StartFadeEffect(float fadeTime, Vector4 startcolor, Vector4 endColor);
 
+	/// <summary>
+	/// フェードアウトスプライトの色を強制的に変更させる関数
+	/// </summary>
+	/// <param name="color">変化させる色</param>
+	void SetFadeColor(Vector4 color);
+
 private: // プライベートなメンバ関数
 
 	/// <summary>

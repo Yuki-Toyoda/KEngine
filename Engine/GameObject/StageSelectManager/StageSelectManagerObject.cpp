@@ -210,6 +210,9 @@ void StageSelectManagerObject::TransitionStaging()
 
 		if (input_->TriggerKey(DIK_SPACE)) {
 
+			// 無理やりフェードイン
+			SceneManager::GetInstance()->SetFadeColor({ 0.0f, 0.0f, 0.0f, 0.0f });
+
 			// カメラ座標を動かす
 			camera_->transform_.translate_.z = cameraEndTranslate_.z;
 			// 視野角を広げる

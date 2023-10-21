@@ -102,6 +102,18 @@ void SceneManager::StartFadeEffect(float fadeTime, Vector4 startcolor, Vector4 e
 	}
 }
 
+void SceneManager::SetFadeColor(Vector4 color)
+{
+	// 演出用tをリセット
+	fadeT_ = 0.0f;
+	// 演出中でない
+	isFading_ = false;
+	// 終了を伝える
+	isEndFade_ = true;
+	// 色を設定
+	fadeSpriteColor_ = color;
+}
+
 void SceneManager::Fade()
 {
 	if (fadeT_ <= fadeTime_) {

@@ -276,5 +276,6 @@ void GameManagerObject::ClearGageAnimation()
 	else
 		clearGageStagingT_ = 0.0f;
 
-	objects_[3]->uvTransform_.rotate_.x = Math::EaseInOut((float)stageClearPercent_, -1.0f, -0.25f, 100);
+	// ゲージを動かす
+	objects_[3]->uvTransform_.rotate_.x = Math::Linear((float)stageClearPercent_, -1.0f, -0.225f, 100);
 }
