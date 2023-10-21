@@ -20,6 +20,8 @@ private: // サブクラス
 		WayPoint4,
 		WayPoint5,
 		WayPoint6,
+		WayPoint7,
+		WayPoint8,
 	};
 
 public: // メンバ関数

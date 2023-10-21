@@ -138,12 +138,12 @@ void GameManagerObject::Update()
 	}
 
 	if (ImGui::TreeNode("ClearGage")) {
-		ImGui::DragFloat3("scale", &clearGageTransform_.scale_.x, 0.5f);
+		ImGui::DragFloat3("scale", &clearGageTransform_.scale_.x, 0.05f);
 		ImGui::DragFloat3("rotatate", &clearGageTransform_.rotate_.x, 0.05f);
-		ImGui::DragFloat3("translate", &clearGageTransform_.translate_.x, 0.5f);
-		ImGui::DragFloat3("UVscale", &objects_[3]->uvTransform_.scale_.x, 0.5f);
+		ImGui::DragFloat3("translate", &clearGageTransform_.translate_.x, 0.05f);
+		ImGui::DragFloat3("UVscale", &objects_[3]->uvTransform_.scale_.x, 0.05f);
 		ImGui::DragFloat3("UVrotatate", &objects_[3]->uvTransform_.rotate_.x, 0.05f);
-		ImGui::DragFloat3("UVtranslate", &objects_[3]->uvTransform_.translate_.x, 0.5f);
+		ImGui::DragFloat3("UVtranslate", &objects_[3]->uvTransform_.translate_.x, 0.05f);
 		ImGui::TreePop();
 	}
 
@@ -245,14 +245,76 @@ void GameManagerObject::CameraStaging()
 		}
 		break;
 	case GameManagerObject::WayPoint4:
+		if (stageClearPercent_ >= 100) {
+			// カメラの始端座標と終端座標
+			cameraStartTranslate_ = camera_->transform_.translate_;
+			cameraEndTranslate_ = { 0.0f, 0.0f, -90.0f };
+			// カメラ演出時間設定
+			cameraStagingTime_ = 1.5f;
+			// 次の演出へ
+			cameraStagingWayPoint_++;
+		}
 		break;
 	case GameManagerObject::WayPoint5:
+		if (cameraStagingT_ <= cameraStagingTime_) {
+			// スプライト透明度設定
+			if (cameraStagingT_ <= 0.5f)
+				spriteUIColor_.w = Math::EaseOut(cameraStagingT_, 1.0f, 0.0f, 0.5f);
+			else
+				spriteUIColor_.w = 0.0f;
+
+			// カメラ座標設定
+			camera_->transform_.translate_ = Math::EaseOut(cameraStagingT_, cameraStartTranslate_, cameraEndTranslate_, cameraStagingTime_);
+			// FOV設定
+			camera_->fov_ = Math::EaseInOut(cameraStagingT_, 0.45f, 0.35f, cameraStagingTime_);
+
+			// tを加算
+			cameraStagingT_ += 1.0f / 60.0f;
+		}
+		else {
+			// tリセット
+			cameraStagingT_ = 0.0f;
+
+			// カメラの終端座標
+			camera_->transform_.translate_ = cameraEndTranslate_;
+
+			// カメラの演出時間設定
+			cameraStagingTime_ = 0.5f;
+
+			// 次の演出に
+			cameraStagingWayPoint_++;
+		}
 		break;
+	case GameManagerObject::WayPoint6:
+		if (cameraStagingT_ <= cameraStagingTime_) {
+
+			
+			// tを加算
+			cameraStagingT_ += 1.0f / 60.0f;
+		}
+		else {
+			// tリセット
+			cameraStagingT_ = 0.0f;
+
+			// カメラの演出時間設定
+			cameraStagingTime_ = 0.1f;
+
+			// 次の演出に
+			cameraStagingWayPoint_++;
+		}
+		break;
+	case GameManagerObject::WayPoint7:
+		
+		break;
+	case GameManagerObject::WayPoint8:
+
+		break;
+
 	}
 }
 
 void GameManagerObject::ClearGageAnimation()
 {
 	// ゲージを動かす
-	objects_[3]->uvTransform_.rotate_.x = Math::EaseIn((float)stageClearPercent_, -1.05f, -0.3f, 100);
+	objects_[3]->uvTransform_.rotate_.x = Math::EaseInOut((float)stageClearPercent_, -1.05f, -0.3f, 100);
 }
