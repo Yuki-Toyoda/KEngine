@@ -109,7 +109,7 @@ void Item::SetItemInfo(const BaseStage::ItemInfo& info)
 	isActive_ = true;
 	isUsed_ = false;
 	if (!isRePop_) {
-		objects_[0]->SetTextureHandle(TextureManager::Load("./Item/NoneItemTex.png"));;
+		objects_[0]->SetTextureHandle(TextureManager::Load("./Item/InstanceItemTex.png"));;
 	}
 }
 
@@ -161,7 +161,7 @@ void Item::DebugGui() {
 		objects_[0]->SetTextureHandle(TextureManager::Load("./Item/ItemTex.png"));;
 	}
 	else {
-		objects_[0]->SetTextureHandle(TextureManager::Load("./Item/NoneItemTex.png"));;
+		objects_[0]->SetTextureHandle(TextureManager::Load("./Item/InstanceItemTex.png"));;
 	}
 	ImGui::End();
 
