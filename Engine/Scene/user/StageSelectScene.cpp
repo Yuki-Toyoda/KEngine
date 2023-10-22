@@ -16,6 +16,9 @@ void StageSelectScene::Initialize()
 	ambient->Initialize("ambient", BaseObject::tagOther); // 初期化
 	gameObjectManager_->AddGameObject(ambient); // ゲームオブジェクトマネージャーに追加
 
+	// ステージマネージャのインスタンス取得
+	stageManager_ = StageManager::GetInstance();
+
 	// ステージ選択シーンマネージャー生成
 	stageSelectManager_ = new StageSelectManagerObject(); // インスタンス生成
 	stageSelectManager_->SetCamera(camera); // カメラをセット
