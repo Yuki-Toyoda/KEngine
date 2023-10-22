@@ -112,6 +112,12 @@ public: // アクセッサ等
 	/// <returns>衝突判定</returns>
 	Collider* GetCollider() { return collider_.get(); }
 
+	/// <summary>
+	/// 色のセッター
+	/// </summary>
+	/// <param name="color">色</param>
+	void SetColor(Vector4 color) { color_ = color; }
+
 public: // その他関数群
 
 	/// <summary>

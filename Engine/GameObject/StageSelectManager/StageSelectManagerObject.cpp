@@ -13,12 +13,13 @@ void StageSelectManagerObject::Initialize(std::string name, Tag tag)
 	// 入力取得
 	input_ = Input::GetInstance();
 
+	// ステージマネージャ取得
+	stageManager_ = StageManager::GetInstance();
+
 	// 初期座標を設定
 	transform_.translate_ = { 0.0f, -7.25f, 0.0f };
 	mainGearTransform_.Initialize();
 	mainGearTransform_.SetParent(&transform_, 0b101);
-
-	stageCount_ = 10;
 
 	// 全てのステージプレビュー座標を初期化
 	for (int i = 0; i < 4; i++)
@@ -45,9 +46,12 @@ void StageSelectManagerObject::Initialize(std::string name, Tag tag)
 	for(int i = 0; i < 4; i++)
 		AddOBJ(&previewStageTransforms_[i], color_, "./Resources/Gear", "Gear_L.obj", false);
 
+	// 全ステージ数取得
+	stageCount_ = (int)stageManager_->GetStageMaxIndex() - 1;
+
 	// 選択中のステージ番号
-	selectedStageNumber_ = 1;
-	// 切り替えボタン押下回数デクリメント
+	selectedStageNumber_ = 0;
+	// 切り替えボタン押下回数
 	pressCount_ = 0;
 
 	// 演出用tリセット
@@ -84,6 +88,24 @@ void StageSelectManagerObject::Initialize(std::string name, Tag tag)
 	// ゲームシーンへは遷移させない
 	isGoGameScene_ = false;
 
+	for (int i = 0; i < 10; i++) {
+		Item* item = new Item(); // インスタンス生成
+		item->Initialize("previewItem", BaseObject::tagOther); // 初期化
+		item->transform_.translate_ = { 10000.0f, 10000.0f, 0.0f };
+		item->transform_.scale_ = { 1.0f / 6.0f, 1.0f / 6.0f, 1.0f / 6.0f };
+		item->SetColor({ 1.0f, 1.0f, 1.0f, 0.0f }); // アイテムを非表示
+		item->SetIsActive(true);
+		previewItems_.push_back(item); // リストに追加
+		GameObjectManager::GetInstance()->AddGameObject(item);
+	}
+	// プレビューアイテム表示演出中か
+	previewItemStaging_ = false;
+	// プレビューアイテム用の演出t
+	previewItemStagingT_ = 0.0f;
+
+	// プレビューアイテムの座標設定
+	SetPreviewItems();
+
 	// フェードイン
 	SceneManager::GetInstance()->StartFadeEffect(transitionStagingTime_, { 0.0f, 0.0f, 0.0f, 1.0f }, { 0.0f, 0.0f, 0.0f, 0.0f });
 }
@@ -94,7 +116,11 @@ void StageSelectManagerObject::Update()
 	BaseObject::Update();
 
 	// ステージプレビュー回転
-	RotateStagePreview();
+	if (isRotateStaging_)
+		RotateStagePreview();
+
+	if (previewItemStaging_)
+		PrevItemStaging();
 
 	// ギアの回転を大元ギアと合わせる
 	previewStageTransforms_[0].rotate_.z = (transform_.rotate_.z * (18.0f / 12.0f)) + 0.125f;
@@ -361,30 +387,84 @@ void StageSelectManagerObject::RotateStart(bool isRight)
 		if (selectedStageNumber_ < stageCount_)
 			selectedStageNumber_++;
 		else
-			selectedStageNumber_ = 1;
+			selectedStageNumber_ = 0;
 	}
 	else {
 		endAngle_ = transform_.rotate_.z + ((float)std::numbers::pi / 2.0f);
-		if (selectedStageNumber_ > 1)
+		if (selectedStageNumber_ > 0)
 			selectedStageNumber_--;
 		else
 			selectedStageNumber_ = stageCount_;
 	}
+
 	// 演出中に
 	isRotateStaging_ = true;
+	previewItemStaging_ = false;
 }
 
 void StageSelectManagerObject::RotateStagePreview()
 {
 	if (rotateStagingT_ <= rotateStagingTime_ && isRotateStaging_) {
 		transform_.rotate_.z = Math::EaseOut(rotateStagingT_, startAngle_, endAngle_, rotateStagingTime_);
+		if (rotateStagingT_ <= 0.15f) {
+			for (int i = 0; i < 10; i++)
+				previewItems_[i]->transform_.scale_ = Math::EaseOut(rotateStagingT_, { 1.0f / 6.0f, 1.0f / 6.0f, 1.0f / 6.0f }, { 0.0f, 0.0f, 0.0f }, 0.15f);
+		}
+		else {
+			for (int i = 0; i < 10; i++)
+				previewItems_[i]->transform_.scale_ = { 0.0f, 0.0f, 0.0f };
+		}
 		// t加算
 		rotateStagingT_ += 1.0f / 60.0f;
 	}
 	else {
+
+		// プレビュー表示の切り替え
+		SetPreviewItems();
+
 		// tリセット
 		rotateStagingT_ = 0.0f;
 		// 演出終了
 		isRotateStaging_ = false;
+	}
+}
+
+void StageSelectManagerObject::SetPreviewItems()
+{
+	// 全てのアイテムの情報
+	for (int i = 0; i < (int)stageManager_->GetStageInfo(selectedStageNumber_).itemInfo_.size(); i++) {
+		previewItems_[i]->transform_.translate_ = stageManager_->GetStageInfo(selectedStageNumber_).itemInfo_[i].position_;
+		previewItems_[i]->transform_.translate_.x = previewItems_[i]->transform_.translate_.x / 6.0f;
+		previewItems_[i]->transform_.translate_.y = previewItems_[i]->transform_.translate_.y / 6.0f;
+		previewItems_[i]->transform_.scale_ = {0.0f, 0.0f, 0.0f};
+		previewItems_[i]->SetIsRePop(stageManager_->GetStageInfo(selectedStageNumber_).itemInfo_[i].isRePop_);
+	}
+	for(int i = (int)stageManager_->GetStageInfo(selectedStageNumber_).itemInfo_.size(); i < 10; i++)
+		previewItems_[i]->transform_.translate_ = { 10000.0f, 10000.0f, 0.0f };
+
+	// プレビューアイテム表示演出開始
+	previewItemStaging_ = true;
+	// 表示演出tをリセット
+	previewItemStagingT_ = 0.0f;
+}
+
+void StageSelectManagerObject::PrevItemStaging()
+{
+	if (previewItemStagingT_ <= 0.25f) {
+		for (int i = 0; i < (int)stageManager_->GetStageInfo(selectedStageNumber_).itemInfo_.size(); i++)
+			previewItems_[i]->transform_.scale_ = Math::EaseOut(previewItemStagingT_, {0.0f, 0.0f, 0.0f}, { 1.0f / 6.0f, 1.0f / 6.0f, 1.0f / 6.0f }, 0.25f);
+
+		// t加算
+		previewItemStagingT_ += 1.0f / 60.0f;
+	}
+	else {
+
+		for (int i = 0; i < (int)stageManager_->GetStageInfo(selectedStageNumber_).itemInfo_.size(); i++)
+			previewItems_[i]->transform_.scale_ = { 1.0f / 6.0f, 1.0f / 6.0f, 1.0f / 6.0f };
+
+		// 表示演出を止める
+		previewItemStaging_ = false;
+		// t加算
+		previewItemStagingT_ = 0.0f;
 	}
 }

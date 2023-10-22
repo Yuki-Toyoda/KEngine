@@ -77,6 +77,16 @@ public: // その他関数群
 	void RotateStagePreview();
 
 	/// <summary>
+	/// プレビューアイテムの座標設定
+	/// </summary>
+	void SetPreviewItems();
+
+	/// <summary>
+	/// プレビューアイテム演出関数
+	/// </summary>
+	void PrevItemStaging();
+
+	/// <summary>
 	/// ゲームシーンへの遷移トリガーゲッター
 	/// </summary>
 	/// <returns>ゲームシーンへ遷移するか</returns>
@@ -144,5 +154,10 @@ private: // メンバ変数
 	StageManager* stageManager_ = nullptr;
 	// プレビュー上のアイテムオブジェクト
 	std::vector<Item*>previewItems_;
+
+	// プレビューアイテム表示演出中か
+	bool previewItemStaging_;
+	// プレビューアイテム用の演出t
+	float previewItemStagingT_;
 };
 

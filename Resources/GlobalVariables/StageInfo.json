@@ -31,11 +31,25 @@
             0.0
         ],
         "1:Condition": 100.0,
-        "1:isRePop:0": 1,
-        "1:kMaxInfoNum": 0,
+        "1:isRePop:0": 0,
+        "1:isRePop:1": 0,
+        "1:isRePop:2": 1,
+        "1:kMaxInfoNum": 3,
         "1:popTime:0": 10,
+        "1:popTime:1": 10,
+        "1:popTime:2": 10,
         "1:position:0": [
-            -2.8299999237060547,
+            7.0,
+            0.0,
+            0.0
+        ],
+        "1:position:1": [
+            -7.0,
+            0.0,
+            0.0
+        ],
+        "1:position:2": [
+            0.0,
             0.0,
             0.0
         ],

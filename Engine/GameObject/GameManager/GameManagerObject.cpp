@@ -46,7 +46,7 @@ void GameManagerObject::Initialize(std::string name, Tag tag)
 	// 演出時間初期化
 	cameraStagingTime_ = 1.25f;
 
-	// ステージ内のアイテム個数取得 （仮置き）
+	// ステージ内のアイテム個数取得
 	stageItemCount_ = (int)stageManager_->GetStageInfo().itemInfo_.size(); // アイテム総数取得
 	stageNowItemCount_ = (int)stageManager_->GetStageInfo().itemInfo_.size(); // 現在のアイテム個数
 
@@ -368,10 +368,10 @@ void GameManagerObject::CameraStaging()
 
 void GameManagerObject::ClearGageAnimation()
 {
-	if (stageManager_->GetGearCondition() <= stageManager_->GetClearCondition())
+	/*if (stageManager_->GetGearCondition() <= stageManager_->GetClearCondition())
 		stageClearPercent_ = Math::Linear(stageManager_->GetGearCondition(), 0, 100, stageManager_->GetClearCondition());
 	else
-		stageClearPercent_ = 100;
+		stageClearPercent_ = 100;*/
 
 	// ゲージを動かす
 	objects_[3]->uvTransform_.rotate_.x = Math::EaseIn((float)stageClearPercent_, -1.05f, -0.3f, 100);
