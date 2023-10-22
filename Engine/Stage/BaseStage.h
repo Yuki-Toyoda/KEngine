@@ -10,6 +10,7 @@
 #include "../GameObject/GameObjectManager.h"
 
 class StageManager;
+class Player;
 
 /// <summary>
 /// 基底シーン
@@ -84,14 +85,13 @@ protected: // メンバ関数
 	void ApplyStageInfo();
 
 
-
 protected: // メンバ変数
 
 	StageManager* stageManager_ = nullptr;
 
 	StageInfo stageInfo_;
 
-	//Player* player_ = nullptr;
+	Player* player_ = nullptr;
 
 	// 歯車の回転量
 	float gearCondition_;

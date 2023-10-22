@@ -1,6 +1,7 @@
 #include "DebugStage.h"
 #include "../StageManager.h"
 #include "../../GameObject/Item/Item.h"
+#include "../../GameObject/Player/Player.h"
 
 void DebugStage::Initialize(const StageInfo& info)
 {
@@ -10,6 +11,9 @@ void DebugStage::Initialize(const StageInfo& info)
 
 void DebugStage::Update()
 {
+	float gearRotate{ 0 };
+	gearRotate += player_->GetGearRotateSpeed();
+	gearCondition_ += 0 < gearRotate ? gearRotate : gearRotate * -1;
 	DebugGUI();
 }
 

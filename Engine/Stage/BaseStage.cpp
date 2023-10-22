@@ -1,6 +1,7 @@
 #include "BaseStage.h"
 #include "StageManager.h"
 #include "../GameObject/Item/Item.h"
+#include "../GameObject/Player/Player.h"
 
 void BaseStage::commonInitialize()
 {
@@ -12,7 +13,9 @@ void BaseStage::commonInitialize()
 
 	globalVariables_ = GlobalVariables::GetInstance();
 
-	//player_ = static_cast<Player*>(gameObjectManager_->GetGameObject(BaseObject::tagPlayer).front());
+	player_ = dynamic_cast<Player*>(gameObjectManager_->GetGameObject(BaseObject::tagPlayer).front());
+	// 空の時エラー
+	assert(player_);
 
 	gearCondition_ = 0;
 	usedItem_ = 0;

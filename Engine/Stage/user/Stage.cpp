@@ -1,5 +1,6 @@
 #include "Stage.h"
 #include "../StageManager.h"
+#include "../../GameObject/Player/Player.h"
 
 Stage::Stage()
 {
@@ -13,5 +14,7 @@ void Stage::Initialize(const StageInfo& info)
 
 void Stage::Update()
 {
-	
+	float gearRotate{ 0 };
+	gearRotate += player_->GetGearRotateSpeed();
+	gearCondition_ += 0 < gearRotate ? gearRotate : gearRotate * -1;
 }
