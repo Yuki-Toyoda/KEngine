@@ -54,6 +54,20 @@ public: // メンバ関数
 	std::vector<Item*>& GetItems() { return items_; }
 
 	/// <summary>
+	/// 今使ってるステージの情報を取得
+	/// </summary>
+	const BaseStage::StageInfo& GetStageInfo()const { return infos_[nowStageNum_]; }
+	/// <summary>
+	/// 添え字でステージの情報を取得
+	/// </summary>
+	const BaseStage::StageInfo& GetStageInfo(int index)const { return infos_[index]; }
+
+	/// <summary>
+	/// すべてのステージ情報を取得
+	/// </summary>
+	const std::vector<BaseStage::StageInfo>& GetStageInfos() const { return infos_; }
+
+	/// <summary>
 	/// マネージャーにステージを登録する
 	/// </summary>
 	void AddStageInfo(const BaseStage::StageInfo& info);
