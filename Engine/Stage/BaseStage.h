@@ -10,6 +10,7 @@
 #include "../GameObject/GameObjectManager.h"
 
 class StageManager;
+class Player;
 
 /// <summary>
 /// 基底シーン
@@ -58,9 +59,10 @@ public: // メンバ関数
 	StageInfo GetStageInfo()const { return stageInfo_; }
 	int GetItemInfoNum() const { return static_cast<int>(stageInfo_.itemInfo_.size()); }
 
+	float GetGearCondition()const;
+	float GetClearCondition()const;
+
 	bool GetIsClear()const;
-
-
 
 public: // パブリックなメンバ変数
 
@@ -84,14 +86,13 @@ protected: // メンバ関数
 	void ApplyStageInfo();
 
 
-
 protected: // メンバ変数
 
 	StageManager* stageManager_ = nullptr;
 
 	StageInfo stageInfo_;
 
-	//Player* player_ = nullptr;
+	Player* player_ = nullptr;
 
 	// 歯車の回転量
 	float gearCondition_;

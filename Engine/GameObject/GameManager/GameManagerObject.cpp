@@ -1,11 +1,15 @@
 #include "GameManagerObject.h"
 #include "../../Scene/SceneManager.h"
+#include "../../Stage/StageManager.h"
 
 void GameManagerObject::Initialize(std::string name, Tag tag)
 {
 	// 基底クラス初期化
 	BaseObject::Initialize(name, tag);
 	isActive_ = true;
+
+	// ステージマネージャのインスタンス取得
+	stageManager_ = StageManager::GetInstance();
 
 	// ギアの座標を初期化
 	for (int i = 0; i < 3; i++) {
@@ -43,8 +47,8 @@ void GameManagerObject::Initialize(std::string name, Tag tag)
 	cameraStagingTime_ = 1.25f;
 
 	// ステージ内のアイテム個数取得 （仮置き）
-	stageItemCount_ = 0;
-	stageNowItemCount_ = 0;
+	stageItemCount_ = (int)stageManager_->GetStageInfo().itemInfo_.size(); // アイテム総数取得
+	stageNowItemCount_ = (int)stageManager_->GetStageInfo().itemInfo_.size(); // 現在のアイテム個数
 
 	// ステージクリア進捗(仮置き)
 	stageClearPercent_ = 0;
@@ -123,6 +127,7 @@ void GameManagerObject::Update()
 	// UIの更新
 	stageItemCounter_->Update();
 	stageItemCounter_->color_ = spriteUIColor_;
+	stageNowItemCount_ = (int)stageManager_->GetStageInfo().itemInfo_.size() - (int)stageManager_->GetStageInfo().itemInfo_.size(); // 現在のアイテム個数
 	stageNowItemCounter_->Update();
 	stageNowItemCounter_->color_ = spriteUIColor_;
 	stageClearCounter_->Update();
@@ -363,6 +368,11 @@ void GameManagerObject::CameraStaging()
 
 void GameManagerObject::ClearGageAnimation()
 {
+	if (stageManager_->GetGearCondition() <= stageManager_->GetClearCondition())
+		stageClearPercent_ = Math::Linear(stageManager_->GetGearCondition(), 0, 100, stageManager_->GetClearCondition());
+	else
+		stageClearPercent_ = 100;
+
 	// ゲージを動かす
 	objects_[3]->uvTransform_.rotate_.x = Math::EaseIn((float)stageClearPercent_, -1.05f, -0.3f, 100);
 }

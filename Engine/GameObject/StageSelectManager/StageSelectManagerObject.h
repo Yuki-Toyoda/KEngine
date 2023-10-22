@@ -5,6 +5,8 @@
 // クラスの前方宣言
 class Input;
 class Camera;
+class Item;
+class StageManager;
 
 /// <summary>
 /// ステージセレクト画面のマネージャー
@@ -138,5 +140,9 @@ private: // メンバ変数
 
 	// ゲームシーンへの遷移トリガー
 	bool isGoGameScene_;
+
+	StageManager* stageManager_ = nullptr;
+	// プレビュー上のアイテムオブジェクト
+	std::vector<Item*>previewItems_;
 };
 

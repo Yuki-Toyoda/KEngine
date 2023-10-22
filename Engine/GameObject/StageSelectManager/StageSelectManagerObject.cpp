@@ -1,6 +1,8 @@
 #include "StageSelectManagerObject.h"
 #include "../../Input/Input.h"
 #include "../../Scene/SceneManager.h"
+#include "../../Stage/StageManager.h"
+#include "../Item/Item.h"
 
 void StageSelectManagerObject::Initialize(std::string name, Tag tag)
 {

@@ -3,6 +3,7 @@
 
 // クラスの前方宣言
 class Camera;
+class StageManager;
 
 /// <summary>
 /// ゲームシーンのマネージャーオブジェクト
@@ -79,6 +80,9 @@ public: // その他関数群
 	void ClearGageAnimation();
 
 private: // メンバ変数
+
+	// ステージマネージャ
+	StageManager* stageManager_ = nullptr;
 
 	// プレイヤーがいるギアのワールドトランスフォーム
 	const WorldTransform* mainGearTransform_;
