@@ -45,6 +45,17 @@ public: // アクセッサ等
 	/// <param name="nextScene">次のシーンの実体</param>
 	void SetNextScene(BaseScene* nextScene) { nextScene_ = nextScene; }
 
+	/// <summary>
+	/// 選択中のステージ番号を取得するゲッター
+	/// </summary>
+	/// <returns>選択中のステージ番号</returns>
+	int GetSelectedStageNumber() { return selectedStageNumber_; }
+	/// <summary>
+	/// 選択中のステージ番号のセッター
+	/// </summary>
+	/// <param name="selectedNumber">選択するステージ番号</param>
+	void SetSelectedStageNumber(int selectedNumber) { selectedStageNumber_ = selectedNumber; }
+
 public: // その他関数
 
 	/// <summary>
@@ -97,5 +108,7 @@ private: // メンバ変数
 	// フェード演出が終了しているか
 	bool isEndFade_;
 
-};
+	// 選択中のステージ番号
+	int selectedStageNumber_;
 
+};

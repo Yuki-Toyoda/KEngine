@@ -11,7 +11,6 @@ SceneManager* SceneManager::GetInstance()
 
 void SceneManager::Initialize()
 {
-
 	// フェード演出スプライト用座標
 	fadeSpritePosition_ = { 0.0f, 0.0f };
 	// フェード演出スプライト用大きさ

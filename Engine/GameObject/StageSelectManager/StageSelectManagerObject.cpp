@@ -50,7 +50,7 @@ void StageSelectManagerObject::Initialize(std::string name, Tag tag)
 	stageCount_ = (int)stageManager_->GetStageMaxIndex() - 1;
 
 	// 選択中のステージ番号
-	selectedStageNumber_ = 0;
+	selectedStageNumber_ = SceneManager::GetInstance()->GetSelectedStageNumber();
 	// 切り替えボタン押下回数
 	pressCount_ = 0;
 
@@ -111,6 +111,8 @@ void StageSelectManagerObject::Initialize(std::string name, Tag tag)
 
 	// UIテクスチャ群
 	textureHandleSelectArrow_ = TextureManager::Load("./Resources/Image/StageSelect", "SelectArrow.png"); // 選択矢印
+	textureHandleNumberSheets_ = TextureManager::Load("./Resources/Image", "MyNumberSheets.png"); // 番号シート
+	textureHandleStageNumberBackGround_ = TextureManager::Load("./Resources/Image/StageSelect", "stageSelectCounterBackGround.png"); // ステージ番号背景
 
 	// ステージ選択矢印UI
 	selectArrowPosition_[0] = {340.0f, 600.0f}; // 選択矢印UI座標 左
@@ -135,6 +137,23 @@ void StageSelectManagerObject::Initialize(std::string name, Tag tag)
 	// 終端座標設定
 	endSelectArrowPosition_[0] = { selectArrowPosition_[0].x - 25.0f, selectArrowPosition_[0].y};
 	endSelectArrowPosition_[1] = { selectArrowPosition_[1].x + 25.0f, selectArrowPosition_[1].y };
+
+	// ステージ番号UI
+	stageSelectedNumber_ = 1;
+	stageNumber_.reset(new Counter());
+	stageNumber_->Initialize(textureHandleNumberSheets_, {512.0f, 512.0f}, &stageSelectedNumber_, {700.0f, 600.0f}, {128.0f, 128.0f}, -16.0f);
+	// ステージ番号のカウンターの色を更新
+	stageNumber_->color_ = spriteUIColor_;
+	stageNumber_->SetIsCentered(true); // 中央ぞろえに
+	// ステージ番号カウンタ背景
+	stageNumberBackGroundSize_ = { 192.0f, 192.0f };
+	stageNumberBackGround_.reset(Sprite::Create(
+		textureHandleStageNumberBackGround_,
+		&stageNumber_->position_,
+		&stageNumberBackGroundSize_,
+		&spriteUIColor_,
+		{ 0.775f, 0.5f }
+	));
 
 	// フェードイン
 	SceneManager::GetInstance()->StartFadeEffect(transitionStagingTime_, { 0.0f, 0.0f, 0.0f, 1.0f }, { 0.0f, 0.0f, 0.0f, 0.0f });
@@ -198,6 +217,9 @@ void StageSelectManagerObject::Update()
 		}
 	}
 
+	// 選択中ステージ番号を検索
+	stageSelectedNumber_ = selectedStageNumber_ + 1;
+
 	// 遷移演出
 	TransitionStaging();
 
@@ -207,8 +229,9 @@ void StageSelectManagerObject::Update()
 	// UIアニメーション
 	if (!isTransitionStaging_)
 		UIAnimation();
-
-	// UI更新処理
+	stageNumber_->Update();
+	// ステージ番号のカウンターの色を更新
+	stageNumber_->color_ = spriteUIColor_;
 
 #ifdef _DEBUG
 
@@ -225,6 +248,7 @@ void StageSelectManagerObject::Update()
 	}
 	ImGui::DragInt("pressCount", &pressCount_, 1.0f);
 	ImGui::DragInt("selectedStage", &selectedStageNumber_, 1.0f);
+	ImGui::DragFloat2("stageNumber", &stageNumber_->position_.x, 0.5f);
 	ImGui::End();
 
 #endif // _DEBUG
@@ -241,6 +265,10 @@ void StageSelectManagerObject::SpriteDraw()
 	// 選択矢印描画
 	for (int i = 0; i < 2; i++)
 		selectArrowSprites_[i]->Draw();
+	// ステージ番号背景描画
+	stageNumberBackGround_->Draw();
+	// ステージ番号の描画
+	stageNumber_->Draw();
 }
 
 void StageSelectManagerObject::AddGlobalVariables()
@@ -539,4 +567,12 @@ void StageSelectManagerObject::UIAnimation()
 			}
 		}
 	}
+
+	if (stageSelectedNumber_ >= 10)
+		stageNumberBackGroundSize_.x = 192.0f * 2.0f;
+	else
+		stageNumberBackGroundSize_.x = 192.0f;
+
+	stageNumber_->Update();
+
 }

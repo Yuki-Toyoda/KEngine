@@ -37,6 +37,14 @@ public: // メンバ関数
 	// スプライト描画
 	void SpriteDraw() override;
 
+public: // アクセッサ等
+
+	/// <summary>
+	/// 選択中のステージ番号ゲッター
+	/// </summary>
+	/// <returns>選択中のステージ番号</returns>
+	int GetSelectedStageNumber() { return selectedStageNumber_; }
+
 public: // その他関数群
 
 	/// <summary>
@@ -169,7 +177,9 @@ private: // メンバ変数
 	Vector4 spriteUIColor_;
 
 	// UIテクスチャ群
-	int32_t textureHandleSelectArrow_ = 0u;
+	int32_t textureHandleSelectArrow_ = 0u; // 選択矢印
+	int32_t textureHandleNumberSheets_ = 0u; // 数字のシート
+	int32_t textureHandleStageNumberBackGround_ = 0u; // ステージ番号背景
 
 	// ステージ選択矢印UI
 	Vector2 selectArrowPosition_[2]; // 選択矢印UI座標
@@ -182,8 +192,9 @@ private: // メンバ変数
 	Vector2 endSelectArrowPosition_[2]; // 選択矢印終端座標
 
 	// ステージ番号UI
-	Vector2 stageNumberUIPosition_; // 選択矢印UI座標
-	Vector2 stageNumberUISize_; // 選択矢印サイズ
-	std::unique_ptr<Counter> stageNumber; // 選択矢印スプライト
+	int stageSelectedNumber_;
+	std::unique_ptr<Counter> stageNumber_; // ステージ番号カウンタ
+	Vector2 stageNumberBackGroundSize_;
+	std::unique_ptr<Sprite> stageNumberBackGround_; // ステージ番号カウンタ背景
 
 };
