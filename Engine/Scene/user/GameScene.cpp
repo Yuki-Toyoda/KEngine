@@ -38,6 +38,12 @@ void GameScene::Update() {
 		BaseScene* nextScene = new TitleScene();
 		SceneManager::GetInstance()->SetNextScene(nextScene);
 	}
+
+	if (gameManager_->GetIsGoStageSelectScene()) {
+		BaseScene* nextScene = new StageSelectScene();
+		SceneManager::GetInstance()->SetNextScene(nextScene);
+	}
+
 	// ステージマネージャー更新
 	stageManager_->Update();
 }

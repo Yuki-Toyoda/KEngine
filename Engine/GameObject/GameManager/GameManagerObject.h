@@ -22,6 +22,7 @@ private: // サブクラス
 		WayPoint6,
 		WayPoint7,
 		WayPoint8,
+		WayPoint9,
 	};
 
 public: // メンバ関数
@@ -35,17 +36,7 @@ public: // メンバ関数
 	// スプライト描画
 	void SpriteDraw() override;
 
-public: // その他関数群
-
-	/// <summary>
-	/// グローバル変数に値を追加する関数
-	/// </summary>
-	void AddGlobalVariables() override;
-
-	/// <summary>
-	/// グローバル変数の値を適用する関数
-	/// </summary>
-	void ApplyGlobalVariables() override;
+public: // アクセッサ等
 
 	/// <summary>
 	/// カメラセッター
@@ -58,6 +49,24 @@ public: // その他関数群
 	/// </summary>
 	/// <param name="transform">ギアのワールドトランスフォーム</param>
 	void SetGearTransform(WorldTransform* transform) { mainGearTransform_ = transform; }
+
+	/// <summary>
+	/// ステージセレクトシーンへの遷移トリガーゲッター
+	/// </summary>
+	/// <returns>遷移するか</returns>
+	bool GetIsGoStageSelectScene() { return isGoStageSelectScene_; }
+
+public: // その他関数群
+
+	/// <summary>
+	/// グローバル変数に値を追加する関数
+	/// </summary>
+	void AddGlobalVariables() override;
+
+	/// <summary>
+	/// グローバル変数の値を適用する関数
+	/// </summary>
+	void ApplyGlobalVariables() override;
 
 	/// <summary>
 	/// ゲーム中のカメラ演出関数
@@ -100,6 +109,9 @@ private: // メンバ変数
 
 	// ステージのクリア進捗パーセント
 	int stageClearPercent_;
+
+	// ステージセレクトシーンへのトリガー
+	bool isGoStageSelectScene_;
 
 	// UIテクスチャ群
 	int32_t textureHandleNumberSheets_ = 0u; // 数字のシート

@@ -49,6 +49,9 @@ void GameManagerObject::Initialize(std::string name, Tag tag)
 	// ステージクリア進捗(仮置き)
 	stageClearPercent_ = 0;
 
+	// ステージセレクトシーンへのトリガー
+	isGoStageSelectScene_ = false;
+
 	/// テクスチャ読み込み
 	textureHandleNumberSheets_ = TextureManager::Load("./Resources/Image", "MyNumberSheets.png"); // 番号シート
 	textureHandleTextLeftItem_ = TextureManager::Load("./Resources/Image/Game", "LeftItem.png"); // 残りアイテムテキスト
@@ -284,7 +287,7 @@ void GameManagerObject::CameraStaging()
 			camera_->transform_.translate_ = cameraEndTranslate_;
 
 			// カメラの演出時間設定
-			cameraStagingTime_ = 1.25f;
+			cameraStagingTime_ = 1.15f;
 
 			// 次の演出に
 			cameraStagingWayPoint_++;
@@ -293,7 +296,7 @@ void GameManagerObject::CameraStaging()
 	case GameManagerObject::WayPoint6:
 		if (cameraStagingT_ <= cameraStagingTime_) {
 
-			clearCheckTransform_.translate_ = Math::EaseInOut(cameraStagingT_, { 0.0f, -100.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, cameraStagingTime_);
+			clearCheckTransform_.translate_ = Math::EaseInOut(cameraStagingT_, { 0.0f, -50.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, cameraStagingTime_);
 			clearCheckTransform_.scale_ = Math::EaseIn(cameraStagingT_, { 0.0f, 0.0f, 1.0f }, clearGageTransform_.scale_, cameraStagingTime_);
 
 			// tを加算
@@ -307,7 +310,7 @@ void GameManagerObject::CameraStaging()
 			clearCheckTransform_.scale_ = clearGageTransform_.scale_;
 
 			// カメラの演出時間設定
-			cameraStagingTime_ = 0.1f;
+			cameraStagingTime_ = 1.0f;
 
 			// 次の演出に
 			cameraStagingWayPoint_++;
@@ -315,9 +318,44 @@ void GameManagerObject::CameraStaging()
 		break;
 	case GameManagerObject::WayPoint7:
 		
+		if (cameraStagingT_ <= cameraStagingTime_) {
+			// tを加算
+			cameraStagingT_ += 1.0f / 60.0f;
+		}
+		else {
+			// tリセット
+			cameraStagingT_ = 0.0f;
+
+			// カメラの演出時間設定
+			cameraStagingTime_ = 1.0f;
+
+			// フェードイン
+			SceneManager::GetInstance()->StartFadeEffect(cameraStagingTime_, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f, 1.0f });
+
+			cameraStartTranslate_ = camera_->transform_.translate_;
+			cameraEndTranslate_ = cameraEndTranslate_ = { 0.0f, 0.0f, -30.0f };
+
+			// 次の演出に
+			cameraStagingWayPoint_++;
+		}
 		break;
 	case GameManagerObject::WayPoint8:
-
+		if (cameraStagingT_ <= cameraStagingTime_) {
+			// カメラ座標設定
+			camera_->transform_.translate_ = Math::EaseInOut(cameraStagingT_, cameraStartTranslate_, cameraEndTranslate_, cameraStagingTime_);
+			// tを加算
+			cameraStagingT_ += 1.0f / 60.0f;
+		}
+		else {
+			// tリセット
+			cameraStagingT_ = 0.0f;
+			// 次の演出に
+			cameraStagingWayPoint_++;
+		}
+		break;
+	case GameManagerObject::WayPoint9:
+		// ステージセレクトシーンへ遷移
+		isGoStageSelectScene_ = true;
 		break;
 
 	}
@@ -326,5 +364,5 @@ void GameManagerObject::CameraStaging()
 void GameManagerObject::ClearGageAnimation()
 {
 	// ゲージを動かす
-	objects_[3]->uvTransform_.rotate_.x = Math::EaseInOut((float)stageClearPercent_, -1.05f, -0.3f, 100);
+	objects_[3]->uvTransform_.rotate_.x = Math::EaseIn((float)stageClearPercent_, -1.05f, -0.3f, 100);
 }
