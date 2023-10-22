@@ -44,12 +44,14 @@ void SceneManager::Update()
 {
 #ifdef _DEBUG
 
+	
+
+#endif // _DEBUG
+
 	// FPSカウンターの表示
 	ImGui::Begin("Control panel");
 	ImGui::Text("Frame rate: %6.2f fps", ImGui::GetIO().Framerate);
 	ImGui::End();
-
-#endif // _DEBUG
 
 	// 現在のシーンから次のシーンへ遷移するよう指示されたら
 	if (nextScene_ != nullptr) {
@@ -98,6 +100,18 @@ void SceneManager::StartFadeEffect(float fadeTime, Vector4 startcolor, Vector4 e
 		// 演出は終了していない
 		isEndFade_ = false;
 	}
+}
+
+void SceneManager::SetFadeColor(Vector4 color)
+{
+	// 演出用tをリセット
+	fadeT_ = 0.0f;
+	// 演出中でない
+	isFading_ = false;
+	// 終了を伝える
+	isEndFade_ = true;
+	// 色を設定
+	fadeSpriteColor_ = color;
 }
 
 void SceneManager::Fade()

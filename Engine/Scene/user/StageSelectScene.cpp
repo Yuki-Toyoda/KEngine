@@ -34,7 +34,7 @@ void StageSelectScene::Update()
 	}
 
 	if (input_->TriggerKey(DIK_RSHIFT)) {
-		BaseScene* nextScene = new TitleScene();
+		BaseScene* nextScene = new GameScene();
 		SceneManager::GetInstance()->SetNextScene(nextScene);
 	}
 }

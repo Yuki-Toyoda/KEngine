@@ -76,7 +76,7 @@ private: // メンバ変数
 	// ゲージ
 	std::unique_ptr<Gage> gage_;
 	// カウンター
-	std::unique_ptr<Counter> counter_;
+	std::unique_ptr<Counter> stageItemCounter_;
 
 	// アニメーションスプライト用テクスチャ
 	uint32_t animSpriteTexture1_ = 0u;

@@ -43,6 +43,11 @@ void StageSelectManagerObject::Initialize(std::string name, Tag tag)
 	for(int i = 0; i < 4; i++)
 		AddOBJ(&previewStageTransforms_[i], color_, "./Resources/Gear", "Gear_L.obj", false);
 
+	// 選択中のステージ番号
+	selectedStageNumber_ = 1;
+	// 切り替えボタン押下回数デクリメント
+	pressCount_ = 0;
+
 	// 演出用tリセット
 	rotateStagingT_ = 0.0f;
 	// 演出時間
@@ -51,13 +56,16 @@ void StageSelectManagerObject::Initialize(std::string name, Tag tag)
 	isRotateStaging_ = false;
 
 	// カメラ手振れ演出無効
-	enableCameraShake_ = false;
+	enableCameraShake_ = true;
 	cameraStagingT_ = (3.0f / 2.0f) / 2.0f;
 	cameraStagingT2_ = (3.0f / 2.0f);
 	// カメラ演出用tのループトリガー
 	cameraStagingTReturn_ = false;
 	// カメラ演出用tのループトリガー
 	cameraStagingT2Return_ = false;
+
+	// 演出中間地点
+	cameraStagingWayPoint_ = WayPoint1;
 
 	// 遷移演出中である
 	isTransitionStaging_ = true;
@@ -99,14 +107,14 @@ void StageSelectManagerObject::Update()
 			if (pressCount_ < 0)
 				pressCount_ = 0;
 
-			if (pressCount_ < 3)
+			if (pressCount_ < 2)
 				pressCount_++;
 		}
 		else if (input_->TriggerKey(DIK_A) || input_->TriggerKey(DIK_LEFTARROW)) {
 			if (pressCount_ > 0)
 				pressCount_ = 0;
 
-			if (pressCount_ > -3)
+			if (pressCount_ > -2)
 				pressCount_--;
 		}
 		// 回転演出中でなければ
@@ -173,12 +181,12 @@ void StageSelectManagerObject::ApplyGlobalVariables()
 
 void StageSelectManagerObject::TransitionStaging()
 {
-	switch (stagingWayPoint_)
+	switch (cameraStagingWayPoint_)
 	{
-	case StageSelectManagerObject::WayPoint1:
+	case StageSelectManagerObject::WayPoint1: // カメラ移動
 		if (transitionStagingT_ <= transitionStagingTime_) {
 			// カメラ座標を動かす
-			camera_->transform_.translate_ = Math::EaseOut(transitionStagingT_, cameraStartTranslate_, cameraEndTranslate_, transitionStagingTime_);
+			camera_->transform_.translate_.z = Math::EaseOut(transitionStagingT_, cameraStartTranslate_.z, cameraEndTranslate_.z, transitionStagingTime_);
 			// 視野角を広げる
 			camera_->fov_ = Math::EaseOut(transitionStagingT_, 0.4f, 0.55f, transitionStagingTime_);
 			// tを加算
@@ -196,14 +204,33 @@ void StageSelectManagerObject::TransitionStaging()
 			// 遷移中ではない
 			isTransitionStaging_ = false;
 
-			// 手振れ演出開始
-			enableCameraShake_ = true;
+			// 次の演出へ
+			cameraStagingWayPoint_++;
+		}
+
+		if (input_->TriggerKey(DIK_SPACE)) {
+
+			// 無理やりフェードイン
+			SceneManager::GetInstance()->SetFadeColor({ 0.0f, 0.0f, 0.0f, 0.0f });
+
+			// カメラ座標を動かす
+			camera_->transform_.translate_.z = cameraEndTranslate_.z;
+			// 視野角を広げる
+			camera_->fov_ = 0.55f;
+
+			// tをリセット
+			transitionStagingT_ = 0.0f;
+			// 秒数設定
+			transitionStagingTime_ = 1.0f;
+
+			// 遷移中ではない
+			isTransitionStaging_ = false;
 
 			// 次の演出へ
-			stagingWayPoint_++;
+			cameraStagingWayPoint_++;
 		}
 		break;
-	case StageSelectManagerObject::WayPoint2:
+	case StageSelectManagerObject::WayPoint2: // スペースを押したらシーン遷移開始
 		if (input_->TriggerKey(DIK_SPACE)) {
 			// カメラシェイク無効
 			enableCameraShake_ = false;
@@ -212,10 +239,10 @@ void StageSelectManagerObject::TransitionStaging()
 			// カメラの終端座標を設定
 			cameraEndTranslate_ = { 0.0f, 0.0f, -17.0f };
 			// 次の演出に
-			stagingWayPoint_++;
+			cameraStagingWayPoint_++;
 		}
 		break;
-	case StageSelectManagerObject::WayPoint3:
+	case StageSelectManagerObject::WayPoint3: // 一度カメラを引く
 		if (transitionStagingT_ <= transitionStagingTime_) {
 			// カメラ座標を動かす
 			camera_->transform_.translate_ = Math::EaseInOut(transitionStagingT_, cameraStartTranslate_, cameraEndTranslate_, transitionStagingTime_);
@@ -240,10 +267,10 @@ void StageSelectManagerObject::TransitionStaging()
 			SceneManager::GetInstance()->StartFadeEffect(transitionStagingTime_, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f, 1.0f });
 
 			// 次の演出へ
-			stagingWayPoint_++;
+			cameraStagingWayPoint_++;
 		}
 		break;
-	case StageSelectManagerObject::WayPoint4:
+	case StageSelectManagerObject::WayPoint4: // カメラを画面奥に動かしながらシーン遷移
 		if (transitionStagingT_ <= transitionStagingTime_) {
 			// カメラ座標を動かす
 			camera_->transform_.translate_ = Math::EaseInOut(transitionStagingT_, cameraStartTranslate_, cameraEndTranslate_, transitionStagingTime_);
@@ -263,7 +290,7 @@ void StageSelectManagerObject::TransitionStaging()
 			transitionStagingTime_ = 1.0f;
 
 			// 次の演出へ
-			stagingWayPoint_++;
+			cameraStagingWayPoint_++;
 		}
 		break;
 	case StageSelectManagerObject::WayPoint5:
@@ -332,11 +359,11 @@ void StageSelectManagerObject::RotateStart(bool isRight)
 		if (selectedStageNumber_ < stageCount_)
 			selectedStageNumber_++;
 		else
-			selectedStageNumber_ = 0;
+			selectedStageNumber_ = 1;
 	}
 	else {
 		endAngle_ = transform_.rotate_.z + ((float)std::numbers::pi / 2.0f);
-		if (selectedStageNumber_ > 0)
+		if (selectedStageNumber_ > 1)
 			selectedStageNumber_--;
 		else
 			selectedStageNumber_ = stageCount_;

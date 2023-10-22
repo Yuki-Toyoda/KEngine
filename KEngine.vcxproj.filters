@@ -16,15 +16,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Engine\Audio\Audio.cpp">
+      <Filter>Audio</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\Base\DirectXCommon.cpp">
-      <Filter>Engine\Base</Filter>
+      <Filter>Base</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Base\WinApp.cpp">
-      <Filter>Engine\Base</Filter>
+      <Filter>Base</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Audio\Audio.cpp">
-      <Filter>Engine\Audio</Filter>
-    </ClCompile>
+    <ClCompile Include="Engine\Collider\Collider.cpp">
+      <Filter>Collider</Filter>
     <ClCompile Include="Engine\GameObject\Ambient\Ambient.cpp">
       <Filter>Engine\GameObject\Ambient</Filter>
     </ClCompile>
@@ -52,23 +54,23 @@
     <ClCompile Include="Engine\externals\imgui\imgui_demo.cpp">
       <Filter>Engine\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\externals\imgui\imgui_draw.cpp">
-      <Filter>Engine\ImGui</Filter>
+    <ClCompile Include="Engine\Scene\user\StageSelectScene.cpp">
+      <Filter>Scene\User</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\externals\imgui\imgui_impl_dx12.cpp">
-      <Filter>Engine\ImGui</Filter>
+    <ClCompile Include="Engine\Sprite\Sprite.cpp">
+      <Filter>Sprite</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\externals\imgui\imgui_impl_win32.cpp">
-      <Filter>Engine\ImGui</Filter>
+    <ClCompile Include="Engine\GameObject\WorldTransform.cpp">
+      <Filter>GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\externals\imgui\imgui_tables.cpp">
-      <Filter>Engine\ImGui</Filter>
+    <ClCompile Include="Engine\GameObject\Samples\Box\SampleBox.cpp">
+      <Filter>GameObject\Samples</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\externals\imgui\imgui_widgets.cpp">
-      <Filter>Engine\ImGui</Filter>
+    <ClCompile Include="Engine\GameObject\Samples\Stage\SampleFloor.cpp">
+      <Filter>GameObject\Samples</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\externals\imgui\ImGuiManager.cpp">
-      <Filter>Engine\ImGui</Filter>
+    <ClCompile Include="Engine\GameObject\Samples\Player\SamplePlayer.cpp">
+      <Filter>GameObject\Samples</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Input\Input.cpp">
       <Filter>Engine\Input</Filter>
@@ -159,14 +161,17 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Audio\Audio.h">
+      <Filter>Audio</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\Base\DirectXCommon.h">
-      <Filter>Engine\Base</Filter>
+      <Filter>Base</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Base\WinApp.h">
-      <Filter>Engine\Base</Filter>
+      <Filter>Base</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Audio\Audio.h">
-      <Filter>Engine\Audio</Filter>
+    <ClInclude Include="Engine\Base\SafeDelete.h">
+      <Filter>Base</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Collider\Shape\AABB.h">
       <Filter>Engine\Colider\Shape</Filter>
@@ -196,7 +201,7 @@
       <Filter>Engine\GameObject\Camera</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Debug\Debug.h">
-      <Filter>Engine\Debug</Filter>
+      <Filter>Debug</Filter>
     </ClInclude>
     <ClInclude Include="Engine\externals\imgui\imconfig.h">
       <Filter>Engine\ImGui</Filter>
@@ -225,14 +230,14 @@
     <ClInclude Include="Engine\externals\imgui\imstb_truetype.h">
       <Filter>Engine\ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Input\Input.h">
-      <Filter>Engine\Input</Filter>
+    <ClInclude Include="Engine\externals\imgui\imgui_impl_dx12.h">
+      <Filter>ImGui</Filter>
     </ClInclude>
     <ClInclude Include="Engine\OBJ\OBJ.h">
       <Filter>Engine\OBJ</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Math\Math.h">
-      <Filter>Engine\Math</Filter>
+      <Filter>Math</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Math\Vector2.h">
       <Filter>Engine\Math\Vector</Filter>
@@ -319,7 +324,7 @@
       <Filter>Engine\Sprite\template</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Sprite\template\Counter.h">
-      <Filter>Engine\Sprite\template</Filter>
+      <Filter>Sprite\Template</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Sprite\template\Gage.h">
       <Filter>Engine\Sprite\template</Filter>
@@ -472,7 +477,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="Engine\externals\imgui\LICENSE.txt">
-      <Filter>Engine\ImGui</Filter>
+      <Filter>ImGui</Filter>
     </Text>
   </ItemGroup>
 </Project>

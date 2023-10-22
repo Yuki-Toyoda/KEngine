@@ -98,7 +98,7 @@ private: // メンバ変数
 	Vector2 buttonAnchorPoint_;
 
 	// 演出中間地点
-	int stagingWayPoint_;
+	int cameraStagingWayPoint_;
 	// 演出t
 	float rotateStagingT_;
 

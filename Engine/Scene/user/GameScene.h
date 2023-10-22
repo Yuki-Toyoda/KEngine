@@ -21,6 +21,9 @@ public: // メンバ関数
 
 private: // メンバ変数
 
+	// ステージマネージャー
 	StageManager* stageManager_ = nullptr;
 
+	// ゲームマネージャー
+	GameManagerObject* gameManager_ = nullptr;
 };

@@ -79,6 +79,8 @@ public:
 
 	float& GetGearRotateSpeed() { return gearRotateSpeed_; }
 
+	WorldTransform& GetGearTransform() { return gearTransform_; }
+
 	// デバッグ時にのみ動くGUI
 	void DebugGui();
 

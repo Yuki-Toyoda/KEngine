@@ -11,3 +11,4 @@
 #include "Item/Item.h"
 #include "TitleManager/TitleManagerObject.h"
 #include "StageSelectManager/StageSelectManagerObject.h"
+#include "GameManager/GameManagerObject.h"

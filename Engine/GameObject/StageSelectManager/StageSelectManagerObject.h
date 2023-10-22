@@ -122,7 +122,7 @@ private: // メンバ変数
 	bool cameraStagingT2Return_;
 
 	// 演出中間地点
-	int stagingWayPoint_;
+	int cameraStagingWayPoint_;
 
 	// 遷移演出トリガー
 	bool isTransitionStaging_;
