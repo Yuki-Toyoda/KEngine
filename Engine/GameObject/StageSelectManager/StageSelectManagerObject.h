@@ -92,6 +92,11 @@ public: // その他関数群
 	/// <returns>ゲームシーンへ遷移するか</returns>
 	bool IsGoGameScene() { return isGoGameScene_; }
 
+	/// <summary>
+	/// UIアニメーション
+	/// </summary>
+	void UIAnimation();
+
 private: // メンバ変数
 
 	// 入力
@@ -159,5 +164,26 @@ private: // メンバ変数
 	bool previewItemStaging_;
 	// プレビューアイテム用の演出t
 	float previewItemStagingT_;
-};
 
+	// UI全体の色
+	Vector4 spriteUIColor_;
+
+	// UIテクスチャ群
+	int32_t textureHandleSelectArrow_ = 0u;
+
+	// ステージ選択矢印UI
+	Vector2 selectArrowPosition_[2]; // 選択矢印UI座標
+	Vector2 selectArrowSize_; // 選択矢印サイズ
+	std::unique_ptr<Sprite> selectArrowSprites_[2]; // 選択矢印スプライト
+	bool playingSelectArrowAnim_[2]; // 選択矢印アニメーション再生トリガー
+	float selectArrowAnimT_[2]; // 選択矢印アニメーションt
+	float selectArrowAnimTime_[2]; // 選択矢印アニメーション時間
+	Vector2 startSelectArrowPosition_[2]; // 選択矢印始端座標
+	Vector2 endSelectArrowPosition_[2]; // 選択矢印終端座標
+
+	// ステージ番号UI
+	Vector2 stageNumberUIPosition_; // 選択矢印UI座標
+	Vector2 selectArrowSize_; // 選択矢印サイズ
+	std::unique_ptr<Sprite> selectArrowSprites_; // 選択矢印スプライト
+
+};

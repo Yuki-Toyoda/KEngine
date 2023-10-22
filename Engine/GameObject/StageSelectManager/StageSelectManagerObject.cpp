@@ -106,6 +106,36 @@ void StageSelectManagerObject::Initialize(std::string name, Tag tag)
 	// プレビューアイテムの座標設定
 	SetPreviewItems();
 
+	// UI全体の色
+	spriteUIColor_ = { 1.0f, 1.0f, 1.0f, 0.0f };
+
+	// UIテクスチャ群
+	textureHandleSelectArrow_ = TextureManager::Load("./Resources/Image/StageSelect", "SelectArrow.png"); // 選択矢印
+
+	// ステージ選択矢印UI
+	selectArrowPosition_[0] = {340.0f, 600.0f}; // 選択矢印UI座標 左
+	selectArrowPosition_[1] = {940.0f, 600.0f }; // 選択矢印UI座標 右
+	selectArrowSize_ = {128.0f, 128.0f}; // 選択矢印サイズ
+	for (int i = 0; i < 2; i++) {
+		selectArrowSprites_[i].reset(Sprite::Create(
+			textureHandleSelectArrow_,
+			&selectArrowPosition_[i],
+			&selectArrowSize_,
+			&spriteUIColor_,
+			{ 0.5f, 0.5f })); // 生成
+		playingSelectArrowAnim_[i] = false; // 再生トリガーリセット
+		selectArrowAnimT_[i] = 0.0f; // tリセット
+		selectArrowAnimTime_[i] = 0.15f; // 演出時間設定 
+		startSelectArrowPosition_[i] = selectArrowPosition_[i]; // 始端座標設定
+	}
+	// それぞれのスプライトの角度を設定
+	selectArrowSprites_[0]->rotation_ = -(float)std::numbers::pi / 2.0f;
+	selectArrowSprites_[1]->rotation_ = (float)std::numbers::pi / 2.0f;
+
+	// 終端座標設定
+	endSelectArrowPosition_[0] = { selectArrowPosition_[0].x - 25.0f, selectArrowPosition_[0].y};
+	endSelectArrowPosition_[1] = { selectArrowPosition_[1].x + 25.0f, selectArrowPosition_[1].y };
+
 	// フェードイン
 	SceneManager::GetInstance()->StartFadeEffect(transitionStagingTime_, { 0.0f, 0.0f, 0.0f, 1.0f }, { 0.0f, 0.0f, 0.0f, 0.0f });
 }
@@ -132,6 +162,10 @@ void StageSelectManagerObject::Update()
 	if (!isTransitionStaging_) {
 		// キーを押すとステージを選択
 		if (input_->TriggerKey(DIK_D) || input_->TriggerKey(DIK_RIGHTARROW)) {
+
+			playingSelectArrowAnim_[1] = true;
+			selectArrowAnimT_[1] = 0.0f;
+
 			if (pressCount_ < 0)
 				pressCount_ = 0;
 
@@ -139,6 +173,10 @@ void StageSelectManagerObject::Update()
 				pressCount_++;
 		}
 		else if (input_->TriggerKey(DIK_A) || input_->TriggerKey(DIK_LEFTARROW)) {
+
+			playingSelectArrowAnim_[0] = true;
+			selectArrowAnimT_[0] = 0.0f;
+
 			if (pressCount_ > 0)
 				pressCount_ = 0;
 
@@ -165,6 +203,10 @@ void StageSelectManagerObject::Update()
 
 	// カメラ手振れ演出
 	CameraShake();
+
+	// UIアニメーション
+	if (!isTransitionStaging_)
+		UIAnimation();
 
 #ifdef _DEBUG
 
@@ -194,7 +236,9 @@ void StageSelectManagerObject::Draw()
 
 void StageSelectManagerObject::SpriteDraw()
 {
-
+	// 選択矢印描画
+	for (int i = 0; i < 2; i++)
+		selectArrowSprites_[i]->Draw();
 }
 
 void StageSelectManagerObject::AddGlobalVariables()
@@ -217,6 +261,8 @@ void StageSelectManagerObject::TransitionStaging()
 			camera_->transform_.translate_.z = Math::EaseOut(transitionStagingT_, cameraStartTranslate_.z, cameraEndTranslate_.z, transitionStagingTime_);
 			// 視野角を広げる
 			camera_->fov_ = Math::EaseOut(transitionStagingT_, 0.4f, 0.55f, transitionStagingTime_);
+			// UIの色を変更
+			spriteUIColor_.w = Math::EaseOut(transitionStagingT_, 0.0f, 1.0f, transitionStagingTime_);
 			// tを加算
 			transitionStagingT_ += 1.0f / 60.0f;
 
@@ -274,6 +320,8 @@ void StageSelectManagerObject::TransitionStaging()
 		if (transitionStagingT_ <= transitionStagingTime_) {
 			// カメラ座標を動かす
 			camera_->transform_.translate_ = Math::EaseInOut(transitionStagingT_, cameraStartTranslate_, cameraEndTranslate_, transitionStagingTime_);
+			// UIの色を変更
+			spriteUIColor_.w = Math::EaseOut(transitionStagingT_, 1.0f, 0.0f, transitionStagingTime_);
 			// tを加算
 			transitionStagingT_ += 1.0f / 60.0f;
 
@@ -466,5 +514,27 @@ void StageSelectManagerObject::PrevItemStaging()
 		previewItemStaging_ = false;
 		// t加算
 		previewItemStagingT_ = 0.0f;
+	}
+}
+
+void StageSelectManagerObject::UIAnimation()
+{
+	for (int i = 0; i < 2; i++) {
+		if (playingSelectArrowAnim_[i]) {
+			if (selectArrowAnimT_[i] <= selectArrowAnimTime_[i]) {
+				// 座標を動かす
+				selectArrowPosition_[i].x = Math::Linear(selectArrowAnimT_[i], startSelectArrowPosition_[i].x, endSelectArrowPosition_[i].x, selectArrowAnimTime_[i]);
+				// tを加算
+				selectArrowAnimT_[i] += 1.0f / 60.0f;
+			}
+			else {
+				// 選択アニメーション再生しない
+				playingSelectArrowAnim_[i] = false;
+				// 座標をリセット
+				selectArrowPosition_[i].x = startSelectArrowPosition_[i].x;
+				// tを加算
+				selectArrowAnimT_[i] = 0.0f;
+			}
+		}
 	}
 }
