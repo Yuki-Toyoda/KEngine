@@ -105,6 +105,11 @@ public: // その他関数群
 	/// </summary>
 	void UIAnimation();
 
+	/// <summary>
+	/// 装飾アニメーション
+	/// </summary>
+	void OrnamentAnimation();
+
 private: // メンバ変数
 
 	// 入力
@@ -116,6 +121,8 @@ private: // メンバ変数
 	// ステージのプレビューモデルを表示させる座標配列
 	WorldTransform mainGearTransform_;
 	WorldTransform previewStageTransforms_[4];
+	// 装飾用ギアの座標配列
+	WorldTransform ornamentGearTransforms_[4];
 
 	// 選択中のステージ番号
 	int selectedStageNumber_;

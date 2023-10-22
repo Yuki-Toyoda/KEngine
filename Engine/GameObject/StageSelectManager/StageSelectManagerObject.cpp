@@ -22,8 +22,10 @@ void StageSelectManagerObject::Initialize(std::string name, Tag tag)
 	mainGearTransform_.SetParent(&transform_, 0b101);
 
 	// 全てのステージプレビュー座標を初期化
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 4; i++) {
 		previewStageTransforms_[i].Initialize();
+		ornamentGearTransforms_[i].Initialize();
+	}
 
 	// ステージプレビュー座標を個々で設定
 	previewStageTransforms_[0].translate_ = { 0.0f, 7.25f, 0.0f };
@@ -39,12 +41,22 @@ void StageSelectManagerObject::Initialize(std::string name, Tag tag)
 	previewStageTransforms_[3].rotate_ = { 0.0f, -0.0f, -0.125f };
 	previewStageTransforms_[3].SetParent(&transform_, 0b011);
 
+	// 装飾ギアの座標を初期化
+	ornamentGearTransforms_[0].translate_ = { 3.5f, -3.825f, -3.75f };
+	ornamentGearTransforms_[1].translate_ = { 4.35f, -0.5f, -3.75f };
+	ornamentGearTransforms_[2].translate_ = { -5.5f, -0.5f, -3.25f };
+	ornamentGearTransforms_[3].translate_ = { -3.0f, -3.0f, -3.25f };
+
 	// モデル読み込み
 	AddOBJ(&mainGearTransform_, color_, "./Resources/Gear", "Gear_XL.obj", false);
 	AddOBJ(&mainGearTransform_, color_, "./Resources/GearBase", "GearBoard.obj", false);
 	AddOBJ(&transform_, color_, "./Resources/GearBase", "GearBase.obj", false);
 	for(int i = 0; i < 4; i++)
 		AddOBJ(&previewStageTransforms_[i], color_, "./Resources/Gear", "Gear_L.obj", false);
+	AddOBJ(&ornamentGearTransforms_[0], color_, "./Resources/Gear", "Gear_M.obj", false);
+	AddOBJ(&ornamentGearTransforms_[1], color_, "./Resources/Gear", "Gear_S.obj", false);
+	AddOBJ(&ornamentGearTransforms_[2], color_, "./Resources/Gear", "Gear_M.obj", false);
+	AddOBJ(&ornamentGearTransforms_[3], color_, "./Resources/Gear", "Gear_S.obj", false);
 
 	// 全ステージ数取得
 	stageCount_ = (int)stageManager_->GetStageMaxIndex() - 1;
@@ -226,6 +238,9 @@ void StageSelectManagerObject::Update()
 	// カメラ手振れ演出
 	CameraShake();
 
+	// ギアアニメーション
+	OrnamentAnimation();
+
 	// UIアニメーション
 	if (!isTransitionStaging_)
 		UIAnimation();
@@ -245,6 +260,13 @@ void StageSelectManagerObject::Update()
 			ImGui::DragFloat3("translate", &previewStageTransforms_[i].translate_.x, 0.5f);
 			ImGui::TreePop();
 		}	
+		name = "ornamentTransform" + std::to_string(i);
+		if (ImGui::TreeNode(name.c_str())) {
+			ImGui::DragFloat3("scale", &ornamentGearTransforms_[i].scale_.x, 0.5f);
+			ImGui::DragFloat3("rotatate", &ornamentGearTransforms_[i].rotate_.x, 0.05f);
+			ImGui::DragFloat3("translate", &ornamentGearTransforms_[i].translate_.x, 0.5f);
+			ImGui::TreePop();
+		}
 	}
 	ImGui::DragInt("pressCount", &pressCount_, 1.0f);
 	ImGui::DragInt("selectedStage", &selectedStageNumber_, 1.0f);
@@ -575,4 +597,13 @@ void StageSelectManagerObject::UIAnimation()
 
 	stageNumber_->Update();
 
+}
+
+void StageSelectManagerObject::OrnamentAnimation()
+{
+	ornamentGearTransforms_[0].rotate_.z += 0.01f;
+	ornamentGearTransforms_[2].rotate_.z += 0.01f;
+	// ギアの回転を大元ギアと合わせる
+	ornamentGearTransforms_[1].rotate_.z = -(ornamentGearTransforms_[0].rotate_.z * (8.0f / 6.0f)) - 0.125f;
+	ornamentGearTransforms_[3].rotate_.z = -(ornamentGearTransforms_[2].rotate_.z * (8.0f / 6.0f)) + 0.125f;
 }
