@@ -183,7 +183,7 @@ private: // メンバ変数
 
 	// ステージ番号UI
 	Vector2 stageNumberUIPosition_; // 選択矢印UI座標
-	Vector2 selectArrowSize_; // 選択矢印サイズ
-	std::unique_ptr<Sprite> selectArrowSprites_; // 選択矢印スプライト
+	Vector2 stageNumberUISize_; // 選択矢印サイズ
+	std::unique_ptr<Counter> stageNumber; // 選択矢印スプライト
 
 };

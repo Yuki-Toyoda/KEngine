@@ -208,6 +208,8 @@ void StageSelectManagerObject::Update()
 	if (!isTransitionStaging_)
 		UIAnimation();
 
+	// UI更新処理
+
 #ifdef _DEBUG
 
 	// Imgui
