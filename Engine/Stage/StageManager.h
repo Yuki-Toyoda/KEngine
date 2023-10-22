@@ -2,6 +2,7 @@
 #include "BaseStage.h"
 #include <memory>
 
+class Item;
 
 /// <summary>
 /// 全てのステージの管理マネージャ
@@ -28,7 +29,7 @@ public: // メンバ関数
 	/// 初期化関数
 	/// </summary>
 	void Initialize();
-	
+
 	/// <summary>
 	/// リセット
 	/// </summary>
@@ -42,17 +43,47 @@ public: // メンバ関数
 	// ステージを設定
 	void SetStage(size_t commitIndex);
 
+	/// <summary>
+	/// ステージの数を取得
+	/// </summary>
 	size_t GetStageMaxIndex() { return infos_.size(); }
 
+	/// <summary>
+	/// アイテムの情報を取得
+	/// </summary>
 	std::vector<Item*>& GetItems() { return items_; }
 
+	/// <summary>
+	/// マネージャーにステージを登録する
+	/// </summary>
 	void AddStageInfo(const BaseStage::StageInfo& info);
 
-	const int& GetItemMax() { return kMaxItem_; }
+	/// <summary>
+	/// アイテムが配置されているか取得する
+	/// </summary>
+	const int& GetItemMax()const { return kMaxItem_; }
+
+	/// <summary>
+	/// アイテムがいくつ使われているかを取得する
+	/// </summary>
+	int GetUsedItem()const;
+
+	/// <summary>
+	/// クリアしているか判定
+	/// </summary>
+	bool GetIsClear() const { return currentStage_->GetIsClear(); };
+
+	/// <summary>
+	/// ゲームを開始してからの経過時間
+	/// </summary>
+	int GetGameTIme() const { return gameTime_; }
 
 private: // メンバ関数
 
-	void AddlyGloavalVariables();
+	/// <summary>
+	/// 設定を作る
+	/// </summary>
+	void AddGloavalVariables();
 
 	/// <summary>
 	/// ステージの情報を読み込む
@@ -61,6 +92,7 @@ private: // メンバ関数
 
 	BaseStage::StageInfo LoadInfo(size_t num);
 
+	BaseStage::ItemInfo LoadItem(const std::string& indexNum, size_t i);
 
 	void SaveStages();
 
@@ -89,11 +121,23 @@ private: // メンバ変数
 	// ステージ毎の情報
 	std::vector<BaseStage::StageInfo> infos_;
 
+	// ステージの経過時間
+	int gameTime_ = 0;
+
+	// 今選んでいるステージの添え字
 	int nowStageNum_ = 0;
+
+#ifdef _DEBUG
+
 	int nextStageNum_ = 0;
+
 
 	int commitIndex_ = 0;
 	int loadIndex_ = 0;
+
+
+#endif // _DEBUG
+
 };
 
 /*

@@ -2,8 +2,10 @@
 #include "../BaseObject.h"
 #include "../../Input/Input.h"
 
+#include "../../Stage/BaseStage.h"
+
 /// <summary>
-/// プレイヤー
+/// アイテム
 /// </summary>
 class Item : public BaseObject
 {
@@ -49,8 +51,17 @@ public: // その他関数群
 	/// <param name="object">前フレーム衝突していたオブジェクト</param>
 	void OnCollisionExit(BaseObject* object) override;
 
+	void SetItemInfo(const BaseStage::ItemInfo& info);
+
 	void SetPosition(const Vector3& pos) { transform_.translate_ = pos; }
 	void SetIsRePop(bool isRePop) { isRePop_ = isRePop; }
+	void SetPopTime(int32_t popTime) { kPopTime_ = popTime; }
+
+	bool GetJumpEnable()const { return isJumpEnable_; }
+
+	void AirJump();
+
+	bool GetIsUsed()const { return isUsed_; }
 
 private: // メンバ関数
 
@@ -66,20 +77,32 @@ private: // メンバ変数
 	//	アイテム自体の変数		//
 	//----------------------*/
 
+	// 自分が何番目の数字なのか
+	//int kIndex_ = 0;
+
 	// アイテムの当たり判定の半径
 	float radius_ = 1.0f;
+
+	// 踏まれた後に使えなくなる時間
+	int32_t kPopTime_ = 0;
+	// こちらの数値を動かす
+	int32_t rePopTime_ = 0;
+
+	// 使用時の色
+	Vector4 usedColor_;
 
 	/*--------------------------------------//
 	//	フラグによって操作も管理するために、		//
 	//	一度クッションをはさむ					//
 	//--------------------------------------*/
-	
-	// ジャンプするかどうかのフラグ
-	bool isJumpTrigger_ = false;
+
+	// ジャンプできるかどうかのフラグ
+	bool isJumpEnable_ = false;
 
 	// 踏まれて消えるか消えないか
 	bool isRePop_ = false;
 
+	bool isUsed_ = false;
 
 #ifdef _DEBUG
 

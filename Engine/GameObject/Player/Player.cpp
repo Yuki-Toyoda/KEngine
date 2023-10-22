@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "../Item/Item.h"
 
 Player::Player() : gearTheta_(gearTransform_.rotate_.z)
 {
@@ -121,12 +122,15 @@ void Player::OnCollisionEnter(BaseObject* object)
 
 void Player::OnCollision(BaseObject* object)
 {
-	object;
+	//object;
+	Item* item = dynamic_cast<Item*>(object);
 	// 衝突しているのが Item だった時
-	if (object->GetIsActive() && object->GetObjectTag() == tagItem) {
+	// ジャンプできる状態の時
+	if (item && item->GetIsActive() && item->GetJumpEnable()) {
 		// ボタンの再入力があった時
-		if (input_->PushKey(DIK_Q)) {
+		if (input_->TriggerKey(DIK_Q)) {
 			AirJump();
+			item->AirJump();
 		}
 	}
 }
