@@ -74,10 +74,13 @@ private: // メンバ関数
 
 	// 空中でジャンプする関数
 	void AirJump();
+	void CatapultJump();
 
 public:
 
 	float& GetGearRotateSpeed() { return gearRotateSpeed_; }
+
+	const float& GetGearTheta() const { return gearTheta_; }
 
 	WorldTransform& GetGearTransform() { return gearTransform_; }
 
@@ -186,6 +189,9 @@ private: // メンバ変数
 	bool isPendulum_ = false;
 	// 振り子するためのバッファ
 	bool wasRotateRight_ = true;
+
+	// 重力が働くか否か
+	bool isEnableGravity_ = false;
 
 	/*------------------//
 	//	デバッグ用の変数	//

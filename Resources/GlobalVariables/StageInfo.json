@@ -1,6 +1,7 @@
 {
     "StageInfo": {
         "0:Condition": 100.0,
-        "0:kMaxInfoNum": 0
+        "0:kMaxInfoNum": 0,
+        "0:kMaxCatapultNum": 0
     }
 }

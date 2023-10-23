@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "../Item/Item.h"
+#include "../Catapult/Catapult.h"
 
 Player::Player() : gearTheta_(gearTransform_.rotate_.z)
 {
@@ -122,15 +123,31 @@ void Player::OnCollisionEnter(BaseObject* object)
 
 void Player::OnCollision(BaseObject* object)
 {
+	if (!object->GetIsActive()) {
+		return;
+	}
 	//object;
 	Item* item = dynamic_cast<Item*>(object);
 	// 衝突しているのが Item だった時
 	// ジャンプできる状態の時
-	if (item && item->GetIsActive() && item->GetJumpEnable()) {
-		// ボタンの再入力があった時
-		if (input_->TriggerKey(DIK_Q)) {
-			AirJump();
-			item->AirJump();
+	if (item) {
+		if (item->GetJumpEnable()) {
+			// ボタンの再入力があった時
+			if (input_->TriggerKey(DIK_Q)) {
+				AirJump();
+				item->AirJump();
+			}
+		}
+	}
+	else {
+		Catapult* catapult = dynamic_cast<Catapult*>(object);
+		if (catapult) {
+			if (catapult->GetJumpEnable() && input_->TriggerKey(DIK_Q)) {
+				transform_.translate_ = catapult->transform_.translate_;
+				playerTheta_ = catapult->GetTheta();
+				CatapultJump();
+				catapult->AirJump();
+			}
 		}
 	}
 }
@@ -170,6 +187,7 @@ void Player::InitializeVariables()
 	isLanding_ = true;
 	isPendulum_ = false;
 	wasRotateRight_ = true;
+	isEnableGravity_ = false;
 
 	// 定数の再定義
 	kGearInnerRadius_ = 0.5f;
@@ -197,6 +215,7 @@ void Player::GetOperation()
 
 	if (input_->TriggerKey(DIK_Q)) {
 		if (isLanding_) {
+			isEnableGravity_ = true;
 			isJumpTrigger_ = true;
 		}
 	}
@@ -225,15 +244,17 @@ void Player::UpdatePlayer()
 		// 歯車の回転は歯車の更新内
 	}
 	else {
-		// 重力減算
-		Vector3 fallVelocity{};
-		fallVelocity.x = kFallDirection_.x * kGravity_;
-		fallVelocity.y = kFallDirection_.y * kGravity_;
-		fallVelocity.z = 0.0f;
-		playerAcceleration_.x = fallVelocity.x;
-		playerAcceleration_.y = fallVelocity.y;
-		playerVelocity_.x += playerAcceleration_.x;
-		playerVelocity_.y += playerAcceleration_.y;
+		if (isEnableGravity_) {
+			// 重力減算
+			Vector3 fallVelocity{};
+			fallVelocity.x = kFallDirection_.x * kGravity_;
+			fallVelocity.y = kFallDirection_.y * kGravity_;
+			fallVelocity.z = 0.0f;
+			playerAcceleration_.x = fallVelocity.x;
+			playerAcceleration_.y = fallVelocity.y;
+			playerVelocity_.x += playerAcceleration_.x;
+			playerVelocity_.y += playerAcceleration_.y;
+		}
 		// プレイヤーの位置を更新する
 		transform_.translate_.x += playerVelocity_.x;
 		transform_.translate_.y += playerVelocity_.y;
@@ -443,6 +464,13 @@ void Player::AirJump() {
 		direct = { std::cosf(pi - pi4),std::sinf(pi - pi4),0.0f };
 	}
 	playerVelocity_ = direct * kAirJumpPower_;
+}
+
+void Player::CatapultJump()
+{
+	Vector3 direct = { -std::cosf(playerTheta_),-std::sinf(playerTheta_), 0.0f };
+	playerVelocity_ = direct * kAirJumpPower_;
+	isEnableGravity_ = false;
 }
 
 void Player::DebugGui() {

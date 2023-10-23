@@ -25,7 +25,6 @@ public: // 共通メンバ関数
 
 	struct ItemInfo
 	{
-		int index_;
 		Vector3 position_;
 		bool isRePop_;
 		int32_t popTime_;
@@ -36,10 +35,19 @@ public: // 共通メンバ関数
 		float clearCondition_;
 	};
 
+	struct CatapultInfo
+	{
+		float theta_;
+		float length_;
+		bool isRePop_;
+		int32_t popTime_;
+	};
+
 	struct StageInfo
 	{
 		std::vector<ItemInfo> itemInfo_;
 		GearInfo gearInfo_;
+		std::vector<CatapultInfo> catapultInfo_;
 	};
 
 
@@ -58,6 +66,7 @@ public: // メンバ関数
 
 	StageInfo GetStageInfo()const { return stageInfo_; }
 	int GetItemInfoNum() const { return static_cast<int>(stageInfo_.itemInfo_.size()); }
+	int GetCatapulltNum() const { return static_cast<int>(stageInfo_.catapultInfo_.size()); }
 
 	bool GetIsClear()const;
 

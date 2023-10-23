@@ -3,6 +3,7 @@
 #include <memory>
 
 class Item;
+class Catapult;
 
 /// <summary>
 /// 全てのステージの管理マネージャ
@@ -53,6 +54,8 @@ public: // メンバ関数
 	/// </summary>
 	std::vector<Item*>& GetItems() { return items_; }
 
+	std::vector<Catapult*>& GetCatapult() { return catapults_; }
+
 	/// <summary>
 	/// 今使ってるステージの情報を取得
 	/// </summary>
@@ -76,6 +79,8 @@ public: // メンバ関数
 	/// アイテムが配置されているか取得する
 	/// </summary>
 	const int& GetItemMax()const { return kMaxItem_; }
+
+	const int& GetCatapultMax() const { return kMaxCatapult_; }
 
 	/// <summary>
 	/// アイテムがいくつ使われているかを取得する
@@ -106,7 +111,9 @@ private: // メンバ関数
 
 	BaseStage::StageInfo LoadInfo(size_t num);
 
-	BaseStage::ItemInfo LoadItem(const std::string& indexNum, size_t i);
+	BaseStage::ItemInfo LoadItem(const std::string& indexNum, const std::string& infoIndex);
+
+	BaseStage::CatapultInfo LoadCatapult(const std::string& indexNum, const std::string& infoIndex);
 
 	void SaveStages();
 
@@ -124,10 +131,16 @@ private: // メンバ変数
 	BaseStage* currentStage_;
 
 	// アイテムの最大数
-	static const int kMaxItem_ = 10;
+	static const int kMaxItem_ = 20;
 
 	// 使用されるアイテムを保存
 	std::vector<Item*> items_;
+
+	// カタパルトの最大数
+	static const int kMaxCatapult_ = 5;
+
+	// 使われるカタパルトを保存
+	std::vector<Catapult*> catapults_;
 
 	// 計算する
 	int32_t kMaxStageNum_ = 0;
