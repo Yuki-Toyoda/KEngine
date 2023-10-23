@@ -11,6 +11,16 @@ void GameManagerObject::Initialize(std::string name, Tag tag)
 	// ステージマネージャのインスタンス取得
 	stageManager_ = StageManager::GetInstance();
 
+	// 音再生インスタンス取得
+	audio_ = Audio::GetInstance();
+
+	// 音量取得
+	bgmVolume_ = &SceneManager::GetInstance()->bgmVolume_;
+	seVolume_ = &SceneManager::GetInstance()->seVolume_;
+
+	// 音をロード
+	bgmHandle_ = audio_->LoadWave("/Audio/BGM/GameBGM.wav");
+
 	// ギアの座標を初期化
 	for (int i = 0; i < 3; i++) {
 		gearTransforms_[i].Initialize();
@@ -26,8 +36,8 @@ void GameManagerObject::Initialize(std::string name, Tag tag)
 	clearGageTransform_.scale_ = {14.5f, 14.5f, 1.0f};
 	// クリア時のチェックマークワールド座標
 	clearCheckTransform_.Initialize();
-	clearCheckTransform_.translate_ = { 0.0f, -100.0f, 0.0f };
-	clearCheckTransform_.scale_ = { 0.0f, 0.0f, 1.0f };
+	clearCheckTransform_.translate_ = { 0.0f, -25.0f, 0.0f };
+	clearCheckTransform_.scale_ = clearGageTransform_.scale_;
 
 	// モデル読み込み
 	AddOBJ(&gearTransforms_[0], color_, "./Resources/Gear", "Gear_UI.obj", true);
@@ -36,6 +46,11 @@ void GameManagerObject::Initialize(std::string name, Tag tag)
 	AddOBJ(&clearGageTransform_, color_, "./Resources/ClearGage", "ClearGage.obj", false);
 	AddOBJ(&clearCheckTransform_, color_, "./Resources/Plane", "Plane.obj", false);
 
+	objects_[3]->uvTransform_.rotate_.x = -1.05f;
+
+	objects_[4]->SetColor({ 0.0f, 0.0f, 0.0f, 0.0f });
+	// 演出中
+	cameraIsStaging_ = true;
 	// 始端、終端座標設定
 	cameraStartTranslate_ = camera_->transform_.translate_;
 	cameraEndTranslate_ = { -11.0f, 0.0f, -66.0f };
@@ -115,6 +130,12 @@ void GameManagerObject::Update()
 	// 基底クラス更新
 	BaseObject::Update();
 
+	// 再生されていなければ再生する
+	if (!audio_->IsPlaying(voiceHandleBGM_) || voiceHandleBGM_ == -1) {
+		voiceHandleBGM_ = audio_->PlayWave(bgmHandle_, false, *bgmVolume_);
+	}
+	audio_->SetVolume(voiceHandleBGM_, *bgmVolume_);
+
 	// カメラ演出を行う
 	CameraStaging();
 
@@ -127,13 +148,14 @@ void GameManagerObject::Update()
 	// UIの更新
 	stageItemCounter_->Update();
 	stageItemCounter_->color_ = spriteUIColor_;
-	stageNowItemCount_ = (int)stageManager_->GetStageInfo().itemInfo_.size() - (int)stageManager_->GetStageInfo().itemInfo_.size(); // 現在のアイテム個数
+	stageNowItemCount_ = (int)stageManager_->GetStageInfo().itemInfo_.size() - (int)stageManager_->GetUsedItem(); // 現在のアイテム個数
 	stageNowItemCounter_->Update();
 	stageNowItemCounter_->color_ = spriteUIColor_;
 	stageClearCounter_->Update();
 	stageClearCounter_->color_ = spriteUIColor_;
 
 	// クリアゲージの更新
+	if(!cameraIsStaging_)
 	ClearGageAnimation();
 
 #ifdef _DEBUG
@@ -227,7 +249,7 @@ void GameManagerObject::CameraStaging()
 		if (cameraStagingT_ <= cameraStagingTime_) {
 			// カメラ座標設定
 			camera_->transform_.translate_ = Math::EaseOut(cameraStagingT_, cameraStartTranslate_, cameraEndTranslate_, cameraStagingTime_);
-
+			
 			// tを加算
 			cameraStagingT_ += 1.0f / 60.0f;
 		}
@@ -236,6 +258,9 @@ void GameManagerObject::CameraStaging()
 			cameraStagingT_ = 0.0f;
 			// 演出時間設定
 			cameraStagingTime_ = 1.0f;
+
+			// カメラ演出中に
+			cameraIsStaging_ = false;
 
 			// 次の演出に
 			cameraStagingWayPoint_++;
@@ -264,6 +289,14 @@ void GameManagerObject::CameraStaging()
 			cameraEndTranslate_ = { 0.0f, 0.0f, -90.0f };
 			// カメラ演出時間設定
 			cameraStagingTime_ = 1.5f;
+
+			// ステージ上の全アイテムを取得したら完全クリア
+			if(stageNowItemCount_ <= 0)
+				objects_[4]->SetColor({ 0.0f, 0.35f, 0.05f, 0.0f });
+
+			// カメラ演出中に
+			cameraIsStaging_ = true;
+
 			// 次の演出へ
 			cameraStagingWayPoint_++;
 		}
@@ -301,8 +334,13 @@ void GameManagerObject::CameraStaging()
 	case GameManagerObject::WayPoint6:
 		if (cameraStagingT_ <= cameraStagingTime_) {
 
-			clearCheckTransform_.translate_ = Math::EaseInOut(cameraStagingT_, { 0.0f, -50.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, cameraStagingTime_);
-			clearCheckTransform_.scale_ = Math::EaseIn(cameraStagingT_, { 0.0f, 0.0f, 1.0f }, clearGageTransform_.scale_, cameraStagingTime_);
+			clearCheckTransform_.translate_ = Math::EaseInOut(cameraStagingT_, { 0.0f, -5.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, cameraStagingTime_);
+			//clearCheckTransform_.scale_ = Math::EaseInOut(cameraStagingT_, { 3.0f, 3.0f, 1.0f }, clearGageTransform_.scale_, cameraStagingTime_);
+			objects_[4]->SetColor({
+				objects_[4]->GetColor().x,
+				objects_[4]->GetColor().y,
+				objects_[4]->GetColor().z,
+				Math::EaseInOut(cameraStagingT_, 0.0f, 1.0f, cameraStagingTime_) });
 
 			// tを加算
 			cameraStagingT_ += 1.0f / 60.0f;
@@ -312,7 +350,6 @@ void GameManagerObject::CameraStaging()
 			cameraStagingT_ = 0.0f;
 
 			clearCheckTransform_.translate_ = { 0.0f, 0.0f, 0.0f };
-			clearCheckTransform_.scale_ = clearGageTransform_.scale_;
 
 			// カメラの演出時間設定
 			cameraStagingTime_ = 1.0f;
@@ -359,6 +396,9 @@ void GameManagerObject::CameraStaging()
 		}
 		break;
 	case GameManagerObject::WayPoint9:
+
+		// BGMを止める
+		audio_->StopWave(voiceHandleBGM_);
 		// ステージセレクトシーンへ遷移
 		isGoStageSelectScene_ = true;
 		break;
@@ -368,10 +408,10 @@ void GameManagerObject::CameraStaging()
 
 void GameManagerObject::ClearGageAnimation()
 {
-	/*if (stageManager_->GetGearCondition() <= stageManager_->GetClearCondition())
+	if (stageManager_->GetGearCondition() <= stageManager_->GetClearCondition())
 		stageClearPercent_ = Math::Linear(stageManager_->GetGearCondition(), 0, 100, stageManager_->GetClearCondition());
 	else
-		stageClearPercent_ = 100;*/
+		stageClearPercent_ = 100;
 
 	// ゲージを動かす
 	objects_[3]->uvTransform_.rotate_.x = Math::EaseIn((float)stageClearPercent_, -1.05f, -0.3f, 100);

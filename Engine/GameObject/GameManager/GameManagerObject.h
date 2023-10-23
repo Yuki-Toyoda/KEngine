@@ -1,5 +1,6 @@
 #pragma once
 #include "../BaseObject.h"
+#include "../../Audio/Audio.h"
 
 // クラスの前方宣言
 class Camera;
@@ -84,6 +85,18 @@ private: // メンバ変数
 	// ステージマネージャ
 	StageManager* stageManager_ = nullptr;
 
+	// 音再生
+	Audio* audio_ = nullptr;
+
+	// 音量
+	float* bgmVolume_;
+	float* seVolume_;
+
+	// BGMハンドル
+	uint32_t bgmHandle_;
+	// 環境音ボイスハンドル
+	int voiceHandleBGM_ = -1;
+
 	// プレイヤーがいるギアのワールドトランスフォーム
 	const WorldTransform* mainGearTransform_;
 	// 演出用ギアのワールド座標
@@ -95,6 +108,8 @@ private: // メンバ変数
 
 	// カメラ
 	Camera* camera_ = nullptr;
+	// カメラ演出トリガー
+	bool cameraIsStaging_;
 	// カメラ演出始端座標
 	Vector3 cameraStartTranslate_;
 	// カメラ演出終端座標

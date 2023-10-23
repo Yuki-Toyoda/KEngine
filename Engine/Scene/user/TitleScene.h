@@ -31,6 +31,5 @@ private: // メンバ変数
 	Vector4 setLightColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 	// ImGui用ライト有効フラグ
 	bool enableLighting_ = true;
-
 };
 

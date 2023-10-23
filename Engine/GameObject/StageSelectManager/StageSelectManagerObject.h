@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "../BaseObject.h"
+#include "../../Audio/Audio.h"
 
 // クラスの前方宣言
 class Input;
@@ -114,6 +115,23 @@ private: // メンバ変数
 
 	// 入力
 	Input* input_ = nullptr;
+
+	// 音再生
+	Audio* audio_ = nullptr;
+
+	// 音量
+	float* bgmVolume_;
+	float* seVolume_;
+
+	// 環境音ハンドル
+	uint32_t ambientHandle_;
+	// 環境音ボイスハンドル
+	int voiceHandleAmbient_ = -1;
+
+	// BGMハンドル
+	uint32_t bgmHandle_;
+	// 環境音ボイスハンドル
+	int voiceHandleBGM_ = -1;
 
 	// 全体のステージ数
 	int stageCount_;

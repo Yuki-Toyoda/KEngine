@@ -1,5 +1,6 @@
 #pragma once
 #include "BaseScene.h"
+#include "../Audio/Audio.h"
 
 /// <summary>
 /// 全てのシーンの管理マネージャ
@@ -78,6 +79,12 @@ private: // プライベートなメンバ関数
 	/// フェード演出関数
 	/// </summary>
 	void Fade();
+
+public: // パブリックなメンバ変数
+
+	// 音量
+	float bgmVolume_; // BGM音量
+	float seVolume_; // SE音量
 
 private: // メンバ変数
 

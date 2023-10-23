@@ -13,6 +13,17 @@ void StageSelectManagerObject::Initialize(std::string name, Tag tag)
 	// 入力取得
 	input_ = Input::GetInstance();
 
+	// 音再生インスタンス取得
+	audio_ = Audio::GetInstance();
+
+	// 音量取得
+	bgmVolume_ = &SceneManager::GetInstance()->bgmVolume_;
+	seVolume_ = &SceneManager::GetInstance()->seVolume_;
+
+	// 音をロード
+	ambientHandle_ = audio_->LoadWave("/Audio/Ambient/GearAmbient.wav");
+	bgmHandle_ = audio_->LoadWave("/Audio/BGM/StageSelectBGM.wav");
+
 	// ステージマネージャ取得
 	stageManager_ = StageManager::GetInstance();
 
@@ -188,6 +199,17 @@ void StageSelectManagerObject::Update()
 	// 基底クラス更新
 	BaseObject::Update();
 
+	// 再生されていなければ再生する
+	if (!audio_->IsPlaying(voiceHandleAmbient_) || voiceHandleAmbient_ == -1) {
+		voiceHandleAmbient_ = audio_->PlayWave(ambientHandle_, false, *bgmVolume_);
+	}
+	audio_->SetVolume(voiceHandleAmbient_, *bgmVolume_ * 0.1f);
+	// 再生されていなければ再生する
+	if (!audio_->IsPlaying(voiceHandleBGM_) || voiceHandleBGM_ == -1) {
+		voiceHandleBGM_ = audio_->PlayWave(bgmHandle_, false, *bgmVolume_);
+	}
+	audio_->SetVolume(voiceHandleBGM_, *bgmVolume_);
+
 	// ステージプレビュー回転
 	if (isRotateStaging_)
 		RotateStagePreview();
@@ -359,6 +381,9 @@ void StageSelectManagerObject::TransitionStaging()
 			// 無理やりフェードイン
 			SceneManager::GetInstance()->SetFadeColor({ 0.0f, 0.0f, 0.0f, 0.0f });
 
+			// UI色リセット
+			spriteUIColor_ = { 1.0f, 1.0f, 1.0f, 1.0f };
+
 			// カメラ座標を動かす
 			camera_->transform_.translate_.z = cameraEndTranslate_.z;
 			// 視野角を広げる
@@ -442,6 +467,11 @@ void StageSelectManagerObject::TransitionStaging()
 		}
 		break;
 	case StageSelectManagerObject::WayPoint5:
+
+		// 環境音を止める
+		audio_->StopWave(voiceHandleAmbient_);
+		audio_->StopWave(voiceHandleBGM_);
+
 		// ゲームシーンへ遷移させる
 		isGoGameScene_ = true;
 		break;
