@@ -175,7 +175,7 @@ void Player::InitializeVariables()
 	kGearInnerRadius_ = 0.5f;
 	// さすがに半回転以上は行かない
 	kMaxGearRotateSpeed_ = 0.1f;
-	kMinGearRollSpeed_ = 0.005f;
+	kMinGearRollSpeed_ = 0.001f;
 	kMinGearPendulumSpeed_ = 1.0f;
 	//kGearFriction_ = 0.001f;
 	kGearAmplitude = 1.4f;
@@ -434,7 +434,7 @@ void Player::CheckGearCollision()
 void Player::AirJump() {
 	Vector3 direct{};
 	float pi = static_cast<float>(std::numbers::pi);
-	float pi4 = pi / 4.0f;
+	float pi4 = pi / 3.0f;
 	// 左にくっついている時
 	if (isLandLeft_) {
 		direct = { std::cosf(pi4),std::sinf(pi4),0.0f };

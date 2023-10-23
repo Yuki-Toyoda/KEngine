@@ -7,8 +7,8 @@
         "kGearAmplitude": 1.399999976158142,
         "kGearDecreaseRate": 0.8999999761581421,
         "kGearInnerRadius": 13.880000114440918,
-        "kMaxGearRotateSpeed": 1.3799999952316284,
+        "kMaxGearRotateSpeed": 1.0,
         "kMinGearPendulumSpeed": 0.23000000417232513,
-        "kMinGearRollSpeed": 0.004999999888241291
+        "kMinGearRollSpeed": 0.003000000026077032
     }
 }

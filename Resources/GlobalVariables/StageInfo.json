@@ -2,7 +2,7 @@
     "StageInfo": {
         "0:Condition": 100.0,
         "0:isRePop:0": 0,
-        "0:kMaxInfoNum": 1,
+        "0:kMaxInfoNum": 0,
         "0:popTime:0": 10,
         "0:position:0": [
             -9.869999885559082,
