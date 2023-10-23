@@ -21,6 +21,10 @@ void StageSelectManagerObject::Initialize(std::string name, Tag tag)
 	mainGearTransform_.Initialize();
 	mainGearTransform_.SetParent(&transform_, 0b101);
 
+	boardTransform_.Initialize();
+	boardTransform_.translate_ = { 0.0f, 0.0f, 5.0f };
+	boardTransform_.SetParent(&transform_, 0b101);
+
 	// 全てのステージプレビュー座標を初期化
 	for (int i = 0; i < 4; i++) {
 		previewStageTransforms_[i].Initialize();
@@ -42,14 +46,18 @@ void StageSelectManagerObject::Initialize(std::string name, Tag tag)
 	previewStageTransforms_[3].SetParent(&transform_, 0b011);
 
 	// 装飾ギアの座標を初期化
-	ornamentGearTransforms_[0].translate_ = { 3.5f, -3.825f, -3.75f };
-	ornamentGearTransforms_[1].translate_ = { 4.35f, -0.5f, -3.75f };
-	ornamentGearTransforms_[2].translate_ = { -5.5f, -0.5f, -3.25f };
-	ornamentGearTransforms_[3].translate_ = { -3.0f, -3.0f, -3.25f };
+	ornamentGearTransforms_[0].translate_ = { 5.0f, 4.75f, 1.5f };
+	ornamentGearTransforms_[0].scale_ = { 1.35f, 1.35f, 1.0f };
+	ornamentGearTransforms_[1].translate_ = { 2.05f, -2.85f, 0.0f };
+	ornamentGearTransforms_[1].SetParent(&ornamentGearTransforms_[0], 0b101);
+	ornamentGearTransforms_[2].translate_ = { -5.0f, 4.75f, 1.5f };
+	ornamentGearTransforms_[2].scale_ = { 1.35f, 1.35f, 1.0f };
+	ornamentGearTransforms_[3].translate_ = { -2.0f, -2.85f, 0.0f };
+	ornamentGearTransforms_[3].SetParent(&ornamentGearTransforms_[2], 0b101);
 
 	// モデル読み込み
 	AddOBJ(&mainGearTransform_, color_, "./Resources/Gear", "Gear_XL.obj", false);
-	AddOBJ(&mainGearTransform_, color_, "./Resources/GearBase", "GearBoard.obj", false);
+	AddOBJ(&boardTransform_, color_, "./Resources/GearBase", "GearBoard.obj", false);
 	AddOBJ(&transform_, color_, "./Resources/GearBase", "GearBase.obj", false);
 	for(int i = 0; i < 4; i++)
 		AddOBJ(&previewStageTransforms_[i], color_, "./Resources/Gear", "Gear_L.obj", false);
@@ -57,6 +65,10 @@ void StageSelectManagerObject::Initialize(std::string name, Tag tag)
 	AddOBJ(&ornamentGearTransforms_[1], color_, "./Resources/Gear", "Gear_S.obj", false);
 	AddOBJ(&ornamentGearTransforms_[2], color_, "./Resources/Gear", "Gear_M.obj", false);
 	AddOBJ(&ornamentGearTransforms_[3], color_, "./Resources/Gear", "Gear_S.obj", false);
+
+	/*for (int i = 7; i < 11; i++) {
+		objects_[i]->SetTextureHandle(TextureManager::Load("./Resources/Gear", "Gear_outline_A.png"));
+	}*/
 
 	// 全ステージ数取得
 	stageCount_ = (int)stageManager_->GetStageMaxIndex() - 1;
@@ -268,6 +280,14 @@ void StageSelectManagerObject::Update()
 			ImGui::TreePop();
 		}
 	}
+
+	if (ImGui::TreeNode("boardTransform")) {
+		ImGui::DragFloat3("scale", &boardTransform_.scale_.x, 0.5f);
+		ImGui::DragFloat3("rotatate", &boardTransform_.rotate_.x, 0.05f);
+		ImGui::DragFloat3("translate", &boardTransform_.translate_.x, 0.5f);
+		ImGui::TreePop();
+	}
+
 	ImGui::DragInt("pressCount", &pressCount_, 1.0f);
 	ImGui::DragInt("selectedStage", &selectedStageNumber_, 1.0f);
 	ImGui::DragFloat2("stageNumber", &stageNumber_->position_.x, 0.5f);
@@ -601,7 +621,7 @@ void StageSelectManagerObject::UIAnimation()
 
 void StageSelectManagerObject::OrnamentAnimation()
 {
-	ornamentGearTransforms_[0].rotate_.z += 0.01f;
+	ornamentGearTransforms_[0].rotate_.z -= 0.01f;
 	ornamentGearTransforms_[2].rotate_.z += 0.01f;
 	// ギアの回転を大元ギアと合わせる
 	ornamentGearTransforms_[1].rotate_.z = -(ornamentGearTransforms_[0].rotate_.z * (8.0f / 6.0f)) - 0.125f;

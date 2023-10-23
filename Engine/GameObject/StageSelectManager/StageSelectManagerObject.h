@@ -120,6 +120,7 @@ private: // メンバ変数
 
 	// ステージのプレビューモデルを表示させる座標配列
 	WorldTransform mainGearTransform_;
+	WorldTransform boardTransform_;
 	WorldTransform previewStageTransforms_[4];
 	// 装飾用ギアの座標配列
 	WorldTransform ornamentGearTransforms_[4];
