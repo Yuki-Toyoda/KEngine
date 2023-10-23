@@ -1,0 +1,11 @@
+{
+    "Item": {
+        "CollisionRadius": 1.5,
+        "UsedAlpha": 0.5,
+        "UsedRGB": [
+            0.5,
+            0.5,
+            0.5
+        ]
+    }
+}

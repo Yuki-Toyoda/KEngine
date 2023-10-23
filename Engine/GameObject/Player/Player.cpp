@@ -150,7 +150,7 @@ void Player::InitializeVariables()
 	playerAcceleration_ = { 0.0f,0.0f,0.0f };
 	// 色初期設定
 	color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
-	playerTheta_ = 0.0f;
+	playerTheta_ = -2;
 	radius_ = 1.0f;
 	transform_.scale_ = { 1.0f,1.0f,1.0f };
 
