@@ -38,7 +38,7 @@ void GameManagerObject::Initialize(std::string name, Tag tag)
 
 	// 始端、終端座標設定
 	cameraStartTranslate_ = camera_->transform_.translate_;
-	cameraEndTranslate_ = { -10.0f, 0.0f, -80.0f };
+	cameraEndTranslate_ = { -11.0f, 0.0f, -66.0f };
 	// 演出中間地点初期化
 	cameraStagingWayPoint_ = WayPoint1;
 	// 演出用t初期化
@@ -67,7 +67,7 @@ void GameManagerObject::Initialize(std::string name, Tag tag)
 
 	/// スプライト生成
 	// 残りアイテム数テキストUI
-	leftItemTextPosition_ = { 307.5f, 520.0f }; // 座標
+	leftItemTextPosition_ = { 255.0f, 550.0f }; // 座標
 	leftItemTextSize_ = { 284.0f, 56.0f }; // 大きさ
 	leftItemTextSprite_.reset(Sprite::Create(
 			textureHandleTextLeftItem_, 
@@ -76,7 +76,7 @@ void GameManagerObject::Initialize(std::string name, Tag tag)
 			&spriteUIColor_, 
 			{ 0.5f, 0.5f })); // 生成
 	// 残りアイテム数テキストUI
-	slashPosition_ = { 310.0f, 620.0f }; // 座標
+	slashPosition_ = { 255.0f, 652.5f }; // 座標
 	slashSize_ = { 64.0f, 64.0f }; // 大きさ
 	slashSprite_.reset(Sprite::Create(
 		textureHandleSlash_,
@@ -85,7 +85,7 @@ void GameManagerObject::Initialize(std::string name, Tag tag)
 			&spriteUIColor_, 
 			{ 0.5f, 0.5f })); // 生成
 	// クリア進捗テキストUI
-	clearPercentTextPosition_ = { 365.0f, 82.5f }; // 座標
+	clearPercentTextPosition_ = { 330.0f, 65.0f }; // 座標
 	clearPercentTextSize_ = { 284.0f, 56.0f }; // 大きさ
 	clearPercentTextSprite_.reset(Sprite::Create(
 		textureHandleTextClearPercent_,
@@ -96,15 +96,15 @@ void GameManagerObject::Initialize(std::string name, Tag tag)
 
 	// ステージ内の全アイテム個数カウンター
 	stageItemCounter_.reset(new Counter());
-	stageItemCounter_->Initialize(textureHandleNumberSheets_, {512.0f, 512.0f}, &stageItemCount_, { 245.0f, 620.0f }, { 64.0f, 64.0f }, -8.0f);
+	stageItemCounter_->Initialize(textureHandleNumberSheets_, {512.0f, 512.0f}, &stageItemCount_, { 188.0f, 650.0f }, { 64.0f, 64.0f }, -8.0f);
 	stageItemCounter_->SetIsCentered(true);
 	// ステージ内の現在のアイテム個数カウンター
 	stageNowItemCounter_.reset(new Counter());
-	stageNowItemCounter_->Initialize(textureHandleNumberSheets_, { 512.0f, 512.0f }, &stageNowItemCount_, { 425.0f, 620.0f }, { 64.0f, 64.0f }, -8.0f);
+	stageNowItemCounter_->Initialize(textureHandleNumberSheets_, { 512.0f, 512.0f }, &stageNowItemCount_, { 383.0f, 650.0f }, { 64.0f, 64.0f }, -8.0f);
 	stageNowItemCounter_->SetIsCentered(true);
 	// ステージ内の現在のアイテム個数カウンター
 	stageClearCounter_.reset(new Counter());
-	stageClearCounter_->Initialize(textureHandleNumberSheets_, { 512.0f, 512.0f }, &stageClearPercent_, { 385.0f, 140.0f }, { 48.0f, 48.0f }, -8.0f);
+	stageClearCounter_->Initialize(textureHandleNumberSheets_, { 512.0f, 512.0f }, &stageClearPercent_, { 350.0f, 130.0f }, { 48.0f, 48.0f }, -8.0f);
 	stageClearCounter_->SetIsCentered(true);
 	stageClearCounter_->SetIsDispayPercent(true);
 
@@ -368,10 +368,10 @@ void GameManagerObject::CameraStaging()
 
 void GameManagerObject::ClearGageAnimation()
 {
-	if (stageManager_->GetGearCondition() <= stageManager_->GetClearCondition())
+	/*if (stageManager_->GetGearCondition() <= stageManager_->GetClearCondition())
 		stageClearPercent_ = Math::Linear(stageManager_->GetGearCondition(), 0, 100, stageManager_->GetClearCondition());
 	else
-		stageClearPercent_ = 100;
+		stageClearPercent_ = 100;*/
 
 	// ゲージを動かす
 	objects_[3]->uvTransform_.rotate_.x = Math::EaseIn((float)stageClearPercent_, -1.05f, -0.3f, 100);
