@@ -133,6 +133,9 @@ private: // メンバ変数
 	// 環境音ボイスハンドル
 	int voiceHandleBGM_ = -1;
 
+	// ステージプレビュー歯車の回転音
+	uint32_t soundHandleRotateGear_;
+
 	// 全体のステージ数
 	int stageCount_;
 

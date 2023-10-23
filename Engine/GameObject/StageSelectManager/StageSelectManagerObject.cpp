@@ -24,6 +24,8 @@ void StageSelectManagerObject::Initialize(std::string name, Tag tag)
 	ambientHandle_ = audio_->LoadWave("/Audio/Ambient/GearAmbient.wav");
 	bgmHandle_ = audio_->LoadWave("/Audio/BGM/StageSelectBGM.wav");
 
+	soundHandleRotateGear_ = audio_->LoadWave("/Audio/SE/RotatePreviewGear.wav"); // プレビュー歯車回転音
+
 	// ステージマネージャ取得
 	stageManager_ = StageManager::GetInstance();
 
@@ -77,10 +79,6 @@ void StageSelectManagerObject::Initialize(std::string name, Tag tag)
 	AddOBJ(&ornamentGearTransforms_[2], color_, "./Resources/Gear", "Gear_M.obj", false);
 	AddOBJ(&ornamentGearTransforms_[3], color_, "./Resources/Gear", "Gear_S.obj", false);
 
-	/*for (int i = 7; i < 11; i++) {
-		objects_[i]->SetTextureHandle(TextureManager::Load("./Resources/Gear", "Gear_outline_A.png"));
-	}*/
-
 	// 全ステージ数取得
 	stageCount_ = (int)stageManager_->GetStageMaxIndex() - 1;
 
@@ -123,7 +121,7 @@ void StageSelectManagerObject::Initialize(std::string name, Tag tag)
 	// ゲームシーンへは遷移させない
 	isGoGameScene_ = false;
 
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < 20; i++) {
 		Item* item = new Item(); // インスタンス生成
 		item->Initialize("previewItem", BaseObject::tagOther); // 初期化
 		item->transform_.translate_ = { 10000.0f, 10000.0f, 0.0f };
@@ -250,10 +248,12 @@ void StageSelectManagerObject::Update()
 		}
 		// 回転演出中でなければ
 		if (!isRotateStaging_) {
+
 			if (pressCount_ > 0) {
 				// 押下回数デクリメント
 				pressCount_--;
 				RotateStart(true);
+				
 			}
 			else if (pressCount_ < 0) {
 				// 押下回数インクリメント
@@ -547,6 +547,9 @@ void StageSelectManagerObject::RotateStart(bool isRight)
 			selectedStageNumber_ = stageCount_;
 	}
 
+	// 歯車回転音を鳴らす
+	audio_->PlayWave(soundHandleRotateGear_, false, *seVolume_);
+
 	// 演出中に
 	isRotateStaging_ = true;
 	previewItemStaging_ = false;
@@ -589,7 +592,7 @@ void StageSelectManagerObject::SetPreviewItems()
 		previewItems_[i]->transform_.scale_ = {0.0f, 0.0f, 0.0f};
 		previewItems_[i]->SetIsRePop(stageManager_->GetStageInfo(selectedStageNumber_).itemInfo_[i].isRePop_);
 	}
-	for(int i = (int)stageManager_->GetStageInfo(selectedStageNumber_).itemInfo_.size(); i < 10; i++)
+	for(int i = (int)stageManager_->GetStageInfo(selectedStageNumber_).itemInfo_.size(); i < 20; i++)
 		previewItems_[i]->transform_.translate_ = { 10000.0f, 10000.0f, 0.0f };
 
 	// プレビューアイテム表示演出開始

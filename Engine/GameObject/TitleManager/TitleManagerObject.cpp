@@ -103,7 +103,7 @@ void TitleManagerObject::Initialize(std::string name, Tag tag)
 	isGoStageSelectScene_ = false;
 
 	// フェードイン
-	SceneManager::GetInstance()->StartFadeEffect(1.0f, { 0.0f, 0.0f, 0.0f, 1.0f }, { 0.0f, 0.0f, 0.0f, 0.0f });
+	SceneManager::GetInstance()->StartFadeEffect(1.0f, { 0.0f, 0.0f, 0.0f, 1.0f }, { 0.0f, 0.0f, 0.0f, 0.0f }, false);
 
 	AddGlobalVariables();
 
