@@ -21,7 +21,7 @@ void GameScene::Initialize() {
 	// ステージマネージャーのインスタンス取得
 	stageManager_ = StageManager::GetInstance();
 	stageManager_->Initialize(); // 初期化
-	stageManager_->SetStage(0);
+	stageManager_->SetStage(SceneManager::GetInstance()->GetSelectedStageNumber());
 	
 	// ゲームマネージャー生成
 	gameManager_ = new GameManagerObject(); // インスタンス生成

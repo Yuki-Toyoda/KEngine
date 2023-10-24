@@ -189,9 +189,9 @@ StageInfo StageManager::LoadInfo(size_t num)
 ItemInfo StageManager::LoadItem(const std::string& indexNum, const std::string& infoIndex)
 {
 	ItemInfo iInfo{};
-	iInfo.isRePop_ = static_cast<bool>(globalVariables_->GetIntValue("StageInfo", indexNum + "isRePop:" + infoIndex));
-	iInfo.position_ = globalVariables_->GetVector3Value("StageInfo", indexNum + "ItemPosition:" + infoIndex);
-	iInfo.popTime_ = globalVariables_->GetIntValue("StageInfo", indexNum + "PopTime" + infoIndex);
+	iInfo.isRePop_ = static_cast<bool>(globalVariables_->GetIntValue("StageInfo", indexNum + "isRePop:" + std::to_string(i)));
+	iInfo.position_ = globalVariables_->GetVector3Value("StageInfo", indexNum + "position:" + std::to_string(i));
+	iInfo.popTime_ = globalVariables_->GetIntValue("StageInfo", indexNum + "popTime:" + std::to_string(i));
 	return iInfo;
 }
 

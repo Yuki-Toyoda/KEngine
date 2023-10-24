@@ -11,15 +11,16 @@ SceneManager* SceneManager::GetInstance()
 
 void SceneManager::Initialize()
 {
-
 	// フェード演出スプライト用座標
 	fadeSpritePosition_ = { 0.0f, 0.0f };
 	// フェード演出スプライト用大きさ
 	fadeSpriteSize_ = { (float)WinApp::kWindowWidth, (float)WinApp::kwindowHeight };
 	// フェード演出スプライト用色
 	fadeSpriteColor_ = { 0.0f, 0.0f, 0.0f, 1.0f };
+	vignetteColor_ = { 1.0f, 1.0f, 1.0f, 1.0f };
 	// フェード演出用スプライト
 	fadeSprite_.reset(Sprite::Create(TextureManager::Load("white1x1.png"), &fadeSpritePosition_, &fadeSpriteSize_, &fadeSpriteColor_));
+	vignetteSprite_.reset(Sprite::Create(TextureManager::Load("./Resources/Image", "Vignette.png"), &fadeSpritePosition_, &fadeSpriteSize_, &vignetteColor_));
 
 	// フェード演出用色
 	startFadeColor_ = fadeSpriteColor_; // 始端
@@ -33,6 +34,13 @@ void SceneManager::Initialize()
 	isFading_ = false;
 	// フェード演出が終了しているか
 	isEndFade_ = true;
+	
+	// フェード効果音
+	soundHandleFade_ = Audio::GetInstance()->LoadWave("/Audio/SE/SceneTransition.wav");
+
+	// 音量初期設定
+	bgmVolume_ = 0.5f; // BGM
+	seVolume_ = 0.5f; // SE
 
 	// シーン初期化
 	currentScene_ = new TitleScene(); // タイトルシーン生成
@@ -44,14 +52,17 @@ void SceneManager::Update()
 {
 #ifdef _DEBUG
 
-	
-
-#endif // _DEBUG
-
 	// FPSカウンターの表示
 	ImGui::Begin("Control panel");
 	ImGui::Text("Frame rate: %6.2f fps", ImGui::GetIO().Framerate);
 	ImGui::End();
+
+	ImGui::Begin("Audio");
+	ImGui::SliderFloat("bgmVolume", &bgmVolume_, 0.0f, 1.0f);
+	ImGui::SliderFloat("seVolume", &seVolume_, 0.0f, 1.0f);
+	ImGui::End();
+
+#endif // _DEBUG
 
 	// 現在のシーンから次のシーンへ遷移するよう指示されたら
 	if (nextScene_ != nullptr) {
@@ -81,10 +92,11 @@ void SceneManager::Update()
 
 void SceneManager::Draw()
 {
+	vignetteSprite_->Draw();
 	fadeSprite_->Draw();
 }
 
-void SceneManager::StartFadeEffect(float fadeTime, Vector4 startcolor, Vector4 endColor)
+void SceneManager::StartFadeEffect(float fadeTime, Vector4 startcolor, Vector4 endColor, bool playSound)
 {
 	// 演出中でなければ
 	if (!isFading_) {
@@ -99,6 +111,10 @@ void SceneManager::StartFadeEffect(float fadeTime, Vector4 startcolor, Vector4 e
 		isFading_ = true;
 		// 演出は終了していない
 		isEndFade_ = false;
+
+		// フェード効果音を鳴らす
+		if(playSound)
+			Audio::GetInstance()->PlayWave(soundHandleFade_, false, 0.25f);
 	}
 }
 
@@ -112,6 +128,9 @@ void SceneManager::SetFadeColor(Vector4 color)
 	isEndFade_ = true;
 	// 色を設定
 	fadeSpriteColor_ = color;
+	// 音量設定
+	bgmVolume_ = startFadeColor_.w;
+	seVolume_ = startFadeColor_.w;
 }
 
 void SceneManager::Fade()
@@ -122,6 +141,9 @@ void SceneManager::Fade()
 		fadeSpriteColor_.y = Math::EaseInOut(fadeT_, startFadeColor_.y, endFadeColor_.y, fadeTime_);
 		fadeSpriteColor_.z = Math::EaseInOut(fadeT_, startFadeColor_.z, endFadeColor_.z, fadeTime_);
 		fadeSpriteColor_.w = Math::EaseInOut(fadeT_, startFadeColor_.w, endFadeColor_.w, fadeTime_);
+
+		bgmVolume_ = Math::EaseInOut(fadeT_, endFadeColor_.w, startFadeColor_.w, fadeTime_);
+		seVolume_ = Math::EaseInOut(fadeT_, endFadeColor_.w, startFadeColor_.w, fadeTime_);
 
 		// tを加算
 		fadeT_ += 1.0f / 60.0f;
@@ -138,5 +160,6 @@ void SceneManager::Fade()
 		isFading_ = false;
 		// 終了を伝える
 		isEndFade_ = true;
+
 	}
 }

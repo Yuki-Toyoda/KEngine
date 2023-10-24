@@ -50,8 +50,6 @@ void Item::Update()
 		}
 	}
 
-	objects_;
-
 	// デバッグ表示
 	DebugGui();
 

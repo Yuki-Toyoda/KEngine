@@ -68,9 +68,10 @@ public: // メンバ関数
 	int GetItemInfoNum() const { return static_cast<int>(stageInfo_.itemInfo_.size()); }
 	int GetCatapulltNum() const { return static_cast<int>(stageInfo_.catapultInfo_.size()); }
 
+	float GetGearCondition()const;
+	float GetClearCondition()const;
+
 	bool GetIsClear()const;
-
-
 
 public: // パブリックなメンバ変数
 

@@ -22,6 +22,16 @@ void BaseStage::commonInitialize()
 	usedItem_ = 0;
 }
 
+float BaseStage::GetGearCondition() const
+{
+	return gearCondition_;
+}
+
+float BaseStage::GetClearCondition() const
+{
+	return stageInfo_.gearInfo_.clearCondition_;
+}
+
 bool BaseStage::GetIsClear() const
 {
 	// 歯車の回転条件

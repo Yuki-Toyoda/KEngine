@@ -71,6 +71,20 @@ public: // メンバ関数
 	const std::vector<BaseStage::StageInfo>& GetStageInfos() const { return infos_; }
 
 	/// <summary>
+	/// 今使ってるステージの情報を取得
+	/// </summary>
+	const BaseStage::StageInfo& GetStageInfo()const { return infos_[nowStageNum_]; }
+	/// <summary>
+	/// 添え字でステージの情報を取得
+	/// </summary>
+	const BaseStage::StageInfo& GetStageInfo(int index)const { return infos_[index]; }
+
+	/// <summary>
+	/// すべてのステージ情報を取得
+	/// </summary>
+	const std::vector<BaseStage::StageInfo>& GetStageInfos() const { return infos_; }
+
+	/// <summary>
 	/// マネージャーにステージを登録する
 	/// </summary>
 	void AddStageInfo(const BaseStage::StageInfo& info);
@@ -96,6 +110,18 @@ public: // メンバ関数
 	/// ゲームを開始してからの経過時間
 	/// </summary>
 	int GetGameTIme() const { return gameTime_; }
+
+	/// <summary>
+	/// ギアの現在進捗ゲッター
+	/// </summary>
+	/// <returns>ギアの現在進捗</returns>
+	float GetGearCondition()const { return currentStage_->GetGearCondition(); }
+
+	/// <summary>
+	/// ギアの進捗最大値ゲッター
+	/// </summary>
+	/// <returns>ギアの進捗最大値</returns>
+	float GetClearCondition()const { return currentStage_->GetClearCondition(); }
 
 private: // メンバ関数
 

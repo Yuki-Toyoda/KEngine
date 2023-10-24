@@ -1,5 +1,6 @@
 #include "TitleScene.h"
 #include "../SceneManager.h"
+#include "../../GameObject/SampleList.h"
 
 void TitleScene::Initialize()
 {
@@ -19,6 +20,7 @@ void TitleScene::Initialize()
 	titleManager_->SetCamera(camera);
 	titleManager_->Initialize("titleManagerObject", BaseObject::tagOther); // 初期化
 	gameObjectManager_->AddGameObject(titleManager_); // ゲームオブジェクトマネージャーに追加
+
 }
 
 void TitleScene::Update()
