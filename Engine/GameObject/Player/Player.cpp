@@ -126,30 +126,36 @@ void Player::OnCollision(BaseObject* object)
 	if (!object->GetIsActive()) {
 		return;
 	}
+	Catapult* catapult = dynamic_cast<Catapult*>(object);
+	if (catapult) {
+		if (catapult->GetJumpEnable() && input_->TriggerKey(DIK_Q)) {
+			transform_.translate_ = catapult->transform_.translate_;
+			playerTheta_ = catapult->GetTheta();
+			CatapultJump();
+			catapult->AirJump();
+		}
+	}
+
 	//object;
 	Item* item = dynamic_cast<Item*>(object);
 	// 衝突しているのが Item だった時
 	// ジャンプできる状態の時
 	if (item) {
 		if (item->GetJumpEnable()) {
-			// ボタンの再入力があった時
-			if (input_->TriggerKey(DIK_Q)) {
-				AirJump();
+			// カタパルト中は破壊する
+			if (isCatapult_) {
 				item->AirJump();
 			}
-		}
-	}
-	else {
-		Catapult* catapult = dynamic_cast<Catapult*>(object);
-		if (catapult) {
-			if (catapult->GetJumpEnable() && input_->TriggerKey(DIK_Q)) {
-				transform_.translate_ = catapult->transform_.translate_;
-				playerTheta_ = catapult->GetTheta();
-				CatapultJump();
-				catapult->AirJump();
+			else {
+				// ボタンの再入力があった時
+				if (input_->TriggerKey(DIK_Q)) {
+					AirJump();
+					item->AirJump();
+				}
 			}
 		}
 	}
+
 }
 
 void Player::OnCollisionExit(BaseObject* object)
@@ -187,7 +193,7 @@ void Player::InitializeVariables()
 	isLanding_ = true;
 	isPendulum_ = false;
 	wasRotateRight_ = true;
-	isEnableGravity_ = false;
+	isCatapult_ = false;
 
 	// 定数の再定義
 	kGearInnerRadius_ = 0.5f;
@@ -215,7 +221,7 @@ void Player::GetOperation()
 
 	if (input_->TriggerKey(DIK_Q)) {
 		if (isLanding_) {
-			isEnableGravity_ = true;
+			isCatapult_ = false;
 			isJumpTrigger_ = true;
 		}
 	}
@@ -244,7 +250,7 @@ void Player::UpdatePlayer()
 		// 歯車の回転は歯車の更新内
 	}
 	else {
-		if (isEnableGravity_) {
+		if (!isCatapult_) {
 			// 重力減算
 			Vector3 fallVelocity{};
 			fallVelocity.x = kFallDirection_.x * kGravity_;
@@ -470,7 +476,7 @@ void Player::CatapultJump()
 {
 	Vector3 direct = { -std::cosf(playerTheta_),-std::sinf(playerTheta_), 0.0f };
 	playerVelocity_ = direct * kAirJumpPower_;
-	isEnableGravity_ = false;
+	isCatapult_ = true;
 }
 
 void Player::DebugGui() {

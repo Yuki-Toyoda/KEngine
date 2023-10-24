@@ -221,7 +221,7 @@ void StageManager::SaveInfo(size_t num)
 {
 	std::string indexNum = std::to_string(num) + ":";
 	std::string strStage = "StageInfo";
-	StageInfo& info = infos_[num];
+	StageInfo info = infos_[num];
 	info = currentStage_->GetStageInfo();
 	globalVariables_->AddItem(strStage, indexNum + "Condition", info.gearInfo_.clearCondition_);
 	globalVariables_->SetValue(strStage, indexNum + "Condition", info.gearInfo_.clearCondition_);

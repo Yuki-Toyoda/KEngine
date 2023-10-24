@@ -191,7 +191,7 @@ private: // メンバ変数
 	bool wasRotateRight_ = true;
 
 	// 重力が働くか否か
-	bool isEnableGravity_ = false;
+	bool isCatapult_ = false;
 
 	/*------------------//
 	//	デバッグ用の変数	//
