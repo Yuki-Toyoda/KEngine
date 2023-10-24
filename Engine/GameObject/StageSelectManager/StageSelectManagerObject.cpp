@@ -194,10 +194,11 @@ void StageSelectManagerObject::Initialize(std::string name, Tag tag)
 	stageNumber_->color_ = spriteUIColor_;
 	stageNumber_->SetIsCentered(true); // 中央ぞろえに
 	// ステージ番号カウンタ背景
+	stageNumberBackGround_Position_ = stageNumber_->position_;
 	stageNumberBackGroundSize_ = { 192.0f, 192.0f };
 	stageNumberBackGround_.reset(Sprite::Create(
 		textureHandleStageNumberBackGround_,
-		&stageNumber_->position_,
+		&stageNumberBackGround_Position_,
 		&stageNumberBackGroundSize_,
 		&spriteUIColor_,
 		{ 0.775f, 0.5f }
@@ -677,10 +678,15 @@ void StageSelectManagerObject::UIAnimation()
 		}
 	}
 
-	if (stageSelectedNumber_ >= 10)
-		stageNumberBackGroundSize_.x = 192.0f * 2.0f;
-	else
+	if (stageSelectedNumber_ >= 10){
+		stageNumberBackGroundSize_.x = 192.0f * 1.5f;
+		stageNumberBackGround_Position_.x = stageNumber_->position_.x + 30.0f;
+
+	}
+	else {
 		stageNumberBackGroundSize_.x = 192.0f;
+		stageNumberBackGround_Position_ = stageNumber_->position_;
+	}
 
 	stageNumber_->Update();
 

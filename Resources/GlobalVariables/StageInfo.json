@@ -1,7 +1,454 @@
 {
-  "StageInfo": {
-    "0:Condition": 100.0,
-    "0:kMaxInfoNum": 0,
-    "0:kMaxCatapultNum": 0
-  }
+    "StageInfo": {
+        "0:Condition": 100.0,
+        "0:isRePop:0": 0,
+        "0:isRePop:1": 0,
+        "0:isRePop:2": 0,
+        "0:isRePop:3": 1,
+        "0:isRePop:4": 0,
+        "0:isRePop:5": 0,
+        "0:kMaxCatapultNum": 0,
+        "0:kMaxInfoNum": 3,
+        "0:popTime:0": 10,
+        "0:popTime:1": 10,
+        "0:popTime:2": 10,
+        "0:popTime:3": 1000,
+        "0:popTime:4": 10,
+        "0:popTime:5": 10,
+        "0:position:0": [
+            0.0,
+            -10.0,
+            0.0
+        ],
+        "0:position:1": [
+            -4.0,
+            -6.0,
+            0.0
+        ],
+        "0:position:2": [
+            4.0,
+            -6.0,
+            0.0
+        ],
+        "0:position:3": [
+            0.0,
+            -2.0,
+            0.0
+        ],
+        "0:position:4": [
+            -8.0,
+            -3.0,
+            0.0
+        ],
+        "0:position:5": [
+            8.0,
+            -3.0,
+            0.0
+        ],
+        "1:Condition": 100.0,
+        "1:isRePop:0": 0,
+        "1:isRePop:1": 0,
+        "1:isRePop:2": 0,
+        "1:isRePop:3": 1,
+        "1:isRePop:4": 0,
+        "1:isRePop:5": 0,
+        "1:kMaxCatapultNum": 0,
+        "1:kMaxInfoNum": 6,
+        "1:popTime:0": 10,
+        "1:popTime:1": 10,
+        "1:popTime:2": 10,
+        "1:popTime:3": 1000,
+        "1:popTime:4": 10,
+        "1:popTime:5": 10,
+        "1:position:0": [
+            0.0,
+            -10.0,
+            0.0
+        ],
+        "1:position:1": [
+            -4.0,
+            -6.0,
+            0.0
+        ],
+        "1:position:2": [
+            4.0,
+            -6.0,
+            0.0
+        ],
+        "1:position:3": [
+            0.0,
+            -2.0,
+            0.0
+        ],
+        "1:position:4": [
+            -8.0,
+            -3.0,
+            0.0
+        ],
+        "1:position:5": [
+            8.0,
+            -3.0,
+            0.0
+        ],
+        "2:Condition": 100.0,
+        "2:isRePop:0": 0,
+        "2:isRePop:1": 0,
+        "2:isRePop:2": 0,
+        "2:isRePop:3": 1,
+        "2:isRePop:4": 0,
+        "2:isRePop:5": 0,
+        "2:kMaxCatapultNum": 0,
+        "2:kMaxInfoNum": 6,
+        "2:popTime:0": 10,
+        "2:popTime:1": 10,
+        "2:popTime:2": 10,
+        "2:popTime:3": 1000,
+        "2:popTime:4": 10,
+        "2:popTime:5": 10,
+        "2:position:0": [
+            0.0,
+            -10.0,
+            0.0
+        ],
+        "2:position:1": [
+            -4.0,
+            -6.0,
+            0.0
+        ],
+        "2:position:2": [
+            4.0,
+            -6.0,
+            0.0
+        ],
+        "2:position:3": [
+            0.0,
+            -2.0,
+            0.0
+        ],
+        "2:position:4": [
+            -8.0,
+            -3.0,
+            0.0
+        ],
+        "2:position:5": [
+            8.0,
+            -3.0,
+            0.0
+        ],
+        "3:Condition": 100.0,
+        "3:isRePop:0": 0,
+        "3:isRePop:1": 0,
+        "3:isRePop:2": 0,
+        "3:isRePop:3": 1,
+        "3:isRePop:4": 0,
+        "3:isRePop:5": 0,
+        "3:kMaxCatapultNum": 0,
+        "3:kMaxInfoNum": 6,
+        "3:popTime:0": 10,
+        "3:popTime:1": 10,
+        "3:popTime:2": 10,
+        "3:popTime:3": 1000,
+        "3:popTime:4": 10,
+        "3:popTime:5": 10,
+        "3:position:0": [
+            0.0,
+            -10.0,
+            0.0
+        ],
+        "3:position:1": [
+            -4.0,
+            -6.0,
+            0.0
+        ],
+        "3:position:2": [
+            4.0,
+            -6.0,
+            0.0
+        ],
+        "3:position:3": [
+            0.0,
+            -2.0,
+            0.0
+        ],
+        "3:position:4": [
+            -8.0,
+            -3.0,
+            0.0
+        ],
+        "3:position:5": [
+            8.0,
+            -3.0,
+            0.0
+        ],
+        "4:Condition": 100.0,
+        "4:isRePop:0": 0,
+        "4:isRePop:1": 0,
+        "4:isRePop:2": 0,
+        "4:isRePop:3": 1,
+        "4:isRePop:4": 0,
+        "4:isRePop:5": 0,
+        "4:kMaxCatapultNum": 0,
+        "4:kMaxInfoNum": 6,
+        "4:popTime:0": 10,
+        "4:popTime:1": 10,
+        "4:popTime:2": 10,
+        "4:popTime:3": 1000,
+        "4:popTime:4": 10,
+        "4:popTime:5": 10,
+        "4:position:0": [
+            0.0,
+            -10.0,
+            0.0
+        ],
+        "4:position:1": [
+            -4.0,
+            -6.0,
+            0.0
+        ],
+        "4:position:2": [
+            4.0,
+            -6.0,
+            0.0
+        ],
+        "4:position:3": [
+            0.0,
+            -2.0,
+            0.0
+        ],
+        "4:position:4": [
+            -8.0,
+            -3.0,
+            0.0
+        ],
+        "4:position:5": [
+            8.0,
+            -3.0,
+            0.0
+        ],
+        "5:Condition": 100.0,
+        "5:isRePop:0": 0,
+        "5:isRePop:1": 0,
+        "5:isRePop:2": 0,
+        "5:isRePop:3": 1,
+        "5:isRePop:4": 0,
+        "5:isRePop:5": 0,
+        "5:kMaxCatapultNum": 0,
+        "5:kMaxInfoNum": 6,
+        "5:popTime:0": 10,
+        "5:popTime:1": 10,
+        "5:popTime:2": 10,
+        "5:popTime:3": 1000,
+        "5:popTime:4": 10,
+        "5:popTime:5": 10,
+        "5:position:0": [
+            0.0,
+            -10.0,
+            0.0
+        ],
+        "5:position:1": [
+            -4.0,
+            -6.0,
+            0.0
+        ],
+        "5:position:2": [
+            4.0,
+            -6.0,
+            0.0
+        ],
+        "5:position:3": [
+            0.0,
+            -2.0,
+            0.0
+        ],
+        "5:position:4": [
+            -8.0,
+            -3.0,
+            0.0
+        ],
+        "5:position:5": [
+            8.0,
+            -3.0,
+            0.0
+        ],
+        "6:Condition": 100.0,
+        "6:isRePop:0": 0,
+        "6:isRePop:1": 0,
+        "6:isRePop:2": 0,
+        "6:isRePop:3": 1,
+        "6:isRePop:4": 0,
+        "6:isRePop:5": 0,
+        "6:kMaxCatapultNum": 0,
+        "6:kMaxInfoNum": 6,
+        "6:popTime:0": 10,
+        "6:popTime:1": 10,
+        "6:popTime:2": 10,
+        "6:popTime:3": 1000,
+        "6:popTime:4": 10,
+        "6:popTime:5": 10,
+        "6:position:0": [
+            0.0,
+            -10.0,
+            0.0
+        ],
+        "6:position:1": [
+            -4.0,
+            -6.0,
+            0.0
+        ],
+        "6:position:2": [
+            4.0,
+            -6.0,
+            0.0
+        ],
+        "6:position:3": [
+            0.0,
+            -2.0,
+            0.0
+        ],
+        "6:position:4": [
+            -8.0,
+            -3.0,
+            0.0
+        ],
+        "6:position:5": [
+            8.0,
+            -3.0,
+            0.0
+        ],
+        "7:Condition": 100.0,
+        "7:isRePop:0": 0,
+        "7:isRePop:1": 0,
+        "7:isRePop:2": 0,
+        "7:isRePop:3": 1,
+        "7:isRePop:4": 0,
+        "7:isRePop:5": 0,
+        "7:kMaxCatapultNum": 0,
+        "7:kMaxInfoNum": 6,
+        "7:popTime:0": 10,
+        "7:popTime:1": 10,
+        "7:popTime:2": 10,
+        "7:popTime:3": 1000,
+        "7:popTime:4": 10,
+        "7:popTime:5": 10,
+        "7:position:0": [
+            0.0,
+            -10.0,
+            0.0
+        ],
+        "7:position:1": [
+            -4.0,
+            -6.0,
+            0.0
+        ],
+        "7:position:2": [
+            4.0,
+            -6.0,
+            0.0
+        ],
+        "7:position:3": [
+            0.0,
+            -2.0,
+            0.0
+        ],
+        "7:position:4": [
+            -8.0,
+            -3.0,
+            0.0
+        ],
+        "7:position:5": [
+            8.0,
+            -3.0,
+            0.0
+        ],
+        "8:Condition": 100.0,
+        "8:isRePop:0": 0,
+        "8:isRePop:1": 0,
+        "8:isRePop:2": 0,
+        "8:isRePop:3": 1,
+        "8:isRePop:4": 0,
+        "8:isRePop:5": 0,
+        "8:kMaxCatapultNum": 0,
+        "8:kMaxInfoNum": 6,
+        "8:popTime:0": 10,
+        "8:popTime:1": 10,
+        "8:popTime:2": 10,
+        "8:popTime:3": 1000,
+        "8:popTime:4": 10,
+        "8:popTime:5": 10,
+        "8:position:0": [
+            0.0,
+            -10.0,
+            0.0
+        ],
+        "8:position:1": [
+            -4.0,
+            -6.0,
+            0.0
+        ],
+        "8:position:2": [
+            4.0,
+            -6.0,
+            0.0
+        ],
+        "8:position:3": [
+            0.0,
+            -2.0,
+            0.0
+        ],
+        "8:position:4": [
+            -8.0,
+            -3.0,
+            0.0
+        ],
+        "8:position:5": [
+            8.0,
+            -3.0,
+            0.0
+        ],
+        "9:Condition": 100.0,
+        "9:isRePop:0": 0,
+        "9:isRePop:1": 0,
+        "9:isRePop:2": 0,
+        "9:isRePop:3": 1,
+        "9:isRePop:4": 0,
+        "9:isRePop:5": 0,
+        "9:kMaxCatapultNum": 0,
+        "9:kMaxInfoNum": 6,
+        "9:popTime:0": 10,
+        "9:popTime:1": 10,
+        "9:popTime:2": 10,
+        "9:popTime:3": 1000,
+        "9:popTime:4": 10,
+        "9:popTime:5": 10,
+        "9:position:0": [
+            0.0,
+            -10.0,
+            0.0
+        ],
+        "9:position:1": [
+            -4.0,
+            -6.0,
+            0.0
+        ],
+        "9:position:2": [
+            4.0,
+            -6.0,
+            0.0
+        ],
+        "9:position:3": [
+            0.0,
+            -2.0,
+            0.0
+        ],
+        "9:position:4": [
+            -8.0,
+            -3.0,
+            0.0
+        ],
+        "9:position:5": [
+            8.0,
+            -3.0,
+            0.0
+        ]
+    }
 }
