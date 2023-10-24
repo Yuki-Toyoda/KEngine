@@ -92,7 +92,9 @@ void Player::AddGlobalVariables()
 	globalVariables_->AddItem("Player", "kJumpPoint", Vector2(kJumpPoint_.x, kJumpPoint_.y));
 	globalVariables_->AddItem("Player", "kGravity", kGravity_);
 	globalVariables_->AddItem("Player", "kPlayerJumpPower", kPlayerJumpPower_);
+
 	globalVariables_->AddItem("Player", "kAirJumpPower", kAirJumpPower_);
+	globalVariables_->AddItem("Player", "kCatapultPower", kCatapultPower_);
 }
 
 void Player::ApplyGlobalVariables()
@@ -112,7 +114,7 @@ void Player::ApplyGlobalVariables()
 	kJumpPoint_ = Vector3(temp.x, temp.y, 0.0f);
 
 	kAirJumpPower_ = globalVariables_->GetFloatValue("Player", "kAirJumpPower");
-
+	kCatapultPower_ = globalVariables_->GetFloatValue("Player", "kCatapultPower");
 
 }
 
@@ -475,7 +477,7 @@ void Player::AirJump() {
 void Player::CatapultJump()
 {
 	Vector3 direct = { -std::cosf(playerTheta_),-std::sinf(playerTheta_), 0.0f };
-	playerVelocity_ = direct * kAirJumpPower_;
+	playerVelocity_ = direct * kCatapultPower_;
 	isCatapult_ = true;
 }
 
