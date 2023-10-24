@@ -115,6 +115,12 @@ public: // メンバ関数
 	void LoadStages();
 
 	/// <summary>
+	/// 演出中トリガーセッター
+	/// </summary>
+	/// <param name="isStaging">演出中か</param>
+	void SetIsStaging(bool isStaging) { isStaging_ = isStaging; }
+
+	/// <summary>
 	/// プレイヤーの実体セッター
 	/// </summary>
 	/// <param name="player">プレイヤーの実体</param>
@@ -147,6 +153,9 @@ private: // メンバ変数
 
 	// 現在のシーン
 	BaseStage* currentStage_;
+
+	// 演出状態トリガー
+	bool isStaging_;
 
 	// プレイヤーの実体
 	Player* player_ = nullptr;

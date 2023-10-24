@@ -240,7 +240,8 @@ void GameManagerObject::CameraStaging()
 	switch (cameraStagingWayPoint_)
 	{
 	case GameManagerObject::WayPoint1: // フェードイン指示
-
+		// ステージマネージャーに演出中ということを伝える
+		stageManager_->SetIsStaging(true);
 		// フェードイン
 		SceneManager::GetInstance()->StartFadeEffect(cameraStagingTime_, { 0.0f, 0.0f, 0.0f, 1.0f }, { 0.0f, 0.0f, 0.0f, 0.0f });
 		// 次の演出へ
@@ -255,6 +256,7 @@ void GameManagerObject::CameraStaging()
 			cameraStagingT_ += 1.0f / 60.0f;
 		}
 		else {
+
 			// tリセット
 			cameraStagingT_ = 0.0f;
 			// 演出時間設定
@@ -262,6 +264,9 @@ void GameManagerObject::CameraStaging()
 
 			// カメラ演出中に
 			cameraIsStaging_ = false;
+
+			// ステージマネージャーに演出終了を伝える
+			stageManager_->SetIsStaging(false);
 
 			// 次の演出に
 			cameraStagingWayPoint_++;
@@ -290,6 +295,9 @@ void GameManagerObject::CameraStaging()
 			cameraEndTranslate_ = { 0.0f, 0.0f, -90.0f };
 			// カメラ演出時間設定
 			cameraStagingTime_ = 1.5f;
+
+			// ステージマネージャーに演出中だと伝える
+			stageManager_->SetIsStaging(true);
 
 			// ステージ上の全アイテムを取得したら完全クリア
 			if(stageNowItemCount_ <= 0)
@@ -397,6 +405,9 @@ void GameManagerObject::CameraStaging()
 		}
 		break;
 	case GameManagerObject::WayPoint9:
+
+		// ステージマネージャーに演出終了を伝える
+		stageManager_->SetIsStaging(false);
 
 		// BGMを止める
 		audio_->StopWave(voiceHandleBGM_);

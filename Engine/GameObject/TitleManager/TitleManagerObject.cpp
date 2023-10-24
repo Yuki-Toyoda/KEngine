@@ -200,7 +200,7 @@ void TitleManagerObject::Update()
 		if (input_->TriggerKey(DIK_SPACE)) {
 			
 			// 音再生
-			audio_->PlayWave(soundHandleButton_, false, *seVolume_ * 0.45f);
+			audio_->PlayWave(soundHandleButton_, false, *seVolume_ * 0.3f);
 			
 			// カメラシェイク無効
 			enableCameraShake_ = false;

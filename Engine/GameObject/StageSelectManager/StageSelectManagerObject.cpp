@@ -425,7 +425,7 @@ void StageSelectManagerObject::TransitionStaging()
 			// カメラの終端座標を設定
 			cameraEndTranslate_ = { 0.0f, 0.0f, -17.0f };
 			
-			audio_->PlayWave(soundHandleStageStart_, false, *seVolume_ * 0.3f);
+			audio_->PlayWave(soundHandleStageStart_, false, *seVolume_ * 0.35f);
 			// 次の演出に
 			cameraStagingWayPoint_++;
 		}

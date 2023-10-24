@@ -50,6 +50,12 @@ public: // その他関数群
 	/// <param name="object">前フレーム衝突していたオブジェクト</param>
 	void OnCollisionExit(BaseObject* object) override;
 
+	/// <summary>
+	/// 操作可能状態のセッター
+	/// </summary>
+	/// <param name="isGetOperation">操作可能か</param>
+	void SetIsGetOperation(bool isGetOperation) { isGetOperation_ = isGetOperation; }
+
 private: // メンバ関数
 
 	// 作成した関数等の初期化
@@ -111,6 +117,9 @@ private: // メンバ変数
 	/*--------------------------//
 	//	プレイヤー自体の変数		//
 	//--------------------------*/
+
+	// 操作を受け付けるか
+	bool isGetOperation_;
 
 	// プレイヤーの最大移動速度
 	float kMaxPlayerVelocity_ = 0;

@@ -68,7 +68,8 @@ void Player::Update()
 	BaseObject::Update();
 
 	// 操作受け付け
-	GetOperation();
+	if(isGetOperation_)
+		GetOperation();
 
 
 	// プレイヤーの更新
@@ -82,7 +83,7 @@ void Player::Update()
 	DebugGui();
 
 	if (playSoundAmountRotation_ >= kPlaySoundRotation_) {
-		audio_->PlayWave(soundHandleRotateGear_[playIndex_], false, *seVolume_ * 0.2f);
+		audio_->PlayWave(soundHandleRotateGear_[playIndex_], false, *seVolume_ * 0.1f);
 		if (isReturn_)
 			playIndex_--;
 		else
@@ -203,6 +204,8 @@ void Player::OnCollisionExit(BaseObject* object)
 void Player::InitializeVariables()
 {
 
+	// 操作を受け付けるか
+	isGetOperation_ = false;
 	// プレイヤー変数初期化
 	playerVelocity_ = { 0.0f,0.0f,0.0f };
 	playerAcceleration_ = { 0.0f,0.0f,0.0f };

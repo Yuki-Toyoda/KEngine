@@ -14,7 +14,8 @@ void DebugStage::Update()
 {
 	float gearRotate{ 0 };
 	gearRotate += player_->GetGearRotateSpeed();
-	gearCondition_ += 0 < gearRotate ? gearRotate : gearRotate * -1;
+	if(isAddGearCondition_)
+		gearCondition_ += 0 < gearRotate ? gearRotate : gearRotate * -1;
 	DebugGUI();
 }
 
