@@ -24,8 +24,6 @@ void StageSelectManagerObject::Initialize(std::string name, Tag tag)
 	// 音をロード
 	ambientHandle_ = audio_->LoadWave("/Audio/Ambient/GearAmbient.wav");
 	bgmHandle_ = audio_->LoadWave("/Audio/BGM/StageSelectBGM.wav");
-
-	
 	soundHandleStageStart_ = audio_->LoadWave("/Audio/SE/StageStart.wav");;// ボタンを押したときのSE
 	soundHandleRotateGear_ = audio_->LoadWave("/Audio/SE/RotatePreviewGear.wav"); // プレビュー歯車回転音
 

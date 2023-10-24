@@ -1,6 +1,7 @@
 #pragma once
 #include "../BaseObject.h"
 #include "../../Input/Input.h"
+#include "../../Audio/Audio.h"
 
 /// <summary>
 /// プレイヤー
@@ -94,6 +95,18 @@ private: // メンバ変数
 	// コントローラー入力
 	XINPUT_STATE joyState_; // 現在フレーム用
 	XINPUT_STATE preJoyState_; // 前フレーム用
+
+	// 音再生
+	Audio* audio_ = nullptr;
+	// 音量
+	float* seVolume_; // SE
+
+	// 効果音
+	uint32_t soundHandleRotateGear_[5]; // ギアの回転音
+	int playIndex_; // 再生するインデックス
+	bool isReturn_; // リターントリガー
+	float playSoundAmountRotation_; // ギアの回転量
+	float kPlaySoundRotation_; // ギアの最大回転量
 
 	/*--------------------------//
 	//	プレイヤー自体の変数		//

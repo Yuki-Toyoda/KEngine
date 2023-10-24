@@ -33,6 +33,7 @@ void GameManagerObject::Initialize(std::string name, Tag tag)
 
 	// クリアゲージの初期化
 	clearGageTransform_.Initialize();
+	clearGageTransform_.translate_ = { 0.0f, 0.0f, 1.0f };
 	clearGageTransform_.scale_ = {14.5f, 14.5f, 1.0f};
 	// クリア時のチェックマークワールド座標
 	clearCheckTransform_.Initialize();

@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "../Item/Item.h"
 #include "../Catapult/Catapult.h"
+#include "../../Scene/SceneManager.h"
 
 Player::Player() : gearTheta_(gearTransform_.rotate_.z)
 {
@@ -22,6 +23,22 @@ void Player::Initialize(std::string name, Tag tag)
 	// コントローラー入力取得
 	input_->GetJoystickState(0, joyState_); // 現在フレームの入力取得
 	preJoyState_ = joyState_; // 前フレームの入力取得
+
+	// 音再生インスタンス取得
+	audio_ = Audio::GetInstance();
+	// 音量取得
+	seVolume_ = &SceneManager::GetInstance()->seVolume_;
+
+	// 効果音読み込み
+	soundHandleRotateGear_[0] = audio_->LoadWave("/Audio/SE/RotateGear_0.8.wav"); // ギアの回転音
+	soundHandleRotateGear_[1] = audio_->LoadWave("/Audio/SE/RotateGear_0.9.wav"); // ギアの回転音
+	soundHandleRotateGear_[2] = audio_->LoadWave("/Audio/SE/RotateGear_1.0.wav"); // ギアの回転音
+	soundHandleRotateGear_[3] = audio_->LoadWave("/Audio/SE/RotateGear_1.1.wav"); // ギアの回転音
+	soundHandleRotateGear_[4] = audio_->LoadWave("/Audio/SE/RotateGear_1.2.wav"); // ギアの回転音
+	playIndex_ = 0;
+	isReturn_ = false;
+	playSoundAmountRotation_ = 0.0f;
+	kPlaySoundRotation_ = 0.3f;
 
 	// 色初期設定
 	color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
@@ -63,6 +80,30 @@ void Player::Update()
 	UpdatePlayerRotate();
 
 	DebugGui();
+
+	if (playSoundAmountRotation_ >= kPlaySoundRotation_) {
+		audio_->PlayWave(soundHandleRotateGear_[playIndex_], false, *seVolume_ * 0.2f);
+		if (isReturn_)
+			playIndex_--;
+		else
+			playIndex_++;
+
+		if (playIndex_ == 4)
+			isReturn_ = true;
+		else
+			isReturn_ = false;
+
+		playSoundAmountRotation_ = 0.0f;
+	}
+		
+#ifdef _DEBUG
+
+	ImGui::Begin(objectName_.c_str());
+	ImGui::SliderFloat("tempo", &kPlaySoundRotation_, 0.05f, 1.0f);
+	ImGui::End();
+
+#endif // _DEBUG
+
 
 	// 破壊されていない時
 	if (!isDestroy_) {
@@ -350,6 +391,11 @@ void Player::UpdateGear()
 	// 回転速度を回転に加える
 	// ここで速度に応じて回転角に変える
 	gearTheta_ += ConvertSpeedToRadian(gearRotateSpeed_);
+	if (ConvertSpeedToRadian(gearRotateSpeed_) < 0)
+		playSoundAmountRotation_ += ConvertSpeedToRadian(gearRotateSpeed_) * -1.0f;
+	else
+		playSoundAmountRotation_ += ConvertSpeedToRadian(gearRotateSpeed_);
+	
 }
 
 void Player::UpdatePlayerRotate()
