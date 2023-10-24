@@ -125,39 +125,44 @@ void Player::OnCollisionEnter(BaseObject* object)
 
 void Player::OnCollision(BaseObject* object)
 {
-	if (!object->GetIsActive()) {
-		return;
-	}
-	Catapult* catapult = dynamic_cast<Catapult*>(object);
-	if (catapult) {
-		if (catapult->GetJumpEnable() && input_->TriggerKey(DIK_Q)) {
-			transform_.translate_ = catapult->transform_.translate_;
-			playerTheta_ = catapult->GetTheta();
-			CatapultJump();
-			catapult->AirJump();
-		}
-	}
+	if (object->GetIsActive()) {
 
-	//object;
-	Item* item = dynamic_cast<Item*>(object);
-	// 衝突しているのが Item だった時
-	// ジャンプできる状態の時
-	if (item) {
-		if (item->GetJumpEnable()) {
-			// カタパルト中は破壊する
-			if (isCatapult_) {
-				item->AirJump();
+		Catapult* catapult = dynamic_cast<Catapult*>(object);
+		if (catapult) {
+			if (catapult->GetJumpEnable()) {
+				// 位置をカタパルトに合わせる
+				if (isCorrection_) {
+					transform_.translate_ = catapult->transform_.translate_;
+					isCorrection_ = false;
+				}
+				if (input_->TriggerKey(DIK_SPACE)) {
+					playerTheta_ = catapult->GetTheta();
+					CatapultJump();
+					catapult->AirJump();
+				}
 			}
-			else {
-				// ボタンの再入力があった時
-				if (input_->TriggerKey(DIK_Q)) {
-					AirJump();
+		}
+
+		//object;
+		Item* item = dynamic_cast<Item*>(object);
+		// 衝突しているのが Item だった時
+		// ジャンプできる状態の時
+		if (item) {
+			if (item->GetJumpEnable()) {
+				// カタパルト中は破壊する
+				if (isCatapult_) {
 					item->AirJump();
+				}
+				else {
+					// ボタンの再入力があった時
+					if (input_->TriggerKey(DIK_SPACE)) {
+						AirJump();
+						item->AirJump();
+					}
 				}
 			}
 		}
 	}
-
 }
 
 void Player::OnCollisionExit(BaseObject* object)
@@ -196,6 +201,7 @@ void Player::InitializeVariables()
 	isPendulum_ = false;
 	wasRotateRight_ = true;
 	isCatapult_ = false;
+	isCorrection_ = true;
 
 	// 定数の再定義
 	kGearInnerRadius_ = 0.5f;
@@ -221,7 +227,7 @@ void Player::GetOperation()
 	preJoyState_ = joyState_; // 前フレームの入力取得
 	input_->GetJoystickState(0, joyState_); // 現在フレームの入力取得
 
-	if (input_->TriggerKey(DIK_Q)) {
+	if (input_->TriggerKey(DIK_SPACE)) {
 		if (isLanding_) {
 			isCatapult_ = false;
 			isJumpTrigger_ = true;
@@ -479,6 +485,7 @@ void Player::CatapultJump()
 	Vector3 direct = { -std::cosf(playerTheta_),-std::sinf(playerTheta_), 0.0f };
 	playerVelocity_ = direct * kCatapultPower_;
 	isCatapult_ = true;
+	isCorrection_ = true;
 }
 
 void Player::DebugGui() {

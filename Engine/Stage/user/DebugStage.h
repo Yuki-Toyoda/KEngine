@@ -25,4 +25,7 @@ public:
 
 private: // メンバ変数
 
+	// 情報を入れるかどうか
+	bool isApplyInfo_ = true;
+
 };
