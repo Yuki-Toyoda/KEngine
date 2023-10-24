@@ -1,7 +1,6 @@
 #pragma once
 #include "../BaseScene.h"
 #include "SceneList.h"
-#include "../../Stage/StageManager.h"
 
 /// <summary>
 /// ステージ選択シーン
@@ -23,9 +22,6 @@ private: // メンバ変数
 
 	// タイトルマネージャー
 	StageSelectManagerObject* stageSelectManager_ = nullptr;
-
-	// ステージマネージャー
-	StageManager* stageManager_ = nullptr;
 
 };
 

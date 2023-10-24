@@ -34,9 +34,6 @@ void StageManager::Initialize()
 
 	GameObjectManager* manager = GameObjectManager::GetInstance();
 
-	for (Item* item : items_) {
-		delete item;
-	}
 	items_.clear();
 	items_.resize(kMaxItem_);
 	for (size_t i = 0; i < items_.size(); i++)
@@ -47,9 +44,6 @@ void StageManager::Initialize()
 		manager->AddGameObject(items_[i]);
 	}
 
-	for (Catapult* catapult : catapults_) {
-		delete catapult;
-	}
 	catapults_.clear();
 	catapults_.resize(kMaxCatapult_);
 	for (size_t i = 0; i < catapults_.size(); i++)
@@ -57,12 +51,13 @@ void StageManager::Initialize()
 		catapults_[i] = new Catapult();
 		catapults_[i]->Initialize("Catapult", BaseObject::tagCatapult);
 		catapults_[i]->SetIsActive(false);
+		catapults_[i]->SetPlayer(player_);
 		manager->AddGameObject(catapults_[i]);
 	}
 
 	AddGloavalVariables();
 	// ステージの設定を読み込む
-	LoadStages();
+	//LoadStages();
 }
 
 void StageManager::Reset()
@@ -141,6 +136,9 @@ void StageManager::AddGloavalVariables()
 
 void StageManager::LoadStages()
 {
+	if(globalVariables_ == nullptr)
+		globalVariables_ = GlobalVariables::GetInstance();
+
 	infos_.clear();
 	// 作ったステージの個数を取得
 	kMaxStageNum_ = globalVariables_->GetIntValue("Stage", "kMaxStageNum");
@@ -189,9 +187,9 @@ StageInfo StageManager::LoadInfo(size_t num)
 ItemInfo StageManager::LoadItem(const std::string& indexNum, const std::string& infoIndex)
 {
 	ItemInfo iInfo{};
-	iInfo.isRePop_ = static_cast<bool>(globalVariables_->GetIntValue("StageInfo", indexNum + "isRePop:" + std::to_string(i)));
-	iInfo.position_ = globalVariables_->GetVector3Value("StageInfo", indexNum + "position:" + std::to_string(i));
-	iInfo.popTime_ = globalVariables_->GetIntValue("StageInfo", indexNum + "popTime:" + std::to_string(i));
+	iInfo.isRePop_ = static_cast<bool>(globalVariables_->GetIntValue("StageInfo", indexNum + "isRePop:" + infoIndex));
+	iInfo.position_ = globalVariables_->GetVector3Value("StageInfo", indexNum + "position:" + infoIndex);
+	iInfo.popTime_ = globalVariables_->GetIntValue("StageInfo", indexNum + "popTime:" + infoIndex);
 	return iInfo;
 }
 
@@ -203,7 +201,7 @@ CatapultInfo StageManager::LoadCatapult(const std::string& indexNum, const std::
 	cInfo.length_ = globalVariables_->GetFloatValue("StageInfo", indexNum + "length:" + infoIndex);
 
 	cInfo.isRePop_ = static_cast<bool>(globalVariables_->GetIntValue("StageInfo", indexNum + "CisRePop:" + infoIndex));
-	cInfo.popTime_ = globalVariables_->GetIntValue("StageInfo", indexNum + "CPopTime" + infoIndex);
+	cInfo.popTime_ = globalVariables_->GetIntValue("StageInfo", indexNum + "CpopTime:" + infoIndex);
 	return cInfo;
 }
 

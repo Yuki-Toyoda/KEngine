@@ -208,6 +208,9 @@
     <ClCompile Include="Engine\Resource\Texture\TextureManager.cpp">
       <Filter>Resource\Texture</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\GameObject\Catapult\Catapult.cpp">
+      <Filter>GameObject\Catapult</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -405,6 +408,9 @@
     <ClInclude Include="Engine\Resource\Texture\TextureManager.h">
       <Filter>Resource\Texture</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\GameObject\Catapult\Catapult.h">
+      <Filter>GameObject\Catapult</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\externals\imgui\.editorconfig">
@@ -510,6 +516,9 @@
     </Filter>
     <Filter Include="Resource\Texture">
       <UniqueIdentifier>{114b41e8-1d06-4ce6-b12f-46be87dd982c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Catapult">
+      <UniqueIdentifier>{5956e728-b7a1-4be6-86e3-1c910e25b3c1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

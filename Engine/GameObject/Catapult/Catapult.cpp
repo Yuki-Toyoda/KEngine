@@ -129,7 +129,10 @@ void Catapult::SetCatapultInfo(const BaseStage::CatapultInfo& info)
 
 float Catapult::GetTheta() const
 {
-	return player_->GetGearTheta() + kTheta_;
+	if(player_ != nullptr)
+		return player_->GetGearTheta() + kTheta_;
+	else
+		return kTheta_;
 }
 
 void Catapult::AirJump()
@@ -167,16 +170,12 @@ void Catapult::InitializeVariables()
 
 	allowTransform_.Initialize();
 
-	// プレイヤーの情報を取る
-	BaseObject* buff = GameObjectManager::GetInstance()->GetGameObject(BaseObject::tagPlayer).front();
-	player_ = dynamic_cast<Player*>(buff);
-	assert(player_ != nullptr);
 }
 
 void Catapult::UpdateCatapult()
 {
 	// 歯車の回転によって回転の補正をする
-	float rotateTheta_ = player_->GetGearTheta() + kTheta_;
+	float rotateTheta_ = GetTheta();
 	// float にキャストしたπを取得
 	float pi = static_cast<float>(std::numbers::pi);
 	// 角度を一回転の中に収める
