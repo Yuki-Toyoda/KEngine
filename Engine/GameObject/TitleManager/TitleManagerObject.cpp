@@ -121,7 +121,7 @@ void TitleManagerObject::Update()
 	if (!audio_->IsPlaying(voiceHandleAmbient_) || voiceHandleAmbient_ == -1) {
 		voiceHandleAmbient_ = audio_->PlayWave(ambientHandle_, false, *bgmVolume_);
 	}
-	audio_->SetVolume(voiceHandleAmbient_, *bgmVolume_ * 0.05f);
+	audio_->SetVolume(voiceHandleAmbient_, *bgmVolume_ * 0.1f);
 	// 再生されていなければ再生する
 	if (!audio_->IsPlaying(voiceHandleBGM_) || voiceHandleBGM_ == -1) {
 		voiceHandleBGM_ = audio_->PlayWave(bgmHandle_, false, *bgmVolume_);
@@ -200,7 +200,7 @@ void TitleManagerObject::Update()
 		if (input_->TriggerKey(DIK_SPACE)) {
 			
 			// 音再生
-			audio_->PlayWave(soundHandleButton_, false, *seVolume_);
+			audio_->PlayWave(soundHandleButton_, false, *seVolume_ * 0.45f);
 			
 			// カメラシェイク無効
 			enableCameraShake_ = false;

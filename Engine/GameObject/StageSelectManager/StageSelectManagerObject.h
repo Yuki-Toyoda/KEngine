@@ -134,6 +134,8 @@ private: // メンバ変数
 	// 環境音ボイスハンドル
 	int voiceHandleBGM_ = -1;
 
+	// ボタンを押したときのSE
+	uint32_t soundHandleStageStart_;
 	// ステージプレビュー歯車の回転音
 	uint32_t soundHandleRotateGear_;
 

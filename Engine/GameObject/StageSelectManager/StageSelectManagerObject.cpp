@@ -25,6 +25,8 @@ void StageSelectManagerObject::Initialize(std::string name, Tag tag)
 	ambientHandle_ = audio_->LoadWave("/Audio/Ambient/GearAmbient.wav");
 	bgmHandle_ = audio_->LoadWave("/Audio/BGM/StageSelectBGM.wav");
 
+	
+	soundHandleStageStart_ = audio_->LoadWave("/Audio/SE/StageStart.wav");;// ボタンを押したときのSE
 	soundHandleRotateGear_ = audio_->LoadWave("/Audio/SE/RotatePreviewGear.wav"); // プレビュー歯車回転音
 
 	// ステージマネージャ取得
@@ -214,7 +216,7 @@ void StageSelectManagerObject::Update()
 
 	// 再生されていなければ再生する
 	if (!audio_->IsPlaying(voiceHandleAmbient_) || voiceHandleAmbient_ == -1) {
-		voiceHandleAmbient_ = audio_->PlayWave(ambientHandle_, false, *bgmVolume_);
+		voiceHandleAmbient_ = audio_->PlayWave(ambientHandle_, false, *bgmVolume_ * 0.1f);
 	}
 	audio_->SetVolume(voiceHandleAmbient_, *bgmVolume_ * 0.1f);
 	// 再生されていなければ再生する
@@ -424,6 +426,8 @@ void StageSelectManagerObject::TransitionStaging()
 			cameraStartTranslate_ = camera_->transform_.translate_;
 			// カメラの終端座標を設定
 			cameraEndTranslate_ = { 0.0f, 0.0f, -17.0f };
+			
+			audio_->PlayWave(soundHandleStageStart_, false, *seVolume_ * 0.3f);
 			// 次の演出に
 			cameraStagingWayPoint_++;
 		}
@@ -548,14 +552,14 @@ void StageSelectManagerObject::RotateStart(bool isRight)
 	startAngle_ = transform_.rotate_.z;
 	// 終端角度設定
 	if (isRight) {
-		endAngle_ = transform_.rotate_.z - ((float)std::numbers::pi / 2.0f);
+		endAngle_ = transform_.rotate_.z + ((float)std::numbers::pi / 2.0f);
 		if (selectedStageNumber_ < stageCount_)
 			selectedStageNumber_++;
 		else
 			selectedStageNumber_ = 0;
 	}
 	else {
-		endAngle_ = transform_.rotate_.z + ((float)std::numbers::pi / 2.0f);
+		endAngle_ = transform_.rotate_.z - ((float)std::numbers::pi / 2.0f);
 		if (selectedStageNumber_ > 0)
 			selectedStageNumber_--;
 		else
