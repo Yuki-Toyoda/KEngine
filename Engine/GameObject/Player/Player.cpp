@@ -39,6 +39,8 @@ void Player::Initialize(std::string name, Tag tag)
 	isReturn_ = false;
 	playSoundAmountRotation_ = 0.0f;
 	kPlaySoundRotation_ = 0.3f;
+	soundHandleJump_ = audio_->LoadWave("/Audio/SE/Jump.wav"); // ジャンプ音
+	soundHandleItemJump_ = audio_->LoadWave("/Audio/SE/ItemJump.wav"); // アイテムでのジャンプ音
 
 	// 色初期設定
 	color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
@@ -176,6 +178,8 @@ void Player::OnCollision(BaseObject* object)
 		if (item->GetJumpEnable()) {
 			// ボタンの再入力があった時
 			if (input_->TriggerKey(DIK_Q)) {
+				// 効果音再生
+				audio_->PlayWave(soundHandleItemJump_, false, *seVolume_);
 				AirJump();
 				item->AirJump();
 			}
@@ -284,6 +288,9 @@ void Player::UpdatePlayer()
 			isJumpTrigger_ = false;
 			isLanding_ = false;
 			isPendulum_ = false;
+
+			// 効果音再生
+			audio_->PlayWave(soundHandleJump_, false, *seVolume_);
 		}
 		// 歯車の回転は歯車の更新内
 	}

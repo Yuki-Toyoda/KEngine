@@ -113,6 +113,8 @@ private: // メンバ変数
 	bool isReturn_; // リターントリガー
 	float playSoundAmountRotation_; // ギアの回転量
 	float kPlaySoundRotation_; // ギアの最大回転量
+	uint32_t soundHandleJump_; // ジャンプ音
+	uint32_t soundHandleItemJump_; // アイテムでのジャンプ音
 
 	/*--------------------------//
 	//	プレイヤー自体の変数		//
