@@ -22,6 +22,7 @@ public: // サブクラス
 		tagCamera, // カメラ
 		tagPlayer, // プレイヤー
 		tagItem, // アイテム
+		tagCatapult, // カタパルト
 		tagEnemy, // 敵
 		tagFloor, // 床
 		tagOther, // その他

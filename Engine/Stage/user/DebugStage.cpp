@@ -2,6 +2,7 @@
 #include "../StageManager.h"
 #include "../../GameObject/Item/Item.h"
 #include "../../GameObject/Player/Player.h"
+#include "../../GameObject/Catapult/Catapult.h"
 
 void DebugStage::Initialize(const StageInfo& info)
 {
@@ -24,6 +25,8 @@ void DebugStage::DebugGUI()
 
 	std::vector<Item*>& items = stageManager_->GetItems();
 	std::vector<ItemInfo>& iInfo = stageInfo_.itemInfo_;
+	std::vector<Catapult*>& catapults = stageManager_->GetCatapult();
+	std::vector<CatapultInfo>& cInfo = stageInfo_.catapultInfo_;
 
 	ImGui::Begin("DebugStage");
 
@@ -66,6 +69,46 @@ void DebugStage::DebugGUI()
 		}
 		ImGui::Separator();
 	}
+
+	ImGui::Separator();
+	if (ImGui::Button("NewCatapult")) {
+		// アイテムが最大数に達していないなら
+		if (cInfo.size() < stageManager_->GetCatapultMax()) {
+			CatapultInfo cinfo{};
+			cinfo.theta_ = 0.0f;
+			cinfo.length_ = 1.0f;
+			cinfo.isRePop_ = true;
+			cinfo.popTime_ = 10;
+			catapults[cInfo.size()]->SetIsRePop(cinfo.isRePop_);
+			catapults[cInfo.size()]->SetIsActive(true);
+			cInfo.push_back(cinfo);
+		}
+	}
+	ImGui::SameLine();
+	// 一番後ろのアイテムを非表示にする
+	if (ImGui::Button("DeleteCatapult")) {
+		if (cInfo.size() != 0) {
+			catapults[cInfo.size() - 1]->SetIsActive(false);
+			cInfo.pop_back();
+		}
+	}
+	ImGui::Separator();
+	commitIndex_ = "cinfo";
+	ImGui::Text("CatapultIndex:%d", cInfo.size());
+	for (size_t i = 0; i < cInfo.size(); i++)
+	{
+		std::string treeName = commitIndex_ + std::to_string(i);
+		if (ImGui::TreeNode(treeName.c_str())) {
+			ImGui::SliderFloat("theta", &cInfo[i].theta_, -3.14f, 3.14f);
+			ImGui::SliderFloat("length", &cInfo[i].length_, 0.0f, 30.0f);
+			ImGui::Checkbox("isRePop", &cInfo[i].isRePop_);
+			ImGui::SliderInt("popTIme", &cInfo[i].popTime_, 10, 1000);
+
+			ImGui::TreePop();
+		}
+		ImGui::Separator();
+	}
+
 
 	//ImGui::Separator();
 	//if (ImGui::Button("Apply")) {

@@ -103,6 +103,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\GameObject\Ambient\Ambient.cpp" />
     <ClCompile Include="Engine\GameObject\BaseObject.cpp" />
     <ClCompile Include="Engine\GameObject\Camera\Camera.cpp" />
+    <ClCompile Include="Engine\GameObject\Catapult\Catapult.cpp" />
     <ClCompile Include="Engine\GameObject\GameManager\GameManagerObject.cpp" />
     <ClCompile Include="Engine\GameObject\GameObjectManager.cpp" />
     <ClCompile Include="Engine\GameObject\Item\Item.cpp" />
@@ -160,6 +161,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\GameObject\Ambient\Ambient.h" />
     <ClInclude Include="Engine\GameObject\BaseObject.h" />
     <ClInclude Include="Engine\GameObject\Camera\Camera.h" />
+    <ClInclude Include="Engine\GameObject\Catapult\Catapult.h" />
     <ClInclude Include="Engine\GameObject\GameManager\GameManagerObject.h" />
     <ClInclude Include="Engine\GameObject\GameObjectManager.h" />
     <ClInclude Include="Engine\GameObject\Item\Item.h" />

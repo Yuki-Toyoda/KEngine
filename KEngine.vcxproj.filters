@@ -15,6 +15,54 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Audio\Audio.cpp" />
+    <ClCompile Include="Engine\Base\DirectXCommon.cpp" />
+    <ClCompile Include="Engine\Base\WinApp.cpp" />
+    <ClCompile Include="Engine\Collider\Collider.cpp" />
+    <ClCompile Include="Engine\Collider\CollisionManager.cpp" />
+    <ClCompile Include="Engine\Debug\Debug.cpp" />
+    <ClCompile Include="Engine\externals\imgui\imgui.cpp" />
+    <ClCompile Include="Engine\externals\imgui\ImGuiManager.cpp" />
+    <ClCompile Include="Engine\externals\imgui\imgui_demo.cpp" />
+    <ClCompile Include="Engine\externals\imgui\imgui_draw.cpp" />
+    <ClCompile Include="Engine\externals\imgui\imgui_impl_dx12.cpp" />
+    <ClCompile Include="Engine\externals\imgui\imgui_impl_win32.cpp" />
+    <ClCompile Include="Engine\externals\imgui\imgui_tables.cpp" />
+    <ClCompile Include="Engine\externals\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Engine\GameObject\Ambient\Ambient.cpp" />
+    <ClCompile Include="Engine\GameObject\BaseObject.cpp" />
+    <ClCompile Include="Engine\GameObject\Camera\Camera.cpp" />
+    <ClCompile Include="Engine\GameObject\GameManager\GameManagerObject.cpp" />
+    <ClCompile Include="Engine\GameObject\GameObjectManager.cpp" />
+    <ClCompile Include="Engine\GameObject\Item\Item.cpp" />
+    <ClCompile Include="Engine\GameObject\Player\Player.cpp" />
+    <ClCompile Include="Engine\GameObject\Samples\Box\SampleBox.cpp" />
+    <ClCompile Include="Engine\GameObject\Samples\Player\SamplePlayer.cpp" />
+    <ClCompile Include="Engine\GameObject\Samples\Stage\SampleFloor.cpp" />
+    <ClCompile Include="Engine\GameObject\Samples\TPCamera\TPCamera.cpp" />
+    <ClCompile Include="Engine\GameObject\StageSelectManager\StageSelectManagerObject.cpp" />
+    <ClCompile Include="Engine\GameObject\TitleManager\TitleManagerObject.cpp" />
+    <ClCompile Include="Engine\GameObject\WorldTransform.cpp" />
+    <ClCompile Include="Engine\GlobalVariables\GlobalVariables.cpp" />
+    <ClCompile Include="Engine\Input\Input.cpp" />
+    <ClCompile Include="Engine\Light\LightGroup.cpp" />
+    <ClCompile Include="Engine\Math\Math.cpp" />
+    <ClCompile Include="Engine\OBJ\ModelManager.cpp" />
+    <ClCompile Include="Engine\OBJ\OBJ.cpp" />
+    <ClCompile Include="Engine\Resource\Texture\TextureManager.cpp" />
+    <ClCompile Include="Engine\Scene\SceneManager.cpp" />
+    <ClCompile Include="Engine\Scene\user\GameScene.cpp" />
+    <ClCompile Include="Engine\Scene\user\StageSelectScene.cpp" />
+    <ClCompile Include="Engine\Scene\user\TitleScene.cpp" />
+    <ClCompile Include="Engine\Sprite\Sprite.cpp" />
+    <ClCompile Include="Engine\Sprite\template\AnimationSprite.cpp" />
+    <ClCompile Include="Engine\Sprite\template\Counter.cpp" />
+    <ClCompile Include="Engine\Sprite\template\Gage.cpp" />
+    <ClCompile Include="Engine\Sprite\template\Timer.cpp" />
+    <ClCompile Include="Engine\Stage\BaseStage.cpp" />
+    <ClCompile Include="Engine\Stage\StageManager.cpp" />
+    <ClCompile Include="Engine\Stage\user\Stage.cpp" />
+    <ClCompile Include="Engine\Stage\user\DebugStage.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\Audio\Audio.cpp">
       <Filter>Audio</Filter>

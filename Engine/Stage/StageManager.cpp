@@ -2,10 +2,12 @@
 #include "user/StageList.h"
 #include "../GameObject/GameObjectManager.h"
 #include "../GameObject/Item/Item.h"
+#include "../GameObject/Catapult/Catapult.h"
 
 using StageInfo = BaseStage::StageInfo;
 using ItemInfo = BaseStage::ItemInfo;
 using GearInfo = BaseStage::GearInfo;
+using CatapultInfo = BaseStage::CatapultInfo;
 
 StageManager* StageManager::GetInstance()
 {
@@ -30,15 +32,32 @@ void StageManager::Initialize()
 	nowStageNum_ = 0;
 	gameTime_ = 0;
 
+	GameObjectManager* manager = GameObjectManager::GetInstance();
+
+	for (Item* item : items_) {
+		delete item;
+	}
 	items_.clear();
 	items_.resize(kMaxItem_);
-	GameObjectManager* manager = GameObjectManager::GetInstance();
 	for (size_t i = 0; i < items_.size(); i++)
 	{
 		items_[i] = new Item();
 		items_[i]->Initialize("Item", BaseObject::tagItem);
 		items_[i]->SetIsActive(false);
 		manager->AddGameObject(items_[i]);
+	}
+
+	for (Catapult* catapult : catapults_) {
+		delete catapult;
+	}
+	catapults_.clear();
+	catapults_.resize(kMaxCatapult_);
+	for (size_t i = 0; i < catapults_.size(); i++)
+	{
+		catapults_[i] = new Catapult();
+		catapults_[i]->Initialize("Catapult", BaseObject::tagCatapult);
+		catapults_[i]->SetIsActive(false);
+		manager->AddGameObject(catapults_[i]);
 	}
 
 	AddGloavalVariables();
@@ -50,6 +69,8 @@ void StageManager::Reset()
 {
 	for (size_t i = 0; i < items_.size(); i++)
 		items_[i]->SetIsActive(false);
+	for (size_t i = 0; i < catapults_.size(); i++)
+		catapults_[i]->SetIsActive(false);
 }
 
 void StageManager::Update()
@@ -95,6 +116,7 @@ void StageManager::AddStageInfo(const BaseStage::StageInfo& info) {
 	kMaxStageNum_ = static_cast<int32_t>(infos_.size());
 }
 
+
 int StageManager::GetUsedItem()const {
 	int usedItemNum = 0;
 
@@ -106,6 +128,15 @@ int StageManager::GetUsedItem()const {
 		}
 	}
 	return usedItemNum;
+}
+
+void StageManager::AddGloavalVariables()
+{
+	// グループを作っておく
+	globalVariables_->CreateGroup("Stage");
+	globalVariables_->CreateGroup("StageInfo");
+
+	globalVariables_->AddItem("Stage", "kMaxStageNum", kMaxStageNum_);
 }
 
 void StageManager::LoadStages()
@@ -121,14 +152,6 @@ void StageManager::LoadStages()
 	}
 }
 
-void StageManager::AddGloavalVariables()
-{
-	// グループを作っておく
-	globalVariables_->CreateGroup("Stage");
-	globalVariables_->CreateGroup("StageInfo");
-
-	globalVariables_->AddItem("Stage", "kMaxStageNum", kMaxStageNum_);
-}
 
 StageInfo StageManager::LoadInfo(size_t num)
 {
@@ -148,13 +171,23 @@ StageInfo StageManager::LoadInfo(size_t num)
 	for (size_t i = 0; i < iInfo.size(); i++) {
 		//iInfo[i].isRePop_ = static_cast<bool>(globalVariables_->GetIntValue(strStage, indexNum + "isRePop:" + std::to_string(i)));
 		//iInfo[i].position_ = globalVariables_->GetVector3Value(strStage, indexNum + "ItemPosition:" + std::to_string(i));
-		iInfo[i] = LoadItem(indexNum, i);
+		iInfo[i] = LoadItem(indexNum, std::to_string(i));
 	}
+	// カタパルト
+	int kMaxCatapultNum = globalVariables_->GetIntValue(strStage, indexNum + "kMaxCatapultNum");
+	// 読み込む
+	std::vector<CatapultInfo>& cInfo = info.catapultInfo_;
+	cInfo.resize(kMaxCatapultNum);
+	for (size_t i = 0; i < cInfo.size(); i++)
+	{
+		cInfo[i] = LoadCatapult(indexNum, std::to_string(i));
+	}
+
 	return info;
 }
 
-ItemInfo StageManager::LoadItem(const std::string& indexNum, size_t i) {
-
+ItemInfo StageManager::LoadItem(const std::string& indexNum, const std::string& infoIndex)
+{
 	ItemInfo iInfo{};
 	iInfo.isRePop_ = static_cast<bool>(globalVariables_->GetIntValue("StageInfo", indexNum + "isRePop:" + std::to_string(i)));
 	iInfo.position_ = globalVariables_->GetVector3Value("StageInfo", indexNum + "position:" + std::to_string(i));
@@ -162,6 +195,17 @@ ItemInfo StageManager::LoadItem(const std::string& indexNum, size_t i) {
 	return iInfo;
 }
 
+
+CatapultInfo StageManager::LoadCatapult(const std::string& indexNum, const std::string& infoIndex)
+{
+	CatapultInfo cInfo{};
+	cInfo.theta_ = globalVariables_->GetFloatValue("StageInfo", indexNum + "theta:" + infoIndex);
+	cInfo.length_ = globalVariables_->GetFloatValue("StageInfo", indexNum + "length:" + infoIndex);
+
+	cInfo.isRePop_ = static_cast<bool>(globalVariables_->GetIntValue("StageInfo", indexNum + "CisRePop:" + infoIndex));
+	cInfo.popTime_ = globalVariables_->GetIntValue("StageInfo", indexNum + "CPopTime" + infoIndex);
+	return cInfo;
+}
 
 void StageManager::SaveStages()
 {
@@ -196,6 +240,25 @@ void StageManager::SaveInfo(size_t num)
 		globalVariables_->AddItem(strStage, indexNum + "popTime:" + std::to_string(i), iInfo[i].popTime_);
 		globalVariables_->SetValue(strStage, indexNum + "popTime:" + std::to_string(i), iInfo[i].popTime_);
 	}
+
+	// カタパルトを保存
+	int32_t kMaxCatapultNum = static_cast<int32_t>(info.catapultInfo_.size());
+	globalVariables_->AddItem(strStage, indexNum + "kMaxCatapultNum", kMaxCatapultNum);
+	globalVariables_->SetValue(strStage, indexNum + "kMaxCatapultNum", kMaxCatapultNum);
+	std::vector<CatapultInfo>& cInfo = info.catapultInfo_;
+	for (size_t i = 0; i < cInfo.size(); i++)
+	{
+		globalVariables_->AddItem(strStage, indexNum + "theta:" + std::to_string(i), cInfo[i].theta_);
+		globalVariables_->SetValue(strStage, indexNum + "theta:" + std::to_string(i), cInfo[i].theta_);
+		globalVariables_->AddItem(strStage, indexNum + "length:" + std::to_string(i), cInfo[i].length_);
+		globalVariables_->SetValue(strStage, indexNum + "length:" + std::to_string(i), cInfo[i].length_);
+
+		globalVariables_->AddItem(strStage, indexNum + "CisRePop:" + std::to_string(i), static_cast<int32_t>(cInfo[i].isRePop_));
+		globalVariables_->SetValue(strStage, indexNum + "CisRePop:" + std::to_string(i), static_cast<int32_t>(cInfo[i].isRePop_));
+		globalVariables_->AddItem(strStage, indexNum + "CpopTime:" + std::to_string(i), cInfo[i].popTime_);
+		globalVariables_->SetValue(strStage, indexNum + "CpopTime:" + std::to_string(i), cInfo[i].popTime_);
+	}
+
 }
 
 void StageManager::DebugGUI()

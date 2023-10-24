@@ -2,6 +2,7 @@
 #include "StageManager.h"
 #include "../GameObject/Item/Item.h"
 #include "../GameObject/Player/Player.h"
+#include "../GameObject/Catapult/Catapult.h"
 
 void BaseStage::commonInitialize()
 {
@@ -69,5 +70,13 @@ void BaseStage::ApplyStageInfo()
 		item[i]->SetIsActive(true);*/
 		item[i]->SetItemInfo(iInfo[i]);
 	}
+	// カタパルトの状態を設定する
+	std::vector<Catapult*>& catapult = stageManager_->GetCatapult();
+	std::vector<CatapultInfo>& cInfo = stageInfo_.catapultInfo_;
+	for (size_t i = 0; i < cInfo.size(); i++)
+	{
+		catapult[i]->SetCatapultInfo(cInfo[i]);
+	}
+
 }
 
