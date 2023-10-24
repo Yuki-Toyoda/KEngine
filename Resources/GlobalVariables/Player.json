@@ -1,12 +1,12 @@
 {
     "Player": {
-        "kAirJumpPower": 0.8500000238418579,
-        "kGravity": 0.05000000074505806,
+        "kAirJumpPower": 0.3499999940395355,
+        "kGravity": 0.014999999664723873,
         "kJumpPoint": [
             0.0,
             5.5
         ],
         "kMaxPlayerVelocity": 1.0,
-        "kPlayerJumpPower": 1.149999976158142
+        "kPlayerJumpPower": 0.3499999940395355
     }
 }
