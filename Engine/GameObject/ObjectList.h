@@ -7,3 +7,8 @@
 #include "BaseObject.h"
 #include "Camera/Camera.h"
 #include "Ambient/Ambient.h"
+#include "Player/Player.h"
+#include "Item/Item.h"
+#include "TitleManager/TitleManagerObject.h"
+#include "StageSelectManager/StageSelectManagerObject.h"
+#include "GameManager/GameManagerObject.h"

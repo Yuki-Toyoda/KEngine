@@ -77,6 +77,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	sceneManager = SceneManager::GetInstance();
 	sceneManager->Initialize();
 
+
 	// メインループ
 	while (true) {
 

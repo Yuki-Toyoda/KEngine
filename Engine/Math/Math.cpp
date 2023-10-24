@@ -28,24 +28,24 @@ int Math::Linear(float t, int start, int end) {
 }
 
 float Math::EaseIn(float t, float start, float end, float time) {
-	float easeT = t * t;
-	return (float)((1.0 - easeT / time) * start + easeT / time * end);
+	float easeT = t / time * t / time;
+	return (float)((1.0 - easeT) * start + easeT * end);
 }
 
 int Math::EaseIn(float t, int start, int end, float time) {
-	float easeT = t * t;
-	return (int)((1.0 - easeT / time) * (float)start + easeT / time * (float)end);
+	float easeT = t / time * t / time;
+	return (int)((1.0 - easeT * (float)start + easeT * (float)end));
 }
 
 Vector3 Math::EaseIn(float t, Vector3 start, Vector3 end, float time) {
 	// 結果格納用
 	Vector3 result;
 
-	float easeT = t * t;
+	float easeT = t / time * t / time;
 
-	result.x = (float)((1.0 - easeT / time) * start.x + easeT / time * end.x);
-	result.y = (float)((1.0 - easeT / time) * start.y + easeT / time * end.y);
-	result.z = (float)((1.0 - easeT / time) * start.z + easeT / time * end.z);
+	result.x = (float)((1.0 - easeT) * start.x + easeT * end.x);
+	result.y = (float)((1.0 - easeT) * start.y + easeT * end.y);
+	result.z = (float)((1.0 - easeT) * start.z + easeT * end.z);
 
 	return result;
 }
@@ -93,6 +93,45 @@ float Math::EaseOut(float t, float start, float end)
 int Math::EaseOut(float t, int start, int end) {
 	float easeT = 1.0f - powf(1.0f - t, 3.0f);
 	return (int)((1.0 - easeT) * (float)start + easeT * (float)end);
+}
+
+float Math::EaseInOut(float t, float start, float end, float time)
+{
+	float easeT = -(cosf((float)std::numbers::pi * t / time) - 1.0f) / 2.0f;
+	return (float)((1.0 - easeT) * start + easeT * end);
+}
+
+int Math::EaseInOut(float t, int start, int end, float time)
+{
+	float easeT = -(cosf((float)std::numbers::pi * t / time) - 1.0f) / 2.0f;
+	return (int)((1.0 - easeT) * start + easeT * end);
+}
+
+Vector3 Math::EaseInOut(float t, Vector3 start, Vector3 end, float time)
+{
+	// 結果格納用
+	Vector3 result;
+
+	float easeT = -(cosf((float)std::numbers::pi * t / time) - 1.0f) / 2.0f;
+
+	result.x = (float)((1.0 - easeT) * start.x + easeT * end.x);
+	result.y = (float)((1.0 - easeT) * start.y + easeT * end.y);
+	result.z = (float)((1.0 - easeT) * start.z + easeT * end.z);
+
+	return result;
+
+}
+
+float Math::EaseInOut(float t, float start, float end)
+{
+	float easeT = -(cosf((float)std::numbers::pi * t) - 1.0f) / 2.0f;
+	return (float)((1.0 - easeT) * start + easeT * end);
+}
+
+int Math::EaseInOut(float t, int start, int end)
+{
+	float easeT = -(cosf((float)std::numbers::pi * t) - 1.0f) / 2.0f;
+	return (int)((1.0 - easeT) * start + easeT * end);
 }
 
 float Math::Clamp(float a, float min, float max)

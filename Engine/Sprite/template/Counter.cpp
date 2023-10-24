@@ -27,6 +27,10 @@ void Counter::Initialize(int* num, Vector2 position, Vector2 size, float lineSpa
 		sprites_[i].reset(Sprite::Create(TextureManager::Load("./Engine/Resource/Samples/Texture", "NumberSheets.png"), &spritePosition_[i], &size_, &color_, {0.5f, 0.5f}));
 		sprites_[i]->SetTextureRect({ 0.0f, 0.0f }, numberTextureSize_);
 	}
+
+	// 中央ぞろえ無効
+	isCentered_ = false;
+	isDisplayPercent_ = false;
 }
 
 void Counter::Initialize(uint32_t numberSheets, Vector2 numberTextureSize, int* num, Vector2 position, Vector2 size, float lineSpace)
@@ -40,6 +44,9 @@ void Counter::Initialize(uint32_t numberSheets, Vector2 numberTextureSize, int* 
 	// 行間設定
 	lineSpace_ = lineSpace;
 	
+	// 色設定
+	color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
+
 	// 番号のテクスチャサイズ指定
 	numberTextureSize_ = numberTextureSize;
 
@@ -52,30 +59,49 @@ void Counter::Initialize(uint32_t numberSheets, Vector2 numberTextureSize, int* 
 		spritePosition_[i] = { position_.x + ((size_.x + lineSpace_) * i), position_.y };
 		sprites_[i].reset(Sprite::Create(numberSheets, &spritePosition_[i], &size_, &color_, { 0.5f, 0.5f }));
 		sprites_[i]->SetTextureRect({ 0.0f, 0.0f }, numberTextureSize_);
+		sprites_[i]->color_ = &color_;
 	}
+
+	// 中央ぞろえ無効
+	isCentered_ = false;
+	isDisplayPercent_ = false;
 }
 
 void Counter::Update()
 {
-	// スプライトの座標を設定
-	for (int i = 0; i < 10; i++)
-		spritePosition_[i] = { position_.x + ((size_.x + lineSpace_) * i), position_.y };
+
+	if (*intNum_ > 999999999)
+		*intNum_ = 999999999;
 
 	// 参照値を文字列に変換
 	std::string countNum = std::to_string(*intNum_);
+	int numLength = (int)countNum.length();
+	if (isDisplayPercent_)
+		numLength++;
 	// 変換した参照値を元にスプライトを変更
-	for (int i = 0; i < (int)countNum.length(); i++) {
+	for (int i = 0; i < numLength; i++) {
 		isSpritesActive_[i] = true;
 		std::string count = countNum.substr(i, 1);
 		if (count != "-") {
 			int c = atoi(count.c_str());
 			sprites_[i]->SetTextureRect({ (numberTextureSize_.x * (float)c), 0.0f }, numberTextureSize_);
 		}
-		else
+		else {
 			sprites_[i]->SetTextureRect({ (numberTextureSize_.x * 10.0f), 0.0f }, numberTextureSize_);
+		}
+
+		if (isDisplayPercent_ && i == numLength - 1) {
+			sprites_[i]->SetTextureRect({ (numberTextureSize_.x * 12.0f), 0.0f }, numberTextureSize_);
+		}
+
+		// スプライトの座標を設定
+		if(isCentered_)
+			spritePosition_[i] = { position_.x + (((size_.x + lineSpace_) * i) - ((size_.x / 2.0f + lineSpace_ / 2.0f) * numLength)), position_.y };
+		else
+			spritePosition_[i] = { position_.x + ((size_.x + lineSpace_) * i), position_.y };
 	}
 
-	for (int i = (int)countNum.length(); i < 10; i++)
+	for (int i = numLength; i < 10; i++)
 		isSpritesActive_[i] = false;
 }
 
