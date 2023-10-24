@@ -115,6 +115,9 @@ private: // メンバ変数
 	float kPlaySoundRotation_; // ギアの最大回転量
 	uint32_t soundHandleJump_; // ジャンプ音
 	uint32_t soundHandleItemJump_; // アイテムでのジャンプ音
+	uint32_t soundHandleCatchCatapult_; // カタパルトにはまった時の音
+	bool playCatchSound_; // カタパルトに入ったときの音再生トリガー
+	uint32_t soundHandleJumpCatapult_; // カタパルトのジャンプ音
 
 	/*--------------------------//
 	//	プレイヤー自体の変数		//

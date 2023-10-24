@@ -41,6 +41,9 @@ void Player::Initialize(std::string name, Tag tag)
 	kPlaySoundRotation_ = 0.3f;
 	soundHandleJump_ = audio_->LoadWave("/Audio/SE/Jump.wav"); // ジャンプ音
 	soundHandleItemJump_ = audio_->LoadWave("/Audio/SE/ItemJump.wav"); // アイテムでのジャンプ音
+	soundHandleCatchCatapult_ = audio_->LoadWave("/Audio/SE/CatchCatapult.wav"); // カタパルトにはまった時の音
+	playCatchSound_ = false;
+	soundHandleJumpCatapult_ = audio_->LoadWave("/Audio/SE/JumpCatapult.wav"); // カタパルトのジャンプ音
 
 	// 色初期設定
 	color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
@@ -187,8 +190,16 @@ void Player::OnCollision(BaseObject* object)
 	}
 	else {
 		Catapult* catapult = dynamic_cast<Catapult*>(object);
+
+		if (catapult && !playCatchSound_) {
+			audio_->PlayWave(soundHandleCatchCatapult_, false, *seVolume_);
+			playCatchSound_ = true;
+		}
+
 		if (catapult) {
 			if (catapult->GetJumpEnable() && input_->TriggerKey(DIK_Q)) {
+				// 効果音再生
+				audio_->PlayWave(soundHandleJumpCatapult_, false, *seVolume_);
 				transform_.translate_ = catapult->transform_.translate_;
 				playerTheta_ = catapult->GetTheta();
 				CatapultJump();
@@ -200,7 +211,10 @@ void Player::OnCollision(BaseObject* object)
 
 void Player::OnCollisionExit(BaseObject* object)
 {
-	object;
+	Catapult* catapult = dynamic_cast<Catapult*>(object);
+
+	if (catapult)
+		playCatchSound_ = false;
 }
 
 /// プライべート関数
