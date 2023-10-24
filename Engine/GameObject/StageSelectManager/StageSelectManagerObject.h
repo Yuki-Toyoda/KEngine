@@ -131,6 +131,8 @@ private: // メンバ変数
 
 	// BGMハンドル
 	uint32_t bgmHandle_;
+	// BGM音量変更用
+	float ChangeVolume_;
 	// 環境音ボイスハンドル
 	int voiceHandleBGM_ = -1;
 

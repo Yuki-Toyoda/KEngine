@@ -21,6 +21,8 @@ void StageSelectManagerObject::Initialize(std::string name, Tag tag)
 	bgmVolume_ = &SceneManager::GetInstance()->bgmVolume_;
 	seVolume_ = &SceneManager::GetInstance()->seVolume_;
 
+	ChangeVolume_ = 1.0f;
+
 	// 音をロード
 	ambientHandle_ = audio_->LoadWave("/Audio/Ambient/GearAmbient.wav");
 	bgmHandle_ = audio_->LoadWave("/Audio/BGM/StageSelectBGM.wav");
@@ -221,7 +223,7 @@ void StageSelectManagerObject::Update()
 	if (!audio_->IsPlaying(voiceHandleBGM_) || voiceHandleBGM_ == -1) {
 		voiceHandleBGM_ = audio_->PlayWave(bgmHandle_, false, *bgmVolume_ * 0.2f);
 	}
-	audio_->SetVolume(voiceHandleBGM_, *bgmVolume_ * 0.2f);
+	audio_->SetVolume(voiceHandleBGM_, *bgmVolume_ * 0.2f * ChangeVolume_);
 
 	// ステージプレビュー回転
 	if (isRotateStaging_)
@@ -436,6 +438,9 @@ void StageSelectManagerObject::TransitionStaging()
 			camera_->transform_.translate_ = Math::EaseInOut(transitionStagingT_, cameraStartTranslate_, cameraEndTranslate_, transitionStagingTime_);
 			// UIの色を変更
 			spriteUIColor_.w = Math::EaseOut(transitionStagingT_, 1.0f, 0.0f, transitionStagingTime_);
+			
+			ChangeVolume_ = Math::EaseInOut(transitionStagingT_, 1.0f, 0.0f, transitionStagingTime_);
+
 			// tを加算
 			transitionStagingT_ += 1.0f / 60.0f;
 

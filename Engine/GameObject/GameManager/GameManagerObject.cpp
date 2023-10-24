@@ -84,7 +84,7 @@ void GameManagerObject::Initialize(std::string name, Tag tag)
 	/// スプライト生成
 	// 残りアイテム数テキストUI
 	leftItemTextPosition_ = { 255.0f, 550.0f }; // 座標
-	leftItemTextSize_ = { 284.0f, 56.0f }; // 大きさ
+	leftItemTextSize_ = { 320.0f, 64.0f }; // 大きさ
 	leftItemTextSprite_.reset(Sprite::Create(
 			textureHandleTextLeftItem_, 
 			&leftItemTextPosition_, 
