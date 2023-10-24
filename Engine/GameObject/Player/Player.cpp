@@ -139,7 +139,9 @@ void Player::AddGlobalVariables()
 	globalVariables_->AddItem("Player", "kJumpPoint", Vector2(kJumpPoint_.x, kJumpPoint_.y));
 	globalVariables_->AddItem("Player", "kGravity", kGravity_);
 	globalVariables_->AddItem("Player", "kPlayerJumpPower", kPlayerJumpPower_);
+
 	globalVariables_->AddItem("Player", "kAirJumpPower", kAirJumpPower_);
+	globalVariables_->AddItem("Player", "kCatapultPower", kCatapultPower_);
 }
 
 void Player::ApplyGlobalVariables()
@@ -159,7 +161,7 @@ void Player::ApplyGlobalVariables()
 	kJumpPoint_ = Vector3(temp.x, temp.y, 0.0f);
 
 	kAirJumpPower_ = globalVariables_->GetFloatValue("Player", "kAirJumpPower");
-
+	kCatapultPower_ = globalVariables_->GetFloatValue("Player", "kCatapultPower");
 
 }
 
@@ -173,40 +175,53 @@ void Player::OnCollision(BaseObject* object)
 	if (!object->GetIsActive()) {
 		return;
 	}
-	//object;
-	Item* item = dynamic_cast<Item*>(object);
-	// 衝突しているのが Item だった時
-	// ジャンプできる状態の時
-	if (item) {
-		if (item->GetJumpEnable()) {
-			// ボタンの再入力があった時
+	Catapult* catapult = dynamic_cast<Catapult*>(object);
+  
+  if (catapult && !playCatchSound_) {
+			audio_->PlayWave(soundHandleCatchCatapult_, false, *seVolume_);
+			playCatchSound_ = true;
+		}
+  
+	if (catapult) {
+		if (catapult->GetJumpEnable() && input_->TriggerKey(DIK_Q)) {
+			transform_.translate_ = catapult->transform_.translate_;
+			playerTheta_ = catapult->GetTheta();
+			CatapultJump();
+			catapult->AirJump();
+		}
+	}
+// ボタンの再入力があった時
 			if (input_->TriggerKey(DIK_Q)) {
 				// 効果音再生
-				audio_->PlayWave(soundHandleItemJump_, false, *seVolume_);
+				audio_->PlayWave(soundHandleJumpCatapult_, false, *seVolume_);
 				AirJump();
 				item->AirJump();
 			}
 		}
 	}
 	else {
-		Catapult* catapult = dynamic_cast<Catapult*>(object);
-
-		if (catapult && !playCatchSound_) {
-			audio_->PlayWave(soundHandleCatchCatapult_, false, *seVolume_);
-			playCatchSound_ = true;
-		}
-
-		if (catapult) {
-			if (catapult->GetJumpEnable() && input_->TriggerKey(DIK_Q)) {
-				// 効果音再生
-				audio_->PlayWave(soundHandleJumpCatapult_, false, *seVolume_);
-				transform_.translate_ = catapult->transform_.translate_;
-				playerTheta_ = catapult->GetTheta();
-				CatapultJump();
-				catapult->AirJump();
+	//object;
+	Item* item = dynamic_cast<Item*>(object);
+	// 衝突しているのが Item だった時
+	// ジャンプできる状態の時
+	if (item) {
+		if (item->GetJumpEnable()) {
+			// カタパルト中は破壊する
+			if (isCatapult_) {
+				item->AirJump();
+			}
+			else {
+				// ボタンの再入力があった時
+				if (input_->TriggerKey(DIK_Q)) {
+          // 効果音再生
+				  audio_->PlayWave(soundHandleItemJump_, false, *seVolume_);
+					AirJump();
+					item->AirJump();
+				}
 			}
 		}
 	}
+
 }
 
 void Player::OnCollisionExit(BaseObject* object)
@@ -249,7 +264,7 @@ void Player::InitializeVariables()
 	isLanding_ = true;
 	isPendulum_ = false;
 	wasRotateRight_ = true;
-	isEnableGravity_ = false;
+	isCatapult_ = false;
 
 	// 定数の再定義
 	kGearInnerRadius_ = 0.5f;
@@ -277,7 +292,7 @@ void Player::GetOperation()
 
 	if (input_->TriggerKey(DIK_Q)) {
 		if (isLanding_) {
-			isEnableGravity_ = true;
+			isCatapult_ = false;
 			isJumpTrigger_ = true;
 		}
 	}
@@ -309,7 +324,7 @@ void Player::UpdatePlayer()
 		// 歯車の回転は歯車の更新内
 	}
 	else {
-		if (isEnableGravity_) {
+		if (!isCatapult_) {
 			// 重力減算
 			Vector3 fallVelocity{};
 			fallVelocity.x = kFallDirection_.x * kGravity_;
@@ -539,8 +554,8 @@ void Player::AirJump() {
 void Player::CatapultJump()
 {
 	Vector3 direct = { -std::cosf(playerTheta_),-std::sinf(playerTheta_), 0.0f };
-	playerVelocity_ = direct * kAirJumpPower_;
-	isEnableGravity_ = false;
+	playerVelocity_ = direct * kCatapultPower_;
+	isCatapult_ = true;
 }
 
 void Player::DebugGui() {
