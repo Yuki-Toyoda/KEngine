@@ -1,6 +1,6 @@
 {
     "StageInfo": {
-        "0:Condition": 100.0,
+        "0:Condition": 300.0,
         "0:isRePop:0": 0,
         "0:isRePop:1": 0,
         "0:isRePop:2": 0,
@@ -45,7 +45,7 @@
             -3.0,
             0.0
         ],
-        "1:Condition": 100.0,
+        "1:Condition": 300.0,
         "1:isRePop:0": 0,
         "1:isRePop:1": 0,
         "1:isRePop:2": 0,
@@ -90,21 +90,23 @@
             -3.0,
             0.0
         ],
-        "2:Condition": 100.0,
+        "2:Condition": 150.0,
         "2:isRePop:0": 0,
         "2:isRePop:1": 0,
-        "2:isRePop:2": 0,
-        "2:isRePop:3": 1,
-        "2:isRePop:4": 0,
-        "2:isRePop:5": 0,
+        "2:isRePop:2": 1,
+        "2:isRePop:3": 0,
+        "2:isRePop:4": 1,
+        "2:isRePop:5": 1,
+        "2:isRePop:6": 1,
         "2:kMaxCatapultNum": 0,
-        "2:kMaxInfoNum": 6,
+        "2:kMaxInfoNum": 7,
         "2:popTime:0": 10,
         "2:popTime:1": 10,
-        "2:popTime:2": 10,
-        "2:popTime:3": 1000,
-        "2:popTime:4": 10,
-        "2:popTime:5": 10,
+        "2:popTime:2": 1000,
+        "2:popTime:3": 10,
+        "2:popTime:4": 1000,
+        "2:popTime:5": 1000,
+        "2:popTime:6": 1000,
         "2:position:0": [
             0.0,
             -10.0,
@@ -112,44 +114,57 @@
         ],
         "2:position:1": [
             -4.0,
-            -6.0,
+            -7.0,
             0.0
         ],
         "2:position:2": [
-            4.0,
-            -6.0,
+            -8.0,
+            -4.0,
             0.0
         ],
         "2:position:3": [
-            0.0,
-            -2.0,
+            7.0,
+            -5.0,
             0.0
         ],
         "2:position:4": [
-            -8.0,
-            -3.0,
+            3.0,
+            -2.0,
             0.0
         ],
         "2:position:5": [
-            8.0,
-            -3.0,
+            -1.0,
+            1.0,
+            0.0
+        ],
+        "2:position:6": [
+            -5.0,
+            4.0,
             0.0
         ],
         "3:Condition": 100.0,
         "3:isRePop:0": 0,
         "3:isRePop:1": 0,
-        "3:isRePop:2": 0,
-        "3:isRePop:3": 1,
-        "3:isRePop:4": 0,
-        "3:isRePop:5": 0,
+        "3:isRePop:2": 1,
+        "3:isRePop:3": 0,
+        "3:isRePop:4": 1,
+        "3:isRePop:5": 1,
+        "3:isRePop:6": 1,
+        "3:isRePop:7": 1,
+        "3:isRePop:8": 1,
+        "3:isRePop:9": 1,
         "3:kMaxCatapultNum": 0,
-        "3:kMaxInfoNum": 6,
-        "3:popTime:0": 10,
-        "3:popTime:1": 10,
-        "3:popTime:2": 10,
+        "3:kMaxInfoNum": 10,
+        "3:popTime:0": 1000,
+        "3:popTime:1": 1000,
+        "3:popTime:2": 1000,
         "3:popTime:3": 1000,
-        "3:popTime:4": 10,
-        "3:popTime:5": 10,
+        "3:popTime:4": 1000,
+        "3:popTime:5": 1000,
+        "3:popTime:6": 1000,
+        "3:popTime:7": 1000,
+        "3:popTime:8": 1000,
+        "3:popTime:9": 1000,
         "3:position:0": [
             0.0,
             -10.0,
@@ -157,27 +172,47 @@
         ],
         "3:position:1": [
             -4.0,
-            -6.0,
+            -7.0,
             0.0
         ],
         "3:position:2": [
-            4.0,
-            -6.0,
+            -8.0,
+            -4.0,
             0.0
         ],
         "3:position:3": [
+            5.0,
+            -5.0,
+            0.0
+        ],
+        "3:position:4": [
             0.0,
             -2.0,
             0.0
         ],
-        "3:position:4": [
-            -8.0,
-            -3.0,
+        "3:position:5": [
+            -4.0,
+            1.0,
             0.0
         ],
-        "3:position:5": [
-            8.0,
-            -3.0,
+        "3:position:6": [
+            6.0,
+            3.0,
+            0.0
+        ],
+        "3:position:7": [
+            0.0,
+            6.0,
+            0.0
+        ],
+        "3:position:8": [
+            -5.0,
+            9.0,
+            0.0
+        ],
+        "3:position:9": [
+            -8.0,
+            4.0,
             0.0
         ],
         "4:Condition": 100.0,
