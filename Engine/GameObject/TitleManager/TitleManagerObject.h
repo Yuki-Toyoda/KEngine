@@ -1,5 +1,6 @@
 #pragma once
 #include "../BaseObject.h"
+#include "../../Audio/Audio.h"
 
 // クラスの前方宣言
 class Camera;
@@ -63,9 +64,28 @@ private: // メンバ変数
 
 	// 入力取得用
 	Input* input_ = nullptr;
+	// 音再生
+	Audio* audio_ = nullptr;
 
 	// タイトルで使用するカメラのポインタ
 	Camera* camera_ = nullptr;
+
+	// 音量
+	float* bgmVolume_;
+	float* seVolume_;
+
+	// 環境音ハンドル
+	uint32_t ambientHandle_;
+	// 環境音ボイスハンドル
+	int voiceHandleAmbient_ = -1;
+
+	// BGMハンドル
+	uint32_t bgmHandle_;
+	// BGMボイスハンドル
+	int voiceHandleBGM_ = -1;
+
+	// ボタンを押したときのSE
+	uint32_t soundHandleButton_;
 
 	// メインギア座標
 	WorldTransform ｍainGearTransform_;

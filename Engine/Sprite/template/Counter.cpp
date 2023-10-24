@@ -59,6 +59,7 @@ void Counter::Initialize(uint32_t numberSheets, Vector2 numberTextureSize, int* 
 		spritePosition_[i] = { position_.x + ((size_.x + lineSpace_) * i), position_.y };
 		sprites_[i].reset(Sprite::Create(numberSheets, &spritePosition_[i], &size_, &color_, { 0.5f, 0.5f }));
 		sprites_[i]->SetTextureRect({ 0.0f, 0.0f }, numberTextureSize_);
+		sprites_[i]->color_ = &color_;
 	}
 
 	// 中央ぞろえ無効

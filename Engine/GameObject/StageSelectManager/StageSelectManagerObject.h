@@ -1,10 +1,14 @@
 #pragma once
 #include <string>
 #include "../BaseObject.h"
+#include "../../Audio/Audio.h"
 
 // クラスの前方宣言
 class Input;
 class Camera;
+class Item;
+class Catapult;
+class StageManager;
 
 /// <summary>
 /// ステージセレクト画面のマネージャー
@@ -34,6 +38,14 @@ public: // メンバ関数
 	void Draw() override;
 	// スプライト描画
 	void SpriteDraw() override;
+
+public: // アクセッサ等
+
+	/// <summary>
+	/// 選択中のステージ番号ゲッター
+	/// </summary>
+	/// <returns>選択中のステージ番号</returns>
+	int GetSelectedStageNumber() { return selectedStageNumber_; }
 
 public: // その他関数群
 
@@ -75,22 +87,65 @@ public: // その他関数群
 	void RotateStagePreview();
 
 	/// <summary>
+	/// プレビューアイテムの座標設定
+	/// </summary>
+	void SetPreviewItems();
+
+	/// <summary>
+	/// プレビューアイテム演出関数
+	/// </summary>
+	void PrevItemStaging();
+
+	/// <summary>
 	/// ゲームシーンへの遷移トリガーゲッター
 	/// </summary>
 	/// <returns>ゲームシーンへ遷移するか</returns>
 	bool IsGoGameScene() { return isGoGameScene_; }
+
+	/// <summary>
+	/// UIアニメーション
+	/// </summary>
+	void UIAnimation();
+
+	/// <summary>
+	/// 装飾アニメーション
+	/// </summary>
+	void OrnamentAnimation();
 
 private: // メンバ変数
 
 	// 入力
 	Input* input_ = nullptr;
 
+	// 音再生
+	Audio* audio_ = nullptr;
+
+	// 音量
+	float* bgmVolume_;
+	float* seVolume_;
+
+	// 環境音ハンドル
+	uint32_t ambientHandle_;
+	// 環境音ボイスハンドル
+	int voiceHandleAmbient_ = -1;
+
+	// BGMハンドル
+	uint32_t bgmHandle_;
+	// 環境音ボイスハンドル
+	int voiceHandleBGM_ = -1;
+
+	// ステージプレビュー歯車の回転音
+	uint32_t soundHandleRotateGear_;
+
 	// 全体のステージ数
 	int stageCount_;
 
 	// ステージのプレビューモデルを表示させる座標配列
 	WorldTransform mainGearTransform_;
+	WorldTransform boardTransform_;
 	WorldTransform previewStageTransforms_[4];
+	// 装飾用ギアの座標配列
+	WorldTransform ornamentGearTransforms_[4];
 
 	// 選択中のステージ番号
 	int selectedStageNumber_;
@@ -138,5 +193,40 @@ private: // メンバ変数
 
 	// ゲームシーンへの遷移トリガー
 	bool isGoGameScene_;
-};
 
+	StageManager* stageManager_ = nullptr;
+	// プレビュー上のアイテムオブジェクト
+	std::vector<Item*>previewItems_;
+
+	std::vector<Catapult*> previewCatapults_;
+
+	// プレビューアイテム表示演出中か
+	bool previewItemStaging_;
+	// プレビューアイテム用の演出t
+	float previewItemStagingT_;
+
+	// UI全体の色
+	Vector4 spriteUIColor_;
+
+	// UIテクスチャ群
+	int32_t textureHandleSelectArrow_ = 0u; // 選択矢印
+	int32_t textureHandleNumberSheets_ = 0u; // 数字のシート
+	int32_t textureHandleStageNumberBackGround_ = 0u; // ステージ番号背景
+
+	// ステージ選択矢印UI
+	Vector2 selectArrowPosition_[2]; // 選択矢印UI座標
+	Vector2 selectArrowSize_; // 選択矢印サイズ
+	std::unique_ptr<Sprite> selectArrowSprites_[2]; // 選択矢印スプライト
+	bool playingSelectArrowAnim_[2]; // 選択矢印アニメーション再生トリガー
+	float selectArrowAnimT_[2]; // 選択矢印アニメーションt
+	float selectArrowAnimTime_[2]; // 選択矢印アニメーション時間
+	Vector2 startSelectArrowPosition_[2]; // 選択矢印始端座標
+	Vector2 endSelectArrowPosition_[2]; // 選択矢印終端座標
+
+	// ステージ番号UI
+	int stageSelectedNumber_;
+	std::unique_ptr<Counter> stageNumber_; // ステージ番号カウンタ
+	Vector2 stageNumberBackGroundSize_;
+	std::unique_ptr<Sprite> stageNumberBackGround_; // ステージ番号カウンタ背景
+
+};

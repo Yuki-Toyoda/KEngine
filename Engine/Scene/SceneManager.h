@@ -1,5 +1,6 @@
 #pragma once
 #include "BaseScene.h"
+#include "../Audio/Audio.h"
 
 /// <summary>
 /// 全てのシーンの管理マネージャ
@@ -45,6 +46,17 @@ public: // アクセッサ等
 	/// <param name="nextScene">次のシーンの実体</param>
 	void SetNextScene(BaseScene* nextScene) { nextScene_ = nextScene; }
 
+	/// <summary>
+	/// 選択中のステージ番号を取得するゲッター
+	/// </summary>
+	/// <returns>選択中のステージ番号</returns>
+	int GetSelectedStageNumber() { return selectedStageNumber_; }
+	/// <summary>
+	/// 選択中のステージ番号のセッター
+	/// </summary>
+	/// <param name="selectedNumber">選択するステージ番号</param>
+	void SetSelectedStageNumber(int selectedNumber) { selectedStageNumber_ = selectedNumber; }
+
 public: // その他関数
 
 	/// <summary>
@@ -52,8 +64,9 @@ public: // その他関数
 	/// </summary>
 	/// <param name="fadeTime">フェードイン演出時間(秒)</param>
 	/// <param name="startcolor">開始時</param>
-	/// <param name="endColor"></param>
-	void StartFadeEffect(float fadeTime, Vector4 startcolor, Vector4 endColor);
+	/// <param name="endColor">終了時</param>
+	/// <param name="playSound">音を鳴らすか</param>
+	void StartFadeEffect(float fadeTime, Vector4 startcolor, Vector4 endColor, bool playSound = true);
 
 	/// <summary>
 	/// フェードアウトスプライトの色を強制的に変更させる関数
@@ -67,6 +80,12 @@ private: // プライベートなメンバ関数
 	/// フェード演出関数
 	/// </summary>
 	void Fade();
+
+public: // パブリックなメンバ変数
+
+	// 音量
+	float bgmVolume_; // BGM音量
+	float seVolume_; // SE音量
 
 private: // メンバ変数
 
@@ -83,6 +102,9 @@ private: // メンバ変数
 	Vector4 fadeSpriteColor_;
 	// フェード演出用スプライト
 	std::unique_ptr<Sprite> fadeSprite_;
+	// ビネットエフェクト色
+	Vector4 vignetteColor_;
+	std::unique_ptr<Sprite> vignetteSprite_;
 
 	// フェード演出用色
 	Vector4 startFadeColor_; // 始端
@@ -97,5 +119,10 @@ private: // メンバ変数
 	// フェード演出が終了しているか
 	bool isEndFade_;
 
-};
+	// フェード効果音
+	uint32_t soundHandleFade_ = 0u;
 
+	// 選択中のステージ番号
+	int selectedStageNumber_;
+
+};

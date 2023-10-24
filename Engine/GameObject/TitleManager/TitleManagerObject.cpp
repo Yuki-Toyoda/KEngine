@@ -14,6 +14,18 @@ void TitleManagerObject::Initialize(std::string name, Tag tag)
 
 	// 入力取得
 	input_ = Input::GetInstance();
+	// 音再生インスタンス取得
+	audio_ = Audio::GetInstance();
+
+	// 音量取得
+	bgmVolume_ = &SceneManager::GetInstance()->bgmVolume_;
+	seVolume_ = &SceneManager::GetInstance()->seVolume_;
+
+	// 音をロード
+	ambientHandle_ = audio_->LoadWave("/Audio/Ambient/GearAmbient.wav");
+	bgmHandle_ = audio_->LoadWave("/Audio/BGM/TitleBGM.wav");
+
+	soundHandleButton_ = audio_->LoadWave("/Audio/SE/ButtonSound.wav");
 
 	// カメラがセットされていれば
 	if (camera_ != nullptr) {
@@ -93,7 +105,7 @@ void TitleManagerObject::Initialize(std::string name, Tag tag)
 	isGoStageSelectScene_ = false;
 
 	// フェードイン
-	SceneManager::GetInstance()->StartFadeEffect(1.0f, { 0.0f, 0.0f, 0.0f, 1.0f }, { 0.0f, 0.0f, 0.0f, 0.0f });
+	SceneManager::GetInstance()->StartFadeEffect(1.0f, { 0.0f, 0.0f, 0.0f, 1.0f }, { 0.0f, 0.0f, 0.0f, 0.0f }, false);
 
 	AddGlobalVariables();
 
@@ -104,6 +116,17 @@ void TitleManagerObject::Update()
 
 	// 基底クラス更新
 	BaseObject::Update();
+
+	// 再生されていなければ再生する
+	if (!audio_->IsPlaying(voiceHandleAmbient_) || voiceHandleAmbient_ == -1) {
+		voiceHandleAmbient_ = audio_->PlayWave(ambientHandle_, false, *bgmVolume_);
+	}
+	audio_->SetVolume(voiceHandleAmbient_, *bgmVolume_ * 0.05f);
+	// 再生されていなければ再生する
+	if (!audio_->IsPlaying(voiceHandleBGM_) || voiceHandleBGM_ == -1) {
+		voiceHandleBGM_ = audio_->PlayWave(bgmHandle_, false, *bgmVolume_);
+	}
+	audio_->SetVolume(voiceHandleBGM_, *bgmVolume_);
 
 	// ギアの回転
 	ｍainGearTransform_.rotate_.z += (0.02f * (6.0f / 8.0f)) * (8.0f / 12.0f);
@@ -175,6 +198,10 @@ void TitleManagerObject::Update()
 		break;
 	case TitleManagerObject::WayPoint3: // スペースを押すとシーン遷移開始
 		if (input_->TriggerKey(DIK_SPACE)) {
+			
+			// 音再生
+			audio_->PlayWave(soundHandleButton_, false, *seVolume_);
+			
 			// カメラシェイク無効
 			enableCameraShake_ = false;
 			// カメラの始端座標を現在のカメラ座標に変更
@@ -243,6 +270,12 @@ void TitleManagerObject::Update()
 		}
 		break;
 	case TitleManagerObject::WayPoint6:
+
+		// 環境音を止める
+		audio_->StopWave(voiceHandleAmbient_);
+		// bgm停止
+		audio_->StopWave(voiceHandleBGM_);
+
 		// ステージセレクトシーンへ
 		isGoStageSelectScene_ = true;
 		break;

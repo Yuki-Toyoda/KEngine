@@ -103,6 +103,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\GameObject\Ambient\Ambient.cpp" />
     <ClCompile Include="Engine\GameObject\BaseObject.cpp" />
     <ClCompile Include="Engine\GameObject\Camera\Camera.cpp" />
+    <ClCompile Include="Engine\GameObject\Catapult\Catapult.cpp" />
     <ClCompile Include="Engine\GameObject\GameManager\GameManagerObject.cpp" />
     <ClCompile Include="Engine\GameObject\GameObjectManager.cpp" />
     <ClCompile Include="Engine\GameObject\Item\Item.cpp" />
@@ -160,6 +161,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\GameObject\Ambient\Ambient.h" />
     <ClInclude Include="Engine\GameObject\BaseObject.h" />
     <ClInclude Include="Engine\GameObject\Camera\Camera.h" />
+    <ClInclude Include="Engine\GameObject\Catapult\Catapult.h" />
     <ClInclude Include="Engine\GameObject\GameManager\GameManagerObject.h" />
     <ClInclude Include="Engine\GameObject\GameObjectManager.h" />
     <ClInclude Include="Engine\GameObject\Item\Item.h" />
@@ -235,12 +237,12 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Engine\externals\imgui\LICENSE.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="Engine\externals\DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">
       <Project>{371b9fa9-4c90-4ac6-a123-aced756d6c77}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Engine\externals\imgui\LICENSE.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

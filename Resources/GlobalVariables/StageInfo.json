@@ -1,5 +1,6 @@
 {
     "StageInfo": {
+        "0:CisRePop:0": 1,
         "0:Condition": 100.0,
         "0:isRePop:0": 0,
         "0:isRePop:1": 1,

@@ -211,6 +211,11 @@ public: // パブリックなメンバ関数
 	/// </summary>
 	/// <param name="color">セットする色</param>
 	void SetColor(Vector4 color) { color_ = color; }
+	/// <summary>
+	/// 色ゲッター
+	/// </summary>
+	/// <returns>現在の色</returns>
+	Vector4 GetColor() { return color_; }
 
 	/// <summary>
 	/// ライトのセッター

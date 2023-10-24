@@ -3,6 +3,7 @@
 #include <memory>
 
 class Item;
+class Catapult;
 
 /// <summary>
 /// 全てのステージの管理マネージャ
@@ -53,6 +54,8 @@ public: // メンバ関数
 	/// </summary>
 	std::vector<Item*>& GetItems() { return items_; }
 
+	std::vector<Catapult*>& GetCatapult() { return catapults_; }
+
 	/// <summary>
 	/// 今使ってるステージの情報を取得
 	/// </summary>
@@ -77,6 +80,8 @@ public: // メンバ関数
 	/// </summary>
 	const int& GetItemMax()const { return kMaxItem_; }
 
+	const int& GetCatapultMax() const { return kMaxCatapult_; }
+
 	/// <summary>
 	/// アイテムがいくつ使われているかを取得する
 	/// </summary>
@@ -92,6 +97,29 @@ public: // メンバ関数
 	/// </summary>
 	int GetGameTIme() const { return gameTime_; }
 
+	/// <summary>
+	/// ギアの現在進捗ゲッター
+	/// </summary>
+	/// <returns>ギアの現在進捗</returns>
+	float GetGearCondition()const { return currentStage_->GetGearCondition(); }
+
+	/// <summary>
+	/// ギアの進捗最大値ゲッター
+	/// </summary>
+	/// <returns>ギアの進捗最大値</returns>
+	float GetClearCondition()const { return currentStage_->GetClearCondition(); }
+
+	/// <summary>
+	/// ステージの情報を読み込む
+	/// </summary>
+	void LoadStages();
+
+	/// <summary>
+	/// プレイヤーの実体セッター
+	/// </summary>
+	/// <param name="player">プレイヤーの実体</param>
+	void SetPlayer(Player* player) { player_ = player; }
+
 private: // メンバ関数
 
 	/// <summary>
@@ -99,14 +127,11 @@ private: // メンバ関数
 	/// </summary>
 	void AddGloavalVariables();
 
-	/// <summary>
-	/// ステージの情報を読み込む
-	/// </summary>
-	void LoadStages();
-
 	BaseStage::StageInfo LoadInfo(size_t num);
 
-	BaseStage::ItemInfo LoadItem(const std::string& indexNum, size_t i);
+	BaseStage::ItemInfo LoadItem(const std::string& indexNum, const std::string& infoIndex);
+
+	BaseStage::CatapultInfo LoadCatapult(const std::string& indexNum, const std::string& infoIndex);
 
 	void SaveStages();
 
@@ -123,11 +148,20 @@ private: // メンバ変数
 	// 現在のシーン
 	BaseStage* currentStage_;
 
+	// プレイヤーの実体
+	Player* player_ = nullptr;
+
 	// アイテムの最大数
-	static const int kMaxItem_ = 10;
+	static const int kMaxItem_ = 20;
 
 	// 使用されるアイテムを保存
 	std::vector<Item*> items_;
+
+	// カタパルトの最大数
+	static const int kMaxCatapult_ = 5;
+
+	// 使われるカタパルトを保存
+	std::vector<Catapult*> catapults_;
 
 	// 計算する
 	int32_t kMaxStageNum_ = 0;
