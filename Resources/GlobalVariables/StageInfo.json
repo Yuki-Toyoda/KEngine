@@ -219,45 +219,52 @@
         "4:isRePop:0": 0,
         "4:isRePop:1": 0,
         "4:isRePop:2": 0,
-        "4:isRePop:3": 1,
-        "4:isRePop:4": 0,
-        "4:isRePop:5": 0,
+        "4:isRePop:3": 0,
+        "4:isRePop:4": 1,
+        "4:isRePop:5": 1,
+        "4:isRePop:6": 1,
         "4:kMaxCatapultNum": 0,
         "4:kMaxInfoNum": 6,
         "4:popTime:0": 10,
         "4:popTime:1": 10,
         "4:popTime:2": 10,
-        "4:popTime:3": 1000,
+        "4:popTime:3": 10,
         "4:popTime:4": 10,
         "4:popTime:5": 10,
+        "4:popTime:6": 10,
         "4:position:0": [
             0.0,
             -10.0,
             0.0
         ],
         "4:position:1": [
-            -4.0,
-            -6.0,
+            3.0,
+            -7.0,
             0.0
         ],
         "4:position:2": [
-            4.0,
-            -6.0,
+            6.0,
+            -4.0,
             0.0
         ],
         "4:position:3": [
-            0.0,
-            -2.0,
+            9.0,
+            -1.0,
             0.0
         ],
         "4:position:4": [
-            -8.0,
-            -3.0,
+            3.0,
+            7.0,
             0.0
         ],
         "4:position:5": [
-            8.0,
-            -3.0,
+            -5.0,
+            2.0,
+            0.0
+        ],
+        "4:position:6": [
+            -5.0,
+            5.0,
             0.0
         ],
         "5:Condition": 100.0,
