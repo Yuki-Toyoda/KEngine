@@ -8,6 +8,6 @@
             5.5
         ],
         "kMaxPlayerVelocity": 1.0,
-        "kPlayerJumpPower": 1.149999976158142
+        "kPlayerJumpPower": 0.3499999940395355
     }
 }

@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "../Item/Item.h"
 #include "../Catapult/Catapult.h"
+#include "../../Scene/SceneManager.h"
 
 Player::Player() : gearTheta_(gearTransform_.rotate_.z)
 {
@@ -22,6 +23,27 @@ void Player::Initialize(std::string name, Tag tag)
 	// コントローラー入力取得
 	input_->GetJoystickState(0, joyState_); // 現在フレームの入力取得
 	preJoyState_ = joyState_; // 前フレームの入力取得
+
+	// 音再生インスタンス取得
+	audio_ = Audio::GetInstance();
+	// 音量取得
+	seVolume_ = &SceneManager::GetInstance()->seVolume_;
+
+	// 効果音読み込み
+	soundHandleRotateGear_[0] = audio_->LoadWave("/Audio/SE/RotateGear_0.8.wav"); // ギアの回転音
+	soundHandleRotateGear_[1] = audio_->LoadWave("/Audio/SE/RotateGear_0.9.wav"); // ギアの回転音
+	soundHandleRotateGear_[2] = audio_->LoadWave("/Audio/SE/RotateGear_1.0.wav"); // ギアの回転音
+	soundHandleRotateGear_[3] = audio_->LoadWave("/Audio/SE/RotateGear_1.1.wav"); // ギアの回転音
+	soundHandleRotateGear_[4] = audio_->LoadWave("/Audio/SE/RotateGear_1.2.wav"); // ギアの回転音
+	playIndex_ = 0;
+	isReturn_ = false;
+	playSoundAmountRotation_ = 0.0f;
+	kPlaySoundRotation_ = 0.3f;
+	soundHandleJump_ = audio_->LoadWave("/Audio/SE/Jump.wav"); // ジャンプ音
+	soundHandleItemJump_ = audio_->LoadWave("/Audio/SE/ItemJump.wav"); // アイテムでのジャンプ音
+	soundHandleCatchCatapult_ = audio_->LoadWave("/Audio/SE/CatchCatapult.wav"); // カタパルトにはまった時の音
+	playCatchSound_ = false;
+	soundHandleJumpCatapult_ = audio_->LoadWave("/Audio/SE/JumpCatapult.wav"); // カタパルトのジャンプ音
 
 	// 色初期設定
 	color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
@@ -51,7 +73,8 @@ void Player::Update()
 	BaseObject::Update();
 
 	// 操作受け付け
-	GetOperation();
+	if(isGetOperation_)
+		GetOperation();
 
 
 	// プレイヤーの更新
@@ -63,6 +86,30 @@ void Player::Update()
 	UpdatePlayerRotate();
 
 	DebugGui();
+
+	if (playSoundAmountRotation_ >= kPlaySoundRotation_) {
+		audio_->PlayWave(soundHandleRotateGear_[playIndex_], false, *seVolume_ * 0.1f);
+		if (isReturn_)
+			playIndex_--;
+		else
+			playIndex_++;
+
+		if (playIndex_ == 4)
+			isReturn_ = true;
+		else
+			isReturn_ = false;
+
+		playSoundAmountRotation_ = 0.0f;
+	}
+		
+#ifdef _DEBUG
+
+	ImGui::Begin(objectName_.c_str());
+	ImGui::SliderFloat("tempo", &kPlaySoundRotation_, 0.05f, 1.0f);
+	ImGui::End();
+
+#endif // _DEBUG
+
 
 	// 破壊されていない時
 	if (!isDestroy_) {
@@ -129,6 +176,12 @@ void Player::OnCollision(BaseObject* object)
 		return;
 	}
 	Catapult* catapult = dynamic_cast<Catapult*>(object);
+  
+  if (catapult && !playCatchSound_) {
+			audio_->PlayWave(soundHandleCatchCatapult_, false, *seVolume_);
+			playCatchSound_ = true;
+		}
+  
 	if (catapult) {
 		if (catapult->GetJumpEnable() && input_->TriggerKey(DIK_Q)) {
 			transform_.translate_ = catapult->transform_.translate_;
@@ -137,7 +190,16 @@ void Player::OnCollision(BaseObject* object)
 			catapult->AirJump();
 		}
 	}
-
+// ボタンの再入力があった時
+			if (input_->TriggerKey(DIK_Q)) {
+				// 効果音再生
+				audio_->PlayWave(soundHandleJumpCatapult_, false, *seVolume_);
+				AirJump();
+				item->AirJump();
+			}
+		}
+	}
+	else {
 	//object;
 	Item* item = dynamic_cast<Item*>(object);
 	// 衝突しているのが Item だった時
@@ -151,6 +213,8 @@ void Player::OnCollision(BaseObject* object)
 			else {
 				// ボタンの再入力があった時
 				if (input_->TriggerKey(DIK_Q)) {
+          // 効果音再生
+				  audio_->PlayWave(soundHandleItemJump_, false, *seVolume_);
 					AirJump();
 					item->AirJump();
 				}
@@ -162,7 +226,10 @@ void Player::OnCollision(BaseObject* object)
 
 void Player::OnCollisionExit(BaseObject* object)
 {
-	object;
+	Catapult* catapult = dynamic_cast<Catapult*>(object);
+
+	if (catapult)
+		playCatchSound_ = false;
 }
 
 /// プライべート関数
@@ -170,12 +237,14 @@ void Player::OnCollisionExit(BaseObject* object)
 void Player::InitializeVariables()
 {
 
+	// 操作を受け付けるか
+	isGetOperation_ = false;
 	// プレイヤー変数初期化
 	playerVelocity_ = { 0.0f,0.0f,0.0f };
 	playerAcceleration_ = { 0.0f,0.0f,0.0f };
 	// 色初期設定
 	color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
-	playerTheta_ = 0.0f;
+	playerTheta_ = -2;
 	radius_ = 1.0f;
 	transform_.scale_ = { 1.0f,1.0f,1.0f };
 
@@ -201,7 +270,7 @@ void Player::InitializeVariables()
 	kGearInnerRadius_ = 0.5f;
 	// さすがに半回転以上は行かない
 	kMaxGearRotateSpeed_ = 0.1f;
-	kMinGearRollSpeed_ = 0.005f;
+	kMinGearRollSpeed_ = 0.001f;
 	kMinGearPendulumSpeed_ = 1.0f;
 	//kGearFriction_ = 0.001f;
 	kGearAmplitude = 1.4f;
@@ -248,6 +317,9 @@ void Player::UpdatePlayer()
 			isJumpTrigger_ = false;
 			isLanding_ = false;
 			isPendulum_ = false;
+
+			// 効果音再生
+			audio_->PlayWave(soundHandleJump_, false, *seVolume_);
 		}
 		// 歯車の回転は歯車の更新内
 	}
@@ -358,6 +430,11 @@ void Player::UpdateGear()
 	// 回転速度を回転に加える
 	// ここで速度に応じて回転角に変える
 	gearTheta_ += ConvertSpeedToRadian(gearRotateSpeed_);
+	if (ConvertSpeedToRadian(gearRotateSpeed_) < 0)
+		playSoundAmountRotation_ += ConvertSpeedToRadian(gearRotateSpeed_) * -1.0f;
+	else
+		playSoundAmountRotation_ += ConvertSpeedToRadian(gearRotateSpeed_);
+	
 }
 
 void Player::UpdatePlayerRotate()
@@ -463,7 +540,7 @@ void Player::CheckGearCollision()
 void Player::AirJump() {
 	Vector3 direct{};
 	float pi = static_cast<float>(std::numbers::pi);
-	float pi4 = pi / 4.0f;
+	float pi4 = pi / 3.0f;
 	// 左にくっついている時
 	if (isLandLeft_) {
 		direct = { std::cosf(pi4),std::sinf(pi4),0.0f };

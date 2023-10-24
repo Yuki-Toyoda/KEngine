@@ -33,6 +33,7 @@ void GameManagerObject::Initialize(std::string name, Tag tag)
 
 	// クリアゲージの初期化
 	clearGageTransform_.Initialize();
+	clearGageTransform_.translate_ = { 0.0f, 0.0f, 1.0f };
 	clearGageTransform_.scale_ = {14.5f, 14.5f, 1.0f};
 	// クリア時のチェックマークワールド座標
 	clearCheckTransform_.Initialize();
@@ -83,7 +84,7 @@ void GameManagerObject::Initialize(std::string name, Tag tag)
 	/// スプライト生成
 	// 残りアイテム数テキストUI
 	leftItemTextPosition_ = { 255.0f, 550.0f }; // 座標
-	leftItemTextSize_ = { 284.0f, 56.0f }; // 大きさ
+	leftItemTextSize_ = { 320.0f, 64.0f }; // 大きさ
 	leftItemTextSprite_.reset(Sprite::Create(
 			textureHandleTextLeftItem_, 
 			&leftItemTextPosition_, 
@@ -239,7 +240,8 @@ void GameManagerObject::CameraStaging()
 	switch (cameraStagingWayPoint_)
 	{
 	case GameManagerObject::WayPoint1: // フェードイン指示
-
+		// ステージマネージャーに演出中ということを伝える
+		stageManager_->SetIsStaging(true);
 		// フェードイン
 		SceneManager::GetInstance()->StartFadeEffect(cameraStagingTime_, { 0.0f, 0.0f, 0.0f, 1.0f }, { 0.0f, 0.0f, 0.0f, 0.0f });
 		// 次の演出へ
@@ -254,6 +256,7 @@ void GameManagerObject::CameraStaging()
 			cameraStagingT_ += 1.0f / 60.0f;
 		}
 		else {
+
 			// tリセット
 			cameraStagingT_ = 0.0f;
 			// 演出時間設定
@@ -261,6 +264,9 @@ void GameManagerObject::CameraStaging()
 
 			// カメラ演出中に
 			cameraIsStaging_ = false;
+
+			// ステージマネージャーに演出終了を伝える
+			stageManager_->SetIsStaging(false);
 
 			// 次の演出に
 			cameraStagingWayPoint_++;
@@ -289,6 +295,9 @@ void GameManagerObject::CameraStaging()
 			cameraEndTranslate_ = { 0.0f, 0.0f, -90.0f };
 			// カメラ演出時間設定
 			cameraStagingTime_ = 1.5f;
+
+			// ステージマネージャーに演出中だと伝える
+			stageManager_->SetIsStaging(true);
 
 			// ステージ上の全アイテムを取得したら完全クリア
 			if(stageNowItemCount_ <= 0)
@@ -397,6 +406,9 @@ void GameManagerObject::CameraStaging()
 		break;
 	case GameManagerObject::WayPoint9:
 
+		// ステージマネージャーに演出終了を伝える
+		stageManager_->SetIsStaging(false);
+
 		// BGMを止める
 		audio_->StopWave(voiceHandleBGM_);
 		// ステージセレクトシーンへ遷移
@@ -408,10 +420,10 @@ void GameManagerObject::CameraStaging()
 
 void GameManagerObject::ClearGageAnimation()
 {
-	/*if (stageManager_->GetGearCondition() <= stageManager_->GetClearCondition())
+	if (stageManager_->GetGearCondition() <= stageManager_->GetClearCondition())
 		stageClearPercent_ = Math::Linear(stageManager_->GetGearCondition(), 0, 100, stageManager_->GetClearCondition());
 	else
-		stageClearPercent_ = 100;*/
+		stageClearPercent_ = 100;
 
 	// ゲージを動かす
 	objects_[3]->uvTransform_.rotate_.x = Math::EaseIn((float)stageClearPercent_, -1.05f, -0.3f, 100);
