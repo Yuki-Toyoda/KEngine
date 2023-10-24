@@ -84,6 +84,9 @@ private: // メンバ変数
 	// BGMボイスハンドル
 	int voiceHandleBGM_ = -1;
 
+	// ボタンを押したときのSE
+	uint32_t soundHandleButton_;
+
 	// メインギア座標
 	WorldTransform ｍainGearTransform_;
 	// 中サイズギア座標

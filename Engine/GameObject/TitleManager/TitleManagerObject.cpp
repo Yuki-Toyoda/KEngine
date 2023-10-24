@@ -25,6 +25,8 @@ void TitleManagerObject::Initialize(std::string name, Tag tag)
 	ambientHandle_ = audio_->LoadWave("/Audio/Ambient/GearAmbient.wav");
 	bgmHandle_ = audio_->LoadWave("/Audio/BGM/TitleBGM.wav");
 
+	soundHandleButton_ = audio_->LoadWave("/Audio/SE/ButtonSound.wav");
+
 	// カメラがセットされていれば
 	if (camera_ != nullptr) {
 		camera_->transform_.translate_ = { 0.0f, 10.0f, -50.0f };
@@ -196,6 +198,10 @@ void TitleManagerObject::Update()
 		break;
 	case TitleManagerObject::WayPoint3: // スペースを押すとシーン遷移開始
 		if (input_->TriggerKey(DIK_SPACE)) {
+			
+			// 音再生
+			audio_->PlayWave(soundHandleButton_, false, *seVolume_);
+			
 			// カメラシェイク無効
 			enableCameraShake_ = false;
 			// カメラの始端座標を現在のカメラ座標に変更

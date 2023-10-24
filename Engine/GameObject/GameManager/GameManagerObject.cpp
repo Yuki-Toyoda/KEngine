@@ -132,9 +132,9 @@ void GameManagerObject::Update()
 
 	// 再生されていなければ再生する
 	if (!audio_->IsPlaying(voiceHandleBGM_) || voiceHandleBGM_ == -1) {
-		voiceHandleBGM_ = audio_->PlayWave(bgmHandle_, false, *bgmVolume_);
+		voiceHandleBGM_ = audio_->PlayWave(bgmHandle_, false, *bgmVolume_ * 0.2f);
 	}
-	audio_->SetVolume(voiceHandleBGM_, *bgmVolume_);
+	audio_->SetVolume(voiceHandleBGM_, *bgmVolume_ * 0.2f);
 
 	// カメラ演出を行う
 	CameraStaging();
