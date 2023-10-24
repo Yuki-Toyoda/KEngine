@@ -176,52 +176,46 @@ void Player::OnCollision(BaseObject* object)
 		return;
 	}
 	Catapult* catapult = dynamic_cast<Catapult*>(object);
-  
-  if (catapult && !playCatchSound_) {
-			audio_->PlayWave(soundHandleCatchCatapult_, false, *seVolume_);
-			playCatchSound_ = true;
-		}
-  
+
+	if (catapult && !playCatchSound_) {
+		audio_->PlayWave(soundHandleCatchCatapult_, false, *seVolume_);
+		playCatchSound_ = true;
+	}
+
 	if (catapult) {
 		if (catapult->GetJumpEnable() && input_->TriggerKey(DIK_Q)) {
+			// 効果音再生
+			audio_->PlayWave(soundHandleJumpCatapult_, false, *seVolume_);
 			transform_.translate_ = catapult->transform_.translate_;
 			playerTheta_ = catapult->GetTheta();
 			CatapultJump();
 			catapult->AirJump();
 		}
 	}
-// ボタンの再入力があった時
-			if (input_->TriggerKey(DIK_Q)) {
-				// 効果音再生
-				audio_->PlayWave(soundHandleJumpCatapult_, false, *seVolume_);
-				AirJump();
-				item->AirJump();
-			}
-		}
-	}
+	// ボタンの再入力があった時
 	else {
-	//object;
-	Item* item = dynamic_cast<Item*>(object);
-	// 衝突しているのが Item だった時
-	// ジャンプできる状態の時
-	if (item) {
-		if (item->GetJumpEnable()) {
-			// カタパルト中は破壊する
-			if (isCatapult_) {
-				item->AirJump();
-			}
-			else {
-				// ボタンの再入力があった時
-				if (input_->TriggerKey(DIK_Q)) {
-          // 効果音再生
-				  audio_->PlayWave(soundHandleItemJump_, false, *seVolume_);
-					AirJump();
+		//object;
+		Item* item = dynamic_cast<Item*>(object);
+		// 衝突しているのが Item だった時
+		// ジャンプできる状態の時
+		if (item) {
+			if (item->GetJumpEnable()) {
+				// カタパルト中は破壊する
+				if (isCatapult_) {
 					item->AirJump();
+				}
+				else {
+					// ボタンの再入力があった時
+					if (input_->TriggerKey(DIK_Q)) {
+						// 効果音再生
+						audio_->PlayWave(soundHandleItemJump_, false, *seVolume_);
+						AirJump();
+						item->AirJump();
+					}
 				}
 			}
 		}
 	}
-
 }
 
 void Player::OnCollisionExit(BaseObject* object)
