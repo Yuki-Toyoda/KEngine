@@ -408,10 +408,10 @@ void GameManagerObject::CameraStaging()
 
 void GameManagerObject::ClearGageAnimation()
 {
-	if (stageManager_->GetGearCondition() <= stageManager_->GetClearCondition())
+	/*if (stageManager_->GetGearCondition() <= stageManager_->GetClearCondition())
 		stageClearPercent_ = Math::Linear(stageManager_->GetGearCondition(), 0, 100, stageManager_->GetClearCondition());
 	else
-		stageClearPercent_ = 100;
+		stageClearPercent_ = 100;*/
 
 	// ゲージを動かす
 	objects_[3]->uvTransform_.rotate_.x = Math::EaseIn((float)stageClearPercent_, -1.05f, -0.3f, 100);

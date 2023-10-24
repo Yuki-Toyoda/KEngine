@@ -7,6 +7,7 @@
 class Input;
 class Camera;
 class Item;
+class Catapult;
 class StageManager;
 
 /// <summary>
@@ -196,6 +197,8 @@ private: // メンバ変数
 	StageManager* stageManager_ = nullptr;
 	// プレビュー上のアイテムオブジェクト
 	std::vector<Item*>previewItems_;
+
+	std::vector<Catapult*> previewCatapults_;
 
 	// プレビューアイテム表示演出中か
 	bool previewItemStaging_;

@@ -3,6 +3,7 @@
 #include "../../Scene/SceneManager.h"
 #include "../../Stage/StageManager.h"
 #include "../Item/Item.h"
+#include "../Catapult/Catapult.h"
 
 void StageSelectManagerObject::Initialize(std::string name, Tag tag)
 {
@@ -28,6 +29,8 @@ void StageSelectManagerObject::Initialize(std::string name, Tag tag)
 
 	// ステージマネージャ取得
 	stageManager_ = StageManager::GetInstance();
+	// ステージ情報読み込み
+	stageManager_->LoadStages();
 
 	// 初期座標を設定
 	transform_.translate_ = { 0.0f, -7.25f, 0.0f };
@@ -131,6 +134,18 @@ void StageSelectManagerObject::Initialize(std::string name, Tag tag)
 		previewItems_.push_back(item); // リストに追加
 		GameObjectManager::GetInstance()->AddGameObject(item);
 	}
+
+	for (int i = 0; i < 5; i++) {
+		Catapult* catapult = new Catapult(); // インスタンス生成
+		catapult->Initialize("previewCatapult", BaseObject::tagOther); // 初期化
+		catapult->SetLength(10000.0f);
+		catapult->transform_.scale_ = { 1.0f / 6.0f, 1.0f / 6.0f, 1.0f / 6.0f };
+		catapult->SetColor({ 1.0f, 1.0f, 1.0f, 0.0f }); // アイテムを非表示
+		catapult->SetIsActive(true);
+		previewCatapults_.push_back(catapult); // リストに追加
+		GameObjectManager::GetInstance()->AddGameObject(catapult);
+	}
+
 	// プレビューアイテム表示演出中か
 	previewItemStaging_ = false;
 	// プレビューアイテム用の演出t
@@ -560,12 +575,16 @@ void StageSelectManagerObject::RotateStagePreview()
 	if (rotateStagingT_ <= rotateStagingTime_ && isRotateStaging_) {
 		transform_.rotate_.z = Math::EaseOut(rotateStagingT_, startAngle_, endAngle_, rotateStagingTime_);
 		if (rotateStagingT_ <= 0.15f) {
-			for (int i = 0; i < 10; i++)
+			for (int i = 0; i < 20; i++)
 				previewItems_[i]->transform_.scale_ = Math::EaseOut(rotateStagingT_, { 1.0f / 6.0f, 1.0f / 6.0f, 1.0f / 6.0f }, { 0.0f, 0.0f, 0.0f }, 0.15f);
+			for (int i = 0; i < 5; i++)
+				previewCatapults_[i]->transform_.scale_ = Math::EaseOut(rotateStagingT_, { 1.0f / 6.0f, 1.0f / 6.0f, 1.0f / 6.0f }, { 0.0f, 0.0f, 0.0f }, 0.15f);
 		}
 		else {
-			for (int i = 0; i < 10; i++)
+			for (int i = 0; i < 20; i++)
 				previewItems_[i]->transform_.scale_ = { 0.0f, 0.0f, 0.0f };
+			for (int i = 0; i < 5; i++)
+				previewCatapults_[i]->transform_.scale_ = { 0.0f, 0.0f, 0.0f };
 		}
 		// t加算
 		rotateStagingT_ += 1.0f / 60.0f;
@@ -595,6 +614,17 @@ void StageSelectManagerObject::SetPreviewItems()
 	for(int i = (int)stageManager_->GetStageInfo(selectedStageNumber_).itemInfo_.size(); i < 20; i++)
 		previewItems_[i]->transform_.translate_ = { 10000.0f, 10000.0f, 0.0f };
 
+	// 全てのアイテムの情報
+	for (int i = 0; i < (int)stageManager_->GetStageInfo(selectedStageNumber_).catapultInfo_.size(); i++) {
+		previewCatapults_[i]->SetTheta(stageManager_->GetStageInfo(selectedStageNumber_).catapultInfo_[i].theta_);
+		previewCatapults_[i]->transform_.scale_ = { 0.0f, 0.0f, 0.0f };
+		previewCatapults_[i]->SetLength(stageManager_->GetStageInfo(selectedStageNumber_).catapultInfo_[i].length_ / 5.25f);
+	}
+	for (int i = (int)stageManager_->GetStageInfo(selectedStageNumber_).catapultInfo_.size(); i < 5; i++) {
+		previewCatapults_[i]->SetLength(10000.0f);
+		previewCatapults_[i]->SetTheta(10000.0f);
+	}
+
 	// プレビューアイテム表示演出開始
 	previewItemStaging_ = true;
 	// 表示演出tをリセット
@@ -606,6 +636,8 @@ void StageSelectManagerObject::PrevItemStaging()
 	if (previewItemStagingT_ <= 0.25f) {
 		for (int i = 0; i < (int)stageManager_->GetStageInfo(selectedStageNumber_).itemInfo_.size(); i++)
 			previewItems_[i]->transform_.scale_ = Math::EaseOut(previewItemStagingT_, {0.0f, 0.0f, 0.0f}, { 1.0f / 6.0f, 1.0f / 6.0f, 1.0f / 6.0f }, 0.25f);
+		for (int i = 0; i < (int)stageManager_->GetStageInfo(selectedStageNumber_).catapultInfo_.size(); i++)
+			previewCatapults_[i]->transform_.scale_ = Math::EaseOut(previewItemStagingT_, { 0.0f, 0.0f, 0.0f }, { 1.0f / 6.0f, 1.0f / 6.0f, 1.0f / 6.0f }, 0.25f);
 
 		// t加算
 		previewItemStagingT_ += 1.0f / 60.0f;
@@ -614,7 +646,9 @@ void StageSelectManagerObject::PrevItemStaging()
 
 		for (int i = 0; i < (int)stageManager_->GetStageInfo(selectedStageNumber_).itemInfo_.size(); i++)
 			previewItems_[i]->transform_.scale_ = { 1.0f / 6.0f, 1.0f / 6.0f, 1.0f / 6.0f };
-
+		for (int i = 0; i < (int)stageManager_->GetStageInfo(selectedStageNumber_).catapultInfo_.size(); i++)
+			previewCatapults_[i]->transform_.scale_ = { 1.0f / 6.0f, 1.0f / 6.0f, 1.0f / 6.0f };
+		
 		// 表示演出を止める
 		previewItemStaging_ = false;
 		// t加算

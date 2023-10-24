@@ -60,8 +60,12 @@ public: // その他関数群
 
 	bool GetJumpEnable()const { return isJumpEnable_; }
 	float GetTheta() const;
+	void SetTheta(float theta) {kTheta_ = theta;}
+	void SetLength(float length) { kLength_ = length; }
 
 	void AirJump();
+
+	void SetPlayer(Player* player) { player_ = player; }
 
 private: // メンバ関数
 
