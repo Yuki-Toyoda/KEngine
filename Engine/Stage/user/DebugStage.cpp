@@ -65,7 +65,7 @@ void DebugStage::DebugGUI()
 		if (ImGui::TreeNode(treeName.c_str())) {
 			ImGui::DragFloat2("positon", &iInfo[i].position_.x, 0.01f);
 			ImGui::Checkbox("isRePop", &iInfo[i].isRePop_);
-			ImGui::SliderInt("popTIme", &iInfo[i].popTime_, 10, 1000);
+			ImGui::SliderInt("popTIme", &iInfo[i].popTime_, 1, 1000);
 
 			ImGui::TreePop();
 		}
