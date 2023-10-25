@@ -26,15 +26,9 @@ void StageSelectScene::Initialize()
 
 void StageSelectScene::Update()
 {
-
 	// ゲームシーンへ遷移させるなら
 	if (stageSelectManager_->IsGoGameScene()) {
 		SceneManager::GetInstance()->SetSelectedStageNumber(stageSelectManager_->GetSelectedStageNumber());
-		BaseScene* nextScene = new GameScene();
-		SceneManager::GetInstance()->SetNextScene(nextScene);
-	}
-
-	if (input_->TriggerKey(DIK_RSHIFT)) {
 		BaseScene* nextScene = new GameScene();
 		SceneManager::GetInstance()->SetNextScene(nextScene);
 	}

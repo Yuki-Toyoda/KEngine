@@ -250,7 +250,7 @@ void StageSelectManagerObject::Update()
 			if (pressCount_ < 0)
 				pressCount_ = 0;
 
-			if (pressCount_ < 2)
+			if (pressCount_ <= 0)
 				pressCount_++;
 		}
 		else if (input_->TriggerKey(DIK_A) || input_->TriggerKey(DIK_LEFTARROW)) {
@@ -261,7 +261,7 @@ void StageSelectManagerObject::Update()
 			if (pressCount_ > 0)
 				pressCount_ = 0;
 
-			if (pressCount_ > -2)
+			if (pressCount_ >= 0)
 				pressCount_--;
 		}
 		// 回転演出中でなければ

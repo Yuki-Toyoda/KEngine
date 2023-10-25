@@ -1,6 +1,7 @@
 #pragma once
 #include "../BaseObject.h"
 #include "../../Audio/Audio.h"
+#include "../../Input/Input.h"
 
 // クラスの前方宣言
 class Camera;
@@ -58,6 +59,12 @@ public: // アクセッサ等
 	/// <returns>遷移するか</returns>
 	bool GetIsGoStageSelectScene() { return isGoStageSelectScene_; }
 
+	/// <summary>
+	/// リトライトリガーの遷移トリガーゲッター
+	/// </summary>
+	/// <returns>遷移するか</returns>
+	bool GetIsRetryThisScene() { return isRetryThisScene_; }
+
 public: // その他関数群
 
 	/// <summary>
@@ -85,6 +92,8 @@ private: // メンバ変数
 	// ステージマネージャ
 	StageManager* stageManager_ = nullptr;
 
+	// 入力
+	Input* input_ = nullptr;
 	// 音再生
 	Audio* audio_ = nullptr;
 
@@ -94,6 +103,8 @@ private: // メンバ変数
 
 	// BGMハンドル
 	uint32_t bgmHandle_;
+	uint32_t soundHandleBack_ = 0u; // 戻る時の効果音
+	uint32_t soundHandleRetry_ = 0u; // リトライ時の効果音
 	uint32_t soundHandleClear_ = 0u; // クリア時効果音
 	uint32_t soundHandlePerfectClear_ = 0u; // 完全クリア時効果音
 
@@ -124,6 +135,11 @@ private: // メンバ変数
 	// カメラ演出時間
 	float cameraStagingTime_;
 
+	// ステージセレクトへ戻る演出中間地点
+	int backStageSelectStagingWayPoint_;
+	bool backStageSelectStaging_;
+	bool isRetry_;
+
 	// ステージ内全てのアイテム個数
 	int stageItemCount_;
 	// 現在のステージ内のアイテム個数
@@ -134,6 +150,11 @@ private: // メンバ変数
 
 	// ステージセレクトシーンへのトリガー
 	bool isGoStageSelectScene_;
+	// リトライトリガー
+	bool isRetryThisScene_;
+
+	// 完全クリアトリガー
+	bool isPerfectClear_;
 
 	// UIテクスチャ群
 	int32_t textureHandleNumberSheets_ = 0u; // 数字のシート
@@ -165,6 +186,7 @@ private: // メンバ変数
 
 	// UIスプライト色
 	Vector4 spriteUIColor_;
+	Vector4 spriteClearUIColor_;
 
 };
 
