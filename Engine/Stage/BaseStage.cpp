@@ -48,7 +48,9 @@ bool BaseStage::GetIsClear() const
 	// 一つでも使われていなかったらクリアではない
 	for (size_t i = 0; i < iInfo.size(); i++)
 	{
-		itemClear = items[i]->GetIsUsed();
+		if (!iInfo[i].isRePop_) {
+			itemClear = items[i]->GetIsUsed();
+		}
 	}
 
 	return gearClear && itemClear;
