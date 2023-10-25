@@ -102,7 +102,7 @@ void DebugStage::DebugGUI()
 		std::string treeName = commitIndex_ + std::to_string(i);
 		if (ImGui::TreeNode(treeName.c_str())) {
 			ImGui::SliderFloat("theta", &cInfo[i].theta_, -3.14f, 3.14f);
-			ImGui::SliderFloat("length", &cInfo[i].length_, 0.0f, 30.0f);
+			ImGui::SliderFloat("length", &cInfo[i].length_, 0.0f, 14.5f);
 			ImGui::Checkbox("isRePop", &cInfo[i].isRePop_);
 			ImGui::SliderInt("popTIme", &cInfo[i].popTime_, 10, 1000);
 
