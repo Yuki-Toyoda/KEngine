@@ -84,6 +84,13 @@ void StageSelectManagerObject::Initialize(std::string name, Tag tag)
 	AddOBJ(&ornamentGearTransforms_[2], color_, "./Resources/Gear", "Gear_M.obj", false);
 	AddOBJ(&ornamentGearTransforms_[3], color_, "./Resources/Gear", "Gear_S.obj", false);
 
+	// タイトル遷移時の演出中間地点
+	backTitleStagingWayPoint_ = WayPoint1;
+	// タイトルへ遷移する演出トリガー
+	backTitleStaging_ = false;
+	// タイトルへ遷移するトリガー
+	backTitle_ = false;
+
 	// 全ステージ数取得
 	stageCount_ = (int)stageManager_->GetStageMaxIndex() - 1;
 
@@ -285,7 +292,8 @@ void StageSelectManagerObject::Update()
 	stageSelectedNumber_ = selectedStageNumber_ + 1;
 
 	// 遷移演出
-	TransitionStaging();
+	if(!backTitleStaging_)
+		TransitionStaging();
 
 	// カメラ手振れ演出
 	CameraShake();
@@ -299,6 +307,42 @@ void StageSelectManagerObject::Update()
 	stageNumber_->Update();
 	// ステージ番号のカウンターの色を更新
 	stageNumber_->color_ = spriteUIColor_;
+
+	if (!isTransitionStaging_) {
+		if (!backTitleStaging_ && input_->TriggerKey(DIK_ESCAPE)) {
+			audio_->PlayWave(audio_->LoadWave("/Audio/SE/BackSound.wav"), false, *seVolume_ * 0.3f);
+			backTitleStagingWayPoint_++;
+			backTitleStaging_ = true;
+			transitionStagingTime_ = 1.0f;
+			transitionStagingT_ = 0.0f;
+			// フェードアウト
+			SceneManager::GetInstance()->SetFadeColor({ 0.0f, 0.0f, 0.0f, 0.0f });
+		}
+
+		switch (backTitleStagingWayPoint_)
+		{
+		case StageSelectManagerObject::WayPoint1:
+			
+			break;
+		case StageSelectManagerObject::WayPoint2:
+			// フェードアウト
+			SceneManager::GetInstance()->StartFadeEffect(transitionStagingTime_, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f, 1.0f });
+			backTitleStagingWayPoint_++;
+			break;
+		case StageSelectManagerObject::WayPoint3:
+			if (transitionStagingT_ <= transitionStagingTime_)
+				transitionStagingT_ += 1.0f / 60.0f;
+			else {
+				backTitle_ = true;
+				// BGMを止める
+				audio_->StopWave(voiceHandleBGM_);
+			}
+			break;
+		case StageSelectManagerObject::WayPoint4:
+			break;
+		}
+
+	}
 
 #ifdef _DEBUG
 

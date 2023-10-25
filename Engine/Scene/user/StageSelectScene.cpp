@@ -32,4 +32,10 @@ void StageSelectScene::Update()
 		BaseScene* nextScene = new GameScene();
 		SceneManager::GetInstance()->SetNextScene(nextScene);
 	}
+
+	if (stageSelectManager_->GetIsGoTitleScene()) {
+		SceneManager::GetInstance()->SetSelectedStageNumber(stageSelectManager_->GetSelectedStageNumber());
+		BaseScene* nextScene = new TitleScene();
+		SceneManager::GetInstance()->SetNextScene(nextScene);
+	}
 }

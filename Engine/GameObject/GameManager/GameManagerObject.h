@@ -65,6 +65,8 @@ public: // アクセッサ等
 	/// <returns>遷移するか</returns>
 	bool GetIsRetryThisScene() { return isRetryThisScene_; }
 
+	
+
 public: // その他関数群
 
 	/// <summary>
