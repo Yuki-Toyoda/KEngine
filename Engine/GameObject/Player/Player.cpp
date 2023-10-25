@@ -175,10 +175,8 @@ void Player::OnCollisionEnter(BaseObject* object)
 void Player::OnCollision(BaseObject* object)
 {
 	if (object->GetIsActive()) {
-
 		Catapult* catapult = dynamic_cast<Catapult*>(object);
-
-		if (catapult && !playCatchSound_) {
+			if (catapult && !playCatchSound_) {
 			audio_->PlayWave(soundHandleCatchCatapult_, false, *seVolume_);
 			playCatchSound_ = true;
 		}
