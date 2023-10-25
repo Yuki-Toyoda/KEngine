@@ -94,6 +94,9 @@ private: // メンバ変数
 
 	// BGMハンドル
 	uint32_t bgmHandle_;
+	uint32_t soundHandleClear_ = 0u; // クリア時効果音
+	uint32_t soundHandlePerfectClear_ = 0u; // 完全クリア時効果音
+
 	// 環境音ボイスハンドル
 	int voiceHandleBGM_ = -1;
 

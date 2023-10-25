@@ -1,7 +1,14 @@
 {
-  "StageInfo": {
-    "0:Condition": 300.0,
-    "0:kMaxInfoNum": 0,
-    "0:kMaxCatapultNum": 0
-  }
+    "StageInfo": {
+        "0:Condition": 300.0,
+        "0:isRePop:0": 0,
+        "0:kMaxCatapultNum": 0,
+        "0:kMaxInfoNum": 1,
+        "0:popTime:0": 10,
+        "0:position:0": [
+            0.0,
+            -9.390000343322754,
+            0.0
+        ]
+    }
 }
