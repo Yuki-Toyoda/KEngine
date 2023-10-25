@@ -232,6 +232,7 @@ private: // メンバ変数
 	std::unique_ptr<Counter> stageNumber_; // ステージ番号カウンタ
 	Vector2 stageNumberBackGround_Position_;
 	Vector2 stageNumberBackGroundSize_;
+	Vector2 stageNumberBackGround_Position_;
 	std::unique_ptr<Sprite> stageNumberBackGround_; // ステージ番号カウンタ背景
 
 };

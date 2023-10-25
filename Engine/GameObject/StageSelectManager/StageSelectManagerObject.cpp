@@ -685,7 +685,7 @@ void StageSelectManagerObject::UIAnimation()
 		}
 	}
 
-	if (stageSelectedNumber_ >= 10) {
+	if (stageSelectedNumber_ >= 10){
 		stageNumberBackGroundSize_.x = 192.0f * 1.5f;
 		stageNumberBackGround_Position_.x = stageNumber_->position_.x + 30.0f;
 
