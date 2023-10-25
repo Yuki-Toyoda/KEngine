@@ -215,7 +215,7 @@
             4.0,
             0.0
         ],
-        "4:Condition": 100.0,
+        "4:Condition": 160.0,
         "4:isRePop:0": 1,
         "4:isRePop:1": 1,
         "4:isRePop:2": 1,
@@ -267,7 +267,7 @@
             5.0,
             0.0
         ],
-        "5:Condition": 100.0,
+        "5:Condition": 30.0,
         "5:isRePop:0": 1,
         "5:isRePop:1": 1,
         "5:isRePop:2": 1,
@@ -312,19 +312,19 @@
             -2.0,
             0.0
         ],
-        "6:Condition": 100.0,
-        "6:isRePop:0": 0,
-        "6:isRePop:1": 0,
-        "6:isRePop:2": 0,
+        "6:Condition": 20.0,
+        "6:isRePop:0": 1,
+        "6:isRePop:1": 1,
+        "6:isRePop:2": 1,
         "6:isRePop:3": 1,
-        "6:isRePop:4": 0,
+        "6:isRePop:4": 1,
         "6:isRePop:5": 0,
         "6:kMaxCatapultNum": 0,
-        "6:kMaxInfoNum": 6,
-        "6:popTime:0": 10,
+        "6:kMaxInfoNum": 5,
+        "6:popTime:0": 1,
         "6:popTime:1": 10,
         "6:popTime:2": 10,
-        "6:popTime:3": 1000,
+        "6:popTime:3": 10,
         "6:popTime:4": 10,
         "6:popTime:5": 10,
         "6:position:0": [
@@ -333,23 +333,23 @@
             0.0
         ],
         "6:position:1": [
-            -4.0,
-            -6.0,
+            3.0,
+            -8.0,
             0.0
         ],
         "6:position:2": [
-            4.0,
-            -6.0,
+            0.0,
+            -4.0,
             0.0
         ],
         "6:position:3": [
-            0.0,
-            -2.0,
+            -5.0,
+            -4.0,
             0.0
         ],
         "6:position:4": [
-            -8.0,
-            -3.0,
+            8.0,
+            -2.0,
             0.0
         ],
         "6:position:5": [
@@ -357,51 +357,59 @@
             -3.0,
             0.0
         ],
-        "7:Condition": 100.0,
+        "7:CisRePop:0": 1,
+        "7:CisRePop:1": 1,
+        "7:Condition": 80.0,
+        "7:CpopTime:0": 10,
+        "7:CpopTime:1": 10,
         "7:isRePop:0": 0,
         "7:isRePop:1": 0,
         "7:isRePop:2": 0,
-        "7:isRePop:3": 1,
+        "7:isRePop:3": 0,
         "7:isRePop:4": 0,
         "7:isRePop:5": 0,
-        "7:kMaxCatapultNum": 0,
+        "7:kMaxCatapultNum": 2,
         "7:kMaxInfoNum": 6,
+        "7:length:0": 14.5,
+        "7:length:1": 14.5,
         "7:popTime:0": 10,
         "7:popTime:1": 10,
         "7:popTime:2": 10,
-        "7:popTime:3": 1000,
+        "7:popTime:3": 10,
         "7:popTime:4": 10,
         "7:popTime:5": 10,
         "7:position:0": [
             0.0,
-            -10.0,
+            -5.0,
             0.0
         ],
         "7:position:1": [
-            -4.0,
-            -6.0,
-            0.0
-        ],
-        "7:position:2": [
-            4.0,
-            -6.0,
-            0.0
-        ],
-        "7:position:3": [
             0.0,
             -2.0,
             0.0
         ],
+        "7:position:2": [
+            0.0,
+            1.0,
+            0.0
+        ],
+        "7:position:3": [
+            0.0,
+            4.0,
+            0.0
+        ],
         "7:position:4": [
-            -8.0,
-            -3.0,
+            0.0,
+            7.0,
             0.0
         ],
         "7:position:5": [
-            8.0,
-            -3.0,
+            0.0,
+            10.0,
             0.0
         ],
+        "7:theta:0": -1.5110000371932983,
+        "7:theta:1": -2.49399995803833,
         "8:Condition": 100.0,
         "8:isRePop:0": 0,
         "8:isRePop:1": 0,

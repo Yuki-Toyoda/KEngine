@@ -4,7 +4,7 @@
             6.0,
             1.0
         ],
-        "addGearSpeedLimit": 0.15000000596046448,
+        "addGearSpeedLimit": 0.20000000298023224,
         "kGearAmplitude": 1.399999976158142,
         "kGearDecreaseRate": 0.8999999761581421,
         "kGearInnerRadius": 13.880000114440918,
