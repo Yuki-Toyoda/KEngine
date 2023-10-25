@@ -56,6 +56,12 @@ public: // その他関数群
 	/// <param name="isGetOperation">操作可能か</param>
 	void SetIsGetOperation(bool isGetOperation) { isGetOperation_ = isGetOperation; }
 
+	/// <summary>
+	/// 加算する回転角のゲッター
+	/// </summary>
+	/// <returns>加算する回転角</returns>
+	float GetAddGearSpeedLimit() { return addGearSpeedLimit_; }
+
 private: // メンバ関数
 
 	// 作成した関数等の初期化
@@ -190,6 +196,9 @@ private: // メンバ変数
 
 	// 歯車の加算の割合
 	float gearRollRatio_ = 1.0f;
+
+	// 歯車の回転量にプラスするリミット
+	float addGearSpeedLimit_;
 
 	/*--------------//
 	//	その他の変数	//

@@ -16,6 +16,7 @@ void Stage::Update()
 {
 	float gearRotate{ 0 };
 	gearRotate += player_->GetGearRotateSpeed();
-	if(isAddGearCondition_)
-		gearCondition_ += 0 < gearRotate ? gearRotate : gearRotate * -1;
+	if (gearRotate >= player_->GetAddGearSpeedLimit() || gearRotate <= -player_->GetAddGearSpeedLimit())
+		if (isAddGearCondition_)
+			gearCondition_ += 0 < gearRotate ? gearRotate : gearRotate * -1;
 }

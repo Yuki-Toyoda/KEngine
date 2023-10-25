@@ -135,6 +135,7 @@ void Player::AddGlobalVariables()
 	globalVariables_->AddItem("Gear", "kGearDecreaseRate", kGearDecreaseRate_);
 	globalVariables_->AddItem("Gear", "kMinGearPendulumSpeed", kMinGearPendulumSpeed_);
 	globalVariables_->AddItem("Gear", "GearScale", Vector2(gearTransform_.scale_.x, gearTransform_.scale_.z));
+	globalVariables_->AddItem("Gear", "addGearSpeedLimit", addGearSpeedLimit_);
 	globalVariables_->AddItem("Player", "kMaxPlayerVelocity", kMaxPlayerVelocity_);
 	globalVariables_->AddItem("Player", "kJumpPoint", Vector2(kJumpPoint_.x, kJumpPoint_.y));
 	globalVariables_->AddItem("Player", "kGravity", kGravity_);
@@ -154,6 +155,7 @@ void Player::ApplyGlobalVariables()
 	kMinGearRollSpeed_ = globalVariables_->GetFloatValue("Gear", "kMinGearRollSpeed");
 	Vector2 temp = globalVariables_->GetVector2Value("Gear", "GearScale");
 	gearTransform_.scale_ = Vector3(temp.x, temp.x, temp.y);
+	addGearSpeedLimit_ = globalVariables_->GetFloatValue("Gear", "addGearSpeedLimit");
 	kMaxPlayerVelocity_ = globalVariables_->GetFloatValue("Player", "kMaxPlayerVelocity");
 	kPlayerJumpPower_ = globalVariables_->GetFloatValue("Player", "kPlayerJumpPower");
 	kGravity_ = globalVariables_->GetFloatValue("Player", "kGravity");
@@ -274,6 +276,8 @@ void Player::InitializeVariables()
 	kPlayerJumpPower_ = 0.05f;
 	kMaxPlayerVelocity_ = 1.0f;
 	kGravity_ = 0.005f;
+
+	addGearSpeedLimit_ = 0.25f;
 	// 定数として定義されているものは読み込む
 	//ApplyGlobalVariables();
 }
@@ -578,7 +582,7 @@ void Player::DebugGui() {
 	ImGui::DragFloat("kMinRotate", &kMinGearRollSpeed_, 0.00001f, -0.01f, 0.01f, "%.5f");
 	//ImGui::DragFloat("kFriction", &kGearFriction_, 0.00001f, -0.01f, 0.01f, "%.5f");
 	ImGui::DragFloat("kGravity", &kGravity_, 0.00001f, -1.0f, 1.0f, "%.5f");
-
+	ImGui::DragFloat("addGearSpeedLimit", &addGearSpeedLimit_, 0.00001f, 0.0f, 1.0f, "%.5f");
 
 	ImGui::End();
 
