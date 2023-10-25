@@ -1,6 +1,7 @@
 #pragma once
 #include "../BaseObject.h"
 #include "../../Input/Input.h"
+#include "../../Audio/Audio.h"
 
 #include "../../Stage/BaseStage.h"
 
@@ -55,6 +56,7 @@ public: // その他関数群
 
 	void SetPosition(const Vector3& pos) { transform_.translate_ = pos; }
 	void SetIsRePop(bool isRePop) { isRePop_ = isRePop; }
+	bool GetIsRePop() { return isRePop_; }
 	void SetPopTime(int32_t popTime) { kPopTime_ = popTime; }
 
 	bool GetJumpEnable()const { return isJumpEnable_; }
@@ -79,6 +81,14 @@ private: // メンバ変数
 
 	// 自分が何番目の数字なのか
 	//int kIndex_ = 0;
+
+	// 音再生
+	Audio* audio_ = nullptr;
+	// 音量
+	float* seVolume_; // SE
+
+	// アイテム使用時の音
+	uint32_t soundHandleUseItem_;
 
 	// アイテムの当たり判定の半径
 	float radius_ = 1.0f;

@@ -1,6 +1,7 @@
 #pragma once
 #include "../BaseObject.h"
 #include "../../Audio/Audio.h"
+#include "../../Input/Input.h"
 
 // クラスの前方宣言
 class Camera;
@@ -58,6 +59,12 @@ public: // アクセッサ等
 	/// <returns>遷移するか</returns>
 	bool GetIsGoStageSelectScene() { return isGoStageSelectScene_; }
 
+	/// <summary>
+	/// リトライトリガーの遷移トリガーゲッター
+	/// </summary>
+	/// <returns>遷移するか</returns>
+	bool GetIsRetryThisScene() { return isRetryThisScene_; }
+
 public: // その他関数群
 
 	/// <summary>
@@ -85,6 +92,8 @@ private: // メンバ変数
 	// ステージマネージャ
 	StageManager* stageManager_ = nullptr;
 
+	// 入力
+	Input* input_ = nullptr;
 	// 音再生
 	Audio* audio_ = nullptr;
 
@@ -94,6 +103,8 @@ private: // メンバ変数
 
 	// BGMハンドル
 	uint32_t bgmHandle_;
+	uint32_t soundHandleBack_ = 0u; // 戻る時の効果音
+	uint32_t soundHandleRetry_ = 0u; // リトライ時の効果音
 	uint32_t soundHandleClear_ = 0u; // クリア時効果音
 	uint32_t soundHandlePerfectClear_ = 0u; // 完全クリア時効果音
 
@@ -124,6 +135,13 @@ private: // メンバ変数
 	// カメラ演出時間
 	float cameraStagingTime_;
 
+	// ステージセレクトへ戻る演出中間地点
+	int backStageSelectStagingWayPoint_;
+	bool backStageSelectStaging_;
+	bool isRetry_;
+	float isPressBackButtonTime_; // ボタン長押し検知用
+	float isPressRetryButtonTime_; // ボタン長押し検知用
+
 	// ステージ内全てのアイテム個数
 	int stageItemCount_;
 	// 現在のステージ内のアイテム個数
@@ -134,12 +152,21 @@ private: // メンバ変数
 
 	// ステージセレクトシーンへのトリガー
 	bool isGoStageSelectScene_;
+	// リトライトリガー
+	bool isRetryThisScene_;
+
+	// 完全クリアトリガー
+	bool isPerfectClear_;
 
 	// UIテクスチャ群
 	int32_t textureHandleNumberSheets_ = 0u; // 数字のシート
 	int32_t textureHandleTextLeftItem_ = 0u; // 残りアイテム数テキスト
 	int32_t textureHandleSlash_ = 0u; // /テクスチャ
 	int32_t textureHandleTextClearPercent_ = 0u; // クリア進捗テキスト
+	int32_t textureHandleEsc_N_ = 0u; // escUI_押してない時
+	int32_t textureHandleR_N_ = 0u; // rUI_押してない時
+	int32_t textureHandleStageSelect_ = 0u; // rUI_押してない時
+	int32_t textureHandleRestart_ = 0u; // rUI_押してない時
 
 	/// UIスプライト群
 
@@ -163,8 +190,23 @@ private: // メンバ変数
 	// 進捗％カウンター
 	std::unique_ptr<Counter> stageClearCounter_ = nullptr;
 
+	// EscUI
+	Vector2 escUIPosition_; // 座標
+	Vector2 escUISize_; // 大きさ
+	std::unique_ptr<Sprite> escUISprite_; // スプライト本体
+	Vector2 stageSelectUIPosition_;
+	std::unique_ptr<Sprite> stageSelectUISprite_; // スプライト本体
+
+	// RUI
+	Vector2 rUIPosition_; // 座標
+	Vector2 rUISize_; // 大きさ
+	std::unique_ptr<Sprite> rUISprite_; // スプライト本体
+	Vector2 restartUIPosition_;
+	std::unique_ptr<Sprite> restartUISprite_; // スプライト本体
+
 	// UIスプライト色
 	Vector4 spriteUIColor_;
+	Vector4 spriteClearUIColor_;
 
 };
 

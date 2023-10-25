@@ -123,13 +123,27 @@ void StageManager::AddStageInfo(const BaseStage::StageInfo& info) {
 }
 
 
+int StageManager::GetAllItem() const
+{
+	int usedItemNum = 0;
+
+	const std::vector<ItemInfo>& iInfo = infos_[nowStageNum_].itemInfo_;
+	for (size_t i = 0; i < iInfo.size(); i++)
+	{
+		if (!items_[i]->GetIsRePop()) {
+			usedItemNum++;
+		}
+	}
+	return usedItemNum;
+}
+
 int StageManager::GetUsedItem()const {
 	int usedItemNum = 0;
 
 	const std::vector<ItemInfo>& iInfo = infos_[nowStageNum_].itemInfo_;
 	for (size_t i = 0; i < iInfo.size(); i++)
 	{
-		if (items_[i]->GetIsUsed()) {
+		if (items_[i]->GetIsUsed() && !items_[i]->GetIsRePop()) {
 			usedItemNum++;
 		}
 	}

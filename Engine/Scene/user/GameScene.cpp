@@ -34,14 +34,15 @@ void GameScene::Initialize() {
 }
 
 void GameScene::Update() {
-	// 右シフトが押されたら次のシーンへ
-	if (input_->TriggerKey(DIK_RSHIFT)) {
-		BaseScene* nextScene = new TitleScene();
+	// ステージ選択シーンに遷移する場合
+	if (gameManager_->GetIsGoStageSelectScene()) {
+		BaseScene* nextScene = new StageSelectScene();
 		SceneManager::GetInstance()->SetNextScene(nextScene);
 	}
 
-	if (gameManager_->GetIsGoStageSelectScene()) {
-		BaseScene* nextScene = new StageSelectScene();
+	// リトライするなら
+	if (gameManager_->GetIsRetryThisScene()) {
+		BaseScene* nextScene = new GameScene();
 		SceneManager::GetInstance()->SetNextScene(nextScene);
 	}
 
