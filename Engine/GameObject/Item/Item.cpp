@@ -1,5 +1,6 @@
 #include "Item.h"
 #include "../../Resource/Texture/TextureManager.h"
+#include "../../Scene/SceneManager.h"
 
 Item::Item()
 {
@@ -15,6 +16,14 @@ void Item::Initialize(std::string name, Tag tag)
 	// 基底クラス初期化
 	BaseObject::Initialize(name, tag);
 	isActive_ = false;
+
+	// 音再生インスタンス取得
+	audio_ = Audio::GetInstance();
+	// 音量取得
+	seVolume_ = &SceneManager::GetInstance()->seVolume_;
+
+	// アイテム使用時の音
+	soundHandleUseItem_ = audio_->LoadWave("/Audio/SE/ItemSound.wav");
 
 	// 色初期設定
 	color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
@@ -160,6 +169,10 @@ void Item::AirJump()
 	}
 	objects_[0]->SetColor(usedColor_);
 	isJumpEnable_ = false;
+
+	if (!isUsed_ && !isRePop_)
+		audio_->PlayWave(soundHandleUseItem_, false, *seVolume_ * 0.35f);
+
 	isUsed_ = true;
 	rotateT_ = 0;
 }

@@ -93,6 +93,10 @@ void GameManagerObject::Initialize(std::string name, Tag tag)
 	textureHandleTextLeftItem_ = TextureManager::Load("./Resources/Image/Game", "LeftItem.png"); // 残りアイテムテキスト
 	textureHandleSlash_ = TextureManager::Load("./Resources/Image/Game", "Slash.png"); // /テクスチャ
 	textureHandleTextClearPercent_ = TextureManager::Load("./Resources/Image/Game", "ClearPercent.png"); // クリア進捗テキスト
+	textureHandleEsc_N_ = TextureManager::Load("./Resources/Image/Game", "Esc_N.png"); // /テクスチャ
+	textureHandleR_N_ = TextureManager::Load("./Resources/Image/Game", "R_N.png"); // /テクスチャ
+	textureHandleStageSelect_ = TextureManager::Load("./Resources/Image/Game", "StageSelect.png"); // rUI_押してない時
+	textureHandleRestart_ = TextureManager::Load("./Resources/Image/Game", "Restart.png"); // rUI_押してない時
 
 	// UI全体の色リセット
 	spriteUIColor_ = { 1.0f, 1.0f, 1.0f, 0.0f };
@@ -140,6 +144,41 @@ void GameManagerObject::Initialize(std::string name, Tag tag)
 	stageClearCounter_->Initialize(textureHandleNumberSheets_, { 512.0f, 512.0f }, &stageClearPercent_, { 350.0f, 130.0f }, { 48.0f, 48.0f }, -8.0f);
 	stageClearCounter_->SetIsCentered(true);
 	stageClearCounter_->SetIsDispayPercent(true);
+
+	// EscUI
+	escUIPosition_ = { 48.0f, 64.0f }; // 座標
+	escUISize_ = { 64.0f, 64.0f }; // 大きさ
+	escUISprite_.reset(Sprite::Create(
+		textureHandleEsc_N_,
+		&escUIPosition_,
+		&escUISize_,
+		&spriteUIColor_,
+		{ 0.5f, 0.5f })); // 生成
+	stageSelectUIPosition_ = { 144.0f, 64.0f };
+	stageSelectUISprite_.reset(Sprite::Create(
+		textureHandleStageSelect_,
+		&stageSelectUIPosition_,
+		&escUISize_,
+		&spriteUIColor_,
+		{ 0.5f, 0.5f })); // 生成
+
+	// RUI
+	rUIPosition_ = { 48.0f, 160.0f }; // 座標
+	rUISize_ = { 64.0f, 64.0f }; // 大きさ
+	rUISprite_.reset(Sprite::Create(
+		textureHandleR_N_,
+		&rUIPosition_,
+		&rUISize_,
+		&spriteUIColor_,
+		{ 0.5f, 0.5f })); // 生成
+	restartUIPosition_ = { 144.0f, 160.0f }; // 座標
+	restartUISprite_.reset(Sprite::Create(
+		textureHandleRestart_,
+		&restartUIPosition_,
+		&rUISize_,
+		&spriteUIColor_,
+		{ 0.5f, 0.5f })); // 生成
+
 
 }
 
@@ -290,6 +329,10 @@ void GameManagerObject::SpriteDraw()
 	stageItemCounter_->Draw(); // ステージ内の全アイテム個数カウンター
 	stageNowItemCounter_->Draw(); // ステージ内の現在アイテム個数カウンター
 	stageClearCounter_->Draw(); // ステージのクリア進捗カウンター
+	escUISprite_->Draw();
+	stageSelectUISprite_->Draw();
+	rUISprite_->Draw();
+	restartUISprite_->Draw();
 }
 
 void GameManagerObject::AddGlobalVariables()

@@ -1,6 +1,7 @@
 #pragma once
 #include "../BaseObject.h"
 #include "../../Input/Input.h"
+#include "../../Audio/Audio.h"
 
 #include "../../Stage/BaseStage.h"
 
@@ -80,6 +81,14 @@ private: // メンバ変数
 
 	// 自分が何番目の数字なのか
 	//int kIndex_ = 0;
+
+	// 音再生
+	Audio* audio_ = nullptr;
+	// 音量
+	float* seVolume_; // SE
+
+	// アイテム使用時の音
+	uint32_t soundHandleUseItem_;
 
 	// アイテムの当たり判定の半径
 	float radius_ = 1.0f;

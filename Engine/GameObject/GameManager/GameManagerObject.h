@@ -139,6 +139,8 @@ private: // メンバ変数
 	int backStageSelectStagingWayPoint_;
 	bool backStageSelectStaging_;
 	bool isRetry_;
+	float isPressBackButtonTime_; // ボタン長押し検知用
+	float isPressRetryButtonTime_; // ボタン長押し検知用
 
 	// ステージ内全てのアイテム個数
 	int stageItemCount_;
@@ -161,6 +163,10 @@ private: // メンバ変数
 	int32_t textureHandleTextLeftItem_ = 0u; // 残りアイテム数テキスト
 	int32_t textureHandleSlash_ = 0u; // /テクスチャ
 	int32_t textureHandleTextClearPercent_ = 0u; // クリア進捗テキスト
+	int32_t textureHandleEsc_N_ = 0u; // escUI_押してない時
+	int32_t textureHandleR_N_ = 0u; // rUI_押してない時
+	int32_t textureHandleStageSelect_ = 0u; // rUI_押してない時
+	int32_t textureHandleRestart_ = 0u; // rUI_押してない時
 
 	/// UIスプライト群
 
@@ -183,6 +189,20 @@ private: // メンバ変数
 	std::unique_ptr<Counter> stageNowItemCounter_ = nullptr;
 	// 進捗％カウンター
 	std::unique_ptr<Counter> stageClearCounter_ = nullptr;
+
+	// EscUI
+	Vector2 escUIPosition_; // 座標
+	Vector2 escUISize_; // 大きさ
+	std::unique_ptr<Sprite> escUISprite_; // スプライト本体
+	Vector2 stageSelectUIPosition_;
+	std::unique_ptr<Sprite> stageSelectUISprite_; // スプライト本体
+
+	// RUI
+	Vector2 rUIPosition_; // 座標
+	Vector2 rUISize_; // 大きさ
+	std::unique_ptr<Sprite> rUISprite_; // スプライト本体
+	Vector2 restartUIPosition_;
+	std::unique_ptr<Sprite> restartUISprite_; // スプライト本体
 
 	// UIスプライト色
 	Vector4 spriteUIColor_;
