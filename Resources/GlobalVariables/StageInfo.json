@@ -1,6 +1,6 @@
 {
     "StageInfo": {
-        "0:Condition": 150.0,
+        "0:Condition": 100.0,
         "0:isRePop:0": 1,
         "0:isRePop:1": 1,
         "0:isRePop:2": 1,
@@ -45,7 +45,7 @@
             -3.0,
             0.0
         ],
-        "1:Condition": 150.0,
+        "1:Condition": 100.0,
         "1:isRePop:0": 1,
         "1:isRePop:1": 1,
         "1:isRePop:2": 1,
@@ -90,7 +90,7 @@
             -3.0,
             0.0
         ],
-        "2:Condition": 70.0,
+        "2:Condition": 60.0,
         "2:isRePop:0": 1,
         "2:isRePop:1": 1,
         "2:isRePop:2": 0,
@@ -215,14 +215,14 @@
             4.0,
             0.0
         ],
-        "4:Condition": 3714.0,
+        "4:Condition": 40.0,
         "4:isRePop:0": 1,
         "4:isRePop:1": 0,
         "4:isRePop:2": 0,
         "4:isRePop:3": 0,
         "4:isRePop:4": 0,
         "4:isRePop:5": 1,
-        "4:isRePop:6": 1,
+        "4:isRePop:6": 0,
         "4:kMaxCatapultNum": 0,
         "4:kMaxInfoNum": 7,
         "4:popTime:0": 1,
@@ -230,8 +230,8 @@
         "4:popTime:2": 1000,
         "4:popTime:3": 10,
         "4:popTime:4": 10,
-        "4:popTime:5": 10,
-        "4:popTime:6": 10,
+        "4:popTime:5": 1,
+        "4:popTime:6": 1,
         "4:position:0": [
             -1.0,
             -10.0,
