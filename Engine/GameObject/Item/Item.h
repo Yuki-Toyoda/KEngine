@@ -55,6 +55,7 @@ public: // その他関数群
 
 	void SetPosition(const Vector3& pos) { transform_.translate_ = pos; }
 	void SetIsRePop(bool isRePop) { isRePop_ = isRePop; }
+	bool GetIsRePop() { return isRePop_; }
 	void SetPopTime(int32_t popTime) { kPopTime_ = popTime; }
 
 	bool GetJumpEnable()const { return isJumpEnable_; }

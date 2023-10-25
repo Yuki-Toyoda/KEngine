@@ -83,6 +83,11 @@ public: // メンバ関数
 	const int& GetCatapultMax() const { return kMaxCatapult_; }
 
 	/// <summary>
+	/// 全てのリポップしないアイテムを取得する
+	/// </summary>
+	/// <returns>全てのリポップしないアイテム総数</returns>
+	int GetAllItem()const;
+	/// <summary>
 	/// アイテムがいくつ使われているかを取得する
 	/// </summary>
 	int GetUsedItem()const;

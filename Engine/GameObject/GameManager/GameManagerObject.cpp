@@ -74,8 +74,8 @@ void GameManagerObject::Initialize(std::string name, Tag tag)
 	isRetry_ = false;
 
 	// ステージ内のアイテム個数取得
-	stageItemCount_ = (int)stageManager_->GetStageInfo().itemInfo_.size(); // アイテム総数取得
-	stageNowItemCount_ = (int)stageManager_->GetStageInfo().itemInfo_.size(); // 現在のアイテム個数
+	stageItemCount_ = stageManager_->GetAllItem(); // アイテム総数取得
+	stageNowItemCount_ = stageManager_->GetAllItem(); // 現在のアイテム個数
 
 	// ステージクリア進捗(仮置き)
 	stageClearPercent_ = 0;
@@ -167,7 +167,7 @@ void GameManagerObject::Update()
 	// UIの更新
 	stageItemCounter_->Update();
 	stageItemCounter_->color_ = spriteClearUIColor_;
-	stageNowItemCount_ = (int)stageManager_->GetStageInfo().itemInfo_.size() - (int)stageManager_->GetUsedItem(); // 現在のアイテム個数
+	stageNowItemCount_ = (int)stageManager_->GetAllItem() - (int)stageManager_->GetUsedItem(); // 現在のアイテム個数
 	stageNowItemCounter_->Update();
 	stageNowItemCounter_->color_.w = spriteClearUIColor_.w;
 	stageClearCounter_->Update();
@@ -410,6 +410,7 @@ void GameManagerObject::CameraStaging()
 			else {
 				audio_->PlayWave(soundHandleClear_, false, *seVolume_ * 0.3f);
 				objects_[4]->SetTextureHandle(TextureManager::Load("./Resources/Plane", "ClearGage_A.png"));
+				leftItemTextSprite_->SetTextureHandle(TextureManager::Load("./Resources/Image/Game", "LeftClearItem.png"));
 				leftItemTextPosition_ = { 640.0f, 280.0f }; // 座標
 				leftItemTextSize_ = { 426.0f,85.0f };
 				slashPosition_ = { 640.0f, 402.5f }; // 座標
