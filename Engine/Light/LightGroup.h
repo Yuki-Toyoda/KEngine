@@ -73,28 +73,28 @@ public: // メンバ関数
 	/// </summary>
 	/// <param name="index">ライト番号</param>
 	/// <param name="acrive">有効状態</param>
-	void SetDirectionalLightActive(int index, bool active);
+	void SetDirectionalLightActive(int commitIndex, bool active);
 
 	/// <summary>
 	/// 平行光源の角度のセッター
 	/// </summary>
 	/// <param name="index">ライト番号</param>
 	/// <param name="direction">角度</param>
-	void SetDirectionalLightDirection(int index, Vector3 direction);
+	void SetDirectionalLightDirection(int commitIndex, Vector3 direction);
 
 	/// <summary>
 	/// 平行光源の色のセッター
 	/// </summary>
 	/// <param name="index">ライト番号</param>
 	/// <param name="color">色</param>
-	void SetDirectionalLightColor(int index, Vector4 color);
+	void SetDirectionalLightColor(int commitIndex, Vector4 color);
 
 	/// <summary>
 	/// 平行高原の輝度のセッター
 	/// </summary>
 	/// <param name="index"></param>
 	/// <param name="intensity"></param>
-	void SetDirectionalLightIntensity(int index, float intensity);
+	void SetDirectionalLightIntensity(int commitIndex, float intensity);
 
 private: // メンバ変数
 

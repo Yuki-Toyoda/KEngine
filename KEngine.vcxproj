@@ -102,12 +102,18 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\externals\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Engine\GameObject\Ambient\Ambient.cpp" />
     <ClCompile Include="Engine\GameObject\BaseObject.cpp" />
-    <ClCompile Include="Engine\GameObject\Box\Box.cpp" />
     <ClCompile Include="Engine\GameObject\Camera\Camera.cpp" />
-    <ClCompile Include="Engine\GameObject\Camera\TPCamera.cpp" />
+    <ClCompile Include="Engine\GameObject\Catapult\Catapult.cpp" />
+    <ClCompile Include="Engine\GameObject\GameManager\GameManagerObject.cpp" />
     <ClCompile Include="Engine\GameObject\GameObjectManager.cpp" />
+    <ClCompile Include="Engine\GameObject\Item\Item.cpp" />
     <ClCompile Include="Engine\GameObject\Player\Player.cpp" />
-    <ClCompile Include="Engine\GameObject\Stage\Floor.cpp" />
+    <ClCompile Include="Engine\GameObject\Samples\Box\SampleBox.cpp" />
+    <ClCompile Include="Engine\GameObject\Samples\Player\SamplePlayer.cpp" />
+    <ClCompile Include="Engine\GameObject\Samples\Stage\SampleFloor.cpp" />
+    <ClCompile Include="Engine\GameObject\Samples\TPCamera\TPCamera.cpp" />
+    <ClCompile Include="Engine\GameObject\StageSelectManager\StageSelectManagerObject.cpp" />
+    <ClCompile Include="Engine\GameObject\TitleManager\TitleManagerObject.cpp" />
     <ClCompile Include="Engine\GameObject\WorldTransform.cpp" />
     <ClCompile Include="Engine\GlobalVariables\GlobalVariables.cpp" />
     <ClCompile Include="Engine\Input\Input.cpp" />
@@ -118,8 +124,17 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Resource\Texture\TextureManager.cpp" />
     <ClCompile Include="Engine\Scene\SceneManager.cpp" />
     <ClCompile Include="Engine\Scene\user\GameScene.cpp" />
+    <ClCompile Include="Engine\Scene\user\StageSelectScene.cpp" />
     <ClCompile Include="Engine\Scene\user\TitleScene.cpp" />
     <ClCompile Include="Engine\Sprite\Sprite.cpp" />
+    <ClCompile Include="Engine\Sprite\template\AnimationSprite.cpp" />
+    <ClCompile Include="Engine\Sprite\template\Counter.cpp" />
+    <ClCompile Include="Engine\Sprite\template\Gage.cpp" />
+    <ClCompile Include="Engine\Sprite\template\Timer.cpp" />
+    <ClCompile Include="Engine\Stage\BaseStage.cpp" />
+    <ClCompile Include="Engine\Stage\StageManager.cpp" />
+    <ClCompile Include="Engine\Stage\user\Stage.cpp" />
+    <ClCompile Include="Engine\Stage\user\DebugStage.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -145,13 +160,20 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\externals\imgui\imstb_truetype.h" />
     <ClInclude Include="Engine\GameObject\Ambient\Ambient.h" />
     <ClInclude Include="Engine\GameObject\BaseObject.h" />
-    <ClInclude Include="Engine\GameObject\Box\Box.h" />
     <ClInclude Include="Engine\GameObject\Camera\Camera.h" />
-    <ClInclude Include="Engine\GameObject\Camera\TPCamera.h" />
+    <ClInclude Include="Engine\GameObject\Catapult\Catapult.h" />
+    <ClInclude Include="Engine\GameObject\GameManager\GameManagerObject.h" />
     <ClInclude Include="Engine\GameObject\GameObjectManager.h" />
+    <ClInclude Include="Engine\GameObject\Item\Item.h" />
     <ClInclude Include="Engine\GameObject\ObjectList.h" />
     <ClInclude Include="Engine\GameObject\Player\Player.h" />
-    <ClInclude Include="Engine\GameObject\Stage\Floor.h" />
+    <ClInclude Include="Engine\GameObject\SampleList.h" />
+    <ClInclude Include="Engine\GameObject\Samples\Box\SampleBox.h" />
+    <ClInclude Include="Engine\GameObject\Samples\Player\SamplePlayer.h" />
+    <ClInclude Include="Engine\GameObject\Samples\Stage\SampleFloor.h" />
+    <ClInclude Include="Engine\GameObject\Samples\TPCamera\TPCamera.h" />
+    <ClInclude Include="Engine\GameObject\StageSelectManager\StageSelectManagerObject.h" />
+    <ClInclude Include="Engine\GameObject\TitleManager\TitleManagerObject.h" />
     <ClInclude Include="Engine\GameObject\WorldTransform.h" />
     <ClInclude Include="Engine\GlobalVariables\GlobalVariables.h" />
     <ClInclude Include="Engine\Input\Input.h" />
@@ -169,9 +191,19 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Scene\SceneManager.h" />
     <ClInclude Include="Engine\Scene\user\GameScene.h" />
     <ClInclude Include="Engine\Scene\user\SceneList.h" />
+    <ClInclude Include="Engine\Scene\user\StageSelectScene.h" />
     <ClInclude Include="Engine\Scene\user\TitleScene.h" />
     <ClInclude Include="Engine\Sprite\Sprite.h" />
     <ClInclude Include="Engine\Sprite\SpriteList.h" />
+    <ClInclude Include="Engine\Sprite\template\AnimationSprite.h" />
+    <ClInclude Include="Engine\Sprite\template\Counter.h" />
+    <ClInclude Include="Engine\Sprite\template\Gage.h" />
+    <ClInclude Include="Engine\Sprite\template\Timer.h" />
+    <ClInclude Include="Engine\Stage\BaseStage.h" />
+    <ClInclude Include="Engine\Stage\StageManager.h" />
+    <ClInclude Include="Engine\Stage\user\Stage.h" />
+    <ClInclude Include="Engine\Stage\user\DebugStage.h" />
+    <ClInclude Include="Engine\Stage\user\StageList.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\externals\imgui\.editorconfig" />
@@ -205,12 +237,12 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Engine\externals\imgui\LICENSE.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="Engine\externals\DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">
       <Project>{371b9fa9-4c90-4ac6-a123-aced756d6c77}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Engine\externals\imgui\LICENSE.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

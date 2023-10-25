@@ -1,16 +1,17 @@
 #pragma once
 #include "../BaseObject.h"
 #include "../../Input/Input.h"
-
-// クラスの前方宣言
-class TPCamera;
+#include "../../Audio/Audio.h"
 
 /// <summary>
 /// プレイヤー
 /// </summary>
-class MyPlayer : public BaseObject
+class Player : public BaseObject
 {
 public: // メンバ関数
+
+	Player();
+	~Player() override;
 
 	// 固有の初期化処理
 	void Initialize(std::string name, Tag tag) override;
@@ -50,30 +51,54 @@ public: // その他関数群
 	void OnCollisionExit(BaseObject* object) override;
 
 	/// <summary>
-	/// 追従カメラセッター
+	/// 操作可能状態のセッター
 	/// </summary>
-	/// <param name="tpCamera">追従カメラ</param>
-	void SetTPCamera(TPCamera* tpCamera) { tpCamera_ = tpCamera; }
+	/// <param name="isGetOperation">操作可能か</param>
+	void SetIsGetOperation(bool isGetOperation) { isGetOperation_ = isGetOperation; }
 
 	/// <summary>
-	/// 浮遊ギミック初期化関数
+	/// 加算する回転角のゲッター
 	/// </summary>
-	void InitializeFloatingGimmick();
+	/// <returns>加算する回転角</returns>
+	float GetAddGearSpeedLimit() { return addGearSpeedLimit_; }
 
-	/// <summary>
-	/// 浮遊ギミック更新関数
-	/// </summary>
-	void UpdateFloatingGimmick();
+private: // メンバ関数
 
-	/// <summary>
-	/// 腕振りギミック初期化
-	/// </summary>
-	void InitializeArmSwingGimmick();
+	// 作成した関数等の初期化
+	void InitializeVariables();
 
-	/// <summary>
-	/// 腕振りギミック更新処理
-	/// </summary>
-	void UpdateArmSwingGimmick();
+	// 操作すべてを取る
+	void GetOperation();
+	// プレイヤー自身の更新
+	void UpdatePlayer();
+	// 歯車自体の更新
+	void UpdateGear();
+
+	// 回転中のプレイヤーの位置の補正
+	void UpdatePlayerRotate();
+
+	// 回転速度を回転角に変換する関数
+	float ConvertSpeedToRadian(float rotateSpeed);
+
+	// 角度からどちらに回転するかを取得する
+	void CheckDirectionRotate();
+	// 歯車のどの位置に着くかを決める
+	void CheckGearCollision();
+
+	// 空中でジャンプする関数
+	void AirJump();
+	void CatapultJump();
+
+public:
+
+	float& GetGearRotateSpeed() { return gearRotateSpeed_; }
+
+	const float& GetGearTheta() const { return gearTheta_; }
+
+	WorldTransform& GetGearTransform() { return gearTransform_; }
+
+	// デバッグ時にのみ動くGUI
+	void DebugGui();
 
 private: // メンバ変数
 
@@ -83,48 +108,148 @@ private: // メンバ変数
 	XINPUT_STATE joyState_; // 現在フレーム用
 	XINPUT_STATE preJoyState_; // 前フレーム用
 
-	TPCamera* tpCamera_ = nullptr;
+	// 音再生
+	Audio* audio_ = nullptr;
+	// 音量
+	float* seVolume_; // SE
 
-	// ワールド座標
-	WorldTransform bodyTransform_; // 体
-	WorldTransform headTransform_; // 頭
-	WorldTransform armTransform_L_; // 左腕
-	WorldTransform armTransform_R_; // 右腕
+	// 効果音
+	uint32_t soundHandleRotateGear_[5]; // ギアの回転音
+	int playIndex_; // 再生するインデックス
+	bool isReturn_; // リターントリガー
+	float playSoundAmountRotation_; // ギアの回転量
+	float kPlaySoundRotation_; // ギアの最大回転量
+	uint32_t soundHandleJump_; // ジャンプ音
+	uint32_t soundHandleItemJump_; // アイテムでのジャンプ音
+	uint32_t soundHandleCatchCatapult_; // カタパルトにはまった時の音
+	bool playCatchSound_; // カタパルトに入ったときの音再生トリガー
+	uint32_t soundHandleJumpCatapult_; // カタパルトのジャンプ音
 
-	// 移動時の目標角度
-	float targetAngle_;
+	/*--------------------------//
+	//	プレイヤー自体の変数		//
+	//--------------------------*/
 
-	// 接地判定
-	bool isLanding_;
-	// 最大落下速度
-	float kMaxFallSpeed_;
-	// 現在落下速度
-	float fallSpeed_;
-	// 落下加速度
-	float kFallAcceleration_;
+	// 操作を受け付けるか
+	bool isGetOperation_;
 
-	// ジャンプできるか
-	bool canJump_;
-	// ジャンプ速度
-	float jumpSpeed_;
-	// 最大ジャンプ高度
-	float kMaxJumpHeight_;
-	// ジャンプ減衰速度
-	float kJumpDecayRate_;
+	// プレイヤーの最大移動速度
+	float kMaxPlayerVelocity_ = 0;
 
-	// 浮遊移動サイクル
-	int32_t floatingCycle_;
-	// 浮遊の振幅
-	float floatingAmpritude_;
-	// 浮遊ギミック用媒介変数
-	float floatingParameter_;
+	// プレイヤーにかかる重力
+	float kGravity_ = 0;
 
-	// 腕振りサイクル
-	int32_t armSwingCycle_;
-	// 腕振りギミック用変数
-	float armSwingParameter_;
+	// プレイヤーの落下方向
+	Vector3 kFallDirection_ = { 0.0f,-1.0f,0.0f };
 
-	bool onCollision_;
+	// ジャンプするときの中心からの差異
+	Vector3 kJumpPoint_ = { 0.0f,0.0f,0.0f };
+
+	// 歯車からのジャンプ力
+	float kPlayerJumpPower_ = 0;
+
+	// 当たり判定 Sphere の半径
+	float radius_ = 1.0f;
+
+	// プレイヤーの移動速度
+	Vector3 playerVelocity_ = { 0,0,0 };
+	Vector3 playerAcceleration_ = { 0,0,0 };
+
+	// プレイヤーのいる角度
+	float playerTheta_ = 0;
+
+	/*------------------//
+	//	歯車自体の変数		//
+	//------------------*/
+
+	// 歯車の回転の最高速度
+	float kMaxGearRotateSpeed_ = 0;
+
+	// 歯車が回転するときの最低値
+	float kMinGearRollSpeed_ = 0;
+
+	// 歯車の抵抗力
+	//float kGearFriction_ = 0;
+
+	// 歯車の振り子する幅
+	float kGearAmplitude = 0;
+
+	// 歯車の減少率
+	float kGearDecreaseRate_ = 0.90f;
+
+	// 歯車の内円の半径
+	float kGearInnerRadius_;
+
+	// 振り子範囲に入った時の速度最低値
+	float kMinGearPendulumSpeed_ = 0.0f;
+
+	// 歯車用のトランスフォーム
+	WorldTransform gearTransform_;
+
+	// 歯車の回転角取得用
+	float& gearTheta_;
+
+	// 歯車の色
+	Vector4 gearColor_;
+
+	// 歯車の回転速度
+	float gearRotateSpeed_;
+
+	// 歯車の加算の割合
+	float gearRollRatio_ = 1.0f;
+
+	// 歯車の回転量にプラスするリミット
+	float addGearSpeedLimit_;
+
+	/*--------------//
+	//	その他の変数	//
+	//--------------*/
+
+	float kAirJumpPower_ = 0;
+
+	float kCatapultPower_ = 0;
+
+	/*--------------------------------------//
+	//	フラグによって操作も管理するために、		//
+	//	一度クッションをはさむ					//
+	//--------------------------------------*/
+
+	// ジャンプするかどうかのフラグ
+	bool isJumpTrigger_ = false;
+
+	// 歯車と設置しているかどうか
+	bool isLanding_ = false;
+
+	// 歯車の回転方向
+	// 右回転 : true, 左回転 : false
+	bool isLandLeft_ = true;
+
+	// 振り子する範囲に入っていたかどうか
+	bool isPendulum_ = false;
+	// 振り子するためのバッファ
+	bool wasRotateRight_ = true;
+
+	// 重力が働くか否か
+	bool isCatapult_ = false;
+
+	// カタパルトに位置を合わせるか
+	bool isCorrection_ = true;
+
+	/*------------------//
+	//	デバッグ用の変数	//
+	//------------------*/
+
+#ifdef _DEBUG
+
+	bool isUpdateRotate = false;
+
+
+#endif // _DEBUG
+
 
 };
 
+/*	作る処理
+* ・回転方法を角度そのままではなく、回転力から回転する角度へと変換してから回転させる
+* ・歯車についていない時の挙動が可笑しいので直す
+*
+*/

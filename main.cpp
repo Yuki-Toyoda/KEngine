@@ -29,7 +29,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// ウィンドウズアプリケーションクラスのインスタンスを取得
 	winApp = WinApp::GetInstance();
 	// ゲームウィンドウを生成する
-	winApp->CreateGameWindow(L"KEngine");
+	winApp->CreateGameWindow(L"2109_サイクロステップ");
 
 	// DirectX汎用クラスのインスタンスを取得
 	dxCommon = DirectXCommon::GetInstance();
@@ -60,6 +60,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	TextureManager::GetInstance()->Intialize(dxCommon->GetDevice());
 	// サンプルテクスチャロード
 	TextureManager::Load("white1x1.png");
+	TextureManager::Load("./Engine/Resource/Samples/Texture", "ColorSample.png");
+	TextureManager::Load("./Engine/Resource/Samples/Texture", "AlphabetSheet.png");
 
 	// グローバル変数の読み込み
 	GlobalVariables::GetInstance()->LoadFiles();
@@ -74,6 +76,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// シーンマネージャ初期化
 	sceneManager = SceneManager::GetInstance();
 	sceneManager->Initialize();
+
 
 	// メインループ
 	while (true) {

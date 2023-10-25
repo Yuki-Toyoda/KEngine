@@ -33,7 +33,7 @@ public: // メンバ関数
 	/// <param name="descriptorSize">ディスクリプタサイズ</param>
 	/// <param name="index">取得するヒープのインデックス</param>
 	/// <returns>特定のインデックスのディスクリプタハンドル</returns>
-	D3D12_CPU_DESCRIPTOR_HANDLE GetCPUDescriptorHandle(ID3D12DescriptorHeap* descriptorHeap, uint32_t descriptorSize, uint32_t index);
+	D3D12_CPU_DESCRIPTOR_HANDLE GetCPUDescriptorHandle(ID3D12DescriptorHeap* descriptorHeap, uint32_t descriptorSize, uint32_t commitIndex);
 
 	/// <summary>
 	/// 特定のインデックスのディスクリプタハンドルを取得する関数(GPU)
@@ -42,14 +42,21 @@ public: // メンバ関数
 	/// <param name="descriptorSize">ディスクリプタサイズ</param>
 	/// <param name="index">取得するヒープのインデックス</param>
 	/// <returns>特定のインデックスのディスクリプタハンドル</returns>
-	D3D12_GPU_DESCRIPTOR_HANDLE GetGPUDescriptorHandle(ID3D12DescriptorHeap* descriptorHeap, uint32_t descriptorSize, uint32_t index);
+	D3D12_GPU_DESCRIPTOR_HANDLE GetGPUDescriptorHandle(ID3D12DescriptorHeap* descriptorHeap, uint32_t descriptorSize, uint32_t commitIndex);
 
 	/// <summary>
 	/// テクスチャのロード関数
 	/// </summary>
-	/// <param name="fileName">テクスチャまでのファイルパス</param>
+	/// <param name="fileName">テクスチャ名</param>
 	/// <returns>テクスチャハンドル</returns>
 	static uint32_t Load(const std::string& fileName);
+	/// <summary>
+	/// テクスチャのロード関数
+	/// </summary>
+	/// <param name="directoryPath">テクスチャまでのファイルパス</param>
+	/// <param name="fileName">テクスチャ名</param>
+	/// <returns>テクスチャハンドル</returns>
+	static uint32_t Load(const std::string& directoryPath, const std::string& fileName);
 
 	/// <summary>
 	/// インスタンス取得関数
@@ -111,8 +118,6 @@ private: // メンバ変数
 	ID3D12Device* device_;
 	// ディスクリプタサイズ
 	UINT sDescriptorHandleIncrementSize_ = 0u;
-	// ディレクトリパス
-	std::string directoryPath_;
 	// ディスクリプタヒープ
 	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> descriptorHeap_;
 	// 次に使うディスクリプタヒープの番号
@@ -123,9 +128,10 @@ private: // メンバ変数
 	/// <summary>
 	/// ポインタでロードしたテクスチャを静的なテクスチャに変更する関数
 	/// </summary>
+	/// <param name="directoryPath">テクスチャまでのファイルパス</param>
 	/// <param name="fileName">テクスチャまでのファイルパス</param>
 	/// <returns>静的なテクスチャ</returns>
-	uint32_t LoadInternal(const std::string& fileName);
+	uint32_t LoadInternal(const std::string& directoryPath, const std::string& fileName);
 
 };
 

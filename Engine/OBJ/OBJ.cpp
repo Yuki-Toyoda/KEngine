@@ -412,13 +412,15 @@ OBJ::OBJ(Vector4 color)
 {
 	transform_->Initialize();
 	color_ = color;
+	uvTransform_.Initialize();
 }
 
-OBJ::OBJ( WorldTransform* transform, Vector4 color)
+OBJ::OBJ(WorldTransform* transform, Vector4 color)
 {
 	// 引数の値をメンバ変数に代入
 	transform_ = transform;
 	color_ = color;
+	uvTransform_.Initialize();
 }
 
 bool OBJ::Initialize(const std::string& directoryPath, const std::string& fileName)
@@ -432,7 +434,7 @@ bool OBJ::Initialize(const std::string& directoryPath, const std::string& fileNa
 	// モデルデータ読み込み
 	myModelData_ = ModelManager::GetInstance()->LoadModel(directoryPath, fileName);
 
-	textureHandle_ = TextureManager::Load(myModelData_.material.textureFilePath);
+	textureHandle_ = TextureManager::Load(directoryPath, myModelData_.material.textureFilePath);
 
 	// テクスチャのリソース情報を取得
 	resourceDesc_ = TextureManager::GetInstance()->GetResourceDesc(textureHandle_);
@@ -480,7 +482,7 @@ void OBJ::Draw()
 	// 行列変換
 	Matrix4x4 worldMatrix = transform_->GetMatWorld();
 
-	if(ViewProjectionMatrix_ != nullptr)
+	if (ViewProjectionMatrix_ != nullptr)
 		matWorld_ = worldMatrix * *ViewProjectionMatrix_;
 	else
 		matWorld_ = worldMatrix;
@@ -490,6 +492,7 @@ void OBJ::Draw()
 	// 行列を設定
 	constMap_->mat = matWorld_;
 	constMap_->world = worldMatrix;
+	constMap_->uvTransform = uvTransform_.GetMatWorld();
 
 	// 頂点バッファの設定
 	sCommandList_->IASetVertexBuffers(0, 1, &vbView_);
@@ -501,6 +504,12 @@ void OBJ::Draw()
 
 	// 描画コマンド
 	sCommandList_->DrawInstanced((UINT)myModelData_.vertices.size(), 1, 0, 0);
+}
+
+void OBJ::SetTextureHandle(uint32_t textureHandle)
+{
+	textureHandle_ = textureHandle;
+	resourceDesc_ = TextureManager::GetInstance()->GetResourceDesc(textureHandle_);
 }
 
 void OBJ::TransferVertices()

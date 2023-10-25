@@ -7,22 +7,28 @@
 using namespace Microsoft::WRL;
 using namespace DirectX;
 
-D3D12_CPU_DESCRIPTOR_HANDLE TextureManager::GetCPUDescriptorHandle(ID3D12DescriptorHeap* descriptorHeap, uint32_t descriptorSize, uint32_t index) {
+D3D12_CPU_DESCRIPTOR_HANDLE TextureManager::GetCPUDescriptorHandle(ID3D12DescriptorHeap* descriptorHeap, uint32_t descriptorSize, uint32_t commitIndex) {
 	D3D12_CPU_DESCRIPTOR_HANDLE handleCPU = descriptorHeap->GetCPUDescriptorHandleForHeapStart();
-	handleCPU.ptr += (descriptorSize * index);
+	handleCPU.ptr += (descriptorSize * commitIndex);
 	return handleCPU;
 }
 
-D3D12_GPU_DESCRIPTOR_HANDLE TextureManager::GetGPUDescriptorHandle(ID3D12DescriptorHeap* descriptorHeap, uint32_t descriptorSize, uint32_t index) {
+D3D12_GPU_DESCRIPTOR_HANDLE TextureManager::GetGPUDescriptorHandle(ID3D12DescriptorHeap* descriptorHeap, uint32_t descriptorSize, uint32_t commitIndex) {
 	D3D12_GPU_DESCRIPTOR_HANDLE handleGPU = descriptorHeap->GetGPUDescriptorHandleForHeapStart();
-	handleGPU.ptr += (descriptorSize * index);
+	handleGPU.ptr += (descriptorSize * commitIndex);
 	return handleGPU;
 }
 
 uint32_t TextureManager::Load(const std::string& fileName)
 {
 	// テクスチャロード -> テクスチャハンドルを返す
-	return TextureManager::GetInstance()->LoadInternal(fileName);
+	return TextureManager::GetInstance()->LoadInternal("Resources", fileName);
+}
+
+uint32_t TextureManager::Load(const std::string& directoryPath, const std::string& fileName)
+{
+	// テクスチャロード -> テクスチャハンドルを返す
+	return TextureManager::GetInstance()->LoadInternal(directoryPath, fileName);
 }
 
 TextureManager* TextureManager::GetInstance()
@@ -38,8 +44,6 @@ void TextureManager::Intialize(ID3D12Device* device, std::string directoryPath)
 	
 	// 引数をメンバ変数に代入
 	device_ = device;
-	directoryPath_ = directoryPath;
-
 	// ディスクリプタハンドルのサイズを取得する
 	sDescriptorHandleIncrementSize_ =
 		device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
@@ -122,7 +126,7 @@ void TextureManager::SetGraphicsDescriptorTable(ID3D12GraphicsCommandList* comma
 	);
 }
 
-uint32_t TextureManager::LoadInternal(const std::string& fileName)
+uint32_t TextureManager::LoadInternal(const std::string& directoryPath, const std::string& fileName)
 {
 	// 次のディスクリプタヒープの番号が最大サイズを超過していないか確認
 	assert(indexNextDescriptorHeap_ < kDescriptorSize);
@@ -134,7 +138,7 @@ uint32_t TextureManager::LoadInternal(const std::string& fileName)
 	auto it = std::find_if(textures_.begin(), textures_.end(), [&](const auto& texture) {
 		// 発見できた場合ファイル名をそのまま返す
 		return texture.name == fileName;
-	});
+		});
 	// コンテナ内にテクスチャが存在すればそのハンドルを返す
 	if (it != textures_.end()) {
 		// テクスチャハンドルを返す
@@ -146,13 +150,8 @@ uint32_t TextureManager::LoadInternal(const std::string& fileName)
 	Texture& texture = textures_.at(handle);
 	texture.name = fileName;
 
-	// . と / がファイルパス内に含まれているか確認
-	bool currentRelative = false;
-	if (2 < fileName.size()) {
-		currentRelative = (fileName[0] == '.' && (fileName[1] == '.'));
-	}
 	// 含まれていた場合は .　と / を含めたフルパスを入れる
-	std::string fullPath = currentRelative ? fileName : directoryPath_ + fileName;
+	std::string fullPath = directoryPath + "/" + fileName;
 
 	// ファイルパスをユニコード文字列に変換する
 	wchar_t wfilePath[256];

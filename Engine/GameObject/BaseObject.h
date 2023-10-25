@@ -21,6 +21,8 @@ public: // サブクラス
 	{
 		tagCamera, // カメラ
 		tagPlayer, // プレイヤー
+		tagItem, // アイテム
+		tagCatapult, // カタパルト
 		tagEnemy, // 敵
 		tagFloor, // 床
 		tagOther, // その他
@@ -60,6 +62,11 @@ public: // アクセッサ等
 	/// </summary>
 	void Destroy() { isDestroy_ = true; }
 
+	/// <summary>
+	/// 表示状態セッター
+	/// </summary>
+	/// <param name="isActive">設定する表示状態</param>
+	void SetIsActive(bool isActive) { isActive_ = isActive; }
 	/// <summary>
 	/// 表示状態ゲッター
 	/// </summary>
@@ -105,6 +112,12 @@ public: // アクセッサ等
 	/// </summary>
 	/// <returns>衝突判定</returns>
 	Collider* GetCollider() { return collider_.get(); }
+
+	/// <summary>
+	/// 色のセッター
+	/// </summary>
+	/// <param name="color">色</param>
+	void SetColor(Vector4 color) { color_ = color; }
 
 public: // その他関数群
 

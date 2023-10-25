@@ -7,7 +7,7 @@ void Ambient::Initialize(std::string name, Tag tag)
 	isActive_ = true;
 
 	// モデル読み込み
-	AddOBJ(&transform_, color_, "./Resources", "SkyDome.obj",false);
+	AddOBJ(&transform_, color_, "./Engine/Resource/Samples/SkyDome", "SkyDome.obj",false);
 
 	// グローバル変数に調整したい値を追加
 	AddGlobalVariables();
@@ -17,6 +17,8 @@ void Ambient::Update()
 {
 	// 基底クラス更新
 	BaseObject::Update();
+
+	transform_.rotate_.y += 0.001f;
 }
 
 void Ambient::Draw()

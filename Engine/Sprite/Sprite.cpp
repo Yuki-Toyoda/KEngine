@@ -120,6 +120,14 @@ void Sprite::StaticInitialize(ID3D12Device* device, int windowWidth, int windowH
 	// 全ての色要素を書き込む
 	blendDesc.RenderTarget[0].RenderTargetWriteMask =
 		D3D12_COLOR_WRITE_ENABLE_ALL;
+	// ノーマルブレンドの設定
+	blendDesc.RenderTarget[0].BlendEnable = true; // ブレンド有効
+	blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
+	blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
+	blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
+	blendDesc.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ONE;
+	blendDesc.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
+	blendDesc.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ZERO;
 
 	// ラスタライザステートの設定を行う
 	D3D12_RASTERIZER_DESC rasterrizerDesc{};
@@ -218,17 +226,8 @@ void Sprite::PostDraw()
 	Sprite::sCommandList_ = nullptr;
 }
 
-Sprite* Sprite::Create(uint32_t textureHandle, Vector2 position, Vector4 color, Vector2 anchorPoint)
+Sprite* Sprite::Create(uint32_t textureHandle, Vector2* position, Vector2* size, Vector4* color, Vector2 anchorPoint)
 {
-	// 仮サイズ設定
-	Vector2 size = { 100.0f, 100.0f };
-
-	// テクスチャの情報を取得
-	const D3D12_RESOURCE_DESC& resDesc =
-		TextureManager::GetInstance()->GetResourceDesc(textureHandle);
-	// 三角形のサイズをテクスチャサイズに設定
-	size = { (float)resDesc.Width, (float)resDesc.Height };
-
 	// スプライトのインスタンスを生成する
 	Sprite* sprite =
 		new Sprite(textureHandle, position, size, color, anchorPoint);
@@ -380,7 +379,7 @@ Microsoft::WRL::ComPtr<ID3D12Resource> Sprite::CreateBufferResource(ID3D12Device
 
 Sprite::Sprite(){}
 
-Sprite::Sprite(uint32_t textureHandle, Vector2 position, Vector2 size, Vector4 color, Vector2 anchorPoint)
+Sprite::Sprite(uint32_t textureHandle, Vector2* position, Vector2* size, Vector4* color, Vector2 anchorPoint)
 {
 	// 引数の値をメンバ変数に代入する
 	position_ = position;
@@ -389,7 +388,13 @@ Sprite::Sprite(uint32_t textureHandle, Vector2 position, Vector2 size, Vector4 c
 	matWorld_ = Math::MakeIdentity4x4();
 	color_ = color;
 	textureHandle_ = textureHandle;
-	texSize_ = size;
+	texBase_ = { 0.0f, 0.0f };
+	// テクスチャの情報を取得
+	const D3D12_RESOURCE_DESC& resDesc =
+		TextureManager::GetInstance()->GetResourceDesc(textureHandle);
+	// 三角形のサイズをテクスチャサイズに設定
+	Vector2 texSize = { (float)resDesc.Width, (float)resDesc.Height };
+	texSize_ = texSize;
 }
 
 bool Sprite::Initialize()
@@ -434,12 +439,15 @@ bool Sprite::Initialize()
 void Sprite::Draw()
 {
 
+	// 頂点更新
+	TransferVertices();
+
 	matWorld_ = Math::MakeIdentity4x4();
 	matWorld_ = matWorld_ * Math::MakeRotateZMatrix(rotation_);
-	matWorld_ = matWorld_ * Math::MakeTranslateMatrix({ position_.x, position_.y, 0.0f });
+	matWorld_ = matWorld_ * Math::MakeTranslateMatrix({ position_->x, position_->y, 0.0f });
 
 	// 色を設定
-	constMap_->color = color_;
+	constMap_->color = *color_;
 	// 行列を設定
 	constMap_->mat = matWorld_ * sMatProjection_;
 	//constMap_->mat = matWorld_;
@@ -473,10 +481,10 @@ void Sprite::TransferVertices()
 	};
 
 	// 4頂点の座標を設定
-	float left = (0.0f - anchorPoint_.x) * size_.x;
-	float right = (1.0f - anchorPoint_.x) * size_.x;
-	float top = (0.0f - anchorPoint_.y) * size_.y;
-	float bottom = (1.0f - anchorPoint_.y) * size_.y;
+	float left = (0.0f - anchorPoint_.x) * size_->x;
+	float right = (1.0f - anchorPoint_.x) * size_->x;
+	float top = (0.0f - anchorPoint_.y) * size_->y;
+	float bottom = (1.0f - anchorPoint_.y) * size_->y;
 
 	// 頂点データ
 	VertexData vertices[kVertexNum];
@@ -486,10 +494,15 @@ void Sprite::TransferVertices()
 	vertices[RB].position = { right, bottom, 0.0f, 1.0f }; // 右下
 	vertices[RT].position = { right, top, 0.0f, 1.0f };    // 右上
 
-	vertices[LB].uv = { 0.0f, 1.0f };  // 左下
-	vertices[LT].uv = { 0.0f, 0.0f };     // 左上
-	vertices[RB].uv = { 1.0f, 1.0f }; // 右下
-	vertices[RT].uv = { 1.0f, 0.0f };    // 右上
+	float tex_left = texBase_.x / resourceDesc_.Width;
+	float tex_right = (texBase_.x + texSize_.x) / resourceDesc_.Width;
+	float tex_top = texBase_.y / resourceDesc_.Height;
+	float tex_bottom = (texBase_.y + texSize_.y) / resourceDesc_.Height;
+
+	vertices[LB].uv = { tex_left, tex_bottom };  // 左下
+	vertices[LT].uv = { tex_left, tex_top };     // 左上
+	vertices[RB].uv = { tex_right, tex_bottom }; // 右下
+	vertices[RT].uv = { tex_right, tex_top };    // 右上
 
 	// 頂点バッファへのデータ転送
 	memcpy(vertMap_, vertices, sizeof(vertices));

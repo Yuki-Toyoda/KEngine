@@ -7,12 +7,16 @@
 #include "../GameObject/ObjectList.h"
 #include "../Sprite/SpriteList.h"
 #include "../Input/Input.h"
+#include "../Stage/StageManager.h"
 
 /// <summary>
 /// 基底シーン
 /// </summary>
 class BaseScene {
 public: // 共通メンバ関数
+
+	// 仮想デストラクタ
+	virtual ~BaseScene() = default;
 
 	/// <summary>
 	/// 共通初期化関数
@@ -45,10 +49,6 @@ public: // メンバ関数
 	virtual void Update() = 0;
 
 public: // パブリックなメンバ変数
-
-	// 次のシーン
-	// 代入値がnullptrの場合はシーン遷移しない
-	BaseScene* nextScene_ = nullptr;
 
 	// ゲームオブジェクトマネージャー
 	GameObjectManager* gameObjectManager_ = nullptr;

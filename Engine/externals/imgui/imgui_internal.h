@@ -1207,7 +1207,7 @@ struct ImGuiPtrOrIndex
     int         Index;          // Usually index in a main pool.
 
     ImGuiPtrOrIndex(void* ptr)  { Ptr = ptr; Index = -1; }
-    ImGuiPtrOrIndex(int index)  { Ptr = NULL; Index = index; }
+    ImGuiPtrOrIndex(int commitIndex)  { Ptr = NULL; Index = commitIndex; }
 };
 
 //-----------------------------------------------------------------------------

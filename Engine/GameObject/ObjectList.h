@@ -5,9 +5,10 @@
 
 #include "WorldTransform.h"
 #include "BaseObject.h"
-#include "Box/Box.h"
 #include "Camera/Camera.h"
-#include "Camera/TPCamera.h"
 #include "Ambient/Ambient.h"
 #include "Player/Player.h"
-#include "Stage/Floor.h"
+#include "Item/Item.h"
+#include "TitleManager/TitleManagerObject.h"
+#include "StageSelectManager/StageSelectManagerObject.h"
+#include "GameManager/GameManagerObject.h"
