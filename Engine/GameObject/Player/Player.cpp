@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "../Item/Item.h"
 #include "../Catapult/Catapult.h"
+#include "../../Scene/SceneManager.h"
 
 Player::Player() : gearTheta_(gearTransform_.rotate_.z)
 {
@@ -22,6 +23,27 @@ void Player::Initialize(std::string name, Tag tag)
 	// コントローラー入力取得
 	input_->GetJoystickState(0, joyState_); // 現在フレームの入力取得
 	preJoyState_ = joyState_; // 前フレームの入力取得
+
+	// 音再生インスタンス取得
+	audio_ = Audio::GetInstance();
+	// 音量取得
+	seVolume_ = &SceneManager::GetInstance()->seVolume_;
+
+	// 効果音読み込み
+	soundHandleRotateGear_[0] = audio_->LoadWave("/Audio/SE/RotateGear_0.8.wav"); // ギアの回転音
+	soundHandleRotateGear_[1] = audio_->LoadWave("/Audio/SE/RotateGear_0.9.wav"); // ギアの回転音
+	soundHandleRotateGear_[2] = audio_->LoadWave("/Audio/SE/RotateGear_1.0.wav"); // ギアの回転音
+	soundHandleRotateGear_[3] = audio_->LoadWave("/Audio/SE/RotateGear_1.1.wav"); // ギアの回転音
+	soundHandleRotateGear_[4] = audio_->LoadWave("/Audio/SE/RotateGear_1.2.wav"); // ギアの回転音
+	playIndex_ = 0;
+	isReturn_ = false;
+	playSoundAmountRotation_ = 0.0f;
+	kPlaySoundRotation_ = 0.3f;
+	soundHandleJump_ = audio_->LoadWave("/Audio/SE/Jump.wav"); // ジャンプ音
+	soundHandleItemJump_ = audio_->LoadWave("/Audio/SE/ItemJump.wav"); // アイテムでのジャンプ音
+	soundHandleCatchCatapult_ = audio_->LoadWave("/Audio/SE/CatchCatapult.wav"); // カタパルトにはまった時の音
+	playCatchSound_ = false;
+	soundHandleJumpCatapult_ = audio_->LoadWave("/Audio/SE/JumpCatapult.wav"); // カタパルトのジャンプ音
 
 	// 色初期設定
 	color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
@@ -51,7 +73,8 @@ void Player::Update()
 	BaseObject::Update();
 
 	// 操作受け付け
-	GetOperation();
+	if(isGetOperation_)
+		GetOperation();
 
 
 	// プレイヤーの更新
@@ -63,6 +86,30 @@ void Player::Update()
 	UpdatePlayerRotate();
 
 	DebugGui();
+
+	if (playSoundAmountRotation_ >= kPlaySoundRotation_) {
+		audio_->PlayWave(soundHandleRotateGear_[playIndex_], false, *seVolume_ * 0.1f);
+		if (isReturn_)
+			playIndex_--;
+		else
+			playIndex_++;
+
+		if (playIndex_ == 4)
+			isReturn_ = true;
+		else
+			isReturn_ = false;
+
+		playSoundAmountRotation_ = 0.0f;
+	}
+		
+#ifdef _DEBUG
+
+	ImGui::Begin(objectName_.c_str());
+	ImGui::SliderFloat("tempo", &kPlaySoundRotation_, 0.05f, 1.0f);
+	ImGui::End();
+
+#endif // _DEBUG
+
 
 	// 破壊されていない時
 	if (!isDestroy_) {
@@ -88,11 +135,14 @@ void Player::AddGlobalVariables()
 	globalVariables_->AddItem("Gear", "kGearDecreaseRate", kGearDecreaseRate_);
 	globalVariables_->AddItem("Gear", "kMinGearPendulumSpeed", kMinGearPendulumSpeed_);
 	globalVariables_->AddItem("Gear", "GearScale", Vector2(gearTransform_.scale_.x, gearTransform_.scale_.z));
+	globalVariables_->AddItem("Gear", "addGearSpeedLimit", addGearSpeedLimit_);
 	globalVariables_->AddItem("Player", "kMaxPlayerVelocity", kMaxPlayerVelocity_);
 	globalVariables_->AddItem("Player", "kJumpPoint", Vector2(kJumpPoint_.x, kJumpPoint_.y));
 	globalVariables_->AddItem("Player", "kGravity", kGravity_);
 	globalVariables_->AddItem("Player", "kPlayerJumpPower", kPlayerJumpPower_);
+
 	globalVariables_->AddItem("Player", "kAirJumpPower", kAirJumpPower_);
+	globalVariables_->AddItem("Player", "kCatapultPower", kCatapultPower_);
 }
 
 void Player::ApplyGlobalVariables()
@@ -105,6 +155,7 @@ void Player::ApplyGlobalVariables()
 	kMinGearRollSpeed_ = globalVariables_->GetFloatValue("Gear", "kMinGearRollSpeed");
 	Vector2 temp = globalVariables_->GetVector2Value("Gear", "GearScale");
 	gearTransform_.scale_ = Vector3(temp.x, temp.x, temp.y);
+	addGearSpeedLimit_ = globalVariables_->GetFloatValue("Gear", "addGearSpeedLimit");
 	kMaxPlayerVelocity_ = globalVariables_->GetFloatValue("Player", "kMaxPlayerVelocity");
 	kPlayerJumpPower_ = globalVariables_->GetFloatValue("Player", "kPlayerJumpPower");
 	kGravity_ = globalVariables_->GetFloatValue("Player", "kGravity");
@@ -112,7 +163,7 @@ void Player::ApplyGlobalVariables()
 	kJumpPoint_ = Vector3(temp.x, temp.y, 0.0f);
 
 	kAirJumpPower_ = globalVariables_->GetFloatValue("Player", "kAirJumpPower");
-
+	kCatapultPower_ = globalVariables_->GetFloatValue("Player", "kCatapultPower");
 
 }
 
@@ -126,27 +177,44 @@ void Player::OnCollision(BaseObject* object)
 	if (!object->GetIsActive()) {
 		return;
 	}
-	//object;
-	Item* item = dynamic_cast<Item*>(object);
-	// 衝突しているのが Item だった時
-	// ジャンプできる状態の時
-	if (item) {
-		if (item->GetJumpEnable()) {
-			// ボタンの再入力があった時
-			if (input_->TriggerKey(DIK_Q)) {
-				AirJump();
-				item->AirJump();
-			}
+	Catapult* catapult = dynamic_cast<Catapult*>(object);
+
+	if (catapult && !playCatchSound_) {
+		audio_->PlayWave(soundHandleCatchCatapult_, false, *seVolume_);
+		playCatchSound_ = true;
+	}
+
+	if (catapult) {
+		if (catapult->GetJumpEnable() && input_->TriggerKey(DIK_Q)) {
+			// 効果音再生
+			audio_->PlayWave(soundHandleJumpCatapult_, false, *seVolume_);
+			transform_.translate_ = catapult->transform_.translate_;
+			playerTheta_ = catapult->GetTheta();
+			CatapultJump();
+			catapult->AirJump();
 		}
 	}
+	// ボタンの再入力があった時
 	else {
-		Catapult* catapult = dynamic_cast<Catapult*>(object);
-		if (catapult) {
-			if (catapult->GetJumpEnable() && input_->TriggerKey(DIK_Q)) {
-				transform_.translate_ = catapult->transform_.translate_;
-				playerTheta_ = catapult->GetTheta();
-				CatapultJump();
-				catapult->AirJump();
+		//object;
+		Item* item = dynamic_cast<Item*>(object);
+		// 衝突しているのが Item だった時
+		// ジャンプできる状態の時
+		if (item) {
+			if (item->GetJumpEnable()) {
+				// カタパルト中は破壊する
+				if (isCatapult_) {
+					item->AirJump();
+				}
+				else {
+					// ボタンの再入力があった時
+					if (input_->TriggerKey(DIK_Q)) {
+						// 効果音再生
+						audio_->PlayWave(soundHandleItemJump_, false, *seVolume_);
+						AirJump();
+						item->AirJump();
+					}
+				}
 			}
 		}
 	}
@@ -154,7 +222,10 @@ void Player::OnCollision(BaseObject* object)
 
 void Player::OnCollisionExit(BaseObject* object)
 {
-	object;
+	Catapult* catapult = dynamic_cast<Catapult*>(object);
+
+	if (catapult)
+		playCatchSound_ = false;
 }
 
 /// プライべート関数
@@ -162,6 +233,8 @@ void Player::OnCollisionExit(BaseObject* object)
 void Player::InitializeVariables()
 {
 
+	// 操作を受け付けるか
+	isGetOperation_ = false;
 	// プレイヤー変数初期化
 	playerVelocity_ = { 0.0f,0.0f,0.0f };
 	playerAcceleration_ = { 0.0f,0.0f,0.0f };
@@ -187,7 +260,7 @@ void Player::InitializeVariables()
 	isLanding_ = true;
 	isPendulum_ = false;
 	wasRotateRight_ = true;
-	isEnableGravity_ = false;
+	isCatapult_ = false;
 
 	// 定数の再定義
 	kGearInnerRadius_ = 0.5f;
@@ -203,6 +276,8 @@ void Player::InitializeVariables()
 	kPlayerJumpPower_ = 0.05f;
 	kMaxPlayerVelocity_ = 1.0f;
 	kGravity_ = 0.005f;
+
+	addGearSpeedLimit_ = 0.25f;
 	// 定数として定義されているものは読み込む
 	//ApplyGlobalVariables();
 }
@@ -215,7 +290,7 @@ void Player::GetOperation()
 
 	if (input_->TriggerKey(DIK_Q)) {
 		if (isLanding_) {
-			isEnableGravity_ = true;
+			isCatapult_ = false;
 			isJumpTrigger_ = true;
 		}
 	}
@@ -240,11 +315,14 @@ void Player::UpdatePlayer()
 			isJumpTrigger_ = false;
 			isLanding_ = false;
 			isPendulum_ = false;
+
+			// 効果音再生
+			audio_->PlayWave(soundHandleJump_, false, *seVolume_);
 		}
 		// 歯車の回転は歯車の更新内
 	}
 	else {
-		if (isEnableGravity_) {
+		if (!isCatapult_) {
 			// 重力減算
 			Vector3 fallVelocity{};
 			fallVelocity.x = kFallDirection_.x * kGravity_;
@@ -350,6 +428,11 @@ void Player::UpdateGear()
 	// 回転速度を回転に加える
 	// ここで速度に応じて回転角に変える
 	gearTheta_ += ConvertSpeedToRadian(gearRotateSpeed_);
+	if (ConvertSpeedToRadian(gearRotateSpeed_) < 0)
+		playSoundAmountRotation_ += ConvertSpeedToRadian(gearRotateSpeed_) * -1.0f;
+	else
+		playSoundAmountRotation_ += ConvertSpeedToRadian(gearRotateSpeed_);
+	
 }
 
 void Player::UpdatePlayerRotate()
@@ -469,8 +552,8 @@ void Player::AirJump() {
 void Player::CatapultJump()
 {
 	Vector3 direct = { -std::cosf(playerTheta_),-std::sinf(playerTheta_), 0.0f };
-	playerVelocity_ = direct * kAirJumpPower_;
-	isEnableGravity_ = false;
+	playerVelocity_ = direct * kCatapultPower_;
+	isCatapult_ = true;
 }
 
 void Player::DebugGui() {
@@ -499,7 +582,7 @@ void Player::DebugGui() {
 	ImGui::DragFloat("kMinRotate", &kMinGearRollSpeed_, 0.00001f, -0.01f, 0.01f, "%.5f");
 	//ImGui::DragFloat("kFriction", &kGearFriction_, 0.00001f, -0.01f, 0.01f, "%.5f");
 	ImGui::DragFloat("kGravity", &kGravity_, 0.00001f, -1.0f, 1.0f, "%.5f");
-
+	ImGui::DragFloat("addGearSpeedLimit", &addGearSpeedLimit_, 0.00001f, 0.0f, 1.0f, "%.5f");
 
 	ImGui::End();
 

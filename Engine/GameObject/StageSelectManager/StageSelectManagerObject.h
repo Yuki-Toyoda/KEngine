@@ -131,9 +131,13 @@ private: // メンバ変数
 
 	// BGMハンドル
 	uint32_t bgmHandle_;
+	// BGM音量変更用
+	float ChangeVolume_;
 	// 環境音ボイスハンドル
 	int voiceHandleBGM_ = -1;
 
+	// ボタンを押したときのSE
+	uint32_t soundHandleStageStart_;
 	// ステージプレビュー歯車の回転音
 	uint32_t soundHandleRotateGear_;
 
@@ -226,6 +230,7 @@ private: // メンバ変数
 	// ステージ番号UI
 	int stageSelectedNumber_;
 	std::unique_ptr<Counter> stageNumber_; // ステージ番号カウンタ
+	Vector2 stageNumberBackGround_Position_;
 	Vector2 stageNumberBackGroundSize_;
 	Vector2 stageNumberBackGround_Position_;
 	std::unique_ptr<Sprite> stageNumberBackGround_; // ステージ番号カウンタ背景

@@ -3,6 +3,7 @@
 #include "../GameObject/GameObjectManager.h"
 #include "../GameObject/Item/Item.h"
 #include "../GameObject/Catapult/Catapult.h"
+#include "../GameObject/Player/Player.h"
 
 using StageInfo = BaseStage::StageInfo;
 using ItemInfo = BaseStage::ItemInfo;
@@ -28,6 +29,8 @@ void StageManager::Initialize()
 	loadIndex_ = 0;
 
 #endif // DEBUG
+
+	isStaging_ = false;
 
 	nowStageNum_ = 0;
 	gameTime_ = 0;
@@ -56,8 +59,6 @@ void StageManager::Initialize()
 	}
 
 	AddGloavalVariables();
-	// ステージの設定を読み込む
-	//LoadStages();
 }
 
 void StageManager::Reset()
@@ -75,6 +76,16 @@ void StageManager::Update()
 	DebugGUI();
 
 #endif // _DEBUG
+
+	// 演出中か否か
+	if (isStaging_) {
+		player_->SetIsGetOperation(false); // 操作を受け付けない
+		currentStage_->SetIsAddGearCondition(false); // 回転量を加算しない
+	}
+	else {
+		player_->SetIsGetOperation(true); // 操作を受け付けない
+		currentStage_->SetIsAddGearCondition(true); // 回転量を加算しない
+	}
 
 	// 現在のシーンの更新
 	currentStage_->Update();
@@ -167,8 +178,6 @@ StageInfo StageManager::LoadInfo(size_t num)
 	std::vector<ItemInfo>& iInfo = info.itemInfo_;
 	iInfo.resize(kMaxInfoNum);
 	for (size_t i = 0; i < iInfo.size(); i++) {
-		//iInfo[i].isRePop_ = static_cast<bool>(globalVariables_->GetIntValue(strStage, indexNum + "isRePop:" + std::to_string(i)));
-		//iInfo[i].position_ = globalVariables_->GetVector3Value(strStage, indexNum + "ItemPosition:" + std::to_string(i));
 		iInfo[i] = LoadItem(indexNum, std::to_string(i));
 	}
 	// カタパルト
@@ -221,7 +230,7 @@ void StageManager::SaveInfo(size_t num)
 {
 	std::string indexNum = std::to_string(num) + ":";
 	std::string strStage = "StageInfo";
-	StageInfo& info = infos_[num];
+	StageInfo info = infos_[num];
 	info = currentStage_->GetStageInfo();
 	globalVariables_->AddItem(strStage, indexNum + "Condition", info.gearInfo_.clearCondition_);
 	globalVariables_->SetValue(strStage, indexNum + "Condition", info.gearInfo_.clearCondition_);

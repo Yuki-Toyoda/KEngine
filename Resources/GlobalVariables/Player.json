@@ -1,6 +1,7 @@
 {
     "Player": {
         "kAirJumpPower": 0.3499999940395355,
+        "kCatapultPower": 0.5799999833106995,
         "kGravity": 0.014999999664723873,
         "kJumpPoint": [
             0.0,

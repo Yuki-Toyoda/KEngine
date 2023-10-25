@@ -14,7 +14,9 @@ void DebugStage::Update()
 {
 	float gearRotate{ 0 };
 	gearRotate += player_->GetGearRotateSpeed();
-	gearCondition_ += 0 < gearRotate ? gearRotate : gearRotate * -1;
+	if(gearRotate >= player_->GetAddGearSpeedLimit() || gearRotate <= -player_->GetAddGearSpeedLimit())
+		if(isAddGearCondition_)
+			gearCondition_ += 0 < gearRotate ? gearRotate : gearRotate * -1;
 	DebugGUI();
 }
 
@@ -100,7 +102,7 @@ void DebugStage::DebugGUI()
 		std::string treeName = commitIndex_ + std::to_string(i);
 		if (ImGui::TreeNode(treeName.c_str())) {
 			ImGui::SliderFloat("theta", &cInfo[i].theta_, -3.14f, 3.14f);
-			ImGui::SliderFloat("length", &cInfo[i].length_, 0.0f, 30.0f);
+			ImGui::SliderFloat("length", &cInfo[i].length_, 0.0f, 14.5f);
 			ImGui::Checkbox("isRePop", &cInfo[i].isRePop_);
 			ImGui::SliderInt("popTIme", &cInfo[i].popTime_, 10, 1000);
 

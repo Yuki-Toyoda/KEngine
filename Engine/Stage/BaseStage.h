@@ -73,6 +73,8 @@ public: // メンバ関数
 
 	bool GetIsClear()const;
 
+	void SetIsAddGearCondition(bool isAdd_) { isAddGearCondition_ = isAdd_; }
+
 public: // パブリックなメンバ変数
 
 	GlobalVariables* globalVariables_ = nullptr;
@@ -105,6 +107,8 @@ protected: // メンバ変数
 
 	// 歯車の回転量
 	float gearCondition_;
+	// 歯車の回転量を加算するかどうか
+	bool isAddGearCondition_;
 
 	// 現在のアイテム使用数
 	int usedItem_ = 0;

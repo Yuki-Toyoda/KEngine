@@ -20,6 +20,8 @@ void GameManagerObject::Initialize(std::string name, Tag tag)
 
 	// 音をロード
 	bgmHandle_ = audio_->LoadWave("/Audio/BGM/GameBGM.wav");
+	soundHandleClear_ = audio_->LoadWave("/Audio/SE/Clear.wav");
+	soundHandlePerfectClear_ = audio_->LoadWave("/Audio/SE/PerfectClear.wav");
 
 	// ギアの座標を初期化
 	for (int i = 0; i < 3; i++) {
@@ -33,6 +35,7 @@ void GameManagerObject::Initialize(std::string name, Tag tag)
 
 	// クリアゲージの初期化
 	clearGageTransform_.Initialize();
+	clearGageTransform_.translate_ = { 0.0f, 0.0f, 1.0f };
 	clearGageTransform_.scale_ = {14.5f, 14.5f, 1.0f};
 	// クリア時のチェックマークワールド座標
 	clearCheckTransform_.Initialize();
@@ -83,7 +86,7 @@ void GameManagerObject::Initialize(std::string name, Tag tag)
 	/// スプライト生成
 	// 残りアイテム数テキストUI
 	leftItemTextPosition_ = { 255.0f, 550.0f }; // 座標
-	leftItemTextSize_ = { 284.0f, 56.0f }; // 大きさ
+	leftItemTextSize_ = { 320.0f, 64.0f }; // 大きさ
 	leftItemTextSprite_.reset(Sprite::Create(
 			textureHandleTextLeftItem_, 
 			&leftItemTextPosition_, 
@@ -239,7 +242,8 @@ void GameManagerObject::CameraStaging()
 	switch (cameraStagingWayPoint_)
 	{
 	case GameManagerObject::WayPoint1: // フェードイン指示
-
+		// ステージマネージャーに演出中ということを伝える
+		stageManager_->SetIsStaging(true);
 		// フェードイン
 		SceneManager::GetInstance()->StartFadeEffect(cameraStagingTime_, { 0.0f, 0.0f, 0.0f, 1.0f }, { 0.0f, 0.0f, 0.0f, 0.0f });
 		// 次の演出へ
@@ -254,6 +258,7 @@ void GameManagerObject::CameraStaging()
 			cameraStagingT_ += 1.0f / 60.0f;
 		}
 		else {
+
 			// tリセット
 			cameraStagingT_ = 0.0f;
 			// 演出時間設定
@@ -261,6 +266,9 @@ void GameManagerObject::CameraStaging()
 
 			// カメラ演出中に
 			cameraIsStaging_ = false;
+
+			// ステージマネージャーに演出終了を伝える
+			stageManager_->SetIsStaging(false);
 
 			// 次の演出に
 			cameraStagingWayPoint_++;
@@ -290,9 +298,13 @@ void GameManagerObject::CameraStaging()
 			// カメラ演出時間設定
 			cameraStagingTime_ = 1.5f;
 
+			// ステージマネージャーに演出中だと伝える
+			stageManager_->SetIsStaging(true);
+
 			// ステージ上の全アイテムを取得したら完全クリア
-			if(stageNowItemCount_ <= 0)
+			if (stageNowItemCount_ <= 0) {
 				objects_[4]->SetColor({ 0.0f, 0.35f, 0.05f, 0.0f });
+			}
 
 			// カメラ演出中に
 			cameraIsStaging_ = true;
@@ -320,6 +332,13 @@ void GameManagerObject::CameraStaging()
 		else {
 			// tリセット
 			cameraStagingT_ = 0.0f;
+
+			// ステージ上の全アイテムを取得したら完全クリア
+			if (objects_[4]->GetColor().y == 0.35f) {
+				audio_->PlayWave(soundHandlePerfectClear_, false, *seVolume_ * 0.65f);
+			}
+			else
+				audio_->PlayWave(soundHandleClear_, false, *seVolume_ * 0.75f);
 
 			// カメラの終端座標
 			camera_->transform_.translate_ = cameraEndTranslate_;
@@ -396,6 +415,9 @@ void GameManagerObject::CameraStaging()
 		}
 		break;
 	case GameManagerObject::WayPoint9:
+
+		// ステージマネージャーに演出終了を伝える
+		stageManager_->SetIsStaging(false);
 
 		// BGMを止める
 		audio_->StopWave(voiceHandleBGM_);
