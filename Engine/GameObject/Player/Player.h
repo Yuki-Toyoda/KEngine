@@ -1,6 +1,7 @@
 #pragma once
 #include "../BaseObject.h"
 #include "../../Input/Input.h"
+#include "../../Audio/Audio.h"
 
 /// <summary>
 /// プレイヤー
@@ -49,6 +50,18 @@ public: // その他関数群
 	/// <param name="object">前フレーム衝突していたオブジェクト</param>
 	void OnCollisionExit(BaseObject* object) override;
 
+	/// <summary>
+	/// 操作可能状態のセッター
+	/// </summary>
+	/// <param name="isGetOperation">操作可能か</param>
+	void SetIsGetOperation(bool isGetOperation) { isGetOperation_ = isGetOperation; }
+
+	/// <summary>
+	/// 加算する回転角のゲッター
+	/// </summary>
+	/// <returns>加算する回転角</returns>
+	float GetAddGearSpeedLimit() { return addGearSpeedLimit_; }
+
 private: // メンバ関数
 
 	// 作成した関数等の初期化
@@ -95,9 +108,29 @@ private: // メンバ変数
 	XINPUT_STATE joyState_; // 現在フレーム用
 	XINPUT_STATE preJoyState_; // 前フレーム用
 
+	// 音再生
+	Audio* audio_ = nullptr;
+	// 音量
+	float* seVolume_; // SE
+
+	// 効果音
+	uint32_t soundHandleRotateGear_[5]; // ギアの回転音
+	int playIndex_; // 再生するインデックス
+	bool isReturn_; // リターントリガー
+	float playSoundAmountRotation_; // ギアの回転量
+	float kPlaySoundRotation_; // ギアの最大回転量
+	uint32_t soundHandleJump_; // ジャンプ音
+	uint32_t soundHandleItemJump_; // アイテムでのジャンプ音
+	uint32_t soundHandleCatchCatapult_; // カタパルトにはまった時の音
+	bool playCatchSound_; // カタパルトに入ったときの音再生トリガー
+	uint32_t soundHandleJumpCatapult_; // カタパルトのジャンプ音
+
 	/*--------------------------//
 	//	プレイヤー自体の変数		//
 	//--------------------------*/
+
+	// 操作を受け付けるか
+	bool isGetOperation_;
 
 	// プレイヤーの最大移動速度
 	float kMaxPlayerVelocity_ = 0;
@@ -163,6 +196,9 @@ private: // メンバ変数
 
 	// 歯車の加算の割合
 	float gearRollRatio_ = 1.0f;
+
+	// 歯車の回転量にプラスするリミット
+	float addGearSpeedLimit_;
 
 	/*--------------//
 	//	その他の変数	//

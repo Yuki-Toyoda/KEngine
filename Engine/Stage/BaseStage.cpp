@@ -19,6 +19,7 @@ void BaseStage::commonInitialize()
 	assert(player_);
 
 	gearCondition_ = 0;
+	isAddGearCondition_ = false;
 	usedItem_ = 0;
 }
 

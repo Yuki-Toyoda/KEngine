@@ -27,7 +27,7 @@ void Catapult::Initialize(std::string name, Tag tag)
 	InitializeVariables();
 
 	AddOBJ(&transform_, color_, "./Resources/Catapult/base", "Catapult.obj");
-	//AddOBJ(&transform_, color_, "./Resource/Catapult/UpAllow", "UpAllow.obj");
+	AddOBJ(&transform_, color_, "./Resources/Catapult/UpAllow", "UpAllow.obj", false);
 
 	// コライダーを設定する
 	Sphere* sphere = new Sphere;
@@ -58,6 +58,8 @@ void Catapult::Update()
 	}
 
 	UpdateCatapult();
+
+	objects_[1]->uvTransform_.translate_.y += 0.01f;
 
 	// デバッグ表示
 	DebugGui();
