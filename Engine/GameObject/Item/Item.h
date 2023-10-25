@@ -91,6 +91,15 @@ private: // メンバ変数
 	// 使用時の色
 	Vector4 usedColor_;
 
+	// イージング用変数
+	float rotateT_ = 0;
+
+	// 浮遊ギミックをやりたい
+	float floatingT_ = 0;
+
+	// 描画のために保存する
+	WorldTransform bufferWorldTransform_;
+
 	/*--------------------------------------//
 	//	フラグによって操作も管理するために、		//
 	//	一度クッションをはさむ					//

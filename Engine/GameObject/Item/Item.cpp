@@ -22,7 +22,7 @@ void Item::Initialize(std::string name, Tag tag)
 	// 用意した変数の初期化
 	InitializeVariables();
 
-	AddOBJ(&transform_, color_, "./Resources/Item", "Item.obj");
+	AddOBJ(&bufferWorldTransform_, color_, "./Resources/Item", "Item.obj");
 
 	// コライダーを設定する
 	Sphere* sphere = new Sphere;
@@ -40,7 +40,25 @@ void Item::Update()
 	// 基底クラス更新
 	BaseObject::Update();
 
-	if (isActive_ && !isJumpEnable_) {
+	bufferWorldTransform_.GetMatWorld();
+
+	// 回転させる
+	if (rotateT_ < 1.0f) {
+		// 秒数でやる
+		rotateT_ += 1.0f / 60.0f;
+		float pi = static_cast<float>(std::numbers::pi);
+		float theta = Math::EaseOut(rotateT_, -pi * 2.0f * 2.0f, 0.0f, 1.0f);
+		if (isRePop_) {
+			theta = Math::EaseOut(rotateT_, -pi * (kPopTime_ * 1.0f / 60.0f) * 2.0f, 0.0f, kPopTime_ * (1.0f / 60.0f));
+		}
+		bufferWorldTransform_.rotate_.y = theta;
+	}
+	// 使用可能回数が一回なら消す
+	else if (isUsed_ && !isRePop_) {
+		isActive_ = false;
+	}
+
+	if (isActive_ && isRePop_ && 0 < rePopTime_) {
 		rePopTime_--;
 		if (rePopTime_ <= 0) {
 			isJumpEnable_ = true;
@@ -49,6 +67,29 @@ void Item::Update()
 			objects_[0]->SetColor(color_);
 		}
 	}
+
+	//ImGui::Begin("checkItem");
+
+	//ImGui::Text("rePopTime:%d", rePopTime_);
+	//ImGui::Checkbox("isUsed", &isUsed_);
+	//ImGui::Checkbox("isJump", &isJumpEnable_);
+	//ImGui::Checkbox("isActive", &isActive_);
+
+	//ImGui::End();
+
+	floatingT_ += 0.01f;
+	if (1.0f < floatingT_) {
+		floatingT_ = 0.0f;
+	}
+	float y = 0.0f;
+	if (floatingT_ < 0.5f) {
+		y = Math::EaseInOut(floatingT_, -0.5f, 0.5f);
+	}
+	else {
+		y = Math::EaseInOut(floatingT_, 0.5f, -0.5f);
+	}
+	// 浮遊ギミック
+	bufferWorldTransform_.translate_.y = y;
 
 	// デバッグ表示
 	DebugGui();
@@ -113,18 +154,14 @@ void Item::SetItemInfo(const BaseStage::ItemInfo& info)
 
 void Item::AirJump()
 {
-	// アイテムがもう一度踏めないタイプなら
-	if (!isRePop_) {
-		isActive_ = false;
-		isJumpEnable_ = false;
-		isUsed_ = true;
-	}
-	else {
+	// アイテムがもう一度踏めるタイプなら
+	if (isRePop_) {
 		rePopTime_ = kPopTime_;
-		isJumpEnable_ = false;
-		isUsed_ = true;
-		objects_[0]->SetColor(usedColor_);
 	}
+	objects_[0]->SetColor(usedColor_);
+	isJumpEnable_ = false;
+	isUsed_ = true;
+	rotateT_ = 0;
 }
 
 /// プライべート関数
@@ -142,6 +179,13 @@ void Item::InitializeVariables()
 	rePopTime_ = 0;
 	isJumpEnable_ = true;
 	isUsed_ = false;
+	isRePop_ = false;
+
+	rotateT_ = 1;
+	floatingT_ = 0;
+
+	bufferWorldTransform_.Initialize();
+	bufferWorldTransform_.SetParent(&transform_, 0b111);
 }
 
 void Item::DebugGui() {

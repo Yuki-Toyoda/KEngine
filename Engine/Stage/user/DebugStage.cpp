@@ -116,7 +116,11 @@ void DebugStage::DebugGUI()
 	//if (ImGui::Button("Apply")) {
 	//	ApplyStageInfo();
 	//}
-	ApplyStageInfo();
+
+	ImGui::Checkbox("isApplyInfor", &isApplyInfo_);
+	if (isApplyInfo_) {
+		ApplyStageInfo();
+	}
 
 	ImGui::Separator();
 	if (ImGui::Button("AddInfo")) {
