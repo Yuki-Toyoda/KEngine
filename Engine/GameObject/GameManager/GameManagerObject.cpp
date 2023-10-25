@@ -46,16 +46,40 @@ void GameManagerObject::Initialize(std::string name, Tag tag)
 	clearCheckTransform_.translate_ = { 0.0f, -25.0f, 0.0f };
 	clearCheckTransform_.scale_ = clearGageTransform_.scale_;
 
+	// チュートリアル平面のワールド座標
+	tutorialTransform_.Initialize();
+	tutorialTransform_.translate_ = { 0.0f, 2.5f, 0.5f };
+	tutorialTransform_.scale_ = { 3.5f, 3.5f, 1.0f };
+
+	// チュートリアル切り替え
+	if (SceneManager::GetInstance()->GetSelectedStageNumber() != 0)
+		isTutorial_ = false;
+	else
+		isTutorial_ = true;
+	// t初期化
+	tutorialStagingT_ = 0.0f;
+	// 描画時間設定
+	tutorialStagingDrawTime_ = 1.0f;
+	// 前フレーム初期化
+	preDrawFrame_ = 0;
+
 	// モデル読み込み
 	AddOBJ(&gearTransforms_[0], color_, "./Resources/Gear", "Gear_UI.obj", true);
 	AddOBJ(&gearTransforms_[1], color_, "./Resources/Gear", "Gear_UI_S.obj", true);
 	AddOBJ(&gearTransforms_[2], color_, "./Resources/Gear", "Gear_M.obj", true);
 	AddOBJ(&clearGageTransform_, color_, "./Resources/ClearGage", "ClearGage.obj", false);
 	AddOBJ(&clearCheckTransform_, color_, "./Resources/Plane", "Plane.obj", false);
-
+	// チュートリアルが有効なら
+	if (isTutorial_) {
+		AddOBJ(&tutorialTransform_, color_, "./Resources/TutorialPlane", "TutorialPlane.obj", false);
+		AddOBJ(&tutorialTransform_, color_, "./Resources/TutorialPlane", "TutorialFrame.obj", false);
+		objects_[6]->SetColor({ 0.0f, 0.0f, 0.0f, 1.0f });
+	}
+		
 	objects_[3]->uvTransform_.rotate_.x = -1.05f;
 
 	objects_[4]->SetColor({ 0.0f, 0.0f, 0.0f, 0.0f });
+
 	// 演出中
 	cameraIsStaging_ = true;
 	// 始端、終端座標設定
@@ -179,7 +203,6 @@ void GameManagerObject::Initialize(std::string name, Tag tag)
 		&spriteUIColor_,
 		{ 0.5f, 0.5f })); // 生成
 
-
 }
 
 void GameManagerObject::Update()
@@ -263,6 +286,10 @@ void GameManagerObject::Update()
 			break;
 		}
 	}
+
+	// チュートリアル演出
+	if(isTutorial_)
+		TutorialStaging();
 
 #ifdef _DEBUG
 
@@ -434,6 +461,10 @@ void GameManagerObject::CameraStaging()
 				spriteClearUIColor_.w = 0.0f;
 			}
 
+			if (isTutorial_) {
+				objects_[5]->SetColor({ objects_[5]->GetColor().x,objects_[5]->GetColor().y,objects_[5]->GetColor().z, Math::EaseInOut(cameraStagingT_, 1.0f, 0.0f, cameraStagingTime_) });
+				objects_[6]->SetColor({ objects_[6]->GetColor().x,objects_[6]->GetColor().y,objects_[6]->GetColor().z, Math::EaseInOut(cameraStagingT_, 1.0f, 0.0f, cameraStagingTime_) });
+			}
 			// カメラ座標設定
 			camera_->transform_.translate_ = Math::EaseOut(cameraStagingT_, cameraStartTranslate_, cameraEndTranslate_, cameraStagingTime_);
 			// FOV設定
@@ -585,4 +616,25 @@ void GameManagerObject::ClearGageAnimation()
 
 	// ゲージを動かす
 	objects_[3]->uvTransform_.rotate_.x = Math::EaseIn((float)stageClearPercent_, -1.05f, -0.3f, 100);
+}
+
+void GameManagerObject::TutorialStaging()
+{
+	// チュートリアル画像を切り替える
+	if (tutorialStagingT_ <= tutorialStagingDrawTime_ * 5.0f) {
+		// 描画フレームを求める
+		int drawFrame = Math::Linear(tutorialStagingT_, 0, 5, tutorialStagingDrawTime_ * 5.0f);
+		
+		if (drawFrame != preDrawFrame_) {
+			// テクスチャ名を求める
+			std::string textureName = "Tutorial_0" + std::to_string(drawFrame) + ".png";
+			// テクスチャ読み込み、変更
+			objects_[5]->SetTextureHandle(TextureManager::Load("./Resources/TutorialPlane", textureName));
+		}
+
+		// t加算
+		tutorialStagingT_ += 1.0f / 60.0f;
+	}
+	else
+		tutorialStagingT_ = 0.0f;
 }

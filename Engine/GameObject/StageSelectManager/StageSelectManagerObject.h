@@ -47,6 +47,12 @@ public: // アクセッサ等
 	/// <returns>選択中のステージ番号</returns>
 	int GetSelectedStageNumber() { return selectedStageNumber_; }
 
+	/// <summary>
+	/// タイトルシーンへの遷移トリガー
+	/// </summary>
+	/// <returns>タイトルシーンへ遷移するか</returns>
+	bool GetIsGoTitleScene() { return backTitle_; }
+
 public: // その他関数群
 
 	/// <summary>
@@ -150,6 +156,13 @@ private: // メンバ変数
 	WorldTransform previewStageTransforms_[4];
 	// 装飾用ギアの座標配列
 	WorldTransform ornamentGearTransforms_[4];
+
+	// タイトル遷移時の演出中間地点
+	int backTitleStagingWayPoint_;
+	// タイトルへ遷移する演出トリガー
+	bool backTitleStaging_;
+	// タイトルへ遷移するトリガー
+	bool backTitle_;
 
 	// 選択中のステージ番号
 	int selectedStageNumber_;
