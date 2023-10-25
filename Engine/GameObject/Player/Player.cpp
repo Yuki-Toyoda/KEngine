@@ -176,11 +176,13 @@ void Player::OnCollision(BaseObject* object)
 {
 	if (object->GetIsActive()) {
 
-	if (catapult && !playCatchSound_) {
-		audio_->PlayWave(soundHandleCatchCatapult_, false, *seVolume_);
-		playCatchSound_ = true;
-	}
 		Catapult* catapult = dynamic_cast<Catapult*>(object);
+
+		if (catapult && !playCatchSound_) {
+			audio_->PlayWave(soundHandleCatchCatapult_, false, *seVolume_);
+			playCatchSound_ = true;
+		}
+		
 		if (catapult) {
 			if (catapult->GetJumpEnable()) {
 				// 位置をカタパルトに合わせる
