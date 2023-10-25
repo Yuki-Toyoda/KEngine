@@ -402,14 +402,14 @@
     <ClInclude Include="Engine\Scene\user\TitleScene.h">
       <Filter>Scene\user</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\GameObject\ObjectList.h">
-      <Filter>Resource\Shader</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Resource\Texture\TextureManager.h">
       <Filter>Resource\Texture</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\Catapult\Catapult.h">
       <Filter>GameObject\Catapult</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\ObjectList.h">
+      <Filter>GameObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

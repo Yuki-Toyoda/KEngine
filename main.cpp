@@ -29,7 +29,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// ウィンドウズアプリケーションクラスのインスタンスを取得
 	winApp = WinApp::GetInstance();
 	// ゲームウィンドウを生成する
-	winApp->CreateGameWindow(L"サイクロステップ");
+	winApp->CreateGameWindow(L"2109_サイクロステップ");
 
 	// DirectX汎用クラスのインスタンスを取得
 	dxCommon = DirectXCommon::GetInstance();
