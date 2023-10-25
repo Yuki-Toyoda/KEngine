@@ -189,6 +189,14 @@ void Item::InitializeVariables()
 }
 
 void Item::DebugGui() {
+
+	if (isRePop_) {
+		objects_[0]->SetTextureHandle(TextureManager::Load("./Item/InstanceItemTex.png"));;
+	}
+	else {
+		objects_[0]->SetTextureHandle(TextureManager::Load("./Item/ItemTex.png"));;
+	}
+
 #ifdef _DEBUG
 
 	ImGui::Begin(objectName_.c_str());
@@ -197,13 +205,6 @@ void Item::DebugGui() {
 
 	if (ImGui::ColorPicker4("UsedColor", &usedColor_.x)) {
 		AddGlobalVariables();
-	}
-
-	if (isRePop_) {
-		objects_[0]->SetTextureHandle(TextureManager::Load("./Item/InstanceItemTex.png"));;
-	}
-	else {
-		objects_[0]->SetTextureHandle(TextureManager::Load("./Item/ItemTex.png"));;
 	}
 	ImGui::End();
 
