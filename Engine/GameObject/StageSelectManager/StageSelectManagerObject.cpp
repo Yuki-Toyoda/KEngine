@@ -64,11 +64,11 @@ void StageSelectManagerObject::Initialize(std::string name, Tag tag)
 	previewStageTransforms_[3].SetParent(&transform_, 0b011);
 
 	// 装飾ギアの座標を初期化
-	ornamentGearTransforms_[0].translate_ = { 5.0f, 4.75f, 1.5f };
+	ornamentGearTransforms_[0].translate_ = { 5.0f, 3.75f, 1.5f };
 	ornamentGearTransforms_[0].scale_ = { 1.35f, 1.35f, 1.0f };
 	ornamentGearTransforms_[1].translate_ = { 2.05f, -2.85f, 0.0f };
 	ornamentGearTransforms_[1].SetParent(&ornamentGearTransforms_[0], 0b101);
-	ornamentGearTransforms_[2].translate_ = { -5.0f, 4.75f, 1.5f };
+	ornamentGearTransforms_[2].translate_ = { -5.0f, 3.75f, 1.5f };
 	ornamentGearTransforms_[2].scale_ = { 1.35f, 1.35f, 1.0f };
 	ornamentGearTransforms_[3].translate_ = { -2.0f, -2.85f, 0.0f };
 	ornamentGearTransforms_[3].SetParent(&ornamentGearTransforms_[2], 0b101);
@@ -121,7 +121,7 @@ void StageSelectManagerObject::Initialize(std::string name, Tag tag)
 	// カメラ演出始端座標設定
 	cameraStartTranslate_ = camera_->transform_.translate_;
 	// カメラ演出終端座標設定
-	cameraEndTranslate_ = { 0.0f, 0.0f, -13.5f };
+	cameraEndTranslate_ = { 0.0f, -0.85f, -13.5f };
 
 	// ゲームシーンへは遷移させない
 	isGoGameScene_ = false;
@@ -410,7 +410,7 @@ void StageSelectManagerObject::TransitionStaging()
 			// tをリセット
 			transitionStagingT_ = 0.0f;
 			// 秒数設定
-			transitionStagingTime_ = 1.0f;
+			transitionStagingTime_ = 1.25f;
 
 			// 遷移中ではない
 			isTransitionStaging_ = false;
@@ -442,6 +442,9 @@ void StageSelectManagerObject::TransitionStaging()
 			
 			ChangeVolume_ = Math::EaseInOut(transitionStagingT_, 1.0f, 0.0f, transitionStagingTime_);
 
+			// 視野角を広げる
+			camera_->fov_ = Math::EaseOut(transitionStagingT_, 0.55f, 0.45f, transitionStagingTime_);
+
 			// tを加算
 			transitionStagingT_ += 1.0f / 60.0f;
 
@@ -471,7 +474,7 @@ void StageSelectManagerObject::TransitionStaging()
 			// カメラ座標を動かす
 			camera_->transform_.translate_ = Math::EaseInOut(transitionStagingT_, cameraStartTranslate_, cameraEndTranslate_, transitionStagingTime_);
 			// 視野角を広げる
-			camera_->fov_ = Math::EaseOut(transitionStagingT_, 0.55f, 0.35f, transitionStagingTime_);
+			camera_->fov_ = Math::EaseOut(transitionStagingT_, 0.45f, 0.35f, transitionStagingTime_);
 			// tを加算
 			transitionStagingT_ += 1.0f / 60.0f;
 
@@ -508,10 +511,10 @@ void StageSelectManagerObject::CameraShake()
 		if (cameraStagingT_ <= 3.0f / 2.0f) {
 			// カメラを横に少し動かす
 			if (!cameraStagingTReturn_) {
-				camera_->transform_.translate_.y = Math::EaseInOut(cameraStagingT_, -0.05f, 0.05f, 3.0f / 2.0f);
+				camera_->transform_.translate_.y = Math::EaseInOut(cameraStagingT_, -0.85f -0.05f, -0.85f + 0.05f, 3.0f / 2.0f);
 			}
 			else {
-				camera_->transform_.translate_.y = Math::EaseInOut(cameraStagingT_, 0.05f, -0.05f, 3.0f / 2.0f);
+				camera_->transform_.translate_.y = Math::EaseInOut(cameraStagingT_, -0.85f + 0.05f, -0.85f -0.05f, 3.0f / 2.0f);
 			}
 
 			// 演出用tを加算

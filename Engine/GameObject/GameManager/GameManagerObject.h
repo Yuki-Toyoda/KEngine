@@ -87,6 +87,11 @@ public: // その他関数群
 	/// </summary>
 	void ClearGageAnimation();
 
+	/// <summary>
+	/// チュートリアル画像アニメーション
+	/// </summary>
+	void TutorialStaging();
+
 private: // メンバ変数
 
 	// ステージマネージャ
@@ -100,6 +105,12 @@ private: // メンバ変数
 	// 音量
 	float* bgmVolume_;
 	float* seVolume_;
+
+	// チュートリアルトリガー
+	bool isTutorial_;
+	float tutorialStagingT_; // 演出用t
+	float tutorialStagingDrawTime_; // 1フレームごとの描画時間
+	int preDrawFrame_; // 前フレーム描画していたフレーム
 
 	// BGMハンドル
 	uint32_t bgmHandle_;
@@ -119,6 +130,9 @@ private: // メンバ変数
 	WorldTransform clearGageTransform_;
 	// クリア時のチェックマークワールド座標
 	WorldTransform clearCheckTransform_;
+	// チュートリアル平面のワールド座標
+	WorldTransform tutorialTransform_;
+	Vector4 tutorialColor_;
 
 	// カメラ
 	Camera* camera_ = nullptr;

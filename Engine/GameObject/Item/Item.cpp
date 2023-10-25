@@ -171,7 +171,7 @@ void Item::AirJump()
 	isJumpEnable_ = false;
 
 	if (!isUsed_ && !isRePop_)
-		audio_->PlayWave(soundHandleUseItem_, false, *seVolume_ * 0.35f);
+		audio_->PlayWave(soundHandleUseItem_, false, *seVolume_ * 0.1f);
 
 	isUsed_ = true;
 	rotateT_ = 0;
