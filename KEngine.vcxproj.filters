@@ -160,6 +160,9 @@
     <ClCompile Include="Externals\imgui\imgui_impl_win32.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\GameObject\Weapon\Weapon.cpp">
+      <Filter>GameObject\user\Weapon</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -324,6 +327,9 @@
     <ClInclude Include="Externals\imgui\imgui_impl_win32.h">
       <Filter>ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\GameObject\Weapon\Weapon.h">
+      <Filter>GameObject\user\Weapon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Object3D.hlsli">
@@ -411,6 +417,9 @@
     </Filter>
     <Filter Include="GameObject\user">
       <UniqueIdentifier>{558ec98b-7d44-4bea-a099-f217e503423a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\user\Weapon">
+      <UniqueIdentifier>{affa1bcf-5f81-4830-98bb-54b26f85f7f0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
