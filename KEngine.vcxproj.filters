@@ -160,6 +160,15 @@
     <ClCompile Include="Externals\imgui\imgui_impl_win32.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Base\DescriptorHeaps\RTV.cpp">
+      <Filter>Base\DescriptorHeaps</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Base\DescriptorHeaps\BaseDescriptorHeap.cpp">
+      <Filter>Base\DescriptorHeaps</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Base\DirectXDevice.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -324,6 +333,15 @@
     <ClInclude Include="Externals\imgui\imgui_impl_win32.h">
       <Filter>ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Base\DescriptorHeaps\RTV.h">
+      <Filter>Base\DescriptorHeaps</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\DescriptorHeaps\BaseDescriptorHeap.h">
+      <Filter>Base\DescriptorHeaps</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\DirectXDevice.h">
+      <Filter>Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Object3D.hlsli">
@@ -411,6 +429,9 @@
     </Filter>
     <Filter Include="GameObject\user">
       <UniqueIdentifier>{558ec98b-7d44-4bea-a099-f217e503423a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Base\DescriptorHeaps">
+      <UniqueIdentifier>{f6691631-5f63-4089-be0c-897e9b375f7f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

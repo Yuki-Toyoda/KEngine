@@ -17,6 +17,9 @@
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
+	// COMの初期化
+	CoInitializeEx(0, COINIT_MULTITHREADED);
+
 	// 空のインスタンスを生成
 	WinApp* winApp = nullptr;
 	DirectXCommon* dxCommon = nullptr;
@@ -139,6 +142,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// ゲームウィンドウを閉じる
 	winApp->TerminateGameWindow();
+
+	// COM終了
+	CoUninitialize();
 
 	// 終了
 	return 0;
