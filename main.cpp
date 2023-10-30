@@ -59,9 +59,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// テクスチャマネージャ初期化
 	TextureManager::GetInstance()->Intialize(dxCommon->GetDevice());
 	// サンプルテクスチャロード
-	TextureManager::Load("white1x1.png");
-	TextureManager::Load("./Engine/Resource/Samples/Texture", "ColorSample.png");
-	TextureManager::Load("./Engine/Resource/Samples/Texture", "AlphabetSheet.png");
+	TextureManager::Load("white1x1.png"); // white1x1
+	TextureManager::Load("./Engine/Resource/Samples/Texture", "ColorSample.png"); // カラーサンプル
+	TextureManager::Load("./Engine/Resource/Samples/Texture", "AlphabetSheet.png"); // アルファベットシート
 
 	// グローバル変数の読み込み
 	GlobalVariables::GetInstance()->LoadFiles();
