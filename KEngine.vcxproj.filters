@@ -76,30 +76,6 @@
     <ClCompile Include="Engine\GameObject\WorldTransform.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\externals\imgui\imgui.cpp">
-      <Filter>ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\externals\imgui\imgui_demo.cpp">
-      <Filter>ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\externals\imgui\imgui_draw.cpp">
-      <Filter>ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\externals\imgui\imgui_impl_dx12.cpp">
-      <Filter>ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\externals\imgui\imgui_impl_win32.cpp">
-      <Filter>ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\externals\imgui\imgui_tables.cpp">
-      <Filter>ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\externals\imgui\imgui_widgets.cpp">
-      <Filter>ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\externals\imgui\ImGuiManager.cpp">
-      <Filter>ImGui</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Input\Input.cpp">
       <Filter>Input</Filter>
     </ClCompile>
@@ -121,26 +97,11 @@
     <ClCompile Include="Engine\Sprite\Sprite.cpp">
       <Filter>Sprite</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Stage\BaseStage.cpp">
-      <Filter>Stage</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Stage\StageManager.cpp">
-      <Filter>Stage</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\GameObject\Ambient\Ambient.cpp">
       <Filter>GameObject\Ambient</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\Camera\Camera.cpp">
       <Filter>GameObject\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject\GameManager\GameManagerObject.cpp">
-      <Filter>GameObject\GameManager</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject\Item\Item.cpp">
-      <Filter>GameObject\Item</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject\Player\Player.cpp">
-      <Filter>GameObject\Player</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\Samples\Box\SampleBox.cpp">
       <Filter>GameObject\Samples</Filter>
@@ -151,20 +112,8 @@
     <ClCompile Include="Engine\GameObject\Samples\Player\SamplePlayer.cpp">
       <Filter>GameObject\Samples</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\GameObject\StageSelectManager\StageSelectManagerObject.cpp">
-      <Filter>GameObject\StageSelectManager</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\GameObject\Samples\TPCamera\TPCamera.cpp">
       <Filter>GameObject\Samples</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject\TitleManager\TitleManagerObject.cpp">
-      <Filter>GameObject\TitleManager</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Stage\user\Stage.cpp">
-      <Filter>Stage\user</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Stage\user\DebugStage.cpp">
-      <Filter>Stage\user</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Sprite\template\Timer.cpp">
       <Filter>Sprite\Template</Filter>
@@ -181,28 +130,19 @@
     <ClCompile Include="Engine\Scene\user\GameScene.cpp">
       <Filter>Scene\user</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Scene\user\StageSelectScene.cpp">
-      <Filter>Scene\user</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Scene\user\TitleScene.cpp">
       <Filter>Scene\user</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Resource\Texture\TextureManager.cpp">
       <Filter>Resource\Texture</Filter>
     </ClCompile>
+    <ClCompile Include="Externals\imgui\ImGuiManager.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
     <ClCompile Include="Externals\imgui\imgui.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="Externals\imgui\imgui_demo.cpp">
-      <Filter>ImGui</Filter>
-    </ClCompile>
     <ClCompile Include="Externals\imgui\imgui_draw.cpp">
-      <Filter>ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Externals\imgui\imgui_impl_dx12.cpp">
-      <Filter>ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Externals\imgui\imgui_impl_win32.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
     <ClCompile Include="Externals\imgui\imgui_tables.cpp">
@@ -211,7 +151,13 @@
     <ClCompile Include="Externals\imgui\imgui_widgets.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="Externals\imgui\ImGuiManager.cpp">
+    <ClCompile Include="Externals\imgui\imgui_demo.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Externals\imgui\imgui_impl_dx12.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Externals\imgui\imgui_impl_win32.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
   </ItemGroup>
@@ -351,22 +297,13 @@
     <ClInclude Include="Engine\GameObject\ObjectList.h">
       <Filter>GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="Externals\imgui\ImGuiManager.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
     <ClInclude Include="Externals\imgui\imconfig.h">
       <Filter>ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="Externals\imgui\imgui.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Externals\imgui\imgui_impl_dx12.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Externals\imgui\imgui_impl_win32.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
     <ClInclude Include="Externals\imgui\imgui_internal.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Externals\imgui\ImGuiManager.h">
       <Filter>ImGui</Filter>
     </ClInclude>
     <ClInclude Include="Externals\imgui\imstb_rectpack.h">
@@ -376,6 +313,15 @@
       <Filter>ImGui</Filter>
     </ClInclude>
     <ClInclude Include="Externals\imgui\imstb_truetype.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Externals\imgui\imgui.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Externals\imgui\imgui_impl_dx12.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Externals\imgui\imgui_impl_win32.h">
       <Filter>ImGui</Filter>
     </ClInclude>
   </ItemGroup>

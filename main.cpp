@@ -29,7 +29,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// ウィンドウズアプリケーションクラスのインスタンスを取得
 	winApp = WinApp::GetInstance();
 	// ゲームウィンドウを生成する
-	winApp->CreateGameWindow(L"2109_サイクロステップ");
+	winApp->CreateGameWindow(L"KEngine");
 
 	// DirectX汎用クラスのインスタンスを取得
 	dxCommon = DirectXCommon::GetInstance();
@@ -77,6 +77,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	sceneManager = SceneManager::GetInstance();
 	sceneManager->Initialize();
 
+	ImGui::CreateContext();
+	auto& io = ImGui::GetIO();
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
 	// メインループ
 	while (true) {
