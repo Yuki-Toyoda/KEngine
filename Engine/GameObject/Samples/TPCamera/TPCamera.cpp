@@ -16,6 +16,8 @@ void TPCamera::Initialize(std::string name, Tag tag)
 
 	// 追従対象の目標角度
 	targetAngle_ = 0.0f;
+	// カメラの追従遅延量
+	trackingDelay_ = 0.35f;
 
 	// グローバル変数に調整したい値を追加
 	AddGlobalVariables();
@@ -106,13 +108,15 @@ void TPCamera::UseThisCamera()
 
 void TPCamera::Reset()
 {
+	targetAngle_ = transform_.translate_.y;
+
 	// 追従対象が存在すれば
 	if (target_) {
 		// 追従座標と角度の初期化
 		interTarget_ = target_->translate_;
 		transform_.rotate_.y = target_->rotate_.y;
+		targetAngle_ = target_->rotate_.y;
 	}
-	targetAngle_ = transform_.rotate_.y;
 
 	Vector3 offset = CalcOffset();
 	transform_.translate_ = interTarget_ + offset;
@@ -120,12 +124,14 @@ void TPCamera::Reset()
 
 void TPCamera::AddGlobalVariables()
 {
-
+	// 調整したい項目をグローバル変数に追加
+	globalVariables_->AddItem(objectName_.c_str(), "trackingDelay",	trackingDelay_);
 }
 
 void TPCamera::ApplyGlobalVariables()
 {
-
+	// 調整した値を適用
+	trackingDelay_ = globalVariables_->GetFloatValue(objectName_.c_str(), "trackingDelay");
 }
 
 void TPCamera::SetTarget(const WorldTransform* target)
@@ -137,7 +143,7 @@ void TPCamera::SetTarget(const WorldTransform* target)
 void TPCamera::UpdateTarget()
 {
 	if (target_)
-		interTarget_ = Math::Linear(0.35f, interTarget_, target_->translate_);
+		interTarget_ = Math::Linear(trackingDelay_, interTarget_, target_->translate_);
 	Vector3 offset = CalcOffset();
 	transform_.translate_ = interTarget_ + offset;
 

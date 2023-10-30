@@ -91,8 +91,6 @@ void SamplePlayer::Update()
 	preJoyState_ = joyState_; // 前フレームの入力取得
 	input_->GetJoystickState(0, joyState_); // 現在フレームの入力取得
 
-	tpCamera_->UpdateTarget();
-
 	// ふるまいを変更するリクエストがあればTrue
 	if (behaviorRequest_) {
 		// ふるまい変更
@@ -203,12 +201,14 @@ void SamplePlayer::Draw()
 
 void SamplePlayer::AddGlobalVariables()
 {
-
+	// 調整したい項目をグローバル変数に追加
+	globalVariables_->AddItem(objectName_.c_str(), "DashSpeed", workDash_.dashSpeed_);
 }
 
 void SamplePlayer::ApplyGlobalVariables()
 {
-
+	// 調整した値を適用
+	workDash_.dashSpeed_ = globalVariables_->GetFloatValue(objectName_.c_str(), "DashSpeed");
 }
 
 void SamplePlayer::OnCollisionEnter(BaseObject* object)

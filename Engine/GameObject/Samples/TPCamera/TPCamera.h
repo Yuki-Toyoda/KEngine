@@ -81,6 +81,8 @@ private: // メンバ変数
 	Vector3 interTarget_ = {};
 	// 追従対象の目標角度
 	float targetAngle_;
+	// カメラの追従遅延量
+	float trackingDelay_;
 
 };
 
