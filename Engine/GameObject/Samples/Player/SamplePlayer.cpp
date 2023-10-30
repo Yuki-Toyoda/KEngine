@@ -20,12 +20,17 @@ void SamplePlayer::Initialize(std::string name, Tag tag)
 	armTransform_R_.Initialize(); // 右腕
 	armTransform_R_.translate_ = { 0.35f, 1.25f, 0.0f }; // 初期座標設定
 	armTransform_R_.SetParent(&bodyTransform_); // 親子付け
+	weaponTransform_.Initialize(); // 武器
+	weaponTransform_.translate_ = { -0.35f, 0.15f, 0.0f }; // 初期座標設定
+	weaponTransform_.rotate_.x = (float)std::numbers::pi;
+	weaponTransform_.SetParent(&armTransform_R_);
 
 	// モデル読み込み
 	AddOBJ(&bodyTransform_, color_, "./Engine/Resource/Samples/Player/Body", "float_Body.obj");
 	AddOBJ(&headTransform_, color_, "./Engine/Resource/Samples/Player/Head", "float_Head.obj");
 	AddOBJ(&armTransform_L_, color_, "./Engine/Resource/Samples/Player/L_Arm", "float_L_arm.obj");
 	AddOBJ(&armTransform_R_, color_, "./Engine/Resource/Samples/Player/R_Arm", "float_R_arm.obj");
+	AddOBJ(&weaponTransform_, color_, "./Engine/Resource/Samples/Player/Weapon", "Weapon.obj");
 
 	// 入力状態取得
 	input_ = Input::GetInstance();
@@ -67,8 +72,6 @@ void SamplePlayer::Initialize(std::string name, Tag tag)
 	// 腕振りギミック用変数
 	armSwingParameter_ = 0.0f;
 
-	onCollision_ = false;
-
 	// 当たり判定用aabb生成
 	AABB* aabb = new AABB();
 	aabb->Initialize(transform_.GetWorldPos(), { 1.0f, 1.0f, 1.0f });
@@ -88,47 +91,38 @@ void SamplePlayer::Update()
 	preJoyState_ = joyState_; // 前フレームの入力取得
 	input_->GetJoystickState(0, joyState_); // 現在フレームの入力取得
 
-	// 移動速度
-	const float speed = 0.3f;
-	// デッドゾーン
-	const float deadZone = 0.7f;
-	// 移動フラグ
-	bool isMoving = false;
-
-	// スティックの入力に応じて移動
-	Vector3 move = {
-		(float)joyState_.Gamepad.sThumbLX / SHRT_MAX, 0.0f,
-		(float)joyState_.Gamepad.sThumbLY / SHRT_MAX };
-	if (Math::Length(move) > deadZone)
-		isMoving = true;
-
-	if (isMoving) {
-		// 移動量を正規化、スピードを加算
-		move = Math::Normalize(move) * speed;
-
-		// カメラ回転角がセットされている場合
-		if (tpCamera_ != nullptr) {
-			// カメラの角度から回転行列を生成
-			Matrix4x4 rotateMat = Math::MakeRotateXYZMatrix(tpCamera_->transform_.rotate_);
-			// 移動ベクトルをカメラの角度に応じて回転させる
-			move = Math::Transform(move, rotateMat);
+	// ふるまいを変更するリクエストがあればTrue
+	if (behaviorRequest_) {
+		// ふるまい変更
+		behavior_ = behaviorRequest_.value();
+		// 各振る舞いごとの初期化を実行
+		switch (behavior_) {
+		case Behavior::kRoot:
+			// 通常行動初期化
+			BehaviorRootInitialize();
+			break;
+		case Behavior::kAttack:
+			// 攻撃行動初期化
+			BehaviorAttackInitialize();
+			break;
 		}
-
-		// 移動
-		transform_.translate_ = transform_.translate_ + move;
-
-		// 移動時の目標角度を求める
-		targetAngle_ = atan2(move.x, move.z);
+		// ふるまいリクエストをリセット
+		behaviorRequest_ = std::nullopt;
 	}
 
-	// 角度を補正する
-	transform_.rotate_.y =
-		Math::LerpShortAngle(transform_.rotate_.y, targetAngle_, 0.1f);
-
-	// 浮遊ギミック更新
-	UpdateFloatingGimmick();
-	// 腕振りギミック更新
-	UpdateArmSwingGimmick();
+	// 各振る舞いごとの初期化を実行
+	switch (behavior_) {
+	case Behavior::kRoot:
+		// 通常行動初期化
+		BehaviorRootUpdate();
+		// 調整項目を反映
+		ApplyGlobalVariables();
+		break;
+	case Behavior::kAttack:
+		// 攻撃行動初期化
+		BehaviorAttackUpdate();
+		break;
+	}
 
 	// 接地していないなら
 	if (!isLanding_) {
@@ -162,27 +156,6 @@ void SamplePlayer::Update()
 		transform_.rotate_ = { 0.0f, 0.0f, 0.0f };
 	}
 
-	// ジャンプ可能なら
-	if (canJump_) {
-		// Aボタンが押されたら
-		if (joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A &&
-			!(preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A)) {
-			// ジャンプさせる
-			jumpSpeed_ = kMaxJumpHeight_;
-			// ジャンプ不可に
-			canJump_ = false;
-			// 接地していない状態に
-			isLanding_ = false;
-		}
-	}
-	else {
-		// 接地しているなら
-		if (isLanding_) {
-			// ジャンプ可能に
-			canJump_ = true;
-		}
-	}
-
 	// 接地していないなら
 	if (!isLanding_) {
 		// ジャンプ処理
@@ -201,7 +174,6 @@ void SamplePlayer::Update()
 
 	// 着地判定リセット
 	isLanding_ = false;
-	onCollision_ = false;
 
 	if (!isDestroy_) {
 		// 当たり判定更新
@@ -262,6 +234,184 @@ void SamplePlayer::OnCollision(BaseObject* object)
 void SamplePlayer::OnCollisionExit(BaseObject* object)
 {
 	object;
+}
+
+void SamplePlayer::BehaviorRootInitialize()
+{
+	// 浮遊ギミック初期化
+	InitializeFloatingGimmick();
+	// 腕振りギミック初期化
+	InitializeArmSwingGimmick();
+}
+
+void SamplePlayer::BehaviorRootUpdate()
+{
+	// 移動速度
+	const float speed = 0.3f;
+	// デッドゾーン
+	const float deadZone = 0.7f;
+	// 移動フラグ
+	bool isMoving = false;
+
+	// スティックの入力に応じて移動
+	Vector3 move = {
+		(float)joyState_.Gamepad.sThumbLX / SHRT_MAX, 0.0f,
+		(float)joyState_.Gamepad.sThumbLY / SHRT_MAX };
+	if (Math::Length(move) > deadZone)
+		isMoving = true;
+
+	if (isMoving) {
+		// 移動量を正規化、スピードを加算
+		move = Math::Normalize(move) * speed;
+
+		// カメラ回転角がセットされている場合
+		if (tpCamera_ != nullptr) {
+			// カメラの角度から回転行列を生成
+			Matrix4x4 rotateMat = Math::MakeRotateXYZMatrix(tpCamera_->transform_.rotate_);
+			// 移動ベクトルをカメラの角度に応じて回転させる
+			move = Math::Transform(move, rotateMat);
+		}
+
+		// 移動
+		transform_.translate_ = transform_.translate_ + move;
+
+		// 移動時の目標角度を求める
+		targetAngle_ = atan2(move.x, move.z);
+	}
+
+	// 角度を補正する
+	transform_.rotate_.y =
+		Math::LerpShortAngle(transform_.rotate_.y, targetAngle_, 0.1f);
+
+	// ジャンプ可能なら
+	if (canJump_) {
+		// Aボタンが押されたら
+		if (joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A &&
+			!(preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A)) {
+			// ジャンプさせる
+			jumpSpeed_ = kMaxJumpHeight_;
+			// ジャンプ不可に
+			canJump_ = false;
+			// 接地していない状態に
+			isLanding_ = false;
+		}
+	}
+	else {
+		// 接地しているなら
+		if (isLanding_) {
+			// ジャンプ可能に
+			canJump_ = true;
+		}
+	}
+
+	// 武器座標をありえないほど遠くに
+	weaponTransform_.translate_ = { -100000.0f, -100000.0f, 0.0f };
+
+	// リクエスト状態が攻撃行動でない、接地状態であれば
+	if (behaviorRequest_ != kAttack && isLanding_) {
+		// Ｘボタンが入力されたら
+		if (joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_X) {
+			// 次の行動を攻撃行動に
+			behaviorRequest_ = kAttack;
+		}
+	}
+
+	// 浮遊ギミック更新
+	UpdateFloatingGimmick();
+	// 腕振りギミック更新
+	UpdateArmSwingGimmick();
+}
+
+void SamplePlayer::BehaviorAttackInitialize()
+{
+	// 攻撃状態初期化
+	attackState_ = SwingOver;
+	// t初期化
+	t_ = 0.0f;
+
+	// 座標設定
+	weaponTransform_.translate_ = { -0.35f, 0.15f, 0.0f };
+}
+
+void SamplePlayer::BehaviorAttackUpdate()
+{
+	// 現在の攻撃状態によって遷移
+	switch (attackState_) {
+	case SamplePlayer::SwingOver:
+		// イージングによって振りかぶる動作を行う
+		if (t_ <= swingOverTime_) {
+			// イージングで腕の角度を調整
+			armTransform_R_.rotate_.x =
+				Math::EaseOut(t_, swingOverStartAngle_, swingOverEndAngle_, swingOverTime_);
+			armTransform_L_.rotate_.x =
+				Math::EaseOut(t_, swingOverStartAngle_, swingOverEndAngle_, swingOverTime_);
+			// t加算
+			t_ += 1.0f / 60.0f;
+		}
+		else {
+			// 演出用tリセット
+			t_ = 0.0f;
+
+			// 攻撃開始地点を設定
+			attackStartPos_ = transform_.translate_;
+			// 攻撃終端地点を設定
+			// スティックの入力に応じて移動
+			Vector3 move = {
+				0.0f, 0.0f, 1.0f };
+
+			// 移動量を正規化、スピードを加算
+			move = Math::Normalize(move) * attackForward_;
+
+			// カメラの角度から回転行列を生成
+			Matrix4x4 rotateMat = Math::MakeRotateXYZMatrix(transform_.rotate_);
+			// 移動ベクトルをカメラの角度に応じて回転させる
+			move = Math::Transform(move, rotateMat);
+
+			// 攻撃終端地点を設定
+			attackEndPos_ = attackStartPos_ + move;
+
+			// 次の段階へ
+			attackState_++;
+		}
+		break;
+	case SamplePlayer::Attack:
+		// イージングによって攻撃動作を行う
+		if (t_ <= attackTime_) {
+			// イージングで腕の角度を調整
+			armTransform_R_.rotate_.x =
+				Math::EaseOut(t_, swingOverEndAngle_, attackEndAngle_, attackTime_);
+			armTransform_L_.rotate_.x =
+				Math::EaseOut(t_, swingOverEndAngle_, attackEndAngle_, attackTime_);
+
+			// イージングでプレイヤーを移動
+			transform_.translate_ =
+				Math::EaseOut(t_, attackStartPos_, attackEndPos_, attackTime_);
+
+			// t加算
+			t_ += 1.0f / 60.0f;
+		}
+		else {
+			// 演出用tリセット
+			t_ = 0.0f;
+			// 次の段階へ
+			attackState_++;
+		}
+		break;
+	case SamplePlayer::Wait:
+		// 待機
+		if (t_ <= attackWaitTime_) {
+			// t加算
+			t_ += 1.0f / 60.0f;
+		}
+		else {
+			// 通常行動に戻すように命令
+			behaviorRequest_ = kRoot;
+		}
+		// 演出終了
+		break;
+	default:
+		break;
+	}
 }
 
 void SamplePlayer::InitializeFloatingGimmick()

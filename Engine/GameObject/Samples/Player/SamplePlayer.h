@@ -56,6 +56,24 @@ public: // その他関数群
 	void SetTPCamera(TPCamera* tpCamera) { tpCamera_ = tpCamera; }
 
 	/// <summary>
+	/// 通常時の行動初期化
+	/// </summary>
+	void BehaviorRootInitialize();
+	/// <summary>
+	/// 通常時の行動更新関数
+	/// </summary>
+	void BehaviorRootUpdate();
+
+	/// <summary>
+	/// 通常時の行動初期化
+	/// </summary>
+	void BehaviorAttackInitialize();
+	/// <summary>
+	/// 攻撃時の行動更新関数
+	/// </summary>
+	void BehaviorAttackUpdate();
+
+	/// <summary>
 	/// 浮遊ギミック初期化関数
 	/// </summary>
 	void InitializeFloatingGimmick();
@@ -90,6 +108,7 @@ private: // メンバ変数
 	WorldTransform headTransform_; // 頭
 	WorldTransform armTransform_L_; // 左腕
 	WorldTransform armTransform_R_; // 右腕
+	WorldTransform weaponTransform_; // 武器
 
 	// 移動時の目標角度
 	float targetAngle_;
@@ -124,7 +143,50 @@ private: // メンバ変数
 	// 腕振りギミック用変数
 	float armSwingParameter_;
 
-	bool onCollision_;
+	// ふるまい列挙子
+	enum Behavior {
+		kRoot, // 通常状態
+		kAttack // 攻撃状態
+	};
+	// ふるまい初期設定
+	Behavior behavior_ = Behavior::kRoot;
+
+	// ふるまいリクエスト
+	std::optional<Behavior> behaviorRequest_ = std::nullopt;
+
+	// 攻撃状態列挙子
+	enum AttackState {
+		SwingOver, // 振りかぶり
+		Attack, // 攻撃動作
+		Wait, // 硬直
+	};
+	// 現在の攻撃状態
+	int32_t attackState_ = SwingOver;
+
+	// 攻撃演出用t
+	float t_ = 0.0f;
+
+	// 振りかぶり秒数
+	float swingOverTime_ = 0.5f;
+	// 攻撃秒数
+	float attackTime_ = 0.25f;
+	// 攻撃の時どれだけ前に進むか
+	float attackForward_ = 10.0f;
+	// 攻撃後硬直秒数
+	float attackWaitTime_ = 0.5f;
+
+	// 振りかぶり初期角度
+	float swingOverStartAngle_ = (float)std::numbers::pi + (float)std::numbers::pi / 2.0f;
+	// 振りかぶり終端角度
+	float swingOverEndAngle_ = (float)std::numbers::pi - (float)std::numbers::pi / 3.0f;
+
+	// 振り降ろし終端角度
+	float attackEndAngle_ = (float)std::numbers::pi + (float)std::numbers::pi / 1.75f;
+
+	// 攻撃開始地点
+	Vector3 attackStartPos_ = { 0.0f, 0.0f, 0.0f };
+	// 攻撃終端地点
+	Vector3 attackEndPos_ = { 0.0f, 0.0f, 0.0f };
 
 };
 
