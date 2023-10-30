@@ -14,13 +14,15 @@ void TPCamera::Initialize(std::string name, Tag tag)
 	// カメラ初期位置の設定
 	transform_.translate_ = { 0.0f, 1.0f, -10.0f };
 
+	// 追従対象の目標角度
+	targetAngle_ = 0.0f;
+
 	// グローバル変数に調整したい値を追加
 	AddGlobalVariables();
 }
 
 void TPCamera::Update()
 {
-
 	// 基底クラス更新
 	BaseObject::Update();
 
@@ -32,11 +34,18 @@ void TPCamera::Update()
 	const float speed = 0.05f;
 
 	// スティックの横移動に対してカメラを旋回
-	transform_.rotate_.y += (float)joyState_.Gamepad.sThumbRX / SHRT_MAX * speed;
+	targetAngle_ += (float)joyState_.Gamepad.sThumbRX / SHRT_MAX * speed;
+	if (targetAngle_ >= (float)std::numbers::pi * 2.0f || (float)-std::numbers::pi * 2.0f >= targetAngle_)
+		targetAngle_ = 0.0f;
 
-	// 追従座標更新
+	if (joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_THUMB) {
+		targetAngle_ = target_->rotate_.y;
+	}
+
+	transform_.rotate_.y = Math::LerpShortAngle(transform_.rotate_.y, targetAngle_, 0.25f);
+
 	UpdateTarget();
-
+	
 #ifdef _DEBUG
 
 	// デバックトリガーがTrueの時
@@ -95,6 +104,20 @@ void TPCamera::UseThisCamera()
 	OBJ::SetViewProjection(&viewProjectionMatrix_);
 }
 
+void TPCamera::Reset()
+{
+	// 追従対象が存在すれば
+	if (target_) {
+		// 追従座標と角度の初期化
+		interTarget_ = target_->translate_;
+		transform_.rotate_.y = target_->rotate_.y;
+	}
+	targetAngle_ = transform_.rotate_.y;
+
+	Vector3 offset = CalcOffset();
+	transform_.translate_ = interTarget_ + offset;
+}
+
 void TPCamera::AddGlobalVariables()
 {
 
@@ -105,23 +128,18 @@ void TPCamera::ApplyGlobalVariables()
 
 }
 
+void TPCamera::SetTarget(const WorldTransform* target)
+{
+	target_ = target;
+	Reset();
+}
+
 void TPCamera::UpdateTarget()
 {
-	// 追従対象が存在すれば
-	if (target_) {
-		// 追従対象からカメラまでのオフセットを設定
-		Vector3 offset = { 0.0f, 2.0f, -10.0f };
-
-		// カメラの角度から回転行列を生成
-		Matrix4x4 rotateMat = Math::MakeRotateXYZMatrix(transform_.rotate_);
-
-		// オフセットをカメラの回転に合わせて回転させる
-		offset = Math::Transform(offset, rotateMat);
-		Vector3 parentPosition = target_->GetWorldPos();
-
-		// 座標コピーからオフセット分ずらす
-		transform_.translate_ = parentPosition + offset;
-	}
+	if (target_)
+		interTarget_ = Math::Linear(0.35f, interTarget_, target_->translate_);
+	Vector3 offset = CalcOffset();
+	transform_.translate_ = interTarget_ + offset;
 
 	// カメラのワールド行列の取得
 	Matrix4x4 cameraMatrix = transform_.GetMatWorld();
@@ -131,4 +149,19 @@ void TPCamera::UpdateTarget()
 	Matrix4x4 projectionMatrix = Math::MakePerspectiveFovMatrix(0.45f, float(WinApp::kWindowWidth) / float(WinApp::kwindowHeight), 0.1f, 100.0f);
 	// ビュープロジェクション行列の計算
 	viewProjectionMatrix_ = viewMatrix * projectionMatrix;
+}
+
+Vector3 TPCamera::CalcOffset() const
+{
+	// 追従対象からカメラまでのオフセットを設定
+	Vector3 offset = { 0.0f, 2.0f, -10.0f };
+
+	// カメラの角度から回転行列を生成
+	Matrix4x4 rotateMat = Math::MakeRotateXYZMatrix(transform_.rotate_);
+
+	// オフセットをカメラの回転に合わせて回転させる
+	offset = Math::Transform(offset, rotateMat);
+	
+	// 計算したオフセットを返す
+	return offset;
 }

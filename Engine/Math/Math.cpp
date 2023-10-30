@@ -27,6 +27,17 @@ int Math::Linear(float t, int start, int end) {
 	return (int)((1.0 - t) * (float)start + t * (float)end);
 }
 
+Vector3 Math::Linear(float t, Vector3 start, Vector3 end)
+{
+	// 結果格納用
+	Vector3 result;
+	result.x = (float)((1.0 - t) * start.x + t * end.x);
+	result.y = (float)((1.0 - t) * start.y + t * end.y);
+	result.z = (float)((1.0 - t) * start.z + t * end.z);
+
+	return result;
+}
+
 float Math::EaseIn(float t, float start, float end, float time) {
 	float easeT = t / time * t / time;
 	return (float)((1.0 - easeT) * start + easeT * end);

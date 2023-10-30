@@ -10,6 +10,16 @@ class TPCamera;
 /// </summary>
 class SamplePlayer : public BaseObject
 {
+private: // サブクラス
+
+	// ダッシュ用ワーク
+	struct WorkDash {
+		// ダッシュ用媒介変数
+		uint32_t dashParameter_ = 0;
+		// ダッシュスピード
+		float dashSpeed_;
+	};
+
 public: // メンバ関数
 
 	// 固有の初期化処理
@@ -72,6 +82,15 @@ public: // その他関数群
 	/// 攻撃時の行動更新関数
 	/// </summary>
 	void BehaviorAttackUpdate();
+
+	/// <summary>
+	/// ダッシュ時の行動初期化関数
+	/// </summary>
+	void BehaviorDashInitialize();
+	/// <summary>
+	/// ダッシュ時の行動更新関数
+	/// </summary>
+	void BehaviorDashUpdate();
 
 	/// <summary>
 	/// 浮遊ギミック初期化関数
@@ -146,7 +165,8 @@ private: // メンバ変数
 	// ふるまい列挙子
 	enum Behavior {
 		kRoot, // 通常状態
-		kAttack // 攻撃状態
+		kAttack, // 攻撃状態
+		kDash // ダッシュ状態
 	};
 	// ふるまい初期設定
 	Behavior behavior_ = Behavior::kRoot;
@@ -187,6 +207,9 @@ private: // メンバ変数
 	Vector3 attackStartPos_ = { 0.0f, 0.0f, 0.0f };
 	// 攻撃終端地点
 	Vector3 attackEndPos_ = { 0.0f, 0.0f, 0.0f };
+
+	// ダッシュ用変数
+	WorkDash workDash_;
 
 };
 

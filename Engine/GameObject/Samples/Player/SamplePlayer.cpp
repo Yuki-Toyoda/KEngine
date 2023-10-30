@@ -91,6 +91,8 @@ void SamplePlayer::Update()
 	preJoyState_ = joyState_; // 前フレームの入力取得
 	input_->GetJoystickState(0, joyState_); // 現在フレームの入力取得
 
+	tpCamera_->UpdateTarget();
+
 	// ふるまいを変更するリクエストがあればTrue
 	if (behaviorRequest_) {
 		// ふるまい変更
@@ -104,6 +106,10 @@ void SamplePlayer::Update()
 		case Behavior::kAttack:
 			// 攻撃行動初期化
 			BehaviorAttackInitialize();
+			break;
+		case Behavior::kDash:
+			// 攻撃行動初期化
+			BehaviorDashInitialize();
 			break;
 		}
 		// ふるまいリクエストをリセット
@@ -121,6 +127,10 @@ void SamplePlayer::Update()
 	case Behavior::kAttack:
 		// 攻撃行動初期化
 		BehaviorAttackUpdate();
+		break;
+	case Behavior::kDash:
+		// 攻撃行動初期化
+		BehaviorDashUpdate();
 		break;
 	}
 
@@ -181,6 +191,9 @@ void SamplePlayer::Update()
 		// リストに自身を登録
 		collisionManager_->RegisterCollider(collider_.get());
 	}
+
+
+	tpCamera_->UpdateTarget();
 }
 
 void SamplePlayer::Draw()
@@ -316,6 +329,15 @@ void SamplePlayer::BehaviorRootUpdate()
 		}
 	}
 
+	// リクエスト状態がダッシュ行動でない、接地状態であれば
+	if (behaviorRequest_ != kDash && behavior_ != kAttack) {
+		// Ｘボタンが入力されたら
+		if (joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) {
+			// 次の行動を攻撃行動に
+			behaviorRequest_ = kDash;
+		}
+	}
+
 	// 浮遊ギミック更新
 	UpdateFloatingGimmick();
 	// 腕振りギミック更新
@@ -412,6 +434,41 @@ void SamplePlayer::BehaviorAttackUpdate()
 	default:
 		break;
 	}
+}
+
+void SamplePlayer::BehaviorDashInitialize()
+{
+	// ダッシュ変数初期化
+	workDash_.dashParameter_ = 0; // 媒介変数
+	workDash_.dashSpeed_ = 1.0f; // ダッシュスピード
+	// プレイヤーを目標角度まで一気に補正
+	transform_.rotate_.y = targetAngle_;
+
+	// 腕をナルト走りにする
+	armTransform_L_.rotate_.x = (float)std::numbers::pi / 3.0f; // 角度設定
+	armTransform_R_.rotate_.x = (float)std::numbers::pi / 3.0f; // 角度設定
+}
+
+void SamplePlayer::BehaviorDashUpdate()
+{
+	// ベクトル設定
+	Vector3 move = {
+		0.0f, 0.0f, workDash_.dashSpeed_ };
+
+	// カメラの角度から回転行列を生成
+	Matrix4x4 rotateMat = Math::MakeRotateXYZMatrix(transform_.rotate_);
+	// 移動ベクトルをカメラの角度に応じて回転させる
+	move = Math::Transform(move, rotateMat);
+
+	// 移動
+	transform_.translate_ = transform_.translate_ + move;
+
+	// ダッシュの時間
+	const uint32_t behaviorDashTime = 15;
+
+	// 既定の時間経過で通常行動に戻る
+	if (++workDash_.dashParameter_ >= behaviorDashTime)
+		behaviorRequest_ = Behavior::kRoot;
 }
 
 void SamplePlayer::InitializeFloatingGimmick()
