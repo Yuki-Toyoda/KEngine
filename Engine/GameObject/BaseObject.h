@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "../externals/imgui/imgui.h"
+#include "../../externals/imgui/imgui.h"
 #include "../OBJ/OBJ.h"
 #include "WorldTransform.h"
 #include "../Sprite/SpriteList.h"

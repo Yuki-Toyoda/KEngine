@@ -1,7 +1,6 @@
 #pragma once
 #include "../BaseScene.h"
 #include "SceneList.h"
-#include "../../Stage/user/StageList.h"
 
 /// <summary>
 /// ゲームシーン
@@ -21,9 +20,4 @@ public: // メンバ関数
 
 private: // メンバ変数
 
-	// ステージマネージャー
-	StageManager* stageManager_ = nullptr;
-
-	// ゲームマネージャー
-	GameManagerObject* gameManager_ = nullptr;
 };

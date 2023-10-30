@@ -102,9 +102,6 @@ private: // メンバ変数
 	Vector4 fadeSpriteColor_;
 	// フェード演出用スプライト
 	std::unique_ptr<Sprite> fadeSprite_;
-	// ビネットエフェクト色
-	Vector4 vignetteColor_;
-	std::unique_ptr<Sprite> vignetteSprite_;
 
 	// フェード演出用色
 	Vector4 startFadeColor_; // 始端

@@ -3,7 +3,7 @@
 #include "Engine/Base/DirectXCommon.h"
 #include "Engine/Scene/SceneManager.h"
 #include "Engine/Base/SafeDelete.h"
-#include "Engine/externals/imgui/ImGuiManager.h"
+#include "Externals/imgui/ImGuiManager.h"
 #include "Engine/OBJ/ModelManager.h"
 #include "Engine/OBJ/OBJ.h"
 #include "Engine/Sprite/Sprite.h"
@@ -62,11 +62,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	TextureManager::Load("white1x1.png");
 	TextureManager::Load("./Engine/Resource/Samples/Texture", "ColorSample.png");
 	TextureManager::Load("./Engine/Resource/Samples/Texture", "AlphabetSheet.png");
-	TextureManager::Load("./Resources/TutorialPlane", "Tutorial_01.png");
-	TextureManager::Load("./Resources/TutorialPlane", "Tutorial_02.png");
-	TextureManager::Load("./Resources/TutorialPlane", "Tutorial_03.png");
-	TextureManager::Load("./Resources/TutorialPlane", "Tutorial_04.png");
-	TextureManager::Load("./Resources/TutorialPlane", "Tutorial_05.png");
 
 	// グローバル変数の読み込み
 	GlobalVariables::GetInstance()->LoadFiles();

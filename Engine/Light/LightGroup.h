@@ -5,7 +5,7 @@
  
 #include "DirectionalLight.h"
 
-#include "../externals/imgui/imgui.h"
+#include "../../Externals/imgui/imgui.h"
 
 /// <summary>
 /// ライト全てを管理するクラス

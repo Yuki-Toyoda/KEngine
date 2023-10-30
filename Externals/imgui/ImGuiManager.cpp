@@ -1,7 +1,7 @@
 #include "ImGuiManager.h"
 
-#include "../../Base/DirectXCommon.h"
-#include "../../Base/WinApp.h"
+#include "../../Engine/Base/DirectXCommon.h"
+#include "../../Engine/Base/WinApp.h"
 
 ImGuiManager* ImGuiManager::GetImstance()
 {

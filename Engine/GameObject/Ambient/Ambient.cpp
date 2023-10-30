@@ -17,8 +17,6 @@ void Ambient::Update()
 {
 	// 基底クラス更新
 	BaseObject::Update();
-
-	transform_.rotate_.y += 0.001f;
 }
 
 void Ambient::Draw()

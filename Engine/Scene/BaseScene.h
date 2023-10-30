@@ -1,13 +1,12 @@
 #pragma once
 #include "../Base/DirectXCommon.h"
 #include "../Resource/Texture/TextureManager.h"
-#include "../externals/imgui/imgui.h"
+#include "../../Externals/imgui/imgui.h"
 #include "../GameObject/GameObjectManager.h"
 #include "../Collider/CollisionManager.h"
 #include "../GameObject/ObjectList.h"
 #include "../Sprite/SpriteList.h"
 #include "../Input/Input.h"
-#include "../Stage/StageManager.h"
 
 /// <summary>
 /// 基底シーン

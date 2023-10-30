@@ -17,10 +17,8 @@ void SceneManager::Initialize()
 	fadeSpriteSize_ = { (float)WinApp::kWindowWidth, (float)WinApp::kwindowHeight };
 	// フェード演出スプライト用色
 	fadeSpriteColor_ = { 0.0f, 0.0f, 0.0f, 1.0f };
-	vignetteColor_ = { 1.0f, 1.0f, 1.0f, 1.0f };
 	// フェード演出用スプライト
 	fadeSprite_.reset(Sprite::Create(TextureManager::Load("white1x1.png"), &fadeSpritePosition_, &fadeSpriteSize_, &fadeSpriteColor_));
-	vignetteSprite_.reset(Sprite::Create(TextureManager::Load("./Resources/Image", "Vignette.png"), &fadeSpritePosition_, &fadeSpriteSize_, &vignetteColor_));
 
 	// フェード演出用色
 	startFadeColor_ = fadeSpriteColor_; // 始端
@@ -36,7 +34,7 @@ void SceneManager::Initialize()
 	isEndFade_ = true;
 	
 	// フェード効果音
-	soundHandleFade_ = Audio::GetInstance()->LoadWave("/Audio/SE/SceneTransition.wav");
+	soundHandleFade_ = Audio::GetInstance()->LoadWave("./Engine/Resource/Samples/Audio/SceneTransition.wav");
 
 	// 音量初期設定
 	bgmVolume_ = 0.5f; // BGM
@@ -92,7 +90,6 @@ void SceneManager::Update()
 
 void SceneManager::Draw()
 {
-	vignetteSprite_->Draw();
 	fadeSprite_->Draw();
 }
 

@@ -1,6 +1,6 @@
 #include <cassert>
 #include "TextureManager.h"
-#include "../../externals/DirectXTex/DirectXTex.h"
+#include "../../../Externals/DirectXTex/DirectXTex.h"
 #include "../../Debug/Debug.h"
 
 // 省略用
