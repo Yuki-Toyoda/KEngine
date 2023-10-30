@@ -3,7 +3,7 @@
 #include "Engine/Base/DirectXCommon.h"
 #include "Engine/Scene/SceneManager.h"
 #include "Engine/Base/SafeDelete.h"
-#include "Engine/externals/imgui/ImGuiManager.h"
+#include "Externals/imgui/ImGuiManager.h"
 #include "Engine/OBJ/ModelManager.h"
 #include "Engine/OBJ/OBJ.h"
 #include "Engine/Sprite/Sprite.h"

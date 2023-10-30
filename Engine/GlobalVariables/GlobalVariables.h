@@ -1,6 +1,6 @@
 #pragma once
 #include <Windows.h>
-#include "../externals/nlohmann/json.hpp"
+#include "../../Externals/nlohmann/json.hpp"
 #include <variant>
 #include <map>
 #include <string>
@@ -8,7 +8,7 @@
 #include "../Math/Math.h"
 
 #ifdef _DEBUG
-#include "../externals/imgui/imgui.h"
+#include "../../externals/imgui/imgui.h"
 #endif // _DEBUG
 
 /// <summary>

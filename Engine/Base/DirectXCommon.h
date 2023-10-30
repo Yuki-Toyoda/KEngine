@@ -128,7 +128,7 @@ private: // メンバ関数
 	/// <param name="descriptorSize">ディスクリプタサイズ</param>
 	/// <param name="index">取得するヒープのインデックス</param>
 	/// <returns>特定のインデックスのディスクリプタハンドル</returns>
-	D3D12_CPU_DESCRIPTOR_HANDLE GetCPUDescriptorHandle(ID3D12DescriptorHeap* descriptorHeap, uint32_t descriptorSize, uint32_t index);
+	D3D12_CPU_DESCRIPTOR_HANDLE GetCPUDescriptorHandle(ID3D12DescriptorHeap* descriptorHeap, uint32_t descriptorSize, uint32_t commitIndex);
 
 	/// <summary>
 	/// 特定のインデックスのディスクリプタハンドルを取得する関数(GPU)
@@ -137,7 +137,7 @@ private: // メンバ関数
 	/// <param name="descriptorSize">ディスクリプタサイズ</param>
 	/// <param name="index">取得するヒープのインデックス</param>
 	/// <returns>特定のインデックスのディスクリプタハンドル</returns>
-	D3D12_GPU_DESCRIPTOR_HANDLE GetGPUDescriptorHandle(ID3D12DescriptorHeap* descriptorHeap, uint32_t descriptorSize, uint32_t index);
+	D3D12_GPU_DESCRIPTOR_HANDLE GetGPUDescriptorHandle(ID3D12DescriptorHeap* descriptorHeap, uint32_t descriptorSize, uint32_t commitIndex);
 
 	/// <summary>
 	/// リソースバリアの切り替えを行う関数

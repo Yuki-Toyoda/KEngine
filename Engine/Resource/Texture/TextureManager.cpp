@@ -1,21 +1,21 @@
 #include <cassert>
 #include "TextureManager.h"
-#include "../../externals/DirectXTex/DirectXTex.h"
+#include "../../../Externals/DirectXTex/DirectXTex.h"
 #include "../../Debug/Debug.h"
 
 // 省略用
 using namespace Microsoft::WRL;
 using namespace DirectX;
 
-D3D12_CPU_DESCRIPTOR_HANDLE TextureManager::GetCPUDescriptorHandle(ID3D12DescriptorHeap* descriptorHeap, uint32_t descriptorSize, uint32_t index) {
+D3D12_CPU_DESCRIPTOR_HANDLE TextureManager::GetCPUDescriptorHandle(ID3D12DescriptorHeap* descriptorHeap, uint32_t descriptorSize, uint32_t commitIndex) {
 	D3D12_CPU_DESCRIPTOR_HANDLE handleCPU = descriptorHeap->GetCPUDescriptorHandleForHeapStart();
-	handleCPU.ptr += (descriptorSize * index);
+	handleCPU.ptr += (descriptorSize * commitIndex);
 	return handleCPU;
 }
 
-D3D12_GPU_DESCRIPTOR_HANDLE TextureManager::GetGPUDescriptorHandle(ID3D12DescriptorHeap* descriptorHeap, uint32_t descriptorSize, uint32_t index) {
+D3D12_GPU_DESCRIPTOR_HANDLE TextureManager::GetGPUDescriptorHandle(ID3D12DescriptorHeap* descriptorHeap, uint32_t descriptorSize, uint32_t commitIndex) {
 	D3D12_GPU_DESCRIPTOR_HANDLE handleGPU = descriptorHeap->GetGPUDescriptorHandleForHeapStart();
-	handleGPU.ptr += (descriptorSize * index);
+	handleGPU.ptr += (descriptorSize * commitIndex);
 	return handleGPU;
 }
 

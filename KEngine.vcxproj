@@ -92,14 +92,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Collider\Collider.cpp" />
     <ClCompile Include="Engine\Collider\CollisionManager.cpp" />
     <ClCompile Include="Engine\Debug\Debug.cpp" />
-    <ClCompile Include="Engine\externals\imgui\imgui.cpp" />
-    <ClCompile Include="Engine\externals\imgui\ImGuiManager.cpp" />
-    <ClCompile Include="Engine\externals\imgui\imgui_demo.cpp" />
-    <ClCompile Include="Engine\externals\imgui\imgui_draw.cpp" />
-    <ClCompile Include="Engine\externals\imgui\imgui_impl_dx12.cpp" />
-    <ClCompile Include="Engine\externals\imgui\imgui_impl_win32.cpp" />
-    <ClCompile Include="Engine\externals\imgui\imgui_tables.cpp" />
-    <ClCompile Include="Engine\externals\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Engine\GameObject\Ambient\Ambient.cpp" />
     <ClCompile Include="Engine\GameObject\BaseObject.cpp" />
     <ClCompile Include="Engine\GameObject\Camera\Camera.cpp" />
@@ -124,6 +116,14 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Sprite\template\Counter.cpp" />
     <ClCompile Include="Engine\Sprite\template\Gage.cpp" />
     <ClCompile Include="Engine\Sprite\template\Timer.cpp" />
+    <ClCompile Include="Externals\imgui\imgui.cpp" />
+    <ClCompile Include="Externals\imgui\ImGuiManager.cpp" />
+    <ClCompile Include="Externals\imgui\imgui_demo.cpp" />
+    <ClCompile Include="Externals\imgui\imgui_draw.cpp" />
+    <ClCompile Include="Externals\imgui\imgui_impl_dx12.cpp" />
+    <ClCompile Include="Externals\imgui\imgui_impl_win32.cpp" />
+    <ClCompile Include="Externals\imgui\imgui_tables.cpp" />
+    <ClCompile Include="Externals\imgui\imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -138,15 +138,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Collider\Shape\BaseShape.h" />
     <ClInclude Include="Engine\Collider\Shape\Sphere.h" />
     <ClInclude Include="Engine\Debug\Debug.h" />
-    <ClInclude Include="Engine\externals\imgui\imconfig.h" />
-    <ClInclude Include="Engine\externals\imgui\imgui.h" />
-    <ClInclude Include="Engine\externals\imgui\ImGuiManager.h" />
-    <ClInclude Include="Engine\externals\imgui\imgui_impl_dx12.h" />
-    <ClInclude Include="Engine\externals\imgui\imgui_impl_win32.h" />
-    <ClInclude Include="Engine\externals\imgui\imgui_internal.h" />
-    <ClInclude Include="Engine\externals\imgui\imstb_rectpack.h" />
-    <ClInclude Include="Engine\externals\imgui\imstb_textedit.h" />
-    <ClInclude Include="Engine\externals\imgui\imstb_truetype.h" />
     <ClInclude Include="Engine\GameObject\Ambient\Ambient.h" />
     <ClInclude Include="Engine\GameObject\BaseObject.h" />
     <ClInclude Include="Engine\GameObject\Camera\Camera.h" />
@@ -181,6 +172,15 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Sprite\template\Counter.h" />
     <ClInclude Include="Engine\Sprite\template\Gage.h" />
     <ClInclude Include="Engine\Sprite\template\Timer.h" />
+    <ClInclude Include="Externals\imgui\imconfig.h" />
+    <ClInclude Include="Externals\imgui\imgui.h" />
+    <ClInclude Include="Externals\imgui\ImGuiManager.h" />
+    <ClInclude Include="Externals\imgui\imgui_impl_dx12.h" />
+    <ClInclude Include="Externals\imgui\imgui_impl_win32.h" />
+    <ClInclude Include="Externals\imgui\imgui_internal.h" />
+    <ClInclude Include="Externals\imgui\imstb_rectpack.h" />
+    <ClInclude Include="Externals\imgui\imstb_textedit.h" />
+    <ClInclude Include="Externals\imgui\imstb_truetype.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Object3D.hlsli">
@@ -191,6 +191,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>
+    <None Include="Externals\imgui\.editorconfig" />
+    <None Include="Externals\imgui\.gitattributes" />
+    <None Include="Externals\imgui\.gitignore" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Engine\Resource\Shader\Object3D.PS.hlsl">
@@ -211,12 +214,12 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Engine\externals\DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">
+    <ProjectReference Include="..\..\..\source\repos\DirectXGame\Externals\DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">
       <Project>{371b9fa9-4c90-4ac6-a123-aced756d6c77}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Engine\externals\imgui\LICENSE.txt" />
+    <Text Include="Externals\imgui\LICENSE.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -35,8 +35,8 @@ void SampleBox::Initialize(std::string name, Tag tag)
 	gage_ = std::make_unique<Gage>();
 	gage_->Initialize(&intNum_, 0.0f, 100.0f, backGroundColor_, gageColor_, { 100.0f, 100.0f }, { 100.0f, 16.0f }, {0.0f, 0.0f});
 
-	counter_ = std::make_unique<Counter>();
-	counter_->Initialize(&testNum_, { 300.0f, 300.0f }, { 96.0f, 96.0f }, -32.0f);
+	stageItemCounter_ = std::make_unique<Counter>();
+	stageItemCounter_->Initialize(&testNum_, { 300.0f, 300.0f }, { 96.0f, 96.0f }, -32.0f);
 
 	animSpriteTexture1_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "NumberSheets.png");
 	animSpriteTexture2_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "AlphabetSheet.png");
@@ -111,12 +111,12 @@ void SampleBox::Update()
 	gage_->SetMax(max_);
 
 	// カウンター更新
-	ImGui::Checkbox("counter - isActive", &counter_->isActive_);
+	ImGui::Checkbox("counter - isActive", &stageItemCounter_->isActive_);
 	ImGui::DragInt("Intnum", &testNum_, 0.5f);
-	ImGui::DragFloat2("counterPosition", &counter_->position_.x, 0.5f);
-	ImGui::DragFloat2("counterSize", &counter_->size_.x, 0.5f);
-	ImGui::DragFloat("counterLineSpace", &counter_->lineSpace_, 0.5f);
-	counter_->Update();
+	ImGui::DragFloat2("counterPosition", &stageItemCounter_->position_.x, 0.5f);
+	ImGui::DragFloat2("counterSize", &stageItemCounter_->size_.x, 0.5f);
+	ImGui::DragFloat("counterLineSpace", &stageItemCounter_->lineSpace_, 0.5f);
+	stageItemCounter_->Update();
 
 	// アニメーションスプライト更新
 	ImGui::Checkbox("animationSprite - isActive", &animationSprite_->isActive_);
@@ -148,7 +148,7 @@ void SampleBox::Draw()
 void SampleBox::SpriteDraw()
 {
 	gage_->Draw();
-	counter_->Draw();
+	stageItemCounter_->Draw();
 	animationSprite_->Draw();
 }
 

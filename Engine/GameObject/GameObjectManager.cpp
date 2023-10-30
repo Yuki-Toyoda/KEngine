@@ -1,4 +1,5 @@
 #include "GameObjectManager.h"
+#include "../Scene/SceneManager.h"
 
 GameObjectManager* GameObjectManager::GetInstance()
 {
@@ -58,6 +59,9 @@ void GameObjectManager::Draw()
 	// 全オブジェクトのスプライト描画
 	for (BaseObject* object : objects_)
 		object->SpriteDraw();
+
+	// シーンマネージャーのスプライトもここで描画
+	SceneManager::GetInstance()->Draw();
 
 	// スプライトの描画後処理
 	Sprite::PostDraw();

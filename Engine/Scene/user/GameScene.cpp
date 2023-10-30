@@ -8,15 +8,19 @@ void GameScene::Initialize() {
 	ambient->Initialize("ambient", BaseObject::tagOther); // 初期化
 	gameObjectManager_->AddGameObject(ambient); // ゲームオブジェクトマネージャーに追加
 
-	SampleBox* sampleBox = new SampleBox();
-	sampleBox->Initialize("sampleBox", BaseObject::tagOther);
-	gameObjectManager_->AddGameObject(sampleBox); // ゲームオブジェクトマネージャーに追加
+	// フェードイン
+	SceneManager::GetInstance()->SetFadeColor({ 0.0f, 0.0f, 0.0f, 1.0f });
+	SceneManager::GetInstance()->StartFadeEffect(1.0f, { 0.0f, 0.0f, 0.0f, 1.0f }, { 0.0f, 0.0f, 0.0f, 0.0f },false);
 }
 
 void GameScene::Update() {
-	// 右シフトが押されたら次のシーンへ
-	if (input_->TriggerKey(DIK_RSHIFT)) {
+#ifdef _DEBUG
+	// デバッグ遷移
+	if (Input::GetInstance()->TriggerKey(DIK_RSHIFT)) {
+		SceneManager::GetInstance()->SetFadeColor({ 0.0f, 0.0f, 0.0f, 0.0f });
+		SceneManager::GetInstance()->StartFadeEffect(1.0f, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f, 1.0f });
 		BaseScene* nextScene = new TitleScene();
 		SceneManager::GetInstance()->SetNextScene(nextScene);
 	}
+#endif // _DEBUG
 }
