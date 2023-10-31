@@ -4,6 +4,7 @@
 
 // クラスの前方宣言
 class TPCamera;
+class Weapon;
 
 /// <summary>
 /// プレイヤー
@@ -64,6 +65,11 @@ public: // その他関数群
 	/// </summary>
 	/// <param name="tpCamera">追従カメラ</param>
 	void SetTPCamera(TPCamera* tpCamera) { tpCamera_ = tpCamera; }
+	/// <summary>
+	/// 武器セッター
+	/// </summary>
+	/// <param name="weapon">武器</param>
+	void SetWeapon(Weapon* weapon);
 
 	/// <summary>
 	/// 通常時の行動初期化
@@ -121,13 +127,13 @@ private: // メンバ変数
 	XINPUT_STATE preJoyState_; // 前フレーム用
 
 	TPCamera* tpCamera_ = nullptr;
+	Weapon* weapon_ = nullptr;
 
 	// ワールド座標
 	WorldTransform bodyTransform_; // 体
 	WorldTransform headTransform_; // 頭
 	WorldTransform armTransform_L_; // 左腕
 	WorldTransform armTransform_R_; // 右腕
-	WorldTransform weaponTransform_; // 武器
 
 	// 移動時の目標角度
 	float targetAngle_;

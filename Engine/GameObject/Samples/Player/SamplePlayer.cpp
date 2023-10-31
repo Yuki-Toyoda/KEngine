@@ -1,5 +1,6 @@
 #include "SamplePlayer.h"
 #include "../TPCamera/TPCamera.h"
+#include "../../Weapon/Weapon.h"
 
 void SamplePlayer::Initialize(std::string name, Tag tag)
 {
@@ -20,17 +21,12 @@ void SamplePlayer::Initialize(std::string name, Tag tag)
 	armTransform_R_.Initialize(); // 右腕
 	armTransform_R_.translate_ = { 0.35f, 1.25f, 0.0f }; // 初期座標設定
 	armTransform_R_.SetParent(&bodyTransform_); // 親子付け
-	weaponTransform_.Initialize(); // 武器
-	weaponTransform_.translate_ = { -0.35f, 0.15f, 0.0f }; // 初期座標設定
-	weaponTransform_.rotate_.x = (float)std::numbers::pi;
-	weaponTransform_.SetParent(&armTransform_R_);
-
+	
 	// モデル読み込み
 	AddOBJ(&bodyTransform_, color_, "./Engine/Resource/Samples/Player/Body", "float_Body.obj");
 	AddOBJ(&headTransform_, color_, "./Engine/Resource/Samples/Player/Head", "float_Head.obj");
 	AddOBJ(&armTransform_L_, color_, "./Engine/Resource/Samples/Player/L_Arm", "float_L_arm.obj");
 	AddOBJ(&armTransform_R_, color_, "./Engine/Resource/Samples/Player/R_Arm", "float_R_arm.obj");
-	AddOBJ(&weaponTransform_, color_, "./Engine/Resource/Samples/Player/Weapon", "Weapon.obj");
 
 	// 入力状態取得
 	input_ = Input::GetInstance();
@@ -249,6 +245,14 @@ void SamplePlayer::OnCollisionExit(BaseObject* object)
 	object;
 }
 
+void SamplePlayer::SetWeapon(Weapon* weapon)
+{
+	// インスタンス取得
+	weapon_ = weapon;
+	// プレイヤー座標を親とする
+	weapon_->transform_.SetParent(&armTransform_R_, 0b111);
+}
+
 void SamplePlayer::BehaviorRootInitialize()
 {
 	// 浮遊ギミック初期化
@@ -318,7 +322,8 @@ void SamplePlayer::BehaviorRootUpdate()
 	}
 
 	// 武器座標をありえないほど遠くに
-	weaponTransform_.translate_ = { -100000.0f, -100000.0f, 0.0f };
+	if(weapon_ != nullptr)
+		weapon_->transform_.translate_ = { -100000.0f, -100000.0f, 0.0f };
 
 	// リクエスト状態が攻撃行動でない、接地状態であれば
 	if (behaviorRequest_ != kAttack && isLanding_) {
@@ -352,7 +357,10 @@ void SamplePlayer::BehaviorAttackInitialize()
 	t_ = 0.0f;
 
 	// 座標設定
-	weaponTransform_.translate_ = { -0.35f, 0.15f, 0.0f };
+	if (weapon_ != nullptr) {
+		weapon_->transform_.rotate_.x = (float)std::numbers::pi;
+		weapon_->transform_.translate_ = { -0.35f, 0.15f, 0.0f };
+	}
 }
 
 void SamplePlayer::BehaviorAttackUpdate()

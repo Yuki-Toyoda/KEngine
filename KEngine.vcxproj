@@ -137,6 +137,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Collider\ShapeList.h" />
     <ClInclude Include="Engine\Collider\Shape\AABB.h" />
     <ClInclude Include="Engine\Collider\Shape\BaseShape.h" />
+    <ClInclude Include="Engine\Collider\Shape\OBB.h" />
     <ClInclude Include="Engine\Collider\Shape\Sphere.h" />
     <ClInclude Include="Engine\Debug\Debug.h" />
     <ClInclude Include="Engine\GameObject\Ambient\Ambient.h" />

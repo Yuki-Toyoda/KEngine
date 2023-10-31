@@ -27,6 +27,13 @@ void GameScene::Initialize() {
 	camera->UseThisCamera(); // 生成したカメラを使用する
 	player->SetTPCamera(camera); // 追従カメラをプレイヤーにセット
 
+	// 武器生成
+	Weapon* weapon = new Weapon(); // インスタンス生成
+	weapon->Initialize("weapon", BaseObject::tagWeapon); // 初期化
+	gameObjectManager_->AddGameObject(weapon); // マネージャーに追加
+	player->SetWeapon(weapon); // 武器をセット
+	weapon->SetTarget(&player->transform_);
+
 	// フェードイン
 	SceneManager::GetInstance()->SetFadeColor({ 0.0f, 0.0f, 0.0f, 1.0f });
 	SceneManager::GetInstance()->StartFadeEffect(1.0f, { 0.0f, 0.0f, 0.0f, 1.0f }, { 0.0f, 0.0f, 0.0f, 0.0f },false);

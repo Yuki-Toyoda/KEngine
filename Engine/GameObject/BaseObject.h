@@ -21,6 +21,7 @@ public: // サブクラス
 	{
 		tagCamera, // カメラ
 		tagPlayer, // プレイヤー
+		tagWeapon, // 武器
 		tagItem, // アイテム
 		tagCatapult, // カタパルト
 		tagEnemy, // 敵

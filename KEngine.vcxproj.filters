@@ -330,6 +330,9 @@
     <ClInclude Include="Engine\GameObject\Weapon\Weapon.h">
       <Filter>GameObject\user\Weapon</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Collider\Shape\OBB.h">
+      <Filter>Collider\Shape</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Object3D.hlsli">

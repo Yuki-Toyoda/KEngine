@@ -12,7 +12,8 @@ public: // サブクラス
 	/// </summary>
 	enum ColliderShape {
 		Sphere, // 球
-		AABB // AABB
+		AABB, // AABB
+		OBB // OBB
 	};
 
 public: // メンバ関数
@@ -81,6 +82,26 @@ public: // AABB用関数群
 	/// </summary>
 	/// <returns>AABB最大点</returns>
 	virtual Vector3 GetMax() { return Vector3(0.0f, 0.0f, 0.0f); }
+
+public: // OBB用関数群
+
+	/// <summary>
+	/// 更新関数(OBB)
+	/// </summary>
+	/// <param name="center">中心座標</param>
+	/// <param name="size">大きさ</param>
+	/// <param name="rotate">回転</param>
+	virtual void Update(Vector3 center, Vector3 size, Vector3 rotate) {
+		size;
+		rotate;
+		center;
+	};
+
+	/// <summary>
+	/// 座標軸ゲッター
+	/// </summary>
+	/// <returns>座標軸</returns>
+	virtual Vector3* GetOtientatuons() { return nullptr; }
 
 protected: // メンバ関数
 
