@@ -118,6 +118,11 @@ public: // その他関数群
 	/// </summary>
 	void UpdateArmSwingGimmick();
 
+public: // パブリックなメンバ変数
+
+	// リスタートフラグ
+	bool restart_;
+
 private: // メンバ変数
 
 	// 入力状態検知

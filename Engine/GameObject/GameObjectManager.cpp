@@ -24,9 +24,6 @@ void GameObjectManager::Initialize()
 
 void GameObjectManager::Update()
 {
-	// 全オブジェクトを更新
-	for (BaseObject* object : objects_)
-		object->Update();
 
 	// 破壊フラグの立ったオブジェクトを削除
 	objects_.remove_if([](BaseObject* object) {
@@ -36,6 +33,10 @@ void GameObjectManager::Update()
 		}
 		return false;
 	});
+
+	// 全オブジェクトを更新
+	for (BaseObject* object : objects_)
+		object->Update();
 }
 
 void GameObjectManager::Draw()

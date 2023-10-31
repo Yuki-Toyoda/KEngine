@@ -42,6 +42,9 @@ void SamplePlayer::Initialize(std::string name, Tag tag)
 	// 腕振りギミック初期化
 	InitializeArmSwingGimmick();
 
+	// リスタートフラグ
+	restart_ = false;
+
 	// 目標角度リセット
 	targetAngle_ = 0.0f;
 
@@ -222,6 +225,12 @@ void SamplePlayer::OnCollisionEnter(BaseObject* object)
 			tpCamera_->UpdateTarget();
 		}
 	}
+
+	if (object->GetObjectTag() == tagEnemy) {
+		// ダッシュ中ならリスタート
+		if(behavior_ == kDash)
+			restart_ = true;
+	}
 }
 
 void SamplePlayer::OnCollision(BaseObject* object)
@@ -337,7 +346,8 @@ void SamplePlayer::BehaviorRootUpdate()
 	// リクエスト状態がダッシュ行動でない、接地状態であれば
 	if (behaviorRequest_ != kDash && behavior_ != kAttack) {
 		// Ｘボタンが入力されたら
-		if (joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) {
+		if ((joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) &&
+			!(preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)) {
 			// 次の行動を攻撃行動に
 			behaviorRequest_ = kDash;
 		}
@@ -417,6 +427,9 @@ void SamplePlayer::BehaviorAttackUpdate()
 			transform_.translate_ =
 				Math::EaseOut(t_, attackStartPos_, attackEndPos_, attackTime_);
 
+			// 攻撃状態に
+			weapon_->SetIsAttack(true);
+
 			// t加算
 			t_ += 1.0f / 60.0f;
 		}
@@ -430,6 +443,10 @@ void SamplePlayer::BehaviorAttackUpdate()
 	case SamplePlayer::Wait:
 		// 待機
 		if (t_ <= attackWaitTime_) {
+
+			// 攻撃していない状態に
+			weapon_->SetIsAttack(false);
+
 			// t加算
 			t_ += 1.0f / 60.0f;
 		}

@@ -163,6 +163,9 @@
     <ClCompile Include="Engine\GameObject\Weapon\Weapon.cpp">
       <Filter>GameObject\user\Weapon</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\GameObject\Enemy\Enemy.cpp">
+      <Filter>GameObject\user\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -333,6 +336,9 @@
     <ClInclude Include="Engine\Collider\Shape\OBB.h">
       <Filter>Collider\Shape</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\GameObject\Enemy\Enemy.h">
+      <Filter>GameObject\user\Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Object3D.hlsli">
@@ -423,6 +429,9 @@
     </Filter>
     <Filter Include="GameObject\user\Weapon">
       <UniqueIdentifier>{affa1bcf-5f81-4830-98bb-54b26f85f7f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\user\Enemy">
+      <UniqueIdentifier>{a60234dd-57d6-4f42-8533-60b097ac6f8c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

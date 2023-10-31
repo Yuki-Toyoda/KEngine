@@ -1,6 +1,7 @@
 #pragma once
 #include "../BaseScene.h"
 #include "SceneList.h"
+#include "../../GameObject/SampleList.h"
 
 /// <summary>
 /// ゲームシーン
@@ -19,5 +20,8 @@ public: // メンバ関数
 	void Update() override;
 
 private: // メンバ変数
+
+	// プレイヤー
+	SamplePlayer* player_ = nullptr;
 
 };
