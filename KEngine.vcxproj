@@ -88,7 +88,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   <ItemGroup>
     <ClCompile Include="Engine\Audio\Audio.cpp" />
     <ClCompile Include="Engine\Base\DescriptorHeaps\BaseDescriptorHeap.cpp" />
+    <ClCompile Include="Engine\Base\DescriptorHeaps\DSV.cpp" />
     <ClCompile Include="Engine\Base\DescriptorHeaps\RTV.cpp" />
+    <ClCompile Include="Engine\Base\DescriptorHeaps\SRV.cpp" />
     <ClCompile Include="Engine\Base\DirectXCommon.cpp" />
     <ClCompile Include="Engine\Base\DirectXDevice.cpp" />
     <ClCompile Include="Engine\Base\WinApp.cpp" />
@@ -132,7 +134,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h" />
     <ClInclude Include="Engine\Base\DescriptorHeaps\BaseDescriptorHeap.h" />
+    <ClInclude Include="Engine\Base\DescriptorHeaps\DSV.h" />
     <ClInclude Include="Engine\Base\DescriptorHeaps\RTV.h" />
+    <ClInclude Include="Engine\Base\DescriptorHeaps\SRV.h" />
     <ClInclude Include="Engine\Base\DirectXCommon.h" />
     <ClInclude Include="Engine\Base\DirectXDevice.h" />
     <ClInclude Include="Engine\Base\SafeDelete.h" />

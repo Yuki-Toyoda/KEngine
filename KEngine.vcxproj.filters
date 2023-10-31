@@ -169,6 +169,12 @@
     <ClCompile Include="Engine\Base\DirectXDevice.cpp">
       <Filter>Base</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Base\DescriptorHeaps\SRV.cpp">
+      <Filter>Base\DescriptorHeaps</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Base\DescriptorHeaps\DSV.cpp">
+      <Filter>Base\DescriptorHeaps</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -341,6 +347,12 @@
     </ClInclude>
     <ClInclude Include="Engine\Base\DirectXDevice.h">
       <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\DescriptorHeaps\SRV.h">
+      <Filter>Base\DescriptorHeaps</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\DescriptorHeaps\DSV.h">
+      <Filter>Base\DescriptorHeaps</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

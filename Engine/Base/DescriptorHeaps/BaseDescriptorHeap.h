@@ -1,5 +1,6 @@
 #pragma once
 #include <stdint.h>
+#include <cassert>
 #include "../DirectXDevice.h"
 
 /// <summary>
@@ -48,7 +49,7 @@ protected: // 継承メンバ関数
 	/// <summary>
 	/// ディスクリプタの実際のサイズゲッター
 	/// </summary>
-	/// <param name="other">サイズを取得するディスクリプタハンドル</param>
+	/// <param name="other">取得を開始するハンドル</param>
 	/// <param name="offsetInDescriptors">そのディスクリプタからのオフセット</param>
 	/// <param name="descriptorIncrementSize">そこからの増加分</param>
 	/// <returns></returns>
@@ -62,6 +63,8 @@ protected: // 継承メンバ変数
 
 	// ヒープ本体
 	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> heap_;
+	// ディスクリプタ1つ分のサイズ定数
+	uint32_t kDescriptorSize_;
 	// ヒープのサイズ
 	uint32_t size_;
 };

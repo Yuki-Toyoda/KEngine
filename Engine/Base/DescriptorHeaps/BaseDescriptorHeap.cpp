@@ -29,5 +29,28 @@ ID3D12DescriptorHeap* BaseDescriptorHeap::CreateDescriptorHeap(D3D12_DESCRIPTOR_
 	D3D12_DESCRIPTOR_HEAP_DESC descriptorHeapDesc{}; // 設定
 	descriptorHeapDesc.Type = heapType; // 種類設定
 	descriptorHeapDesc.NumDescriptors = numDescriptors; // ヒープ番号取得
-	descriptorHeapDesc.Flags = 
+	// フラッグの設定取得
+	descriptorHeapDesc.Flags = shaderVisible ? D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE : D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+
+	// 設定を基にヒープを生成
+	result = device_->CreateDescriptorHeap(&descriptorHeapDesc, IID_PPV_ARGS(&descriptorHeap));
+	// 生成確認
+	assert(SUCCEEDED(result));
+
+	// 生成したヒープを返す
+	return descriptorHeap;
+}
+
+D3D12_CPU_DESCRIPTOR_HANDLE BaseDescriptorHeap::GetDescriptorInclementSize(const D3D12_CPU_DESCRIPTOR_HANDLE& other, int offsetInDescriptors, UINT descriptorIncrementSize) const
+{
+	// ディスクリプタハンドルを取得
+	D3D12_CPU_DESCRIPTOR_HANDLE handle;
+	// オフセットが0以下であれば最初のハンドルを返す
+	if (offsetInDescriptors <= 0)
+		handle = other;
+	else // それ以外の場合は増加分を取得しそれを返す
+		handle.ptr = other.ptr + (offsetInDescriptors * descriptorIncrementSize);
+
+	// 取得したハンドルを返す
+	return handle;
 }
