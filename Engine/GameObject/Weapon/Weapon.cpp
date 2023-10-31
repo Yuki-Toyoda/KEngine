@@ -12,8 +12,6 @@ void Weapon::Initialize(std::string name, Tag tag)
 
 	// obj読み込み
 	AddOBJ(&transform_, color_, "./Engine/Resource/Samples/Player/Weapon", "Weapon.obj");
-	AddOBJ(&colliderTransform_, color_, "./Engine/Resource/Samples/Box", "Box.obj");
-
 	// 攻撃状態false
 	isAttack_ = false;
 

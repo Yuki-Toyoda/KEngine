@@ -50,6 +50,19 @@ void Enemy::Update()
 	// 基底クラス更新
 	BaseObject::Update();
 
+	// スティックの入力に応じて移動
+	Vector3 move = { 0.0f, 0.0f,1.0f };
+
+	// 移動量を正規化、スピードを加算
+	move = Math::Normalize(move) * 0.1f;
+	// カメラの角度から回転行列を生成
+	Matrix4x4 rotateMat = Math::MakeRotateYMatrix(transform_.rotate_.y);
+	// 移動ベクトルをカメラの角度に応じて回転させる
+	move = Math::Transform(move, rotateMat);
+	transform_.translate_ = transform_.translate_ + move;
+
+	transform_.rotate_.y += 0.025f;
+
 	// 接地していないなら
 	if (!isLanding_) {
 		// 最大落下速度を超過するまで
