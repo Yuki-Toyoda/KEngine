@@ -175,6 +175,9 @@
     <ClCompile Include="Engine\Base\DescriptorHeaps\DSV.cpp">
       <Filter>Base\DescriptorHeaps</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Base\PSO.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -353,6 +356,9 @@
     </ClInclude>
     <ClInclude Include="Engine\Base\DescriptorHeaps\DSV.h">
       <Filter>Base\DescriptorHeaps</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\PSO.h">
+      <Filter>Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

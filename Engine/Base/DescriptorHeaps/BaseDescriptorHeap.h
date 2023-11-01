@@ -1,7 +1,7 @@
 #pragma once
 #include <stdint.h>
 #include <cassert>
-#include "../DirectXDevice.h"
+#include "../Device/DirectXDevice.h"
 
 /// <summary>
 /// ディスクリプタヒープの基底クラス
