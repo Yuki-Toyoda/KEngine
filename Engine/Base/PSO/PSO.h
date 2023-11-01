@@ -79,7 +79,7 @@ private: // プライベートなメンバ関数
 	IDxcBlob* CompileShader(const std::wstring& filePath, const wchar_t* profile, DXC* dxc);
 
 public: // パブリックなメンバ変数
-	// 本体
-	Microsoft::WRL::ComPtr<ID3D12PipelineState> pso_;
+	// パイプラインステートオブジェクトの状態
+	Microsoft::WRL::ComPtr<ID3D12PipelineState> state_;
 };
 

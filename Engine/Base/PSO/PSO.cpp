@@ -34,7 +34,7 @@ void PSO::Initialize(ID3D12Device* device, ID3D12RootSignature* signature, DXC* 
 
 	// 設定を元に実際に生成を行う
 	result = device->CreateGraphicsPipelineState(&graphicPipelineStateDesc,
-		IID_PPV_ARGS(&pso_));
+		IID_PPV_ARGS(&state_));
 	// 生成出来ているかを確認する
 	assert(SUCCEEDED(result));
 }

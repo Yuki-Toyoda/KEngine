@@ -178,6 +178,12 @@
     <ClCompile Include="Engine\Base\PSO\PSO.cpp">
       <Filter>Base\PSO</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Primitive\BasePrimitive.cpp">
+      <Filter>Primitive</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Base\Command\BaseCommand.cpp">
+      <Filter>Base\Command</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -360,6 +366,15 @@
     <ClInclude Include="Engine\Base\PSO\PSO.h">
       <Filter>Base\PSO</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Primitive\BasePrimitive.h">
+      <Filter>Primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\Command\BaseCommand.h">
+      <Filter>Base\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\ResourceStruct.h">
+      <Filter>Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Object3D.hlsli">
@@ -456,6 +471,12 @@
     </Filter>
     <Filter Include="Base\PSO">
       <UniqueIdentifier>{66b5ba43-5908-4908-85e4-3696756ae501}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Primitive">
+      <UniqueIdentifier>{5fc9c809-8734-4f5e-8651-85bdbe200e78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Base\Command">
+      <UniqueIdentifier>{827fb3a2-eba9-4bf6-aee3-bca0159d7145}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

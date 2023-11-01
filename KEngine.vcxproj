@@ -87,6 +87,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Audio\Audio.cpp" />
+    <ClCompile Include="Engine\Base\Command\BaseCommand.cpp" />
     <ClCompile Include="Engine\Base\DescriptorHeaps\BaseDescriptorHeap.cpp" />
     <ClCompile Include="Engine\Base\DescriptorHeaps\DSV.cpp" />
     <ClCompile Include="Engine\Base\DescriptorHeaps\RTV.cpp" />
@@ -113,6 +114,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Math\Math.cpp" />
     <ClCompile Include="Engine\OBJ\ModelManager.cpp" />
     <ClCompile Include="Engine\OBJ\OBJ.cpp" />
+    <ClCompile Include="Engine\Primitive\BasePrimitive.cpp" />
     <ClCompile Include="Engine\Resource\Texture\TextureManager.cpp" />
     <ClCompile Include="Engine\Scene\SceneManager.cpp" />
     <ClCompile Include="Engine\Scene\user\GameScene.cpp" />
@@ -134,6 +136,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h" />
+    <ClInclude Include="Engine\Base\Command\BaseCommand.h" />
     <ClInclude Include="Engine\Base\DescriptorHeaps\BaseDescriptorHeap.h" />
     <ClInclude Include="Engine\Base\DescriptorHeaps\DSV.h" />
     <ClInclude Include="Engine\Base\DescriptorHeaps\RTV.h" />
@@ -141,6 +144,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Base\Device\DirectXDevice.h" />
     <ClInclude Include="Engine\Base\DirectXCommon.h" />
     <ClInclude Include="Engine\Base\PSO\PSO.h" />
+    <ClInclude Include="Engine\Base\ResourceStruct.h" />
     <ClInclude Include="Engine\Base\SafeDelete.h" />
     <ClInclude Include="Engine\Base\WinApp.h" />
     <ClInclude Include="Engine\Collider\Collider.h" />
@@ -172,6 +176,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Math\Vector4.h" />
     <ClInclude Include="Engine\OBJ\ModelManager.h" />
     <ClInclude Include="Engine\OBJ\OBJ.h" />
+    <ClInclude Include="Engine\Primitive\BasePrimitive.h" />
     <ClInclude Include="Engine\Resource\Texture\TextureManager.h" />
     <ClInclude Include="Engine\Scene\BaseScene.h" />
     <ClInclude Include="Engine\Scene\SceneManager.h" />
