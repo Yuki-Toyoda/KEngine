@@ -166,17 +166,17 @@
     <ClCompile Include="Engine\Base\DescriptorHeaps\BaseDescriptorHeap.cpp">
       <Filter>Base\DescriptorHeaps</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Base\DirectXDevice.cpp">
-      <Filter>Base</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Base\DescriptorHeaps\SRV.cpp">
       <Filter>Base\DescriptorHeaps</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Base\DescriptorHeaps\DSV.cpp">
       <Filter>Base\DescriptorHeaps</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Base\PSO.cpp">
-      <Filter>Base</Filter>
+    <ClCompile Include="Engine\Base\Device\DirectXDevice.cpp">
+      <Filter>Base\Device</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Base\PSO\PSO.cpp">
+      <Filter>Base\PSO</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -348,17 +348,17 @@
     <ClInclude Include="Engine\Base\DescriptorHeaps\BaseDescriptorHeap.h">
       <Filter>Base\DescriptorHeaps</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Base\DirectXDevice.h">
-      <Filter>Base</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Base\DescriptorHeaps\SRV.h">
       <Filter>Base\DescriptorHeaps</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Base\DescriptorHeaps\DSV.h">
       <Filter>Base\DescriptorHeaps</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Base\PSO.h">
-      <Filter>Base</Filter>
+    <ClInclude Include="Engine\Base\Device\DirectXDevice.h">
+      <Filter>Base\Device</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\PSO\PSO.h">
+      <Filter>Base\PSO</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -450,6 +450,12 @@
     </Filter>
     <Filter Include="Base\DescriptorHeaps">
       <UniqueIdentifier>{f6691631-5f63-4089-be0c-897e9b375f7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Base\Device">
+      <UniqueIdentifier>{0dafb9af-fe60-4b81-a141-9b7f32c2f190}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Base\PSO">
+      <UniqueIdentifier>{66b5ba43-5908-4908-85e4-3696756ae501}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
