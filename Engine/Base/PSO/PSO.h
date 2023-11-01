@@ -30,8 +30,8 @@ public: // メンバ関数
 	/// <param name="dxc">dxc構造体</param>
 	/// <param name="vs">使用する頂点シェーダまでのファイルパス</param>
 	/// <param name="ps">使用するピクセルシェーダまでのファイルパス</param>
-	/// /// <param name="wire">ワイヤーフレーム状態にするか 0 : 通常表示 ** 1 : ワイヤー表示 (デフォルトは 0) </param>
-	void Initialize(ID3D12Device* device, ID3D12RootSignature* signature, DXC* dxc, std::wstring vs, std::wstring ps, UINT wire = 0);
+	/// /// <param name="wire">ワイヤーフレーム状態にするか 0 : 通常表示 ** 1 : ワイヤー表示</param>
+	void Initialize(ID3D12Device* device, ID3D12RootSignature* signature, DXC* dxc, std::wstring vs, std::wstring ps, UINT wire);
 
 private: // プライベートなメンバ関数
 

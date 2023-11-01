@@ -37,13 +37,16 @@ void BaseCommand::SetDescriptorHeap(RTV* rtv, SRV* srv, DSV* dsv)
 	dsv_ = dsv; // 深度ステンシルビュー
 }
 
-void BaseCommand::CreatePSO(ID3D12Device* device, DXC* dxc, ID3D12RootSignature* signature)
+void BaseCommand::CreatePSO(ID3D12Device* device, DXC* dxc, ID3D12RootSignature* signature, std::wstring vs, std::wstring ps, UINT wire)
 {
 	// 基底クラスでは記述を行わない
 	// 以下は警告回避の参照
 	device;
 	dxc;
 	signature;
+	vs;
+	ps;
+	wire;
 }
 
 D3D12_RESOURCE_BARRIER BaseCommand::SettingResourceBarrier(ID3D12Resource* resource, D3D12_RESOURCE_STATES stateBefore, D3D12_RESOURCE_STATES stateAfter)

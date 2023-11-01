@@ -184,6 +184,9 @@
     <ClCompile Include="Engine\Base\Command\BaseCommand.cpp">
       <Filter>Base\Command</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Base\Command\MainCommand.cpp">
+      <Filter>Base\Command</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -374,6 +377,9 @@
     </ClInclude>
     <ClInclude Include="Engine\Base\ResourceStruct.h">
       <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\Command\MainCommand.h">
+      <Filter>Base\Command</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -67,7 +67,10 @@ protected: // 継承先メンバ関数
 	/// <param name="device">DirectX12のデバイス</param>
 	/// <param name="dxc">hlslコード変換用</param>
 	/// <param name="signature">ルートシグネチャ</param>
-	virtual void CreatePSO(ID3D12Device* device, DXC* dxc, ID3D12RootSignature* signature);
+	/// <param name="vs">頂点シェーダーまでのパス</param>
+	/// <param name="ps">ピクセルシェーダーまでのパス</param>
+	/// <param name="wire">ワイヤーフレーム表示</param>
+	virtual void CreatePSO(ID3D12Device* device, DXC* dxc, ID3D12RootSignature* signature, std::wstring vs, std::wstring ps, UINT wire = 0);
 
 	/// <summary>
 	/// リソースバリア設定関数
