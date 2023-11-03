@@ -36,7 +36,6 @@
     <ClCompile Include="Engine\Math\Math.cpp" />
     <ClCompile Include="Engine\OBJ\ModelManager.cpp" />
     <ClCompile Include="Engine\OBJ\OBJ.cpp" />
-    <ClCompile Include="Engine\Resource\Texture\TextureManager.cpp" />
     <ClCompile Include="Engine\Scene\SceneManager.cpp" />
     <ClCompile Include="Engine\Scene\user\GameScene.cpp" />
     <ClCompile Include="Engine\Scene\user\TitleScene.cpp" />
