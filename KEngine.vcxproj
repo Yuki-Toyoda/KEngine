@@ -88,6 +88,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   <ItemGroup>
     <ClCompile Include="Engine\Audio\Audio.cpp" />
     <ClCompile Include="Engine\Base\Command\BaseCommand.cpp" />
+    <ClCompile Include="Engine\Base\Command\CommandManager.cpp" />
     <ClCompile Include="Engine\Base\Command\MainCommand.cpp" />
     <ClCompile Include="Engine\Base\DescriptorHeaps\BaseDescriptorHeap.cpp" />
     <ClCompile Include="Engine\Base\DescriptorHeaps\DSV.cpp" />
@@ -115,7 +116,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Math\Math.cpp" />
     <ClCompile Include="Engine\OBJ\ModelManager.cpp" />
     <ClCompile Include="Engine\OBJ\OBJ.cpp" />
+    <ClCompile Include="Engine\Primitive\3d\Mesh.cpp" />
     <ClCompile Include="Engine\Primitive\BasePrimitive.cpp" />
+    <ClCompile Include="Engine\Resource\Material\Material.cpp" />
+    <ClCompile Include="Engine\Resource\Texture\Texture.cpp" />
     <ClCompile Include="Engine\Resource\Texture\TextureManager.cpp" />
     <ClCompile Include="Engine\Scene\SceneManager.cpp" />
     <ClCompile Include="Engine\Scene\user\GameScene.cpp" />
@@ -138,6 +142,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h" />
     <ClInclude Include="Engine\Base\Command\BaseCommand.h" />
+    <ClInclude Include="Engine\Base\Command\CommandManager.h" />
     <ClInclude Include="Engine\Base\Command\MainCommand.h" />
     <ClInclude Include="Engine\Base\DescriptorHeaps\BaseDescriptorHeap.h" />
     <ClInclude Include="Engine\Base\DescriptorHeaps\DSV.h" />
@@ -178,8 +183,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Math\Vector4.h" />
     <ClInclude Include="Engine\OBJ\ModelManager.h" />
     <ClInclude Include="Engine\OBJ\OBJ.h" />
+    <ClInclude Include="Engine\Primitive\3d\Mesh.h" />
     <ClInclude Include="Engine\Primitive\BasePrimitive.h" />
-    <ClInclude Include="Engine\Resource\Texture\TextureManager.h" />
+    <ClInclude Include="Engine\Resource\Material\Material.h" />
+    <ClInclude Include="Engine\Resource\Texture\Texture.h" />
     <ClInclude Include="Engine\Scene\BaseScene.h" />
     <ClInclude Include="Engine\Scene\SceneManager.h" />
     <ClInclude Include="Engine\Scene\user\GameScene.h" />

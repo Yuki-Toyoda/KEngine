@@ -187,6 +187,18 @@
     <ClCompile Include="Engine\Base\Command\MainCommand.cpp">
       <Filter>Base\Command</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Base\Command\CommandManager.cpp">
+      <Filter>Base\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Resource\Texture\Texture.cpp">
+      <Filter>Resource\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Resource\Material\Material.cpp">
+      <Filter>Resource\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Primitive\3d\Mesh.cpp">
+      <Filter>Primitive\3d</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -318,9 +330,6 @@
     <ClInclude Include="Engine\Scene\user\TitleScene.h">
       <Filter>Scene\user</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Resource\Texture\TextureManager.h">
-      <Filter>Resource\Texture</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\GameObject\ObjectList.h">
       <Filter>GameObject</Filter>
     </ClInclude>
@@ -380,6 +389,18 @@
     </ClInclude>
     <ClInclude Include="Engine\Base\Command\MainCommand.h">
       <Filter>Base\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\Command\CommandManager.h">
+      <Filter>Base\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Resource\Texture\Texture.h">
+      <Filter>Resource\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Resource\Material\Material.h">
+      <Filter>Resource\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Primitive\3d\Mesh.h">
+      <Filter>Primitive\3d</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -483,6 +504,12 @@
     </Filter>
     <Filter Include="Base\Command">
       <UniqueIdentifier>{827fb3a2-eba9-4bf6-aee3-bca0159d7145}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Material">
+      <UniqueIdentifier>{c3f5e39c-9e6c-4ace-9726-921e54810c5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Primitive\3d">
+      <UniqueIdentifier>{5da4eff7-609f-4695-88a1-eed539634028}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
