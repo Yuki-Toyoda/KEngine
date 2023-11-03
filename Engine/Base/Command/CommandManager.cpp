@@ -155,5 +155,74 @@ void CommandManager::SetViewProjection(Matrix4x4* vpMat)
 
 void CommandManager::SetDrawData(BasePrimitive* primitive)
 {
+	// 最大数を超えていないかチェック
+	assert(commands_[0]->indexBuffer_->usedCount < commands_[0]->kMaxIndex);
+	assert(vertexBuffer_->usedCount < kMaxVertex);
+	assert(worldTransformBuffer_->usedCount < kMaxWorldTransform);
+	assert(materialBuffer_->usedCount < kMaxMaterial);
 
+	// 開始のインデックス番号の取得
+	uint32_t startIndexNum = vertexBuffer_->usedCount;
+
+	// 頂点データを登録
+	for (int i = 0; i < primitive->GetVertexCount(); i++) {
+		vertexBuffer_->vertex[vertexBuffer_->usedCount++] = primitive->vertices_[i];
+		if (primitive->commonColor != nullptr)	// 共通の色があるときはcommonColorを適応
+			vertexBuffer_->vertex[vertexBuffer_->usedCount - 1].color = *primitive->commonColor;
+	}
+	// ワールドトランスフォームをデータに登録
+	uint32_t worldMatrix = worldTransformBuffer_->usedCount;
+	worldTransformBuffer_->mat[worldTransformBuffer_->usedCount++] = primitive->transform_.GetMatWorld();
+	// マテリアルをデータに登録
+	uint32_t material = materialBuffer_->usedCount;
+	materialBuffer_->material[materialBuffer_->usedCount++] = primitive->material_;
+	// テクスチャのインデックスを貰う
+	uint32_t texture = defaultTexture_->GetIndex();
+	if (primitive->texture_ != nullptr) {
+		texture = primitive->texture_->GetIndex();
+	}
+
+
+	// Indexの分だけIndexInfoを求める
+	for (int i = 0; i < primitive->GetIndexCount(); i++) {
+		commands_[0]->indexBuffer_->indexData[commands_[0]->indexBuffer_->usedCount++] = IndexInfoStruct{
+			startIndexNum + primitive->indexes_[i],
+			0,
+			worldMatrix,
+			material,
+			texture
+		};
+	}
+
+}
+
+int CommandManager::createTextureResource(const DirectX::ScratchImage& image)
+{
+	return 0;
+}
+
+void CommandManager::InitializeDXC()
+{
+}
+
+void CommandManager::CreateRootSignature()
+{
+}
+
+void CommandManager::CreateStructuredBuffer()
+{
+}
+
+ID3D12Resource* CommandManager::CreateBuffer(size_t size)
+{
+	return nullptr;
+}
+
+ID3D12Resource* CommandManager::CreateTextureBuffer(const DirectX::TexMetadata& metaData)
+{
+	return nullptr;
+}
+
+void CommandManager::UploadTextureData(const DirectX::ScratchImage& mipImages)
+{
 }

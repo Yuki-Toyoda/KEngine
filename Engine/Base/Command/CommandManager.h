@@ -103,7 +103,6 @@ private: // プライベートなメンバ関数
 	/// <param name="mipImages">ミップマップ付きテクスチャ</param>
 	void UploadTextureData(const DirectX::ScratchImage& mipImages);
 
-
 private: // メンバ変数
 
 	// DirectX12のデバイス
@@ -148,7 +147,7 @@ private: // メンバ変数
 
 	// 頂点データ
 	std::unique_ptr<VertexBuffer> vertexBuffer_; // 本体
-	const UINT kMaxIndex = 655360;				 // 頂点情報の最大数(今回は受け売りで設定)
+	const UINT kMaxVertex = 655360;				 // 頂点情報の最大数(今回は受け売りで設定)
 
 	// ビュープロジェクション行列バッファ
 	std::unique_ptr<MatrixBuffer> viewProjectionBuffer_; // 本体

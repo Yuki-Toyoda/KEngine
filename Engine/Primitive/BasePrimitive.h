@@ -71,7 +71,7 @@ public: // パブリックなメンバ変数
 	WorldTransform transform_;
 
 	// マテリアル
-	Material* material_;
+	Material material_;
 	// 使用するテクスチャ
 	Texture* texture_ = nullptr;
 

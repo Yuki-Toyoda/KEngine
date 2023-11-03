@@ -29,9 +29,19 @@ struct IndexBuffer {
 /// </summary>
 struct VertexData {
 	Vector4 position; // 座標
-	Vector2 uv;		  // UV座標
+	Vector2 texCoord; // テクスチャ座標
 	Vector3 normal;	  // 法線
 	Vector4 color;	  // 色
+
+	// VertexDataを=演算子で代入できるようにオーバーロード
+	VertexData& operator=(const Vertex& vertex) {
+		position = { vertex.position.x, vertex.position.y, vertex.position.z, 1.0f }; // 座標
+		texCoord = vertex.texCoord;													  // テクスチャ座標
+		normal = vertex.normal;														  // 法線
+		color = color;																  // 色
+		// 自身のポインタを返す
+		return *this;
+	}
 };
 /// <summary>
 /// 頂点バッファ構造体
@@ -51,6 +61,14 @@ struct VertexBuffer {
 struct MaterialData {
 	Matrix4x4 uvTransform;  // UVトランスフォーム
 	int32_t enableLighting; // ライトの有効トリガー
+
+	// MaterialDataを=演算子で代入できるようにオーバーロード
+	MaterialData& operator=(const Material& material) {
+		uvTransform = material.uvTransform_.GetMatWorld();				 // ワールド行列の取得
+		enableLighting = static_cast<int32_t>(material.enableLighting_); // ライティング有効トリガー
+		// 自身のポインタを返す
+		return *this;
+	}
 };
 
 /// <summary>
