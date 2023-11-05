@@ -107,9 +107,9 @@ struct MatrixBuffer {
 /// テクスチャバッファ構造体
 /// </summary>
 struct TextureBuffer {
-	Microsoft::WRL::ComPtr<ID3D12Resource> resource;  // バッファリソース
-	D3D12_GPU_DESCRIPTOR_HANDLE view{};				  // GPU上のハンドルを格納
-	UINT usedCount = 0;							      // 使用中のインデックスバッファの数
+	std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> resource; // バッファリソース
+	D3D12_GPU_DESCRIPTOR_HANDLE view{};							  // GPU上のハンドルを格納
+	UINT usedCount = 0;											  // 使用中のインデックスバッファの数
 };
 #pragma endregion
 

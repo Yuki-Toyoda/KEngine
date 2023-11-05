@@ -155,33 +155,32 @@ void CommandManager::SetViewProjection(Matrix4x4* vpMat)
 
 void CommandManager::SetDrawData(BasePrimitive* primitive)
 {
-	// 最大数を超えていないかチェック
-	assert(commands_[0]->indexBuffer_->usedCount < commands_[0]->kMaxIndex);
-	assert(vertexBuffer_->usedCount < kMaxVertex);
-	assert(worldTransformBuffer_->usedCount < kMaxWorldTransform);
-	assert(materialBuffer_->usedCount < kMaxMaterial);
+	// いろいろ最大数を超えていないかチェック
+	assert(commands_[0]->indexBuffer_->usedCount < commands_[0]->kMaxIndex); // インデックス情報
+	assert(vertexBuffer_->usedCount < kMaxVertex);							 // 頂点数
+	assert(worldTransformBuffer_->usedCount < kMaxWorldTransform);			 // ワールドトランスフォーム
+	assert(materialBuffer_->usedCount < kMaxMaterial);						 // マテリアル数
 
-	// 開始のインデックス番号の取得
+	// 頂点バッファの最初のインデックス番号の取得
 	uint32_t startIndexNum = vertexBuffer_->usedCount;
 
 	// 頂点データを登録
 	for (int i = 0; i < primitive->GetVertexCount(); i++) {
-		vertexBuffer_->vertex[vertexBuffer_->usedCount++] = primitive->vertices_[i];
+		vertexBuffer_->vertex[vertexBuffer_->usedCount++] = primitive->vertices_[i]; // 頂点データをバッファに登録
 		if (primitive->commonColor != nullptr)	// 共通の色があるときはcommonColorを適応
-			vertexBuffer_->vertex[vertexBuffer_->usedCount - 1].color = *primitive->commonColor;
+			vertexBuffer_->vertex[vertexBuffer_->usedCount - 1].color = *primitive->commonColor; // 共通色に変更
 	}
 	// ワールドトランスフォームをデータに登録
-	uint32_t worldMatrix = worldTransformBuffer_->usedCount;
-	worldTransformBuffer_->mat[worldTransformBuffer_->usedCount++] = primitive->transform_.GetMatWorld();
+	uint32_t worldMatrix = worldTransformBuffer_->usedCount;											  // バッファの末尾を取得
+	worldTransformBuffer_->mat[worldTransformBuffer_->usedCount++] = primitive->transform_.GetMatWorld(); // データを代入
 	// マテリアルをデータに登録
-	uint32_t material = materialBuffer_->usedCount;
-	materialBuffer_->material[materialBuffer_->usedCount++] = primitive->material_;
+	uint32_t material = materialBuffer_->usedCount;									// バッファの末尾を取得
+	materialBuffer_->material[materialBuffer_->usedCount++] = primitive->material_; // データを代入
 	// テクスチャのインデックスを貰う
 	uint32_t texture = defaultTexture_->GetIndex();
-	if (primitive->texture_ != nullptr) {
+	if (primitive->texture_ != nullptr) { // テクスチャがある場合
 		texture = primitive->texture_->GetIndex();
 	}
-
 
 	// Indexの分だけIndexInfoを求める
 	for (int i = 0; i < primitive->GetIndexCount(); i++) {
@@ -193,24 +192,215 @@ void CommandManager::SetDrawData(BasePrimitive* primitive)
 			texture
 		};
 	}
-
 }
 
 int CommandManager::createTextureResource(const DirectX::ScratchImage& image)
 {
-	return 0;
+	// バッファにテクスチャのメタデータを追加
+	textureBuffer_->resource.push_back(CreateTextureBuffer(image.GetMetadata()));
+	// テクスチャをアップロード
+	UploadTextureData(image);
+	// テクスチャバッファの番号を返す
+	return textureBuffer_->usedCount++;
 }
 
 void CommandManager::InitializeDXC()
 {
+	// 結果確認用
+	HRESULT result = S_FALSE;
+
+	// DXCのインスタンス生成
+	dxc_ = std::make_unique<DXC>();
+
+	// DXCUtilsを初期化
+	result = DxcCreateInstance(CLSID_DxcUtils, IID_PPV_ARGS(&dxc_->dxcUtils_)); // 初期化
+	assert(SUCCEEDED(result));													// 初期化確認
+	// DXCCompilerを初期化
+	result = DxcCreateInstance(CLSID_DxcCompiler, IID_PPV_ARGS(&dxc_->dxcCompiler_)); // 初期化
+	assert(SUCCEEDED(result));													      // 初期化確認
+	// 現在は使用しないがIncludeに対応させるための設定を行う
+	result = dxc_->dxcUtils_->CreateDefaultIncludeHandler(&dxc_->dxcIncludeHandler_); // 設定を行う
+	assert(SUCCEEDED(result));														  // 設定確認
+
 }
 
 void CommandManager::CreateRootSignature()
 {
+	// 結果確認用
+	HRESULT result = S_FALSE;
+
+	// ルートシグネチャ生成
+	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature{};			 // 設定用インスタンス生成
+	descriptionRootSignature.Flags = D3D12_ROOT_SIGNATURE_FLAG_NONE; // フラッグはなし
+	// ルートパラメータ生成
+	D3D12_ROOT_PARAMETER rootParameters[7] = {};
+	// サンプラー
+	D3D12_STATIC_SAMPLER_DESC staticSamplers[2] = {};
+	// 配列用のRangeDesc
+	D3D12_DESCRIPTOR_RANGE descRange[1] = {};	// DescriptorRangeを作成
+	descRange[0].BaseShaderRegister = 0; // 0から始まる
+	descRange[0].NumDescriptors = 1; // 数は1つ
+	descRange[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV; // SRVを使う
+	descRange[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; // Offsetを自動計算
+
+	// RootSignatureにrootParametersを登録
+	descriptionRootSignature.pParameters = rootParameters;					// ルートパラメータ配列へのポインタ
+	descriptionRootSignature.NumParameters = _countof(rootParameters);		// 配列の長さ
+
+	// RootSignatureにサンプラーを登録
+	descriptionRootSignature.pStaticSamplers = staticSamplers;
+	descriptionRootSignature.NumStaticSamplers = _countof(staticSamplers);
+
+	// ストラクチャーバッファーのインデックス
+	D3D12_DESCRIPTOR_RANGE indexDesc[1] = { descRange[0] };						  // DescriptorRangeを作成
+	indexDesc[0].BaseShaderRegister = 0;										  // レジスタ番号は0
+	rootParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE; // DescriptorTableを使う
+	rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;			  // 全てのシェーダーで使う
+	rootParameters[0].DescriptorTable.pDescriptorRanges = indexDesc;			  // Tabelの中身の配列を指定
+	rootParameters[0].DescriptorTable.NumDescriptorRanges = _countof(indexDesc);  // Tableで利用する数
+
+	// 平行光源
+	rootParameters[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;  // CBVを使う
+	rootParameters[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL; // PixelとVertexで使う
+	rootParameters[1].Descriptor.ShaderRegister = 0;				  // レジスタ番号0とバインド
+
+	// 頂点データ
+	D3D12_DESCRIPTOR_RANGE vertexDesc[1] = { descRange[0] };					  // DescriptorRangeを作成
+	vertexDesc[0].BaseShaderRegister = 1;										  // レジスタ番号は1
+	rootParameters[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE; // DescriptorTableを使う
+	rootParameters[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX;		  // 頂点シェーダーで使う
+	rootParameters[2].DescriptorTable.pDescriptorRanges = vertexDesc;			  // Tabelの中身の配列を指定
+	rootParameters[2].DescriptorTable.NumDescriptorRanges = _countof(vertexDesc); // Tableで利用する数
+
+	// カメラのViewProjection
+	D3D12_DESCRIPTOR_RANGE vpDesc[1] = { descRange[0] };						  // DescriptorRangeを作成
+	vpDesc[0].BaseShaderRegister = 2;											  // レジスタ番号は2
+	rootParameters[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE; // DescriptorTableを使う
+	rootParameters[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX;		  // 頂点シェーダーで使う
+	rootParameters[3].DescriptorTable.pDescriptorRanges = vpDesc;				  // Tabelの中身の配列を指定
+	rootParameters[3].DescriptorTable.NumDescriptorRanges = _countof(vpDesc);	  // Tableで利用する数
+
+	// WorldTransform
+	D3D12_DESCRIPTOR_RANGE wtDesc[1] = { descRange[0] };						  // DescriptorRangeを作成
+	wtDesc[0].BaseShaderRegister = 3;											  // レジスタ番号は3
+	rootParameters[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE; // DescriptorTableを使う
+	rootParameters[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX;		  // 頂点シェーダーで使う
+	rootParameters[4].DescriptorTable.pDescriptorRanges = wtDesc;				  // Tabelの中身の配列を指定
+	rootParameters[4].DescriptorTable.NumDescriptorRanges = _countof(wtDesc);	  // Tableで利用する数
+
+	// マテリアル
+	D3D12_DESCRIPTOR_RANGE materialDesc[1] = { descRange[0] };					    // DescriptorRangeを作成
+	materialDesc[0].BaseShaderRegister = 1;										    // レジスタ番号は1
+	rootParameters[5].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;   // DescriptorTableを使う
+	rootParameters[5].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;			    // ピクセルシェーダーで使う
+	rootParameters[5].DescriptorTable.pDescriptorRanges = materialDesc;			    // Tabelの中身の配列を指定
+	rootParameters[5].DescriptorTable.NumDescriptorRanges = _countof(materialDesc); // Tableで利用する数
+
+	// テクスチャ
+	D3D12_DESCRIPTOR_RANGE textureDesc[1] = { descRange[0] };					   // DescriptorRangeを作成
+	textureDesc[0].BaseShaderRegister = 2;										   // レジスタ番号は2
+	textureDesc[0].NumDescriptors = kMaxTexture;								   // 最大数を定義
+	rootParameters[6].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;  // DescriptorTabelを使う
+	rootParameters[6].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;		       // ピクセルシェーダーで使う
+	rootParameters[6].DescriptorTable.pDescriptorRanges = textureDesc;			   // Tabelの中身の配列を指定
+	rootParameters[6].DescriptorTable.NumDescriptorRanges = _countof(textureDesc); // Tableで利用する数
+
+	// Samplerの設定
+	staticSamplers[0].Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR; // バイオリニアフィルタ
+	staticSamplers[0].AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP; // 0~1の範囲外をリピート
+	staticSamplers[0].AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+	staticSamplers[0].AddressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+	staticSamplers[0].ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER; // 比較しない
+	staticSamplers[0].MaxLOD = D3D12_FLOAT32_MAX; // ありったけのMipmapを使う
+	staticSamplers[0].ShaderRegister = 1; // レジスタ番号は1
+	staticSamplers[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; // PixelShaderで使う
+
+	// シリアライズを行う
+	ID3DBlob* signatureBlob = nullptr; // シリアライズ後のバイナリオブジェクト
+	ID3DBlob* errorBlob = nullptr;	   // エラーログを出すためのバイナリオブジェクト
+	// ルートシグネチャ用にシリアライズ
+	result = D3D12SerializeRootSignature(&descriptionRootSignature, D3D_ROOT_SIGNATURE_VERSION_1, &signatureBlob, &errorBlob);
+	// 生成に失敗した場合
+	if (FAILED(result)) {
+		// ログを出力
+		Debug::Log(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
+		// 停止
+		assert(false);
+	}
+	// バイナリを元にルートシグネチャを生成
+	result = device_->CreateRootSignature(0, signatureBlob->GetBufferPointer(), signatureBlob->GetBufferSize(), IID_PPV_ARGS(&rootSignature_)); // 生成
+	assert(SUCCEEDED(result));																													// 生成確認
+
+	// 使わないリソースを解放
+	signatureBlob->Release();
+	errorBlob->Release();
 }
 
 void CommandManager::CreateStructuredBuffer()
 {
+	// 共通のSRV用Desc
+	D3D12_SHADER_RESOURCE_VIEW_DESC commonDesc{};
+	commonDesc.Format = DXGI_FORMAT_UNKNOWN;
+	commonDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	commonDesc.ViewDimension = D3D12_SRV_DIMENSION_BUFFER;
+	commonDesc.Buffer.FirstElement = 0;
+	commonDesc.Buffer.Flags = D3D12_BUFFER_SRV_FLAG_NONE;
+
+	// 平行光源
+	lightBuffer_ = std::make_unique<LightBuffer>();
+	lightBuffer_->resource = CreateBuffer(sizeof(DirectionalLight));
+	lightBuffer_->resource->Map(0, nullptr, reinterpret_cast<void**>(&lightBuffer_->light));
+	lightBuffer_->view = lightBuffer_->resource->GetGPUVirtualAddress();
+	// 平行光源だけ今は生成を変える
+	lightBuffer_->light->color = { 1.0f,1.0f,1.0f,1.0f };
+	lightBuffer_->light->direction = { 0.0f,-1.0f,0.0f };
+	lightBuffer_->light->intensity = 1.0f;
+	lightBuffer_->rotate = { 1.57f,0.0f,0.0f };
+
+
+	// 頂点データ
+	vertexResourceBuffer_ = std::make_unique<VertexResourceBuffer>();
+	vertexResourceBuffer_->resource_ = CreateBufferResource(sizeof(VertexStruct) * kMaxVertex);
+	vertexResourceBuffer_->resource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexResourceBuffer_->data_));
+	D3D12_SHADER_RESOURCE_VIEW_DESC vertexDesc = { commonDesc };
+	vertexDesc.Buffer.NumElements = kMaxVertex;
+	vertexDesc.Buffer.StructureByteStride = sizeof(VertexStruct);
+	vertexResourceBuffer_->view_ = srv_->GetGPUHandle(srv_->GetUsedCount());
+	device_->CreateShaderResourceView(vertexResourceBuffer_->resource_.Get(), &vertexDesc, srv_->GetCPUHandle(srv_->GetUsedCount()));
+	srv_->AddUsedCount();	// SRV使用数を+1
+	// カメラのビュープロジェクション用
+	cameraResourceBuffer_ = std::make_unique<MatrixResourceBuffer>();
+	cameraResourceBuffer_->resource_ = CreateBufferResource(sizeof(Math::Matrix4x4) * kMaxCameraVP);
+	cameraResourceBuffer_->resource_->Map(0, nullptr, reinterpret_cast<void**>(&cameraResourceBuffer_->data_));
+	D3D12_SHADER_RESOURCE_VIEW_DESC cameraDesc = { commonDesc };
+	cameraDesc.Buffer.NumElements = kMaxCameraVP;
+	cameraDesc.Buffer.StructureByteStride = sizeof(Math::Matrix4x4);
+	cameraResourceBuffer_->view_ = srv_->GetGPUHandle(srv_->GetUsedCount());
+	device_->CreateShaderResourceView(cameraResourceBuffer_->resource_.Get(), &cameraDesc, srv_->GetCPUHandle(srv_->GetUsedCount()));
+	srv_->AddUsedCount();	// SRV使用数を+1
+	// WorldTransformデータ
+	matrixResourceBuffer_ = std::make_unique<MatrixResourceBuffer>();
+	matrixResourceBuffer_->resource_ = CreateBufferResource(sizeof(Math::Matrix4x4) * kMaxMatrix);
+	matrixResourceBuffer_->resource_->Map(0, nullptr, reinterpret_cast<void**>(&matrixResourceBuffer_->data_));
+	D3D12_SHADER_RESOURCE_VIEW_DESC matrixDesc = { commonDesc };
+	matrixDesc.Buffer.NumElements = kMaxMatrix;
+	matrixDesc.Buffer.StructureByteStride = sizeof(Math::Matrix4x4);
+	matrixResourceBuffer_->view_ = srv_->GetGPUHandle(srv_->GetUsedCount());
+	device_->CreateShaderResourceView(matrixResourceBuffer_->resource_.Get(), &matrixDesc, srv_->GetCPUHandle(srv_->GetUsedCount()));
+	srv_->AddUsedCount();	// SRV使用数を+1
+
+	// マテリアルデータ
+	materialResourceBuffer_ = std::make_unique<MaterialResourceBuffer>();
+	materialResourceBuffer_->resource_ = CreateBufferResource(sizeof(MaterialStruct) * kMaxMaterial);
+	materialResourceBuffer_->resource_->Map(0, nullptr, reinterpret_cast<void**>(&materialResourceBuffer_->data_));
+	D3D12_SHADER_RESOURCE_VIEW_DESC materialDesc = { commonDesc };
+	materialDesc.Buffer.NumElements = kMaxMaterial;
+	materialDesc.Buffer.StructureByteStride = sizeof(MaterialStruct);
+	materialResourceBuffer_->view_ = srv_->GetGPUHandle(srv_->GetUsedCount());
+	device_->CreateShaderResourceView(materialResourceBuffer_->resource_.Get(), &materialDesc, srv_->GetCPUHandle(srv_->GetUsedCount()));
+	srv_->AddUsedCount();	// SRV使用数を+1
+	// テクスチャデータ
+	textureResourceBuffer_ = std::make_unique<TextureResourceBuffer>();
 }
 
 ID3D12Resource* CommandManager::CreateBuffer(size_t size)
