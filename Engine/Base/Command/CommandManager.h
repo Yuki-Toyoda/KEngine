@@ -61,6 +61,18 @@ public: // アクセッサ等
 	/// <param name="primitive">頂点データ</param>
 	void SetDrawData(BasePrimitive* primitive);
 
+	/// <summary>
+	/// コマンドキューのゲッター
+	/// </summary>
+	/// <returns>コマンドキュー</returns>
+	ID3D12CommandQueue* GetQueue() { return commandQueue_.Get(); }
+
+	/// <summary>
+	/// コマンドリストゲッター
+	/// </summary>
+	/// <returns>コマンドリスト</returns>
+	ID3D12GraphicsCommandList* GetRenderCommandList() { return commandList_.Get(); }
+
 public: // その他関数
 
 	/// <summary>

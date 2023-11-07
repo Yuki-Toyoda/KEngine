@@ -132,9 +132,6 @@
     <ClCompile Include="Engine\Scene\user\TitleScene.cpp">
       <Filter>Scene\user</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Resource\Texture\TextureManager.cpp">
-      <Filter>Resource\Texture</Filter>
-    </ClCompile>
     <ClCompile Include="Externals\imgui\ImGuiManager.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
@@ -197,6 +194,9 @@
     </ClCompile>
     <ClCompile Include="Engine\Primitive\3d\Mesh.cpp">
       <Filter>Primitive\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Resource\Texture\TextureManager.cpp">
+      <Filter>Resource\Texture</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -400,6 +400,9 @@
     </ClInclude>
     <ClInclude Include="Engine\Primitive\3d\Mesh.h">
       <Filter>Primitive\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Resource\Texture\TextureManager.h">
+      <Filter>Resource\Texture</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

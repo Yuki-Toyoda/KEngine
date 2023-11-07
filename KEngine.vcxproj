@@ -120,6 +120,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Primitive\BasePrimitive.cpp" />
     <ClCompile Include="Engine\Resource\Material\Material.cpp" />
     <ClCompile Include="Engine\Resource\Texture\Texture.cpp" />
+    <ClCompile Include="Engine\Resource\Texture\TextureManager.cpp" />
     <ClCompile Include="Engine\Scene\SceneManager.cpp" />
     <ClCompile Include="Engine\Scene\user\GameScene.cpp" />
     <ClCompile Include="Engine\Scene\user\TitleScene.cpp" />
@@ -186,6 +187,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Primitive\BasePrimitive.h" />
     <ClInclude Include="Engine\Resource\Material\Material.h" />
     <ClInclude Include="Engine\Resource\Texture\Texture.h" />
+    <ClInclude Include="Engine\Resource\Texture\TextureManager.h" />
     <ClInclude Include="Engine\Scene\BaseScene.h" />
     <ClInclude Include="Engine\Scene\SceneManager.h" />
     <ClInclude Include="Engine\Scene\user\GameScene.h" />
