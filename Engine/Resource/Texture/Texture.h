@@ -6,7 +6,7 @@
 #pragma comment(lib, "d3d12.lib")
 
 // クラスの前方宣言
-class DirecctXCommon;
+class DirectXCommon;
 class CommandManager;
 
 /// <summary>

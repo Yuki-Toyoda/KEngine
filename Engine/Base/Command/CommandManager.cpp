@@ -2,6 +2,7 @@
 #include "../DescriptorHeaps/RTV.h"
 #include "../DescriptorHeaps/SRV.h"
 #include "../DescriptorHeaps/DSV.h"
+#include "../../Resource/Texture/TextureManager.h"
 
 void CommandManager::Initialize(ID3D12Device* device)
 {
@@ -144,7 +145,7 @@ void CommandManager::SetHeaps(RTV* rtv, SRV* srv, DSV* dsv)
 	CreateStructuredBuffer();
 
 	// サンプルテクスチャの読み込み
-	// 後で
+	TextureManager::Load("white1x1.png");
 }
 
 void CommandManager::SetViewProjection(Matrix4x4* vpMat)
