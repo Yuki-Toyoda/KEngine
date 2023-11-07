@@ -101,34 +101,91 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Collider\Collider.cpp" />
     <ClCompile Include="Engine\Collider\CollisionManager.cpp" />
     <ClCompile Include="Engine\Debug\Debug.cpp" />
-    <ClCompile Include="Engine\GameObject\Ambient\Ambient.cpp" />
-    <ClCompile Include="Engine\GameObject\BaseObject.cpp" />
-    <ClCompile Include="Engine\GameObject\Camera\Camera.cpp" />
-    <ClCompile Include="Engine\GameObject\GameObjectManager.cpp" />
-    <ClCompile Include="Engine\GameObject\Samples\Box\SampleBox.cpp" />
-    <ClCompile Include="Engine\GameObject\Samples\Player\SamplePlayer.cpp" />
-    <ClCompile Include="Engine\GameObject\Samples\Stage\SampleFloor.cpp" />
-    <ClCompile Include="Engine\GameObject\Samples\TPCamera\TPCamera.cpp" />
+    <ClCompile Include="Engine\GameObject\Ambient\Ambient.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\BaseObject.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\Camera\Camera.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\GameObjectManager.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\Samples\Box\SampleBox.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\Samples\Player\SamplePlayer.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\Samples\Stage\SampleFloor.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\Samples\TPCamera\TPCamera.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Engine\GameObject\WorldTransform.cpp" />
     <ClCompile Include="Engine\GlobalVariables\GlobalVariables.cpp" />
     <ClCompile Include="Engine\Input\Input.cpp" />
-    <ClCompile Include="Engine\Light\LightGroup.cpp" />
+    <ClCompile Include="Engine\Light\LightGroup.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Engine\Math\Math.cpp" />
-    <ClCompile Include="Engine\OBJ\ModelManager.cpp" />
-    <ClCompile Include="Engine\OBJ\OBJ.cpp" />
+    <ClCompile Include="Engine\OBJ\ModelManager.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Engine\OBJ\OBJ.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Engine\Primitive\3d\Mesh.cpp" />
     <ClCompile Include="Engine\Primitive\BasePrimitive.cpp" />
     <ClCompile Include="Engine\Resource\Material\Material.cpp" />
     <ClCompile Include="Engine\Resource\Texture\Texture.cpp" />
     <ClCompile Include="Engine\Resource\Texture\TextureManager.cpp" />
-    <ClCompile Include="Engine\Scene\SceneManager.cpp" />
-    <ClCompile Include="Engine\Scene\user\GameScene.cpp" />
-    <ClCompile Include="Engine\Scene\user\TitleScene.cpp" />
-    <ClCompile Include="Engine\Sprite\Sprite.cpp" />
-    <ClCompile Include="Engine\Sprite\template\AnimationSprite.cpp" />
-    <ClCompile Include="Engine\Sprite\template\Counter.cpp" />
-    <ClCompile Include="Engine\Sprite\template\Gage.cpp" />
-    <ClCompile Include="Engine\Sprite\template\Timer.cpp" />
+    <ClCompile Include="Engine\Scene\SceneManager.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Engine\Scene\user\GameScene.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Engine\Scene\user\TitleScene.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Engine\Sprite\Sprite.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Engine\Sprite\template\AnimationSprite.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Engine\Sprite\template\Counter.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Engine\Sprite\template\Gage.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Engine\Sprite\template\Timer.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Externals\imgui\imgui.cpp" />
     <ClCompile Include="Externals\imgui\ImGuiManager.cpp" />
     <ClCompile Include="Externals\imgui\imgui_demo.cpp" />
@@ -161,44 +218,18 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Collider\Shape\BaseShape.h" />
     <ClInclude Include="Engine\Collider\Shape\Sphere.h" />
     <ClInclude Include="Engine\Debug\Debug.h" />
-    <ClInclude Include="Engine\GameObject\Ambient\Ambient.h" />
-    <ClInclude Include="Engine\GameObject\BaseObject.h" />
-    <ClInclude Include="Engine\GameObject\Camera\Camera.h" />
-    <ClInclude Include="Engine\GameObject\GameObjectManager.h" />
-    <ClInclude Include="Engine\GameObject\ObjectList.h" />
-    <ClInclude Include="Engine\GameObject\SampleList.h" />
-    <ClInclude Include="Engine\GameObject\Samples\Box\SampleBox.h" />
-    <ClInclude Include="Engine\GameObject\Samples\Player\SamplePlayer.h" />
-    <ClInclude Include="Engine\GameObject\Samples\Stage\SampleFloor.h" />
-    <ClInclude Include="Engine\GameObject\Samples\TPCamera\TPCamera.h" />
-    <ClInclude Include="Engine\GameObject\WorldTransform.h" />
     <ClInclude Include="Engine\GlobalVariables\GlobalVariables.h" />
     <ClInclude Include="Engine\Input\Input.h" />
-    <ClInclude Include="Engine\Light\DirectionalLight.h" />
-    <ClInclude Include="Engine\Light\LightGroup.h" />
     <ClInclude Include="Engine\Math\Math.h" />
     <ClInclude Include="Engine\Math\Matrix4x4.h" />
     <ClInclude Include="Engine\Math\Vector2.h" />
     <ClInclude Include="Engine\Math\Vector3.h" />
     <ClInclude Include="Engine\Math\Vector4.h" />
-    <ClInclude Include="Engine\OBJ\ModelManager.h" />
-    <ClInclude Include="Engine\OBJ\OBJ.h" />
     <ClInclude Include="Engine\Primitive\3d\Mesh.h" />
     <ClInclude Include="Engine\Primitive\BasePrimitive.h" />
     <ClInclude Include="Engine\Resource\Material\Material.h" />
     <ClInclude Include="Engine\Resource\Texture\Texture.h" />
     <ClInclude Include="Engine\Resource\Texture\TextureManager.h" />
-    <ClInclude Include="Engine\Scene\BaseScene.h" />
-    <ClInclude Include="Engine\Scene\SceneManager.h" />
-    <ClInclude Include="Engine\Scene\user\GameScene.h" />
-    <ClInclude Include="Engine\Scene\user\SceneList.h" />
-    <ClInclude Include="Engine\Scene\user\TitleScene.h" />
-    <ClInclude Include="Engine\Sprite\Sprite.h" />
-    <ClInclude Include="Engine\Sprite\SpriteList.h" />
-    <ClInclude Include="Engine\Sprite\template\AnimationSprite.h" />
-    <ClInclude Include="Engine\Sprite\template\Counter.h" />
-    <ClInclude Include="Engine\Sprite\template\Gage.h" />
-    <ClInclude Include="Engine\Sprite\template\Timer.h" />
     <ClInclude Include="Externals\imgui\imconfig.h" />
     <ClInclude Include="Externals\imgui\imgui.h" />
     <ClInclude Include="Externals\imgui\ImGuiManager.h" />

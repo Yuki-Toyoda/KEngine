@@ -224,23 +224,8 @@
     <ClInclude Include="Engine\GlobalVariables\GlobalVariables.h">
       <Filter>GlobalVariables</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\GameObject\BaseObject.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameObject\GameObjectManager.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameObject\WorldTransform.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Input\Input.h">
       <Filter>Input</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Light\LightGroup.h">
-      <Filter>Light</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Light\DirectionalLight.h">
-      <Filter>Light</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Math\Math.h">
       <Filter>Math</Filter>
@@ -257,27 +242,6 @@
     <ClInclude Include="Engine\Math\Vector4.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\OBJ\ModelManager.h">
-      <Filter>OBJ</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\OBJ\OBJ.h">
-      <Filter>OBJ</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Scene\SceneManager.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Scene\user\SceneList.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Sprite\Sprite.h">
-      <Filter>Sprite</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Sprite\SpriteList.h">
-      <Filter>Sprite</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Scene\BaseScene.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Collider\Shape\AABB.h">
       <Filter>Collider\Shape</Filter>
     </ClInclude>
@@ -289,48 +253,6 @@
     </ClInclude>
     <ClInclude Include="Engine\Collider\ShapeList.h">
       <Filter>Collider\Shape</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameObject\Ambient\Ambient.h">
-      <Filter>GameObject\Ambient</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameObject\Camera\Camera.h">
-      <Filter>GameObject\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameObject\Samples\Box\SampleBox.h">
-      <Filter>GameObject\Samples</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameObject\Samples\Stage\SampleFloor.h">
-      <Filter>GameObject\Samples</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameObject\SampleList.h">
-      <Filter>GameObject\Samples</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameObject\Samples\Player\SamplePlayer.h">
-      <Filter>GameObject\Samples</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameObject\Samples\TPCamera\TPCamera.h">
-      <Filter>GameObject\Samples</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Sprite\template\Timer.h">
-      <Filter>Sprite\Template</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Sprite\template\Counter.h">
-      <Filter>Sprite\Template</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Sprite\template\Gage.h">
-      <Filter>Sprite\Template</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Sprite\template\AnimationSprite.h">
-      <Filter>Sprite\Template</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Scene\user\GameScene.h">
-      <Filter>Scene\user</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Scene\user\TitleScene.h">
-      <Filter>Scene\user</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameObject\ObjectList.h">
-      <Filter>GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Externals\imgui\ImGuiManager.h">
       <Filter>ImGui</Filter>
@@ -438,59 +360,26 @@
     <Filter Include="GlobalVariables">
       <UniqueIdentifier>{0e34d352-1728-40ee-a487-bf65837d942a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameObject">
-      <UniqueIdentifier>{5c58911e-ee8f-412b-93b8-4f63a1f66fa3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ImGui">
       <UniqueIdentifier>{13a20c8e-a633-49aa-adb7-a30fe43c4191}</UniqueIdentifier>
     </Filter>
     <Filter Include="Input">
       <UniqueIdentifier>{2e94133f-b53e-4903-b4ae-b109bdd76131}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Light">
-      <UniqueIdentifier>{f2e2a085-c19c-4459-bf80-53432ecf4f36}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Math">
       <UniqueIdentifier>{f2cd2653-c2e1-45f0-b0b9-481baba94153}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="OBJ">
-      <UniqueIdentifier>{ed9b3117-93d3-4300-a172-638be21d452c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource">
       <UniqueIdentifier>{b2c8cb73-410f-4267-8a42-247c59b88259}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scene">
-      <UniqueIdentifier>{be92d851-cfaa-48a5-865a-130fa106c3ce}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sprite">
-      <UniqueIdentifier>{1e61e602-b003-4ce5-932d-878245efb6d2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Collider\Shape">
       <UniqueIdentifier>{60892422-3362-412f-b945-41ad9ef224e5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject\Ambient">
-      <UniqueIdentifier>{15abff18-bd83-4b46-8b03-63776d686ef2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject\Camera">
-      <UniqueIdentifier>{32862175-18b0-43f4-94bd-9e9c2888ce4a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject\Samples">
-      <UniqueIdentifier>{225c8297-5dbd-4af4-8221-0e7532e10b42}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sprite\Template">
-      <UniqueIdentifier>{43180b25-13b5-4bcc-80e0-22ed007cd513}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scene\user">
-      <UniqueIdentifier>{f5ee107d-bc93-47d9-8dbf-f13f2cdd5629}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource\Shader">
       <UniqueIdentifier>{a755d675-5c8f-4292-994d-c54898f118d8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource\Texture">
       <UniqueIdentifier>{114b41e8-1d06-4ce6-b12f-46be87dd982c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject\user">
-      <UniqueIdentifier>{558ec98b-7d44-4bea-a099-f217e503423a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Base\DescriptorHeaps">
       <UniqueIdentifier>{f6691631-5f63-4089-be0c-897e9b375f7f}</UniqueIdentifier>

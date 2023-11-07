@@ -16,13 +16,6 @@ public: // 静的なメンバ変数
 	// ウィンドウクラス名
 	static const wchar_t kWindowClassName[];
 
-public: // コンストラクタ等
-
-	// コンストラクタ
-	WinApp() = default;
-	// デストラクタ
-	~WinApp() = default;
-
 public: // 静的なメンバ関数
 
 	/// <summary>

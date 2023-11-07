@@ -23,9 +23,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// 空のインスタンスを生成
 	WinApp* winApp = nullptr;
 	DirectXCommon* dxCommon = nullptr;
-	GameObjectManager* gameObjectManager = nullptr;
-	CollisionManager* collisionManager = nullptr;
-	SceneManager* sceneManager = nullptr;
+	//GameObjectManager* gameObjectManager = nullptr;
+	//CollisionManager* collisionManager = nullptr;
+	//SceneManager* sceneManager = nullptr;
 	Input* input = nullptr;
 	Audio* audio = nullptr;
 
@@ -52,33 +52,29 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	audio->Initialize();
 
 	// モデルマネージャの初期化
-	ModelManager::GetInstance()->Initialize();
+	//ModelManager::GetInstance()->Initialize();
 
 	// objの静的初期化
-	OBJ::StaticInitialize(dxCommon->GetDevice());
+	//OBJ::StaticInitialize(dxCommon->GetDevice());
 	// Spriteの静的初期化
-	Sprite::StaticInitialize(dxCommon->GetDevice(), winApp->kWindowWidth, winApp->kwindowHeight);
+	//Sprite::StaticInitialize(dxCommon->GetDevice(), winApp->kWindowWidth, winApp->kwindowHeight);
 
 	// テクスチャマネージャ初期化
-	TextureManager::GetInstance()->Intialize(dxCommon->GetDevice());
-	// サンプルテクスチャロード
-	TextureManager::Load("white1x1.png"); // white1x1
-	TextureManager::Load("./Engine/Resource/Samples/Texture", "ColorSample.png"); // カラーサンプル
-	TextureManager::Load("./Engine/Resource/Samples/Texture", "AlphabetSheet.png"); // アルファベットシート
+	TextureManager::GetInstance()->Initialize();
 
 	// グローバル変数の読み込み
 	GlobalVariables::GetInstance()->LoadFiles();
 
 	// ゲームオブジェクトマネージャーの初期化
-	gameObjectManager = GameObjectManager::GetInstance();
-	gameObjectManager->Initialize();
+	//gameObjectManager = GameObjectManager::GetInstance();
+	//gameObjectManager->Initialize();
 
 	// 衝突マネージャのインスタンス取得
-	collisionManager = CollisionManager::GetInstance();
+	//collisionManager = CollisionManager::GetInstance();
 
 	// シーンマネージャ初期化
-	sceneManager = SceneManager::GetInstance();
-	sceneManager->Initialize();
+	//sceneManager = SceneManager::GetInstance();
+	//sceneManager->Initialize();
 
 	ImGui::CreateContext();
 	auto& io = ImGui::GetIO();
@@ -101,18 +97,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			input->Update();
 
 			// 衝突判定リストクリア
-			collisionManager->ListClear();
+			//collisionManager->ListClear();
 
 			// グローバル変数の更新
 			GlobalVariables::GetInstance()->Update();
 
 			// シーンの更新処理
-			sceneManager->Update();
+			//sceneManager->Update();
 			// ゲームオブジェクト更新
-			gameObjectManager->Update();
+			//gameObjectManager->Update();
 
 			// 衝突判定検証
-			collisionManager->CheckAllCollision();
+			//collisionManager->CheckAllCollision();
 
 			// ImGui受付終了
 			imguiManager->End();
@@ -130,7 +126,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	}
 
 	// 全オブジェクト削除
-	gameObjectManager->Initialize();
+	//gameObjectManager->Initialize();
 	// 音解放処理
 	audio->Finalize();
 
