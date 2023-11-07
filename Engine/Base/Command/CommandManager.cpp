@@ -235,7 +235,7 @@ void CommandManager::CreateRootSignature()
 	// ルートパラメータ生成
 	D3D12_ROOT_PARAMETER rootParameters[7] = {};
 	// サンプラー
-	D3D12_STATIC_SAMPLER_DESC staticSamplers[2] = {};
+	D3D12_STATIC_SAMPLER_DESC staticSamplers[1] = {};
 	// 配列用のRangeDesc
 	D3D12_DESCRIPTOR_RANGE descRange[1] = {};	// DescriptorRangeを作成
 	descRange[0].BaseShaderRegister = 0; // 0から始まる
@@ -404,14 +404,105 @@ void CommandManager::CreateStructuredBuffer()
 
 ID3D12Resource* CommandManager::CreateBuffer(size_t size)
 {
-	return nullptr;
+	// 結果確認用
+	HRESULT result = S_FALSE;
+
+	// 返すリソース
+	ID3D12Resource* resource;
+
+	// 頂点リソース用のヒープの設定
+	D3D12_HEAP_PROPERTIES uploadHeapProperties{};
+	uploadHeapProperties.Type = D3D12_HEAP_TYPE_UPLOAD;	// UploadHeapを使う
+	// 頂点リソースの設定
+	D3D12_RESOURCE_DESC resourceDesc{};
+	// バッファリソース。テクスチャの場合はまた別の設定をする
+	resourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+	resourceDesc.Width = size; // リソースのサイズ
+	// バッファの場合はこれらは1にする決まり
+	resourceDesc.Height = 1;
+	resourceDesc.DepthOrArraySize = 1;
+	resourceDesc.MipLevels = 1;
+	resourceDesc.SampleDesc.Count = 1;
+	// バッファの場合はこれにする決まり
+	resourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+	// 実際に頂点リソースを作る
+	result = device_->CreateCommittedResource(&uploadHeapProperties, D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&resource));
+	assert(SUCCEEDED(result));
+
+	// 生成したバッファリソースを返す
+	return resource;
 }
 
 ID3D12Resource* CommandManager::CreateTextureBuffer(const DirectX::TexMetadata& metaData)
 {
-	return nullptr;
+	// 結果確認用
+	HRESULT result = S_FALSE;
+
+	// 1. metadataを基にResourceの設定
+	D3D12_RESOURCE_DESC resourceDesc{};
+	resourceDesc.Width = UINT(metaData.width);
+	resourceDesc.Height = UINT(metaData.height);
+	resourceDesc.MipLevels = UINT16(metaData.mipLevels);
+	resourceDesc.DepthOrArraySize = UINT16(metaData.arraySize);
+	resourceDesc.Format = metaData.format;
+	resourceDesc.SampleDesc.Count = 1;
+	resourceDesc.Dimension = D3D12_RESOURCE_DIMENSION(metaData.dimension);
+
+	// 2. 利用するHeapの設定。非常に特殊な運用。
+	D3D12_HEAP_PROPERTIES heapProperties{};
+	heapProperties.Type = D3D12_HEAP_TYPE_CUSTOM; // 細かい設定を行う
+	heapProperties.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_WRITE_BACK; // WriteBackポリシーでCPUアクセス可能
+	heapProperties.MemoryPoolPreference = D3D12_MEMORY_POOL_L0; // プロセッサの近くに配置
+
+	// 3. Resourceを生成する
+	ID3D12Resource* resource = nullptr;
+	result = device_->CreateCommittedResource(
+		&heapProperties,					// Heapの設定
+		D3D12_HEAP_FLAG_NONE,				// Heapの特殊な設定。特になし。
+		&resourceDesc,						// Resourceの設定
+		D3D12_RESOURCE_STATE_GENERIC_READ,	// 初回のResourceState。Textureは基本読むだけ
+		nullptr,							// Clear最適地。使わないでnullptr
+		IID_PPV_ARGS(&resource)				// 作成するResourceポインタへのポインタ
+	);
+	assert(SUCCEEDED(result));
+	return resource;
 }
 
 void CommandManager::UploadTextureData(const DirectX::ScratchImage& mipImages)
 {
+	// 結果確認用
+	HRESULT result = S_FALSE;
+
+	// Meta情報を取得
+	const DirectX::TexMetadata& metadata = mipImages.GetMetadata();
+	// 全MipMapについて
+	for (size_t mipLevel = 0; mipLevel < metadata.mipLevels; ++mipLevel) {
+		// MipMapLevelを指定して各Imageを取得
+		const DirectX::Image* img = mipImages.GetImage(mipLevel, 0, 0);
+		// Textureに転送
+		result = textureBuffer_->resource[textureBuffer_->usedCount]->WriteToSubresource(
+			UINT(mipLevel),
+			nullptr,
+			img->pixels,
+			UINT(img->rowPitch),
+			UINT(img->slicePitch)
+		);
+		assert(SUCCEEDED(result));
+	}
+
+	// metaDataを元にSRVの設定
+	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
+	srvDesc.Format = metadata.format;
+	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
+	srvDesc.Texture2D.MipLevels = UINT(metadata.mipLevels);
+
+	// SRVを作成するDescriptorHeapの場所を決める（ImGuiとStructuredBufferたちが先頭を使っているので + ）
+	D3D12_CPU_DESCRIPTOR_HANDLE textureSRVHandleCPU = srv_->GetCPUHandle(textureBuffer_->usedCount + srv_->GetUsedCount());
+	// 初めてのテクスチャ生成ならviewを保存
+	if (textureBuffer_->usedCount == 0) {
+		textureBuffer_->view = srv_->GetGPUHandle(textureBuffer_->usedCount + srv_->GetUsedCount());
+	}
+	// SRVの生成
+	device_->CreateShaderResourceView(textureBuffer_->resource[textureBuffer_->usedCount].Get(), &srvDesc, textureSRVHandleCPU);
 }
