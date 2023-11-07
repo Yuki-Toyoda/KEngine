@@ -339,12 +339,12 @@ void CommandManager::CreateRootSignature()
 void CommandManager::CreateStructuredBuffer()
 {
 	// 共通のSRV用Desc
-	D3D12_SHADER_RESOURCE_VIEW_DESC commonDesc{};
-	commonDesc.Format = DXGI_FORMAT_UNKNOWN;
-	commonDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-	commonDesc.ViewDimension = D3D12_SRV_DIMENSION_BUFFER;
-	commonDesc.Buffer.FirstElement = 0;
-	commonDesc.Buffer.Flags = D3D12_BUFFER_SRV_FLAG_NONE;
+	D3D12_SHADER_RESOURCE_VIEW_DESC commonDesc{};								   // 汎用設定用
+	commonDesc.Format = DXGI_FORMAT_UNKNOWN;									   // フォーマット形式は不明
+	commonDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING; // シェーダーからテクスチャにアクセスする際の値指定 
+	commonDesc.ViewDimension = D3D12_SRV_DIMENSION_BUFFER;						   // SRVのバッファであることを指定
+	commonDesc.Buffer.FirstElement = 0;											   // 最初の番号を指定
+	commonDesc.Buffer.Flags = D3D12_BUFFER_SRV_FLAG_NONE;						   // フラッグ設定
 
 	// 平行光源
 	lightBuffer_ = std::make_unique<LightBuffer>();
@@ -357,50 +357,49 @@ void CommandManager::CreateStructuredBuffer()
 	lightBuffer_->light->intensity = 1.0f;
 	lightBuffer_->rotate = { 1.57f,0.0f,0.0f };
 
-
 	// 頂点データ
-	vertexResourceBuffer_ = std::make_unique<VertexResourceBuffer>();
-	vertexResourceBuffer_->resource_ = CreateBufferResource(sizeof(VertexStruct) * kMaxVertex);
-	vertexResourceBuffer_->resource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexResourceBuffer_->data_));
+	vertexBuffer_ = std::make_unique<VertexBuffer>();
+	vertexBuffer_->resource = CreateBuffer(sizeof(Vertex) * kMaxVertex);
+	vertexBuffer_->resource->Map(0, nullptr, reinterpret_cast<void**>(&vertexBuffer_->vertex));
 	D3D12_SHADER_RESOURCE_VIEW_DESC vertexDesc = { commonDesc };
 	vertexDesc.Buffer.NumElements = kMaxVertex;
-	vertexDesc.Buffer.StructureByteStride = sizeof(VertexStruct);
-	vertexResourceBuffer_->view_ = srv_->GetGPUHandle(srv_->GetUsedCount());
-	device_->CreateShaderResourceView(vertexResourceBuffer_->resource_.Get(), &vertexDesc, srv_->GetCPUHandle(srv_->GetUsedCount()));
+	vertexDesc.Buffer.StructureByteStride = sizeof(Vertex);
+	vertexBuffer_->view = srv_->GetGPUHandle(srv_->GetUsedCount());
+	device_->CreateShaderResourceView(vertexBuffer_->resource.Get(), &vertexDesc, srv_->GetCPUHandle(srv_->GetUsedCount()));
 	srv_->AddUsedCount();	// SRV使用数を+1
 	// カメラのビュープロジェクション用
-	cameraResourceBuffer_ = std::make_unique<MatrixResourceBuffer>();
-	cameraResourceBuffer_->resource_ = CreateBufferResource(sizeof(Math::Matrix4x4) * kMaxCameraVP);
-	cameraResourceBuffer_->resource_->Map(0, nullptr, reinterpret_cast<void**>(&cameraResourceBuffer_->data_));
-	D3D12_SHADER_RESOURCE_VIEW_DESC cameraDesc = { commonDesc };
-	cameraDesc.Buffer.NumElements = kMaxCameraVP;
-	cameraDesc.Buffer.StructureByteStride = sizeof(Math::Matrix4x4);
-	cameraResourceBuffer_->view_ = srv_->GetGPUHandle(srv_->GetUsedCount());
-	device_->CreateShaderResourceView(cameraResourceBuffer_->resource_.Get(), &cameraDesc, srv_->GetCPUHandle(srv_->GetUsedCount()));
+	viewProjectionBuffer_ = std::make_unique<MatrixBuffer>();
+	viewProjectionBuffer_->resource = CreateBuffer(sizeof(Matrix4x4));
+	viewProjectionBuffer_->resource->Map(0, nullptr, reinterpret_cast<void**>(&viewProjectionBuffer_->mat));
+	D3D12_SHADER_RESOURCE_VIEW_DESC vpDesc = { commonDesc };
+	vpDesc.Buffer.NumElements = 1;
+	vpDesc.Buffer.StructureByteStride = sizeof(Matrix4x4);
+	viewProjectionBuffer_->view = srv_->GetGPUHandle(srv_->GetUsedCount());
+	device_->CreateShaderResourceView(viewProjectionBuffer_->resource.Get(), &vpDesc, srv_->GetCPUHandle(srv_->GetUsedCount()));
 	srv_->AddUsedCount();	// SRV使用数を+1
 	// WorldTransformデータ
-	matrixResourceBuffer_ = std::make_unique<MatrixResourceBuffer>();
-	matrixResourceBuffer_->resource_ = CreateBufferResource(sizeof(Math::Matrix4x4) * kMaxMatrix);
-	matrixResourceBuffer_->resource_->Map(0, nullptr, reinterpret_cast<void**>(&matrixResourceBuffer_->data_));
-	D3D12_SHADER_RESOURCE_VIEW_DESC matrixDesc = { commonDesc };
-	matrixDesc.Buffer.NumElements = kMaxMatrix;
-	matrixDesc.Buffer.StructureByteStride = sizeof(Math::Matrix4x4);
-	matrixResourceBuffer_->view_ = srv_->GetGPUHandle(srv_->GetUsedCount());
-	device_->CreateShaderResourceView(matrixResourceBuffer_->resource_.Get(), &matrixDesc, srv_->GetCPUHandle(srv_->GetUsedCount()));
+	worldTransformBuffer_ = std::make_unique<MatrixBuffer>();
+	worldTransformBuffer_->resource = CreateBuffer(sizeof(Matrix4x4) * kMaxWorldTransform);
+	worldTransformBuffer_->resource->Map(0, nullptr, reinterpret_cast<void**>(&worldTransformBuffer_->mat));
+	D3D12_SHADER_RESOURCE_VIEW_DESC wtDesc = { commonDesc };
+	wtDesc.Buffer.NumElements = kMaxWorldTransform;
+	wtDesc.Buffer.StructureByteStride = sizeof(Matrix4x4);
+	worldTransformBuffer_->view = srv_->GetGPUHandle(srv_->GetUsedCount());
+	device_->CreateShaderResourceView(worldTransformBuffer_->resource.Get(), &wtDesc, srv_->GetCPUHandle(srv_->GetUsedCount()));
 	srv_->AddUsedCount();	// SRV使用数を+1
 
 	// マテリアルデータ
-	materialResourceBuffer_ = std::make_unique<MaterialResourceBuffer>();
-	materialResourceBuffer_->resource_ = CreateBufferResource(sizeof(MaterialStruct) * kMaxMaterial);
-	materialResourceBuffer_->resource_->Map(0, nullptr, reinterpret_cast<void**>(&materialResourceBuffer_->data_));
+	materialBuffer_ = std::make_unique<MaterialBuffer>();
+	materialBuffer_->resource = CreateBuffer(sizeof(Material) * kMaxMaterial);
+	materialBuffer_->resource->Map(0, nullptr, reinterpret_cast<void**>(&materialBuffer_->material));
 	D3D12_SHADER_RESOURCE_VIEW_DESC materialDesc = { commonDesc };
 	materialDesc.Buffer.NumElements = kMaxMaterial;
-	materialDesc.Buffer.StructureByteStride = sizeof(MaterialStruct);
-	materialResourceBuffer_->view_ = srv_->GetGPUHandle(srv_->GetUsedCount());
-	device_->CreateShaderResourceView(materialResourceBuffer_->resource_.Get(), &materialDesc, srv_->GetCPUHandle(srv_->GetUsedCount()));
+	materialDesc.Buffer.StructureByteStride = sizeof(Material);
+	materialBuffer_->view = srv_->GetGPUHandle(srv_->GetUsedCount());
+	device_->CreateShaderResourceView(materialBuffer_->resource.Get(), &materialDesc, srv_->GetCPUHandle(srv_->GetUsedCount()));
 	srv_->AddUsedCount();	// SRV使用数を+1
 	// テクスチャデータ
-	textureResourceBuffer_ = std::make_unique<TextureResourceBuffer>();
+	textureBuffer_ = std::make_unique<TextureBuffer>();
 }
 
 ID3D12Resource* CommandManager::CreateBuffer(size_t size)
