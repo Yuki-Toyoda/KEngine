@@ -11,9 +11,9 @@
 /// DXC構造体
 /// </summary>
 struct DXC {
-	static Microsoft::WRL::ComPtr<IDxcUtils> dxcUtils_;					   // dxcUtils
-	static Microsoft::WRL::ComPtr<IDxcCompiler3> dxcCompiler_;			   // dxcコンパイラ
-	static Microsoft::WRL::ComPtr<IDxcIncludeHandler> dxcIncludeHandler_;  // InludeHandler
+	Microsoft::WRL::ComPtr<IDxcUtils> dxcUtils_;				   // dxcUtils
+	Microsoft::WRL::ComPtr<IDxcCompiler3> dxcCompiler_;			   // dxcコンパイラ
+	Microsoft::WRL::ComPtr<IDxcIncludeHandler> dxcIncludeHandler_; // InludeHandler
 };
 
 /// <summary>

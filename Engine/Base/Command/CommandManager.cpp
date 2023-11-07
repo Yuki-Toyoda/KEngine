@@ -20,7 +20,7 @@ void CommandManager::Initialize(ID3D12Device* device)
 	result = device_->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&commandAllocator_)); // 生成
 	assert(SUCCEEDED(result));																				    // 生成確認
 	// コマンドリスト生成
-	result = device_->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, commandAllocator_.Get(), nullptr, IID_PPV_ARGS(&commandAllocator_)); // 生成
+	result = device_->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, commandAllocator_.Get(), nullptr, IID_PPV_ARGS(&commandList_)); // 生成
 	assert(SUCCEEDED(result));																													// 生成確認
 
 	// 初期値0でフェンスの生成
@@ -36,9 +36,6 @@ void CommandManager::Initialize(ID3D12Device* device)
 
 void CommandManager::DrawCall()
 {
-	// 結果確認用
-	HRESULT result = S_FALSE;
-
 	// 描画コマンドの数だけループさせる
 	for (size_t i = commands_.size() - 1; i >= 0; i--) {
 		// コマンドリストの取得
@@ -126,7 +123,7 @@ void CommandManager::Reset()
 	materialBuffer_->usedCount = 0;		  // マテリアルバッファ
 }
 
-void CommandManager::SetHeaps(RTV* rtv, SRV* srv, DSV* dsv)
+void CommandManager::SetHeaps(RTV* rtv, SRV* srv, DSV* dsv, std::wstring vs, std::wstring ps)
 {
 	// ヒープのポインタをセット
 	rtv_ = rtv; // レンダーターゲットビュー
@@ -138,7 +135,7 @@ void CommandManager::SetHeaps(RTV* rtv, SRV* srv, DSV* dsv)
 	// 全ての描画コマンドの初期化
 	for (int i = 0; i < commands_.size(); i++) {
 		commands_[i]->SetDescriptorHeap(rtv_, srv_, dsv_); // ヒープをセット
-		commands_[i]->Initialize(device_, dxc_.get(), rootSignature_.Get(), CreateBuffer(sizeof(IndexInfoStruct) * commands_[i]->kMaxIndex)); // 初期化
+		commands_[i]->Initialize(device_, dxc_.get(), rootSignature_.Get(), CreateBuffer(sizeof(IndexInfoStruct) * commands_[i]->kMaxIndex), vs, ps); // 初期化
 	}
 
 	// ストラクチャーバッファを生成

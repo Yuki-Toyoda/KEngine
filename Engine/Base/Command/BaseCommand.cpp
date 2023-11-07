@@ -1,10 +1,10 @@
 #include "BaseCommand.h"
 #include "../DescriptorHeaps/SRV.h"
 
-void BaseCommand::Initialize(ID3D12Device* device, DXC* dxc, ID3D12RootSignature* signature, ID3D12Resource* resource)
+void BaseCommand::Initialize(ID3D12Device* device, DXC* dxc, ID3D12RootSignature* signature, ID3D12Resource* resource, std::wstring vs, std::wstring ps)
 {
 	// PSOの生成
-	CreatePSO(device, dxc, signature);
+	CreatePSO(device, dxc, signature, vs, ps);
 
 	// インデックスバッファの生成
 	indexBuffer_ = std::make_unique<IndexBuffer>(); // インスタンス生成
@@ -24,7 +24,7 @@ void BaseCommand::Initialize(ID3D12Device* device, DXC* dxc, ID3D12RootSignature
 	indexBuffer_->view = srv_->GetGPUHandle(srv_->GetUsedCount());
 	// 設定を基にヒープの未使用ハンドルにビューの生成
 	device->CreateShaderResourceView(indexBuffer_->resource.Get(), &indexDesc, srv_->GetCPUHandle(srv_->GetUsedCount()));
-	
+
 	// srvヒープ使用数をインクリメント
 	srv_->AddUsedCount();
 }

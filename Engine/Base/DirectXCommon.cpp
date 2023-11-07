@@ -28,6 +28,10 @@ void DirectXCommon::Initialize(WinApp* win,
 	dxDevice_->Initialize();					   // 初期化
 	device_ = dxDevice_->GetDevice();			   // デバイスを渡す
 
+	// コマンドマネージャー生成
+	commandManager_ = std::make_unique<CommandManager>(); // インスタンス生成
+	commandManager_->Initialize(device_); // 初期化
+
 	// 各種ヒープの生成
 	rtv_ = std::make_unique<RTV>();																							 // インスタンス生成
 	rtv_->Initialize(winApp_->GetHwnd(), dxDevice_.get(), backBufferWidth_, backBufferHeight_, commandManager_->GetQueue()); // 初期化
@@ -36,11 +40,8 @@ void DirectXCommon::Initialize(WinApp* win,
 	dsv_ = std::make_unique<DSV>();																						     // インスタンス生成
 	dsv_->Initialize(dxDevice_->GetDevice(), backBufferWidth_, backBufferHeight_);											 // 初期化
 
-	// コマンドマネージャー生成
-	commandManager_ = std::make_unique<CommandManager>(); // インスタンス生成
-	commandManager_->Initialize(dxDevice_->GetDevice()); // 初期化
 	// コマンドマネージャーにヒープをセット
-	commandManager_->SetHeaps(rtv_.get(), srv_.get(), dsv_.get());
+	commandManager_->SetHeaps(rtv_.get(), srv_.get(), dsv_.get(), L"Engine/Resource/Shader/Object3D.VS.hlsl", L"Engine/Resource/Shader/Object3D.PS.hlsl");
 
 	// FPS初期化
 	InitializeFixFPS();

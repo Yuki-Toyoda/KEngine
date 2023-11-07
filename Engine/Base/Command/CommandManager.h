@@ -3,6 +3,7 @@
 #include "../../Debug/Debug.h"
 #include "MainCommand.h"
 
+#include <wrl.h>
 #include <dxcapi.h>
 #pragma comment(lib, "dxcompiler.lib")
 
@@ -47,7 +48,7 @@ public: // アクセッサ等
 	/// <param name="rtv">レンダーターゲットビュー</param>
 	/// <param name="srv">シェーダーリソースビュー</param>
 	/// <param name="dsv">深度ステンシルビュー</param>
-	void SetHeaps(RTV* rtv, SRV* srv, DSV* dsv);
+	void SetHeaps(RTV* rtv, SRV* srv, DSV* dsv, std::wstring vs, std::wstring ps);
 
 	/// <summary>
 	/// カメラのビュープロジェクション行列セッター

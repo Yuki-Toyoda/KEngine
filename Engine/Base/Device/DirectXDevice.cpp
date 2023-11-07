@@ -1,5 +1,5 @@
 #include "DirectXDevice.h"
-#include "../Debug/Debug.h"
+#include "../../Debug/Debug.h"
 #include <cassert>
 
 using namespace Microsoft::WRL;

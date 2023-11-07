@@ -28,7 +28,7 @@ void TextureManager::Initialize()
 Texture* TextureManager::LoadTexture(std::string fileName)
 {
 	// ロード
-	Load("./Resources", fileName);
+	return Load("./Resources", fileName);
 }
 
 Texture* TextureManager::LoadTexture(std::string directoryPath, std::string fileName)

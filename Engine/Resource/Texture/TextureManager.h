@@ -6,71 +6,71 @@
 #include "Texture.h"
 
 /// <summary>
-/// ƒeƒNƒXƒ`ƒƒƒ}ƒl[ƒWƒƒ[
+/// ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼
 /// </summary>
 class TextureManager
 {
-private:  // ƒRƒ“ƒXƒgƒ‰ƒNƒ^“™
+private:  // ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ç­‰
 
-	// ƒVƒ“ƒOƒ‹ƒgƒ“ƒpƒ^[ƒ“‚Ìİ’è
+	// ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ãƒ‘ã‚¿ãƒ¼ãƒ³ã®è¨­å®š
 	TextureManager() = default;
 	~TextureManager() = default;
 	TextureManager(const TextureManager&) = delete;
 	const TextureManager& operator=(const TextureManager&) = delete;
 
-public: // Ã“I‚Èƒƒ“ƒoŠÖ”
+public: // é™çš„ãªãƒ¡ãƒ³ãƒé–¢æ•°
 
 	/// <summary>
-	/// ƒVƒ“ƒOƒ‹ƒgƒ“ƒCƒ“ƒXƒ^ƒ“ƒX‚Ìæ“¾
+	/// ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®å–å¾—
 	/// </summary>
-	/// <returns>ƒVƒ“ƒOƒ‹ƒgƒ“ƒCƒ“ƒXƒ^ƒ“ƒX</returns>
+	/// <returns>ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹</returns>
 	static TextureManager* GetInstance();
 
 	/// <summary>
-	/// ƒeƒNƒXƒ`ƒƒƒ[ƒhŠÖ”(ƒfƒBƒŒƒNƒgƒŠw’è‚È‚µ)
+	/// ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ­ãƒ¼ãƒ‰é–¢æ•°(ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªæŒ‡å®šãªã—)
 	/// </summary>
-	/// <param name="fileName">Resources“à‚Ìƒtƒ@ƒCƒ‹–¼</param>
-	/// <returns>ƒeƒNƒXƒ`ƒƒ</returns>
+	/// <param name="fileName">Resourceså†…ã®ãƒ•ã‚¡ã‚¤ãƒ«å</param>
+	/// <returns>ãƒ†ã‚¯ã‚¹ãƒãƒ£</returns>
 	static Texture* Load(std::string fileName);
 
 	/// <summary>
-	/// ƒeƒNƒXƒ`ƒƒƒ[ƒhŠÖ”
+	/// ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ­ãƒ¼ãƒ‰é–¢æ•°
 	/// </summary>
-	/// <param name="directoryPath">ƒeƒNƒXƒ`ƒƒ‚Ü‚Å‚ÌƒfƒBƒŒƒNƒgƒŠƒpƒX</param>
-	/// <param name="fileName">ƒtƒ@ƒCƒ‹–¼</param>
-	/// <returns>ƒeƒNƒXƒ`ƒƒ</returns>
+	/// <param name="directoryPath">ãƒ†ã‚¯ã‚¹ãƒãƒ£ã¾ã§ã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãƒ‘ã‚¹</param>
+	/// <param name="fileName">ãƒ•ã‚¡ã‚¤ãƒ«å</param>
+	/// <returns>ãƒ†ã‚¯ã‚¹ãƒãƒ£</returns>
 	static Texture* Load(std::string directoryPath, std::string fileName);
 
-public: // ƒƒ“ƒoŠÖ”
+public: // ãƒ¡ãƒ³ãƒé–¢æ•°
 
 	/// <summary>
-	/// ‰Šú‰»ŠÖ”
+	/// åˆæœŸåŒ–é–¢æ•°
 	/// </summary>
 	void Initialize();
 
-private: // “Ç‚İ‚İŠÖ”ŒQ
+private: // èª­ã¿è¾¼ã¿é–¢æ•°ç¾¤
 
 	/// <summary>
-	/// ƒeƒNƒXƒ`ƒƒƒ[ƒhŠÖ”(ƒfƒBƒŒƒNƒgƒŠw’è‚È‚µ)
+	/// ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ­ãƒ¼ãƒ‰é–¢æ•°(ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªæŒ‡å®šãªã—)
 	/// </summary>
-	/// <param name="fileName">Resources“à‚Ìƒtƒ@ƒCƒ‹–¼</param>
-	/// <returns>ƒeƒNƒXƒ`ƒƒ</returns>
+	/// <param name="fileName">Resourceså†…ã®ãƒ•ã‚¡ã‚¤ãƒ«å</param>
+	/// <returns>ãƒ†ã‚¯ã‚¹ãƒãƒ£</returns>
 	Texture* LoadTexture(std::string fileName);
 
 	/// <summary>
-	/// ƒeƒNƒXƒ`ƒƒƒ[ƒhŠÖ”
+	/// ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ­ãƒ¼ãƒ‰é–¢æ•°
 	/// </summary>
-	/// <param name="directoryPath">ƒeƒNƒXƒ`ƒƒ‚Ü‚Å‚ÌƒfƒBƒŒƒNƒgƒŠƒpƒX</param>
-	/// <param name="fileName">ƒtƒ@ƒCƒ‹–¼</param>
-	/// <returns>ƒeƒNƒXƒ`ƒƒ</returns>
+	/// <param name="directoryPath">ãƒ†ã‚¯ã‚¹ãƒãƒ£ã¾ã§ã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãƒ‘ã‚¹</param>
+	/// <param name="fileName">ãƒ•ã‚¡ã‚¤ãƒ«å</param>
+	/// <returns>ãƒ†ã‚¯ã‚¹ãƒãƒ£</returns>
 	Texture* LoadTexture(std::string directoryPath, std::string fileName);
 
-private: // ƒƒ“ƒo•Ï”
+private: // ãƒ¡ãƒ³ãƒå¤‰æ•°
 
-	// DirectX12”Ä—pƒNƒ‰ƒX
+	// DirectX12æ±ç”¨ã‚¯ãƒ©ã‚¹
 	DirectXCommon* dxCommon_;
 
-	// ƒeƒNƒXƒ`ƒƒƒRƒ“ƒeƒi
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚³ãƒ³ãƒ†ãƒŠ
 	std::map<std::string, Texture*> textures_;
 
 };

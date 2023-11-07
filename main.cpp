@@ -1,15 +1,9 @@
 #include <Windows.h>
 #include "Engine/Base/WinApp.h"
 #include "Engine/Base/DirectXCommon.h"
-#include "Engine/Scene/SceneManager.h"
 #include "Engine/Base/SafeDelete.h"
 #include "Externals/imgui/ImGuiManager.h"
-#include "Engine/OBJ/ModelManager.h"
-#include "Engine/OBJ/OBJ.h"
-#include "Engine/Sprite/Sprite.h"
 #include "Engine/Resource/Texture/TextureManager.h"
-#include "Engine/GameObject/GameObjectManager.h"
-#include "Engine/Collider/CollisionManager.h"
 #include "Engine/GlobalVariables/GlobalVariables.h"
 #include "Engine/Input/Input.h"
 #include "Engine/Audio/Audio.h"
@@ -23,9 +17,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// 空のインスタンスを生成
 	WinApp* winApp = nullptr;
 	DirectXCommon* dxCommon = nullptr;
-	//GameObjectManager* gameObjectManager = nullptr;
-	//CollisionManager* collisionManager = nullptr;
-	//SceneManager* sceneManager = nullptr;
 	Input* input = nullptr;
 	Audio* audio = nullptr;
 
@@ -51,30 +42,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	audio = Audio::GetInstance();
 	audio->Initialize();
 
-	// モデルマネージャの初期化
-	//ModelManager::GetInstance()->Initialize();
-
-	// objの静的初期化
-	//OBJ::StaticInitialize(dxCommon->GetDevice());
-	// Spriteの静的初期化
-	//Sprite::StaticInitialize(dxCommon->GetDevice(), winApp->kWindowWidth, winApp->kwindowHeight);
-
 	// テクスチャマネージャ初期化
 	TextureManager::GetInstance()->Initialize();
 
 	// グローバル変数の読み込み
 	GlobalVariables::GetInstance()->LoadFiles();
-
-	// ゲームオブジェクトマネージャーの初期化
-	//gameObjectManager = GameObjectManager::GetInstance();
-	//gameObjectManager->Initialize();
-
-	// 衝突マネージャのインスタンス取得
-	//collisionManager = CollisionManager::GetInstance();
-
-	// シーンマネージャ初期化
-	//sceneManager = SceneManager::GetInstance();
-	//sceneManager->Initialize();
 
 	ImGui::CreateContext();
 	auto& io = ImGui::GetIO();
@@ -96,19 +68,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			// 入力関連の毎フレーム処理
 			input->Update();
 
-			// 衝突判定リストクリア
-			//collisionManager->ListClear();
-
 			// グローバル変数の更新
 			GlobalVariables::GetInstance()->Update();
-
-			// シーンの更新処理
-			//sceneManager->Update();
-			// ゲームオブジェクト更新
-			//gameObjectManager->Update();
-
-			// 衝突判定検証
-			//collisionManager->CheckAllCollision();
 
 			// ImGui受付終了
 			imguiManager->End();
@@ -125,8 +86,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	}
 
-	// 全オブジェクト削除
-	//gameObjectManager->Initialize();
 	// 音解放処理
 	audio->Finalize();
 

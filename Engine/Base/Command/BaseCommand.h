@@ -28,7 +28,7 @@ public: // パブリックなメンバ関数
 	/// <param name="dxc">hlslコード変換用</param>
 	/// <param name="signature">ルートシグネチャ</param>
 	/// <param name="resource">インデックスバッファリソース</param>
-	void Initialize(ID3D12Device* device, DXC* dxc, ID3D12RootSignature* signature, ID3D12Resource* resource);	
+	void Initialize(ID3D12Device* device, DXC* dxc, ID3D12RootSignature* signature, ID3D12Resource* resource, std::wstring vs, std::wstring ps);	
 
 public: // 純粋仮想関数
 

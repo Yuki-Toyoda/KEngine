@@ -18,32 +18,10 @@
     <ClCompile Include="Engine\Audio\Audio.cpp" />
     <ClCompile Include="Engine\Base\DirectXCommon.cpp" />
     <ClCompile Include="Engine\Base\WinApp.cpp" />
-    <ClCompile Include="Engine\Collider\Collider.cpp" />
-    <ClCompile Include="Engine\Collider\CollisionManager.cpp" />
     <ClCompile Include="Engine\Debug\Debug.cpp" />
-    <ClCompile Include="Engine\GameObject\Ambient\Ambient.cpp" />
-    <ClCompile Include="Engine\GameObject\BaseObject.cpp" />
-    <ClCompile Include="Engine\GameObject\Camera\Camera.cpp" />
-    <ClCompile Include="Engine\GameObject\GameObjectManager.cpp" />
-    <ClCompile Include="Engine\GameObject\Samples\Box\SampleBox.cpp" />
-    <ClCompile Include="Engine\GameObject\Samples\Player\SamplePlayer.cpp" />
-    <ClCompile Include="Engine\GameObject\Samples\Stage\SampleFloor.cpp" />
-    <ClCompile Include="Engine\GameObject\Samples\TPCamera\TPCamera.cpp" />
-    <ClCompile Include="Engine\GameObject\WorldTransform.cpp" />
     <ClCompile Include="Engine\GlobalVariables\GlobalVariables.cpp" />
     <ClCompile Include="Engine\Input\Input.cpp" />
-    <ClCompile Include="Engine\Light\LightGroup.cpp" />
     <ClCompile Include="Engine\Math\Math.cpp" />
-    <ClCompile Include="Engine\OBJ\ModelManager.cpp" />
-    <ClCompile Include="Engine\OBJ\OBJ.cpp" />
-    <ClCompile Include="Engine\Scene\SceneManager.cpp" />
-    <ClCompile Include="Engine\Scene\user\GameScene.cpp" />
-    <ClCompile Include="Engine\Scene\user\TitleScene.cpp" />
-    <ClCompile Include="Engine\Sprite\Sprite.cpp" />
-    <ClCompile Include="Engine\Sprite\template\AnimationSprite.cpp" />
-    <ClCompile Include="Engine\Sprite\template\Counter.cpp" />
-    <ClCompile Include="Engine\Sprite\template\Gage.cpp" />
-    <ClCompile Include="Engine\Sprite\template\Timer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\Audio\Audio.cpp">
       <Filter>Audio</Filter>
@@ -54,23 +32,11 @@
     <ClCompile Include="Engine\Base\WinApp.cpp">
       <Filter>Base</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Collider\Collider.cpp">
-      <Filter>Collider</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Collider\CollisionManager.cpp">
-      <Filter>Collider</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Debug\Debug.cpp">
       <Filter>Debug</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GlobalVariables\GlobalVariables.cpp">
       <Filter>GlobalVariables</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject\BaseObject.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject\GameObjectManager.cpp">
-      <Filter>GameObject</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\WorldTransform.cpp">
       <Filter>GameObject</Filter>
@@ -78,59 +44,8 @@
     <ClCompile Include="Engine\Input\Input.cpp">
       <Filter>Input</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Light\LightGroup.cpp">
-      <Filter>Light</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Math\Math.cpp">
       <Filter>Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\OBJ\ModelManager.cpp">
-      <Filter>OBJ</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\OBJ\OBJ.cpp">
-      <Filter>OBJ</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Scene\SceneManager.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Sprite\Sprite.cpp">
-      <Filter>Sprite</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject\Ambient\Ambient.cpp">
-      <Filter>GameObject\Ambient</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject\Camera\Camera.cpp">
-      <Filter>GameObject\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject\Samples\Box\SampleBox.cpp">
-      <Filter>GameObject\Samples</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject\Samples\Stage\SampleFloor.cpp">
-      <Filter>GameObject\Samples</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject\Samples\Player\SamplePlayer.cpp">
-      <Filter>GameObject\Samples</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject\Samples\TPCamera\TPCamera.cpp">
-      <Filter>GameObject\Samples</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Sprite\template\Timer.cpp">
-      <Filter>Sprite\Template</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Sprite\template\Counter.cpp">
-      <Filter>Sprite\Template</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Sprite\template\Gage.cpp">
-      <Filter>Sprite\Template</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Sprite\template\AnimationSprite.cpp">
-      <Filter>Sprite\Template</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Scene\user\GameScene.cpp">
-      <Filter>Scene\user</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Scene\user\TitleScene.cpp">
-      <Filter>Scene\user</Filter>
     </ClCompile>
     <ClCompile Include="Externals\imgui\ImGuiManager.cpp">
       <Filter>ImGui</Filter>
@@ -195,6 +110,9 @@
     <ClCompile Include="Engine\Primitive\3d\Mesh.cpp">
       <Filter>Primitive\3d</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\GameObject\WorldTransform.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\Resource\Texture\TextureManager.cpp">
       <Filter>Resource\Texture</Filter>
     </ClCompile>
@@ -211,12 +129,6 @@
     </ClInclude>
     <ClInclude Include="Engine\Base\SafeDelete.h">
       <Filter>Base</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Collider\Collider.h">
-      <Filter>Collider</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Collider\CollisionManager.h">
-      <Filter>Collider</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Debug\Debug.h">
       <Filter>Debug</Filter>
@@ -241,18 +153,6 @@
     </ClInclude>
     <ClInclude Include="Engine\Math\Vector4.h">
       <Filter>Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Collider\Shape\AABB.h">
-      <Filter>Collider\Shape</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Collider\Shape\Sphere.h">
-      <Filter>Collider\Shape</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Collider\Shape\BaseShape.h">
-      <Filter>Collider\Shape</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Collider\ShapeList.h">
-      <Filter>Collider\Shape</Filter>
     </ClInclude>
     <ClInclude Include="Externals\imgui\ImGuiManager.h">
       <Filter>ImGui</Filter>
@@ -323,6 +223,9 @@
     <ClInclude Include="Engine\Primitive\3d\Mesh.h">
       <Filter>Primitive\3d</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\GameObject\WorldTransform.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\Resource\Texture\TextureManager.h">
       <Filter>Resource\Texture</Filter>
     </ClInclude>
@@ -351,9 +254,6 @@
     <Filter Include="Base">
       <UniqueIdentifier>{d34b0994-e5d0-4d38-8b5f-dd920dcb028c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Collider">
-      <UniqueIdentifier>{1dd1e804-fc5a-458c-b4d4-463dfc5ae940}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Debug">
       <UniqueIdentifier>{a29e6f5f-3afe-4782-9daa-52cd64fb7cf0}</UniqueIdentifier>
     </Filter>
@@ -371,9 +271,6 @@
     </Filter>
     <Filter Include="Resource">
       <UniqueIdentifier>{b2c8cb73-410f-4267-8a42-247c59b88259}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Collider\Shape">
-      <UniqueIdentifier>{60892422-3362-412f-b945-41ad9ef224e5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource\Shader">
       <UniqueIdentifier>{a755d675-5c8f-4292-994d-c54898f118d8}</UniqueIdentifier>
@@ -401,6 +298,9 @@
     </Filter>
     <Filter Include="Primitive\3d">
       <UniqueIdentifier>{5da4eff7-609f-4695-88a1-eed539634028}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject">
+      <UniqueIdentifier>{aa622da1-e859-4aeb-956f-1b00f16f033f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
