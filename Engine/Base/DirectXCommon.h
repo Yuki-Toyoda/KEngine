@@ -34,11 +34,6 @@ public: // メンバ関数
 		int32_t backBufferWidth = WinApp::kWindowWidth, int32_t backBufferHeight = WinApp::kwindowHeight);
 
 	/// <summary>
-	/// 描画前処理
-	/// </summary>
-	void PreDraw();
-
-	/// <summary>
 	/// 描画
 	/// </summary>
 	void Draw();
@@ -110,7 +105,7 @@ private: // メンバ変数
 	// 各種ヒープ
 	std::unique_ptr<RTV> rtv_; // レンダーターゲットビュー
 	std::unique_ptr<SRV> srv_; // シェーダーリソースビュー
-	std::unique_ptr<RTV> dsv_; // 深度ステンシルビュー
+	std::unique_ptr<DSV> dsv_; // 深度ステンシルビュー
 
 	// 描画コマンドマネージャー
 	std::unique_ptr<CommandManager> commandManager_;

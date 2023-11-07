@@ -60,7 +60,5 @@ private: // コンストラクタ等
 private: // メンバ変数
 	// DirectX基盤インスタンス（借りてくる）
 	DirectXCommon* dxCommon_ = nullptr;
-	// SRV用ヒープ
-	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> srvHeap_;
 };
 
