@@ -18,6 +18,10 @@ void RTV::Initialize(HWND hwnd, DirectXDevice* device, int32_t width, int32_t he
 	// ヒープ生成
 	heap_ = CreateDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE_RTV, size_, false);
 
+	/// レンダーターゲットビューの設定
+	rtvDesc_.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; // シェーダーで行った計算の結果をSRGBの変換して書き込み
+	rtvDesc_.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D; // 2Dテクスチャ描画として書き込み
+
 	// スワップチューン生成
 	// スワップチューンの設定を行う
 	swapChainDesc_.Width = width;								   // ウィンドウ横幅
@@ -35,11 +39,7 @@ void RTV::Initialize(HWND hwnd, DirectXDevice* device, int32_t width, int32_t he
 	assert(SUCCEEDED(result)); // 生成確認
 
 	// 生成出来たらSwapChain4に変換
-	swapChain1->QueryInterface(IID_PPV_ARGS(&swapChain1));
-
-	/// レンダーターゲットビューの設定
-	rtvDesc_.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; // シェーダーで行った計算の結果をSRGBの変換して書き込み
-	rtvDesc_.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D; // 2Dテクスチャ描画として書き込み
+	swapChain1->QueryInterface(IID_PPV_ARGS(&swapChain_));
 
 	// 生成したSwapChainからバッファリソースを取得
 	backBuffers_.resize(2); // サイズ設定。今回はダブルバッファなので2

@@ -80,7 +80,7 @@ void DirectXDevice::Initialize()
 
 #ifdef _DEBUG // デバッグ時のみ有効
 	// デバックでの実行時、エラーが出た場合警告を出す
-	Microsoft::WRL::ComPtr<ID3D12InfoQueue> infoQueue;
+	ID3D12InfoQueue* infoQueue;
 
 	if (SUCCEEDED(device_->QueryInterface(IID_PPV_ARGS(&infoQueue)))) {
 		// 重大なエラー時に停止する

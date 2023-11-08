@@ -27,6 +27,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// DirectX汎用クラスのインスタンスを取得
 	dxCommon = DirectXCommon::GetInstance();
+	// テクスチャマネージャ初期化
+	TextureManager::GetInstance()->Initialize();
 	// DirectXの初期化
 	dxCommon->Initialize(winApp);
 
@@ -41,9 +43,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// オーディオの初期化
 	audio = Audio::GetInstance();
 	audio->Initialize();
-
-	// テクスチャマネージャ初期化
-	TextureManager::GetInstance()->Initialize();
 
 	// グローバル変数の読み込み
 	GlobalVariables::GetInstance()->LoadFiles();

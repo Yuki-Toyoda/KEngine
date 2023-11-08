@@ -1,47 +1,29 @@
 #include "Object3D.hlsli"
 
-Texture2D<float4> gTexture : register(t0);
-SamplerState gSampler : register(s0);
-
-// 
-PixelShaderOutput main(VertexShaderOutput input)
+float4 main(VertexShaderOutput input) : SV_TARGET
 {
-    
-    // 
-    PixelShaderOutput output;
-    
-    float4 transformedUV = mul(float4(input.texcoord, 0.0f, 1.0f), uvTransform);
-    float4 textureColor = gTexture.Sample(gSampler, transformedUV.xy);
-    // テクスチャの透明度が0.5以下ならピクセルを棄却
-    if (textureColor.a <= 0.5f)
-        discard;
-    
-    // 
-    for (int i = 0; i < kDirectionalLight; i++)
-    {
-        if (directionalLight[i].active)
-        {
-            if (enableLighting)
-            {
-                float NdotL = dot(normalize(input.normal), -normalize(directionalLight[i].direciton));
-                float cos = pow(NdotL * 0.5f + 0.5f, 2.0f);
-                output.color.rgb = color.rgb * textureColor.rgb * directionalLight[i].color.rgb * cos * directionalLight[i].intensity;
-                output.color.a = color.a * textureColor.a;
-            }
-            else
-            {
-                 // 
-                output.color = color * textureColor;
-            }
-        }
-        else
-        {
-         // 
-            output.color = color * textureColor;
-        }
+    // インデックスを抽出
+    int m = gIndex[input.id].material;
+    int t = gIndex[input.id].tex2d;
+
+
+    // 最終的な結果
+    float4 output;
+
+    if (gMaterial[m].enableLighting != 0)
+    { // Lightingの計算を行う
+        // シェーディング
+        float NdotL = dot(normalize(input.normal), -gDirectionalLight.direction);
+        float cos = pow(NdotL * 0.5f + 0.5f, 2.0f);
+        // uvTransform
+        float4 transformUV = mul(float4(input.texcoord, 0.0f, 1.0f), gMaterial[m].uvTransform);
+        output.rgb = input.color.rgb * gTexture[t].Sample(gSampler, transformUV.xy).rgb * gDirectionalLight.color.rgb * cos * gDirectionalLight.intensity;
+        output.w = input.color.a * gTexture[t].Sample(gSampler, transformUV.xy).a; // 透明度を保持
     }
-    
-    // 
+    else
+    { // Lightingの計算を行わない
+        float4 transformUV = mul(float4(input.texcoord, 0.0f, 1.0f), gMaterial[m].uvTransform);
+        output = input.color * gTexture[t].Sample(gSampler, transformUV.xy);
+    }
     return output;
-    
 }

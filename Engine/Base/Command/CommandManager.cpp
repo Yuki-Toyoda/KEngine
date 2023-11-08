@@ -39,40 +39,37 @@ void CommandManager::Initialize(ID3D12Device* device)
 
 void CommandManager::DrawCall()
 {
-	// 描画コマンドの数だけループさせる
-	for (size_t i = commands_.size() - 1; i >= 0; i--) {
-		// コマンドリストの取得
-		ID3D12GraphicsCommandList* cmdList = commandList_.Get();
+	// コマンドリストの取得
+	ID3D12GraphicsCommandList* cmdList = commandList_.Get();
 
-		// 描画前処理を行う
-		commands_[i]->PreDraw(cmdList);
+	// 描画前処理を行う
+	commands_[0]->PreDraw(cmdList);
 
-		// コマンドリストにルートシグネチャの設定
-		cmdList->SetGraphicsRootSignature(rootSignature_.Get());
-		// 形状を設定する
-		cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		// PSOを取得、コマンドリストにセット
-		cmdList->SetPipelineState(commands_[i]->GetPSOState());
+	// コマンドリストにルートシグネチャの設定
+	cmdList->SetGraphicsRootSignature(rootSignature_.Get());
+	// 形状を設定する
+	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	// PSOを取得、コマンドリストにセット
+	cmdList->SetPipelineState(commands_[0]->GetPSOState());
 
-		// シグネチャのテーブル設定
-		// 0 : バッファのインデックス情報
-		// 1 : 光源情報
-		// 2 : 頂点データ
-		// 3 : viewProjection行列
-		// 4 : worldTransform
-		// 5 : マテリアル情報
-		// 6 : テクスチャ
-		cmdList->SetGraphicsRootDescriptorTable(0, commands_[i]->indexBuffer_->view);
-		cmdList->SetGraphicsRootConstantBufferView(1, lightBuffer_->view);
-		cmdList->SetGraphicsRootDescriptorTable(2, vertexBuffer_->view);
-		cmdList->SetGraphicsRootDescriptorTable(3, viewProjectionBuffer_->view);
-		cmdList->SetGraphicsRootDescriptorTable(4, worldTransformBuffer_->view);
-		cmdList->SetGraphicsRootDescriptorTable(5, materialBuffer_->view);
-		cmdList->SetGraphicsRootDescriptorTable(6, textureBuffer_->view);
+	// シグネチャのテーブル設定
+	// 0 : バッファのインデックス情報
+	// 1 : 光源情報
+	// 2 : 頂点データ
+	// 3 : viewProjection行列
+	// 4 : worldTransform
+	// 5 : マテリアル情報
+	// 6 : テクスチャ
+	cmdList->SetGraphicsRootDescriptorTable(0, commands_[0]->indexBuffer_->view);
+	cmdList->SetGraphicsRootConstantBufferView(1, lightBuffer_->view);
+	cmdList->SetGraphicsRootDescriptorTable(2, vertexBuffer_->view);
+	cmdList->SetGraphicsRootDescriptorTable(3, viewProjectionBuffer_->view);
+	cmdList->SetGraphicsRootDescriptorTable(4, worldTransformBuffer_->view);
+	cmdList->SetGraphicsRootDescriptorTable(5, materialBuffer_->view);
+	cmdList->SetGraphicsRootDescriptorTable(6, textureBuffer_->view);
 
-		// バッファ内の全3角形を描画
-		cmdList->DrawInstanced(3, commands_[i]->indexBuffer_->usedCount / 3, 0, 0);
-	}
+	// バッファ内の全3角形を描画
+	cmdList->DrawInstanced(3, commands_[0]->indexBuffer_->usedCount / 3, 0, 0);
 }
 
 void CommandManager::PostDraw()
@@ -87,7 +84,7 @@ void CommandManager::PostDraw()
 	// GPUの処理がここまでたどり着いた時にFenceに指定した値を代入するようSignalを送る
 	commandQueue_->Signal(fence_.Get(), ++fenceVal_);
 	// FenceのSignal値が指定した値かどうかを確認する
-	if (fence_->GetCompletedValue() < fenceVal_) {
+	if (fence_->GetCompletedValue() != fenceVal_) {
 		// FenceのSignalを待つためのイベントを生成
 		HANDLE fenceEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
 		// イベントが生成出来ているか確認
@@ -99,7 +96,6 @@ void CommandManager::PostDraw()
 		// 終了したら閉じる
 		CloseHandle(fenceEvent);
 	}
-
 	// GPUとOSに画面の交換を行うように指示する
 	rtv_->GetSwapChain()->Present(1, 0);
 }
@@ -145,7 +141,7 @@ void CommandManager::SetHeaps(RTV* rtv, SRV* srv, DSV* dsv, std::wstring vs, std
 	CreateStructuredBuffer();
 
 	// サンプルテクスチャの読み込み
-	TextureManager::Load("white1x1.png");
+	TextureManager::Load("white2x2.png");
 }
 
 void CommandManager::SetViewProjection(Matrix4x4* vpMat)
@@ -334,7 +330,7 @@ void CommandManager::CreateRootSignature()
 
 	// 使わないリソースを解放
 	signatureBlob->Release();
-	errorBlob->Release();
+	//errorBlob->Release();
 }
 
 void CommandManager::CreateStructuredBuffer()
