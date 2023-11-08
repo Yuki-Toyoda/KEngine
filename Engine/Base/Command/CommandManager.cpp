@@ -4,6 +4,9 @@
 #include "../DescriptorHeaps/DSV.h"
 #include "../../Resource/Texture/TextureManager.h"
 
+#pragma comment(lib, "d3d12.lib")
+#pragma comment(lib, "dxgi.lib")
+
 void CommandManager::Initialize(ID3D12Device* device)
 {
 	// 結果確認用
