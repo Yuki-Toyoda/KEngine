@@ -5,7 +5,6 @@
 #include <cassert>
 #include <string>
 #include <dxcapi.h>
-#pragma comment(lib, "d3dCompiler.lib")
 
 /// <summary>
 /// DXC構造体

@@ -1,6 +1,9 @@
 #include "DirectXCommon.h"
 #include <cassert>
 
+#pragma comment(lib, "dxcompiler.lib")
+#pragma comment(lib, "d3dCompiler.lib")
+
 DirectXCommon* DirectXCommon::GetInstance() {
 	// クラスのインスタンスを取得
 	static DirectXCommon instance;
