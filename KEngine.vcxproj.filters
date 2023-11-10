@@ -116,6 +116,12 @@
     <ClCompile Include="Engine\Resource\Texture\TextureManager.cpp">
       <Filter>Resource\Texture</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Scene\BaseScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\BaseObject.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -229,6 +235,12 @@
     <ClInclude Include="Engine\Resource\Texture\TextureManager.h">
       <Filter>Resource\Texture</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Scene\BaseScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\BaseObject.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Object3D.hlsli">
@@ -301,6 +313,12 @@
     </Filter>
     <Filter Include="GameObject">
       <UniqueIdentifier>{aa622da1-e859-4aeb-956f-1b00f16f033f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{6d872bc3-86ed-45ab-8f90-5be9ba0d9f05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Base">
+      <UniqueIdentifier>{d4d5bd11-e154-4a9a-b4ae-2044cd310347}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

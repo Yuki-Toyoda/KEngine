@@ -1,4 +1,6 @@
 #pragma once
+#include <string>
+#include "../../Externals/imgui/ImGui.h"
 #include "../math/Math.h"
 
 /// <summary>
@@ -42,6 +44,12 @@ public: // パブリックメンバ関数
 	/// 初期化
 	/// </summary>
 	void Initialize();
+
+	/// <summary>
+	/// デバッグ用ImGui表示関数
+	/// </summary>
+	/// <param name="name">表示名</param>
+	void DisplayImGui(std::string name);
 
 private: // メンバ変数
 
