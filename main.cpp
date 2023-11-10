@@ -3,6 +3,7 @@
 #include "Engine/Base/DirectXCommon.h"
 #include "Engine/Base/SafeDelete.h"
 #include "Externals/imgui/ImGuiManager.h"
+#include "Engine/Primitive/PrimitiveManager.h"
 #include "Engine/Resource/Texture/TextureManager.h"
 #include "Engine/GlobalVariables/GlobalVariables.h"
 #include "Engine/Input/Input.h"
@@ -35,6 +36,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// ImGuiの初期化
 	ImGuiManager* imguiManager = ImGuiManager::GetImstance();
 	imguiManager->Intialize(winApp, dxCommon);
+
+	// 形状マネージャの初期化
+	PrimitiveManager* primitiveManager = PrimitiveManager::GetInstance();
+	primitiveManager->Initialize();
 
 	// 入力の初期化
 	input = Input::GetInstance();
@@ -72,6 +77,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			// ImGui受付終了
 			imguiManager->End();
+
+			// 形状マネージャ描画
+			primitiveManager->Draw();
 
 			// 描画
 			dxCommon->Draw();

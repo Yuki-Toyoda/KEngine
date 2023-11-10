@@ -122,6 +122,9 @@
     <ClCompile Include="Engine\GameObject\BaseObject.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Primitive\PrimitiveManager.cpp">
+      <Filter>Primitive</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -241,6 +244,9 @@
     <ClInclude Include="Engine\GameObject\BaseObject.h">
       <Filter>GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Primitive\PrimitiveManager.h">
+      <Filter>Primitive</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Object3D.hlsli">
@@ -317,7 +323,7 @@
     <Filter Include="Scene">
       <UniqueIdentifier>{6d872bc3-86ed-45ab-8f90-5be9ba0d9f05}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameObject\Base">
+    <Filter Include="GameObject\Core">
       <UniqueIdentifier>{d4d5bd11-e154-4a9a-b4ae-2044cd310347}</UniqueIdentifier>
     </Filter>
   </ItemGroup>

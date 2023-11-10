@@ -3,8 +3,6 @@
 
 BasePrimitive::BasePrimitive(CommandManager* manager)
 {
-	// トランスフォーム初期化
-	transform_.Initialize();
 	// 基底クラスでは使用しない
 	manager;
 }

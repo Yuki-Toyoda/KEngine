@@ -3,7 +3,7 @@
 #include <vector>
 #include "../../Externals/imgui/imgui.h"
 #include "WorldTransform.h"
-#include "../Primitive/3d/Mesh.h"
+#include "../Primitive/PrimitiveManager.h"
 
 /// <summary>
 /// 全オブジェクトの基底クラス
@@ -87,12 +87,7 @@ private: // プライベートなメンバ関数
 	/// <param name="path">モデルまでのディレクトリパス</param>
 	/// <param name="fileName">ファイル名</param>
 	/// <param name="enableLighting">ライティングを有効にするか</param>
-	void AddMesh(WorldTransform* wt, const Vector4& color, const std::string& path, const std::string& fileName, bool enableLighting = true);
-
-	/// <summary>
-	/// メッシュリスト内のメッシュを全て描画する関数
-	/// </summary>
-	void DrawAllMesh();
+	void AddMesh(WorldTransform* wt, Vector4 color, const std::string& path, const std::string& fileName);
 
 public: // パブリックなメンバ変数
 
@@ -106,6 +101,9 @@ public: // パブリックなメンバ変数
 	std::vector<Mesh*> meshes_;
 
 protected: // 継承メンバ変数
+
+	// 形状マネージャのインスタンス
+	PrimitiveManager* primitiveManager_;
 
 	// オブジェクトの所属
 	Tag tag_;

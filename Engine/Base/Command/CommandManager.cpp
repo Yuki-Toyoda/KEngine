@@ -168,8 +168,8 @@ void CommandManager::SetDrawData(BasePrimitive* primitive)
 			vertexBuffer_->vertex[vertexBuffer_->usedCount - 1].color = *primitive->commonColor; // 共通色に変更
 	}
 	// ワールドトランスフォームをデータに登録
-	uint32_t worldMatrix = worldTransformBuffer_->usedCount;											  // バッファの末尾を取得
-	worldTransformBuffer_->mat[worldTransformBuffer_->usedCount++] = primitive->transform_.GetMatWorld(); // データを代入
+	uint32_t worldMatrix = worldTransformBuffer_->usedCount;											   // バッファの末尾を取得
+	worldTransformBuffer_->mat[worldTransformBuffer_->usedCount++] = primitive->transform_->GetMatWorld(); // データを代入
 	// マテリアルをデータに登録
 	uint32_t material = materialBuffer_->usedCount;									// バッファの末尾を取得
 	materialBuffer_->material[materialBuffer_->usedCount++] = primitive->material_; // データを代入

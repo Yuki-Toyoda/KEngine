@@ -1,13 +1,13 @@
 #pragma once
 
 /// <summary>
-/// シーンの基底クラス
+/// 繧ｷ繝ｼ繝ｳ縺ｮ蝓ｺ蠎輔け繝ｩ繧ｹ
 /// </summary>
 class BaseScene
 {
-public: // メンバ関数
+public: // 繝｡繝ｳ繝宣未謨ｰ
 
-	// 仮想デストラクタ
+	// 莉ｮ諠ｳ繝�繧ｹ繝医Λ繧ｯ繧ｿ
 	virtual ~BaseScene() = default;
 
 

@@ -68,7 +68,7 @@ public: // パブリックなメンバ変数
 	std::vector<uint32_t> indexes_;
 
 	// 描画中心座標
-	WorldTransform transform_;
+	WorldTransform* transform_;
 
 	// マテリアル
 	Material material_;
@@ -83,3 +83,8 @@ public: // パブリックなメンバ変数
 	bool isActive_ = true;
 };
 
+/// <summary>
+/// BasePrimitiveを継承したクラスを選択できるテンプレート
+/// </summary>
+template <class SelectPrimitive>
+concept IsBasePrimitive = std::is_base_of<BasePrimitive, SelectPrimitive>::value;
