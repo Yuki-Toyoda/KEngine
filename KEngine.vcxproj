@@ -102,6 +102,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Base\WinApp.cpp" />
     <ClCompile Include="Engine\Debug\Debug.cpp" />
     <ClCompile Include="Engine\GameObject\BaseObject.cpp" />
+    <ClCompile Include="Engine\GameObject\Core\MainCamera.cpp" />
+    <ClCompile Include="Engine\GameObject\GameObjectManager.cpp" />
     <ClCompile Include="Engine\GameObject\WorldTransform.cpp" />
     <ClCompile Include="Engine\GlobalVariables\GlobalVariables.cpp" />
     <ClCompile Include="Engine\Input\Input.cpp" />
@@ -140,6 +142,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Base\WinApp.h" />
     <ClInclude Include="Engine\Debug\Debug.h" />
     <ClInclude Include="Engine\GameObject\BaseObject.h" />
+    <ClInclude Include="Engine\GameObject\Core\MainCamera.h" />
+    <ClInclude Include="Engine\GameObject\GameObjectManager.h" />
     <ClInclude Include="Engine\GameObject\WorldTransform.h" />
     <ClInclude Include="Engine\GlobalVariables\GlobalVariables.h" />
     <ClInclude Include="Engine\Input\Input.h" />

@@ -27,7 +27,7 @@ public: // メンバ関数
 	virtual ~BaseObject() = default;
 
 	// (ユーザー呼び出し禁止)共通初期化関数
-	void PreInitialize();
+	void PreInitialize(std::string name, Tag tag);
 	// (ユーザー呼び出し禁止)共通更新関数
 	void PreUpdate();
 
@@ -36,13 +36,10 @@ public: // メンバ関数
 	/// </summary>
 	/// <param name="name">オブジェクト名</param>
 	/// <param name="tag">所属タグ</param>
-	virtual void Initialize(std::string name, Tag tag) = 0;
+	virtual void Initialize() = 0;
 
 	// 更新関数
 	virtual void Update() = 0;
-
-	// 描画関数
-	virtual void Draw() = 0;
 
 	// ImGui表示関数
 	// ImGuiを表示させたい場合はこの関数に処理を追記
@@ -54,6 +51,12 @@ public: // アクセッサ等
 	/// オブジェクト破壊関数
 	/// </summary>
 	void Destroy() { isDestroy_ = true; }
+
+	/// <summary>
+	/// 破壊トリガー状態のゲッター
+	/// </summary>
+	/// <returns>破壊トリガー状態</returns>
+	bool GetIsDestroy() { return isDestroy_; }
 
 	/// <summary>
 	/// オブジェクト名セッター
@@ -117,4 +120,10 @@ protected: // 継承メンバ変数
 	Vector4 color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
 
 };
+
+/// <summary>
+/// BaseObjectを継承したクラスを選択できるテンプレート
+/// </summary>
+template <class SelectObject>
+concept IsBaseObject = std::is_base_of<BaseObject, SelectObject>::value;
 

@@ -125,6 +125,12 @@
     <ClCompile Include="Engine\Primitive\PrimitiveManager.cpp">
       <Filter>Primitive</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\GameObject\Core\MainCamera.cpp">
+      <Filter>GameObject\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\GameObjectManager.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -246,6 +252,12 @@
     </ClInclude>
     <ClInclude Include="Engine\Primitive\PrimitiveManager.h">
       <Filter>Primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\Core\MainCamera.h">
+      <Filter>GameObject\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\GameObjectManager.h">
+      <Filter>GameObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

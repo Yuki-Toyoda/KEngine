@@ -1,10 +1,10 @@
 #include "BaseObject.h"
 
-void BaseObject::PreInitialize()
+void BaseObject::PreInitialize(std::string name, Tag tag)
 {
 	// 非表示
 	isActive_ = false;
-	
+
 	// ワールドトランスフォームの初期化
 	transform_.Initialize();
 
@@ -12,12 +12,15 @@ void BaseObject::PreInitialize()
 	meshes_.clear();
 
 	// タグの初期化
-	tag_ = TagNone;
+	tag_ = tag;
 	// 名前の初期化
-	name_ = "object";
+	name_ = name;
 
 	// デストロイトリガーFalse
 	isDestroy_ = false;
+
+	// 初期化を呼び出す
+	Initialize();
 }
 
 void BaseObject::PreUpdate()

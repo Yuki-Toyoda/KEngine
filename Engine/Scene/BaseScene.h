@@ -11,9 +11,7 @@ public: // メンバ関数
 	virtual ~BaseScene() = default;
 
 
-	void PreInitialize() {
-
-	}
+	void PreInitialize();
 
 };
 
