@@ -125,11 +125,23 @@
     <ClCompile Include="Engine\Primitive\PrimitiveManager.cpp">
       <Filter>Primitive</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\GameObject\Core\MainCamera.cpp">
+    <ClCompile Include="Engine\GameObject\Core\Camera.cpp">
       <Filter>GameObject\Core</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\GameObjectManager.cpp">
       <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Scene\User\TitleScene.cpp">
+      <Filter>Scene\User</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Scene\SceneManager.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Scene\User\GameScene.cpp">
+      <Filter>Scene\User</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\Samples\SampleBox\SampleBox.cpp">
+      <Filter>GameObject\Samples\Box</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -253,11 +265,29 @@
     <ClInclude Include="Engine\Primitive\PrimitiveManager.h">
       <Filter>Primitive</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\GameObject\Core\MainCamera.h">
+    <ClInclude Include="Engine\GameObject\Core\Camera.h">
       <Filter>GameObject\Core</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\GameObjectManager.h">
       <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\ObjectList.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Scene\SceneList.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Scene\User\TitleScene.h">
+      <Filter>Scene\User</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Scene\SceneManager.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Scene\User\GameScene.h">
+      <Filter>Scene\User</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\Samples\SampleBox\SampleBox.h">
+      <Filter>GameObject\Samples\Box</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -337,6 +367,15 @@
     </Filter>
     <Filter Include="GameObject\Core">
       <UniqueIdentifier>{d4d5bd11-e154-4a9a-b4ae-2044cd310347}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\User">
+      <UniqueIdentifier>{19111d30-375b-42f5-892b-22a7a66dd627}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Samples">
+      <UniqueIdentifier>{89284fb6-f950-449c-974e-bdfdbe7ea9ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Samples\Box">
+      <UniqueIdentifier>{106e3ed8-07e4-4837-88ba-8cb84b198b23}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

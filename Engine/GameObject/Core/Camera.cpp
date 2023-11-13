@@ -1,7 +1,8 @@
-#include "MainCamera.h"
+#include "Camera.h"
 #include "../../Base/WinApp.h"
+#include "../../Base/DirectXCommon.h"
 
-void MainCamera::Initialize()
+void Camera::Initialize()
 {
 	// カメラ初期位置設定
 	transform_.translate_ = { 0.0f, 1.0f, -10.0f };
@@ -10,7 +11,7 @@ void MainCamera::Initialize()
 	fov_ = 0.45f;
 }
 
-void MainCamera::Update()
+void Camera::Update()
 {
 	// ビュープロジェクション行列の計算
 	Matrix4x4 cameraMatrix = transform_.GetMatWorld(); // ワールド行列の生成
@@ -19,8 +20,16 @@ void MainCamera::Update()
 	viewProjectionMatrix_ = viewMatrix_ * projectionMatrix; // 実際に計算
 }
 
-void MainCamera::DisplayImGui()
+void Camera::DisplayImGui()
 {
 	// ワールド座標の表示
-	transform_.DisplayImGui(name_);
+	transform_.DisplayImGui();
+	if (ImGui::Button("UseThisCamera"))
+		UseThisCamera();
+}
+
+void Camera::UseThisCamera()
+{
+	// このカメラのビュープロジェクション行列を渡す
+	DirectXCommon::GetInstance()->GetCommandManager()->SetViewProjection(&viewProjectionMatrix_);
 }

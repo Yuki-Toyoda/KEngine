@@ -141,7 +141,7 @@ void CommandManager::SetHeaps(RTV* rtv, SRV* srv, DSV* dsv, std::wstring vs, std
 	CreateStructuredBuffer();
 
 	// サンプルテクスチャの読み込み
-	TextureManager::Load("white2x2.png");
+	defaultTexture_ = TextureManager::Load("white2x2.png");
 }
 
 void CommandManager::SetViewProjection(Matrix4x4* vpMat)

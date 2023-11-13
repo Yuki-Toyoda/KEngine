@@ -5,7 +5,7 @@
 /// <summary>
 /// カメラ
 /// </summary>
-class MainCamera : public BaseObject
+class Camera : public BaseObject
 {
 public: // メンバ関数
 
@@ -37,6 +37,13 @@ public: // アクセッサ等
 	/// </summary>
 	/// <returns>ビュープロジェクション行列</returns>
 	Matrix4x4 GetViewProjectionMatrix() { return viewProjectionMatrix_; };
+
+public: // その他関数
+
+	/// <summary>
+	/// このカメラを使用する関数
+	/// </summary>
+	void UseThisCamera();
 
 public: // パブリックなメンバ変数
 

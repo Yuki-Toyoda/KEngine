@@ -147,7 +147,7 @@ void Mesh::LoadMaterial(const std::string& filePath, const std::string& fileName
 			std::string textureName; // テクスチャ情報格納用
 			s >> textureName;		 // テクスチャ名取得
 			// テクスチャ読み込み
-			TextureManager::Load(filePath, textureName);
+			texture_ = TextureManager::Load(filePath, textureName);
 		}
 	}
 }

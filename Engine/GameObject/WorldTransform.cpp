@@ -51,10 +51,10 @@ void WorldTransform::Initialize()
 	parentType_ = 0b111;
 }
 
-void WorldTransform::DisplayImGui(std::string name)
+void WorldTransform::DisplayImGui()
 {
 	// 各種項目をImGuiにて表示
-	if (ImGui::TreeNode(name.c_str())) {
+	if (ImGui::TreeNode("Transform")) {
 		ImGui::DragFloat3("Scale", &scale_.x, 0.01f);		  // 拡縮
 		ImGui::DragFloat3("Rotate", &rotate_.x, 0.01f);		  // 回転
 		ImGui::DragFloat3("Translate", &translate_.x, 0.01f); // 位置座標

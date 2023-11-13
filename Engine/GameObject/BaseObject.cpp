@@ -19,6 +19,8 @@ void BaseObject::PreInitialize(std::string name, Tag tag)
 	// デストロイトリガーFalse
 	isDestroy_ = false;
 
+	color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
+
 	// 初期化を呼び出す
 	Initialize();
 }
@@ -40,6 +42,8 @@ void BaseObject::PreUpdate()
 		transform_.rotate_.z = transform_.rotate_.z - (float)std::numbers::pi * 2.0f;
 	else if (transform_.rotate_.z < -(float)std::numbers::pi * 2.0f)
 		transform_.rotate_.z = (float)std::numbers::pi * 2.0f + (transform_.rotate_.z - (float)std::numbers::pi * 2.0f); // z
+
+	
 }
 
 void BaseObject::DisplayImGui()

@@ -102,8 +102,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Base\WinApp.cpp" />
     <ClCompile Include="Engine\Debug\Debug.cpp" />
     <ClCompile Include="Engine\GameObject\BaseObject.cpp" />
-    <ClCompile Include="Engine\GameObject\Core\MainCamera.cpp" />
+    <ClCompile Include="Engine\GameObject\Core\Camera.cpp" />
     <ClCompile Include="Engine\GameObject\GameObjectManager.cpp" />
+    <ClCompile Include="Engine\GameObject\Samples\SampleBox\SampleBox.cpp" />
     <ClCompile Include="Engine\GameObject\WorldTransform.cpp" />
     <ClCompile Include="Engine\GlobalVariables\GlobalVariables.cpp" />
     <ClCompile Include="Engine\Input\Input.cpp" />
@@ -115,6 +116,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Resource\Texture\Texture.cpp" />
     <ClCompile Include="Engine\Resource\Texture\TextureManager.cpp" />
     <ClCompile Include="Engine\Scene\BaseScene.cpp" />
+    <ClCompile Include="Engine\Scene\SceneManager.cpp" />
+    <ClCompile Include="Engine\Scene\User\GameScene.cpp" />
+    <ClCompile Include="Engine\Scene\User\TitleScene.cpp" />
     <ClCompile Include="Externals\imgui\imgui.cpp" />
     <ClCompile Include="Externals\imgui\ImGuiManager.cpp" />
     <ClCompile Include="Externals\imgui\imgui_demo.cpp" />
@@ -142,8 +146,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Base\WinApp.h" />
     <ClInclude Include="Engine\Debug\Debug.h" />
     <ClInclude Include="Engine\GameObject\BaseObject.h" />
-    <ClInclude Include="Engine\GameObject\Core\MainCamera.h" />
+    <ClInclude Include="Engine\GameObject\Core\Camera.h" />
     <ClInclude Include="Engine\GameObject\GameObjectManager.h" />
+    <ClInclude Include="Engine\GameObject\ObjectList.h" />
+    <ClInclude Include="Engine\GameObject\Samples\SampleBox\SampleBox.h" />
     <ClInclude Include="Engine\GameObject\WorldTransform.h" />
     <ClInclude Include="Engine\GlobalVariables\GlobalVariables.h" />
     <ClInclude Include="Engine\Input\Input.h" />
@@ -159,6 +165,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Resource\Texture\Texture.h" />
     <ClInclude Include="Engine\Resource\Texture\TextureManager.h" />
     <ClInclude Include="Engine\Scene\BaseScene.h" />
+    <ClInclude Include="Engine\Scene\SceneList.h" />
+    <ClInclude Include="Engine\Scene\SceneManager.h" />
+    <ClInclude Include="Engine\Scene\User\GameScene.h" />
+    <ClInclude Include="Engine\Scene\User\TitleScene.h" />
     <ClInclude Include="Externals\imgui\imconfig.h" />
     <ClInclude Include="Externals\imgui\imgui.h" />
     <ClInclude Include="Externals\imgui\ImGuiManager.h" />

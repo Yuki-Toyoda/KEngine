@@ -80,7 +80,7 @@ public: // アクセッサ等
 	/// <returns>オブジェクトタグ</returns>
 	const Tag GetObjectTag() { return tag_; }
 
-private: // プライベートなメンバ関数
+protected: // プライベートなメンバ関数
 
 	/// <summary>
 	/// メッシュ追加関数

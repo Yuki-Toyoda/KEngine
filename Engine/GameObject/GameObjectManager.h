@@ -41,7 +41,7 @@ public: // メンバ関数
 	/// <param name="tag">タグ名</param>
 	/// <returns>生成したオブジェクトのインスタンス</returns>
 	template<IsBaseObject SelectObject>
-	inline SelectObject* CreateInstance(std::string name, std::string tag) {
+	inline SelectObject* CreateInstance(std::string name, BaseObject::Tag tag) {
 		// オブジェクトを生成
 		SelectObject* newObject = new SelectObject(); // インスタンスを生成
 		newObject->PreInitialize(name, tag);		  // 初期化
@@ -76,6 +76,8 @@ public: // メンバ関数
 
 		// 生成したオブジェクトを追加
 		objects_.push_back(newObject);
+
+		return newObject;
 	}
 
 	/// <summary>

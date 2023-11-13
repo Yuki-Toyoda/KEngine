@@ -4,6 +4,7 @@
 #include "Engine/Base/SafeDelete.h"
 #include "Externals/imgui/ImGuiManager.h"
 #include "Engine/Primitive/PrimitiveManager.h"
+#include "Engine/Scene/SceneManager.h"
 #include "Engine/GameObject/GameObjectManager.h"
 #include "Engine/Resource/Texture/TextureManager.h"
 #include "Engine/GlobalVariables/GlobalVariables.h"
@@ -46,6 +47,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	GameObjectManager* gameObjectManager = GameObjectManager::GetInstance();
 	gameObjectManager->Initialize();
 
+	// シーンマネージャーの初期化
+	SceneManager* sceneManager = SceneManager::GetInstance();
+	sceneManager->Initialize();
+
 	// 入力の初期化
 	input = Input::GetInstance();
 	input->Initialize();
@@ -79,6 +84,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			// グローバル変数の更新
 			GlobalVariables::GetInstance()->Update();
+
+			// シーンマネージャー更新
+			sceneManager->Update();
 
 			// オブジェクトマネージャー更新
 			gameObjectManager->Update();

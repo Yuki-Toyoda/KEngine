@@ -33,7 +33,7 @@ void BasePrimitive::ResizeIndexes()
 void BasePrimitive::Draw(CommandManager* manager)
 {
 	// 表示状態でなければ表示しない
-	if (isActive_)
+	if (!isActive_)
 		return;
 
 	// マネージャーに頂点情報を送る
