@@ -199,6 +199,15 @@ int CommandManager::createTextureResource(const DirectX::ScratchImage& image)
 	return textureBuffer_->usedCount++;
 }
 
+void CommandManager::DisplayImGui()
+{
+	ImGui::Begin("Light");
+	ImGui::ColorEdit4("Color", &lightBuffer_->light->color.x);
+	ImGui::SliderFloat3("Direction", &lightBuffer_->light->direction.x, -1.0f, 1.0f);
+	ImGui::DragFloat("Intensity", &lightBuffer_->light->intensity, 0.01f);
+	ImGui::End();
+}
+
 void CommandManager::InitializeDXC()
 {
 	// 結果確認用

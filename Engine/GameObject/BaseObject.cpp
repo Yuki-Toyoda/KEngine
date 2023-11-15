@@ -58,7 +58,7 @@ void BaseObject::DisplayImGui()
 	// 基底クラスでは特に記述なし
 }
 
-void BaseObject::AddMesh(WorldTransform* wt, Vector4& color, const std::string& path, const std::string& fileName)
+void BaseObject::AddMesh(WorldTransform* wt, Vector4& color, const std::string& path, const std::string& fileName, bool enableLighting)
 {
 	// 形状マネージャのインスタンスが取得されていない場合ここで取得
 	if (primitiveManager_ == nullptr)
@@ -69,6 +69,7 @@ void BaseObject::AddMesh(WorldTransform* wt, Vector4& color, const std::string& 
 	newMesh->LoadFile(path, fileName);						   // モデルを読み込み
 	newMesh->transform_ = wt;								   // ワールドトランスフォームを与える
 	newMesh->commonColor = &color;							   // 色を設定
+	newMesh->material_.enableLighting_ = enableLighting;	   // ライティングの有効設定
 
 	// メッシュリストに生成メッシュを追加
 	meshes_.push_back(newMesh);

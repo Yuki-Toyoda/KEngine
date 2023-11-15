@@ -26,6 +26,8 @@ void Camera::DisplayImGui()
 {
 	// ワールド座標の表示
 	transform_.DisplayImGui();
+	// 視野角の調整
+	ImGui::SliderFloat("FOV", &fov_, 0.45f, 1.2f);
 }
 
 void Camera::SetVPDataTarget()

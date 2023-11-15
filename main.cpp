@@ -91,6 +91,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			// オブジェクトマネージャー更新
 			gameObjectManager->Update();
 
+			// DirectX汎用クラスのImGuiを描画
+			dxCommon->GetCommandManager()->DisplayImGui();
+
 			// ImGui受付終了
 			imguiManager->End();
 

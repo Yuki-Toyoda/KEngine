@@ -119,8 +119,8 @@ struct TextureBuffer {
 /// </summary>
 struct DirectionalLight {
 	Matrix4x4 viewProjection; // ビュープロジェクション行列
-	Vector3 direction;		  // ライト向き
 	Vector4 color;			  // ライト色
+	Vector3 direction;		  // ライト向き
 	float intensity;		  // ライト輝度
 };
 

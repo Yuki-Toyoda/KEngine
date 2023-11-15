@@ -19,6 +19,14 @@ void GameObjectManager::Initialize()
 		}
 		return false;
 	});
+
+#ifdef _DEBUG // ImGui用デバッグ変数
+
+	// 選択オブジェクトリセット
+	imGuiSelectObjects_ = 0;
+	
+#endif // _DEBUG // ImGui用デバッグ変数
+
 }
 
 void GameObjectManager::Update()
@@ -42,13 +50,37 @@ void GameObjectManager::Update()
 #ifdef _DEBUG
 	ImGui::Begin("Objects");
 	// 全オブジェクトのImGuiを描画
-	for (BaseObject* object : objects_) {
-		if (ImGui::TreeNode(object->GetObjectName().c_str())) {
-			object->DisplayImGui();
-			ImGui::TreePop();
-		}		
+	ImGui::BeginChild(ImGui::GetID((void*)0), ImVec2(250, 100), ImGuiWindowFlags_NoTitleBar);
+	// オブジェクトが1つでもあった場合
+	if (objects_.size() > 0) {
+		for (int i = 0; i < objects_.size(); i++) {
+			ImGui::RadioButton(GetGameObject(i)->GetObjectName().c_str(), &imGuiSelectObjects_, i);
+		}
 	}
+	else // 1つもオブジェクトがない場合テキストで表示
+		ImGui::Text("No Objects!");
+	ImGui::EndChild();
+	
+	// オブジェクトが1つでもある場合は変数で指定されたオブジェクトの情報を表示
+	if (objects_.size() > 0)
+		GetGameObject(imGuiSelectObjects_)->DisplayImGui();
+
 	ImGui::End();
 #endif // _DEBUG
 
+}
+
+BaseObject* GameObjectManager::GetGameObject(int index)
+{
+	// カウント用
+	int count = 0;
+
+	// オブジェクトリスト内のオブジェクト番号と一致するオブジェクトを探す
+	for (BaseObject* object : objects_) {
+		if (count == index) // 引数と一致した場合
+			return object; // そのオブジェクトを返す
+		count++; // 一致していなかった場合カウントをインクリメント
+	}
+	// 発見できなかった場合nullptrを返す
+	return nullptr;
 }

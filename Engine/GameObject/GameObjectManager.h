@@ -107,10 +107,25 @@ public: // メンバ関数
 		return nullptr;
 	}
 
+	/// <summary>
+	/// 指定したインデックスをBaseObject型で受け取る関数
+	/// </summary>
+	/// <param name="index">取得する番号</param>
+	/// <returns>インデックスのゲームオブジェクト</returns>
+	BaseObject* GetGameObject(int index);
+
 private: // メンバ変数
 
 	// オブジェクトリスト
 	std::list<BaseObject*> objects_;
+
+#ifdef _DEBUG // ImGui用デバッグ変数
+
+	// 選択中オブジェクト
+	int imGuiSelectObjects_;
+
+#endif // _DEBUG // ImGui用デバッグ変数
+
 
 };
 

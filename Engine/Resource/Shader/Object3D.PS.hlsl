@@ -13,7 +13,7 @@ float4 main(VertexShaderOutput input) : SV_TARGET
     if (gMaterial[m].enableLighting != 0)
     { // Lightingの計算を行う
         // シェーディング
-        float NdotL = dot(normalize(input.normal), -gDirectionalLight.direction);
+        float NdotL = dot(normalize(input.normal), -normalize(gDirectionalLight.direction));
         float cos = pow(NdotL * 0.5f + 0.5f, 2.0f);
         // uvTransform
         float4 transformUV = mul(float4(input.texcoord, 0.0f, 1.0f), gMaterial[m].uvTransform);

@@ -81,6 +81,11 @@ public: // その他関数
 	/// <returns>テクスチャリソース</returns>
 	int createTextureResource(const DirectX::ScratchImage& image);
 
+	/// <summary>
+	/// ImGuiを表示させる関数
+	/// </summary>
+	void DisplayImGui();
+
 private: // プライベートなメンバ関数
 
 	/// <summary>

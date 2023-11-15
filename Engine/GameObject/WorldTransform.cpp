@@ -54,12 +54,10 @@ void WorldTransform::Initialize()
 void WorldTransform::DisplayImGui()
 {
 	// 各種項目をImGuiにて表示
-	if (ImGui::TreeNode("Transform")) {
-		ImGui::DragFloat3("Scale", &scale_.x, 0.01f);		  // 拡縮
-		ImGui::DragFloat3("Rotate", &rotate_.x, 0.01f);		  // 回転
-		ImGui::DragFloat3("Translate", &translate_.x, 0.01f); // 位置座標
-		ImGui::TreePop();
-	}
+	ImGui::Text("Transform");
+	ImGui::DragFloat3("Scale", &scale_.x, 0.01f);		  // 拡縮
+	ImGui::DragFloat3("Rotate", &rotate_.x, 0.01f);		  // 回転
+	ImGui::DragFloat3("Translate", &translate_.x, 0.01f); // 位置座標
 }
 
 void WorldTransform::SetParent(WorldTransform* parent, uint8_t parentType)
