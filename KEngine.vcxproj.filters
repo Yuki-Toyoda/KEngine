@@ -129,6 +129,9 @@
     <ClCompile Include="Engine\GameObject\Samples\SampleBox\SampleBox.cpp">
       <Filter>GameObject\Samples\Box</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\GameObject\Samples\SampleSkyDome\SkyDome.cpp">
+      <Filter>GameObject\Samples\SkyDome</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -275,6 +278,9 @@
     <ClInclude Include="Engine\GameObject\Samples\SampleBox\SampleBox.h">
       <Filter>GameObject\Samples\Box</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\GameObject\Samples\SampleSkyDome\SkyDome.h">
+      <Filter>GameObject\Samples\SkyDome</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -359,6 +365,9 @@
     </Filter>
     <Filter Include="GameObject\Samples\Box">
       <UniqueIdentifier>{106e3ed8-07e4-4837-88ba-8cb84b198b23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Samples\SkyDome">
+      <UniqueIdentifier>{8065e286-0718-421c-ba52-72d1062819ab}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
