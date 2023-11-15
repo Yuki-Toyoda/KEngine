@@ -41,9 +41,9 @@ public: // アクセッサ等
 public: // その他関数
 
 	/// <summary>
-	/// このカメラを使用する関数
+	///	ViewProjectionMatrixの書き込み先の指定関数
 	/// </summary>
-	void UseThisCamera();
+	void SetVPDataTarget();
 
 public: // パブリックなメンバ変数
 
@@ -59,6 +59,8 @@ private: // メンバ変数
 	Matrix4x4 viewMatrix_;
 	// カメラ用ビュープロジェクション行列
 	Matrix4x4 viewProjectionMatrix_;
+
+	Matrix4x4* vpDataTarget_ = nullptr;
 
 };
 

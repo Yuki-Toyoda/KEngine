@@ -1,20 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <FxCompile Include="Engine\Resource\Shader\Object3D.PS.hlsl">
-      <Filter>Resource\Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="Engine\Resource\Shader\Object3D.VS.hlsl">
-      <Filter>Resource\Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="Engine\Resource\Shader\SpritePS.hlsl">
-      <Filter>Resource\Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="Engine\Resource\Shader\SpriteVS.hlsl">
-      <Filter>Resource\Shader</Filter>
-    </FxCompile>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="Engine\Audio\Audio.cpp" />
     <ClCompile Include="Engine\Base\DirectXCommon.cpp" />
     <ClCompile Include="Engine\Base\WinApp.cpp" />
@@ -291,12 +277,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Engine\Resource\Shader\Object3D.hlsli">
-      <Filter>Resource\Shader</Filter>
-    </None>
-    <None Include="Engine\Resource\Shader\Sprite.hlsli">
-      <Filter>Resource\Shader</Filter>
-    </None>
     <None Include="Externals\imgui\.editorconfig">
       <Filter>ImGui</Filter>
     </None>
@@ -305,6 +285,9 @@
     </None>
     <None Include="Externals\imgui\.gitignore">
       <Filter>ImGui</Filter>
+    </None>
+    <None Include="Engine\Resource\Shader\Object3D.hlsli">
+      <Filter>Resource\Shader</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -382,5 +365,13 @@
     <Text Include="Externals\imgui\LICENSE.txt">
       <Filter>ImGui</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Engine\Resource\Shader\Object3D.PS.hlsl">
+      <Filter>Resource\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\Object3D.VS.hlsl">
+      <Filter>Resource\Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

@@ -29,7 +29,7 @@ void PrimitiveManager::Draw()
 {
 	// 登録形状がNullだった場合その要素を削除
 	primitives_.remove_if([](BasePrimitive* primitive) {
-		if (primitive == nullptr)
+		if (primitive->isDestroy_ == true)
 			return true;
 
 		return false;

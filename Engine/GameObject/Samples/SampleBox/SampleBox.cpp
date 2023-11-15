@@ -3,7 +3,7 @@
 void SampleBox::Initialize() {
 
 	// メッシュを追加
-	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Box", "Box.obj");
+	AddMesh(&transform_, color_, "./Engine/Resource/Samples/cube", "cube.obj");
 
 }
 

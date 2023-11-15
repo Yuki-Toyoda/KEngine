@@ -1,76 +1,65 @@
-// ’¸“_ƒf[ƒ^
+ï»¿// é ‚ç‚¹
 struct Vertex
 {
-    float4 position;
-    float2 texcoord;
-    float3 normal;
-    float4 color;
+    float4 position;// ä½ç½®åº§æ¨™
+    float2 texcoord;// ãƒ†ã‚¯ã‚¹ãƒãƒ£åº§æ¨™
+    float3 normal;// æ³•ç·š
+    float4 color;// è‰²(é ‚ç‚¹ã”ã¨)
 };
 
-// ƒ}ƒeƒŠƒAƒ‹
+// ãƒãƒ†ãƒªã‚¢ãƒ«
 struct Material
 {
-    float4x4 uvTransform;
-    int enableLighting;
+    float4x4 uvTransform;// uvãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ 
+    int enableLighting;// ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°æœ‰åŠ¹ãƒˆãƒªã‚¬ãƒ¼
 };
 
-// •½sŒõŒ¹
+// å¹³è¡Œå…‰æº
 struct DirectionalLight
 {
     float4x4 viewProjection;
-    float4 color; // !< ƒ‰ƒCƒg‚ÌF
-    float3 direction; // !< ƒ‰ƒCƒg‚ÌŒü‚«
-    float intensity; // !< ‹P“x
+    float4 color; // !< ãƒ©ã‚¤ãƒˆã®è‰²
+    float3 direction; // !< ãƒ©ã‚¤ãƒˆã®å‘ã
+    float intensity; // !< è¼åº¦
 };
 
-// ƒCƒ“ƒfƒbƒNƒXî•ñ‚Ì\‘¢‘Ì
+// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹æƒ…å ±ã®æ§‹é€ ä½“
 struct IndexInfo
 {
-    uint vertex; // À¿’¸“_ƒCƒ“ƒfƒbƒNƒX‚Ì–ğŠ„
-    uint cameraVP; // ƒJƒƒ‰‚Ìƒrƒ…[ƒvƒƒWƒFƒNƒVƒ‡ƒ“s—ñ
-    uint worldMatrix; // ƒ[ƒ‹ƒhƒgƒ‰ƒ“ƒXƒtƒH[ƒ€
-    uint material; // ƒ}ƒeƒŠƒAƒ‹
-    uint tex2d; // ƒeƒNƒXƒ`ƒƒ
+    uint vertex;// é ‚ç‚¹
+    uint cameraVP;// ãƒ“ãƒ¥ãƒ¼ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³è¡Œåˆ—
+    uint worldMatrix;// ãƒ¯ãƒ¼ãƒ«ãƒ‰ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ 
+    uint material;// ãƒãƒ†ãƒªã‚¢ãƒ«
+    uint tex2d;// ãƒ†ã‚¯ã‚¹ãƒãƒ£
 };
 
 
-// ** —¼•û—p ** //
-
-// ŠeƒXƒgƒ‰ƒNƒ`ƒƒ[ƒoƒbƒtƒ@[‚ÌƒCƒ“ƒfƒbƒNƒX
+// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹æƒ…å ±
 StructuredBuffer<IndexInfo> gIndex : register(t0);
-// •½sŒõŒ¹
+// å¹³è¡Œå…‰æº
 ConstantBuffer<DirectionalLight> gDirectionalLight : register(b0);
 
-
-// ** VS—p ** //
-
-// ’¸“_ƒf[ƒ^
+// é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿
 StructuredBuffer<Vertex> gVertex : register(t1);
-// ƒJƒƒ‰‚ÌViewProjection
+// ã‚«ãƒ¡ãƒ©ã®ViewProjection
 StructuredBuffer<float4x4> gCameraVP : register(t2);
 // WorldTransform
 StructuredBuffer<float4x4> gWorldMatrix : register(t3);
 
-
-// ** PS—p ** //
-
-// ƒ}ƒeƒŠƒAƒ‹
+// ãƒãƒ†ãƒªã‚¢ãƒ«
 StructuredBuffer<Material> gMaterial : register(t1);
 
-// ƒVƒƒƒhƒEƒ}ƒbƒv‚ÌƒeƒNƒXƒ`ƒƒ
-Texture2D<float> gShadowMap : register(t2);
-SamplerState gShadowMapSampler : register(s0);
-// ƒeƒNƒXƒ`ƒƒ
-Texture2D<float4> gTexture[] : register(t3);
-SamplerState gSampler : register(s1);
+// ãƒ†ã‚¯ã‚¹ãƒãƒ£
+Texture2D<float4> gTexture[] : register(t2);
+SamplerState gSampler : register(s0);
 
 
-// ’¸“_ƒVƒF[ƒ_[‚Ìo—ÍŒ‹‰Ê‚Ì\‘¢‘Ì
+// é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®å‡ºåŠ›çµæœã®æ§‹é€ ä½“
 struct VertexShaderOutput
 {
-    float4 position : SV_POSITION;
+    float4 position : SV_Position0;
     float2 texcoord : TEXCOORD0;
     float3 normal : NORMAL0;
     float4 color : COLOR0;
-    uint id : SV_InstanceID; // VS‚ÅQÆ‚µ‚½IndexInfo‚Ì”Ô†
+    uint id : SV_InstanceID; // VSã§å‚ç…§ã—ãŸIndexInfoã®ç•ªå·
 };

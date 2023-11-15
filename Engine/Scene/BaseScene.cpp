@@ -10,5 +10,5 @@ void BaseScene::PreInitialize()
 	// カメラを生成
 	camera_ = gameObjectManager_->CreateInstance<Camera>("DebugCamera", BaseObject::TagNone);
 	// このカメラを使う
-	camera_->UseThisCamera();
+	camera_->SetVPDataTarget();
 }

@@ -144,10 +144,8 @@ void CommandManager::SetHeaps(RTV* rtv, SRV* srv, DSV* dsv, std::wstring vs, std
 	defaultTexture_ = TextureManager::Load("white2x2.png");
 }
 
-void CommandManager::SetViewProjection(Matrix4x4* vpMat)
-{
-	// バッファにビュープロジェクション行列をセット
-	viewProjectionBuffer_->mat = vpMat;
+Matrix4x4* const CommandManager::GetViewProjection() const {
+	return viewProjectionBuffer_->mat;
 }
 
 void CommandManager::SetDrawData(BasePrimitive* primitive)
@@ -165,7 +163,7 @@ void CommandManager::SetDrawData(BasePrimitive* primitive)
 	for (int i = 0; i < primitive->GetVertexCount(); i++) {
 		vertexBuffer_->vertex[vertexBuffer_->usedCount++] = primitive->vertices_[i]; // 頂点データをバッファに登録
 		if (primitive->commonColor != nullptr)	// 共通の色があるときはcommonColorを適応
-			vertexBuffer_->vertex[vertexBuffer_->usedCount - 1].color = *primitive->commonColor; // 共通色に変更
+			vertexBuffer_->vertex[vertexBuffer_->usedCount - 1].color = { 1.0f, 1.0f, 1.0f, 1.0f }; // 共通色に変更
 	}
 	// ワールドトランスフォームをデータに登録
 	uint32_t worldMatrix = worldTransformBuffer_->usedCount;											   // バッファの末尾を取得
@@ -293,6 +291,16 @@ void CommandManager::CreateRootSignature()
 	rootParameters[5].DescriptorTable.pDescriptorRanges = materialDesc;			    // Tabelの中身の配列を指定
 	rootParameters[5].DescriptorTable.NumDescriptorRanges = _countof(materialDesc); // Tableで利用する数
 
+	// Samplerの設定
+	staticSamplers[0].Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR; // バイオリニアフィルタ
+	staticSamplers[0].AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP; // 0~1の範囲外をリピート
+	staticSamplers[0].AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+	staticSamplers[0].AddressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+	staticSamplers[0].ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER; // 比較しない
+	staticSamplers[0].MaxLOD = D3D12_FLOAT32_MAX; // ありったけのMipmapを使う
+	staticSamplers[0].ShaderRegister = 0; // レジスタ番号は0
+	staticSamplers[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; // PixelShaderで使う
+
 	// テクスチャ
 	D3D12_DESCRIPTOR_RANGE textureDesc[1] = { descRange[0] };					   // DescriptorRangeを作成
 	textureDesc[0].BaseShaderRegister = 2;										   // レジスタ番号は2
@@ -301,16 +309,6 @@ void CommandManager::CreateRootSignature()
 	rootParameters[6].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;		       // ピクセルシェーダーで使う
 	rootParameters[6].DescriptorTable.pDescriptorRanges = textureDesc;			   // Tabelの中身の配列を指定
 	rootParameters[6].DescriptorTable.NumDescriptorRanges = _countof(textureDesc); // Tableで利用する数
-
-	// Samplerの設定
-	staticSamplers[0].Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR; // バイオリニアフィルタ
-	staticSamplers[0].AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP; // 0~1の範囲外をリピート
-	staticSamplers[0].AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
-	staticSamplers[0].AddressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
-	staticSamplers[0].ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER; // 比較しない
-	staticSamplers[0].MaxLOD = D3D12_FLOAT32_MAX; // ありったけのMipmapを使う
-	staticSamplers[0].ShaderRegister = 1; // レジスタ番号は1
-	staticSamplers[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; // PixelShaderで使う
 
 	// シリアライズを行う
 	ID3DBlob* signatureBlob = nullptr; // シリアライズ後のバイナリオブジェクト

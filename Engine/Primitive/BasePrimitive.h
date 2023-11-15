@@ -81,6 +81,8 @@ public: // パブリックなメンバ変数
 
 	// 表示状態
 	bool isActive_ = true;
+	// 破壊トリガー
+	bool isDestroy_ = false;
 };
 
 /// <summary>

@@ -1,5 +1,12 @@
 #include "BaseObject.h"
 
+BaseObject::~BaseObject()
+{
+	// 全形状を描画
+	for (BasePrimitive* primitive : meshes_)
+		primitive->isDestroy_ = true;
+}
+
 void BaseObject::PreInitialize(std::string name, Tag tag)
 {
 	// 非表示

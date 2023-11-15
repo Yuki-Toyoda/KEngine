@@ -51,11 +51,8 @@ public: // アクセッサ等
 	/// <param name="dsv">深度ステンシルビュー</param>
 	void SetHeaps(RTV* rtv, SRV* srv, DSV* dsv, std::wstring vs, std::wstring ps);
 
-	/// <summary>
-	/// カメラのビュープロジェクション行列セッター
-	/// </summary>
-	/// <param name="vpMat">ビュープロジェクション行列</param>
-	void SetViewProjection(Matrix4x4* vpMat);
+
+	Matrix4x4* const GetViewProjection() const;
 
 	/// <summary>
 	/// 描画データ登録関数
@@ -174,7 +171,7 @@ private: // メンバ変数
 	// テクスチャバッファ
 	std::unique_ptr<TextureBuffer> textureBuffer_; // 本体
 	const UINT kMaxTexture = 128;				   // テクスチャ最大数
-	
+
 	// デフォルトテクスチャ
 	Texture* defaultTexture_;
 

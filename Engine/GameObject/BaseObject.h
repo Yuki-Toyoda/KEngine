@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <memory>
 #include "../../Externals/imgui/imgui.h"
 #include "WorldTransform.h"
 #include "../Primitive/PrimitiveManager.h"
@@ -24,7 +25,7 @@ public: // サブクラス
 public: // メンバ関数
 
 	// 仮想デストラクタ
-	virtual ~BaseObject() = default;
+	virtual ~BaseObject();
 
 	// (ユーザー呼び出し禁止)共通初期化関数
 	void PreInitialize(std::string name, Tag tag);
