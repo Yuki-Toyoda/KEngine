@@ -163,7 +163,7 @@ void CommandManager::SetDrawData(BasePrimitive* primitive)
 	for (int i = 0; i < primitive->GetVertexCount(); i++) {
 		vertexBuffer_->vertex[vertexBuffer_->usedCount++] = primitive->vertices_[i]; // 頂点データをバッファに登録
 		if (primitive->commonColor != nullptr)	// 共通の色があるときはcommonColorを適応
-			vertexBuffer_->vertex[vertexBuffer_->usedCount - 1].color = { 1.0f, 1.0f, 1.0f, 1.0f }; // 共通色に変更
+			vertexBuffer_->vertex[vertexBuffer_->usedCount - 1].color = *primitive->commonColor; // 共通色に変更
 	}
 	// ワールドトランスフォームをデータに登録
 	uint32_t worldMatrix = worldTransformBuffer_->usedCount;											   // バッファの末尾を取得
