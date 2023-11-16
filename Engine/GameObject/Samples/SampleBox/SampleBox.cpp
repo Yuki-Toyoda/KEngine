@@ -3,13 +3,13 @@
 void SampleBox::Initialize() {
 
 	// メッシュを追加
-	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Sphere", "Sphere.obj");
+	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Box", "Box.obj");
 
 }
 
 void SampleBox::Update() {
 
-	
+	transform_.rotate_.y += 0.01f;
 
 }
 
@@ -20,4 +20,7 @@ void SampleBox::DisplayImGui() {
 	ImGui::Text("Color");
 	//　色の変更
 	ImGui::ColorPicker4("Color", &color_.x);
+
+	for (Mesh* mesh : meshes_)
+		mesh->DisplayImGui();
 }

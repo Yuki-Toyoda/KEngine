@@ -66,6 +66,7 @@ void BaseObject::AddMesh(WorldTransform* wt, Vector4& color, const std::string& 
 
 	// メッシュのインスタンスを生成
 	Mesh* newMesh = primitiveManager_->CreateInstance<Mesh>(); // インスタンス生成
+	newMesh->name_ = fileName;								   // 1メッシュ名をファイル名に
 	newMesh->LoadFile(path, fileName);						   // モデルを読み込み
 	newMesh->transform_ = wt;								   // ワールドトランスフォームを与える
 	newMesh->commonColor = &color;							   // 色を設定

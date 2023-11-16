@@ -44,6 +44,11 @@ public: // メンバ関数
 	/// </summary>
 	virtual void Draw(CommandManager* manager);
 
+	/// <summary>
+	/// ImGui表示関数
+	/// </summary>
+	virtual void DisplayImGui();
+
 public: // アクセッサ等
 
 	/// <summary>

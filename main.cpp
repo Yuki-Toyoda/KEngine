@@ -92,7 +92,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			gameObjectManager->Update();
 
 			// DirectX汎用クラスのImGuiを描画
+			#ifdef _DEBUG
 			dxCommon->GetCommandManager()->DisplayImGui();
+			#endif // _DEBUG
 
 			// ImGui受付終了
 			imguiManager->End();

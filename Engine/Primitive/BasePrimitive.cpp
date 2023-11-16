@@ -40,6 +40,20 @@ void BasePrimitive::Draw(CommandManager* manager)
 	manager->SetDrawData(this);
 }
 
+void BasePrimitive::DisplayImGui()
+{
+	std::string treeName = name_ + " : vertex";
+	if(ImGui::TreeNode(treeName.c_str())) {
+		ImGui::BeginChild(ImGui::GetID((void*)0), ImVec2(0, 100), ImGuiWindowFlags_NoTitleBar);
+		for (UINT i = 0; i < vertices_.size(); i++) {
+			std::string name = "vertex" + std::to_string(i);
+			ImGui::DragFloat3(name.c_str(), &vertices_[i].position.x, 0.05f);
+		}
+		ImGui::EndChild();
+		ImGui::TreePop();
+	}
+}
+
 int BasePrimitive::GetVertexCount() const
 {
 	return 3;
