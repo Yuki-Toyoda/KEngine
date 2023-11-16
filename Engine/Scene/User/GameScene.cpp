@@ -3,6 +3,9 @@
 
 void GameScene::Initialize(){
 
+	Camera* newcamera = nullptr;
+	newcamera = gameObjectManager_->CreateInstance<Camera>("mainCamera", BaseObject::TagCamera);
+
 	SkyDome* skyDome = nullptr;
 	skyDome = gameObjectManager_->CreateInstance<SkyDome>("SkyDome", BaseObject::TagNone);
 

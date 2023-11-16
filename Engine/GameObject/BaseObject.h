@@ -18,6 +18,7 @@ public: // サブクラス
 	/// </summary>
 	enum Tag {
 		TagNone,   // 無所属
+		TagCamera, // カメラ
 		TagPlayer, // プレイヤー
 		TagEnemy,  // 敵
 	};

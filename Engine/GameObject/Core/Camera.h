@@ -27,6 +27,12 @@ public: // メンバ関数
 public: // アクセッサ等
 
 	/// <summary>
+	/// カメラの使用トリガーセッター
+	/// </summary>
+	/// <param name="isUsed">使用するか</param>
+	void SetIsUseThisCamera(bool isUsed) { isUseThisCamera_ = isUsed; }
+
+	/// <summary>
 	/// ビュー行列ゲッター
 	/// </summary>
 	/// <returns>ビュー行列</returns>
@@ -39,6 +45,13 @@ public: // アクセッサ等
 	Matrix4x4 GetViewProjectionMatrix() { return viewProjectionMatrix_; };
 
 public: // その他関数
+
+	/// <summary>
+	///	このカメラを使用する際に呼び出す関数
+	/// </summary>
+	void UseThisCamera();
+
+private: // メンバ関数
 
 	/// <summary>
 	///	ViewProjectionMatrixの書き込み先の指定関数
@@ -55,11 +68,15 @@ private: // メンバ変数
 	// 入力検知用
 	Input* input_;
 
+	// カメラ使用トリガー
+	bool isUseThisCamera_;
+
 	// ビュー行列
 	Matrix4x4 viewMatrix_;
 	// カメラ用ビュープロジェクション行列
 	Matrix4x4 viewProjectionMatrix_;
 
+	// ビュープロジェクション行列をコマンドマネージャーに送るためのポインタ
 	Matrix4x4* vpDataTarget_ = nullptr;
 
 };
