@@ -169,11 +169,6 @@ void CommandManager::SetDrawData(BasePrimitive* primitive)
 	}
 
 	uint32_t useCamera = (uint32_t)primitive->isUI_;
-	// UIかそうでないか
-	if (primitive->isUI_) {
-		// UI1時はライティング無効
-		primitive->material_.enableLighting_ = false;
-	}
 
 	// ワールドトランスフォームをデータに登録
 	uint32_t worldMatrix = worldTransformBuffer_->usedCount;											   // バッファの末尾を取得
