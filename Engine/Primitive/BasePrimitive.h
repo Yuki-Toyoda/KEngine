@@ -88,6 +88,9 @@ public: // パブリックなメンバ変数
 	bool isActive_ = true;
 	// 破壊トリガー
 	bool isDestroy_ = false;
+
+	// UIとして使用するか
+	bool isUI_ = false;
 };
 
 /// <summary>

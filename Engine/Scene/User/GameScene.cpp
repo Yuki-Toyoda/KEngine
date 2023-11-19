@@ -7,8 +7,8 @@ void GameScene::Initialize(){
 	newcamera = gameObjectManager_->CreateInstance<Camera>("mainCamera", BaseObject::TagCamera);
 	newcamera->UseThisCamera();
 
-	SkyDome* skyDome = nullptr;
-	skyDome = gameObjectManager_->CreateInstance<SkyDome>("SkyDome", BaseObject::TagNone);
+	/*SkyDome* skyDome = nullptr;
+	skyDome = gameObjectManager_->CreateInstance<SkyDome>("SkyDome", BaseObject::TagNone);*/
 
 	SampleBox* box = nullptr;
 	box = gameObjectManager_->CreateInstance<SampleBox>("box", BaseObject::TagNone);

@@ -167,6 +167,7 @@ private: // メンバ変数
 
 	// ビュープロジェクション行列バッファ
 	std::unique_ptr<MatrixBuffer> viewProjectionBuffer_; // 本体
+	const UINT kMaxVP = 2;
 	// ワールドトランスフォームバッファ
 	std::unique_ptr<MatrixBuffer> worldTransformBuffer_; // 本体
 	const UINT kMaxWorldTransform = 128000;				 // 行列最大数

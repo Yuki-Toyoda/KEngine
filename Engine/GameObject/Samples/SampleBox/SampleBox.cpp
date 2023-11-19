@@ -21,6 +21,8 @@ void SampleBox::DisplayImGui() {
 	//　色の変更
 	ImGui::ColorPicker4("Color", &color_.x);
 
-	for (Mesh* mesh : meshes_)
+	for (Mesh* mesh : meshes_) {
 		mesh->DisplayImGui();
+		ImGui::Checkbox("isUI", &mesh->isUI_);
+	}
 }

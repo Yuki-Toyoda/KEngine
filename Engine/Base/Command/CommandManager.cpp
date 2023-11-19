@@ -3,6 +3,7 @@
 #include "../DescriptorHeaps/SRV.h"
 #include "../DescriptorHeaps/DSV.h"
 #include "../../Resource/Texture/TextureManager.h"
+#include "../WinApp.h"
 
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
@@ -145,6 +146,7 @@ void CommandManager::SetHeaps(RTV* rtv, SRV* srv, DSV* dsv, std::wstring vs, std
 }
 
 Matrix4x4* const CommandManager::GetViewProjection() const {
+	viewProjectionBuffer_->mat[1] = Math::MakeIdentity4x4() * Math::MakeOrthGraphicMatrix(0.0f, 0.0f, (float)WinApp::kWindowWidth, (float)WinApp::kwindowHeight, 0.0f, 100.0f);
 	return viewProjectionBuffer_->mat;
 }
 
@@ -165,6 +167,14 @@ void CommandManager::SetDrawData(BasePrimitive* primitive)
 		if (primitive->commonColor != nullptr)	// 共通の色があるときはcommonColorを適応
 			vertexBuffer_->vertex[vertexBuffer_->usedCount - 1].color = *primitive->commonColor; // 共通色に変更
 	}
+
+	uint32_t useCamera = (uint32_t)primitive->isUI_;
+	// UIかそうでないか
+	if (primitive->isUI_) {
+		// UI1時はライティング無効
+		primitive->material_.enableLighting_ = false;
+	}
+
 	// ワールドトランスフォームをデータに登録
 	uint32_t worldMatrix = worldTransformBuffer_->usedCount;											   // バッファの末尾を取得
 	worldTransformBuffer_->mat[worldTransformBuffer_->usedCount++] = primitive->transform_->GetMatWorld(); // データを代入
@@ -181,7 +191,7 @@ void CommandManager::SetDrawData(BasePrimitive* primitive)
 	for (int i = 0; i < primitive->GetIndexCount(); i++) {
 		commands_[0]->indexBuffer_->indexData[commands_[0]->indexBuffer_->usedCount++] = IndexInfoStruct{
 			startIndexNum + primitive->indexes_[i],
-			0,
+			useCamera,
 			worldMatrix,
 			material,
 			texture
@@ -373,10 +383,10 @@ void CommandManager::CreateStructuredBuffer()
 	srv_->AddUsedCount();	// SRV使用数を+1
 	// カメラのビュープロジェクション用
 	viewProjectionBuffer_ = std::make_unique<MatrixBuffer>();
-	viewProjectionBuffer_->resource = CreateBuffer(sizeof(Matrix4x4));
+	viewProjectionBuffer_->resource = CreateBuffer(sizeof(Matrix4x4) * kMaxVP);
 	viewProjectionBuffer_->resource->Map(0, nullptr, reinterpret_cast<void**>(&viewProjectionBuffer_->mat));
 	D3D12_SHADER_RESOURCE_VIEW_DESC vpDesc = { commonDesc };
-	vpDesc.Buffer.NumElements = 1;
+	vpDesc.Buffer.NumElements = kMaxVP;
 	vpDesc.Buffer.StructureByteStride = sizeof(Matrix4x4);
 	viewProjectionBuffer_->view = srv_->GetGPUHandle(srv_->GetUsedCount());
 	device_->CreateShaderResourceView(viewProjectionBuffer_->resource.Get(), &vpDesc, srv_->GetCPUHandle(srv_->GetUsedCount()));
