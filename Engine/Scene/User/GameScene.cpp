@@ -6,7 +6,6 @@ void GameScene::Initialize(){
 	Camera* newcamera = nullptr;
 	newcamera = gameObjectManager_->CreateInstance<Camera>("mainCamera", BaseObject::TagCamera);
 	newcamera->UseThisCamera();
-	newcamera->transform_.translate_ = { 0.0f, 10.0f, -25.0f };
 
 	SkyDome* skyDome = nullptr;
 	skyDome = gameObjectManager_->CreateInstance<SkyDome>("SkyDome", BaseObject::TagNone);
@@ -17,6 +16,13 @@ void GameScene::Initialize(){
 
 void GameScene::Update()
 {
+
+	ImGui::Begin("GenerateMenu");
+	if (ImGui::Button("GenerateBox")) {
+		SampleBox* box = nullptr;
+		box = gameObjectManager_->CreateInstance<SampleBox>("box", BaseObject::TagNone);
+	}
+	ImGui::End();
 
 	// デバッグ時のみ特定のキーでシーン遷移
 #ifdef _DEBUG

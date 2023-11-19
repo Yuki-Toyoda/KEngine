@@ -111,6 +111,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Input\Input.cpp" />
     <ClCompile Include="Engine\Math\Math.cpp" />
     <ClCompile Include="Engine\Primitive\3d\Mesh.cpp" />
+    <ClCompile Include="Engine\Primitive\3d\MeshManager.cpp" />
     <ClCompile Include="Engine\Primitive\BasePrimitive.cpp" />
     <ClCompile Include="Engine\Primitive\PrimitiveManager.cpp" />
     <ClCompile Include="Engine\Resource\Material\Material.cpp" />
@@ -161,6 +162,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Math\Vector3.h" />
     <ClInclude Include="Engine\Math\Vector4.h" />
     <ClInclude Include="Engine\Primitive\3d\Mesh.h" />
+    <ClInclude Include="Engine\Primitive\3d\MeshManager.h" />
     <ClInclude Include="Engine\Primitive\BasePrimitive.h" />
     <ClInclude Include="Engine\Primitive\PrimitiveManager.h" />
     <ClInclude Include="Engine\Resource\Material\Material.h" />
