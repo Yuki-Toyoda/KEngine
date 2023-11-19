@@ -16,14 +16,6 @@ void GameScene::Initialize(){
 
 void GameScene::Update()
 {
-
-	ImGui::Begin("GenerateMenu");
-	if (ImGui::Button("GenerateBox")) {
-		SampleBox* box = nullptr;
-		box = gameObjectManager_->CreateInstance<SampleBox>("box", BaseObject::TagNone);
-	}
-	ImGui::End();
-
 	// デバッグ時のみ特定のキーでシーン遷移
 #ifdef _DEBUG
 	// デバッグ遷移
