@@ -135,6 +135,9 @@
     <ClCompile Include="Engine\Primitive\3d\MeshManager.cpp">
       <Filter>Primitive\3d</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\GameObject\Samples\SamplePlayer\SamplePlayer.cpp">
+      <Filter>GameObject\Samples\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -287,6 +290,9 @@
     <ClInclude Include="Engine\Primitive\3d\MeshManager.h">
       <Filter>Primitive\3d</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\GameObject\Samples\SamplePlayer\SamplePlayer.h">
+      <Filter>GameObject\Samples\Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -374,6 +380,9 @@
     </Filter>
     <Filter Include="GameObject\Samples\SkyDome">
       <UniqueIdentifier>{8065e286-0718-421c-ba52-72d1062819ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Samples\Player">
+      <UniqueIdentifier>{d84aac2d-9489-49be-88ec-37601d17a574}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
