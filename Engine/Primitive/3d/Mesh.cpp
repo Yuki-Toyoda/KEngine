@@ -18,7 +18,6 @@ void Mesh::LoadFile(const std::string& filePath, const std::string& fileName)
 
 void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 {
-
 	// フルパスの合成
 	std::string fullPath = filePath + "/" + fileName;
 
