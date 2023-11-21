@@ -135,6 +135,12 @@
     <ClCompile Include="Engine\Primitive\3d\MeshManager.cpp">
       <Filter>Primitive\3d</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Collider\Collider.cpp">
+      <Filter>Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Collider\CollisionManager.cpp">
+      <Filter>Collider</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\GameObject\Samples\SamplePlayer\SamplePlayer.cpp">
       <Filter>GameObject\Samples\Player</Filter>
     </ClCompile>
@@ -290,6 +296,27 @@
     <ClInclude Include="Engine\Primitive\3d\MeshManager.h">
       <Filter>Primitive\3d</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Collider\Collider.h">
+      <Filter>Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Collider\CollisionManager.h">
+      <Filter>Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Collider\ShapeList.h">
+      <Filter>Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Collider\Shape\AABB.h">
+      <Filter>Collider\Shape</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Collider\Shape\BaseShape.h">
+      <Filter>Collider\Shape</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Collider\Shape\OBB.h">
+      <Filter>Collider\Shape</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Collider\Shape\Sphere.h">
+      <Filter>Collider\Shape</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\GameObject\Samples\SamplePlayer\SamplePlayer.h">
       <Filter>GameObject\Samples\Player</Filter>
     </ClInclude>
@@ -380,6 +407,12 @@
     </Filter>
     <Filter Include="GameObject\Samples\SkyDome">
       <UniqueIdentifier>{8065e286-0718-421c-ba52-72d1062819ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Collider">
+      <UniqueIdentifier>{3d74ac5f-3244-4942-8648-980e216271a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Collider\Shape">
+      <UniqueIdentifier>{90624c1b-4e9d-4395-a179-30f1589e163f}</UniqueIdentifier>
     </Filter>
     <Filter Include="GameObject\Samples\Player">
       <UniqueIdentifier>{d84aac2d-9489-49be-88ec-37601d17a574}</UniqueIdentifier>

@@ -5,6 +5,7 @@
 #include "../../Externals/imgui/imgui.h"
 #include "WorldTransform.h"
 #include "../Primitive/PrimitiveManager.h"
+#include "../Collider/CollisionManager.h"
 
 /// <summary>
 /// 全オブジェクトの基底クラス
@@ -82,6 +83,32 @@ public: // アクセッサ等
 	/// <returns>オブジェクトタグ</returns>
 	const Tag GetObjectTag() { return tag_; }
 
+	/// <summary>
+	/// コライダーゲッター
+	/// </summary>
+	/// <returns>コライダー</returns>
+	Collider* GetCollider() { return collider_.get(); }
+
+public: // その他関数群
+
+	/// <summary>
+	/// 衝突した瞬間にコールバックされる関数
+	/// </summary>
+	/// <param name="object">衝突したオブジェクト</param>
+	virtual void OnCollisionEnter(BaseObject* object) { object; }
+
+	/// <summary>
+	/// 衝突時コールバック関数
+	/// </summary>
+	/// <param name="object">衝突したオブジェクト</param>
+	virtual void OnCollision(BaseObject* object) { object; }
+
+	/// <summary>
+	/// 衝突していたオブジェクトから離れた時のコールバック関数
+	/// </summary>
+	/// <param name="object">衝突していたオブジェクト</param>
+	virtual void OnCollisionExit(BaseObject* object) { object; }
+
 protected: // プライベートなメンバ関数
 
 	/// <summary>
@@ -108,7 +135,9 @@ public: // パブリックなメンバ変数
 protected: // 継承メンバ変数
 
 	// 形状マネージャのインスタンス
-	PrimitiveManager* primitiveManager_;
+	PrimitiveManager* primitiveManager_ = nullptr;
+	// 衝突マネージャーのインスタンス
+	CollisionManager* collisionManager_ = nullptr;
 
 	// オブジェクトの所属
 	Tag tag_;
@@ -120,6 +149,9 @@ protected: // 継承メンバ変数
 
 	// 色
 	Vector4 color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
+
+	// コライダー
+	std::unique_ptr<Collider> collider_;
 
 };
 

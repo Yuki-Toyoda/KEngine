@@ -9,6 +9,10 @@ BaseObject::~BaseObject()
 
 void BaseObject::PreInitialize(std::string name, Tag tag)
 {
+
+	// インスタンス取得
+	collisionManager_ = CollisionManager::GetInstance(); // 衝突判定マネージャ
+
 	// 非表示
 	isActive_ = false;
 
@@ -26,7 +30,11 @@ void BaseObject::PreInitialize(std::string name, Tag tag)
 	// デストロイトリガーFalse
 	isDestroy_ = false;
 
+	// 色を設定
 	color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
+
+	// コライダーの生成
+	collider_ = std::make_unique<Collider>();
 
 	// 初期化を呼び出す
 	Initialize();
