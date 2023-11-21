@@ -3,7 +3,8 @@
 
 void TitleScene::Initialize()
 {
-
+	SampleBox* box = nullptr;
+	box = gameObjectManager_->CreateInstance<SampleBox>("box", BaseObject::TagNone);
 }
 
 void TitleScene::Update()

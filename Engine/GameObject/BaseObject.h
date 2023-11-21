@@ -21,7 +21,9 @@ public: // サブクラス
 		TagNone,   // 無所属
 		TagCamera, // カメラ
 		TagPlayer, // プレイヤー
+		TagWeapon, // 武器
 		TagEnemy,  // 敵
+		TagFloor,  // 床
 	};
 
 public: // メンバ関数

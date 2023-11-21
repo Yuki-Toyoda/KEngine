@@ -63,7 +63,7 @@ public: // パブリックなメンバ変数
 	// 視野角
 	float fov_;
 
-private: // メンバ変数
+protected: // メンバ変数
 
 	// 入力検知用
 	Input* input_;

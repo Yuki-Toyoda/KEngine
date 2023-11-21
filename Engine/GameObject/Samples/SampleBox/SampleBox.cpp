@@ -16,6 +16,8 @@ void SampleBox::Initialize() {
 
 void SampleBox::Update() {
 
+	transform_.rotate_.y += 0.01f;
+
 	// コライダーの更新
 	collider_->Update(transform_.GetWorldPos(), transform_.scale_);
 	// リストに自分自身を登録

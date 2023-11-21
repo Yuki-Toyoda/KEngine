@@ -59,6 +59,14 @@ public:	// メンバ関数
 	/// <param name="end">終了値</param>
 	/// <returns>イージングされた値(float)</returns>
 	static int Linear(float t, int start, int end);
+	/// <summary>
+	/// イージングにかかる秒数を指定しない線形補間関数(Normal)(Vector3)
+	/// </summary>
+	/// <param name="t">現在のt</param>
+	/// <param name="start">開始値</param>
+	/// <param name="end">終了値</param>
+	/// <returns>イージングされた値(float)</returns>
+	static Vector3 Linear(float t, Vector3 start, Vector3 end);
 
 	/// <summary>
 	/// 線形補間関数(EaseIn)(float)
