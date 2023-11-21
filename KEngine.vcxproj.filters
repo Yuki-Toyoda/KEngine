@@ -153,6 +153,9 @@
     <ClCompile Include="Engine\GameObject\Samples\SampleWeapon\SampleWeapon.cpp">
       <Filter>GameObject\Samples\Weapon</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\GameObject\Samples\SampleEnemy\SampleEnemy.cpp">
+      <Filter>GameObject\Samples\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -338,6 +341,9 @@
     <ClInclude Include="Engine\GameObject\Samples\SampleWeapon\SampleWeapon.h">
       <Filter>GameObject\Samples\Weapon</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\GameObject\Samples\SampleEnemy\SampleEnemy.h">
+      <Filter>GameObject\Samples\Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -443,6 +449,9 @@
     </Filter>
     <Filter Include="GameObject\Samples\Floor">
       <UniqueIdentifier>{19b08627-6d9c-4f7d-8046-cd5783ffc7ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Samples\Enemy">
+      <UniqueIdentifier>{283a43bf-5d01-4128-8024-64fd4fa2aac4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

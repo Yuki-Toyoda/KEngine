@@ -23,7 +23,5 @@ public: // メンバ関数
 	/// </summary>
 	void DisplayImGui() override;
 
-public: // その他関数群
-
 };
 

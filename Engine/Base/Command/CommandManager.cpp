@@ -364,7 +364,7 @@ void CommandManager::CreateStructuredBuffer()
 	lightBuffer_->light->color = { 1.0f,1.0f,1.0f,1.0f };
 	lightBuffer_->light->direction = { 0.0f,-1.0f,0.0f };
 	lightBuffer_->light->intensity = 1.0f;
-	lightBuffer_->rotate = { 1.57f,0.0f,0.0f };
+	lightBuffer_->rotate = { 0.0f,0.0f,0.0f };
 
 	// 頂点データ
 	vertexBuffer_ = std::make_unique<VertexBuffer>();
