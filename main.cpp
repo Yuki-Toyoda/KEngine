@@ -8,6 +8,7 @@
 #include "Engine/GameObject/GameObjectManager.h"
 #include "Engine/Resource/Texture/TextureManager.h"
 #include "Engine/GlobalVariables/GlobalVariables.h"
+#include "Engine/Collider/CollisionManager.h"
 #include "Engine/Input/Input.h"
 #include "Engine/Audio/Audio.h"
 
@@ -47,6 +48,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	GameObjectManager* gameObjectManager = GameObjectManager::GetInstance();
 	gameObjectManager->Initialize();
 
+	// 衝突マネージャーの初期化
+	CollisionManager* collisionManager = CollisionManager::GetInstance();
+
 	// シーンマネージャーの初期化
 	SceneManager* sceneManager = SceneManager::GetInstance();
 	sceneManager->Initialize();
@@ -82,6 +86,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			// 入力関連の毎フレーム処理
 			input->Update();
 
+			// 衝突判定リストクリア
+			collisionManager->ListClear();
+
 			// グローバル変数の更新
 			GlobalVariables::GetInstance()->Update();
 
@@ -90,6 +97,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			// オブジェクトマネージャー更新
 			gameObjectManager->Update();
+
+			// 衝突判定検証
+			collisionManager->CheckAllCollision();
 
 			// DirectX汎用クラスのImGuiを描画
 			#ifdef _DEBUG

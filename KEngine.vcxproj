@@ -100,6 +100,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Base\DirectXCommon.cpp" />
     <ClCompile Include="Engine\Base\PSO\PSO.cpp" />
     <ClCompile Include="Engine\Base\WinApp.cpp" />
+    <ClCompile Include="Engine\Collider\Collider.cpp" />
+    <ClCompile Include="Engine\Collider\CollisionManager.cpp" />
     <ClCompile Include="Engine\Debug\Debug.cpp" />
     <ClCompile Include="Engine\GameObject\BaseObject.cpp" />
     <ClCompile Include="Engine\GameObject\Core\Camera.cpp" />
@@ -146,6 +148,13 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Base\ResourceStruct.h" />
     <ClInclude Include="Engine\Base\SafeDelete.h" />
     <ClInclude Include="Engine\Base\WinApp.h" />
+    <ClInclude Include="Engine\Collider\Collider.h" />
+    <ClInclude Include="Engine\Collider\CollisionManager.h" />
+    <ClInclude Include="Engine\Collider\ShapeList.h" />
+    <ClInclude Include="Engine\Collider\Shape\AABB.h" />
+    <ClInclude Include="Engine\Collider\Shape\BaseShape.h" />
+    <ClInclude Include="Engine\Collider\Shape\OBB.h" />
+    <ClInclude Include="Engine\Collider\Shape\Sphere.h" />
     <ClInclude Include="Engine\Debug\Debug.h" />
     <ClInclude Include="Engine\GameObject\BaseObject.h" />
     <ClInclude Include="Engine\GameObject\Core\Camera.h" />
