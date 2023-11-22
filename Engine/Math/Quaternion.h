@@ -20,5 +20,11 @@ struct Quaternion {
 	/// <returns>積</returns>
 	Quaternion operator* (const Quaternion q) const;
 
+	/// <summary>
+	/// 演算子のオーバーロード(/)
+	/// </summary>
+	/// <param name="q">クォータニオン</param>
+	/// <returns>除算</returns>
+	Quaternion operator/ (const Quaternion q) const;
 
 };

@@ -656,7 +656,7 @@ void Math::MatrixImGui(Matrix4x4 m, std::string paramName)
 	ImGui::End();
 }
 
-Quaternion Math::MakeQuaternion()
+Quaternion Math::MakeIdentityQuaternion()
 {
 	// 結果格納用
 	Quaternion result;
@@ -686,7 +686,7 @@ Quaternion Math::MakeQuaternion(const Vector3& v)
 	return result;
 }
 
-Quaternion Math::Conjugatoin(const Quaternion& q)
+Quaternion Math::Conjugate(const Quaternion& q)
 {
 	// 結果格納用
 	Quaternion result;
@@ -694,12 +694,12 @@ Quaternion Math::Conjugatoin(const Quaternion& q)
 	result = q;
 
 	// 虚部を反転
-	result.x = result.x * -1.0f;
-	result.y = result.y * -1.0f;
-	result.z = result.z * -1.0f;
+	result.x *= -1.0f;
+	result.y *= -1.0f;
+	result.z *= -1.0f;
 
 	// 結果を返す
-	return q;
+	return result;
 }
 
 float Math::Length(const Quaternion& q)
@@ -733,6 +733,29 @@ Quaternion Math::Normalize(const Quaternion& q)
 		result.y = 0.0f;
 		result.z = 0.0f;
 		result.w = 0.0f;
+	}
+
+	// 結果を返す
+	return result;
+}
+
+Quaternion Math::Inverse(const Quaternion& q)
+{
+	// 結果格納用
+	Quaternion result = MakeIdentityQuaternion();
+
+	// 正規化するベクトルの長さを求める
+	float length = Length(q);
+	length = std::powf(length, 2);
+	// 共役クォータニオンを求める
+	Quaternion conjugate = Math::Conjugate(q);
+
+	// 計算処理
+	if (length != 0.0f) {
+		result.x = conjugate.x / length;
+		result.y = conjugate.y / length;
+		result.z = conjugate.z / length;
+		result.w = conjugate.w / length;
 	}
 
 	// 結果を返す

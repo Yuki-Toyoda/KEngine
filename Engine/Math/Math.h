@@ -417,10 +417,10 @@ public:	// メンバ関数
 	static void MatrixImGui(Matrix4x4 m, std::string paramName);
 
 	/// <summary>
-	/// 乗法単位元
+	/// 単位クォータニオンの生成関数
 	/// </summary>
-	/// <returns乗法単位元></returns>
-	static Quaternion MakeQuaternion();
+	/// <returns>乗法単位元</returns>
+	static Quaternion MakeIdentityQuaternion();
 	
 	/// <summary>
 	/// 乗法単位元
@@ -435,7 +435,7 @@ public:	// メンバ関数
 	/// </summary>
 	/// <param name="q">変換するクォータニオン</param>
 	/// <returns>共役</returns>
-	static Quaternion Conjugatoin(const Quaternion& q);
+	static Quaternion Conjugate(const Quaternion& q);
 
 	/// <summary>
 	/// クォータニオンの長さを求める
@@ -449,6 +449,14 @@ public:	// メンバ関数
 	/// <param name="q">正規化するクォータニオン</param>
 	/// <returns>正規化されたクォータニオン</returns>
 	static Quaternion Normalize(const Quaternion& q);
+
+	/// <summary>
+	/// 逆クォータニオン生成関数
+	/// </summary>
+	/// <param name="q">逆にするクォータニオン</param>
+	/// <returns>逆クォータニオン</returns>
+	static Quaternion Inverse(const Quaternion& q);
+
 	/// <summary>
 	/// クォータニオンを行列に変換する関数
 	/// </summary>

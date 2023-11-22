@@ -8,3 +8,13 @@ Quaternion Quaternion::operator*(const Quaternion q) const
 	result.w = this->w * q.w - Math::Dot(this->vec(), q.vec());
 	return result;
 }
+
+Quaternion Quaternion::operator/(const Quaternion q) const
+{
+	Quaternion result;
+	result.x = this->x / q.x;
+	result.y = this->y / q.y;
+	result.z = this->z / q.z;
+	result.w = this->w / q.w;
+	return result;
+}
