@@ -4,9 +4,12 @@
 #include <ctime>
 #include <math.h>
 #include <numbers>
+#include <string>
+#include "../../Externals/imgui/imgui.h"
 #include "Vector2.h"
 #include "Vector3.h"
 #include "Vector4.h"
+#include "Quaternion.h"
 #include "Matrix4x4.h"
 
 /// <summary>
@@ -264,6 +267,14 @@ public:	// メンバ関数
 	static Vector3 Normalize(const Vector3& v);
 
 	/// <summary>
+	/// 行列のクロス積を求める関数
+	/// </summary>
+	/// <param name="v1">ベクトル1</param>
+	/// <param name="v2">ベクトル2</param>
+	/// <returns>クロス積</returns>
+	static Vector3 Cross(const Vector3& v1, const Vector3& v2);
+
+	/// <summary>
 	/// ワールド座標変換関数
 	/// </summary>
 	/// <param name="v">ベクトル</param>
@@ -340,6 +351,14 @@ public:	// メンバ関数
 	/// <param name="translate">位置座標</param>
 	/// <returns>アフィン行列</returns>
 	static Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rotate, const Vector3& translate);
+	/// <summary>
+	/// アフィン変換行列生成関数
+	/// </summary>
+	/// <param name="scale">拡縮</param>
+	/// <param name="rotate">回転</param>
+	/// <param name="translate">位置座標</param>
+	/// <returns></returns>
+	static Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Quaternion& rotate, const Vector3& translate);
 
 	/// <summary>
 	/// 正射影行列生成関数
@@ -374,4 +393,91 @@ public:	// メンバ関数
 	/// <param name="maxDepth">最大深度</param>
 	/// <returns>ビューポート行列</returns>
 	static Matrix4x4 MakeViewportMatrix(float left, float top, float width, float height, float minDepth, float maxDepth);
+
+	/// <summary>
+	/// 任意軸の回転行列を生成する関数
+	/// </summary>
+	/// <param name="axis">回転軸</param>
+	/// <param name="angle">回転角</param>
+	/// <returns>任意軸の回転行列</returns>
+	static Matrix4x4 MakeRotateAxisAngle(Vector3 axis, float angle);
+
+	/// <summary>
+	/// ベクトルを回転させる回転行列を生成する関数
+	/// </summary>
+	/// <param name="from">開始ベクトル</param>
+	/// <param name="to">終端ベクトル</param>
+	/// <returns>ベクトルを回転させる回転行列</returns>
+	static Matrix4x4 DirectionToDirection(const Vector3& from, const Vector3& to);
+
+	/// <summary>
+	/// マトリックス内のパラメータを表示する関数
+	/// </summary>
+	/// <param name="m">マトリックス</param>
+	static void MatrixImGui(Matrix4x4 m, std::string paramName);
+
+	/// <summary>
+	/// 単位クォータニオンの生成関数
+	/// </summary>
+	/// <returns>乗法単位元</returns>
+	static Quaternion MakeIdentityQuaternion();
+	
+	/// <summary>
+	/// 乗法単位元
+	/// </summary>
+	/// <param name="v">ベクトル</param>
+	/// <param name="w">実数部</param>
+	/// <returns>乗法単位元</returns>
+	static Quaternion MakeQuaternion(const Vector3& v);
+
+	/// <summary>
+	/// 共役
+	/// </summary>
+	/// <param name="q">変換するクォータニオン</param>
+	/// <returns>共役</returns>
+	static Quaternion Conjugate(const Quaternion& q);
+
+	/// <summary>
+	/// クォータニオンの長さを求める
+	/// </summary>
+	/// <param name="q">長さを求めるクォータニオン</param>
+	/// <returns>クォータニオンの長さ</returns>
+	static float Length(const Quaternion& q);
+	/// <summary>
+	/// クォータニオンの正規化
+	/// </summary>
+	/// <param name="q">正規化するクォータニオン</param>
+	/// <returns>正規化されたクォータニオン</returns>
+	static Quaternion Normalize(const Quaternion& q);
+
+	/// <summary>
+	/// 逆クォータニオン生成関数
+	/// </summary>
+	/// <param name="q">逆にするクォータニオン</param>
+	/// <returns>逆クォータニオン</returns>
+	static Quaternion Inverse(const Quaternion& q);
+
+	/// <summary>
+	/// 任意軸回転を表すクォータニオン生成関数
+	/// </summary>
+	/// <param name="v">回転軸</param>
+	/// <param name="angle">回転角</param>
+	/// <returns>任意軸回転を表すクォータニオン</returns>
+	static Quaternion MakeRotateAxisAngleQuaternion(const Vector3& v, float angle);
+
+	
+	/// <summary>
+	/// ベクトルをクォータニオンで回転させた後のベクトルを求める関数
+	/// </summary>
+	/// <param name="v">始点ベクトル</param>
+	/// <param name="q">回転量</param>
+	/// <returns>回転ベクトル</returns>
+	static Vector3 RoatateVector(const Vector3& v, const Quaternion& q);
+
+	/// <summary>
+	/// クォータニオンを行列に変換する関数
+	/// </summary>
+	/// <param name="q">返還するクォータニオン</param>
+	/// <returns>行列</returns>
+	static Matrix4x4 QuaternionToMatrix(const Quaternion& q);
 };

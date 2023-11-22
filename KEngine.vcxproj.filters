@@ -156,6 +156,9 @@
     <ClCompile Include="Engine\GameObject\Samples\SampleEnemy\SampleEnemy.cpp">
       <Filter>GameObject\Samples\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Math\Quaternion.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -343,6 +346,9 @@
     </ClInclude>
     <ClInclude Include="Engine\GameObject\Samples\SampleEnemy\SampleEnemy.h">
       <Filter>GameObject\Samples\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Math\Quaternion.h">
+      <Filter>Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
