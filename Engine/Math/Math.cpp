@@ -644,7 +644,6 @@ Matrix4x4 Math::DirectionToDirection(const Vector3& from, const Vector3& to)
 
 void Math::MatrixImGui(Matrix4x4 m, std::string paramName)
 {
-	ImGui::Begin(paramName.c_str());
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
 			std::string param = std::to_string(m.m[i][j]);
@@ -653,7 +652,6 @@ void Math::MatrixImGui(Matrix4x4 m, std::string paramName)
 		}
 		ImGui::Spacing();
 	}
-	ImGui::End();
 }
 
 Quaternion Math::MakeIdentityQuaternion()
@@ -760,6 +758,37 @@ Quaternion Math::Inverse(const Quaternion& q)
 
 	// 結果を返す
 	return result;
+}
+
+
+Quaternion Math::MakeRotateAxisAngleQuaternion(const Vector3& v, float angle)
+{
+	// 結果格納用
+	Quaternion result = MakeIdentityQuaternion();
+
+	// 計算処理
+	result.w = cos((angle / 2.0f));
+	result.x = v.x * sin((angle / 2.0f));
+	result.y = v.y * sin((angle / 2.0f));
+	result.z = v.z * sin((angle / 2.0f));
+
+	// 結果を返す
+	return result;
+}
+
+Vector3 Math::RoatateVector(const Vector3& v, const Quaternion& q)
+{
+	// 引数のベクトルを使用してクォータニオンを生成する
+	Quaternion vq = MakeIdentityQuaternion();
+	vq.x = v.x;
+	vq.y = v.y;
+	vq.z = v.z;
+	vq.w = 0.0f;
+
+	// 生成したクォータニオンを用いてクォータニオンを回転させる
+	Quaternion result = q * vq * Conjugate(q);
+	// 計算結果を返す
+	return result.vec();
 }
 
 Matrix4x4 Math::QuaternionToMatrix(const Quaternion& q)

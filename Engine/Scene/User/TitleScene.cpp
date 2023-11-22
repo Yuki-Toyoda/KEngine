@@ -10,24 +10,18 @@ void TitleScene::Initialize()
 void TitleScene::Update()
 {
 
-	Quaternion q1 = { 2.0f, 3.0f, 4.0f, 1.0f };
-	Quaternion q2 = { 1.0f, 3.0f, 5.0f, 2.0f };
-	Quaternion identity = Math::MakeIdentityQuaternion();
-	Quaternion conj = Math::Conjugate(q1);
-	Quaternion inv = Math::Inverse(q1);
-	Quaternion normal = Math::Normalize(q1);
-	Quaternion mul1 = q1 * q2;
-	Quaternion mul2 = q2 * q1;
-	float norm = Math::Length(q1);
+	Quaternion rotation = Math::MakeRotateAxisAngleQuaternion(
+		Math::Normalize(Vector3{ 1.0f, 0.4f, -0.2f }), 0.45f);
+	Vector3 pointY = { 2.1f, -0.9f, 1.3f };
+	Matrix4x4 rotateMatrix = Math::QuaternionToMatrix(rotation);
+	Vector3 rotateByQuaternion = Math::RoatateVector(pointY, rotation);
+	Vector3 rotateByMatrix = Math::Transform(pointY, rotateMatrix);
 
 	ImGui::Begin("answer");
-	ImGui::DragFloat4("Identity", &identity.x, 0.0f);
-	ImGui::DragFloat4("conj", &conj.x, 0.0f);
-	ImGui::DragFloat4("inv", &inv.x, 0.0f);
-	ImGui::DragFloat4("normal", &normal.x, 0.0f);
-	ImGui::DragFloat4("mul1", &mul1.x, 0.0f);
-	ImGui::DragFloat4("mul2", &mul2.x, 0.0f);
-	ImGui::DragFloat("norm", &norm, 0.0f);
+	ImGui::DragFloat4("rotation", &rotation.x, 0.0f);
+	Math::MatrixImGui(rotateMatrix, "rotateMatrix");
+	ImGui::DragFloat3("rotateByQuaternion", &rotateByQuaternion.x, 0.0f);
+	ImGui::DragFloat3("rotateByMatrix", &rotateByMatrix.x, 0.0f);
 	ImGui::End();
 
 	// デバッグ時のみ特定のキーでシーン遷移

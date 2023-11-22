@@ -458,6 +458,23 @@ public:	// メンバ関数
 	static Quaternion Inverse(const Quaternion& q);
 
 	/// <summary>
+	/// 任意軸回転を表すクォータニオン生成関数
+	/// </summary>
+	/// <param name="v">回転軸</param>
+	/// <param name="angle">回転角</param>
+	/// <returns>任意軸回転を表すクォータニオン</returns>
+	static Quaternion MakeRotateAxisAngleQuaternion(const Vector3& v, float angle);
+
+	
+	/// <summary>
+	/// ベクトルをクォータニオンで回転させた後のベクトルを求める関数
+	/// </summary>
+	/// <param name="v">始点ベクトル</param>
+	/// <param name="q">回転量</param>
+	/// <returns>回転ベクトル</returns>
+	static Vector3 RoatateVector(const Vector3& v, const Quaternion& q);
+
+	/// <summary>
 	/// クォータニオンを行列に変換する関数
 	/// </summary>
 	/// <param name="q">返還するクォータニオン</param>
