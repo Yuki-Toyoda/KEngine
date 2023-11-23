@@ -41,7 +41,7 @@ void SamplePlayer::Initialize()
 	restart_ = false;
 
 	// 目標角度リセット
-	targetAngle_ = 0.0f;
+	targetAngle_ = Math::MakeIdentity4x4();
 
 	// 接地判定
 	isLanding_ = false;
@@ -265,26 +265,29 @@ void SamplePlayer::BehaviorRootUpdate()
 
 	if (isMoving) {
 		// 移動量を正規化、スピードを加算
-		move = Math::Normalize(move) * speed;
+		move = Math::Normalize(move);
+		float moveDot = 0.0f;
 
 		// カメラ回転角がセットされている場合
 		if (tpCamera_ != nullptr) {
 			// カメラの角度から回転行列を生成
+			Vector3 v = { 0.0f, 0.0f, 1.0f };
 			Matrix4x4 rotateMat = Math::MakeRotateXYZMatrix(tpCamera_->transform_.rotate_);
 			// 移動ベクトルをカメラの角度に応じて回転させる
 			move = Math::Transform(move, rotateMat);
+			moveDot = Math::Dot(v, move);
+			targetAngle_ = Math::DirectionToDirection({0.0f, 0.0f, 1.0f}, move);
+			if (moveDot == -1.0f)
+				targetAngle_ = targetAngle_ * Math::MakeRotateYMatrix((float)std::numbers::pi);
+			move = Math::Normalize(move) * speed;
 		}
 
 		// 移動
 		transform_.translate_ = transform_.translate_ + move;
 
-		// 移動時の目標角度を求める
-		targetAngle_ = atan2(move.x, move.z);
+		// トランスフォームに回転行列をセット
+		transform_.SetRotateMat(targetAngle_);
 	}
-
-	// 角度を補正する
-	transform_.rotate_.y =
-		Math::LerpShortAngle(transform_.rotate_.y, targetAngle_, 0.1f);
 
 	// ジャンプ可能なら
 	if (canJump_) {
@@ -380,9 +383,9 @@ void SamplePlayer::BehaviorAttackUpdate()
 			move = Math::Normalize(move) * attackForward_;
 
 			// カメラの角度から回転行列を生成
-			Matrix4x4 rotateMat = Math::MakeRotateXYZMatrix(transform_.rotate_);
+			//Matrix4x4 rotateMat = Math::MakeRotateXYZMatrix(transform_.rotate_);
 			// 移動ベクトルをカメラの角度に応じて回転させる
-			move = Math::Transform(move, rotateMat);
+			move = Math::Transform(move, targetAngle_);
 
 			// 攻撃終端地点を設定
 			attackEndPos_ = attackStartPos_ + move;
@@ -444,7 +447,7 @@ void SamplePlayer::BehaviorDashInitialize()
 	workDash_.dashParameter_ = 0; // 媒介変数
 	workDash_.dashSpeed_ = 1.0f; // ダッシュスピード
 	// プレイヤーを目標角度まで一気に補正
-	transform_.rotate_.y = targetAngle_;
+	//transform_.rotate_.y = targetAngle_;
 
 	// 腕をナルト走りにする
 	armTransform_L_.rotate_.x = (float)std::numbers::pi / 3.0f; // 角度設定
@@ -458,9 +461,9 @@ void SamplePlayer::BehaviorDashUpdate()
 		0.0f, 0.0f, workDash_.dashSpeed_ };
 
 	// カメラの角度から回転行列を生成
-	Matrix4x4 rotateMat = Math::MakeRotateXYZMatrix(transform_.rotate_);
+	//Matrix4x4 rotateMat = Math::MakeRotateXYZMatrix(transform_.rotate_);
 	// 移動ベクトルをカメラの角度に応じて回転させる
-	move = Math::Transform(move, rotateMat);
+	move = Math::Transform(move, targetAngle_);
 
 	// 移動
 	transform_.translate_ = transform_.translate_ + move;

@@ -76,7 +76,17 @@ const WorldTransform* WorldTransform::GetParent()
 Matrix4x4 WorldTransform::GetMatWorld() const
 {
 	// 結果格納用
-	Matrix4x4 result = Math::MakeAffineMatrix(scale_, rotate_, translate_);
+	Matrix4x4 result = Math::MakeIdentity4x4();
+
+	// 回転行列がセットされているか
+	if (rotateMat_ == nullptr)
+		result = Math::MakeAffineMatrix(scale_, rotate_, translate_);
+	else { // セットされている場合それを考慮してアフィン変換行列を作る
+		Matrix4x4 scaleMat = Math::MakeScaleMatrix(scale_);
+		Matrix4x4 rotateMat = *rotateMat_;
+		Matrix4x4 translateMat = Math::MakeTranslateMatrix(translate_);
+		result = scaleMat * rotateMat * translateMat;
+	}
 
 	// 親がいる場合
 	if (parent_) {

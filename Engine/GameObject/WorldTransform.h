@@ -60,6 +60,9 @@ private: // メンバ変数
 	// それぞれ scale rotate translate
 	uint8_t parentType_;
 
+	// 行列を直接代入したい場合はこれらの変数に代入する
+	const Matrix4x4* rotateMat_ = nullptr; // 現在は回転行列のみ対応
+
 public: // アクセッサ等
 
 	/// <summary>
@@ -73,6 +76,12 @@ public: // アクセッサ等
 	/// </summary>
 	/// <returns>親</returns>
 	const WorldTransform* GetParent();
+
+	/// <summary>
+	/// 回転行列セッター
+	/// </summary>
+	/// <param name="mat">セットする回転行列</param>
+	void SetRotateMat(const Matrix4x4& mat) { rotateMat_ = &mat; }
 
 	/// <summary>
 	/// 現在のワールド行列のゲッター

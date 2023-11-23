@@ -140,7 +140,7 @@ private: // メンバ変数
 	WorldTransform armTransform_R_; // 右腕
 
 	// 移動時の目標角度
-	float targetAngle_;
+	Matrix4x4 targetAngle_;
 
 	// 接地判定
 	bool isLanding_;
