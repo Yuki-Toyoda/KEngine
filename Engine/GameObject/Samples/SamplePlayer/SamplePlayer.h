@@ -7,6 +7,10 @@
 class ThirdPersonCamera;
 class SampleWeapon;
 
+class SampleEnemy;
+
+class LockOn;
+
 /// <summary>
 /// プレイヤーサンプル
 /// </summary>
@@ -69,6 +73,12 @@ public: // その他関数群
 	/// </summary>
 	/// <param name="weapon">武器</param>
 	void SetWeapon(SampleWeapon* weapon);
+
+	/// <summary>
+	/// ロックオンクラスセッター
+	/// </summary>
+	/// <param name="lockOn">ロックオンクラス</param>
+	void SetLockOn(LockOn* lockOn) { lockOn_ = lockOn; }
 
 	/// <summary>
 	/// 通常時の行動初期化
@@ -220,6 +230,12 @@ private: // メンバ変数
 
 	// ダッシュ用変数
 	WorkDash workDash_;
+
+	// ロックオン可能な敵のリスト
+	std::list<SampleEnemy*> enemies_;
+
+	// ロックオンクラス
+	LockOn* lockOn_ = nullptr;
 
 };
 

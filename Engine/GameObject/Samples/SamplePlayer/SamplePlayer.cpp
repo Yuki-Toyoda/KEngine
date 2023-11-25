@@ -1,6 +1,10 @@
 #include "SamplePlayer.h"
 #include "../SampleThirdPersonCamera/ThirdPersonCamera.h"
 #include "../SampleWeapon/SampleWeapon.h"
+#include "../SampleEnemy/SampleEnemy.h"
+#include "../SampleLockOn/LockOn.h"
+#include "../../GameObjectManager.h"
+
 void SamplePlayer::Initialize()
 {
 	// ワールド座標初期化
@@ -168,6 +172,13 @@ void SamplePlayer::Update()
 		jumpSpeed_ = 0.0f;
 	}
 
+	// 敵の取得
+	enemies_.clear();
+	enemies_ = GameObjectManager::GetInstance()->GetGameObjectList<SampleEnemy>();
+
+	// ロックオンしている敵リストにセット
+	lockOn_->SetEnemyList(enemies_);
+
 	// 着地判定リセット
 	isLanding_ = false;
 
@@ -278,7 +289,7 @@ void SamplePlayer::BehaviorRootUpdate()
 			moveDot = Math::Dot(v, move);
 			targetAngle_ = Math::DirectionToDirection({0.0f, 0.0f, 1.0f}, move);
 			if (moveDot == -1.0f)
-				targetAngle_ = targetAngle_ * Math::MakeRotateYMatrix((float)std::numbers::pi);
+				targetAngle_ = targetAngle_ + Math::MakeRotateYMatrix((float)std::numbers::pi);
 			move = Math::Normalize(move) * speed;
 		}
 

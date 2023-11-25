@@ -159,6 +159,9 @@
     <ClCompile Include="Engine\Math\Quaternion.cpp">
       <Filter>Math</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\GameObject\Samples\SampleLockOn\LockOn.cpp">
+      <Filter>GameObject\Samples\LockOn</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -350,6 +353,9 @@
     <ClInclude Include="Engine\Math\Quaternion.h">
       <Filter>Math</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\GameObject\Samples\SampleLockOn\LockOn.h">
+      <Filter>GameObject\Samples\LockOn</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -458,6 +464,9 @@
     </Filter>
     <Filter Include="GameObject\Samples\Enemy">
       <UniqueIdentifier>{283a43bf-5d01-4128-8024-64fd4fa2aac4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Samples\LockOn">
+      <UniqueIdentifier>{43051f82-85dc-4c45-b614-986b73ae10f4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

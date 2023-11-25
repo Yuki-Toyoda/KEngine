@@ -12,6 +12,11 @@ void GameScene::Initialize(){
 	player = gameObjectManager_->CreateInstance<SamplePlayer>("Player", BaseObject::TagPlayer);
 	player->transform_.translate_ = { 0.0f, 3.0f, 0.0f };
 
+	// 床生成
+	SampleFloor* floor = nullptr;
+	floor = gameObjectManager_->CreateInstance<SampleFloor>("Floor", BaseObject::TagFloor);
+	floor->transform_.scale_ = { 50.0f, 1.0f, 50.0f };
+
 	// 追従カメラ生成
 	ThirdPersonCamera* camera = nullptr;
 	camera = gameObjectManager_->CreateInstance<ThirdPersonCamera>("TPCamera", BaseObject::TagCamera);
@@ -25,16 +30,18 @@ void GameScene::Initialize(){
 	weapon->SetTarget(&player->transform_);
 	player->SetWeapon(weapon);
 
-	// 床生成
-	SampleFloor* floor = nullptr;
-	floor = gameObjectManager_->CreateInstance<SampleFloor>("Floor", BaseObject::TagFloor);
-	floor->transform_.scale_ = { 50.0f, 1.0f, 50.0f };
-
 	// 敵生成
 	SampleEnemy* enemy = nullptr;
-	enemy = gameObjectManager_->CreateInstance<SampleEnemy>("Enemy", BaseObject::TagEnemy);
-	enemy->transform_.translate_ = { 0.0f, 0.0f, 10.0f };
+	for (int i = 0; i < 3; i++) {
+		enemy = gameObjectManager_->CreateInstance<SampleEnemy>("Enemy", BaseObject::TagEnemy);
+		enemy->transform_.translate_ = { Math::RandomF(-15.0f, 15.0f, 2), 0.0f, Math::RandomF(10.0f, 15.0f, 2) };
+	}
 
+	// ロックオンシステム生成
+	LockOn* lockOn = nullptr;
+	lockOn = gameObjectManager_->CreateInstance<LockOn>("LockOn", BaseObject::TagPlayer);
+	player->SetLockOn(lockOn);
+	lockOn->SetTPCamera(camera);
 }
 
 void GameScene::Update()

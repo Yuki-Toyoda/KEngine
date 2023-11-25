@@ -11,3 +11,4 @@
 #include "Samples/SampleWeapon/SampleWeapon.h"
 #include "Samples/SampleFloor/SampleFloor.h"
 #include "Samples/SampleEnemy/SampleEnemy.h"
+#include "Samples/SampleLockOn/LockOn.h"

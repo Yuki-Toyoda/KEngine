@@ -89,7 +89,7 @@ public: // メンバ関数
 	template<IsBaseObject SelectObject>
 	inline SelectObject* GetGameObject(std::string name) {
 		// 返還用
-		SelectObject* result = new BaseObject();
+		SelectObject* result = new SelectObject();
 
 		// 全オブジェクトから同名のオブジェクトがないか探す
 		for (BaseObject* object : objects_) {
@@ -116,6 +116,29 @@ public: // メンバ関数
 	inline std::vector<SelectObject*> GetGameObject() {
 		// 返還用
 		std::vector<SelectObject*> result;
+
+		// 全オブジェクトから同名のオブジェクトがないか探す
+		for (BaseObject* object : objects_) {
+			// そのオブジェクトを選択型に返還
+			SelectObject* o = dynamic_cast<SelectObject*>(object);
+			// 結果がnullptr以外だったらそれを配列に追加
+			if (o != nullptr)
+				result.push_back(o);
+		}
+
+		// 返還するオブジェクトがなかった場合nullptrを返す
+		return result;
+	}
+
+	/// <summary>
+	/// 指定した型のゲームオブジェクトを一括取得する関数
+	/// </summary>
+	/// <typeparam name="SelectObject">取得するオブジェクトの型</typeparam>
+	/// <returns>オブジェクト達(vector)</returns>
+	template<IsBaseObject SelectObject>
+	inline std::list<SelectObject*> GetGameObjectList() {
+		// 返還用
+		std::list<SelectObject*> result;
 
 		// 全オブジェクトから同名のオブジェクトがないか探す
 		for (BaseObject* object : objects_) {

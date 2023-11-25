@@ -7,7 +7,7 @@ void SampleWeapon::Initialize()
 	colliderTransform_.scale_ = { 0.5f, 0.5f, 0.5f }; // 座標設定
 
 	// obj読み込み
-	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Player/Weapon", "Weapon.obj");
+	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Player/Weapon", "Weapon.obj", false);
 	// 攻撃状態false
 	isAttack_ = false;
 

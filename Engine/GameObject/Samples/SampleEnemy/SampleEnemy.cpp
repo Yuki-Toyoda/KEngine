@@ -11,9 +11,9 @@ void SampleEnemy::Initialize()
 	TireTransform_L_.SetParent(&transform_);
 
 	// モデル読み込み
-	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Enemy/Body", "MonsterBody.obj");
-	AddMesh(&TireTransform_R_, color_, "./Engine/Resource/Samples/Enemy/Tire", "MonsterTire.obj");
-	AddMesh(&TireTransform_L_, color_, "./Engine/Resource/Samples/Enemy/Tire", "MonsterTire.obj");
+	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Enemy/Body", "MonsterBody.obj", true);
+	AddMesh(&TireTransform_R_, color_, "./Engine/Resource/Samples/Enemy/Tire", "MonsterTire.obj", true);
+	AddMesh(&TireTransform_L_, color_, "./Engine/Resource/Samples/Enemy/Tire", "MonsterTire.obj", true);
 
 	// 移動速度設定
 	velocity_ = { 0.15f, 0.0f, 0.0f };
