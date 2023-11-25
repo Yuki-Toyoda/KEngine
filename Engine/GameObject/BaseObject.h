@@ -134,6 +134,9 @@ public: // パブリックなメンバ変数
 	// メッシュリスト
 	std::vector<Mesh*> meshes_;
 
+	// デストロイトリガー
+	bool isDestroy_;
+
 protected: // 継承メンバ変数
 
 	// 形状マネージャのインスタンス
@@ -145,9 +148,6 @@ protected: // 継承メンバ変数
 	Tag tag_;
 	// オブジェクト名
 	std::string name_;
-
-	// デストロイトリガー
-	bool isDestroy_;
 
 	// 色
 	Vector4 color_ = { 1.0f, 1.0f, 1.0f, 1.0f };

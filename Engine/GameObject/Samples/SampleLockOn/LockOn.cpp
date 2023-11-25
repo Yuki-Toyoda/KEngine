@@ -27,12 +27,8 @@ void LockOn::Update()
 	// 入力取得
 	preJoyState_ = joyState_; // 前フレームの入力取得
 	input_->GetJoystickState(0, joyState_); // 現在フレームの入力取得
-	if ((joyState_.Gamepad.bRightTrigger > 10) &&
-		!(preJoyState_.Gamepad.bRightTrigger > 10)) {
-		SerchEnemy();
-	}
 
-	if (target_ != nullptr) {
+	if (target_ != nullptr && !target_->isDestroy_) {
 		meshes_[0]->isActive_ = true;
 		// ロックオン対象のワールド座標を取得
 		Vector3 positionWorld = target_->transform_.GetWorldPos();
@@ -41,10 +37,21 @@ void LockOn::Update()
 		// ワールド座標をスクリーン座標に変換
 		transform_.translate_ = Math::Transform(positionWorld, matViewProjectionMat);
 
-
+		if ((joyState_.Gamepad.bLeftTrigger > 10) &&
+			!(preJoyState_.Gamepad.bLeftTrigger > 10)) {
+			target_ = nullptr;
+		}
+		else if (IsOutOfRange()) {
+			target_ = nullptr;
+		}
 	}
 	else {
 		meshes_[0]->isActive_ = false;
+
+		if ((joyState_.Gamepad.bLeftTrigger > 10) &&
+			!(preJoyState_.Gamepad.bLeftTrigger > 10)) {
+			SerchEnemy();
+		}
 	}
 }
 
@@ -92,4 +99,21 @@ void LockOn::SerchEnemy()
 		// ソートの結果一番近い敵をロックオン対象とする
 		target_ = targets_.front().second;
 	}
+}
+
+bool LockOn::IsOutOfRange()
+{
+	// ワールド座標の取得
+	Vector3 worldPosition = target_->transform_.GetWorldPos();
+	// ワールドからビュー座標に変換する
+	Vector3 positionView = Math::Transform(worldPosition, camera_->GetViewMatrix());
+
+	// 距離条件にあっているかチェック
+	if (minDisntance_ <= positionView.z && positionView.z <= maxDistance_) {
+		// あっていたら範囲外じゃない
+		return false;
+	}
+
+	// 合ってなかったら範囲外
+	return true;
 }

@@ -41,13 +41,19 @@ public: // アクセッサ等
 	/// <param name="camera">カメラ</param>
 	void SetTPCamera(ThirdPersonCamera* camera) { camera_ = camera; }
 
-public: // その他関数群
+private: // その他関数群
 
 	/// <summary>
 	/// 
 	/// </summary>
 	/// <param name="enemies"></param>
 	void SerchEnemy();
+
+	/// <summary>
+	/// ロックオンの対象が範囲外にいるかどうかの検証関数
+	/// </summary>
+	/// <returns>範囲外か</returns>
+	bool IsOutOfRange();
 
 private: // メンバ変数
 
