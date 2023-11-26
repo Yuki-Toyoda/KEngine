@@ -5,6 +5,16 @@
 #include "../SampleLockOn/LockOn.h"
 #include "../../GameObjectManager.h"
 
+// 静的なメンバ変数の実体を宣言
+const std::array<SamplePlayer::constAttack, SamplePlayer::comboNum_> SamplePlayer::kConstAttacks_ = 
+{
+	{
+		{0.15f, 0.35f, 2.5f, 0.5f },
+		{0.45f, 0.35f, 5.0f, 0.5f },
+		{0.65f, 0.10f, 12.5f, 0.7f },
+	}
+};
+
 void SamplePlayer::Initialize()
 {
 	// ワールド座標初期化
@@ -377,11 +387,20 @@ void SamplePlayer::BehaviorAttackInitialize()
 
 void SamplePlayer::BehaviorAttackUpdate()
 {
+	if (workAttack_.comboIndex < comboNum_ - 1) {
+		if ((joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_X) &&
+			!(preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_X)) {
+			workAttack_.comboNext = true;
+		}
+	}
+
 	// 現在の攻撃状態によって遷移
 	switch (attackState_) {
 	case SamplePlayer::SwingOver:
 		// イージングによって振りかぶる動作を行う
-		if (t_ <= swingOverTime_) {
+		if (t_ <= kConstAttacks_[workAttack_.comboIndex].swingOverTime_) {
+
+			attackForward_ = kConstAttacks_[workAttack_.comboIndex].attackForward_;
 
 			if (lockOn_->target_ != nullptr && !lockOn_->target_->isDestroy_) {
 				// ロックオン対象の座標
@@ -402,7 +421,7 @@ void SamplePlayer::BehaviorAttackUpdate()
 						attackForward_ = distance - threShold;
 					}
 					else {
-						attackForward_ = 10.0f;
+						attackForward_ = kConstAttacks_[workAttack_.comboIndex].attackForward_;
 					}
 				}
 
@@ -455,16 +474,16 @@ void SamplePlayer::BehaviorAttackUpdate()
 		break;
 	case SamplePlayer::Attack:
 		// イージングによって攻撃動作を行う
-		if (t_ <= attackTime_) {
+		if (t_ <= kConstAttacks_[workAttack_.comboIndex].attackTime_) {
 			// イージングで腕の角度を調整
 			armTransform_R_.rotate_.x =
-				Math::EaseOut(t_, swingOverEndAngle_, attackEndAngle_, attackTime_);
+				Math::EaseOut(t_, swingOverEndAngle_, attackEndAngle_, kConstAttacks_[workAttack_.comboIndex].attackTime_);
 			armTransform_L_.rotate_.x =
-				Math::EaseOut(t_, swingOverEndAngle_, attackEndAngle_, attackTime_);
+				Math::EaseOut(t_, swingOverEndAngle_, attackEndAngle_, kConstAttacks_[workAttack_.comboIndex].attackTime_);
 
 			// イージングでプレイヤーを移動
 			transform_.translate_ =
-				Math::EaseOut(t_, attackStartPos_, attackEndPos_, attackTime_);
+				Math::EaseOut(t_, attackStartPos_, attackEndPos_, kConstAttacks_[workAttack_.comboIndex].attackTime_);
 
 			// 攻撃状態に
 			weapon_->SetIsAttack(true);
@@ -481,7 +500,7 @@ void SamplePlayer::BehaviorAttackUpdate()
 		break;
 	case SamplePlayer::Wait:
 		// 待機
-		if (t_ <= attackWaitTime_) {
+		if (t_ <= kConstAttacks_[workAttack_.comboIndex].attackWaitTime_) {
 
 			// 攻撃していない状態に
 			weapon_->SetIsAttack(false);
@@ -490,8 +509,18 @@ void SamplePlayer::BehaviorAttackUpdate()
 			t_ += 1.0f / 60.0f;
 		}
 		else {
-			// 通常行動に戻すように命令
-			behaviorRequest_ = kRoot;
+			// コンボ継続なら次のコンボへ
+			if (workAttack_.comboNext) {
+				// 攻撃続行
+				behaviorRequest_ = kAttack;
+				workAttack_.comboNext = false;
+				workAttack_.comboIndex++;
+			}
+			else {
+				// 通常行動に戻すように命令
+				behaviorRequest_ = kRoot;
+				workAttack_.comboIndex = 0;
+			}
 		}
 		// 演出終了
 		break;

@@ -26,6 +26,23 @@ private: // サブクラス
 		float dashSpeed_;
 	};
 
+	struct constAttack {
+		// 振りかぶり秒数
+		float swingOverTime_ = 0.5f;
+		// 攻撃秒数
+		float attackTime_ = 0.25f;
+		// 攻撃の時どれだけ前に進むか
+		float attackForward_ = 10.0f;
+		// 攻撃後硬直秒数
+		float attackWaitTime_ = 0.5f;
+	};
+
+	struct WorkAttack {
+		int32_t comboIndex = 0;
+		int32_t inComboPhase = 0;
+		bool comboNext = false;
+	};
+
 public: // メンバ関数
 
 	/// <summary>
@@ -205,6 +222,14 @@ private: // メンバ変数
 
 	// 攻撃演出用t
 	float t_ = 0.0f;
+
+	// コンボ数
+	static const int comboNum_ = 3;
+	// コンボ定数配列
+	static const std::array<constAttack, comboNum_> kConstAttacks_;
+
+	// 攻撃コンボ用変数
+	WorkAttack workAttack_;
 
 	// 振りかぶり秒数
 	float swingOverTime_ = 0.5f;
