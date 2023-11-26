@@ -189,7 +189,7 @@ void SamplePlayer::Update()
 		collisionManager_->RegisterCollider(collider_.get());
 	}
 
-	tpCamera_->UpdateTarget();
+	//tpCamera_->UpdateTarget();
 }
 
 void SamplePlayer::DisplayImGui()
@@ -299,6 +299,17 @@ void SamplePlayer::BehaviorRootUpdate()
 		// トランスフォームに回転行列をセット
 		transform_.SetRotateMat(targetAngle_);
 	}
+	else if (lockOn_->target_ != nullptr && !lockOn_->target_->isDestroy_) {
+		// ロックオン対象の座標
+		Vector3 targetPos = lockOn_->target_->transform_.translate_;
+		// 追従対象からロックオン対象への差分ベクトル
+		Vector3 sub = targetPos - transform_.translate_;
+
+		// 方向ベクトルを元にプレイヤーがいる角度を求める
+		transform_.rotate_.y = atan2(sub.x, sub.z);
+		// セットされている回転行列を削除
+		transform_.ResetRotateMat();
+	}
 
 	// ジャンプ可能なら
 	if (canJump_) {
@@ -371,6 +382,34 @@ void SamplePlayer::BehaviorAttackUpdate()
 	case SamplePlayer::SwingOver:
 		// イージングによって振りかぶる動作を行う
 		if (t_ <= swingOverTime_) {
+
+			if (lockOn_->target_ != nullptr && !lockOn_->target_->isDestroy_) {
+				// ロックオン対象の座標
+				Vector3 targetPos = lockOn_->target_->transform_.translate_;
+				// 追従対象からロックオン対象への差分ベクトル
+				Vector3 sub = targetPos - transform_.translate_;
+
+				// 距離
+				float distance = Math::Length(sub);
+				// 距離閾値
+				const float threShold = 0.2f;
+
+				if (distance > threShold) {
+					// 方向ベクトルを元にプレイヤーがいる角度を求める
+					transform_.rotate_.y = atan2(sub.x, sub.z);
+
+					if (attackForward_ > distance - threShold) {
+						attackForward_ = distance - threShold;
+					}
+					else {
+						attackForward_ = 10.0f;
+					}
+				}
+
+				// セットされている回転行列を削除
+				transform_.ResetRotateMat();
+			}
+
 			// イージングで腕の角度を調整
 			armTransform_R_.rotate_.x =
 				Math::EaseOut(t_, swingOverStartAngle_, swingOverEndAngle_, swingOverTime_);
@@ -394,9 +433,18 @@ void SamplePlayer::BehaviorAttackUpdate()
 			move = Math::Normalize(move) * attackForward_;
 
 			// カメラの角度から回転行列を生成
-			//Matrix4x4 rotateMat = Math::MakeRotateXYZMatrix(transform_.rotate_);
+			Matrix4x4 rotateMat = Math::MakeIdentity4x4();
+
+			if (transform_.rotateMat_ != nullptr) {
+				rotateMat = targetAngle_;
+			}
+			else {
+				// カメラの角度から回転行列を生成
+				rotateMat = Math::MakeRotateXYZMatrix(transform_.rotate_);
+			}
+			
 			// 移動ベクトルをカメラの角度に応じて回転させる
-			move = Math::Transform(move, targetAngle_);
+			move = Math::Transform(move, rotateMat);
 
 			// 攻撃終端地点を設定
 			attackEndPos_ = attackStartPos_ + move;

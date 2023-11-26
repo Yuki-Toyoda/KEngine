@@ -56,7 +56,7 @@ void BaseObject::PreUpdate()
 	if (transform_.rotate_.z > (float)std::numbers::pi * 2.0f)
 		transform_.rotate_.z = transform_.rotate_.z - (float)std::numbers::pi * 2.0f;
 	if (transform_.rotate_.z < -(float)std::numbers::pi * 2.0f)
-		transform_.rotate_.z = (float)std::numbers::pi * 2.0f + (transform_.rotate_.z - (float)std::numbers::pi * 2.0f); // z
+		transform_.rotate_.z = (transform_.rotate_.z + (float)std::numbers::pi * 2.0f); // z
 
 	
 }

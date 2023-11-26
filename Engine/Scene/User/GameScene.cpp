@@ -42,6 +42,7 @@ void GameScene::Initialize(){
 	lockOn = gameObjectManager_->CreateInstance<LockOn>("LockOn", BaseObject::TagPlayer);
 	player->SetLockOn(lockOn);
 	lockOn->SetTPCamera(camera);
+	camera->SetLockOn(*lockOn);
 }
 
 void GameScene::Update()

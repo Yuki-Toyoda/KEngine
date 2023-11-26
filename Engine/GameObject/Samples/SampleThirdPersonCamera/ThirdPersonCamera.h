@@ -1,6 +1,9 @@
 #pragma once
 #include "../../Core/Camera.h"
 
+// クラスの前方宣言
+class LockOn;
+
 /// <summary>
 /// 三人称の追従カメラ
 /// </summary>
@@ -18,12 +21,23 @@ public: // メンバ関数
 	/// </summary>
 	void Update() override;
 
+	/// <summary>
+	/// ImGui表示関数
+	/// </summary>
+	void DisplayImGui() override;
+
 public: // その他関数群
 
 	/// <summary>
 	/// リセット関数
 	/// </summary>
 	void Reset();
+
+	/// <summary>
+	/// ロックオンクラスセッター
+	/// </summary>
+	/// <param name="lockOn">ロックオンクラス</param>
+	void SetLockOn(const LockOn& lockOn) { lockOn_ = &lockOn; }
 
 	/// <summary>
 	/// カメラの追従対象セッター
@@ -47,6 +61,9 @@ private:
 	// コントローラー入力
 	XINPUT_STATE joyState_; // 現在フレーム用
 	XINPUT_STATE preJoyState_; // 前フレーム用
+
+	// ロックオンクラス
+	const LockOn* lockOn_ = nullptr;
 
 	// 追従対象のワールド座標
 	const WorldTransform* target_ = nullptr;

@@ -1,4 +1,6 @@
 #include "ThirdPersonCamera.h"
+#include "../SampleLockOn/LockOn.h"
+#include "../SampleEnemy/SampleEnemy.h"
 
 void ThirdPersonCamera::Initialize()
 {
@@ -24,21 +26,45 @@ void ThirdPersonCamera::Update()
 	preJoyState_ = joyState_; // 前フレームの入力取得
 	input_->GetJoystickState(0, joyState_); // 現在フレームの入力取得
 
-	// 旋回速度
-	const float speed = 0.05f;
+	// ロックオン中の場合
+	if (lockOn_->target_ != nullptr && !lockOn_->target_->isDestroy_) {
+		// ロックオン対象の座標
+		Vector3 targetPos = lockOn_->target_->transform_.translate_;
+		// 追従対象からロックオン対象への差分ベクトル
+		Vector3 sub = targetPos - target_->translate_;
 
-	// スティックの横移動に対してカメラを旋回
-	targetAngle_ += (float)joyState_.Gamepad.sThumbRX / SHRT_MAX * speed;
-	if (targetAngle_ >= (float)std::numbers::pi * 2.0f || (float)-std::numbers::pi * 2.0f >= targetAngle_)
-		targetAngle_ = 0.0f;
+		// 方向ベクトルを元にプレイヤーがいる角度を求める
+		targetAngle_ = atan2(sub.x, sub.z);
+		//Matrix4x4 rotateMat =
+		//	Math::MakeRotateYMatrix(-atan2(sub.x, sub.z));
+		//Vector3 subA = Math::Transform(sub, rotateMat);
+		//transform_.rotate_.x = atan2(-subA.y, subA.z);
+	}
+	else {
+		// 旋回速度
+		const float speed = 0.05f;
+		
+		// スティックの横移動に対してカメラを旋回
+		targetAngle_ += (float)joyState_.Gamepad.sThumbRX / SHRT_MAX * speed;
+		if (targetAngle_ >= (float)std::numbers::pi * 2.0f || (float)-std::numbers::pi * 2.0f >= targetAngle_)
+			targetAngle_ = 0.0f;
 
-	if (joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_THUMB) {
-		targetAngle_ = target_->rotate_.y;
+		if (joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_THUMB) {
+			targetAngle_ = target_->rotate_.y;
+		}
 	}
 
 	transform_.rotate_.y = Math::LerpShortAngle(transform_.rotate_.y, targetAngle_, 0.25f);
 
 	UpdateTarget();
+}
+
+void ThirdPersonCamera::DisplayImGui()
+{
+	// 基底クラスの表示処理
+	Camera::DisplayImGui();
+	// 目標回転角の表示
+	ImGui::DragFloat("targetAngle", &targetAngle_, 0.05f);
 }
 
 void ThirdPersonCamera::Reset()

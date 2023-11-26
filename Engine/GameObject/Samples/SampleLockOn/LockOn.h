@@ -2,8 +2,8 @@
 #include "../../BaseObject.h"
 #include "../../../Input/Input.h"
 
-class SampleEnemy;
 class ThirdPersonCamera;
+class SampleEnemy;
 
 /// <summary>
 /// ロックオンクラス
@@ -55,6 +55,11 @@ private: // その他関数群
 	/// <returns>範囲外か</returns>
 	bool IsOutOfRange();
 
+public: 
+
+	//　ロックオン中の敵
+	const SampleEnemy* target_ = nullptr;
+
 private: // メンバ変数
 
 	// 入力検知クラス
@@ -71,9 +76,6 @@ private: // メンバ変数
 
 	// 敵リスト
 	 std::list<SampleEnemy*> enemies_;
-
-	//　ロックオン中の敵
-	const SampleEnemy* target_ = nullptr;
 
 	// ロックオン最小距離
 	float minDisntance_ = 10.0f;
