@@ -47,12 +47,25 @@ void GameScene::Initialize(){
 
 void GameScene::Update()
 {
-	// デバッグ時のみ特定のキーでシーン遷移
-#ifdef _DEBUG
 	// デバッグ遷移
 	if (input_->TriggerKey(DIK_RSHIFT)) {
 		BaseScene* nextScene = new TitleScene();
 		SceneManager::GetInstance()->SetNextScene(nextScene);
 	}
+
+	ImGui::Begin("particle");
+	if (ImGui::Button("Play")) {
+		// ロックオンシステム生成
+		SampleHitParticle* hitParticle = nullptr;
+		hitParticle = gameObjectManager_->CreateInstance<SampleHitParticle>("HitParticle", BaseObject::TagPlayer);
+	}
+	ImGui::End();
+
+	// デバッグ時のみ特定のキーでシーン遷移
+#ifdef _DEBUG
+
+	
+
+	
 #endif // _DEBUG
 }

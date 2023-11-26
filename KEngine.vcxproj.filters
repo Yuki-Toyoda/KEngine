@@ -162,6 +162,9 @@
     <ClCompile Include="Engine\GameObject\Samples\SampleLockOn\LockOn.cpp">
       <Filter>GameObject\Samples\LockOn</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\GameObject\Samples\SampleHitParticle\SampleHitParticle.cpp">
+      <Filter>GameObject\Samples\HitParticle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -356,6 +359,9 @@
     <ClInclude Include="Engine\GameObject\Samples\SampleLockOn\LockOn.h">
       <Filter>GameObject\Samples\LockOn</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\GameObject\Samples\SampleHitParticle\SampleHitParticle.h">
+      <Filter>GameObject\Samples\HitParticle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -467,6 +473,9 @@
     </Filter>
     <Filter Include="GameObject\Samples\LockOn">
       <UniqueIdentifier>{43051f82-85dc-4c45-b614-986b73ae10f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Samples\HitParticle">
+      <UniqueIdentifier>{b5bddbce-fb88-453b-a05e-daee0ce1b4f2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

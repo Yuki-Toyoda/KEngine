@@ -109,6 +109,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\GameObject\Samples\SampleBox\SampleBox.cpp" />
     <ClCompile Include="Engine\GameObject\Samples\SampleEnemy\SampleEnemy.cpp" />
     <ClCompile Include="Engine\GameObject\Samples\SampleFloor\SampleFloor.cpp" />
+    <ClCompile Include="Engine\GameObject\Samples\SampleHitParticle\SampleHitParticle.cpp" />
     <ClCompile Include="Engine\GameObject\Samples\SampleLockOn\LockOn.cpp" />
     <ClCompile Include="Engine\GameObject\Samples\SamplePlayer\SamplePlayer.cpp" />
     <ClCompile Include="Engine\GameObject\Samples\SampleSkyDome\SkyDome.cpp" />
@@ -170,6 +171,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\GameObject\Samples\SampleBox\SampleBox.h" />
     <ClInclude Include="Engine\GameObject\Samples\SampleEnemy\SampleEnemy.h" />
     <ClInclude Include="Engine\GameObject\Samples\SampleFloor\SampleFloor.h" />
+    <ClInclude Include="Engine\GameObject\Samples\SampleHitParticle\SampleHitParticle.h" />
     <ClInclude Include="Engine\GameObject\Samples\SampleLockOn\LockOn.h" />
     <ClInclude Include="Engine\GameObject\Samples\SamplePlayer\SamplePlayer.h" />
     <ClInclude Include="Engine\GameObject\Samples\SampleSkyDome\SkyDome.h" />

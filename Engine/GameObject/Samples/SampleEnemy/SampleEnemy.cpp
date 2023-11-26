@@ -1,6 +1,7 @@
 #include "SampleEnemy.h"
 #include "../../GameObjectManager.h"
 #include "../SampleThirdPersonCamera/ThirdPersonCamera.h"
+#include "../SampleHitParticle/SampleHitParticle.h"
 
 void SampleEnemy::Initialize()
 {
@@ -168,6 +169,10 @@ void SampleEnemy::OnCollisionEnter(BaseObject* object)
 			// スピードを設定
 			awaySpeed_ = 0.5f;
 		}
+
+		SampleHitParticle* hp = GameObjectManager::GetInstance()->CreateInstance<SampleHitParticle>("HitParticle", BaseObject::TagNone);
+		hp->transform_.translate_ = transform_.translate_;
+		hp->SetTarget(transform_.translate_);
 
 		// 命中クールタイムリセット
 		hitCoolTime_ = kHitCoolTime;

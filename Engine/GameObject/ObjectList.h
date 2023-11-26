@@ -12,3 +12,4 @@
 #include "Samples/SampleFloor/SampleFloor.h"
 #include "Samples/SampleEnemy/SampleEnemy.h"
 #include "Samples/SampleLockOn/LockOn.h"
+#include "Samples/SampleHitParticle/SampleHitParticle.h"
