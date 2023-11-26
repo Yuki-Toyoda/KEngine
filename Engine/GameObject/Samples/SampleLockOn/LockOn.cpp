@@ -44,6 +44,18 @@ void LockOn::Update()
 		else if (IsOutOfRange()) {
 			target_ = nullptr;
 		}
+
+		if ((joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT) &&
+			!(preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT)) {
+			if (lockableEnemies_.size() > 1) {
+				// ロックオン配列番号インクリメント
+				LockOnIndex_++;
+				if (LockOnIndex_ >= lockableEnemies_.size()) {
+					LockOnIndex_ = 0;
+				}
+				target_ = lockableEnemies_[LockOnIndex_];
+			}
+		}
 	}
 	else {
 		meshes_[0]->isActive_ = false;
@@ -69,6 +81,11 @@ void LockOn::SerchEnemy()
 {
 	// ロックオン目標
 	std::list<std::pair<float, const SampleEnemy*>> targets_;
+
+	// ロックオン番号リセット
+	LockOnIndex_ = 0;
+	// ロックオン可能敵リストをクリア
+	lockableEnemies_.clear();
 
 	for(const SampleEnemy* enemy : enemies_){
 		// ワールド座標の取得
@@ -98,6 +115,10 @@ void LockOn::SerchEnemy()
 		targets_.sort([](auto& pair1, auto& pair2) {return pair1.first < pair2.first; });
 		// ソートの結果一番近い敵をロックオン対象とする
 		target_ = targets_.front().second;
+		
+		for (std::pair<float, const SampleEnemy*>enemy : targets_) {
+			lockableEnemies_.push_back(enemy.second);
+		}
 	}
 }
 
