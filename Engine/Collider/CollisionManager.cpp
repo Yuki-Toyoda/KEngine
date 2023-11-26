@@ -137,7 +137,7 @@ bool CollisionManager::CheckCollisionExit(Collider* collider)
 	for (; itr != objectList.end(); itr++) {
 		// イテレータAからコライダーAを取得する
 		BaseObject* colliderA = *itr;
-		if (collider == nullptr || collider->GetGameObject() == nullptr) // 
+		if (collider == nullptr || collider->GetGameObject() == nullptr || !collider->GetGameObject()->GetIsDestroy()) // 
 			continue;
 
 		// そのオブジェクトが衝突していなかった場合

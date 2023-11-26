@@ -30,9 +30,11 @@ bool Collider::GetPrevCollisionObject(std::string name)
 	// 要素がある場合
 	if (GetPrevCollisionObject()) {
 		for (BaseObject* object : prevCollisionObjects_) {
-			// 同名オブジェクトを見つけた場合true
-			if (name == object->GetObjectName())
-				return true;
+			if (!object->GetIsDestroy()) {
+				// 同名オブジェクトを見つけた場合true
+				if (name == object->GetObjectName())
+					return true;
+			}
 		}
 		// 同名オブジェクトを場合False
 		return false;

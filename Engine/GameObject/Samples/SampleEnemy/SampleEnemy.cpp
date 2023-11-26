@@ -1,4 +1,6 @@
 #include "SampleEnemy.h"
+#include "../../GameObjectManager.h"
+#include "../SampleThirdPersonCamera/ThirdPersonCamera.h"
 
 void SampleEnemy::Initialize()
 {
@@ -27,8 +29,10 @@ void SampleEnemy::Initialize()
 	// 落下加速度
 	kFallAcceleration_ = 0.0098f;
 
-	// 攻撃が当たってない
-	isHit_ = false;
+	// 敵のHP
+	hp_ = 3;
+	// クールタイムリセット
+	hitCoolTime_ = 0;
 
 	// 当たり判定用aabb生成
 	AABB* aabb = new AABB();
@@ -41,18 +45,29 @@ void SampleEnemy::Initialize()
 
 void SampleEnemy::Update()
 {
-	// スティックの入力に応じて移動
-	Vector3 move = { 0.0f, 0.0f,1.0f };
+	// 吹っ飛び状態でないとき
+	if (awaySpeed_ <= 0.0f) {
+		// スティックの入力に応じて移動
+		Vector3 move = { 0.0f, 0.0f,1.0f };
 
-	// 移動量を正規化、スピードを加算
-	move = Math::Normalize(move) * 0.1f;
-	// カメラの角度から回転行列を生成
-	Matrix4x4 rotateMat = Math::MakeRotateYMatrix(transform_.rotate_.y);
-	// 移動ベクトルをカメラの角度に応じて回転させる
-	move = Math::Transform(move, rotateMat);
-	transform_.translate_ = transform_.translate_ + move;
+		// 移動量を正規化、スピードを加算
+		move = Math::Normalize(move) * 0.1f;
+		// カメラの角度から回転行列を生成
+		Matrix4x4 rotateMat = Math::MakeRotateYMatrix(transform_.rotate_.y);
+		// 移動ベクトルをカメラの角度に応じて回転させる
+		move = Math::Transform(move, rotateMat);
+		transform_.translate_ = transform_.translate_ + move;
 
-	transform_.rotate_.y += 0.025f;
+		transform_.rotate_.y += 0.025f;
+	}	
+
+	// ダメージ処理
+	if (hp_ > 0) {
+		Damage();
+	}
+	else {
+		Dead();
+	}
 
 	// 接地していないなら
 	if (!isLanding_) {
@@ -92,8 +107,13 @@ void SampleEnemy::Update()
 		Destroy();
 	}
 
-	if (isHit_)
-		Destroy();
+	if (hitCoolTime_ > 0) {
+		// クールタイムデクリメント
+		hitCoolTime_--;
+	}
+	else {
+		hitCoolTime_ = 0;
+	}
 
 	isLanding_ = false;
 
@@ -108,6 +128,7 @@ void SampleEnemy::Update()
 void SampleEnemy::DisplayImGui()
 {
 	transform_.DisplayImGui();
+	ImGui::InputInt("HP", &hp_);
 }
 
 void SampleEnemy::OnCollisionEnter(BaseObject* object)
@@ -119,8 +140,38 @@ void SampleEnemy::OnCollisionEnter(BaseObject* object)
 		isLanding_ = true;
 	}
 
-	if (object->GetObjectTag() == TagWeapon)
-		isHit_ = true;
+	// 武器と当たったら
+	if (object->GetObjectTag() == TagWeapon && hitCoolTime_ <= 0) {
+		// HPを減らす
+		hp_--;
+
+		// 吹っ飛びベクトルの設定
+		if (hp_ > 0) {
+			// 使用中のカメラｗぽ取得
+			ThirdPersonCamera* camera = GameObjectManager::GetInstance()->GetGameObject<ThirdPersonCamera>("TPCamera");
+			// 敵が今向いている方向の反対ベクトルを取る
+			Matrix4x4 rotateMat = Math::MakeRotateYMatrix(camera->transform_.rotate_.y);
+			awayVector_ = {0.0f, 0.0f, 1.0f};
+			awayVector_ = Math::Normalize(Math::Transform(awayVector_, rotateMat));
+			awayVector_.y = 0.5f;
+			// スピードを設定
+			awaySpeed_ = 1.0f;
+		}
+		else {
+			// 使用中のカメラｗぽ取得
+			ThirdPersonCamera* camera = GameObjectManager::GetInstance()->GetGameObject<ThirdPersonCamera>("TPCamera");
+			// 敵が今向いている方向の反対ベクトルを取る
+			Matrix4x4 rotateMat = Math::MakeRotateYMatrix(camera->transform_.rotate_.y);
+			awayVector_ = { 0.0f, 0.0f, 1.0f };
+			awayVector_ = Math::Normalize(Math::Transform(awayVector_, rotateMat));
+			awayVector_.y = 0.5f;
+			// スピードを設定
+			awaySpeed_ = 0.5f;
+		}
+
+		// 命中クールタイムリセット
+		hitCoolTime_ = kHitCoolTime;
+	}
 }
 
 void SampleEnemy::OnCollision(BaseObject* object)
@@ -132,5 +183,41 @@ void SampleEnemy::OnCollision(BaseObject* object)
 		transform_.translate_.y = object->transform_.translate_.y + object->transform_.scale_.y * 2.0f;
 		// 接地判定On
 		isLanding_ = true;
+	}
+}
+
+void SampleEnemy::Damage()
+{
+	// 吹っ飛びスピードが0でなければ
+	if (awaySpeed_ > 0) {
+		// 吹っ飛び方向を求める
+		Vector3 away = awayVector_* awaySpeed_;
+		// 移動させる
+		transform_.translate_ = transform_.translate_ + away;
+
+		// 吹っ飛びスピードを少しづつ遅くする
+		awaySpeed_ -= 0.1f;
+	}
+	else {
+		// 吹っ飛びスピードを0
+		awaySpeed_ = 0.0f;
+	}
+}
+
+void SampleEnemy::Dead()
+{
+	// 吹っ飛び方向を求める
+	Vector3 away = awayVector_ * awaySpeed_;
+	// 移動させる
+	transform_.translate_ = transform_.translate_ + away;
+
+	// 吹っ飛びスピードを少しづつ遅くする
+	color_.w = color_.w -= 0.01f;
+
+	// 吹っ飛びスピードを徐々に上げる
+	awaySpeed_ += 0.001f;
+
+	if (color_.w <= 0.0f) {
+		Destroy();
 	}
 }

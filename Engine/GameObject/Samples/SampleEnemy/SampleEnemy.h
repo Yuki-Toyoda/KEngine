@@ -37,6 +37,16 @@ public: // その他関数群
 	/// <param name="object">衝突したオブジェクト</param>
 	void OnCollision(BaseObject* object) override;
 
+	/// <summary>
+	/// ダメージ演出関数
+	/// </summary>
+	void Damage();
+
+	/// <summary>
+	/// 死亡演出関数
+	/// </summary>
+	void Dead();
+
 private: // メンバ変数
 
 	// 階層アニメーション用トランスフォーム
@@ -55,8 +65,19 @@ private: // メンバ変数
 	// 落下加速度
 	float kFallAcceleration_;
 
+	// 吹っ飛び方向ベクトル
+	Vector3 awayVector_;
+	// 吹っ飛びスピード
+	float awaySpeed_;
+
+	// 敵のHP
+	int32_t hp_ = 3;
+
 	// 攻撃が当たったか
-	bool isHit_;
+	uint32_t hitCoolTime_ = 0;
+	const uint32_t kHitCoolTime = 30;
+
+
 
 };
 

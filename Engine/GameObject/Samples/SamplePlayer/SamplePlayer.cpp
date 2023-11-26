@@ -411,7 +411,7 @@ void SamplePlayer::BehaviorAttackUpdate()
 				// 距離
 				float distance = Math::Length(sub);
 				// 距離閾値
-				const float threShold = 0.2f;
+				const float threShold = 0.1f;
 
 				if (distance > threShold) {
 					// 方向ベクトルを元にプレイヤーがいる角度を求める
