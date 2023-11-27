@@ -314,9 +314,10 @@ void SamplePlayer::BehaviorRootUpdate()
 		Vector3 targetPos = lockOn_->target_->transform_.translate_;
 		// 追従対象からロックオン対象への差分ベクトル
 		Vector3 sub = targetPos - transform_.translate_;
+		sub = Math::Normalize(sub);
 
 		// 方向ベクトルを元にプレイヤーがいる角度を求める
-		transform_.rotate_.y = atan2(sub.x, sub.z);
+		transform_.rotate_.y = Math::Angle({ 0.0f, 0.0f, 1.0f }, sub);
 		// セットされている回転行列を削除
 		transform_.ResetRotateMat();
 	}
@@ -413,10 +414,11 @@ void SamplePlayer::BehaviorAttackUpdate()
 				// 距離閾値
 				const float threShold = 0.1f;
 
-				if (distance > threShold) {
-					// 方向ベクトルを元にプレイヤーがいる角度を求める
-					transform_.rotate_.y = atan2(sub.x, sub.z);
+				sub = Math::Normalize(sub);
+				// 方向ベクトルを元にプレイヤーがいる角度を求める
+				transform_.rotate_.y = Math::Angle({ 0.0f, 0.0f, 1.0f }, sub);
 
+				if (distance > threShold) {
 					if (attackForward_ > distance - threShold) {
 						attackForward_ = distance - threShold;
 					}

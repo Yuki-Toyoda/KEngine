@@ -95,12 +95,12 @@ void LockOn::SerchEnemy()
 
 		// 距離条件にあっているかチェック
 		if (minDisntance_ <= positionView.z && positionView.z <= maxDistance_) {
-			// カメラ前方との角度を計算する
-			float arcTan = std::atan2(
-				std::sqrt(positionView.x * positionView.x + positionView.y * positionView.y), positionView.z);
+			Vector3 viewXZ = Math::Normalize(Vector3{ positionView.x,0.0f,positionView.z });
+			Vector3 viewZ = Math::Normalize(Vector3{ 0.0f,0.0f,positionView.z });
+			float cos = Math::Length(Math::Cross(viewXZ, viewZ));
 
 			// 角度条件チェック
-			if (std::abs(arcTan) <= angleRange_) {
+			if (std::abs(cos) <= angleRange_) {
 				// 条件に当てはまる敵をリストに追加する
 				targets_.push_back(std::make_pair(positionView.z, enemy));
 			}
