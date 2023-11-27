@@ -32,13 +32,11 @@ void ThirdPersonCamera::Update()
 		Vector3 targetPos = lockOn_->target_->transform_.translate_;
 		// 追従対象からロックオン対象への差分ベクトル
 		Vector3 sub = targetPos - target_->translate_;
+		sub = Math::Normalize(sub);
 
 		// 方向ベクトルを元にプレイヤーがいる角度を求める
-		targetAngle_ = atan2(sub.x, sub.z);
-		//Matrix4x4 rotateMat =
-		//	Math::MakeRotateYMatrix(-atan2(sub.x, sub.z));
-		//Vector3 subA = Math::Transform(sub, rotateMat);
-		//transform_.rotate_.x = atan2(-subA.y, subA.z);
+		targetAngle_ = Math::Angle({0.0f, 0.0f, 1.0f}, sub);
+
 	}
 	else {
 		// 旋回速度

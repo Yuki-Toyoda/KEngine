@@ -32,7 +32,7 @@ void GameScene::Initialize(){
 
 	// 敵生成
 	SampleEnemy* enemy = nullptr;
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < 5; i++) {
 		enemy = gameObjectManager_->CreateInstance<SampleEnemy>("Enemy", BaseObject::TagEnemy);
 		enemy->transform_.translate_ = { Math::RandomF(-15.0f, 15.0f, 2), 0.0f, Math::RandomF(10.0f, 15.0f, 2) };
 	}

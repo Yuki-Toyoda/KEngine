@@ -259,6 +259,10 @@ public:	// メンバ関数
 	/// <returns></returns>
 	static float LerpShortAngle(float a, float b, float t);
 
+	static float Cross(Vector2 lhs, Vector2 rhs);
+
+	static float Angle(const Vector3& from, const Vector3& to);
+
 	/// <summary>
 	/// ベクトル正規化関数
 	/// </summary>

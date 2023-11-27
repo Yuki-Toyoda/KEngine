@@ -9,8 +9,8 @@
 const std::array<SamplePlayer::constAttack, SamplePlayer::comboNum_> SamplePlayer::kConstAttacks_ = 
 {
 	{
-		{0.15f, 0.35f, 2.5f, 0.5f },
-		{0.45f, 0.35f, 5.0f, 0.5f },
+		{0.15f, 0.15f, 2.5f, 0.5f },
+		{0.45f, 0.15f, 5.0f, 0.5f },
 		{0.65f, 0.10f, 12.5f, 0.7f },
 	}
 };
@@ -299,7 +299,7 @@ void SamplePlayer::BehaviorRootUpdate()
 			moveDot = Math::Dot(v, move);
 			targetAngle_ = Math::DirectionToDirection({0.0f, 0.0f, 1.0f}, move);
 			if (moveDot == -1.0f)
-				targetAngle_ = targetAngle_ + Math::MakeRotateYMatrix((float)std::numbers::pi);
+				targetAngle_ = Math::MakeRotateYMatrix((float)std::numbers::pi);
 			move = Math::Normalize(move) * speed;
 		}
 
