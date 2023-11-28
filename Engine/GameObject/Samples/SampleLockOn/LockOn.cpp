@@ -56,6 +56,18 @@ void LockOn::Update()
 				target_ = lockableEnemies_[LockOnIndex_];
 			}
 		}
+
+		if ((joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT) &&
+			!(preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT)) {
+			if (lockableEnemies_.size() > 1) {
+				// ロックオン配列番号インクリメント
+				LockOnIndex_--;
+				if (LockOnIndex_ < 0) {
+					LockOnIndex_ = (int)lockableEnemies_.size() - 1;
+				}
+				target_ = lockableEnemies_[LockOnIndex_];
+			}
+		}
 	}
 	else {
 		meshes_[0]->isActive_ = false;

@@ -80,7 +80,7 @@ private: // メンバ変数
 	 // ロックオンできる敵リスト
 	 std::vector<const SampleEnemy*> lockableEnemies_;
 	 // ロックオンする敵の配列番号
-	 uint32_t LockOnIndex_ = 0;
+	 int LockOnIndex_ = 0;
 
 
 	// ロックオン最小距離
