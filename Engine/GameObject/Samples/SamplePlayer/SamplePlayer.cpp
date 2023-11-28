@@ -359,8 +359,8 @@ void SamplePlayer::BehaviorRootUpdate()
 	// リクエスト状態がダッシュ行動でない、接地状態であれば
 	if (behaviorRequest_ != kDash && behavior_ != kAttack) {
 		// Ｘボタンが入力されたら
-		if ((joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) &&
-			!(preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)) {
+		if ((joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) &&
+			!(preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)) {
 			// 次の行動を攻撃行動に
 			behaviorRequest_ = kDash;
 		}
@@ -553,7 +553,12 @@ void SamplePlayer::BehaviorDashUpdate()
 	// カメラの角度から回転行列を生成
 	//Matrix4x4 rotateMat = Math::MakeRotateXYZMatrix(transform_.rotate_);
 	// 移動ベクトルをカメラの角度に応じて回転させる
-	move = Math::Transform(move, targetAngle_);
+	if (transform_.rotateMat_ != nullptr) {
+		move = Math::Transform(move, targetAngle_);
+	}
+	else {
+		move = Math::Transform(move, Math::MakeRotateYMatrix(transform_.rotate_.y));
+	}
 
 	// 移動
 	transform_.translate_ = transform_.translate_ + move;

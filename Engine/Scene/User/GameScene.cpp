@@ -48,7 +48,7 @@ void GameScene::Initialize(){
 void GameScene::Update()
 {
 	// デバッグ遷移
-	if (input_->TriggerKey(DIK_RSHIFT)) {
+	if (input_->TriggerKey(DIK_RSHIFT) || gameObjectManager_->GetGameObject<SamplePlayer>("Player")->restart_) {
 		BaseScene* nextScene = new TitleScene();
 		SceneManager::GetInstance()->SetNextScene(nextScene);
 	}
