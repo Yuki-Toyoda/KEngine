@@ -644,14 +644,17 @@ Matrix4x4 Math::DirectionToDirection(const Vector3& from, const Vector3& to)
 
 void Math::MatrixImGui(Matrix4x4 m, std::string paramName)
 {
-	for (int i = 0; i < 4; i++) {
-		for (int j = 0; j < 4; j++) {
-			std::string param = std::to_string(m.m[i][j]);
-			ImGui::Text(param.c_str());
-			ImGui::SameLine();
+	if (ImGui::TreeNode(paramName.c_str())) {
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 4; j++) {
+				std::string param = std::to_string(m.m[i][j]);
+				ImGui::Text(param.c_str());
+				ImGui::SameLine();
+			}
+			ImGui::Spacing();
 		}
-		ImGui::Spacing();
-	}
+		ImGui::TreePop();
+	}	
 }
 
 Quaternion Math::MakeIdentityQuaternion()
