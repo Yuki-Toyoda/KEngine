@@ -9,12 +9,11 @@ GameObjectManager* GameObjectManager::GetInstance()
 void GameObjectManager::Initialize()
 {
 	// 全オブジェクトを破壊
-	for (BaseObject* object : objects_)
+	for (std::unique_ptr<BaseObject>& object : objects_)
 		object->Destroy();
 	// 破壊フラグの立ったオブジェクトを削除
-	objects_.remove_if([](BaseObject* object) {
+	objects_.remove_if([](std::unique_ptr<BaseObject>& object) {
 		if (object->GetIsDestroy()) {
-			delete object;
 			return true;
 		}
 		return false;
@@ -32,16 +31,15 @@ void GameObjectManager::Initialize()
 void GameObjectManager::Update()
 {
 	// 破壊フラグの立ったオブジェクトを削除
-	objects_.remove_if([](BaseObject* object) {
+	objects_.remove_if([](std::unique_ptr<BaseObject>& object) {
 		if (object->GetIsDestroy()) {
-			delete object;
 			return true;
 		}
 		return false;
 	});
 
 	// 全オブジェクトを更新
-	for (BaseObject* object : objects_) {
+	for (std::unique_ptr<BaseObject>& object : objects_) {
 		object->PreUpdate(); // 共通更新を呼び出す
 		object->Update();	 // 更新
 	}
@@ -76,9 +74,9 @@ BaseObject* GameObjectManager::GetGameObject(int index)
 	int count = 0;
 
 	// オブジェクトリスト内のオブジェクト番号と一致するオブジェクトを探す
-	for (BaseObject* object : objects_) {
+	for (std::unique_ptr<BaseObject>& object : objects_) {
 		if (count == index) // 引数と一致した場合
-			return object; // そのオブジェクトを返す
+			return object.get(); // そのオブジェクトを返す
 		count++; // 一致していなかった場合カウントをインクリメント
 	}
 	// 発見できなかった場合nullptrを返す
