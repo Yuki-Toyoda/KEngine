@@ -197,8 +197,8 @@ float Math::LerpShortAngle(float a, float b, float t)
 	float diff = b - a;
 
 	// 角度差分が-2πを下回る、または上回る時
-	if(diff <= (float)(-std::numbers::pi * 2.0f) || diff >= (float)(std::numbers::pi * 2.0f))
-	diff = std::fmod(a, b); // 角度差分を補正する
+	if (diff <= (float)(-std::numbers::pi * 2.0f) || diff >= (float)(std::numbers::pi * 2.0f))
+		diff = std::fmod(a, b); // 角度差分を補正する
 
 	// -πからπに補正する
 	if (diff >= (float)std::numbers::pi) {
@@ -206,7 +206,7 @@ float Math::LerpShortAngle(float a, float b, float t)
 	}
 	else if (diff <= (float)-std::numbers::pi)
 		diff += (float)std::numbers::pi * 2.0f;
-	
+
 	// 求めた角度を元に線形補間を行う
 	return result = a + (diff * t);
 
@@ -815,4 +815,3 @@ Matrix4x4 Math::QuaternionToMatrix(const Quaternion& q)
 	// 計算結果を返す
 	return result;
 }
-
