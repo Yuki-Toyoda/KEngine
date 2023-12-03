@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include <map>
 #include <string>
 #include <wrl.h>
@@ -71,7 +72,7 @@ private: // メンバ変数
 	DirectXCommon* dxCommon_;
 
 	// テクスチャコンテナ
-	std::map<std::string, Texture*> textures_;
+	std::map<std::string, std::unique_ptr<Texture>> textures_;
 
 };
 
