@@ -2,7 +2,7 @@
 
 BaseObject::~BaseObject()
 {
-	// 全形状を描画
+	// 全形状を削除
 	for (BasePrimitive* primitive : meshes_)
 		primitive->isDestroy_ = true;
 }
