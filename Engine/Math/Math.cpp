@@ -654,7 +654,7 @@ void Math::MatrixImGui(Matrix4x4 m, std::string paramName)
 			ImGui::Spacing();
 		}
 		ImGui::TreePop();
-	}
+	}	
 }
 
 Quaternion Math::MakeIdentityQuaternion()

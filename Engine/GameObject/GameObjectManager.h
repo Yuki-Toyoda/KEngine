@@ -43,15 +43,15 @@ public: // メンバ関数
 	template<IsBaseObject SelectObject>
 	inline SelectObject* CreateInstance(std::string name, BaseObject::Tag tag) {
 		// オブジェクトを生成
-		SelectObject* newObject = new SelectObject(); // インスタンスを生成
-		newObject->PreInitialize(name, tag);		  // 初期化
+		std::unique_ptr<SelectObject> newObject = std::make_unique<SelectObject>(); // インスタンスを生成
+		newObject->PreInitialize(name, tag);									    // 初期化
 
 		// 生成したオブジェクト名をかぶらないように設定
 		// 同名オブジェクト個数計算用
 		int sameNameCount = 0;
 
 		// 全オブジェクトから同名のオブジェクトがないか探す
-		for (BaseObject* object : objects_) {
+		for (std::unique_ptr<BaseObject>& object : objects_) {
 			// オブジェクト名を取得
 			std::string objectName = object->GetObjectName();
 			// オブジェクト名の末尾に数字が含まれている場合は末尾の文字を削除
@@ -74,10 +74,14 @@ public: // メンバ関数
 			newObject->SetObjectName(newObject->GetObjectName() + count);
 		}
 
-		// 生成したオブジェクトを追加
-		objects_.push_back(newObject);
+		// インスタンス変換用のオブジェクト
+		SelectObject* returnObject = newObject.get();
 
-		return newObject;
+		// 生成したオブジェクトを追加
+		objects_.push_back(std::move(newObject));
+
+		// オブジェクトを返す
+		return returnObject;
 	}
 
 	/// <summary>
@@ -118,9 +122,9 @@ public: // メンバ関数
 		std::vector<SelectObject*> result;
 
 		// 全オブジェクトから同名のオブジェクトがないか探す
-		for (BaseObject* object : objects_) {
+		for (std::unique_ptr<BaseObject>& object : objects_) {
 			// そのオブジェクトを選択型に返還
-			SelectObject* o = dynamic_cast<SelectObject*>(object);
+			SelectObject* o = dynamic_cast<SelectObject*>(object.get());
 			// 結果がnullptr以外だったらそれを配列に追加
 			if (o != nullptr)
 				result.push_back(o);
@@ -140,7 +144,7 @@ public: // メンバ関数
 private: // メンバ変数
 
 	// オブジェクトリスト
-	std::list<BaseObject*> objects_;
+	std::list<std::unique_ptr<BaseObject>> objects_;
 
 #ifdef _DEBUG // ImGui用デバッグ変数
 

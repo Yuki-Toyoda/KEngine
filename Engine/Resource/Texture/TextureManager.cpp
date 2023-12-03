@@ -38,8 +38,8 @@ Texture* TextureManager::LoadTexture(std::string directoryPath, std::string file
 
 	// テクスチャコンテナ内に同名テクスチャが見つからなかった場合生成
 	if (!textures_.count(fullPath))
-		textures_[fullPath] = new Texture(dxCommon_->GetCommandManager(), fullPath);
-	return textures_[fullPath];
+		textures_[fullPath] = std::make_unique<Texture>(dxCommon_->GetCommandManager(), fullPath);
+	return textures_[fullPath].get();
 }
 
 

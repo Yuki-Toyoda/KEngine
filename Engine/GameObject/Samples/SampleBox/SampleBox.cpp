@@ -16,6 +16,8 @@ void SampleBox::Initialize() {
 
 void SampleBox::Update() {
 
+	//transform_.rotate_.y += 0.01f;
+
 	// コライダーの更新
 	collider_->Update(transform_.GetWorldPos(), transform_.scale_);
 	// リストに自分自身を登録
@@ -33,6 +35,7 @@ void SampleBox::DisplayImGui() {
 
 	for (Mesh* mesh : meshes_) {
 		mesh->DisplayImGui();
+		ImGui::SliderInt("LayerNo", &mesh->layerNo_, 0, 10);
 		ImGui::Checkbox("isUI", &mesh->isUI_);
 	}
 }

@@ -89,6 +89,9 @@ public: // パブリックなメンバ変数
 	// 破壊トリガー
 	bool isDestroy_ = false;
 
+	// 描画順
+	int32_t layerNo_ = 0;
+
 	// UIとして使用するか
 	bool isUI_ = false;
 };

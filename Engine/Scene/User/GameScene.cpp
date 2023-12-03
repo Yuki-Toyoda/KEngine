@@ -3,16 +3,10 @@
 
 void GameScene::Initialize(){
 
-	Camera* newcamera = nullptr;
-	newcamera = gameObjectManager_->CreateInstance<Camera>("mainCamera", BaseObject::TagCamera);
-	newcamera->UseThisCamera();
-
+	// スカイドーム生成
 	SkyDome* skyDome = nullptr;
 	skyDome = gameObjectManager_->CreateInstance<SkyDome>("SkyDome", BaseObject::TagNone);
 
-	SampleBox* box = nullptr;
-	box = gameObjectManager_->CreateInstance<SampleBox>("box", BaseObject::TagNone);
-	box = gameObjectManager_->CreateInstance<SampleBox>("box", BaseObject::TagCamera);
 }
 
 void GameScene::Update()

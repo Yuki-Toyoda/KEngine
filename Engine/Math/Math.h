@@ -464,8 +464,6 @@ public:	// メンバ関数
 	/// <param name="angle">回転角</param>
 	/// <returns>任意軸回転を表すクォータニオン</returns>
 	static Quaternion MakeRotateAxisAngleQuaternion(const Vector3& v, float angle);
-
-
 	/// <summary>
 	/// ベクトルをクォータニオンで回転させた後のベクトルを求める関数
 	/// </summary>

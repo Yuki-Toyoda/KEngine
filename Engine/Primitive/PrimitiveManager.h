@@ -1,5 +1,6 @@
 #pragma once
 #include <list>
+#include <memory>
 #include "BasePrimitive.h"
 #include "3d/Mesh.h"
 
@@ -45,15 +46,18 @@ public: // メンバ関数
 	template <IsBasePrimitive SelectPrimitive>
 	inline SelectPrimitive* CreateInstance() {
 		// 形状のインスタンス
-		SelectPrimitive* newPrimitive = new SelectPrimitive(commandManager_);
+		std::unique_ptr<SelectPrimitive> newPrimitive = std::make_unique<SelectPrimitive>(commandManager_);
 		newPrimitive->ResizeVertices();
 		newPrimitive->ResizeIndexes();
 
+		// インスタンス変換用のオブジェクト
+		SelectPrimitive* returnPrimitive = newPrimitive.get();
+
 		// 生成した形状をリストに登録
-		primitives_.push_back(newPrimitive);
+		primitives_.push_back(std::move(newPrimitive));
 
 		// 生成した形状を返す
-		return newPrimitive;
+		return returnPrimitive;
 	}
 
 private: // メンバ変数
@@ -62,7 +66,7 @@ private: // メンバ変数
 	CommandManager* commandManager_ = nullptr;
 
 	// 描画形状リスト
-	std::list<BasePrimitive*> primitives_;
+	std::list<std::unique_ptr<BasePrimitive>> primitives_;
 
 };
 

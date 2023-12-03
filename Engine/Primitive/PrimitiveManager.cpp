@@ -13,9 +13,9 @@ void PrimitiveManager::Initialize()
 	commandManager_ = DirectXCommon::GetInstance()->GetCommandManager();
 
 	// 全登録形状を削除
-	primitives_.remove_if([](BasePrimitive* primitive) {
+	primitives_.remove_if([](std::unique_ptr<BasePrimitive>& primitive) {
+		primitive;
 		if (true) {
-			delete primitive;
 			return true;
 		}
 		return false;
@@ -28,14 +28,18 @@ void PrimitiveManager::Initialize()
 void PrimitiveManager::Draw()
 {
 	// 登録形状がNullだった場合その要素を削除
-	primitives_.remove_if([](BasePrimitive* primitive) {
-		if (primitive->isDestroy_ == true)
+	primitives_.remove_if([](std::unique_ptr<BasePrimitive>& primitive) {
+		if (primitive->isDestroy_)
 			return true;
 
 		return false;
 	});
 
+	// レイヤー番号で昇順にソート
+	primitives_.sort([](std::unique_ptr<BasePrimitive>& primitive1, std::unique_ptr<BasePrimitive>& primitive2) {return primitive1->layerNo_ < primitive2->layerNo_; });
+
 	// 全形状を描画
-	for (BasePrimitive* primitive : primitives_)
+	for (std::unique_ptr<BasePrimitive>& primitive : primitives_) {
 		primitive->Draw(commandManager_);
+	}	
 }

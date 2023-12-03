@@ -141,6 +141,24 @@
     <ClCompile Include="Engine\Collider\CollisionManager.cpp">
       <Filter>Collider</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\GameObject\Samples\SamplePlayer\SamplePlayer.cpp">
+      <Filter>GameObject\Samples\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\Samples\SampleThirdPersonCamera\ThirdPersonCamera.cpp">
+      <Filter>GameObject\Samples\ThirdPersonCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\Samples\SampleFloor\SampleFloor.cpp">
+      <Filter>GameObject\Samples\Floor</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\Samples\SampleWeapon\SampleWeapon.cpp">
+      <Filter>GameObject\Samples\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\Samples\SampleEnemy\SampleEnemy.cpp">
+      <Filter>GameObject\Samples\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Math\Quaternion.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -314,6 +332,24 @@
     <ClInclude Include="Engine\Collider\Shape\Sphere.h">
       <Filter>Collider\Shape</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\GameObject\Samples\SamplePlayer\SamplePlayer.h">
+      <Filter>GameObject\Samples\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\Samples\SampleThirdPersonCamera\ThirdPersonCamera.h">
+      <Filter>GameObject\Samples\ThirdPersonCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\Samples\SampleFloor\SampleFloor.h">
+      <Filter>GameObject\Samples\Floor</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\Samples\SampleWeapon\SampleWeapon.h">
+      <Filter>GameObject\Samples\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\Samples\SampleEnemy\SampleEnemy.h">
+      <Filter>GameObject\Samples\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Math\Quaternion.h">
+      <Filter>Math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -407,6 +443,21 @@
     </Filter>
     <Filter Include="Collider\Shape">
       <UniqueIdentifier>{90624c1b-4e9d-4395-a179-30f1589e163f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Samples\Player">
+      <UniqueIdentifier>{d84aac2d-9489-49be-88ec-37601d17a574}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Samples\ThirdPersonCamera">
+      <UniqueIdentifier>{784d2395-7411-4e99-b57a-9e0c77c24159}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Samples\Weapon">
+      <UniqueIdentifier>{cb785a87-d86d-4783-8dd2-88fede289ea2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Samples\Floor">
+      <UniqueIdentifier>{19b08627-6d9c-4f7d-8046-cd5783ffc7ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Samples\Enemy">
+      <UniqueIdentifier>{283a43bf-5d01-4128-8024-64fd4fa2aac4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
