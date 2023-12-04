@@ -36,7 +36,7 @@ void PrimitiveManager::Draw()
 	});
 
 	// レイヤー番号で昇順にソート
-	primitives_.sort([](std::unique_ptr<BasePrimitive>& primitive1, std::unique_ptr<BasePrimitive>& primitive2) {return primitive1->layerNo_ < primitive2->layerNo_; });
+	primitives_.sort([](std::unique_ptr<BasePrimitive>& primitive1, std::unique_ptr<BasePrimitive>& primitive2) {return primitive1->layerNo_ > primitive2->layerNo_; });
 
 	// 全形状を描画
 	for (std::unique_ptr<BasePrimitive>& primitive : primitives_) {
