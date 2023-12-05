@@ -1,6 +1,6 @@
 #include "DeltaTimer.h"
 
-void DeltaTimer::Start()
+void KLib::DeltaTimer::Start()
 {
 	// 各種項目のリセット
 	nowFlame_ = 0.0f; // フレーム
@@ -8,7 +8,7 @@ void DeltaTimer::Start()
 	isActive_ = true; // 有効トリガー
 }
 
-void DeltaTimer::Start(float time)
+void KLib::DeltaTimer::Start(float time)
 {
 	// 項目リセット
 	Start();
@@ -16,7 +16,7 @@ void DeltaTimer::Start(float time)
 	finishFlame_ = time;
 }
 
-bool DeltaTimer::Update()
+bool KLib::DeltaTimer::Update()
 {
 	// 終了している場合
 	if (isFinish_) {
@@ -36,7 +36,7 @@ bool DeltaTimer::Update()
 	}
 }
 
-void DeltaTimer::Finish()
+void KLib::DeltaTimer::Finish()
 {
 	// 全メンバ変数をリセット
 	nowFlame_ = 0.0f;
@@ -45,7 +45,7 @@ void DeltaTimer::Finish()
 	finishFlame_ = 0.0f;
 }
 
-float DeltaTimer::GetProgress() const
+float KLib::DeltaTimer::GetProgress() const
 {
 	// 現在のタイマーの進行度を返す
 	return std::clamp(nowFlame_ / finishFlame_, 0.f, 1.f);

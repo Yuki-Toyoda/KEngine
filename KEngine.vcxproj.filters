@@ -159,8 +159,8 @@
     <ClCompile Include="Engine\Math\Quaternion.cpp">
       <Filter>Math</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Timer\DeltaTimer.cpp">
-      <Filter>Timer</Filter>
+    <ClCompile Include="Engine\Utility\Timer\DeltaTimer.cpp">
+      <Filter>Utility\Timer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -353,8 +353,11 @@
     <ClInclude Include="Engine\Math\Quaternion.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Timer\DeltaTimer.h">
-      <Filter>Timer</Filter>
+    <ClInclude Include="Engine\Utility\Timer\DeltaTimer.h">
+      <Filter>Utility\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Utility\Lerp\Lerp.h">
+      <Filter>Utility\Lerp</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -465,8 +468,14 @@
     <Filter Include="GameObject\Samples\Enemy">
       <UniqueIdentifier>{283a43bf-5d01-4128-8024-64fd4fa2aac4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Timer">
+    <Filter Include="Utility">
+      <UniqueIdentifier>{c507d589-1a82-40b2-ac1c-f171606562f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\Timer">
       <UniqueIdentifier>{05111ea3-bc1b-452c-94f8-cbb5372fffa9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\Lerp">
+      <UniqueIdentifier>{4b65be02-5225-4357-ad00-042292f13c38}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
