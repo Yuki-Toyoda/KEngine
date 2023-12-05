@@ -39,7 +39,7 @@ public: // その他関数
 
 private: // メンバ変数
 
-
+	int imGuiSelectBlendMode_ = 0;
 
 };
 

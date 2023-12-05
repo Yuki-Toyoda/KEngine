@@ -20,7 +20,7 @@ struct DXC {
 /// </summary>
 class PSO final{
 public: // メンバ関数
-
+	
 	/// <summary>
 	/// 初期化関数
 	/// </summary>
@@ -29,8 +29,16 @@ public: // メンバ関数
 	/// <param name="dxc">dxc構造体</param>
 	/// <param name="vs">使用する頂点シェーダまでのファイルパス</param>
 	/// <param name="ps">使用するピクセルシェーダまでのファイルパス</param>
-	/// /// <param name="wire">ワイヤーフレーム状態にするか 0 : 通常表示 ** 1 : ワイヤー表示</param>
-	void Initialize(ID3D12Device* device, ID3D12RootSignature* signature, DXC* dxc, std::wstring vs, std::wstring ps, UINT wire);
+	/// <param name="blendType">ブレンド設定</param>
+	/// <param name="wire">ワイヤーフレーム状態にするか 0 : 通常表示 ** 1 : ワイヤー表示</param>
+	void Initialize(
+		ID3D12Device* device, 
+		ID3D12RootSignature* signature, 
+		DXC* dxc, 
+		std::wstring vs, 
+		std::wstring ps, 
+		int blendType,
+		UINT wire);
 
 private: // プライベートなメンバ関数
 
@@ -38,7 +46,7 @@ private: // プライベートなメンバ関数
 	/// ブレンド設定を行う関数
 	/// </summary>
 	/// <returns>ブレンド設定</returns>
-	D3D12_BLEND_DESC SettingBlendState();
+	D3D12_BLEND_DESC SettingBlendState(int state);
 	/// <summary>
 	/// ラスタライザ設定を行う関数
 	/// </summary>

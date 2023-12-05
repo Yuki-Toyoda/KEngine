@@ -60,6 +60,9 @@ private: // メンバ変数
 	// それぞれ scale rotate translate
 	uint8_t parentType_;
 
+	// 直接ワールド行列を代入したい場合はこの変数に代入
+	const Matrix4x4* worldMat_ = nullptr;
+
 public: // アクセッサ等
 
 	/// <summary>
@@ -73,6 +76,16 @@ public: // アクセッサ等
 	/// </summary>
 	/// <returns>親</returns>
 	const WorldTransform* GetParent();
+
+	/// <summary>
+	/// ワールド行列のセッター
+	/// </summary>
+	/// <param name="mat">ワールド行列</param>
+	void SetWorldMat(const Matrix4x4& mat) { worldMat_ = &mat; };
+	/// <summary>
+	/// ワールド行列削除関数
+	/// </summary>
+	void DeleteWorldMat() { worldMat_ = nullptr; }
 
 	/// <summary>
 	/// 現在のワールド行列のゲッター

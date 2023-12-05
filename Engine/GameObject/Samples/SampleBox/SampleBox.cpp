@@ -1,9 +1,11 @@
 #include "SampleBox.h"
+#include "../../../Resource/Texture/TextureManager.h"
 
 void SampleBox::Initialize() {
 
 	// メッシュを追加
-	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Box", "Box.obj");
+	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Plane", "Plane.obj");
+	meshes_[0]->texture_ = TextureManager::GetInstance()->Load("./Engine/Resource/Samples/Texture", "circle.png");
 
 	// 当たり判定の設定
 	AABB* aabb = new AABB();
@@ -37,6 +39,11 @@ void SampleBox::DisplayImGui() {
 		ImGui::SliderInt("LayerNo", &mesh->layerNo_, 0, 10);
 		ImGui::Checkbox("isUI", &mesh->isUI_);
 		ImGui::Checkbox("isActive", &mesh->isActive_);
+
+		ImGui::SliderInt("BlendMode", &imGuiSelectBlendMode_, 0, 4);
+		mesh->blendMode_ = (BasePrimitive::kBlendMode)imGuiSelectBlendMode_;
+
+		ImGui::Checkbox("isBillBoard", &mesh->isBillboard_);
 
 		if(ImGui::Button("destroy")) {
 			mesh->isDestroy_ = true;

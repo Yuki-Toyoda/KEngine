@@ -1,4 +1,5 @@
 #include "GameObjectManager.h"
+#include "Core/Camera.h"
 
 GameObjectManager* GameObjectManager::GetInstance()
 {
@@ -66,6 +67,24 @@ void GameObjectManager::Update()
 	ImGui::End();
 #endif // _DEBUG
 
+}
+
+Camera* GameObjectManager::GetUseCamera()
+{
+	// カメラタグが付いたオブジェクトを取得
+	for (std::unique_ptr<BaseObject>& object : objects_) {
+		if (object->GetObjectTag() == BaseObject::TagCamera) {
+			// カメラかどうか確認
+			Camera* camera = dynamic_cast<Camera*>(object.get());
+			// 変換出来た、かつ使用中のカメラなら
+			if (camera != nullptr && camera->GetIsUsedCamera()) {
+				// そのインスタンスを返す
+				return camera;
+			}
+		}
+	}
+	// 発見できなかった場合nullptrを返す
+	return nullptr;
 }
 
 BaseObject* GameObjectManager::GetGameObject(int index)

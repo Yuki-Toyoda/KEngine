@@ -50,27 +50,31 @@ void CommandManager::DrawCall()
 	cmdList->SetGraphicsRootSignature(rootSignature_.Get());
 	// 形状を設定する
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	// PSOを取得、コマンドリストにセット
-	cmdList->SetPipelineState(commands_[0]->GetPSOState());
 
-	// シグネチャのテーブル設定
-	// 0 : バッファのインデックス情報
-	// 1 : 光源情報
-	// 2 : 頂点データ
-	// 3 : viewProjection行列
-	// 4 : worldTransform
-	// 5 : マテリアル情報
-	// 6 : テクスチャ
-	cmdList->SetGraphicsRootDescriptorTable(0, commands_[0]->indexBuffer_->view);
-	cmdList->SetGraphicsRootConstantBufferView(1, lightBuffer_->view);
-	cmdList->SetGraphicsRootDescriptorTable(2, vertexBuffer_->view);
-	cmdList->SetGraphicsRootDescriptorTable(3, viewProjectionBuffer_->view);
-	cmdList->SetGraphicsRootDescriptorTable(4, worldTransformBuffer_->view);
-	cmdList->SetGraphicsRootDescriptorTable(5, materialBuffer_->view);
-	cmdList->SetGraphicsRootDescriptorTable(6, textureBuffer_->view);
+	// 
+	for (int i = 0; i < 5; i++) {
+		// PSOを取得、コマンドリストにセット
+		cmdList->SetPipelineState(commands_[0]->GetPSOState(i));
 
-	// バッファ内の全3角形を描画
-	cmdList->DrawInstanced(3, commands_[0]->indexBuffer_->usedCount / 3, 0, 0);
+		// シグネチャのテーブル設定
+		// 0 : バッファのインデックス情報
+		// 1 : 光源情報
+		// 2 : 頂点データ
+		// 3 : viewProjection行列
+		// 4 : worldTransform
+		// 5 : マテリアル情報
+		// 6 : テクスチャ
+		cmdList->SetGraphicsRootDescriptorTable(0, commands_[0]->indexBuffers_[i]->view);
+		cmdList->SetGraphicsRootConstantBufferView(1, lightBuffer_->view);
+		cmdList->SetGraphicsRootDescriptorTable(2, vertexBuffer_->view);
+		cmdList->SetGraphicsRootDescriptorTable(3, viewProjectionBuffer_->view);
+		cmdList->SetGraphicsRootDescriptorTable(4, worldTransformBuffer_->view);
+		cmdList->SetGraphicsRootDescriptorTable(5, materialBuffer_->view);
+		cmdList->SetGraphicsRootDescriptorTable(6, textureBuffer_->view);
+
+		// バッファ内の全3角形を描画
+		cmdList->DrawInstanced(3, commands_[0]->indexBuffers_[i]->usedCount / 3, 0, 0);
+	}
 }
 
 void CommandManager::PostDraw()
@@ -114,8 +118,11 @@ void CommandManager::Reset()
 	assert(SUCCEEDED(result)); // リセット確認
 
 	// 全ての描画コマンドのインデックス情報をクリア
-	for (int i = 0; i < commands_.size(); i++)
-		commands_[i]->indexBuffer_->usedCount = 0;
+	for (int i = 0; i < commands_.size(); i++) {
+		for (int j = 0; j < 5; j++) {
+			commands_[i]->indexBuffers_[j]->usedCount = 0;
+		}
+	}
 
 	// 全てのバッファのヒープ使用数をリセットする
 	vertexBuffer_->usedCount = 0;		  // 頂点バッファ
@@ -135,7 +142,14 @@ void CommandManager::SetHeaps(RTV* rtv, SRV* srv, DSV* dsv, std::wstring vs, std
 	// 全ての描画コマンドの初期化
 	for (int i = 0; i < commands_.size(); i++) {
 		commands_[i]->SetDescriptorHeap(rtv_, srv_, dsv_); // ヒープをセット
-		commands_[i]->Initialize(device_, dxc_.get(), rootSignature_.Get(), CreateBuffer(sizeof(IndexInfoStruct) * commands_[i]->kMaxIndex), vs, ps); // 初期化
+		// バッファ配列の生成
+		std::vector<ID3D12Resource*> buffers;
+		for (int j = 0; j < 5; j++) {
+			// バッファをブレンドモードの数分生成
+			buffers.push_back(CreateBuffer(sizeof(IndexInfoStruct) * commands_[i]->kMaxIndex));
+		}
+		// リソースの生成を行う
+		commands_[i]->Initialize(device_, dxc_.get(), rootSignature_.Get(), buffers, vs, ps); // 初期化
 	}
 
 	// ストラクチャーバッファを生成
@@ -153,7 +167,7 @@ Matrix4x4* const CommandManager::GetViewProjection() const {
 void CommandManager::SetDrawData(BasePrimitive* primitive)
 {
 	// いろいろ最大数を超えていないかチェック
-	assert(commands_[0]->indexBuffer_->usedCount < commands_[0]->kMaxIndex); // インデックス情報
+	assert(commands_[0]->indexBuffers_[primitive->blendMode_]->usedCount < commands_[0]->kMaxIndex); // インデックス情報
 	assert(vertexBuffer_->usedCount < kMaxVertex);							 // 頂点数
 	assert(worldTransformBuffer_->usedCount < kMaxWorldTransform);			 // ワールドトランスフォーム
 	assert(materialBuffer_->usedCount < kMaxMaterial);						 // マテリアル数
@@ -184,7 +198,7 @@ void CommandManager::SetDrawData(BasePrimitive* primitive)
 
 	// Indexの分だけIndexInfoを求める
 	for (int i = 0; i < primitive->GetIndexCount(); i++) {
-		commands_[0]->indexBuffer_->indexData[commands_[0]->indexBuffer_->usedCount++] = IndexInfoStruct{
+		commands_[0]->indexBuffers_[primitive->blendMode_]->indexData[commands_[0]->indexBuffers_[primitive->blendMode_]->usedCount++] = IndexInfoStruct{
 			startIndexNum + primitive->indexes_[i],
 			useCamera,
 			worldMatrix,

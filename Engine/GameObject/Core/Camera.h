@@ -31,6 +31,11 @@ public: // アクセッサ等
 	/// </summary>
 	/// <param name="isUsed">使用するか</param>
 	void SetIsUseThisCamera(bool isUsed) { isUseThisCamera_ = isUsed; }
+	/// <summary>
+	/// カメラの使用トリガーゲッター
+	/// </summary>
+	/// <returns>カメラが使用中か</returns>
+	bool GetIsUsedCamera() { return isUseThisCamera_; }
 
 	/// <summary>
 	/// ビュー行列ゲッター

@@ -21,6 +21,7 @@ public: // パブリックなメンバ関数
 	// デストラクタ
 	~BaseCommand() = default;
 
+
 	/// <summary>
 	/// 初期化関数
 	/// </summary>
@@ -28,7 +29,9 @@ public: // パブリックなメンバ関数
 	/// <param name="dxc">hlslコード変換用</param>
 	/// <param name="signature">ルートシグネチャ</param>
 	/// <param name="resource">インデックスバッファリソース</param>
-	void Initialize(ID3D12Device* device, DXC* dxc, ID3D12RootSignature* signature, ID3D12Resource* resource, std::wstring vs, std::wstring ps);	
+	/// <param name="vs">使用する頂点シェーダ</param>
+	/// <param name="ps">使用するピクセルシェーダ</param>
+	void Initialize(ID3D12Device* device, DXC* dxc, ID3D12RootSignature* signature, std::vector<ID3D12Resource*> resource, std::wstring vs, std::wstring ps);	
 
 public: // 純粋仮想関数
 
@@ -54,10 +57,11 @@ public: // アクセッサ等
 	void SetDescriptorHeap(RTV* rtv, SRV* srv, DSV* dsv);
 
 	/// <summary>
-	/// パイプラインステートオブジェクトの状態ゲッター
+	/// パイプラインステートオブジェクトゲッター
 	/// </summary>
-	/// <returns></returns>
-	ID3D12PipelineState* GetPSOState() { return pso_->state_.Get(); }
+	/// <param name="blendType">取得するブレンドモード</param>
+	/// <returns>指定したパイプライン</returns>
+	ID3D12PipelineState* GetPSOState(int blendType) { return pso_[blendType]->state_.Get(); }
 
 protected: // 継承先メンバ関数
 
@@ -84,7 +88,7 @@ protected: // 継承先メンバ関数
 public: // パブリックなメンバ変数
 
 	// インデックスバッファ
-	std::unique_ptr<IndexBuffer> indexBuffer_;
+	std::vector<std::unique_ptr<IndexBuffer>> indexBuffers_;
 	// インデックス情報の最大数(今回は受け売りで設定)
 	const UINT kMaxIndex = 655360;
 
@@ -96,7 +100,7 @@ protected: // 継承先メンバ変数
 	DSV* dsv_ = nullptr; // 深度ステンシルビュー
 
 	// パイプラインステートオブジェクトの定義
-	std::unique_ptr<PSO> pso_;
+	std::vector<std::unique_ptr<PSO>> pso_;
 
 };
 

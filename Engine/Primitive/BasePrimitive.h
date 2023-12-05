@@ -22,6 +22,19 @@ struct Vertex {
 /// </summary>
 class BasePrimitive
 {
+public: // パブリックなサブクラス
+
+	/// <summary>
+	/// ブレンドモード列挙子
+	/// </summary>
+	enum kBlendMode {
+		kBlendNormal,	// ノーマルaブレンド
+		kBlendAdd,		// 加算合成
+		kBlendSubtract, // 減算合成
+		kBlendMultiply, // 乗算合成
+		kBlendScreen,	// スクリーン合成
+	};
+
 public: // メンバ関数
 
 	/// <summary>
@@ -84,10 +97,23 @@ public: // パブリックなメンバ変数
 	// ここに情報が入っている場合全頂点の色にこの色を適用する
 	Vector4* commonColor = nullptr;
 
+	// ブレンドモード
+	// kBlendNormal ... ノーマルaブレンド
+	// kBlendAdd ... 加算合成
+	// kBlendSubtract ... 減算合成
+	// kBlendMultiply ... 乗算合成
+	// kBlendScreen ... スクリーン合成
+	kBlendMode blendMode_ = kBlendNormal;
+
 	// 表示状態
 	bool isActive_ = true;
 	// 破壊トリガー
 	bool isDestroy_ = false;
+
+	// ビルボード状態にするか
+	bool isBillboard_ = false;
+	// ビルボード用行列格納用
+	Matrix4x4 billboardMat_;
 
 	// 描画順
 	int32_t layerNo_ = 0;

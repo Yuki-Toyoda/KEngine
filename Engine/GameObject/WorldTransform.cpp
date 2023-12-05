@@ -78,6 +78,11 @@ Matrix4x4 WorldTransform::GetMatWorld() const
 	// 結果格納用
 	Matrix4x4 result = Math::MakeAffineMatrix(scale_, rotate_, translate_);
 
+	// ワールド行列セット中はそれを使う
+	if (worldMat_ != nullptr) {
+		result = *worldMat_;
+	}
+
 	// 親がいる場合
 	if (parent_) {
 		Matrix4x4 parentMat = Math::MakeIdentity4x4();

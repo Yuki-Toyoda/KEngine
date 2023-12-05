@@ -2,6 +2,9 @@
 #include <list>
 #include "BaseObject.h"
 
+// クラスの前方宣言
+class Camera;
+
 /// <summary>
 /// ゲームオブジェクトマネージャー
 /// </summary>
@@ -84,6 +87,8 @@ public: // メンバ関数
 		return returnObject;
 	}
 
+public: // アクセッサ等
+
 	/// <summary>
 	/// 指定した名前のゲームオブジェクトを取得する関数
 	/// </summary>
@@ -133,6 +138,12 @@ public: // メンバ関数
 		// 返還するオブジェクトがなかった場合nullptrを返す
 		return result;
 	}
+
+	/// <summary>
+	/// 現在使用中のカメラを取得する関数
+	/// </summary>
+	/// <returns>現在使用中のカメラ</returns>
+	Camera* GetUseCamera();
 
 	/// <summary>
 	/// 指定したインデックスをBaseObject型で受け取る関数

@@ -109,6 +109,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			// ImGui受付終了
 			imguiManager->End();
 
+			// 形状マネージャ更新
+			primitiveManager->Update();
 			// 形状マネージャ描画
 			primitiveManager->Draw();
 

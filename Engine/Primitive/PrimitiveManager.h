@@ -34,6 +34,11 @@ public: // メンバ関数
 	void Initialize();
 
 	/// <summary>
+	/// 更新関数
+	/// </summary>
+	void Update();
+
+	/// <summary>
 	/// 描画関数
 	/// </summary>
 	void Draw();

@@ -1,6 +1,6 @@
 #include "PSO.h"
 
-void PSO::Initialize(ID3D12Device* device, ID3D12RootSignature* signature, DXC* dxc, std::wstring vs, std::wstring ps, UINT wire)
+void PSO::Initialize(ID3D12Device* device, ID3D12RootSignature* signature, DXC* dxc, std::wstring vs, std::wstring ps, int blendType, UINT wire)
 {
 	// 結果確認用
 	HRESULT result = S_FALSE;
@@ -12,7 +12,7 @@ void PSO::Initialize(ID3D12Device* device, ID3D12RootSignature* signature, DXC* 
 	// パイプラインステートの設定を行う
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicPipelineStateDesc{}; // パイプラインステート設定用構造体
 	graphicPipelineStateDesc.pRootSignature = signature; // RootSignature取得
-	graphicPipelineStateDesc.BlendState = SettingBlendState(); // ブレンド設定
+	graphicPipelineStateDesc.BlendState = SettingBlendState(blendType); // ブレンド設定
 	graphicPipelineStateDesc.RasterizerState = SettingRasterizerDesc(wire); // ラスタライザ設定
 	graphicPipelineStateDesc.DepthStencilState = SettingDepthStencilState(); // 深度ステンシルビュー設定
 	graphicPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT; // フォーマット設定
@@ -39,7 +39,7 @@ void PSO::Initialize(ID3D12Device* device, ID3D12RootSignature* signature, DXC* 
 	assert(SUCCEEDED(result));
 }
 
-D3D12_BLEND_DESC PSO::SettingBlendState()
+D3D12_BLEND_DESC PSO::SettingBlendState(int state)
 {
 	// ブレンドステートの設定を行う
 	D3D12_BLEND_DESC blendDesc{};
@@ -54,6 +54,31 @@ D3D12_BLEND_DESC PSO::SettingBlendState()
 	blendDesc.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ONE;
 	blendDesc.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
 	blendDesc.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ZERO;
+
+	// 渡されたステート情報を元に設定
+	switch (state)
+	{
+	case 0: // 通常の設定
+		// そのまま抜ける
+		break;
+	case 1: // 加算の設定
+		blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_ONE;
+		break; // 減算の設定
+	case 2:
+		blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_REV_SUBTRACT;
+		blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_ONE;
+		break; // 乗算の設定
+	case 3:
+		blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_REV_SUBTRACT;
+		blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_ONE;
+		break; // スクリーンの設定
+	case 4:
+		blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_ZERO;
+		blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_SRC_COLOR;
+		break;
+	default: // それ以外の場合は処理なしで抜ける
+		break;
+	}
 
 	// ブレンド設定を返す
 	return blendDesc;
