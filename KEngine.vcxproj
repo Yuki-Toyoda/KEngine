@@ -129,6 +129,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Scene\SceneManager.cpp" />
     <ClCompile Include="Engine\Scene\User\GameScene.cpp" />
     <ClCompile Include="Engine\Scene\User\TitleScene.cpp" />
+    <ClCompile Include="Engine\Timer\DeltaTimer.cpp" />
     <ClCompile Include="Externals\imgui\imgui.cpp" />
     <ClCompile Include="Externals\imgui\ImGuiManager.cpp" />
     <ClCompile Include="Externals\imgui\imgui_demo.cpp" />
@@ -194,6 +195,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Scene\SceneManager.h" />
     <ClInclude Include="Engine\Scene\User\GameScene.h" />
     <ClInclude Include="Engine\Scene\User\TitleScene.h" />
+    <ClInclude Include="Engine\Timer\DeltaTimer.h" />
     <ClInclude Include="Externals\imgui\imconfig.h" />
     <ClInclude Include="Externals\imgui\imgui.h" />
     <ClInclude Include="Externals\imgui\ImGuiManager.h" />

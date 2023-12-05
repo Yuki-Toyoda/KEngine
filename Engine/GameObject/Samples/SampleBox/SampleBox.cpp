@@ -44,10 +44,6 @@ void SampleBox::DisplayImGui() {
 		mesh->blendMode_ = (BasePrimitive::kBlendMode)imGuiSelectBlendMode_;
 
 		ImGui::Checkbox("isBillBoard", &mesh->isBillboard_);
-
-		if(ImGui::Button("destroy")) {
-			mesh->isDestroy_ = true;
-		}
 	}
 }
 

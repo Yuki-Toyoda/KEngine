@@ -159,6 +159,9 @@
     <ClCompile Include="Engine\Math\Quaternion.cpp">
       <Filter>Math</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Timer\DeltaTimer.cpp">
+      <Filter>Timer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -350,6 +353,9 @@
     <ClInclude Include="Engine\Math\Quaternion.h">
       <Filter>Math</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Timer\DeltaTimer.h">
+      <Filter>Timer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -458,6 +464,9 @@
     </Filter>
     <Filter Include="GameObject\Samples\Enemy">
       <UniqueIdentifier>{283a43bf-5d01-4128-8024-64fd4fa2aac4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Timer">
+      <UniqueIdentifier>{05111ea3-bc1b-452c-94f8-cbb5372fffa9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
