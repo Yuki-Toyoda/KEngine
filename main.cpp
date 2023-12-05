@@ -124,6 +124,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	}
 
+	// 衝突マネージャーリストクリア
+	collisionManager->ListClear();
+
+	// 全オブジェクトを削除
+	gameObjectManager->Initialize();
+
+	// 読み込み形状を削除
+	primitiveManager->Initialize();
+
 	// 音解放処理
 	audio->Finalize();
 

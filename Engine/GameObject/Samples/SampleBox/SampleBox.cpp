@@ -11,7 +11,6 @@ void SampleBox::Initialize() {
 	collider_->SetColliderShape(aabb);
 	collider_->SetGameObject(this);
 	
-
 }
 
 void SampleBox::Update() {
@@ -37,6 +36,11 @@ void SampleBox::DisplayImGui() {
 		mesh->DisplayImGui();
 		ImGui::SliderInt("LayerNo", &mesh->layerNo_, 0, 10);
 		ImGui::Checkbox("isUI", &mesh->isUI_);
+		ImGui::Checkbox("isActive", &mesh->isActive_);
+
+		if(ImGui::Button("destroy")) {
+			mesh->isDestroy_ = true;
+		}
 	}
 }
 

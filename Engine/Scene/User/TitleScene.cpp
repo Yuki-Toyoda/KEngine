@@ -1,11 +1,15 @@
 #include "TitleScene.h"
 #include "../SceneManager.h"
+#include "../../Resource/Texture/TextureManager.h"
 
 void TitleScene::Initialize()
 {
 	SampleBox* box = nullptr;
-	box = gameObjectManager_->CreateInstance<SampleBox>("box", BaseObject::TagNone);
-	box = gameObjectManager_->CreateInstance<SampleBox>("box", BaseObject::TagNone);
+	box = GameObjectManager::GetInstance()->CreateInstance<SampleBox>("box", BaseObject::TagNone);
+	box->transform_.translate_ = { 3.0f, 0.0f, 0.0f };
+	box->meshes_[0]->texture_ = TextureManager::Load("White2x2.png");
+
+	box = GameObjectManager::GetInstance()->CreateInstance<SampleBox>("box", BaseObject::TagPlayer);
 }
 
 void TitleScene::Update()
