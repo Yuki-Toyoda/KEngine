@@ -365,7 +365,7 @@
     <ClInclude Include="Engine\Utility\Easing\Easing.h">
       <Filter>Utility\Easing</Filter>
     </ClInclude>
-    <ClInclude Include="KLib.h">
+    <ClInclude Include="Engine\Utility\KLib.h">
       <Filter>Utility</Filter>
     </ClInclude>
   </ItemGroup>
