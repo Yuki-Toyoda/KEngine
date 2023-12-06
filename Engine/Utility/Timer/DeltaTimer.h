@@ -1,6 +1,7 @@
 #pragma once
 #include <functional>
 #include <chrono>
+#include <string>
 
 #include "../../../Externals/imgui/imgui.h"
 
@@ -43,7 +44,13 @@ namespace KLib {
 		/// <summary>
 		/// タイマーの強制停止関数
 		/// </summary>
-		void Finish();
+		void Stop();
+
+		/// <summary>
+		/// ImGui表示関数
+		/// </summary>
+		/// <param name="name">グループ名</param>
+		void DisplayImGui(const std::string& name);
 
 	public: // アクセッサ等
 
@@ -85,5 +92,8 @@ namespace KLib {
 		bool isFinish_;
 		// タイマーの有効トリガー
 		bool isActive_;
+
+		// ImGuiにて開始秒数を指定する変数
+		float imGuiStartTime_ = 0.0f;
 	};
 }

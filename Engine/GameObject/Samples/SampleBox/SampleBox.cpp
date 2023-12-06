@@ -18,6 +18,9 @@ void SampleBox::Update() {
 
 	//transform_.rotate_.y += 0.01f;
 
+	// タイマーの更新処理
+	timer_.Update();
+
 	// コライダーの更新
 	collider_->Update(transform_.GetWorldPos(), transform_.scale_);
 	// リストに自分自身を登録
@@ -32,6 +35,8 @@ void SampleBox::DisplayImGui() {
 	ImGui::Text("Color");
 	//　色の変更
 	ImGui::ColorPicker4("Color", &color_.x);
+
+	timer_.DisplayImGui("timer");
 
 	for (Mesh* mesh : meshes_) {
 		mesh->DisplayImGui();

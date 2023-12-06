@@ -1,5 +1,6 @@
 #pragma once
 #include "../../BaseObject.h"
+#include "../../../Utility/KLib.h"
 
 /// <summary>
 /// サンプルオブジェクト
@@ -38,6 +39,8 @@ public: // その他関数
 	void OnCollisionExit(BaseObject* object) override;
 
 private: // メンバ変数
+
+	KLib::DeltaTimer timer_;
 
 	int imGuiSelectBlendMode_ = 0;
 
