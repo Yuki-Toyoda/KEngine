@@ -34,6 +34,7 @@ bool KLib::DeltaTimer::Update()
 		// タイマー終了
 		isFinish_ = true;
 	}
+	return true;
 }
 
 void KLib::DeltaTimer::Finish()

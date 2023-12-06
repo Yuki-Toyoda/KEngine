@@ -4,8 +4,7 @@
 void SampleBox::Initialize() {
 
 	// メッシュを追加
-	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Plane", "Plane.obj");
-	meshes_[0]->texture_ = TextureManager::GetInstance()->Load("./Engine/Resource/Samples/Texture", "circle.png");
+	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Box", "Box.obj");
 
 	// 当たり判定の設定
 	AABB* aabb = new AABB();

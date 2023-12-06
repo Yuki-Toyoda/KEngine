@@ -162,6 +162,9 @@
     <ClCompile Include="Engine\Utility\Timer\DeltaTimer.cpp">
       <Filter>Utility\Timer</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Utility\Easing\Easing.cpp">
+      <Filter>Utility\Easing</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -359,6 +362,12 @@
     <ClInclude Include="Engine\Utility\Lerp\Lerp.h">
       <Filter>Utility\Lerp</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Utility\Easing\Easing.h">
+      <Filter>Utility\Easing</Filter>
+    </ClInclude>
+    <ClInclude Include="KLib.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -476,6 +485,9 @@
     </Filter>
     <Filter Include="Utility\Lerp">
       <UniqueIdentifier>{4b65be02-5225-4357-ad00-042292f13c38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\Easing">
+      <UniqueIdentifier>{e8356644-0f27-4d8e-8218-41dd7d1d5dc9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

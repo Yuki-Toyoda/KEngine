@@ -5,7 +5,7 @@
 #include "../../../Externals/imgui/imgui.h"
 
 /// <summary>
-/// KLib
+/// KEngineのライブラリ関数
 /// </summary>
 namespace KLib {
 	/// <summary>

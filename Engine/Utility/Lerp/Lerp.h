@@ -1,7 +1,7 @@
 #pragma once
 
 /// <summary>
-/// KLib
+/// KEngineのライブラリ関数
 /// </summary>
 namespace KLib {
 
