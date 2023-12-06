@@ -157,17 +157,17 @@ void GameManagerObject::Initialize(std::string name, Tag tag)
 
 	// ステージ内の全アイテム個数カウンター
 	stageItemCounter_.reset(new Counter());
-	stageItemCounter_->Initialize(textureHandleNumberSheets_, {512.0f, 512.0f}, &stageItemCount_, { 188.0f, 650.0f }, { 64.0f, 64.0f }, -8.0f);
+	stageItemCounter_->Initialize(textureHandleNumberSheets_, {512.0f, 512.0f}, &stageNowItemCount_, { 188.0f, 650.0f }, { 64.0f, 64.0f }, -8.0f);
 	stageItemCounter_->SetIsCentered(true);
 	// ステージ内の現在のアイテム個数カウンター
 	stageNowItemCounter_.reset(new Counter());
-	stageNowItemCounter_->Initialize(textureHandleNumberSheets_, { 512.0f, 512.0f }, &stageNowItemCount_, { 383.0f, 650.0f }, { 64.0f, 64.0f }, -8.0f);
+	stageNowItemCounter_->Initialize(textureHandleNumberSheets_, { 512.0f, 512.0f }, &stageItemCount_, { 383.0f, 650.0f }, { 64.0f, 64.0f }, -8.0f);
 	stageNowItemCounter_->SetIsCentered(true);
 	// ステージ内の現在のアイテム個数カウンター
 	stageClearCounter_.reset(new Counter());
 	stageClearCounter_->Initialize(textureHandleNumberSheets_, { 512.0f, 512.0f }, &stageClearPercent_, { 350.0f, 130.0f }, { 48.0f, 48.0f }, -8.0f);
 	stageClearCounter_->SetIsCentered(true);
-	stageClearCounter_->SetIsDispayPercent(true);
+	stageClearCounter_->SetIsDispayPercent(true); 
 
 	// EscUI
 	escUIPosition_ = { 48.0f, 64.0f }; // 座標
@@ -228,10 +228,10 @@ void GameManagerObject::Update()
 
 	// UIの更新
 	stageItemCounter_->Update();
-	stageItemCounter_->color_ = spriteClearUIColor_;
+	stageItemCounter_->color_.w = spriteClearUIColor_.w;
 	stageNowItemCount_ = (int)stageManager_->GetAllItem() - (int)stageManager_->GetUsedItem(); // 現在のアイテム個数
 	stageNowItemCounter_->Update();
-	stageNowItemCounter_->color_.w = spriteClearUIColor_.w;
+	stageNowItemCounter_->color_ = spriteClearUIColor_;
 	stageClearCounter_->Update();
 	stageClearCounter_->color_ = spriteUIColor_;
 
@@ -493,7 +493,7 @@ void GameManagerObject::CameraStaging()
 				stageItemCounter_->size_ = { 85.0f, 85.0f };
 				stageNowItemCounter_->position_ = { 778.5f, 402.5f };
 				stageNowItemCounter_->size_ = { 85.0f, 85.0f };
-				stageNowItemCounter_->color_ = { 1.0f, 0.1f, 0.0f, 0.0f };
+				stageItemCounter_->color_ = { 1.0f, 0.1f, 0.0f, 0.0f };
 			}
 				
 			// カメラの終端座標
