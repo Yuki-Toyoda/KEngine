@@ -4,8 +4,6 @@
 /// </summary>
 namespace KLib {
 
-
-
 	/// <summary>
 	/// EaseInQuad関数
 	/// </summary>

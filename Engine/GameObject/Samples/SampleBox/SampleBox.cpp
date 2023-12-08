@@ -38,6 +38,11 @@ void SampleBox::DisplayImGui() {
 
 	timer_.DisplayImGui("timer");
 
+	ImGui::DragFloat("StartValue", &imGuiStartValue_, 0.05f);
+	ImGui::DragFloat("EndValue", &imGuiEndValue_, 0.05f);
+	float nowValue = KLib::Lerp<float>(imGuiStartValue_, imGuiEndValue_, timer_.GetProgress());
+	ImGui::Text("nowValue : %4.2f", nowValue);
+
 	for (Mesh* mesh : meshes_) {
 		mesh->DisplayImGui();
 		ImGui::SliderInt("LayerNo", &mesh->layerNo_, 0, 10);

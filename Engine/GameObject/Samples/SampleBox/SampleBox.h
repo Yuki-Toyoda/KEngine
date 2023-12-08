@@ -44,5 +44,8 @@ private: // メンバ変数
 
 	int imGuiSelectBlendMode_ = 0;
 
+	float imGuiStartValue_ = 0.0f;
+	float imGuiEndValue_ = 0.0f;
+
 };
 
