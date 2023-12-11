@@ -50,6 +50,12 @@ public: // パブリックメンバ関数
 	/// </summary>
 	void DisplayImGui();
 
+	/// <summary>
+	/// デバッグ用ImGui表示関数
+	/// </summary>
+	/// <param name="id">ウィンドウ表示名</param>
+	void DisplayImGui(const std::string& id);
+
 private: // メンバ変数
 
 	// 親子関係

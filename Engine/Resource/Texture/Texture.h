@@ -5,6 +5,8 @@
 #include <d3d12.h>
 #pragma comment(lib, "d3d12.lib")
 
+#include "../../Math/Vector2.h"
+
 // クラスの前方宣言
 class DirectXCommon;
 class CommandManager;
@@ -36,6 +38,12 @@ public: // アクセッサ等
 	/// </summary>
 	/// <param name="index">設定するインデックス</param>
 	void SetIndex(int index) { index_ = index; }
+
+	/// <summary>
+	/// テクスチャサイズゲッター
+	/// </summary>
+	/// <returns>テクスチャサイズ</returns>
+	const Vector2 GetTextureSize() const { return { (float)mipImages_.GetImages()->width, (float)mipImages_.GetImages()->height }; }
 
 private: // プライベートなメンバ関数
 

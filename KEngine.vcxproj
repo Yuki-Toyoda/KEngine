@@ -118,6 +118,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Input\Input.cpp" />
     <ClCompile Include="Engine\Math\Math.cpp" />
     <ClCompile Include="Engine\Math\Quaternion.cpp" />
+    <ClCompile Include="Engine\Primitive\2d\Plane.cpp" />
     <ClCompile Include="Engine\Primitive\3d\Mesh.cpp" />
     <ClCompile Include="Engine\Primitive\3d\MeshManager.cpp" />
     <ClCompile Include="Engine\Primitive\BasePrimitive.cpp" />
@@ -129,6 +130,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Scene\SceneManager.cpp" />
     <ClCompile Include="Engine\Scene\User\GameScene.cpp" />
     <ClCompile Include="Engine\Scene\User\TitleScene.cpp" />
+    <ClCompile Include="Engine\Sprite\Sprite.cpp" />
+    <ClCompile Include="Engine\Sprite\SpriteManager.cpp" />
     <ClCompile Include="Engine\Utility\Easing\Easing.cpp" />
     <ClCompile Include="Engine\Utility\Timer\DeltaTimer.cpp" />
     <ClCompile Include="Externals\imgui\imgui.cpp" />
@@ -184,6 +187,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Math\Vector2.h" />
     <ClInclude Include="Engine\Math\Vector3.h" />
     <ClInclude Include="Engine\Math\Vector4.h" />
+    <ClInclude Include="Engine\Primitive\2d\Plane.h" />
     <ClInclude Include="Engine\Primitive\3d\Mesh.h" />
     <ClInclude Include="Engine\Primitive\3d\MeshManager.h" />
     <ClInclude Include="Engine\Primitive\BasePrimitive.h" />
@@ -196,6 +200,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Scene\SceneManager.h" />
     <ClInclude Include="Engine\Scene\User\GameScene.h" />
     <ClInclude Include="Engine\Scene\User\TitleScene.h" />
+    <ClInclude Include="Engine\Sprite\Sprite.h" />
+    <ClInclude Include="Engine\Sprite\SpriteManager.h" />
     <ClInclude Include="Engine\Utility\Easing\Easing.h" />
     <ClInclude Include="Engine\Utility\KLib.h" />
     <ClInclude Include="Engine\Utility\Lerp\Lerp.h" />

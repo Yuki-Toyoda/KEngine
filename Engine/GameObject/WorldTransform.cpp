@@ -60,6 +60,15 @@ void WorldTransform::DisplayImGui()
 	ImGui::DragFloat3("Translate", &translate_.x, 0.01f); // 位置座標
 }
 
+void WorldTransform::DisplayImGui(const std::string& id)
+{
+	// 各種項目をImGuiにて表示
+	ImGui::Text(id.c_str());
+	ImGui::DragFloat3("Scale", &scale_.x, 0.01f);		  // 拡縮
+	ImGui::DragFloat3("Rotate", &rotate_.x, 0.01f);		  // 回転
+	ImGui::DragFloat3("Translate", &translate_.x, 0.01f); // 位置座標
+}
+
 void WorldTransform::SetParent(WorldTransform* parent, uint8_t parentType)
 {
 	// 親子関係をセット

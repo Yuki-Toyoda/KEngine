@@ -165,6 +165,15 @@
     <ClCompile Include="Engine\Utility\Easing\Easing.cpp">
       <Filter>Utility\Easing</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Primitive\2d\Plane.cpp">
+      <Filter>Primitive\2d</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Sprite\Sprite.cpp">
+      <Filter>Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Sprite\SpriteManager.cpp">
+      <Filter>Sprite</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -368,6 +377,15 @@
     <ClInclude Include="Engine\Utility\KLib.h">
       <Filter>Utility</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Primitive\2d\Plane.h">
+      <Filter>Primitive\2d</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Sprite\Sprite.h">
+      <Filter>Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Sprite\SpriteManager.h">
+      <Filter>Sprite</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -488,6 +506,12 @@
     </Filter>
     <Filter Include="Utility\Easing">
       <UniqueIdentifier>{e8356644-0f27-4d8e-8218-41dd7d1d5dc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Primitive\2d">
+      <UniqueIdentifier>{ed71e37f-4dd0-470a-a23c-c86e4fe2e5da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sprite">
+      <UniqueIdentifier>{89930de6-5713-4b33-a25e-c80afe7ab47c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -5,6 +5,9 @@ BaseObject::~BaseObject()
 	// 全形状を削除
 	for (BasePrimitive* primitive : meshes_)
 		primitive->isDestroy_ = true;
+	// 全スプライトを削除
+	for (Sprite* sprite : sprites_)
+		sprite->Destroy();
 }
 
 void BaseObject::PreInitialize(std::string name, Tag tag)
@@ -43,21 +46,26 @@ void BaseObject::PreInitialize(std::string name, Tag tag)
 void BaseObject::PreUpdate()
 {
 	// 回転角のリセット
-	if (transform_.rotate_.x > (float)std::numbers::pi * 2.0f)
-		transform_.rotate_.x = transform_.rotate_.x - (float)std::numbers::pi * 2.0f;
-	if(transform_.rotate_.x < -(float)std::numbers::pi * 2.0f)
-		transform_.rotate_.x = (transform_.rotate_.x - (float)std::numbers::pi * 2.0f); // x
+	if (transform_.rotate_.x >= (float)std::numbers::pi * 2.0f) {
+		transform_.rotate_.x -= (float)std::numbers::pi * 2.0f;
+	}
+	if (transform_.rotate_.x <= -(float)std::numbers::pi * 2.0f) {
+		transform_.rotate_.x += (float)std::numbers::pi * 2.0f;
+	}
 
-	if (transform_.rotate_.y > (float)std::numbers::pi * 2.0f)
-		transform_.rotate_.y = transform_.rotate_.y - (float)std::numbers::pi * 2.0f;
-	if (transform_.rotate_.y < -(float)std::numbers::pi * 2.0f)
-		transform_.rotate_.y = (transform_.rotate_.y + (float)std::numbers::pi * 2.0f); // y
+	if (transform_.rotate_.y >= (float)std::numbers::pi * 2.0f) {
+		transform_.rotate_.y -= (float)std::numbers::pi * 2.0f;
+	}
+	if (transform_.rotate_.y <= -(float)std::numbers::pi * 2.0f) {
+		transform_.rotate_.y += (float)std::numbers::pi * 2.0f;
+	}
 
-	if (transform_.rotate_.z > (float)std::numbers::pi * 2.0f)
-		transform_.rotate_.z = transform_.rotate_.z - (float)std::numbers::pi * 2.0f;
-	if (transform_.rotate_.z < -(float)std::numbers::pi * 2.0f)
-		transform_.rotate_.z = (float)std::numbers::pi * 2.0f + (transform_.rotate_.z - (float)std::numbers::pi * 2.0f); // z
-
+	if (transform_.rotate_.z >= (float)std::numbers::pi * 2.0f) {
+		transform_.rotate_.z -= (float)std::numbers::pi * 2.0f;
+	}
+	if (transform_.rotate_.z <= -(float)std::numbers::pi * 2.0f) {
+		transform_.rotate_.z += (float)std::numbers::pi * 2.0f;
+	}
 	
 }
 
@@ -79,8 +87,17 @@ void BaseObject::AddMesh(WorldTransform* wt, Vector4& color, const std::string& 
 	newMesh->transform_ = wt;								   // ワールドトランスフォームを与える
 	newMesh->commonColor = &color;							   // 色を設定
 	newMesh->material_.enableLighting_ = enableLighting;	   // ライティングの有効設定
+	newMesh->layerNo_ = 1;
 
 	// メッシュリストに生成メッシュを追加
 	meshes_.push_back(newMesh);
+}
+
+void BaseObject::AddSprite(const std::string& name, const Vector2 position, const Vector2& size, Texture* texture)
+{
+	// 新しいインスタンスの追加
+	Sprite* newSprite = SpriteManager::GetInstance()->Create(name, position, size, texture);
+	// リストに追加
+	sprites_.push_back(newSprite);
 }
 

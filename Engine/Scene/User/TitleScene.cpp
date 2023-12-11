@@ -6,9 +6,9 @@ void TitleScene::Initialize()
 {
 	SampleBox* box = nullptr;
 	box = GameObjectManager::GetInstance()->CreateInstance<SampleBox>("box", BaseObject::TagNone);
-	box->transform_.translate_ = { 3.0f, 0.0f, 0.0f };
+	box->transform_.translate_ = { 0.0f, 0.0f, 0.0f };
 
-	box = GameObjectManager::GetInstance()->CreateInstance<SampleBox>("box", BaseObject::TagPlayer);
+	//box = GameObjectManager::GetInstance()->CreateInstance<SampleBox>("box", BaseObject::TagPlayer);
 }
 
 void TitleScene::Update()

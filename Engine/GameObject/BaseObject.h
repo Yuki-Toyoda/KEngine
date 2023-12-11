@@ -5,6 +5,7 @@
 #include "../../Externals/imgui/imgui.h"
 #include "WorldTransform.h"
 #include "../Primitive/PrimitiveManager.h"
+#include "../Sprite/SpriteManager.h"
 #include "../Collider/CollisionManager.h"
 
 /// <summary>
@@ -123,6 +124,15 @@ protected: // プライベートなメンバ関数
 	/// <param name="enableLighting">ライティングを有効にするか</param>
 	void AddMesh(WorldTransform* wt, Vector4& color, const std::string& path, const std::string& fileName, bool enableLighting = true);
 
+	/// <summary>
+	/// スプライト追加関数
+	/// </summary>
+	/// <param name="name">追加するスプライト名</param>
+	/// <param name="position">初期座標</param>
+	/// <param name="size">大きさ</param>
+	/// <param name="texture">テクスチャ</param>
+	void AddSprite(const std::string& name, const Vector2 position, const Vector2& size, Texture* texture);
+
 public: // パブリックなメンバ変数
 
 	// 表示状態切り替えトリガー
@@ -133,6 +143,8 @@ public: // パブリックなメンバ変数
 
 	// メッシュリスト
 	std::vector<Mesh*> meshes_;
+	// スプライトリスト
+	std::vector<Sprite*> sprites_;
 
 protected: // 継承メンバ変数
 

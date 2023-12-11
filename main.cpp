@@ -6,6 +6,7 @@
 #include "Engine/Primitive/PrimitiveManager.h"
 #include "Engine/Scene/SceneManager.h"
 #include "Engine/GameObject/GameObjectManager.h"
+#include "Engine/Sprite/SpriteManager.h"
 #include "Engine/Resource/Texture/TextureManager.h"
 #include "Engine/GlobalVariables/GlobalVariables.h"
 #include "Engine/Collider/CollisionManager.h"
@@ -47,6 +48,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// オブジェクトマネージャーの初期化
 	GameObjectManager* gameObjectManager = GameObjectManager::GetInstance();
 	gameObjectManager->Initialize();
+
+	// スプライトマネージャの初期化
+	SpriteManager* spriteManager = SpriteManager::GetInstance();
+	spriteManager->Initialize();
 
 	// 衝突マネージャーの初期化
 	CollisionManager* collisionManager = CollisionManager::GetInstance();
@@ -97,6 +102,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			// オブジェクトマネージャー更新
 			gameObjectManager->Update();
+			// スプライトマネージャ更新
+			spriteManager->Update();
 
 			// 衝突判定検証
 			collisionManager->CheckAllCollision();
@@ -131,6 +138,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// 全オブジェクトを削除
 	gameObjectManager->Initialize();
+	// 読み込みスプライト削除
+	spriteManager->Initialize();
 
 	// 読み込み形状を削除
 	primitiveManager->Initialize();
