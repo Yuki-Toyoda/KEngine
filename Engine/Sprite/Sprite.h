@@ -69,7 +69,7 @@ private: // メンバ関数
 	bool isDestroy_ = false;
 
 	// 形状
-	Plane* primitive_;
+	Plane* plane_;
 
 	// ワールドトランスフォーム
 	WorldTransform transform_;
