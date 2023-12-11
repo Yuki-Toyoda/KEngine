@@ -1,7 +1,9 @@
 #pragma once
 #include "../Primitive/2d/Plane.h"
 
-// 2dスプライト
+/// <summary>
+/// 2Dスプライト
+/// </summary>
 class Sprite
 {
 public: // メンバ関数
@@ -42,6 +44,28 @@ public: // アクセッサ等
 	/// </summary>
 	/// <returns></returns>
 	bool GetIsDestroy() { return isDestroy_; }
+
+	/// <summary>
+	/// 表示状態セッター
+	/// </summary>
+	/// <param name="isActive">表示するか</param>
+	void SetIsActive(bool isActive) { plane_->isActive_ = isActive; }
+	/// <summary>
+	/// 表示状態ゲッター
+	/// </summary>
+	/// <returns>表示状態</returns>
+	bool GetIsActive() { return plane_->isActive_; }
+
+	/// <summary>
+	/// ブレンドモードセッター
+	/// </summary>
+	/// <param name="mode">設定するブレンドモード</param>
+	void SetBlendMode(BasePrimitive::kBlendMode mode) { plane_->blendMode_ = mode; }
+	/// <summary>
+	/// ブレンドモードゲッター
+	/// </summary>
+	/// <returns>ブレンドモード</returns>
+	BasePrimitive::kBlendMode GetBlendMode() { return plane_->blendMode_; }
 
 public: // パブリックなメンバ変数
 
