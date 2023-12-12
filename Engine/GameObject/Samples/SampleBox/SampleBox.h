@@ -3,7 +3,7 @@
 #include "../../../Utility/KLib.h"
 
 /// <summary>
-/// サンプルオブジェクト
+/// オブジェクトの描画を行うサンプル
 /// </summary>
 class SampleBox : public BaseObject
 {
@@ -40,14 +40,9 @@ public: // その他関数
 
 private: // メンバ変数
 
-	KLib::DeltaTimer timer_;
 
+	// ブレンドモード設定用
 	int imGuiSelectBlendMode_ = 0;
-
-	float imGuiStartValue_ = 0.0f;
-	float imGuiEndValue_ = 0.0f;
-
-	std::vector<AnimationKey<Vector3>> keys_;
 
 };
 

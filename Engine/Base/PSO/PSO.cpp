@@ -69,12 +69,13 @@ D3D12_BLEND_DESC PSO::SettingBlendState(int state)
 		blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_ONE;
 		break; // 乗算の設定
 	case 3:
-		blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_REV_SUBTRACT;
-		blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_ONE;
+		blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_ZERO;
+		blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
+		blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_SRC_COLOR;
 		break; // スクリーンの設定
 	case 4:
-		blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_ZERO;
-		blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_SRC_COLOR;
+		blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_INV_DEST_COLOR;
+		blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_ONE;
 		break;
 	default: // それ以外の場合は処理なしで抜ける
 		break;
