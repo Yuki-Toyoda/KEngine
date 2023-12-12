@@ -11,7 +11,7 @@ DirectXCommon* DirectXCommon::GetInstance() {
 	return &instance;
 }
 
-void DirectXCommon::Initialize(WinApp* win,
+void DirectXCommon::Init(WinApp* win,
 	int32_t backBufferWidth, int32_t backBufferHeight) {
 
 	// 引数のNULLチェックを行う
@@ -24,20 +24,20 @@ void DirectXCommon::Initialize(WinApp* win,
 
 	// デバイスの生成
 	dxDevice_ = std::make_unique<DirectXDevice>(); // インスタンス生成
-	dxDevice_->Initialize();					   // 初期化
+	dxDevice_->Init();					   // 初期化
 	device_ = dxDevice_->GetDevice();			   // デバイスを渡す
 
 	// コマンドマネージャー生成
 	commandManager_ = std::make_unique<CommandManager>(); // インスタンス生成
-	commandManager_->Initialize(device_); // 初期化
+	commandManager_->Init(device_); // 初期化
 
 	// 各種ヒープの生成
 	rtv_ = std::make_unique<RTV>();																							 // インスタンス生成
-	rtv_->Initialize(winApp_->GetHwnd(), dxDevice_.get(), backBufferWidth_, backBufferHeight_, commandManager_->GetQueue()); // 初期化
+	rtv_->Init(winApp_->GetHwnd(), dxDevice_.get(), backBufferWidth_, backBufferHeight_, commandManager_->GetQueue()); // 初期化
 	srv_ = std::make_unique<SRV>();																						     // インスタンス生成
-	srv_->Initialize(dxDevice_->GetDevice());																				 // 初期化
+	srv_->Init(dxDevice_->GetDevice());																				 // 初期化
 	dsv_ = std::make_unique<DSV>();																						     // インスタンス生成
-	dsv_->Initialize(dxDevice_->GetDevice(), backBufferWidth_, backBufferHeight_);											 // 初期化
+	dsv_->Init(dxDevice_->GetDevice(), backBufferWidth_, backBufferHeight_);											 // 初期化
 
 	// コマンドマネージャーにヒープをセット
 	commandManager_->SetHeaps(rtv_.get(), srv_.get(), dsv_.get(), L"Engine/Resource/Shader/Object3D.VS.hlsl", L"Engine/Resource/Shader/Object3D.PS.hlsl");

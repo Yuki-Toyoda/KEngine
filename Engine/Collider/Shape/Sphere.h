@@ -17,7 +17,7 @@ public: // メンバ関数
 	/// </summary>
 	/// <param name="center">中心座標</param>
 	/// <param name="radius">当たり判定半径</param>
-	void Initialize(Vector3 center, float radius) {
+	void Init(Vector3 center, float radius) {
 		colliderShape_ = ColliderShape::Sphere; // 形状設定
 		center_ = center; // 中心座標設定
 		radius_ = radius; // 半径設定

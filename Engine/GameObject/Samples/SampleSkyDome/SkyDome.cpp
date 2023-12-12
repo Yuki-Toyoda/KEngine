@@ -1,6 +1,6 @@
 #include "SkyDome.h"
 
-void SkyDome::Initialize()
+void SkyDome::Init()
 {
 	// メッシュを追加
 	AddMesh(&transform_, color_, "./Engine/Resource/Samples/SkyDome", "SkyDome.obj", false);

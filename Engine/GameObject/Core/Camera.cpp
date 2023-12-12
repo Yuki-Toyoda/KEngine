@@ -4,7 +4,7 @@
 #include "../../Base/DirectXCommon.h"
 #include "../GameObjectManager.h"
 
-void Camera::Initialize()
+void Camera::Init()
 {
 	// カメラ初期位置設定
 	transform_.translate_ = { 0.0f, 1.0f, -10.0f };

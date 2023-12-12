@@ -7,7 +7,7 @@ GameObjectManager* GameObjectManager::GetInstance()
 	return &instance;
 }
 
-void GameObjectManager::Initialize()
+void GameObjectManager::Init()
 {
 	// 全オブジェクトを破壊
 	for (std::unique_ptr<BaseObject>& object : objects_)

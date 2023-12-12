@@ -1,9 +1,9 @@
 #include "SampleWeapon.h"
 
-void SampleWeapon::Initialize()
+void SampleWeapon::Init()
 {
 	// 当たり判定座標
-	colliderTransform_.Initialize(); // 初期化
+	colliderTransform_.Init(); // 初期化
 	colliderTransform_.scale_ = { 0.5f, 0.5f, 0.5f }; // 座標設定
 
 	// obj読み込み
@@ -13,7 +13,7 @@ void SampleWeapon::Initialize()
 
 	// 当たり判定用aabb生成
 	AABB* aabb = new AABB();
-	aabb->Initialize(colliderTransform_.GetWorldPos(), colliderTransform_.scale_);
+	aabb->Init(colliderTransform_.GetWorldPos(), colliderTransform_.scale_);
 	// 当たり判定設定
 	collider_->SetColliderShape(aabb);
 	collider_->SetGameObject(this);

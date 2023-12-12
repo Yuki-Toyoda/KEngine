@@ -43,7 +43,7 @@ public: // パブリックメンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize();
+	void Init();
 
 	/// <summary>
 	/// デバッグ用ImGui表示関数

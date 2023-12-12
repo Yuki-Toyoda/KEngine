@@ -20,7 +20,7 @@ void BaseObject::PreInitialize(std::string name, Tag tag)
 	isActive_ = false;
 
 	// ワールドトランスフォームの初期化
-	transform_.Initialize();
+	transform_.Init();
 
 	// メッシュリストクリア
 	meshes_.clear();
@@ -40,7 +40,7 @@ void BaseObject::PreInitialize(std::string name, Tag tag)
 	collider_ = std::make_unique<Collider>();
 
 	// 初期化を呼び出す
-	Initialize();
+	Init();
 }
 
 void BaseObject::PreUpdate()

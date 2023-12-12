@@ -19,7 +19,7 @@ Texture* TextureManager::Load(std::string directoryPath, std::string fileName)
 	return TextureManager::GetInstance()->LoadTexture(directoryPath, fileName);
 }
 
-void TextureManager::Initialize()
+void TextureManager::Init()
 {
 	// DirectX12汎用クラスのインスタンス取得
 	dxCommon_ = DirectXCommon::GetInstance();

@@ -31,7 +31,7 @@ public: // メンバ関数
 	/// <param name="ps">使用するピクセルシェーダまでのファイルパス</param>
 	/// <param name="blendType">ブレンド設定</param>
 	/// <param name="wire">ワイヤーフレーム状態にするか 0 : 通常表示 ** 1 : ワイヤー表示</param>
-	void Initialize(
+	void Init(
 		ID3D12Device* device, 
 		ID3D12RootSignature* signature, 
 		DXC* dxc, 

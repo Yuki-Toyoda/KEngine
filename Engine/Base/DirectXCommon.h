@@ -30,7 +30,7 @@ public: // メンバ関数
 	/// <param name="win">ウィンドウズアプリケーションクラス</param>
 	/// <param name="backBufferWidth">ウィンドウ横幅</param>
 	/// <param name="backBufferHeight">ウィンドウ縦幅</param>
-	void Initialize(WinApp* win, 
+	void Init(WinApp* win, 
 		int32_t backBufferWidth = WinApp::kWindowWidth, int32_t backBufferHeight = WinApp::kwindowHeight);
 
 	/// <summary>

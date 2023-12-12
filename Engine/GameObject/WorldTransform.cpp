@@ -8,13 +8,13 @@ const int FLAG_TRANSLATE = 0b001; // 座標用フラグ
 WorldTransform::WorldTransform()
 {
 	// 初期化
-	Initialize();
+	Init();
 }
 
 WorldTransform::WorldTransform(Vector3 scale, Vector3 rotate, Vector3 translate)
 {
 	// 初期化
-	Initialize();
+	Init();
 	
 	// パブリックメンバ変数に代入
 	scale_ = scale;
@@ -25,7 +25,7 @@ WorldTransform::WorldTransform(Vector3 scale, Vector3 rotate, Vector3 translate)
 WorldTransform::WorldTransform(Vector3 rotate, Vector3 translate)
 {
 	// 初期化
-	Initialize();
+	Init();
 
 	// パブリックメンバ変数に代入
 	rotate_ = rotate;
@@ -35,13 +35,13 @@ WorldTransform::WorldTransform(Vector3 rotate, Vector3 translate)
 WorldTransform::WorldTransform(Vector3 translate)
 {
 	// 初期化
-	Initialize();
+	Init();
 
 	// パブリックメンバ変数に代入
 	translate_ = translate;
 }
 
-void WorldTransform::Initialize()
+void WorldTransform::Init()
 {
 	// パブリックメンバ変数初期化
 	scale_ = { 1.0f, 1.0f, 1.0f };

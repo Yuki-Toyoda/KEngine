@@ -12,7 +12,7 @@ public: // メンバ関数
 	/// <summary>
 	/// 初期化関数
 	/// </summary>
-	void Initialize() override;
+	void Init() override;
 
 	/// <summary>
 	/// 更新関数
@@ -46,6 +46,8 @@ private: // メンバ変数
 
 	float imGuiStartValue_ = 0.0f;
 	float imGuiEndValue_ = 0.0f;
+
+	std::vector<AnimationKey<Vector3>> keys_;
 
 };
 

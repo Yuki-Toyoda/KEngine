@@ -1,13 +1,13 @@
 #include "SampleFloor.h"
 
-void SampleFloor::Initialize()
+void SampleFloor::Init()
 {
 	// モデル読み込み
 	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Stage", "Stage.obj");
 
 	// 当たり判定用aabb生成
 	AABB* aabb = new AABB();
-	aabb->Initialize(transform_.GetWorldPos(), transform_.scale_);
+	aabb->Init(transform_.GetWorldPos(), transform_.scale_);
 	// 当たり判定設定
 	collider_->SetColliderShape(aabb);
 	collider_->SetGameObject(this);

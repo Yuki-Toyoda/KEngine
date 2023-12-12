@@ -8,12 +8,12 @@ SceneManager* SceneManager::GetInstance()
 	return &sceneManager;
 }
 
-void SceneManager::Initialize()
+void SceneManager::Init()
 {
 	// シーン初期化
 	currentScene_ = new TitleScene(); // タイトルシーン生成
 	currentScene_->PreInitialize(); // 共通初期化を行う
-	currentScene_->Initialize(); // 初期化を行う
+	currentScene_->Init(); // 初期化を行う
 }
 
 void SceneManager::Update()
@@ -32,7 +32,7 @@ void SceneManager::Update()
 
 	// 現在のシーンから次のシーンへ遷移するよう指示されたら
 	if (nextScene_ != nullptr) {
-		GameObjectManager::GetInstance()->Initialize();
+		GameObjectManager::GetInstance()->Init();
 		// 現在のシーンがあるなら
 		if (currentScene_) {
 			// 現在のシーンを削除
@@ -42,7 +42,7 @@ void SceneManager::Update()
 		currentScene_ = nextScene_; // 次のシーンを取得
 		nextScene_ = nullptr; // 次のシーンにNULLを代入
 		currentScene_->PreInitialize(); // 取得したシーンの共通初期化を行う
-		currentScene_->Initialize(); // 取得したシーンの初期化を行う
+		currentScene_->Init(); // 取得したシーンの初期化を行う
 	}
 
 	// 現在のシーンの更新

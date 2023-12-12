@@ -97,7 +97,7 @@ public: // メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(const std::string& directoryPath = "./Resources/");
+	void Init(const std::string& directoryPath = "./Resources/");
 
 	/// <summary>
 	/// 終了処理

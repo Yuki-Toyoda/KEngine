@@ -8,7 +8,7 @@
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
 
-void CommandManager::Initialize(ID3D12Device* device)
+void CommandManager::Init(ID3D12Device* device)
 {
 	// 結果確認用
 	HRESULT result = S_FALSE;
@@ -149,7 +149,7 @@ void CommandManager::SetHeaps(RTV* rtv, SRV* srv, DSV* dsv, std::wstring vs, std
 			buffers.push_back(CreateBuffer(sizeof(IndexInfoStruct) * commands_[i]->kMaxIndex));
 		}
 		// リソースの生成を行う
-		commands_[i]->Initialize(device_, dxc_.get(), rootSignature_.Get(), buffers, vs, ps); // 初期化
+		commands_[i]->Init(device_, dxc_.get(), rootSignature_.Get(), buffers, vs, ps); // 初期化
 	}
 
 	// ストラクチャーバッファを生成

@@ -13,7 +13,7 @@ Audio* Audio::GetInstance()
 	return &instance;
 }
 
-void Audio::Initialize(const std::string& directoryPath)
+void Audio::Init(const std::string& directoryPath)
 {
 	// ディレクトリパスを指定
 	directoryPath_ = directoryPath;

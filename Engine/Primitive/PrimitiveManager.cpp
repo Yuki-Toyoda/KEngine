@@ -9,7 +9,7 @@ PrimitiveManager* PrimitiveManager::GetInstance()
 	return &instance;
 }
 
-void PrimitiveManager::Initialize()
+void PrimitiveManager::Init()
 {
 	// コマンドマネージャーの取得
 	commandManager_ = DirectXCommon::GetInstance()->GetCommandManager();

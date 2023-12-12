@@ -2,7 +2,7 @@
 
 using namespace Microsoft::WRL;
 
-void RTV::Initialize(HWND hwnd, DirectXDevice* device, int32_t width, int32_t height, ID3D12CommandQueue* queue)
+void RTV::Init(HWND hwnd, DirectXDevice* device, int32_t width, int32_t height, ID3D12CommandQueue* queue)
 {
 	// 結果確認用
 	HRESULT result = S_FALSE;

@@ -1,7 +1,7 @@
 #include "SampleBox.h"
 #include "../../../Resource/Texture/TextureManager.h"
 
-void SampleBox::Initialize() {
+void SampleBox::Init() {
 
 	// メッシュを追加
 	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Box", "Box.obj");
@@ -10,10 +10,11 @@ void SampleBox::Initialize() {
 
 	// 当たり判定の設定
 	AABB* aabb = new AABB();
-	aabb->Initialize(transform_.GetWorldPos(), transform_.scale_);
+	aabb->Init(transform_.GetWorldPos(), transform_.scale_);
 	collider_->SetColliderShape(aabb);
 	collider_->SetGameObject(this);
 
+	keys_.push_back(AnimationKey<Vector3>("TestAnim", 1));
 }
 
 void SampleBox::Update() {
@@ -46,6 +47,8 @@ void SampleBox::DisplayImGui() {
 	ImGui::Text("nowValue : %4.2f", nowValue);
 
 	sprites_[0]->DisplayImGui();
+	
+	keys_[0].DisplayImGui();
 
 	for (Mesh* mesh : meshes_) {
 		mesh->DisplayImGui();

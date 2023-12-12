@@ -1,6 +1,6 @@
 #include "DSV.h"
 
-void DSV::Initialize(ID3D12Device* device, int32_t width, int32_t height)
+void DSV::Init(ID3D12Device* device, int32_t width, int32_t height)
 {
 	// デバイス取得
 	device_ = device;

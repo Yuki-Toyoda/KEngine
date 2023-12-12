@@ -1,11 +1,11 @@
 #include "SampleEnemy.h"
 
-void SampleEnemy::Initialize()
+void SampleEnemy::Init()
 {
-	TireTransform_R_.Initialize();
+	TireTransform_R_.Init();
 	TireTransform_R_.translate_ = { 0.0f, 1.0f, 0.0f };
 	TireTransform_R_.SetParent(&transform_);
-	TireTransform_L_.Initialize();
+	TireTransform_L_.Init();
 	TireTransform_L_.translate_ = { 0.0f, 1.0f, 0.0f };
 	TireTransform_L_.rotate_ = { 0.0f, (float)std::numbers::pi, 0.0f };
 	TireTransform_L_.SetParent(&transform_);
@@ -32,7 +32,7 @@ void SampleEnemy::Initialize()
 
 	// 当たり判定用aabb生成
 	AABB* aabb = new AABB();
-	aabb->Initialize(transform_.GetWorldPos(), { 1.0f, 1.0f, 1.0f });
+	aabb->Init(transform_.GetWorldPos(), { 1.0f, 1.0f, 1.0f });
 	// 当たり判定設定
 	collider_->SetColliderShape(aabb);
 	collider_->SetGameObject(this);

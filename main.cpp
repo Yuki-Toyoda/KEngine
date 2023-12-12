@@ -33,9 +33,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// DirectX汎用クラスのインスタンスを取得
 	dxCommon = DirectXCommon::GetInstance();
 	// テクスチャマネージャ初期化
-	TextureManager::GetInstance()->Initialize();
+	TextureManager::GetInstance()->Init();
 	// DirectXの初期化
-	dxCommon->Initialize(winApp);
+	dxCommon->Init(winApp);
 
 	// ImGuiの初期化
 	ImGuiManager* imguiManager = ImGuiManager::GetImstance();
@@ -43,30 +43,30 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// 形状マネージャの初期化
 	PrimitiveManager* primitiveManager = PrimitiveManager::GetInstance();
-	primitiveManager->Initialize();
+	primitiveManager->Init();
 
 	// オブジェクトマネージャーの初期化
 	GameObjectManager* gameObjectManager = GameObjectManager::GetInstance();
-	gameObjectManager->Initialize();
+	gameObjectManager->Init();
 
 	// スプライトマネージャの初期化
 	SpriteManager* spriteManager = SpriteManager::GetInstance();
-	spriteManager->Initialize();
+	spriteManager->Init();
 
 	// 衝突マネージャーの初期化
 	CollisionManager* collisionManager = CollisionManager::GetInstance();
 
 	// シーンマネージャーの初期化
 	SceneManager* sceneManager = SceneManager::GetInstance();
-	sceneManager->Initialize();
+	sceneManager->Init();
 
 	// 入力の初期化
 	input = Input::GetInstance();
-	input->Initialize();
+	input->Init();
 
 	// オーディオの初期化
 	audio = Audio::GetInstance();
-	audio->Initialize();
+	audio->Init();
 
 	// グローバル変数の読み込み
 	GlobalVariables::GetInstance()->LoadFiles();
@@ -137,12 +137,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	collisionManager->ListClear();
 
 	// 全オブジェクトを削除
-	gameObjectManager->Initialize();
+	gameObjectManager->Init();
 	// 読み込みスプライト削除
-	spriteManager->Initialize();
+	spriteManager->Init();
 
 	// 読み込み形状を削除
-	primitiveManager->Initialize();
+	primitiveManager->Init();
 
 	// 音解放処理
 	audio->Finalize();

@@ -174,6 +174,9 @@
     <ClCompile Include="Engine\Sprite\SpriteManager.cpp">
       <Filter>Sprite</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Utility\Animation\AnimationKey.cpp">
+      <Filter>Utility\Animation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -386,6 +389,9 @@
     <ClInclude Include="Engine\Sprite\SpriteManager.h">
       <Filter>Sprite</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Utility\Animation\AnimationKey.h">
+      <Filter>Utility\Animation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -512,6 +518,9 @@
     </Filter>
     <Filter Include="Sprite">
       <UniqueIdentifier>{89930de6-5713-4b33-a25e-c80afe7ab47c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\Animation">
+      <UniqueIdentifier>{e0beeaf0-3b5a-451f-96a4-9aaedb7e01b6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -217,7 +217,7 @@ Input::~Input() {
 	}
 }
 
-void Input::Initialize() {
+void Input::Init() {
 	WinApp* winApp = WinApp::GetInstance();
 
 	hwnd_ = winApp->GetHwnd();

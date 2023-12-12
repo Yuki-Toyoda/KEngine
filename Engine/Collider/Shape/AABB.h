@@ -17,7 +17,7 @@ public: // メンバ関数
 	/// </summary>
 	/// <param name="center">中心座標</param>
 	/// <param name="size">AABB半径</param>
-	void Initialize(Vector3 center, Vector3 size) {
+	void Init(Vector3 center, Vector3 size) {
 		colliderShape_ = ColliderShape::AABB; // 形状設定
 		center_ = center; // 中心座標設定
 		min_ = center_ - size; // 最小点設定

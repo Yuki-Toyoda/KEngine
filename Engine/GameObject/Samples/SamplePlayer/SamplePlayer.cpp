@@ -1,19 +1,19 @@
 #include "SamplePlayer.h"
 #include "../SampleThirdPersonCamera/ThirdPersonCamera.h"
 #include "../SampleWeapon/SampleWeapon.h"
-void SamplePlayer::Initialize()
+void SamplePlayer::Init()
 {
 	// ワールド座標初期化
-	bodyTransform_.Initialize(); // 体
+	bodyTransform_.Init(); // 体
 	bodyTransform_.translate_ = { 0.0f, 0.0f, 0.0f }; // 初期座標設定
 	bodyTransform_.SetParent(&transform_); // 親子付け
-	headTransform_.Initialize(); // 頭
+	headTransform_.Init(); // 頭
 	headTransform_.translate_ = { 0.0f, 1.5f, 0.0f }; // 初期座標設定
 	headTransform_.SetParent(&bodyTransform_); // 親子付け
-	armTransform_L_.Initialize(); // 左腕
+	armTransform_L_.Init(); // 左腕
 	armTransform_L_.translate_ = { -0.35f, 1.25f, 0.0f }; // 初期座標設定
 	armTransform_L_.SetParent(&bodyTransform_); // 親子付け
-	armTransform_R_.Initialize(); // 右腕
+	armTransform_R_.Init(); // 右腕
 	armTransform_R_.translate_ = { 0.35f, 1.25f, 0.0f }; // 初期座標設定
 	armTransform_R_.SetParent(&bodyTransform_); // 親子付け
 
@@ -68,7 +68,7 @@ void SamplePlayer::Initialize()
 
 	// 当たり判定用aabb生成
 	AABB* aabb = new AABB();
-	aabb->Initialize(transform_.GetWorldPos(), { 1.0f, 1.0f, 1.0f });
+	aabb->Init(transform_.GetWorldPos(), { 1.0f, 1.0f, 1.0f });
 	// 当たり判定設定
 	collider_->SetColliderShape(aabb);
 	collider_->SetGameObject(this);

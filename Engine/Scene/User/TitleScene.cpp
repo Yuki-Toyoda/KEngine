@@ -2,7 +2,7 @@
 #include "../SceneManager.h"
 #include "../../Resource/Texture/TextureManager.h"
 
-void TitleScene::Initialize()
+void TitleScene::Init()
 {
 	SampleBox* box = nullptr;
 	box = GameObjectManager::GetInstance()->CreateInstance<SampleBox>("box", BaseObject::TagNone);

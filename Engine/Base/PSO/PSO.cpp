@@ -1,6 +1,6 @@
 #include "PSO.h"
 
-void PSO::Initialize(ID3D12Device* device, ID3D12RootSignature* signature, DXC* dxc, std::wstring vs, std::wstring ps, int blendType, UINT wire)
+void PSO::Init(ID3D12Device* device, ID3D12RootSignature* signature, DXC* dxc, std::wstring vs, std::wstring ps, int blendType, UINT wire)
 {
 	// 結果確認用
 	HRESULT result = S_FALSE;

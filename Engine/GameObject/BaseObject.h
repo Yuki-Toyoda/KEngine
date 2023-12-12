@@ -29,6 +29,8 @@ public: // サブクラス
 
 public: // メンバ関数
 
+	// コンストラクタ
+	BaseObject() = default;
 	// 仮想デストラクタ
 	virtual ~BaseObject();
 
@@ -42,7 +44,7 @@ public: // メンバ関数
 	/// </summary>
 	/// <param name="name">オブジェクト名</param>
 	/// <param name="tag">所属タグ</param>
-	virtual void Initialize() = 0;
+	virtual void Init() = 0;
 
 	// 更新関数
 	virtual void Update() = 0;

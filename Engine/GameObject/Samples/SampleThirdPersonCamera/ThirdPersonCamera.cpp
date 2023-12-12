@@ -1,9 +1,9 @@
 #include "ThirdPersonCamera.h"
 
-void ThirdPersonCamera::Initialize()
+void ThirdPersonCamera::Init()
 {
 	// 基底クラスの初期化を呼び出す
-	Camera::Initialize();
+	Camera::Init();
 
 	// 入力取得
 	input_ = Input::GetInstance();

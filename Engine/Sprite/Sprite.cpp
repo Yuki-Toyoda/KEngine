@@ -1,10 +1,16 @@
 #include "Sprite.h"
 #include "../Primitive/PrimitiveManager.h"
 
-void Sprite::Initialize(const std::string& name)
+Sprite::~Sprite()
+{
+	// メッシュを破壊
+	plane_->isDestroy_ = true;
+}
+
+void Sprite::Init(const std::string& name)
 {
 	// トランスフォーム初期化
-	transform_.Initialize();
+	transform_.Init();
 
 	// 形状生成
 	plane_ = PrimitiveManager::GetInstance()->CreateInstance<Plane>();
@@ -15,10 +21,10 @@ void Sprite::Initialize(const std::string& name)
 	plane_->commonColor = &color_;
 }
 
-void Sprite::Initialize(const std::string& name, const Vector2 position, const Vector2& size, Texture* texture)
+void Sprite::Init(const std::string& name, const Vector2 position, const Vector2& size, Texture* texture)
 {
 	// トランスフォーム初期化
-	transform_.Initialize();
+	transform_.Init();
 
 	// 形状生成
 	plane_ = PrimitiveManager::GetInstance()->CreateInstance<Plane>();

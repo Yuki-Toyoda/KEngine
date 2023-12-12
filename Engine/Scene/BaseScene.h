@@ -23,7 +23,7 @@ public: // 純粋仮想関数
 	/// <summary>
 	/// 初期化関数
 	/// </summary>
-	virtual void Initialize() = 0;
+	virtual void Init() = 0;
 
 	/// <summary>
 	/// 更新関数

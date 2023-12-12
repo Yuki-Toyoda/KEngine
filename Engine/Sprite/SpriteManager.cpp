@@ -6,7 +6,7 @@ SpriteManager* SpriteManager::GetInstance()
 	return &instance;
 }
 
-void SpriteManager::Initialize()
+void SpriteManager::Init()
 {
 	// 全スプライトを破壊
 	for (std::unique_ptr<Sprite>& sprite : sprites_)
@@ -41,7 +41,7 @@ Sprite* SpriteManager::Create(const std::string& name)
 	// インスタンス生成
 	std::unique_ptr<Sprite> newSprite = std::make_unique<Sprite>();
 	// 初期化
-	newSprite->Initialize(name);
+	newSprite->Init(name);
 
 	// 返還用インスタンスの生成
 	Sprite* returnSprite = newSprite.get();
@@ -58,7 +58,7 @@ Sprite* SpriteManager::Create(const std::string& name, const Vector2 position, c
 	// インスタンス生成
 	std::unique_ptr<Sprite> newSprite = std::make_unique<Sprite>();
 	// 初期化
-	newSprite->Initialize(name, position, size, texture);
+	newSprite->Init(name, position, size, texture);
 
 	// 返還用インスタンスの生成
 	Sprite* returnSprite = newSprite.get();
