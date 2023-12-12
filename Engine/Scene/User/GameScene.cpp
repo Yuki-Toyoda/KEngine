@@ -1,5 +1,6 @@
 #include "GameScene.h"
 #include "../SceneManager.h"
+#include "../../GameObject/SampleList.h"
 
 void GameScene::Init(){
 

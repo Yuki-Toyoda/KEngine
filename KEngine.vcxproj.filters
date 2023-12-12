@@ -178,6 +178,10 @@
       <Filter>Utility\Animation</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Utility\Animation\Animation.cpp" />
+    <ClCompile Include="Engine\Scene\User\SampleScene.cpp">
+      <Filter>Scene\User</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\Samples\SampleSprite\SampleSprite.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -394,6 +398,13 @@
       <Filter>Utility\Animation</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utility\Animation\Animation.h" />
+    <ClInclude Include="Engine\GameObject\SampleList.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Scene\User\SampleScene.h">
+      <Filter>Scene\User</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\Samples\SampleSprite\SampleSprite.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -523,6 +534,9 @@
     </Filter>
     <Filter Include="Utility\Animation">
       <UniqueIdentifier>{e0beeaf0-3b5a-451f-96a4-9aaedb7e01b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Samples\Sprite">
+      <UniqueIdentifier>{cfbc2871-68a2-4a09-a052-431c3e871e78}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

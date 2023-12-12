@@ -4,21 +4,11 @@
 
 void TitleScene::Init()
 {
-	SampleBox* box = nullptr;
-	box = GameObjectManager::GetInstance()->CreateInstance<SampleBox>("box", BaseObject::TagNone);
-	box->transform_.translate_ = { 0.0f, 0.0f, 0.0f };
-
-	//box = GameObjectManager::GetInstance()->CreateInstance<SampleBox>("box", BaseObject::TagPlayer);
+	
 }
 
 void TitleScene::Update()
 {
-	ImGui::Begin("Generate");
-	if (ImGui::Button("Generate Plane")) {
-		SampleBox* box = nullptr;
-		box = GameObjectManager::GetInstance()->CreateInstance<SampleBox>("box", BaseObject::TagPlayer);
-	}
-	ImGui::End();
 
 	// デバッグ時のみ特定のキーでシーン遷移
 #ifdef _DEBUG
