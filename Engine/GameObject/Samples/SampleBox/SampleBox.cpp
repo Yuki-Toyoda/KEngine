@@ -10,9 +10,7 @@ void SampleBox::Init() {
 	/// ~メッシュの追加~
 	// オブジェクトにメッシュを追加したい場合、下記のAddMesh関数を呼び出してください
 	// 引数については関数の定義から参照してください
-	for (int i = 0; i < 1000; i++) {
-		AddMesh(&transform_, color_, "./Engine/Resource/Samples/Plane", "Plane.obj");
-	}
+	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Box", "Box.obj");
 
 	/// ~当たり判定の設定~
 	// 当たり判定の設定については以下の手順で行ってください
