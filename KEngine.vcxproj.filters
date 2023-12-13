@@ -177,11 +177,18 @@
     <ClCompile Include="Engine\Utility\Animation\AnimationKey.cpp">
       <Filter>Utility\Animation</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Utility\Animation\Animation.cpp" />
     <ClCompile Include="Engine\Scene\User\SampleScene.cpp">
       <Filter>Scene\User</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\GameObject\Samples\SampleSprite\SampleSprite.cpp" />
+    <ClCompile Include="Engine\Utility\Animation\Animation.cpp">
+      <Filter>Utility\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\Samples\SampleSprite\SampleSprite.cpp">
+      <Filter>GameObject\Samples\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Particle\IParticleEmitter.cpp">
+      <Filter>Particle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -397,14 +404,21 @@
     <ClInclude Include="Engine\Utility\Animation\AnimationKey.h">
       <Filter>Utility\Animation</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Utility\Animation\Animation.h" />
     <ClInclude Include="Engine\GameObject\SampleList.h">
       <Filter>GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Scene\User\SampleScene.h">
       <Filter>Scene\User</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\GameObject\Samples\SampleSprite\SampleSprite.h" />
+    <ClInclude Include="Engine\Utility\Animation\Animation.h">
+      <Filter>Utility\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\Samples\SampleSprite\SampleSprite.h">
+      <Filter>GameObject\Samples\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Particle\IParticleEmitter.h">
+      <Filter>Particle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -537,6 +551,9 @@
     </Filter>
     <Filter Include="GameObject\Samples\Sprite">
       <UniqueIdentifier>{cfbc2871-68a2-4a09-a052-431c3e871e78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Particle">
+      <UniqueIdentifier>{35ed7eb1-48ce-4485-9d6f-e794d8493628}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

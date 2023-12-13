@@ -144,7 +144,7 @@ public: // パブリックなメンバ変数
 	WorldTransform transform_;
 
 	// メッシュリスト
-	std::vector<Mesh*> meshes_;
+	std::vector<BasePrimitive*> meshes_;
 	// スプライトリスト
 	std::vector<Sprite*> sprites_;
 

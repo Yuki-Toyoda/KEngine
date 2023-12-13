@@ -14,5 +14,7 @@ void SampleScene::Init()
 
 void SampleScene::Update()
 {
-
+	if (ImGui::Button("GeneratePlane")) {
+		GameObjectManager::GetInstance()->CreateInstance<SampleBox>("SampleBox", BaseObject::TagNone);
+	}
 }

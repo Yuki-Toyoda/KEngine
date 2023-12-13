@@ -38,7 +38,7 @@ void PrimitiveManager::Update()
 	});
 
 	// レイヤー番号で昇順にソート
-	primitives_.sort([](std::unique_ptr<BasePrimitive>& primitive1, std::unique_ptr<BasePrimitive>& primitive2) {return primitive1->layerNo_ > primitive2->layerNo_; });
+	//primitives_.sort([](std::unique_ptr<BasePrimitive>& primitive1, std::unique_ptr<BasePrimitive>& primitive2) {return primitive1->layerNo_ > primitive2->layerNo_; });
 
 	// 使用中カメラのビュー行列取得
 	Matrix4x4 viewMat = Math::Inverse(GameObjectManager::GetInstance()->GetUseCamera()->GetViewMatrix());
