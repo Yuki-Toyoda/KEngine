@@ -1,13 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Engine\Audio\Audio.cpp" />
-    <ClCompile Include="Engine\Base\DirectXCommon.cpp" />
-    <ClCompile Include="Engine\Base\WinApp.cpp" />
-    <ClCompile Include="Engine\Debug\Debug.cpp" />
-    <ClCompile Include="Engine\GlobalVariables\GlobalVariables.cpp" />
-    <ClCompile Include="Engine\Input\Input.cpp" />
-    <ClCompile Include="Engine\Math\Math.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\Audio\Audio.cpp">
       <Filter>Audio</Filter>
@@ -188,6 +181,30 @@
     </ClCompile>
     <ClCompile Include="Engine\Particle\IParticleEmitter.cpp">
       <Filter>Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\User\TestObject.cpp">
+      <Filter>GameObject\User</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Audio\Audio.cpp">
+      <Filter>Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Debug\Debug.cpp">
+      <Filter>Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Base\DirectXCommon.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Base\WinApp.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GlobalVariables\GlobalVariables.cpp">
+      <Filter>GlobalVariables</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Input\Input.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Math\Math.cpp">
+      <Filter>Math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -419,6 +436,9 @@
     <ClInclude Include="Engine\Particle\IParticleEmitter.h">
       <Filter>Particle</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\GameObject\User\TestObject.h">
+      <Filter>GameObject\User</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -554,6 +574,9 @@
     </Filter>
     <Filter Include="Particle">
       <UniqueIdentifier>{35ed7eb1-48ce-4485-9d6f-e794d8493628}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\User">
+      <UniqueIdentifier>{e4d282eb-c22f-46f5-a5d1-e5fa5125b0e2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

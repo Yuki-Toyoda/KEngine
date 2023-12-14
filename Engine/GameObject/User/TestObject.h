@@ -1,13 +1,11 @@
 #pragma once
-#include "../BaseScene.h"
-#include "../SceneList.h"
+#include "../BaseObject.h"
 
 /// <summary>
-/// サンプルのシーン
+/// テストオブジェクト
 /// </summary>
-class SampleScene final : public BaseScene {
-public: // メンバ関数
-
+class TestObject : public BaseObject
+{
 	/// <summary>
 	/// 初期化関数
 	/// </summary>
@@ -18,7 +16,9 @@ public: // メンバ関数
 	/// </summary>
 	void Update() override;
 
-private: // メンバ変数
-
+	/// <summary>
+	/// ImGuiを表示させる関数
+	/// </summary>
+	void DisplayImGui() override;
 };
 

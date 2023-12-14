@@ -4,3 +4,4 @@
 ==================================*/
 
 #include "Core/Camera.h"
+#include "User/TestObject.h"

@@ -71,7 +71,28 @@ void BaseObject::PreUpdate()
 
 void BaseObject::DisplayImGui()
 {
-	// 基底クラスでは特に記述なし
+	// トランスフォーム内の情報を表示
+	transform_.DisplayImGui();
+
+	// メッシュ情報があれば
+	if (meshes_.size() > 0) {
+		ImGui::Text("Meshes");
+		ImGui::BeginChild("Meshes", ImVec2(0, 300), ImGuiWindowFlags_NoTitleBar);
+		for (BasePrimitive* p : meshes_) {
+			p->DisplayImGui();
+		}
+		ImGui::EndChild();	
+	}
+
+	// スプライト情報があれば
+	if (sprites_.size() > 0) {
+		ImGui::Text("Sprites");
+		ImGui::BeginChild("Sprites", ImVec2(0, 300), ImGuiWindowFlags_NoTitleBar);
+		for (Sprite* s : sprites_) {
+			s->DisplayImGui();
+		}
+		ImGui::EndChild();
+	}
 }
 
 void BaseObject::AddMesh(WorldTransform* wt, Vector4& color, const std::string& path, const std::string& fileName, bool enableLighting)

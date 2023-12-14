@@ -8,6 +8,34 @@
 #include "../Sprite/SpriteManager.h"
 #include "../Collider/CollisionManager.h"
 
+/// 最小構成
+/*
+#include "../../BaseObject.h"
+
+/// <summary>
+/// 任意のクラス名
+/// </summary>
+class 任意のクラス名 : public BaseObject
+{
+public: // メンバ関数
+
+	/// <summary>
+	/// 初期化関数
+	/// </summary>
+	void Init() override;
+
+	/// <summary>
+	/// 更新関数
+	/// </summary>
+	void Update() override;
+
+private: // メンバ変数
+
+	// メンバ変数をここに
+
+};
+*/
+
 /// <summary>
 /// 全オブジェクトの基底クラス
 /// </summary>

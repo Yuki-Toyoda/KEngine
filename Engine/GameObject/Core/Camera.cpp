@@ -6,6 +6,9 @@
 
 void Camera::Init()
 {
+	// 入力取得
+	input_ = Input::GetInstance();
+
 	// カメラ初期位置設定
 	transform_.translate_ = { 0.0f, 1.0f, -10.0f };
 
@@ -35,10 +38,76 @@ void Camera::Update()
 		// アドレスに
 		*vpDataTarget_ = viewProjectionMatrix_;
 	}
+
+	// デバッグカメラだった場合はキー入力でカメラを移動させる
+	if (name_ == "DebugCamera") {
+
+		// 移動速度
+		const float speed = 0.1f;
+		// 移動ベクトル
+		Vector3 move = { 0.0f };
+
+		// Wキーが押されたら
+		if (input_->PushKey(DIK_W)) {
+			move.z = 1.0f;
+		}
+		else if (input_->PushKey(DIK_S)) {
+			move.z = -1.0f;
+		}
+
+		if (input_->PushKey(DIK_A)) {
+			move.x = -1.0f;
+		}
+		else if (input_->PushKey(DIK_D)) {
+			move.x = 1.0f;
+		}
+
+		if (input_->PushKey(DIK_SPACE)) {
+			move.y = 1.0f;
+		}
+		else if (input_->PushKey(DIK_LCONTROL)) {
+			move.y = -1.0f;
+		}
+
+		if (input_->PushKey(DIK_UP)) {
+			transform_.rotate_.x -= 0.015f;
+		}
+		else if (input_->PushKey(DIK_DOWN)) {
+			transform_.rotate_.x += 0.015f;
+		}
+
+		if (input_->PushKey(DIK_LEFT)) {
+			transform_.rotate_.y -= 0.015f;
+		}
+		else if (input_->PushKey(DIK_RIGHT)) {
+			transform_.rotate_.y += 0.015f;
+		}
+
+		// 移動量を正規化、スピードを加算
+		move = Math::Normalize(move) * speed;
+
+		// カメラの角度から回転行列を生成
+		Matrix4x4 rotateMat = Math::MakeRotateXYZMatrix(transform_.rotate_);
+		// 移動ベクトルをカメラの角度に応じて回転させる
+		move = Math::Transform(move, rotateMat);
+
+		// 移動
+		transform_.translate_ = transform_.translate_ + move;
+	}
+
 }
 
 void Camera::DisplayImGui()
 {
+	// デバッグカメラだった場合はキー入力でカメラを移動させる
+	if (name_ == "DebugCamera") {
+		ImGui::Text("Debug Movement");
+		ImGui::Text("Move ... WASD");
+		ImGui::Text("Look ... ArrowKey");
+		ImGui::Text("Rise ... Space");
+		ImGui::Text("Descent ... LCTRL");
+	}
+
 	// ワールド座標の表示
 	transform_.DisplayImGui();
 	// 視野角の調整

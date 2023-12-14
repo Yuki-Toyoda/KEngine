@@ -42,9 +42,12 @@ void BasePrimitive::Draw(CommandManager* manager)
 
 void BasePrimitive::DisplayImGui()
 {
-	if (ImGui::TreeNode("MeshMenu")) {
-		std::string treeName = name_ + " : vertex";
-		if (ImGui::TreeNode(treeName.c_str())) {
+	// メッシュ名を設定
+	std::string meshName = name_ + " - Mesh";
+	if (ImGui::TreeNode(meshName.c_str())) {
+		// 頂点情報の表示
+		if (ImGui::TreeNode("vertex")) {
+			// 頂点をリストで表示する
 			ImGui::BeginChild(ImGui::GetID((void*)0), ImVec2(0, 100), ImGuiWindowFlags_NoTitleBar);
 			for (UINT i = 0; i < vertices_.size(); i++) {
 				std::string name = "vertex" + std::to_string(i);
@@ -53,8 +56,13 @@ void BasePrimitive::DisplayImGui()
 			ImGui::EndChild();
 			ImGui::TreePop();
 		}
+		
+		// 表示状態の設定
+		ImGui::Checkbox("isActive", &isActive_);
 		// マテリアルのuvトランスフォームを表示
-		material_.uvTransform_.DisplayImGui();
+		material_.uvTransform_.DisplayImGui("uvTransform");
+		ImGui::Checkbox("isBillboard", &isBillboard_);
+		ImGui::Checkbox("isUI", &isUI_);
 		ImGui::TreePop();
 	}
 }
