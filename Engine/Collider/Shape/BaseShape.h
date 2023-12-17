@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 #include "../../Math/Math.h"
 #include "../../../Externals/imgui/imgui.h"
 
@@ -53,32 +54,12 @@ public: // 共用関数群
 public: // 球用関数群
 
 	/// <summary>
-	/// 更新関数(球)
-	/// </summary>
-	/// <param name="center">中心座標</param>
-	/// <param name="radius">半径</param>
-	virtual void Update(Vector3 center, float radius) {
-		center;
-		radius;
-	};
-
-	/// <summary>
 	/// 球の当たり判定半径ゲッター
 	/// </summary>
 	/// <returns>球の当たり判定半径</returns>
 	virtual const float GetRadius() { return 0.0f; }
 
 public: // AABB用関数群
-
-	/// <summary>
-	/// 更新関数(AABB)
-	/// </summary>
-	/// <param name="center">中心座標</param>
-	/// <param name="size">AABBサイズ</param>
-	virtual void Update(Vector3 center, Vector3 size) { 
-		center; 
-		size;
-	};
 
 	/// <summary>
 	/// AABB最小点ゲッター
@@ -94,22 +75,16 @@ public: // AABB用関数群
 public: // OBB用関数群
 
 	/// <summary>
-	/// 更新関数(OBB)
-	/// </summary>
-	/// <param name="center">中心座標</param>
-	/// <param name="size">大きさ</param>
-	/// <param name="rotate">回転</param>
-	virtual void Update(Vector3 center, Vector3 size, Vector3 rotate) {
-		size;
-		rotate;
-		center;
-	};
-
-	/// <summary>
 	/// 座標軸ゲッター
 	/// </summary>
 	/// <returns>座標軸</returns>
-	virtual Vector3* GetOtientatuons() { return nullptr; }
+	virtual const std::vector<Vector3> GetOtientatuons() { return std::vector<Vector3>(); }
+	
+	/// <summary>
+	/// 座標軸の半分の長さゲッター
+	/// </summary>
+	/// <returns></returns>
+	virtual const Vector3 GetSize() { return Vector3(0.0f, 0.0f, 0.0f); }
 
 protected: // メンバ関数
 

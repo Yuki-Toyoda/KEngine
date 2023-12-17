@@ -9,8 +9,8 @@ void TestObject::Init()
 	/// ~スプライトの追加関数~
 	AddSprite("TestSprite", { 0.0f, 0.0f }, { 512.0f, 512.0f }, TextureManager::Load("./Engine/Resource/Samples/Box", "uvChecker.png"));
 
-	// AABB生成
-	AddColliderAABB("Test", &transform_.translate_, &transform_.scale_);
+	// OBB生成
+	AddColliderOBB("Test", &transform_.scale_, &transform_.rotate_, &transform_.translate_);
 }
 
 void TestObject::Update()

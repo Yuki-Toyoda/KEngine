@@ -178,6 +178,16 @@ protected: // プライベートなメンバ関数
 	void AddColliderAABB(const std::string& name, Vector3* center, Vector3* size, bool enable = true);
 
 	/// <summary>
+	/// コライダー追加関数(OBB)
+	/// </summary>
+	/// <param name="name">追加するコライダー名称</param>
+	/// <param name="scale">大きさ</param>
+	/// <param name="rotate">回転角</param>
+	/// <param name="translate">中心座標</param>
+	/// <param name="enable">登録時にコライダーを有効化するか</param>
+	void AddColliderOBB(const std::string& name, Vector3* scale, Vector3* rotate, Vector3* translate, bool enable = true);
+
+	/// <summary>
 	/// 指定した名称のコライダーを削除する関数
 	/// </summary>
 	/// <param name="name">削除するコライダー</param>

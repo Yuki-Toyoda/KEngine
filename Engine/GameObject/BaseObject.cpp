@@ -173,6 +173,23 @@ void BaseObject::AddColliderAABB(const std::string& name, Vector3* center, Vecto
 	colliders_.push_back(std::move(newCollider));
 }
 
+void BaseObject::AddColliderOBB(const std::string& name, Vector3* scale, Vector3* rotate, Vector3* translate, bool enable)
+{
+	// 新しいコライダーを生成する
+	std::unique_ptr<Collider> newCollider = std::make_unique<Collider>();
+	// 形状生成
+	std::unique_ptr<OBB> shape = std::make_unique<OBB>();
+	shape->Init(scale, rotate, translate);
+	// コライダー初期化
+	newCollider->Init(name, std::move(shape));
+	// コライダー有効状態設定
+	newCollider->SetIsActive(enable);
+	// 自身を設定
+	newCollider->SetGameObject(this);
+	// 生成したコライダーをリストに追加
+	colliders_.push_back(std::move(newCollider));
+}
+
 void BaseObject::DeleteCollider(const std::string& name)
 {
 	// 全てのコライダーから一致するコライダーを検索
