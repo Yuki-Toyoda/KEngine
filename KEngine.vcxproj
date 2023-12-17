@@ -138,6 +138,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Sprite\SpriteManager.cpp" />
     <ClCompile Include="Engine\Utility\Animation\Animation.cpp" />
     <ClCompile Include="Engine\Utility\Animation\AnimationKey.cpp" />
+    <ClCompile Include="Engine\Utility\Animation\AnimationManager.cpp" />
     <ClCompile Include="Engine\Utility\Easing\Easing.cpp" />
     <ClCompile Include="Engine\Utility\Timer\DeltaTimer.cpp" />
     <ClCompile Include="Externals\imgui\imgui.cpp" />
@@ -215,6 +216,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Sprite\SpriteManager.h" />
     <ClInclude Include="Engine\Utility\Animation\Animation.h" />
     <ClInclude Include="Engine\Utility\Animation\AnimationKey.h" />
+    <ClInclude Include="Engine\Utility\Animation\AnimationManager.h" />
     <ClInclude Include="Engine\Utility\Easing\Easing.h" />
     <ClInclude Include="Engine\Utility\KLib.h" />
     <ClInclude Include="Engine\Utility\Lerp\Lerp.h" />

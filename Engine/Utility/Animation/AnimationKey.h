@@ -54,7 +54,7 @@ public: // アクセッサ等
 	/// 再生位置の取得
 	/// </summary>
 	/// <returns>再生位置</returns>
-	int32_t GetPlayFrame() { return playFlame_; }
+	int32_t GetPlayFrame() { return playFrame_; }
 
 private: // メンバ変数
 
@@ -63,7 +63,7 @@ private: // メンバ変数
 	T value_;
 
 	// 終端フレーム
-	int32_t playFlame_;
+	int32_t playFrame_;
 
 	// アニメーション名
 	std::string animationName_;
@@ -89,7 +89,7 @@ inline AnimationKey<T>::AnimationKey(const std::string& animationName, int32_t p
 	// アニメーション名の取得
 	animationName_ = animationName;
 	// 再生位置の取得
-	playFlame_ = playFrame;
+	playFrame_ = playFrame;
 
 	// パラメーター追加
 	AddParam();
@@ -101,7 +101,7 @@ template<typename T>
 inline void AnimationKey<T>::DisplayImGui()
 {
 	// キー名の取得
-	std::string keyName = "key : " + std::to_string(playFlame_);
+	std::string keyName = "key : " + std::to_string(playFrame_);
 	if constexpr (std::is_same_v<T, WorldTransform>) {
 		value_.DisplayImGui(keyName);
 	}else if constexpr (std::is_same_v<T, int32_t>) {
@@ -129,7 +129,7 @@ template<typename T>
 inline void AnimationKey<T>::AddParam()
 {
 	// キー名の取得
-	std::string keyName = animationName_ + " key : " + std::to_string(playFlame_);
+	std::string keyName = animationName_ + " key : " + std::to_string(playFrame_);
 	if constexpr (std::is_same_v<T, WorldTransform>) {
 		// ワールドトランスフォーム内の情報を渡す
 		GlobalVariables::GetInstance()->AddItem(animationName_, keyName + " : Scale", value_.scale_);
@@ -146,7 +146,7 @@ template<typename T>
 inline void AnimationKey<T>::SetParam()
 {
 	// キー名の取得
-	std::string keyName = animationName_ + " key : " + std::to_string(playFlame_);
+	std::string keyName = animationName_ + " key : " + std::to_string(playFrame_);
 	if constexpr (std::is_same_v<T, WorldTransform>) {
 		// ワールドトランスフォーム内の情報を渡す
 		GlobalVariables::GetInstance()->SetValue(animationName_, keyName + " : Scale", value_.scale_);
@@ -163,7 +163,7 @@ template<typename T>
 inline void AnimationKey<T>::ApplyParam()
 {
 	// キー名の取得
-	std::string keyName = animationName_ + " key : " + std::to_string(playFlame_);
+	std::string keyName = animationName_ + " key : " + std::to_string(playFrame_);
 	if constexpr (std::is_same_v<T, WorldTransform>) {
 		value_.scale_ = GlobalVariables::GetInstance()->GetVector3Value(animationName_, keyName + " : Scale");
 		value_.rotate_ = GlobalVariables::GetInstance()->GetVector3Value(animationName_, keyName + " : Rotate");

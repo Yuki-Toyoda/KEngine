@@ -206,6 +206,9 @@
     <ClCompile Include="Engine\Math\Math.cpp">
       <Filter>Math</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Utility\Animation\AnimationManager.cpp">
+      <Filter>Utility\Animation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -439,6 +442,9 @@
     <ClInclude Include="Engine\GameObject\User\TestObject.h">
       <Filter>GameObject\User</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Utility\Animation\AnimationManager.h">
+      <Filter>Utility\Animation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -566,9 +572,6 @@
     <Filter Include="Sprite">
       <UniqueIdentifier>{89930de6-5713-4b33-a25e-c80afe7ab47c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utility\Animation">
-      <UniqueIdentifier>{e0beeaf0-3b5a-451f-96a4-9aaedb7e01b6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameObject\Samples\Sprite">
       <UniqueIdentifier>{cfbc2871-68a2-4a09-a052-431c3e871e78}</UniqueIdentifier>
     </Filter>
@@ -577,6 +580,9 @@
     </Filter>
     <Filter Include="GameObject\User">
       <UniqueIdentifier>{e4d282eb-c22f-46f5-a5d1-e5fa5125b0e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\Animation">
+      <UniqueIdentifier>{e0beeaf0-3b5a-451f-96a4-9aaedb7e01b6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
