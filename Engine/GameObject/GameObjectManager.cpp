@@ -41,8 +41,9 @@ void GameObjectManager::Update()
 
 	// 全オブジェクトを更新
 	for (std::unique_ptr<BaseObject>& object : objects_) {
-		object->PreUpdate(); // 共通更新を呼び出す
-		object->Update();	 // 更新
+		object->PreUpdate();  // 共通更新を呼び出す
+		object->Update();	  // 更新
+		object->PostUpdate(); // 更新後処理
 	}
 
 	// デバッグ時のみImGuiを描画

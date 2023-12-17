@@ -1,5 +1,6 @@
 #pragma once
 #include "../../Math/Math.h"
+#include "../../../Externals/imgui/imgui.h"
 
 /// <summary>
 /// コライダー形状の基底クラス
@@ -24,6 +25,13 @@ public: // メンバ関数
 	virtual ~BaseShape() {};
 
 	/// <summary>
+	/// ImGui表示関数
+	/// </summary>
+	virtual void DisplayImGui() = 0;
+
+public: // アクセッサ等
+
+	/// <summary>
 	/// コライダー形状のゲッター
 	/// </summary>
 	/// <returns>コライダー形状</returns>
@@ -33,14 +41,14 @@ public: // メンバ関数
 	/// </summary>
 	/// <param name="colliderShape">設定したいコライダー形状</param>
 	void SetColliderShape(ColliderShape colliderShape) { colliderShape_ = colliderShape; }
-	
+
 public: // 共用関数群
 
 	/// <summary>
 	/// 中心座標のゲッター
 	/// </summary>
 	/// <returns>中心座標</returns>
-	virtual Vector3 GetCenter() { return Vector3(0.0f, 0.0f, 0.0f); }
+	virtual const Vector3 GetCenter() { return Vector3(0.0f, 0.0f, 0.0f); }
 
 public: // 球用関数群
 
@@ -58,7 +66,7 @@ public: // 球用関数群
 	/// 球の当たり判定半径ゲッター
 	/// </summary>
 	/// <returns>球の当たり判定半径</returns>
-	virtual float GetRadius() { return 0.0f; }
+	virtual const float GetRadius() { return 0.0f; }
 
 public: // AABB用関数群
 
@@ -76,12 +84,12 @@ public: // AABB用関数群
 	/// AABB最小点ゲッター
 	/// </summary>
 	/// <returns>AABB最小点</returns>
-	virtual Vector3 GetMin() { return Vector3(0.0f, 0.0f, 0.0f); }
+	virtual const Vector3 GetMin() { return Vector3(0.0f, 0.0f, 0.0f); }
 	/// <summary>
 	/// AABB最大点ゲッター
 	/// </summary>
 	/// <returns>AABB最大点</returns>
-	virtual Vector3 GetMax() { return Vector3(0.0f, 0.0f, 0.0f); }
+	virtual const Vector3 GetMax() { return Vector3(0.0f, 0.0f, 0.0f); }
 
 public: // OBB用関数群
 

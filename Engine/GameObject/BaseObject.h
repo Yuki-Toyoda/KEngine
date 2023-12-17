@@ -66,6 +66,8 @@ public: // メンバ関数
 	void PreInitialize(std::string name, Tag tag);
 	// (ユーザー呼び出し禁止)共通更新関数
 	void PreUpdate();
+	// (ユーザー呼び出し禁止)更新後関数
+	void PostUpdate();
 
 	/// <summary>
 	/// 初期化関数
@@ -116,12 +118,6 @@ public: // アクセッサ等
 	/// <returns>オブジェクトタグ</returns>
 	const Tag GetObjectTag() { return tag_; }
 
-	/// <summary>
-	/// コライダーゲッター
-	/// </summary>
-	/// <returns>コライダー</returns>
-	Collider* GetCollider() { return collider_.get(); }
-
 public: // その他関数群
 
 	/// <summary>
@@ -163,6 +159,30 @@ protected: // プライベートなメンバ関数
 	/// <param name="texture">テクスチャ</param>
 	void AddSprite(const std::string& name, const Vector2& position, const Vector2& size, Texture* texture);
 
+	/// <summary>
+	/// コライダー追加関数(球)
+	/// </summary>
+	/// <param name="name">追加するコライダー名称</param>
+	/// <param name="center">中心座標</param>
+	/// <param name="radius">半径</param>
+	/// <param name="enable">登録時にコライダーを有効化するか</param>
+	void AddColliderSphere(const std::string& name, Vector3* center, float* radius, bool enable = true);
+
+	/// <summary>
+	/// コライダー追加関数(AABB)
+	/// </summary>
+	/// <param name="name">追加するコライダー名称</param>
+	/// <param name="center">中心座標</param>
+	/// <param name="size">大きさ</param>
+	/// <param name="enable">登録時にコライダーを有効化するか</param>
+	void AddColliderAABB(const std::string& name, Vector3* center, Vector3* size, bool enable = true);
+
+	/// <summary>
+	/// 指定した名称のコライダーを削除する関数
+	/// </summary>
+	/// <param name="name">削除するコライダー</param>
+	void DeleteCollider(const std::string& name);
+
 public: // パブリックなメンバ変数
 
 	// 表示状態切り替えトリガー
@@ -195,8 +215,7 @@ protected: // 継承メンバ変数
 	Vector4 color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
 
 	// コライダー
-	std::unique_ptr<Collider> collider_;
-
+	std::list<std::unique_ptr<Collider>> colliders_;
 };
 
 /// <summary>

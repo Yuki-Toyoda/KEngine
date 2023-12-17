@@ -20,5 +20,19 @@ class TestObject : public BaseObject
 	/// ImGuiを表示させる関数
 	/// </summary>
 	void DisplayImGui() override;
+
+public: // その他関数
+
+	/// <summary>
+	/// 衝突した瞬間にコールバックされる関数
+	/// </summary>
+	/// <param name="object">衝突したオブジェクト</param>
+	void OnCollisionEnter(BaseObject* object) override;
+
+	/// <summary>
+	/// 衝突していたオブジェクトから離れた時のコールバック関数
+	/// </summary>
+	/// <param name="object">衝突していたオブジェクト</param>
+	void OnCollisionExit(BaseObject* object) override;
 };
 
