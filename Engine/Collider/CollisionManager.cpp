@@ -66,9 +66,9 @@ void CollisionManager::CheckAllCollision()
 
 bool CollisionManager::CheckCollisionPair(Collider* colliderA, Collider* colliderB, bool isCheckExit)
 {
-	// コライダーのゲームオブジェクトタグが一致した場合は判定をとらない
-	/*if (colliderA->GetGameObject()->GetObjectTag() == colliderB->GetGameObject()->GetObjectTag())
-		return false;*/
+	// コライダーが所持しているゲームオブジェクトが同一の場合当たり判定を取らない
+	if (colliderA->GetGameObject() == colliderB->GetGameObject())
+		return false;
 
 	// 結果格納用
 	bool result = false;
@@ -125,9 +125,9 @@ bool CollisionManager::CheckCollisionPair(Collider* colliderA, Collider* collide
 
 	// 衝突時の関数を呼び出す
 	if (result && !isCheckExit) {
-		colliderA->GetGameObject()->OnCollision(colliderB->GetGameObject()); // A
+		colliderA->GetGameObject()->OnCollision(colliderB); // A
 		colliderA->AddNowCollisionObject(colliderB); // 前フレーム衝突したオブジェクトリストに衝突しているオブジェクトを追加
-		colliderB->GetGameObject()->OnCollision(colliderA->GetGameObject()); // B
+		colliderB->GetGameObject()->OnCollision(colliderA); // B
 		colliderB->AddNowCollisionObject(colliderA); // 前フレーム衝突したオブジェクトリストに衝突しているオブジェクトを追加
 
 	}
@@ -143,8 +143,8 @@ void CollisionManager::CheckCollisionEnter(Collider* colliderA, Collider* collid
 		if (!colliderA->GetPrevCollisionObject(colliderB->GetGameObject()->GetObjectName()) &&
 			!colliderB->GetPrevCollisionObject(colliderA->GetGameObject()->GetObjectName())) {
 			// 衝突した関数を呼び出す
-			colliderA->GetGameObject()->OnCollisionEnter(colliderB->GetGameObject());
-			colliderB->GetGameObject()->OnCollisionEnter(colliderA->GetGameObject());
+			colliderA->GetGameObject()->OnCollisionEnter(colliderB);
+			colliderB->GetGameObject()->OnCollisionEnter(colliderA);
 		}
 	}
 }
@@ -163,7 +163,7 @@ bool CollisionManager::CheckCollisionExit(Collider* collider)
 		// そのオブジェクトが衝突していなかった場合
 		if (!CheckCollisionPair(collider, colliderA, true)) {
 			// 非衝突時関数を呼び出す
-			collider->GetGameObject()->OnCollisionExit(colliderA->GetGameObject());
+			collider->GetGameObject()->OnCollisionExit(colliderA);
 			collider->DeletePrevCollisionObject(colliderA->GetGameObject()->GetObjectName());
 
 			// 衝突していない

@@ -26,13 +26,13 @@ public: // その他関数
 	/// <summary>
 	/// 衝突した瞬間にコールバックされる関数
 	/// </summary>
-	/// <param name="object">衝突したオブジェクト</param>
-	void OnCollisionEnter(BaseObject* object) override;
+	/// <param name="object">衝突したコライダー</param>
+	void OnCollisionEnter(Collider* object) override;
 
 	/// <summary>
 	/// 衝突していたオブジェクトから離れた時のコールバック関数
 	/// </summary>
-	/// <param name="object">衝突していたオブジェクト</param>
-	void OnCollisionExit(BaseObject* object) override;
+	/// <param name="object">衝突していたコライダー<</param>
+	void OnCollisionExit(Collider* object) override;
 };
 

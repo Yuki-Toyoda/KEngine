@@ -123,20 +123,20 @@ public: // その他関数群
 	/// <summary>
 	/// 衝突した瞬間にコールバックされる関数
 	/// </summary>
-	/// <param name="object">衝突したオブジェクト</param>
-	virtual void OnCollisionEnter(BaseObject* object) { object; }
+	/// <param name="object">衝突したコライダー</param>
+	virtual void OnCollisionEnter(Collider* object) { object; }
 
 	/// <summary>
 	/// 衝突時コールバック関数
 	/// </summary>
-	/// <param name="object">衝突したオブジェクト</param>
-	virtual void OnCollision(BaseObject* object) { object; }
+	/// <param name="object">衝突したコライダー<</param>
+	virtual void OnCollision(Collider* object) { object; }
 
 	/// <summary>
 	/// 衝突していたオブジェクトから離れた時のコールバック関数
 	/// </summary>
-	/// <param name="object">衝突していたオブジェクト</param>
-	virtual void OnCollisionExit(BaseObject* object) { object; }
+	/// <param name="object">衝突していたコライダー<</param>
+	virtual void OnCollisionExit(Collider* object) { object; }
 
 protected: // プライベートなメンバ関数
 

@@ -23,13 +23,13 @@ void TestObject::DisplayImGui()
 	BaseObject::DisplayImGui();
 }
 
-void TestObject::OnCollisionEnter(BaseObject* object)
+void TestObject::OnCollisionEnter(Collider* object)
 {
 	object;
 	color_ = { 1.0f, 0.0f, 0.0f, 1.0f };
 }
 
-void TestObject::OnCollisionExit(BaseObject* object)
+void TestObject::OnCollisionExit(Collider* object)
 {
 	object;
 	color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
