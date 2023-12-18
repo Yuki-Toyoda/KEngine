@@ -66,8 +66,8 @@ void CollisionManager::CheckAllCollision()
 
 bool CollisionManager::CheckCollisionPair(Collider* colliderA, Collider* colliderB, bool isCheckExit)
 {
-	// コライダーのゲームオブジェクトタグが一致した場合は判定をとらない
-	if (colliderA->GetGameObject()->GetObjectTag() == colliderB->GetGameObject()->GetObjectTag())
+	// コライダーが所持しているゲームオブジェクトが同一の場合当たり判定を取らない
+	if (colliderA->GetGameObject() == colliderB->GetGameObject())
 		return false;
 
 	// 結果格納用
@@ -86,6 +86,10 @@ bool CollisionManager::CheckCollisionPair(Collider* colliderA, Collider* collide
 			// 球とAABBの当たり判定を検証する
 			result = IsCollisionSphereWithAABB(colliderA->GetColliderShape(), colliderB->GetColliderShape());
 			break;
+		case BaseShape::OBB: // コライダーBがOBBの場合
+			// 球とOBBの当たり判定を検証する
+			result = IsCollisionSphereWithOBB(colliderA->GetColliderShape(), colliderB->GetColliderShape());
+			break;
 		}
 		break;
 	case BaseShape::AABB: // コライダーAがAABBの場合
@@ -101,14 +105,30 @@ bool CollisionManager::CheckCollisionPair(Collider* colliderA, Collider* collide
 			break;
 		}
 		break;
+	case BaseShape::OBB: // コライダーAがOBBの場合
+		switch (colliderB->GetColliderShape()->GetColliderShape())
+		{
+		case BaseShape::Sphere: // コライダーBが球の場合
+			// 球同士の当たり判定を検証する
+			result = IsCollisionSphere(colliderA->GetColliderShape(), colliderB->GetColliderShape());
+			break;
+		case BaseShape::AABB: // コライダーBがAABBの場合
+			
+			break;
+		case BaseShape::OBB: // コライダーBがOBBの場合
+			// 球とAABBの当たり判定を検証する
+			result = isCollisionOBB(colliderA->GetColliderShape(), colliderB->GetColliderShape());
+			break;
+		}
+		break;
 	}
 
 	// 衝突時の関数を呼び出す
 	if (result && !isCheckExit) {
-		colliderA->GetGameObject()->OnCollision(colliderB->GetGameObject()); // A
-		colliderA->AddNowCollisionObject(colliderB->GetGameObject()); // 前フレーム衝突したオブジェクトリストに衝突しているオブジェクトを追加
-		colliderB->GetGameObject()->OnCollision(colliderA->GetGameObject()); // B
-		colliderB->AddNowCollisionObject(colliderA->GetGameObject()); // 前フレーム衝突したオブジェクトリストに衝突しているオブジェクトを追加
+		colliderA->GetGameObject()->OnCollision(colliderB); // A
+		colliderA->AddNowCollisionObject(colliderB); // 前フレーム衝突したオブジェクトリストに衝突しているオブジェクトを追加
+		colliderB->GetGameObject()->OnCollision(colliderA); // B
+		colliderB->AddNowCollisionObject(colliderA); // 前フレーム衝突したオブジェクトリストに衝突しているオブジェクトを追加
 
 	}
 
@@ -123,8 +143,8 @@ void CollisionManager::CheckCollisionEnter(Collider* colliderA, Collider* collid
 		if (!colliderA->GetPrevCollisionObject(colliderB->GetGameObject()->GetObjectName()) &&
 			!colliderB->GetPrevCollisionObject(colliderA->GetGameObject()->GetObjectName())) {
 			// 衝突した関数を呼び出す
-			colliderA->GetGameObject()->OnCollisionEnter(colliderB->GetGameObject());
-			colliderB->GetGameObject()->OnCollisionEnter(colliderA->GetGameObject());
+			colliderA->GetGameObject()->OnCollisionEnter(colliderB);
+			colliderB->GetGameObject()->OnCollisionEnter(colliderA);
 		}
 	}
 }
@@ -132,19 +152,19 @@ void CollisionManager::CheckCollisionEnter(Collider* colliderA, Collider* collid
 bool CollisionManager::CheckCollisionExit(Collider* collider)
 {
 	// リスト内の全てのコライダーのペアを検証する
-	std::list<BaseObject*> objectList = collider->GetPrevCollisionObjectList();
-	std::list<BaseObject*>::iterator itr = objectList.begin();
+	std::list<Collider*> objectList = collider->GetPrevCollisionObjectList();
+	std::list<Collider*>::iterator itr = objectList.begin();
 	for (; itr != objectList.end(); itr++) {
 		// イテレータAからコライダーAを取得する
-		BaseObject* colliderA = *itr;
-		if (collider == nullptr || collider->GetGameObject() == nullptr) // 
+		Collider* colliderA = *itr;
+		if (collider == nullptr || collider->GetGameObject()->GetIsDestroy()) // 
 			continue;
 
 		// そのオブジェクトが衝突していなかった場合
-		if (!CheckCollisionPair(collider, colliderA->GetCollider(), true)) {
+		if (!CheckCollisionPair(collider, colliderA, true)) {
 			// 非衝突時関数を呼び出す
 			collider->GetGameObject()->OnCollisionExit(colliderA);
-			collider->DeletePrevCollisionObject(colliderA->GetObjectName());
+			collider->DeletePrevCollisionObject(colliderA->GetGameObject()->GetObjectName());
 
 			// 衝突していない
 			return true;
@@ -196,6 +216,167 @@ bool CollisionManager::IsCollisionAABB(BaseShape* shapeA, BaseShape* shapeB)
 
 }
 
+bool CollisionManager::isCollisionOBB(BaseShape* shapeA, BaseShape* shapeB)
+{
+	// 形状Aの各種情報を取得
+	std::vector<Vector3> otientatuonsA = shapeA->GetOtientatuons(); // 回転軸の取得
+	Vector3 centerA = shapeA->GetCenter();							// 中心座標の取得
+	Vector3 sizeA = shapeA->GetSize();								// 大きさ
+
+	// 形状Bの各種情報を取得
+	std::vector<Vector3> otientatuonsB = shapeB->GetOtientatuons(); // 回転軸の取得
+	Vector3 centerB = shapeB->GetCenter();							// 中心座標の取得
+	Vector3 sizeB = shapeB->GetSize();								// 大きさ
+
+	// 軸
+	Vector3 axis[15];
+
+	// 面法線
+	axis[0] = otientatuonsA[0];
+	axis[1] = otientatuonsA[1];
+	axis[2] = otientatuonsA[2];
+	axis[3] = otientatuonsB[0];
+	axis[4] = otientatuonsB[1];
+	axis[5] = otientatuonsB[2];
+
+	// クロス積
+	axis[6] = Math::Cross(otientatuonsA[0], otientatuonsB[0]);
+	axis[7] = Math::Cross(otientatuonsA[0], otientatuonsB[1]);
+	axis[8] = Math::Cross(otientatuonsA[0], otientatuonsB[2]);
+	axis[9] = Math::Cross(otientatuonsA[1], otientatuonsB[0]);
+	axis[10] = Math::Cross(otientatuonsA[1], otientatuonsB[1]);
+	axis[11] = Math::Cross(otientatuonsA[1], otientatuonsB[2]);
+	axis[12] = Math::Cross(otientatuonsA[2], otientatuonsB[0]);
+	axis[13] = Math::Cross(otientatuonsA[2], otientatuonsB[1]);
+	axis[14] = Math::Cross(otientatuonsA[2], otientatuonsB[2]);
+
+	// 頂点
+
+	// 回転させる
+	Vector3 obbVertex[8];
+
+	obbVertex[0] = { +sizeA.x, +sizeA.y, +sizeA.z };
+
+	obbVertex[1] = { +sizeA.x, +sizeA.y, -sizeA.z };
+
+	obbVertex[2] = { +sizeA.x, -sizeA.y, +sizeA.z };
+
+	obbVertex[3] = { +sizeA.x, -sizeA.y, -sizeA.z };
+
+	obbVertex[4] = { -sizeA.x, +sizeA.y, +sizeA.z };
+
+	obbVertex[5] = { -sizeA.x, +sizeA.y, -sizeA.z };
+
+	obbVertex[6] = { -sizeA.x, -sizeA.y, +sizeA.z };
+
+	obbVertex[7] = { -sizeA.x, -sizeA.y, -sizeA.z };
+
+	Matrix4x4 obbRotateMatrix = {
+		otientatuonsA[0].x,
+		otientatuonsA[0].y,
+		otientatuonsA[0].z,
+		0.0f,
+		otientatuonsA[1].x,
+		otientatuonsA[1].y,
+		otientatuonsA[1].z,
+		0.0f,
+		otientatuonsA[2].x,
+		otientatuonsA[2].y,
+		otientatuonsA[2].z,
+		0.0f,
+		0.0f,
+		0.0f,
+		0.0f,
+		1.0f };
+
+	for (int i = 0; i < 8; i++) {
+
+		obbVertex[i] = Math::Transform(obbVertex[i], obbRotateMatrix);
+		obbVertex[i] = obbVertex[i] + centerA;
+	}
+
+	Vector3 obb2Vertex[8] = {
+		{ +sizeB.x, +sizeB.y, +sizeB.z },
+		{ +sizeB.x, +sizeB.y, -sizeB.z },
+		{ +sizeB.x, -sizeB.y, +sizeB.z },
+		{ +sizeB.x, -sizeB.y, -sizeB.z },
+		{ -sizeB.x, +sizeB.y, +sizeB.z },
+		{ -sizeB.x, +sizeB.y, -sizeB.z },
+		{ -sizeB.x, -sizeB.y, +sizeB.z },
+		{ -sizeB.x, -sizeB.y, -sizeB.z }
+	};
+
+	Matrix4x4 obb2RotateMatrix = {
+		otientatuonsB[0].x,
+		otientatuonsB[0].y,
+		otientatuonsB[0].z,
+		0.0f,
+		otientatuonsB[1].x,
+		otientatuonsB[1].y,
+		otientatuonsB[1].z,
+		0.0f,
+		otientatuonsB[2].x,
+		otientatuonsB[2].y,
+		otientatuonsB[2].z,
+		0.0f,
+		0.0f,
+		0.0f,
+		0.0f,
+		1.0f };
+
+	for (int i = 0; i < 8; i++) {
+
+		obb2Vertex[i] = Math::Transform(obb2Vertex[i], obb2RotateMatrix);
+		obb2Vertex[i] = obb2Vertex[i] + centerB;
+	}
+
+	// 1.頂点を軸に対して射影
+	for (int a = 0; a < 15; a++) {
+		float min1 = 0.0f;
+		float max1 = 0.0f;
+		float min2 = 0.0f;
+		float max2 = 0.0f;
+
+		for (int v = 0; v < 8; v++) {
+			// 一時保存
+			float tmp = 0.0f;
+			// obb
+			tmp = Math::Dot(Math::Normalize(axis[a]), obbVertex[v]);
+			// 2.射影した点の最大値と最小値を求める
+			if (v == 0 || min1 > tmp) {
+				min1 = tmp;
+			}
+			if (v == 0 || max1 < tmp) {
+				max1 = tmp;
+			}
+
+			// obb2
+			tmp = Math::Dot(Math::Normalize(axis[a]), obb2Vertex[v]);
+			// 2.射影した点の最大値と最小値を求める
+			if (v == 0 || min2 > tmp) {
+				min2 = tmp;
+			}
+			if (v == 0 || max2 < tmp) {
+				max2 = tmp;
+			}
+		}
+
+		// 3.差分の形状を分離軸に射影した長さ
+		float L1 = max1 - min1;
+		float L2 = max2 - min2;
+
+		float sumSpan = L1 + L2;
+		float LonSpan = (std::max)(max1, max2) - (std::min)(min1, min2);
+		if (sumSpan < LonSpan) {
+			// 分離しているので分離軸
+			return false;
+		}
+	}
+
+	return true;
+
+}
+
 bool CollisionManager::IsCollisionSphereWithAABB(BaseShape* shapeA, BaseShape* shapeB)
 {
 	Vector3 sphereCenter = shapeA->GetCenter();
@@ -218,4 +399,38 @@ bool CollisionManager::IsCollisionSphereWithAABB(BaseShape* shapeA, BaseShape* s
 	}
 
 	return false;
+}
+
+bool CollisionManager::IsCollisionSphereWithOBB(BaseShape* shapeA, BaseShape* shapeB)
+{
+	Vector3 sphereCenter = shapeA->GetCenter();
+	float sphereRadius = shapeA->GetRadius();
+
+	std::vector<Vector3> otientatuons = shapeB->GetOtientatuons();
+	Vector3 obbCenter = shapeB->GetCenter();
+	Vector3 obbSize = shapeB->GetSize();
+
+	Matrix4x4 obbWorldMatrix = {
+		otientatuons[0].x, otientatuons[1].x, otientatuons[2].x, 0,
+		otientatuons[0].y, otientatuons[1].y, otientatuons[2].y, 0,
+		otientatuons[0].z, otientatuons[1].z, otientatuons[2].z, 0,
+		obbCenter.x, obbCenter.y, obbCenter.z, 1 };
+
+	Matrix4x4 obbWorldMatrixInverse = Math::Inverse(obbWorldMatrix);
+
+	Vector3 centerInOBBLocalSpace = Math::Transform(sphereCenter, obbWorldMatrixInverse);
+
+	Vector3 aabbTranslate = Vector3(-obbSize.x, -obbSize.y, -obbSize.z);
+	Vector3 aabbSize = Vector3(obbSize.x, obbSize.y, obbSize.z);
+
+	AABB aabbOBBLocal;
+	aabbOBBLocal.Init(
+		&aabbTranslate, &aabbSize);
+
+
+	Sphere sphereOBBLocal;
+	sphereOBBLocal.Init(&centerInOBBLocalSpace, &sphereRadius);
+
+	// ローカル空間で衝突
+	return IsCollisionSphereWithAABB(&sphereOBBLocal, &aabbOBBLocal);
 }

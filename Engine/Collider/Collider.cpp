@@ -1,6 +1,12 @@
 #include "Collider.h"
 #include "../GameObject/BaseObject.h"
 
+void Collider::Init(const std::string& name, std::unique_ptr<BaseShape> shape)
+{
+	name_ = name;
+	colliderShape_ = std::move(shape);
+}
+
 bool Collider::GetPrevCollisionObject()
 {
 	// 前フレーム衝突していたオブジェクトが1つでもあればTrue
@@ -13,12 +19,12 @@ bool Collider::GetPrevCollisionObject()
 void Collider::DeletePrevCollisionObject(const std::string& name)
 {
 	// リスト内の全てのコライダーのペアを検証する
-	std::list<BaseObject*>::iterator itr = prevCollisionObjects_.begin();
+	std::list<Collider*>::iterator itr = prevCollisionObjects_.begin();
 	for (; itr != prevCollisionObjects_.end(); itr++) {
 		// イテレータAからコライダーAを取得する
-		BaseObject* object = *itr;
+		Collider* object = *itr;
 		// 同名オブジェクトを見つけた場合それを削除
-		if (name == object->GetObjectName()) {
+		if (name == object->GetGameObject()->GetObjectName()) {
 			prevCollisionObjects_.erase(itr);
 			break;
 		}
@@ -29,9 +35,9 @@ bool Collider::GetPrevCollisionObject(std::string name)
 {
 	// 要素がある場合
 	if (GetPrevCollisionObject()) {
-		for (BaseObject* object : prevCollisionObjects_) {
+		for (Collider* object : prevCollisionObjects_) {
 			// 同名オブジェクトを見つけた場合true
-			if (name == object->GetObjectName())
+			if (name == object->GetGameObject()->GetObjectName())
 				return true;
 		}
 		// 同名オブジェクトを場合False
@@ -39,4 +45,12 @@ bool Collider::GetPrevCollisionObject(std::string name)
 	}
 	// そもそも前フレーム衝突していたオブジェクトが存在しない
 	return false;
+}
+
+void Collider::DisplayImGui()
+{
+	if (ImGui::TreeNode(name_.c_str())) {
+		colliderShape_->DisplayImGui();
+		ImGui::TreePop();
+	}
 }

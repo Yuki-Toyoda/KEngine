@@ -187,12 +187,12 @@ void SamplePlayer::DisplayImGui()
 	transform_.DisplayImGui();
 }
 
-void SamplePlayer::OnCollisionEnter(BaseObject* object)
+void SamplePlayer::OnCollisionEnter(Collider* object)
 {
-	if (object->GetObjectTag() == TagFloor) {
+	if (object->GetGameObject()->GetObjectTag() == TagFloor) {
 
 		// とりあえず床の高さに補正
-		transform_.translate_.y = object->transform_.translate_.y + object->transform_.scale_.y;
+		transform_.translate_.y = object->GetGameObject()->transform_.translate_.y + object->transform_.scale_.y;
 		// 接地判定On
 		isLanding_ = true;
 
@@ -203,30 +203,30 @@ void SamplePlayer::OnCollisionEnter(BaseObject* object)
 		}
 	}
 
-	if (object->GetObjectTag() == TagEnemy) {
+	if (object->GetGameObject()->GetObjectTag() == TagEnemy) {
 		// ダッシュ中ならリスタート
 		if (behavior_ == kDash)
 			restart_ = true;
 	}
 }
 
-void SamplePlayer::OnCollision(BaseObject* object)
+void SamplePlayer::OnCollision(Collider* object)
 {
-	switch (object->GetObjectTag())
+	switch (object->GetGameObject()->GetObjectTag())
 	{
 	case TagEnemy: // 衝突したオブジェクトが敵であった場合
 
 		break;
 	case TagFloor: // 衝突したオブジェクトが床の場合
 		// とりあえず床の高さに補正
-		transform_.translate_.y = object->transform_.translate_.y + object->transform_.scale_.y;
+		transform_.translate_.y = object->GetGameObject()->transform_.translate_.y + object->transform_.scale_.y;
 		// 接地判定On
 		isLanding_ = true;
 		break;
 	}
 }
 
-void SamplePlayer::OnCollisionExit(BaseObject* object)
+void SamplePlayer::OnCollisionExit(Collider* object)
 {
 	object;
 }
