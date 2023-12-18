@@ -129,13 +129,13 @@ public: // その他関数群
 	/// <summary>
 	/// 衝突時コールバック関数
 	/// </summary>
-	/// <param name="object">衝突したコライダー<</param>
+	/// <param name="collider">衝突したコライダー<</param>
 	virtual void OnCollision(Collider* collider) { collider; }
 
 	/// <summary>
 	/// 衝突していたオブジェクトから離れた時のコールバック関数
 	/// </summary>
-	/// <param name="object">衝突していたコライダー<</param>
+	/// <param name="collider">衝突していたコライダー<</param>
 	virtual void OnCollisionExit(Collider* collider) { collider; }
 
 protected: // プライベートなメンバ関数
