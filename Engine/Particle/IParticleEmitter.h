@@ -76,7 +76,7 @@ protected: // メンバ変数
 	bool isEnd_ = false;
 
 	// 生成する粒子の型
-	std::function<std::unique_ptr<IParticle>(const Vector3&)> type_;
+	
 
 	// 粒子生成間隔タイマー
 	KLib::DeltaTimer frequencyTimer_;
