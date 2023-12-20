@@ -15,7 +15,7 @@ public: // コンストラクタ等
 	// コンストラクタ
 	IParticle() = default;
 	// 仮想デストラクタ
-	virtual ~IParticle() = default;
+	virtual ~IParticle();
 
 public: // メンバ関数
 
@@ -74,7 +74,7 @@ protected: // メンバ変数
 	float rotate_ = 0.0f;
 
 	// アンカーポイント
-	Vector2 anchorPoint_ = { 0.0f, 0.0f };
+	Vector2 anchorPoint_ = { 0.5f, 0.5f };
 
 	// 色
 	Vector4 color_;

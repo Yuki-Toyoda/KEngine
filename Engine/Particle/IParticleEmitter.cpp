@@ -1,6 +1,6 @@
 #include "IParticleEmitter.h"
 
-void IParticleEmitter::PreInit(const std::string& name, int32_t maxCount, int32_t maxGenerateCount, const Vector3& translate, float aliveTime, float frequency)
+void IParticleEmitter::PreInit(const std::string& name, int32_t maxCount, int32_t maxGenerateCount, const Vector3& translate, float aliveTime, float frequency, Texture* texture)
 {
 	// 名称設定
 	name_ = name;
@@ -17,6 +17,9 @@ void IParticleEmitter::PreInit(const std::string& name, int32_t maxCount, int32_
 	// 粒子生成間隔タイマースタート
 	frequency_ = frequency;
 	frequencyTimer_.Start(0.0f);
+
+	// テクスチャを取得
+	texture_ = texture;
 }
 
 void IParticleEmitter::Init()
@@ -57,12 +60,20 @@ void IParticleEmitter::PostUpdate()
 
 	// エミッタの生存時間タイマーが終了していたら
 	if (aliveTimer_.GetIsFinish()) {
-		isEnd_ = true;
+		// 粒子配列のサイズが0以下なら
+		if (particles_.size() <= 0) {
+			// エミッタは終了している
+			isEnd_ = true;
+		}
 	}
 
 	// 生成間隔タイマーが終了していたら
-	if (frequencyTimer_.GetIsFinish() && !isEnd_) {
+	if (frequencyTimer_.GetIsFinish() && !aliveTimer_.GetIsFinish()) {
+		// 新しい粒子を生成
+		GenerateParticle();
 
+		// 生成間隔リセット
+		frequencyTimer_.Start(frequency_);
 	}
 }
 
@@ -71,13 +82,23 @@ void IParticleEmitter::GenerateParticle()
 	// 一度に生成する数分のパーティクルを生成する
 	for (int i = 0; i < generateParticleCount_; i++) {
 		// パーティクル最大数を超過していた場合生成を行わない
-		if (maxCount_ > particles_.size()) {
+		if (maxCount_ <= particles_.size()) {
 			break;
 		}
 
+		// 生成粒子の大きさ設定
+		float size = Math::RandomF(1.0f, 1.5f, 1);
+		Vector2 generateScale = { size, size };
+		// 生成粒子の速度ベクトル設定
+		Vector3 generateVelocity = { Math::RandomF(-0.05f, 0.05f, 3), Math::RandomF(-0.05f, 0.05f, 3), Math::RandomF(-0.05f, 0.05f, 3) };
+		// 生成粒子の色
+		Vector4 generateColor = { Math::RandomF(0.35f, 1.0f, 2), Math::RandomF(0.35f, 1.0f, 2), Math::RandomF(0.35f, 1.0f, 2), 1.0f };
+
 		// 新しい粒子を生成
-		std::unique_ptr<IParticle>newParticle = std::make_unique<IParticle>();
-		Vector2 generateScale = { Math::RandomF(3.0f, 5.0f, 1), generateScale.x };
-		newParticle->PreInit(1.0f, transform_.translate_, generateScale, )
+		std::unique_ptr<IParticle>newParticle = type_();
+		newParticle->PreInit(3.0f, transform_.translate_, generateScale, generateVelocity, texture_, generateColor);
+
+		// 生成した粒子をリストに追加
+		particles_.push_back(std::move(newParticle));
 	}
 }

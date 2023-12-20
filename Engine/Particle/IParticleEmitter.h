@@ -12,7 +12,7 @@ public: // コンストラクタ等
 	// コンストラクタ
 	IParticleEmitter() = default;
 	// デストラクタ
-	~IParticleEmitter() = default;
+	virtual ~IParticleEmitter() = default;
 
 public: // メンバ関数
 
@@ -25,7 +25,8 @@ public: // メンバ関数
 	/// <param name="translate">発生座標</param>
 	/// <param name="aliveTime">エミッタの生存時間</param>
 	/// <param name="frequency">粒子生成間隔</param>
-	void PreInit(const std::string& name, int32_t maxCount, int32_t maxGenerateCount, const Vector3& translate, float aliveTime, float frequency);
+	/// <param name="texture">粒子のテクスチャ</param>
+	void PreInit(const std::string& name, int32_t maxCount, int32_t maxGenerateCount, const Vector3& translate, float aliveTime, float frequency, Texture* texture);
 
 	/// <summary>
 	/// 初期化関数
@@ -46,6 +47,25 @@ public: // メンバ関数
 	/// 更新後処理関数
 	/// </summary>
 	void PostUpdate();
+
+public: // アクセッサ等
+
+	/// <summary>
+	/// 生成する粒子の型を設定する関数
+	/// </summary>
+	/// <typeparam name="SelectParticle">生成する粒子の型</typeparam>
+	template<IsIParticle SelectParticle>
+	void SetParticleType() {
+		type_ = []()->std::unique_ptr<IParticle> {
+			return std::make_unique<SelectParticle>();
+		};
+	}
+
+	/// <summary>
+	/// エミッタの終了状態ゲッター
+	/// </summary>
+	/// <returns>エミッタの終了状態</returns>
+	bool GetIsEnd() { return isEnd_; }
 
 protected: // 継承先メンバ関数
 
@@ -75,8 +95,11 @@ protected: // メンバ変数
 	// エミッタの終了トリガー
 	bool isEnd_ = false;
 
+	// 生成する粒子のテクスチャ
+	Texture* texture_;
+
 	// 生成する粒子の型
-	
+	std::function<std::unique_ptr<IParticle>()> type_;
 
 	// 粒子生成間隔タイマー
 	KLib::DeltaTimer frequencyTimer_;
@@ -84,3 +107,5 @@ protected: // メンバ変数
 
 };
 
+template<class SelectEmiiter>
+concept IsIParticleEmitter = std::is_base_of<IParticleEmitter, SelectEmiiter>::value;

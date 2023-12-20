@@ -209,6 +209,9 @@
     <ClCompile Include="Engine\Particle\IParticle.cpp">
       <Filter>Particle</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Particle\ParticleEmitterManager.cpp">
+      <Filter>Particle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -443,6 +446,9 @@
       <Filter>Particle</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Particle\IParticle.h">
+      <Filter>Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Particle\ParticleEmitterManager.h">
       <Filter>Particle</Filter>
     </ClInclude>
   </ItemGroup>
