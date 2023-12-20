@@ -111,6 +111,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			spriteManager->Update();
 			// パーティクルマネージャ更新
 			particleEmitterManager->Update();
+			particleEmitterManager->DisplayImGui();
 
 			// 衝突判定検証
 			collisionManager->CheckAllCollision();

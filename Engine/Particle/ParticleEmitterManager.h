@@ -50,6 +50,13 @@ public: // メンバ関数
 	template<IsIParticleEmitter SelectEmitter, IsIParticle SelectParticle>
 	inline void CreateEmitter(const std::string& name, int32_t maxCount, int32_t maxGenerateCount, const Vector3& translate, float aliveTime, float frequency, Texture* texture);
 
+public: // その他関数群
+
+	/// <summary>
+	/// ImGuiの表示関数
+	/// </summary>
+	void DisplayImGui();
+
 private: // メンバ変数
 
 	// エミッタリスト

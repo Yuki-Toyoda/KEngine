@@ -102,3 +102,34 @@ void IParticleEmitter::GenerateParticle()
 		particles_.push_back(std::move(newParticle));
 	}
 }
+
+void IParticleEmitter::DisplayImGui()
+{
+	if (ImGui::TreeNode(name_.c_str())) {
+		// 放出座標の調整
+		transform_.DisplayImGui("EmitTransform");
+
+		// 再生中かどうか表示
+		ImGui::Text("PlayState : ");
+		ImGui::SameLine(); // 非改行
+		if (!aliveTimer_.GetIsFinish()) {
+			ImGui::Text("Playing");
+		}
+		else {
+			ImGui::Text("Ending");
+		}
+
+		// 表示されている粒子の数の表示
+		ImGui::Text("AliveParticleCount : %d", (int)particles_.size());
+		ImGui::SameLine();
+		// と、粒子最大数の表示
+		ImGui::Text("  Max : %d", (int)particles_.size());
+
+		// 各種タイマーの情報表示
+		aliveTimer_.DisplayImGui("AliveTime");		// エミッタ自体の生存時間
+		frequencyTimer_.DisplayImGui("FrequencyTime");	// 生成間隔の表示
+
+		ImGui::TreePop();
+	}
+	
+}

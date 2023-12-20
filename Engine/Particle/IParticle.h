@@ -58,6 +58,8 @@ public: // アクセッサ等
 	/// <param name="isEnd">設定する状態</param>
 	void SetIsEnd(bool isEnd) { isEnd_ = isEnd; }
 
+public: // その他関数群
+
 protected: // メンバ変数
 
 	// 平面

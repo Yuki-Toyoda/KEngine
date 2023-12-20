@@ -74,6 +74,13 @@ protected: // 継承先メンバ関数
 	/// </summary>
 	virtual void GenerateParticle();
 
+public: // その他関数群
+
+	/// <summary>
+	/// ImGui表示関数
+	/// </summary>
+	virtual void DisplayImGui();
+
 protected: // メンバ変数
 
 	// パーティクル達

@@ -4,8 +4,6 @@ void ParticleEmitterManager::Init()
 {
 	// エミッタ配列をクリア
 	emitters_.clear();
-
-	CreateEmitter<IParticleEmitter, IParticle>("test", 50, 3, Vector3(0.0f, 0.0f, 0.0f), 30.0f, 0.1f, TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png"));
 }
 
 void ParticleEmitterManager::Update()
@@ -24,4 +22,28 @@ void ParticleEmitterManager::Update()
 		emitter->Update();	    // 更新
 		emitter->PostUpdate();  // 更新後処理
 	}
+}
+
+void ParticleEmitterManager::DisplayImGui()
+{
+#ifdef _DEBUG // デバッグ時のみImGuiを表示
+
+	// ImGuiの開始
+	ImGui::Begin("Particles");
+	// 全パーティクルのImGuiを描画
+	ImGui::BeginChild(ImGui::GetID((void*)0), ImVec2(350, 500), ImGuiWindowFlags_NoTitleBar);
+	// パーティクルが1つでもあった場合
+	if (emitters_.size() > 0) {
+		for (std::unique_ptr<IParticleEmitter>& p : emitters_) {
+			p->DisplayImGui();
+		}
+	}
+	else // 1つもパーティクルがない場合テキストで表示
+		ImGui::Text("No Particle!");
+	ImGui::EndChild();
+
+
+	ImGui::End();
+
+#endif // _DEBUG
 }

@@ -17,8 +17,7 @@ class CommandManager
 public: // メンバ関数
 
 	// コンストラクタ
-	CommandManager() {}
-	//CommandManager() = default;
+	CommandManager() = default;
 	// デストラクタ
 	~CommandManager() = default;
 
