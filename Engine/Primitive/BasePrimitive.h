@@ -35,6 +35,15 @@ public: // パブリックなサブクラス
 		kBlendScreen,	// スクリーン合成
 	};
 
+	/// <summary>
+	/// 描画タイプ列挙子
+	/// </summary>
+	enum kPrimitiveType {
+		kModelNormal,	// 通常
+		kModelParticle, // パーティクル
+		kModelSprite,   // スプライト
+	};
+
 public: // メンバ関数
 
 	/// <summary>
@@ -104,6 +113,12 @@ public: // パブリックなメンバ変数
 	// kBlendMultiply ... 乗算合成
 	// kBlendScreen ... スクリーン合成
 	kBlendMode blendMode_ = kBlendNormal;
+
+	// モデルタイプ
+	// kModelNormal ... 通常の3Dモデル描画
+	// kModelParticle ... パーティクル描画
+	// kModelSprite ... スプライト描画
+	kPrimitiveType primitiveType_ = kModelNormal;
 
 	// 表示状態
 	bool isActive_ = true;

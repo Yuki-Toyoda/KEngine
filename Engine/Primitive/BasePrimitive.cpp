@@ -63,6 +63,10 @@ void BasePrimitive::DisplayImGui()
 		material_.uvTransform_.DisplayImGui("uvTransform");
 		ImGui::Checkbox("isBillboard", &isBillboard_);
 		ImGui::Checkbox("isUI", &isUI_);
+		if (commonColor != nullptr) {
+			ImGui::ColorPicker4("Color", &commonColor->x);
+		}
+
 		ImGui::TreePop();
 	}
 }

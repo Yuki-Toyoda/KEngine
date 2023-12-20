@@ -37,6 +37,7 @@ void Sprite::Init(const std::string& name, const Vector2 position, const Vector2
 	plane_->texture_ = texture; // テクスチャ
 	texSize_ = plane_->texture_->GetTextureSize();
 	plane_->commonColor = &color_;
+	plane_->primitiveType_ = BasePrimitive::kModelSprite;
 
 	// 形状にワールドトランスフォームを渡す
 	plane_->transform_ = &transform_;

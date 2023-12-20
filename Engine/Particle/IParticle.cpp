@@ -32,6 +32,7 @@ void IParticle::PreInit(float aliveTime, const Vector3& position, const Vector2&
 	plane_->commonColor = &color_;									   // 色設定
 	plane_->isBillboard_ = true;									   // ビルボード設定
 	plane_->texture_ = texture;										   // テクスチャ設定
+	plane_->primitiveType_ = BasePrimitive::kModelParticle;			   // 描画タイプ設定
 	texSize_ = plane_->texture_->GetTextureSize();
 
 	// 固有初期化を呼び出す
@@ -49,6 +50,8 @@ void IParticle::Init()
 void IParticle::Update()
 {
 	transform_.translate_ = transform_.translate_ + velocity_;
+
+	color_.w = KLib::Lerp(1.0f, 0.0f, KLib::EaseInOutQuad(aliveTimer_.GetProgress()));
 }
 
 void IParticle::PostUpdate()

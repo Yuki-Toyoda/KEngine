@@ -38,6 +38,7 @@ public: // メンバ関数
 		std::wstring vs, 
 		std::wstring ps, 
 		int blendType,
+		bool isWriteDSV,
 		UINT wire);
 
 private: // プライベートなメンバ関数
@@ -56,8 +57,9 @@ private: // プライベートなメンバ関数
 	/// <summary>
 	/// 深度ステンシルビュー設定を行う関数
 	/// </summary>
+	/// <param name="isWriteDSV">Depthを書き込むか</param>
 	/// <returns>深度ステンシルビュー設定</returns>
-	D3D12_DEPTH_STENCIL_DESC SettingDepthStencilState();
+	D3D12_DEPTH_STENCIL_DESC SettingDepthStencilState(bool isWriteDSV = false);
 
 	/// <summary>
 	/// 頂点シェーダ生成関数

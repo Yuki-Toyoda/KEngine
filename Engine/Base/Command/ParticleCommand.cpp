@@ -1,14 +1,14 @@
-#include "MainCommand.h"
+#include "ParticleCommand.h"
 #include "../WinApp.h"
 #include "../DescriptorHeaps/RTV.h"
 #include "../DescriptorHeaps/SRV.h"
 #include "../DescriptorHeaps/DSV.h"
 
-void MainCommand::PreDraw(ID3D12GraphicsCommandList* cmdList)
+void ParticleCommand::PreDraw(ID3D12GraphicsCommandList* cmdList)
 {
 	// TransitionBarrierの設定
 	D3D12_RESOURCE_BARRIER barrier = SettingResourceBarrier(
-		rtv_->GetBackBuffer(),			
+		rtv_->GetBackBuffer(),
 		D3D12_RESOURCE_STATE_PRESENT,	   // 画面に表示
 		D3D12_RESOURCE_STATE_RENDER_TARGET // 書き込めるように
 	);
@@ -23,10 +23,8 @@ void MainCommand::PreDraw(ID3D12GraphicsCommandList* cmdList)
 	// 取得したハンドルを基に描画先のRTVとDSVの設定
 	cmdList->OMSetRenderTargets(1, &rtvHandle, false, &dsvHandle);
 
-	// 全画面のクリア
-	rtv_->ClearRenderTargetView(cmdList);
 	// 指定した深度で全画面のクリア
-	dsv_->ClearDepth(0, cmdList);
+	//dsv_->ClearDepth(0, cmdList);
 
 	// 描画に用いるSRVのディスクリプタヒープの設定
 	ID3D12DescriptorHeap* descriptorHeaps[] = { srv_->GetDescriptorHeap() }; // SRVからヒープを取得
@@ -56,7 +54,7 @@ void MainCommand::PreDraw(ID3D12GraphicsCommandList* cmdList)
 	cmdList->RSSetScissorRects(1, &scissorRect); // コマンドリストに生成したシザー矩形をセット
 }
 
-void MainCommand::PostDraw(ID3D12GraphicsCommandList* cmdList)
+void ParticleCommand::PostDraw(ID3D12GraphicsCommandList* cmdList)
 {
 	// 結果確認用
 	HRESULT result = S_FALSE;
@@ -76,12 +74,12 @@ void MainCommand::PostDraw(ID3D12GraphicsCommandList* cmdList)
 	assert(SUCCEEDED(result)); // 確定確認
 }
 
-void MainCommand::CreatePSO(ID3D12Device* device, DXC* dxc, ID3D12RootSignature* signature, std::wstring vs, std::wstring ps, UINT wire)
+void ParticleCommand::CreatePSO(ID3D12Device* device, DXC* dxc, ID3D12RootSignature* signature, std::wstring vs, std::wstring ps, UINT wire)
 {
 	// ブレンドモードの数だけPSOを生成する
 	for (int i = 0; i < 5; i++) {
-		std::unique_ptr<PSO> newPSO = std::make_unique<PSO>();		 // インスタンスを生成
-		newPSO->Init(device, signature, dxc, vs, ps, i, true, wire); // 初期化
+		std::unique_ptr<PSO> newPSO = std::make_unique<PSO>();		  // インスタンスを生成
+		newPSO->Init(device, signature, dxc, vs, ps, i, false, wire); // 初期化
 
 		// PSO配列に追加
 		pso_.push_back(std::move(newPSO));

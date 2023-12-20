@@ -2,6 +2,8 @@
 #include <vector>
 #include "../../Debug/Debug.h"
 #include "MainCommand.h"
+#include "ParticleCommand.h"
+#include "SpriteCommand.h"
 
 #include <wrl.h>
 #include <dxcapi.h>
