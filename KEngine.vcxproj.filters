@@ -179,9 +179,6 @@
     <ClCompile Include="Engine\GameObject\Samples\SampleSprite\SampleSprite.cpp">
       <Filter>GameObject\Samples\Sprite</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Particle\IParticleEmitter.cpp">
-      <Filter>Particle</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\GameObject\User\TestObject.cpp">
       <Filter>GameObject\User</Filter>
     </ClCompile>
@@ -205,6 +202,12 @@
     </ClCompile>
     <ClCompile Include="Engine\Math\Math.cpp">
       <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Particle\IParticleEmitter.cpp">
+      <Filter>Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Particle\IParticle.cpp">
+      <Filter>Particle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -433,11 +436,14 @@
     <ClInclude Include="Engine\GameObject\Samples\SampleSprite\SampleSprite.h">
       <Filter>GameObject\Samples\Sprite</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\GameObject\User\TestObject.h">
+      <Filter>GameObject\User</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\Particle\IParticleEmitter.h">
       <Filter>Particle</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\GameObject\User\TestObject.h">
-      <Filter>GameObject\User</Filter>
+    <ClInclude Include="Engine\Particle\IParticle.h">
+      <Filter>Particle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -577,6 +583,9 @@
     </Filter>
     <Filter Include="GameObject\User">
       <UniqueIdentifier>{e4d282eb-c22f-46f5-a5d1-e5fa5125b0e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Particle\user">
+      <UniqueIdentifier>{2347873e-0749-4013-b89a-e0b69857473d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

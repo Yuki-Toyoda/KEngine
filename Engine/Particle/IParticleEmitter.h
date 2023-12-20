@@ -1,33 +1,31 @@
 #pragma once
-#include "../Primitive/PrimitiveManager.h"
-#include "../Utility/KLib.h"
+#include "IParticle.h"
+#include <list>
 
 /// <summary>
-/// パーティクル発生源基底クラス
+/// パーティクル発生箇所
 /// </summary>
 class IParticleEmitter
 {
-protected: // サブクラス
+public: // コンストラクタ等
 
-	// パーティクル構造体
-	struct Particle {
-		WorldTransform transform;
-		Vector3 velocity;
-		Vector4 color;
-		bool isActive;
-		BasePrimitive* primitive_;
-		KLib::DeltaTimer aliveTimer_;
-	};
+	// コンストラクタ
+	IParticleEmitter() = default;
+	// デストラクタ
+	~IParticleEmitter() = default;
 
 public: // メンバ関数
 
 	/// <summary>
 	/// 共通初期化関数
 	/// </summary>
+	/// <param name="name">名称</param>
 	/// <param name="maxCount">粒子最大数</param>
-	/// <param name="emitterAliveTime">エミッタ生存時間</param>
-	/// <param name="frequency">生成間隔設定</param>
-	void PreInit(int32_t maxCount, const float& emitterAliveTime, const float& frequency);
+	/// <param name="maxGenerateCount">一度に生成する粒子数</param>
+	/// <param name="translate">発生座標</param>
+	/// <param name="aliveTime">エミッタの生存時間</param>
+	/// <param name="frequency">粒子生成間隔</param>
+	void PreInit(const std::string& name, int32_t maxCount, int32_t maxGenerateCount, const Vector3& translate, float aliveTime, float frequency);
 
 	/// <summary>
 	/// 初期化関数
@@ -35,32 +33,54 @@ public: // メンバ関数
 	virtual void Init();
 
 	/// <summary>
-	/// 更新関数
+	/// 共通更新関数
+	/// </summary>
+	void PreUpdate();
+
+	/// <summary>
+	/// 更新処理
 	/// </summary>
 	virtual void Update();
 
+	/// <summary>
+	/// 更新後処理関数
+	/// </summary>
+	void PostUpdate();
+
+protected: // 継承先メンバ関数
+
+	/// <summary>
+	/// 粒子生成関数
+	/// </summary>
+	virtual void GenerateParticle();
+
 protected: // メンバ変数
 
+	// パーティクル達
+	std::list<std::unique_ptr<IParticle>> particles_;
+
+	// パーティクル名
+	std::string name_;
+
+	// 粒子最大数
+	int32_t maxCount_;
+
+	// 一度に生成する粒子数
+	int32_t generateParticleCount_;
 	// 発生座標
-	WorldTransform emitTransform_;
-	// パーティクルの最大発生数
-	int32_t maxEmitCount_;
+	WorldTransform transform_;
 
-	// エミッタ自体の生存時間
-	float emitterAliveTime_ = 1.0f;
-	KLib::DeltaTimer emitterAliveTimer_;
-	// 発生頻度
-	float frequency_ = 0.5f;
+	// エミッタの生存時間タイマー
+	KLib::DeltaTimer aliveTimer_;
+	// エミッタの終了トリガー
+	bool isEnd_ = false;
+
+	// 生成する粒子の型
+	std::function<std::unique_ptr<IParticle>(const Vector3&)> type_;
+
+	// 粒子生成間隔タイマー
 	KLib::DeltaTimer frequencyTimer_;
-
-	// 発生をランダムにするための値
-	float randomRange_ = 0.0f;
-
-	// パーティクル再生トリガー
-	bool isPlay_;
-
-	// パーティクルごとのデータ達
-	std::vector<Particle>particles_;
+	float frequency_ = 0.0f;
 
 };
 

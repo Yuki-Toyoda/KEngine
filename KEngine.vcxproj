@@ -130,6 +130,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Input\Input.cpp" />
     <ClCompile Include="Engine\Math\Math.cpp" />
     <ClCompile Include="Engine\Math\Quaternion.cpp" />
+    <ClCompile Include="Engine\Particle\IParticle.cpp" />
     <ClCompile Include="Engine\Particle\IParticleEmitter.cpp" />
     <ClCompile Include="Engine\Primitive\2d\Plane.cpp" />
     <ClCompile Include="Engine\Primitive\3d\Mesh.cpp" />
@@ -216,6 +217,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Math\Vector2.h" />
     <ClInclude Include="Engine\Math\Vector3.h" />
     <ClInclude Include="Engine\Math\Vector4.h" />
+    <ClInclude Include="Engine\Particle\IParticle.h" />
     <ClInclude Include="Engine\Particle\IParticleEmitter.h" />
     <ClInclude Include="Engine\Primitive\2d\Plane.h" />
     <ClInclude Include="Engine\Primitive\3d\Mesh.h" />
