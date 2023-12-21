@@ -150,8 +150,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Scene\User\TitleScene.cpp" />
     <ClCompile Include="Engine\Sprite\Sprite.cpp" />
     <ClCompile Include="Engine\Sprite\SpriteManager.cpp" />
-    <ClCompile Include="Engine\Utility\Animation\Animation.cpp" />
-    <ClCompile Include="Engine\Utility\Animation\AnimationKey.cpp" />
     <ClCompile Include="Engine\Utility\Animation\AnimationManager.cpp" />
     <ClCompile Include="Engine\Utility\Easing\Easing.cpp" />
     <ClCompile Include="Engine\Utility\Timer\DeltaTimer.cpp" />
@@ -242,7 +240,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Scene\User\TitleScene.h" />
     <ClInclude Include="Engine\Sprite\Sprite.h" />
     <ClInclude Include="Engine\Sprite\SpriteManager.h" />
-    <ClInclude Include="Engine\Utility\Animation\Animation.h" />
+    <ClInclude Include="Engine\Utility\Animation\AnimationKeys.h" />
     <ClInclude Include="Engine\Utility\Animation\AnimationKey.h" />
     <ClInclude Include="Engine\Utility\Animation\AnimationManager.h" />
     <ClInclude Include="Engine\Utility\Easing\Easing.h" />

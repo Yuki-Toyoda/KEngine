@@ -7,9 +7,9 @@
 template<typename T>
 
 /// <summary>
-/// アニメーション(キー配列クラス)
+/// アニメーションキー配列クラス
 /// </summary>
-class Animation
+class AnimationKeys
 {
 public: // コンストラクタ
 
@@ -20,7 +20,7 @@ public: // コンストラクタ
 	/// <param name="value">アニメーションで動かす値</param>
 	/// <param name="endFlame">何フレームのアニメーションか</param>
 	/// <param name="isLoop">ループ中か</param>
-	Animation(const std::string& animationName, T* value, int32_t endFlame, bool isLoop);
+	AnimationKeys(const std::string& animationName, T* value, int32_t endFlame, bool isLoop);
 
 public: // メンバ関数
 
@@ -75,7 +75,7 @@ private: // メンバ変数
 
 
 template<typename T>
-inline Animation<T>::Animation(const std::string& animationName, T* value, int32_t endFrame, bool isLoop)
+inline AnimationKeys<T>::AnimationKeys(const std::string& animationName, T* value, int32_t endFrame, bool isLoop)
 {
 	// 名称設定
 	name_ = animationName;
@@ -85,25 +85,27 @@ inline Animation<T>::Animation(const std::string& animationName, T* value, int32
 }
 
 template<typename T>
-inline void Animation<T>::Update()
+inline void AnimationKeys<T>::Update()
 {
 	// 再生中か
 	if (isPlay_) {
-
+		
 	}
+
+	// 終端フレームの取得
 }
 
 template<typename T>
-inline void Animation<T>::AddItem()
+inline void AnimationKeys<T>::AddItem()
 {
 }
 
 template<typename T>
-inline void Animation<T>::SetItem()
+inline void AnimationKeys<T>::SetItem()
 {
 }
 
 template<typename T>
-inline void Animation<T>::ApplyItem()
+inline void AnimationKeys<T>::ApplyItem()
 {
 }

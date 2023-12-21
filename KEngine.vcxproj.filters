@@ -167,14 +167,8 @@
     <ClCompile Include="Engine\Sprite\SpriteManager.cpp">
       <Filter>Sprite</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Utility\Animation\AnimationKey.cpp">
-      <Filter>Utility\Animation</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Scene\User\SampleScene.cpp">
       <Filter>Scene\User</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Utility\Animation\Animation.cpp">
-      <Filter>Utility\Animation</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\Samples\SampleSprite\SampleSprite.cpp">
       <Filter>GameObject\Samples\Sprite</Filter>
@@ -440,7 +434,7 @@
     <ClInclude Include="Engine\Scene\User\SampleScene.h">
       <Filter>Scene\User</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Utility\Animation\Animation.h">
+    <ClInclude Include="Engine\Utility\Animation\AnimationKeys.h">
       <Filter>Utility\Animation</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\Samples\SampleSprite\SampleSprite.h">
