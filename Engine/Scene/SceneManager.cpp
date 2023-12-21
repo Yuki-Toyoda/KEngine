@@ -14,7 +14,7 @@ void SceneManager::Init()
 	currentScene_ = new TitleScene(); // タイトルシーン生成
 #ifdef _DEBUG // デバッグ時のみサンプルシーンを生成
 	// シーン初期化
-	currentScene_ = new SampleScene(); // タイトルシーン生成
+	//currentScene_ = new SampleScene(); // タイトルシーン生成
 #endif // _DEBUG // デバッグ時のみサンプルシーンを生成
 	currentScene_->PreInitialize(); // 共通初期化を行う
 	currentScene_->Init(); // 初期化を行う

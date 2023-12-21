@@ -216,6 +216,8 @@
       <Filter>Base\Command</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Base\Command\SpriteCommand.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Player\Player.cpp" />
+    <ClCompile Include="Engine\GameObject\User\InputManager\InputManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -459,6 +461,8 @@
       <Filter>Base\Command</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Base\Command\SpriteCommand.h" />
+    <ClInclude Include="Engine\GameObject\User\Player\Player.h" />
+    <ClInclude Include="Engine\GameObject\User\InputManager\InputManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
