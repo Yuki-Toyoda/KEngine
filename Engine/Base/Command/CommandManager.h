@@ -2,6 +2,8 @@
 #include <vector>
 #include "../../Debug/Debug.h"
 #include "MainCommand.h"
+#include "ParticleCommand.h"
+#include "SpriteCommand.h"
 
 #include <wrl.h>
 #include <dxcapi.h>
@@ -15,8 +17,7 @@ class CommandManager
 public: // メンバ関数
 
 	// コンストラクタ
-	CommandManager() {}
-	//CommandManager() = default;
+	CommandManager() = default;
 	// デストラクタ
 	~CommandManager() = default;
 

@@ -8,6 +8,7 @@
 #include "Engine/GameObject/GameObjectManager.h"
 #include "Engine/Sprite/SpriteManager.h"
 #include "Engine/Resource/Texture/TextureManager.h"
+#include "Engine/Particle/ParticleEmitterManager.h"
 #include "Engine/GlobalVariables/GlobalVariables.h"
 #include "Engine/Collider/CollisionManager.h"
 #include "Engine/Input/Input.h"
@@ -60,6 +61,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	SceneManager* sceneManager = SceneManager::GetInstance();
 	sceneManager->Init();
 
+	// パーティクルマネージャの初期化
+	ParticleEmitterManager* particleEmitterManager = ParticleEmitterManager::GetInstance();
+	particleEmitterManager->Init();
+
 	// 入力の初期化
 	input = Input::GetInstance();
 	input->Init();
@@ -104,6 +109,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			gameObjectManager->Update();
 			// スプライトマネージャ更新
 			spriteManager->Update();
+			// パーティクルマネージャ更新
+			particleEmitterManager->Update();
+			particleEmitterManager->DisplayImGui();
 
 			// 衝突判定検証
 			collisionManager->CheckAllCollision();
@@ -140,6 +148,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	gameObjectManager->Init();
 	// 読み込みスプライト削除
 	spriteManager->Init();
+	// 全パーティクル削除
+	particleEmitterManager->Init();
 
 	// 読み込み形状を削除
 	primitiveManager->Init();

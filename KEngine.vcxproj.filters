@@ -179,9 +179,6 @@
     <ClCompile Include="Engine\GameObject\Samples\SampleSprite\SampleSprite.cpp">
       <Filter>GameObject\Samples\Sprite</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Particle\IParticleEmitter.cpp">
-      <Filter>Particle</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\GameObject\User\TestObject.cpp">
       <Filter>GameObject\User</Filter>
     </ClCompile>
@@ -206,6 +203,19 @@
     <ClCompile Include="Engine\Math\Math.cpp">
       <Filter>Math</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Particle\IParticleEmitter.cpp">
+      <Filter>Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Particle\IParticle.cpp">
+      <Filter>Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Particle\ParticleEmitterManager.cpp">
+      <Filter>Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Base\Command\ParticleCommand.cpp">
+      <Filter>Base\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Base\Command\SpriteCommand.cpp" />
     <ClCompile Include="Engine\Utility\Animation\AnimationManager.cpp">
       <Filter>Utility\Animation</Filter>
     </ClCompile>
@@ -436,12 +446,22 @@
     <ClInclude Include="Engine\GameObject\Samples\SampleSprite\SampleSprite.h">
       <Filter>GameObject\Samples\Sprite</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Particle\IParticleEmitter.h">
-      <Filter>Particle</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\GameObject\User\TestObject.h">
       <Filter>GameObject\User</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Particle\IParticleEmitter.h">
+      <Filter>Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Particle\IParticle.h">
+      <Filter>Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Particle\ParticleEmitterManager.h">
+      <Filter>Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\Command\ParticleCommand.h">
+      <Filter>Base\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\Command\SpriteCommand.h" />
     <ClInclude Include="Engine\Utility\Animation\AnimationManager.h">
       <Filter>Utility\Animation</Filter>
     </ClInclude>
@@ -580,6 +600,9 @@
     </Filter>
     <Filter Include="GameObject\User">
       <UniqueIdentifier>{e4d282eb-c22f-46f5-a5d1-e5fa5125b0e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Particle\user">
+      <UniqueIdentifier>{2347873e-0749-4013-b89a-e0b69857473d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Utility\Animation">
       <UniqueIdentifier>{e0beeaf0-3b5a-451f-96a4-9aaedb7e01b6}</UniqueIdentifier>
