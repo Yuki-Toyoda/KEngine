@@ -18,9 +18,9 @@ public: // コンストラクタ等
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	/// <param name="keyName">アニメーション名</param>
-	/// <param name="playFrame">キーの位置</param>
-	AnimationKey(const std::string& keyName, int32_t playFrame);
+	/// <param name="animationName">アニメーション名</param>
+	/// <param name="keyCount">配列上のインデックス</param>
+	AnimationKey(const std::string& animationName, int32_t keyCount);
 
 public: // メンバ関数
 
@@ -42,31 +42,20 @@ public: // メンバ関数
 	/// </summary>
 	void ApplyParam();
 
-public: // アクセッサ等
-
-	/// <summary>
-	/// 任意型のパラメーターゲッター
-	/// </summary>
-	/// <returns>生成時の任意型ゲッター</returns>
-	T GetValue() { return value_; }
-
-	/// <summary>
-	/// 再生位置の取得
-	/// </summary>
-	/// <returns>再生位置</returns>
-	int32_t GetPlayFrame() { return playFrame_; }
-
-public: // pa-buメンバ変数
+public: // メンバ変数
 
 	// アニメーションさせるパラメーター
 	// 一応任意型。現在はint, int32_t, float, Vector2, Vector3, WorldTransformに対応予定
 	T value_;
 
-	// 終端フレーム
-	int32_t playFrame_;
+	// 再生されるキーのカウント
+	int32_t playKeyCount_ = 0;
 
-	// キー名
-	std::string keyName_;
+	// 終端フレーム
+	int32_t playFrame_ = 0;
+
+	// 大元のアニメーション名
+	std::string animationName_;
 
 	// イージングパラメーター
 	KLib::EasingType eParam_ = KLib::ParamEaseLinear;
@@ -76,7 +65,7 @@ public: // pa-buメンバ変数
 };
 
 template<typename T>
-inline AnimationKey<T>::AnimationKey(const std::string& keyName, int32_t playFrame)
+inline AnimationKey<T>::AnimationKey(const std::string& animationName, int32_t keyCount)
 {
 	if constexpr (std::is_same_v<T, WorldTransform>) {
 		// worldTransformを初期化
@@ -92,9 +81,9 @@ inline AnimationKey<T>::AnimationKey(const std::string& keyName, int32_t playFra
 	}
 
 	// キー名の取得
-	keyName_ = keyName;
-	// 再生位置の取得
-	playFrame_ = playFrame;
+	animationName_ = animationName;
+	// 再生キーの位置を取得
+	playKeyCount_ = keyCount;
 
 	// イージングパラメーター初期設定
 	eParam_ = KLib::ParamEaseLinear;
@@ -139,117 +128,118 @@ inline void AnimationKey<T>::DisplayImGui()
 	}
 
 	// イージングパラメーターを設定
-	ImGui::SliderInt(keyName.c_str() + " : EasingParameter", &eParam_, KLib::ParamEaseLinear, KLib::ParamEaseInOutBounce);
+	keyName = keyName + "EasingParameter";
+	ImGui::SliderInt(keyName.c_str(), &eParam_, KLib::ParamEaseLinear, KLib::ParamEaseInOutBounce);
 }
 
 template<typename T>
 inline void AnimationKey<T>::AddParam()
 {
 	// キー名の取得
-	std::string keyName = keyName_ + " key : " + std::to_string(playFrame_);
+	std::string keyName = animationName_ + " key : " + std::to_string(playFrame_);
 	if constexpr (std::is_same_v<T, WorldTransform>) {
 		// ワールドトランスフォーム内の情報を渡す
-		GlobalVariables::GetInstance()->AddItem(keyName_, keyName + " : Scale", value_.scale_);
-		GlobalVariables::GetInstance()->AddItem(keyName_, keyName + " : Rotate", value_.rotate_);
-		GlobalVariables::GetInstance()->AddItem(keyName_, keyName + " : Translate", value_.translate_);
+		GlobalVariables::GetInstance()->AddItem(animationName_, keyName + " : Scale", value_.scale_);
+		GlobalVariables::GetInstance()->AddItem(animationName_, keyName + " : Rotate", value_.rotate_);
+		GlobalVariables::GetInstance()->AddItem(animationName_, keyName + " : Translate", value_.translate_);
 	}
 	else {
 		// パラメーター内の情報を渡す
-		GlobalVariables::GetInstance()->AddItem(keyName_, keyName, value_);
+		GlobalVariables::GetInstance()->AddItem(animationName_, keyName, value_);
 	}
 
 	// イージング情報を渡す
-	GlobalVariables::GetInstance()->AddItem(keyName_, keyName, eParam_);
+	GlobalVariables::GetInstance()->AddItem(animationName_, keyName, eParam_);
 }
 
 template<typename T>
 inline void AnimationKey<T>::SetParam()
 {
 	// キー名の取得
-	std::string keyName = keyName_ + " key : " + std::to_string(playFrame_);
+	std::string keyName = animationName_ + " key : " + std::to_string(playFrame_);
 	if constexpr (std::is_same_v<T, WorldTransform>) {
 		// ワールドトランスフォーム内の情報を渡す
-		GlobalVariables::GetInstance()->SetValue(keyName_, keyName + " : Scale", value_.scale_);
-		GlobalVariables::GetInstance()->SetValue(keyName_, keyName + " : Rotate", value_.rotate_);
-		GlobalVariables::GetInstance()->SetValue(keyName_, keyName + " : Translate", value_.translate_);
+		GlobalVariables::GetInstance()->SetValue(animationName_, keyName + " : Scale", value_.scale_);
+		GlobalVariables::GetInstance()->SetValue(animationName_, keyName + " : Rotate", value_.rotate_);
+		GlobalVariables::GetInstance()->SetValue(animationName_, keyName + " : Translate", value_.translate_);
 	}
 	else {
 		// パラメーター内の情報を渡す
-		GlobalVariables::GetInstance()->SetValue(keyName_, keyName, value_);
+		GlobalVariables::GetInstance()->SetValue(animationName_, keyName, value_);
 	}
 
 	keyName = keyName + "EasingParameter";
 	// イージング情報を渡す
-	GlobalVariables::GetInstance()->SetValue(keyName_, keyName, eParam_);
+	GlobalVariables::GetInstance()->SetValue(animationName_, keyName, eParam_);
 }
 
 template<typename T>
 inline void AnimationKey<T>::ApplyParam()
 {
 	// キー名の取得
-	std::string keyName = keyName_ + " key : " + std::to_string(playFrame_);
+	std::string keyName = animationName_ + " key : " + std::to_string(playFrame_);
 	if constexpr (std::is_same_v<T, WorldTransform>) {
-		value_.scale_ = GlobalVariables::GetInstance()->GetVector3Value(keyName_, keyName + " : Scale");
-		value_.rotate_ = GlobalVariables::GetInstance()->GetVector3Value(keyName_, keyName + " : Rotate");
-		value_.translate_ = GlobalVariables::GetInstance()->GetVector3Value(keyName_, keyName + " : Translate");
+		value_.scale_ = GlobalVariables::GetInstance()->GetVector3Value(animationName_, keyName + " : Scale");
+		value_.rotate_ = GlobalVariables::GetInstance()->GetVector3Value(animationName_, keyName + " : Rotate");
+		value_.translate_ = GlobalVariables::GetInstance()->GetVector3Value(animationName_, keyName + " : Translate");
 	}
 	else if constexpr (std::is_same_v<T, int32_t> || std::is_same_v<T, int>) {
-		value_ = GlobalVariables::GetInstance()->GetIntValue(keyName_, keyName);
+		value_ = GlobalVariables::GetInstance()->GetIntValue(animationName_, keyName);
 	}
 	else if constexpr (std::is_same_v<T, float>) {
-		value_ = GlobalVariables::GetInstance()->GetFloatValue(keyName_, keyName);
+		value_ = GlobalVariables::GetInstance()->GetFloatValue(animationName_, keyName);
 	}
 	else if constexpr (std::is_same_v<T, Vector2>) {
-		value_ = GlobalVariables::GetInstance()->GetVector2Value(keyName_, keyName);
+		value_ = GlobalVariables::GetInstance()->GetVector2Value(animationName_, keyName);
 	}
 	else if constexpr (std::is_same_v<T, Vector3>) {
-		value_ = GlobalVariables::GetInstance()->GetVector3Value(keyName_, keyName);
+		value_ = GlobalVariables::GetInstance()->GetVector3Value(animationName_, keyName);
 	}
 
 	keyName = keyName + "EasingParameter";
 	// イージング情報を渡す
-	value_ = GlobalVariables::GetInstance()->GetIntValue(keyName_, keyName);
+	eParam_ = GlobalVariables::GetInstance()->GetIntValue(animationName_, keyName);
 
 	// 読み取ったイージングタイプを元に設定
-	switch (KLib::EasingType)
+	switch (eParam_)
 	{
-	case ParamEaseLinear:
+	case KLib::ParamEaseLinear:
 		ease_ = KLib::EaseLinear;
 		break;
-	case ParamEaseInQuad:
+	case KLib::ParamEaseInQuad:
 		ease_ = KLib::EaseInQuad;
 		break;
-	case ParamEaseOutQuad:
+	case KLib::ParamEaseOutQuad:
 		ease_ = KLib::EaseOutQuad;
 		break;
-	case ParamEaseInOutQuad:
+	case KLib::ParamEaseInOutQuad:
 		ease_ = KLib::EaseInOutQuad;
 		break;
-	case ParamEaseInSine:
+	case KLib::ParamEaseInSine:
 		ease_ = KLib::EaseInSine;
 		break;
-	case ParamEaseOutSine:
+	case KLib::ParamEaseOutSine:
 		ease_ = KLib::EaseOutSine;
 		break;
-	case ParamEaseInOutSine:
+	case KLib::ParamEaseInOutSine:
 		ease_ = KLib::EaseInOutSine;
 		break;
-	case ParamEaseInBack:
-		ease_ = KLib::EaseInBack();
+	case KLib::ParamEaseInBack:
+		ease_ = KLib::EaseInBack;
 		break;
-	case ParamEaseOutBack:
+	case KLib::ParamEaseOutBack:
 		ease_ = KLib::EaseOutBack;
-		break
-	case ParamEaseInOutBack:
+		break;
+	case KLib::ParamEaseInOutBack:
 		ease_ = KLib::EaseInOutBack;
 		break;
-	case ParamEaseInBounce:
+	case KLib::ParamEaseInBounce:
 		ease_ = KLib::EaseInBounce;
 		break;
-	case ParamEaseOutBounce:
+	case KLib::ParamEaseOutBounce:
 		ease_ = KLib::EaseOutBounce;
 		break;
-	case ParamEaseInOutBounce:
+	case KLib::ParamEaseInOutBounce:
 		ease_ = KLib::EaseInOutBounce;
 		break;
 	}
