@@ -10,7 +10,7 @@ void Camera::Init()
 	input_ = Input::GetInstance();
 
 	// カメラ初期位置設定
-	transform_.translate_ = { 0.0f, 1.0f, -10.0f };
+	transform_.translate_ = { 0.0f, 1.0f, -50.0f };
 
 	// 視野角初期値の設定
 	fov_ = 0.45f;
@@ -48,7 +48,7 @@ void Camera::Update()
 		Vector3 move = { 0.0f };
 
 		// Wキーが押されたら
-		if (input_->PushKey(DIK_W)) {
+		/*if (input_->PushKey(DIK_W)) {
 			move.z = 1.0f;
 		}
 		else if (input_->PushKey(DIK_S)) {
@@ -67,9 +67,9 @@ void Camera::Update()
 		}
 		else if (input_->PushKey(DIK_LCONTROL)) {
 			move.y = -1.0f;
-		}
+		}*/
 
-		if (input_->PushKey(DIK_UP)) {
+		/*if (input_->PushKey(DIK_UP)) {
 			transform_.rotate_.x -= 0.015f;
 		}
 		else if (input_->PushKey(DIK_DOWN)) {
@@ -81,7 +81,7 @@ void Camera::Update()
 		}
 		else if (input_->PushKey(DIK_RIGHT)) {
 			transform_.rotate_.y += 0.015f;
-		}
+		}*/
 
 		// 移動量を正規化、スピードを加算
 		move = Math::Normalize(move) * speed;

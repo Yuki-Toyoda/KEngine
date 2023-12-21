@@ -7,6 +7,8 @@ public:
 	static bool MoveUp();
 	static bool MoveDown();
 	static bool MoveRight();
+	static bool RotateRight();
+	static bool RotateLeft();
 private:
 
 };

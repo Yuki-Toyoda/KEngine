@@ -24,5 +24,6 @@ public: // メンバ関数
 	private:
 
 		Vector3 velocity_;
+		float moveSpeed_ = 0.1f;
 };
 

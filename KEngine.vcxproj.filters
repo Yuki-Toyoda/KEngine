@@ -105,7 +105,7 @@
       <Filter>Primitive</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\Core\Camera.cpp">
-      <Filter>GameObject\Core</Filter>
+      <Filter>GameObject\User\Core</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\GameObjectManager.cpp">
       <Filter>GameObject</Filter>
@@ -216,8 +216,11 @@
       <Filter>Base\Command</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Base\Command\SpriteCommand.cpp" />
-    <ClCompile Include="Engine\GameObject\User\Player\Player.cpp" />
     <ClCompile Include="Engine\GameObject\User\InputManager\InputManager.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Player\Player.cpp">
+      <Filter>GameObject\User</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\User\Player\Wepon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -341,7 +344,7 @@
       <Filter>Primitive</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\Core\Camera.h">
-      <Filter>GameObject\Core</Filter>
+      <Filter>GameObject\User\Core</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\GameObjectManager.h">
       <Filter>GameObject</Filter>
@@ -461,8 +464,11 @@
       <Filter>Base\Command</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Base\Command\SpriteCommand.h" />
-    <ClInclude Include="Engine\GameObject\User\Player\Player.h" />
     <ClInclude Include="Engine\GameObject\User\InputManager\InputManager.h" />
+    <ClInclude Include="Engine\GameObject\User\Player\Player.h">
+      <Filter>GameObject\User</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\User\Player\Wepon.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -536,9 +542,6 @@
     <Filter Include="Scene">
       <UniqueIdentifier>{6d872bc3-86ed-45ab-8f90-5be9ba0d9f05}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameObject\Core">
-      <UniqueIdentifier>{d4d5bd11-e154-4a9a-b4ae-2044cd310347}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scene\User">
       <UniqueIdentifier>{19111d30-375b-42f5-892b-22a7a66dd627}</UniqueIdentifier>
     </Filter>
@@ -604,6 +607,9 @@
     </Filter>
     <Filter Include="Particle\user">
       <UniqueIdentifier>{2347873e-0749-4013-b89a-e0b69857473d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\User\Core">
+      <UniqueIdentifier>{d4d5bd11-e154-4a9a-b4ae-2044cd310347}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

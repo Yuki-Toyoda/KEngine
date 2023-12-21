@@ -7,8 +7,14 @@ void GameScene::Init(){
 	// スカイドーム生成
 	SkyDome* skyDome = nullptr;
 	skyDome = gameObjectManager_->CreateInstance<SkyDome>("SkyDome", BaseObject::TagNone);
+
 	Player* player = nullptr;
 	player = gameObjectManager_->CreateInstance<Player>("Player", BaseObject::TagPlayer);
+
+	Wepon* wepon = nullptr;
+	wepon = gameObjectManager_->CreateInstance<Wepon>("wepon", BaseObject::TagPlayer);
+	wepon->SetTarget(&player->transform_);
+	wepon->transform_.SetParent(&player->transform_, 0b001);
 }
 
 void GameScene::Update()
