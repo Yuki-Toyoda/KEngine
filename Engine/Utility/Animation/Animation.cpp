@@ -17,19 +17,58 @@ void Animation::Update()
 	}
 }
 
-void Animation::AddItem()
+void Animation::DisplayImGui()
 {
+	// アニメーション名
+	std::string name = "Now Select : " + name_;
+	ImGui::Text(name.c_str());
 
-}
+	// メニューバーの表示
+	if (ImGui::BeginMenuBar()) {
+		if (ImGui::BeginMenu("Keys"))
+		{
+			// 配列のサイズが1以上の時にキー情報を描画
+			if (animationKeys_.size() > 0) {
+				// 現在取得中のインデックス保存用
+				size_t index = 0;
+				// 配列内の全てのキーを更新する
+				for (auto& keys : animationKeys_) {
+					std::visit([&](auto& key) {
+						// キー名のアイテム表示
+						if (ImGui::MenuItem(key.keysName_.c_str())) {
+							imGuiSelectKey_ = (int)index;
+						}
+						}, keys);
+					// 選択中インデックスインクリメント
+					index++;
+				}
+				ImGui::EndMenu();
+			}
+		}
+		ImGui::EndMenuBar();
+	}
 
-void Animation::SetItem()
-{
+	// 選択したキーの情報を表示する
+	if (imGuiSelectKey_ >= animationKeys_.size() - 1) {
+		imGuiSelectKey_ = (int)animationKeys_.size() - 1;
+	}
 
-}
-
-void Animation::ApplyItem()
-{
-
+	if (animationKeys_.size() > 0) {
+		// 現在取得中のインデックス保存用
+		size_t index = 0;
+		// 配列内の全てのキーを更新する
+		for (auto& keys : animationKeys_) {
+			std::visit([&](auto& key) {
+				// インデックスと一致した場合そのキーｍの情報を表示
+				if (imGuiSelectKey_ == (int)index) {
+					// ImGuiの表示関数
+					key.DisplayImGui();
+				}
+				}, keys);
+			// 選択中インデックスインクリメント
+			index++;
+		}
+	}
 }
 
 

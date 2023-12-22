@@ -128,3 +128,68 @@ Vector3 WorldTransform::GetWorldPos() const
 	// 結果を返す
 	return result;
 }
+
+WorldTransform WorldTransform::operator+(const WorldTransform wt) const
+{
+	// 変換用インスタンス
+	WorldTransform result = *this;
+	// 計算
+	result.scale_ = this->scale_ + wt.scale_;
+	result.rotate_ = this->rotate_ + wt.rotate_;
+	result.translate_ = this->translate_ + wt.translate_;
+
+	// 結果を返す
+	return result;
+}
+
+WorldTransform WorldTransform::operator-(const WorldTransform wt) const
+{
+	// 変換用インスタンス
+	WorldTransform result = *this;
+	// 計算
+	result.scale_ = this->scale_ - wt.scale_;
+	result.rotate_ = this->rotate_ - wt.rotate_;
+	result.translate_ = this->translate_ - wt.translate_;
+
+	// 結果を返す
+	return result;
+}
+
+WorldTransform WorldTransform::operator*(const WorldTransform wt) const
+{
+	// 変換用インスタンス
+	WorldTransform result = *this;
+	// 計算
+	result.scale_ = this->scale_ * wt.scale_;
+	result.rotate_ = this->rotate_ * wt.rotate_;
+	result.translate_ = this->translate_ * wt.translate_;
+
+	// 結果を返す
+	return result;
+}
+
+WorldTransform WorldTransform::operator*(const float f) const
+{
+	// 変換用インスタンス
+	WorldTransform result = *this;
+	// 計算
+	result.scale_ = this->scale_ * f;
+	result.rotate_ = this->rotate_ * f;
+	result.translate_ = this->translate_ * f;
+
+	// 結果を返す
+	return result;
+}
+
+WorldTransform WorldTransform::operator/(const WorldTransform wt) const
+{
+	// 変換用インスタンス
+	WorldTransform result = *this;
+	// 計算
+	result.scale_ = this->scale_ / wt.scale_;
+	result.rotate_ = this->rotate_ / wt.rotate_;
+	result.translate_ = this->translate_ / wt.translate_;
+
+	// 結果を返す
+	return result;
+}

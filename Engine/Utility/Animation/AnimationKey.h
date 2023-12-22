@@ -129,7 +129,9 @@ inline void AnimationKey<T>::DisplayImGui()
 
 	// イージングパラメーターを設定
 	keyName = keyName + "EasingParameter";
-	ImGui::SliderInt(keyName.c_str(), &eParam_, KLib::ParamEaseLinear, KLib::ParamEaseInOutBounce);
+	int eParam = (int)eParam_;
+	ImGui::SliderInt(keyName.c_str(), &eParam, (int)KLib::ParamEaseLinear, (int)KLib::ParamEaseInOutBounce);
+	eParam_ = (KLib::EasingType)eParam;
 }
 
 template<typename T>

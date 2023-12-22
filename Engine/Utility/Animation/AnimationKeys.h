@@ -17,6 +17,14 @@ public: // コンストラクタ
 	/// コンストラクタ
 	/// </summary>
 	/// <param name="animationName">アニメーション名</param>
+	/// <param name="keyName">キー名</param>
+	AnimationKeys(const std::string& animationName, const std::string& keyName);
+
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	/// <param name="animationName">アニメーション名</param>
+	/// <param name="keyName">キー名</param>
 	/// <param name="value">アニメーションで動かす値</param>
 	AnimationKeys(const std::string& animationName, const std::string& keyName, T* value);
 
@@ -43,7 +51,8 @@ private: // プライベートなメンバ関数
 	/// <summary>
 	/// アニメーションキーの追加関数
 	/// </summary>
-	void AddKey();
+	/// <param name="keyIndex">追加するインデックス位置</param>
+	void AddKey(int32_t keyIndex);
 
 	/// <summary>
 	/// 次のキーへ遷移させる関数
@@ -89,8 +98,8 @@ public: // メンバ変数
 	int32_t playingKey_ = 0;
 
 	// 線形補間を行うキーの取得
-	std::list<AnimationKey<T>>::iterator prevKey_; // 前フレーム用
-	std::list<AnimationKey<T>>::iterator nextKey_; // 次フレーム用
+	AnimationKey<T> prevKey_; // 前フレーム用
+	AnimationKey<T> nextKey_; // 次フレーム用
 
 	// 線形補間用タイマー
 	KLib::DeltaTimer lerpTimer_;
@@ -105,18 +114,41 @@ public: // メンバ変数
 };
 
 template<typename T>
+inline AnimationKeys<T>::AnimationKeys(const std::string& animationName, const std::string& keyName)
+{
+	// 名称設定
+	name_ = animationName;
+	// キー名称設定
+	keysName_ = keyName;
+
+	// 再生トリガーは一度false
+	isPlay_ = false;
+
+	prevKey_ = AnimationKey<T>(name_, 0);
+	nextKey_ = AnimationKey<T>(name_, 0);
+
+	// キー達を配列に追加
+	AddItem();
+	// キー配列を取得
+	ApplyItem();
+}
+
+template<typename T>
 inline AnimationKeys<T>::AnimationKeys(const std::string& animationName, const std::string& keyName, T* value)
 {
 	// 名称設定
 	name_ = animationName;
 	// キー名称設定
-	keyName_ = keyName;
+	keysName_ = keyName;
 
 	// アニメーションさせるオブジェクトの取得
 	animateObject_ = value;
 
 	// 再生トリガーは一度false
 	isPlay_ = false;
+
+	prevKey_ = AnimationKey<T>(name_, 0);
+	nextKey_ = AnimationKey<T>(name_, 0);
 
 	// キー達を配列に追加
 	AddItem();
@@ -128,24 +160,24 @@ template<typename T>
 inline void AnimationKeys<T>::Update()
 {
 	// キーの総数を取得
-	keyCount_ = keys_.size();
+	keyCount_ = (int)keys_.size();
 
 	// 再生中か、キーのサイズが2以上の時
 	if (isPlay_ && keys_.size() <= 2) {
 		// 再生中フレームで遷移させる
-		animateObject_ = KLib::Lerp<T>(prevKey_.value_, nextKey_.value_, keys_[playingKey_++].ease_(lerpTimer_.GetProgress()));
+		*animateObject_ = KLib::Lerp<T>(prevKey_.value_, nextKey_.value_, nextKey_.ease_(lerpTimer_.GetProgress()));
 
 		// 各種タイマー更新
 		lerpTimer_.Update(); // 線形補間
 		animTimer_.Update(); // アニメーション全体時間
-	}
 
-	// 線形補間タイマーが終了している時
-	if (lerpTimer_.GetIsFinish()) {
-		// アニメーションの終端地点だった場合
-		if (playingKey_ < keys_.size() - 1) {
-			// 次のキーへ
-			NextKey();
+		// 線形補間タイマーが終了している時
+		if (lerpTimer_.GetIsFinish()) {
+			// アニメーションの終端地点だった場合
+			if (playingKey_ < keys_.size() - 1) {
+				// 次のキーへ
+				NextKey();
+			}
 		}
 	}
 }
@@ -154,29 +186,35 @@ template<typename T>
 inline void AnimationKeys<T>::DisplayImGui()
 {
 	// 全てのキーのImGuiを表示
-	for (AnimationKeys<T> key : keys_) {
+	for (AnimationKey<T> key : keys_) {
 		key.DisplayImGui();
 	}
 }
 
 template<typename T>
 inline void AnimationKeys<T>::Play(const int32_t& keyIndex){
+#ifdef _DEBUG // デバッグ時のみ、キーの情報を読み取る
+	// キーの情報を読み取る
+	ApplyItem();
+#endif // _DEBUG
+
 	// そもそもアニメーションのキー数が2以下だった場合再生すらしない
 	if (keys_.size() < 2) { 
 		return;
 	}
+	
+	// 再生中キーを指定したキーに変更
+	playingKey_ = keyIndex;
+	
 	// アニメーションの最終フレームを超過していた場合1フレーム前までさかのぼる
-	else if (playingKey_ >= keys_.size()) {
-		// 再生中キーを指定したキーに変更
-		playingKey_ = keyIndex;
-
+	if (playingKey_ >= keys_.size()) {
 		// 最終フレームの１つ前のフレームに設定
 		playingKey_ = keys_.size() - 2;
 	}
-	
+
 	// 現在のキーで値を設定
 	prevKey_ = std::next(keys_.begin(), playingKey_);
-	nextKey_ = std::next(keys_.begin(), playingKey_++);
+	nextKey_ = std::next(keys_.begin(), playingKey_ + 1);
 
 	// 次のフレームとの差分を求める
 	int difFrame = nextKey_.playFrame_ - prevKey_.playFrame_;
@@ -187,10 +225,10 @@ inline void AnimationKeys<T>::Play(const int32_t& keyIndex){
 }
 
 template<typename T>
-inline void AnimationKeys<T>::AddKey()
+inline void AnimationKeys<T>::AddKey(int32_t keyIndex)
 {
 	// 新しいキーを生成
-	AnimationKey newKey = AnimationKey<T>(name_, i);
+	AnimationKey newKey = AnimationKey<T>(name_, keyIndex);
 	// 生成したキーを管理配列に追加
 	keys_.push_back(newKey);
 
@@ -203,10 +241,10 @@ inline void AnimationKeys<T>::NextKey()
 {
 	// 次のキーへ
 	playingKey_++;
-	
+
 	// 現在フレームと次フレームの情報を取得
-	prevKey_ = NextKey_;								// 前（現在）フレーム
-	nextKey_ = std::next(keys_.begin(), playingKey_++); // 次フレーム
+	//prevKey_ = nextKey_;								// 前（現在）フレーム
+	//nextKey_ = std::next(keys_.begin(), playingKey_ + 1); // 次フレーム
 
 	// 次のフレームとの差分を求める
 	int difFrame = nextKey_.playFrame_ - prevKey_.playFrame_;

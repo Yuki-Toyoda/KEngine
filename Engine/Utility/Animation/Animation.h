@@ -20,7 +20,7 @@ public: // メンバ関数
 	/// <summary>
 	/// 初期化関数
 	/// </summary>
-	/// <param name="name">アニメーション名</param>
+	/// <param keyName="keyName">アニメーション名</param>
 	void Init(const std::string& name);
 	
 	/// <summary>
@@ -31,30 +31,18 @@ public: // メンバ関数
 	/// <summary>
 	/// アニメーションキー配列を追加する関数
 	/// </summary>
-	/// <typeparam name="T">追加するキーの型名</typeparam>
-	/// <param name="name">追加するキー配列の名前</param>
-	/// <param name="value">アニメーションさせる値のポインタ</param>
+	/// <typeparam keyName="T">追加するキーの型名</typeparam>
+	/// <param keyName="keyName">追加するキー配列の名前</param>
+	/// <param keyName="value">アニメーションさせる値のポインタ</param>
 	template<typename T>
-	void AddAnimationKeys(const std::string name, T* value);
-
-	void AddAnimationKey(const std::string keynam)
+	void AddAnimationKeys(const std::string keyName, T* value);
 
 public: // その他関数群
 
 	/// <summary>
-	/// 調整項目クラスに値を追加する関数
+	/// ImGui表示関数
 	/// </summary>
-	void AddItem();
-
-	/// <summary>
-	/// 調整項目クラスに値をセットする関数
-	/// </summary>
-	void SetItem();
-
-	/// <summary>
-	/// 調整項目クラスから値を取得する関数
-	/// </summary>
-	void ApplyItem();
+	void DisplayImGui();
 
 private: // メンバ変数
 
@@ -71,17 +59,20 @@ private: // メンバ変数
 		AnimationKeys<WorldTransform>
 		>> animationKeys_;
 
+	// ImGui用変数
+	int imGuiSelectKey_; // 選択中キー
+
 };
 
 template<typename T>
-inline void Animation::AddAnimationKeys(const std::string name, T* value)
+inline void Animation::AddAnimationKeys(const std::string keyName, T* value)
 {
 	// アニメーションキー配列を新しく追加する処理
 	for (auto& keys : animationKeys_) {
 		// 格納しているキー名と同一のキーがあった場合にはこのキーの追加は行わない
 		std::visit([](auto& key) {
 			// 同一キー名を発見した場合
-			if (key.keyName_ == name) {
+			if (key.keyName_ == keyName) {
 				// 追加を行わず処理を抜ける
 				return;
 			}
@@ -89,6 +80,6 @@ inline void Animation::AddAnimationKeys(const std::string name, T* value)
 	}
 
 	// 同名キー配列が見つからなかった場合、キーの追加処理を行う
-	AnimationKeys newKeys = AnimationKeys<Type>(name_, name, value); // 新しいキーの生成
-	animationKeys_.push_back(newKeys);								 // 配列に追加
+	AnimationKeys newKeys = AnimationKeys<T>(name_, keyName, value); // 新しいキーの生成
+	animationKeys_.push_back(newKeys);								    // 配列に追加
 }

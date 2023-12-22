@@ -105,4 +105,20 @@ public: // アクセッサ等
 	/// <returns>ワールド座標</returns>
 	Vector3 GetWorldPos() const;
 
+public: // 演算子オーバーロード
+
+	// 演算子オーバーロード(+)
+	WorldTransform operator+(const WorldTransform wt) const;
+
+	// 演算子オーバーロード(-)
+	WorldTransform operator-(const WorldTransform wt) const;
+
+	// 演算子オーバーロード(*)
+	WorldTransform operator*(const WorldTransform wt) const;
+	// 演算子オーバーロード(*)(float)
+	WorldTransform operator*(const float f) const;
+
+	// 演算子オーバーロード(/)
+	WorldTransform operator/(const WorldTransform wt) const;
+
 };
