@@ -34,9 +34,20 @@ private:
 	//回転の向き　０なら右回り1なら左回り
 	bool rotateDirection_;
 	Vector3 worldPos_;
+	//回転しているか
+	bool isMove_;
+	int parentCount_;
+	float goalDistance_;
+	float lerpCount_;
 private://メンバ関数
 
 	void Move();
+
+	/// <summary>
+	/// 衝突した瞬間にコールバックされる関数
+	/// </summary>
+	/// <param name="collider">衝突したコライダー</param>
+	void OnCollisionEnter(Collider* collider) override;
 
 };
 
