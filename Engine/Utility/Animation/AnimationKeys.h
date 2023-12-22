@@ -18,7 +18,7 @@ public: // コンストラクタ
 	/// </summary>
 	/// <param name="animationName">アニメーション名</param>
 	/// <param name="value">アニメーションで動かす値</param>
-	AnimationKeys(const std::string& animationName, T* value);
+	AnimationKeys(const std::string& animationName, const std::string& keyName, T* value);
 
 public: // メンバ関数
 
@@ -70,10 +70,12 @@ private: // プライベートなメンバ関数
 	/// </summary>
 	void ApplyItem();
 
-private: // メンバ変数
+public: // メンバ変数
 
 	// アニメーション名
-	std::stirng name_;
+	std::string name_;
+	// キー配列自体の名前
+	std::string keysName_;
 
 	// アニメーションキー配列
 	std::list<AnimationKey<T>> keys_;
@@ -103,10 +105,13 @@ private: // メンバ変数
 };
 
 template<typename T>
-inline AnimationKeys<T>::AnimationKeys(const std::string& animationName, T* value)
+inline AnimationKeys<T>::AnimationKeys(const std::string& animationName, const std::string& keyName, T* value)
 {
 	// 名称設定
 	name_ = animationName;
+	// キー名称設定
+	keyName_ = keyName;
+
 	// アニメーションさせるオブジェクトの取得
 	animateObject_ = value;
 

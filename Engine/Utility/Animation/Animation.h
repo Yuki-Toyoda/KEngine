@@ -28,8 +28,18 @@ public: // メンバ関数
 	/// </summary>
 	void Update();
 
-	template<typename Type>
-	void AddAnimationKeys(const std::string name, Type* value);
+	/// <summary>
+	/// アニメーションキー配列を追加する関数
+	/// </summary>
+	/// <typeparam name="T">追加するキーの型名</typeparam>
+	/// <param name="name">追加するキー配列の名前</param>
+	/// <param name="value">アニメーションさせる値のポインタ</param>
+	template<typename T>
+	void AddAnimationKeys(const std::string name, T* value);
+
+	void AddAnimationKey(const std::string keynam)
+
+public: // その他関数群
 
 	/// <summary>
 	/// 調整項目クラスに値を追加する関数
@@ -63,11 +73,22 @@ private: // メンバ変数
 
 };
 
-template<typename Type>
-inline void Animation::AddAnimationKeys(const std::string name, Type* value)
+template<typename T>
+inline void Animation::AddAnimationKeys(const std::string name, T* value)
 {
-	// 配列内の全てのキーを更新する
+	// アニメーションキー配列を新しく追加する処理
 	for (auto& keys : animationKeys_) {
-		
+		// 格納しているキー名と同一のキーがあった場合にはこのキーの追加は行わない
+		std::visit([](auto& key) {
+			// 同一キー名を発見した場合
+			if (key.keyName_ == name) {
+				// 追加を行わず処理を抜ける
+				return;
+			}
+		}, keys);
 	}
+
+	// 同名キー配列が見つからなかった場合、キーの追加処理を行う
+	AnimationKeys newKeys = AnimationKeys<Type>(name_, name, value); // 新しいキーの生成
+	animationKeys_.push_back(newKeys);								 // 配列に追加
 }

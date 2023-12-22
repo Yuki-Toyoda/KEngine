@@ -209,12 +209,14 @@
     <ClCompile Include="Engine\Base\Command\ParticleCommand.cpp">
       <Filter>Base\Command</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Base\Command\SpriteCommand.cpp" />
     <ClCompile Include="Engine\Utility\Animation\AnimationManager.cpp">
       <Filter>Utility\Animation</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Utility\Animation\Animation.cpp">
       <Filter>Utility\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Base\Command\SpriteCommand.cpp">
+      <Filter>Base\Command</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -458,12 +460,14 @@
     <ClInclude Include="Engine\Base\Command\ParticleCommand.h">
       <Filter>Base\Command</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Base\Command\SpriteCommand.h" />
     <ClInclude Include="Engine\Utility\Animation\AnimationManager.h">
       <Filter>Utility\Animation</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utility\Animation\Animation.h">
       <Filter>Utility\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\Command\SpriteCommand.h">
+      <Filter>Base\Command</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
