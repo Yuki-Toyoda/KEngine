@@ -100,7 +100,6 @@ private: // メンバ変数
 
 	// 終了トリガー
 	bool isEnd_ = false;
-
 };
 
 template<typename T>

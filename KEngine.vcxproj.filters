@@ -213,6 +213,9 @@
     <ClCompile Include="Engine\Utility\Animation\AnimationManager.cpp">
       <Filter>Utility\Animation</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Utility\Animation\Animation.cpp">
+      <Filter>Utility\Animation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -457,6 +460,9 @@
     </ClInclude>
     <ClInclude Include="Engine\Base\Command\SpriteCommand.h" />
     <ClInclude Include="Engine\Utility\Animation\AnimationManager.h">
+      <Filter>Utility\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Utility\Animation\Animation.h">
       <Filter>Utility\Animation</Filter>
     </ClInclude>
   </ItemGroup>
