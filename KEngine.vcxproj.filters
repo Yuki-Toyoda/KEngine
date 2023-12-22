@@ -179,9 +179,6 @@
     <ClCompile Include="Engine\GameObject\Samples\SampleSprite\SampleSprite.cpp">
       <Filter>GameObject\Samples\Sprite</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\GameObject\User\TestObject.cpp">
-      <Filter>GameObject\User</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Audio\Audio.cpp">
       <Filter>Audio</Filter>
     </ClCompile>
@@ -218,9 +215,17 @@
     <ClCompile Include="Engine\Base\Command\SpriteCommand.cpp" />
     <ClCompile Include="Engine\GameObject\User\InputManager\InputManager.cpp" />
     <ClCompile Include="Engine\GameObject\User\Player\Player.cpp">
+      <Filter>GameObject\User\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\User\Player\Wepon.cpp">
+      <Filter>GameObject\User\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\User\Enemy\Enemy.cpp">
+      <Filter>GameObject\User\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\User\TestObject.cpp">
       <Filter>GameObject\User</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\GameObject\User\Player\Wepon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -466,9 +471,14 @@
     <ClInclude Include="Engine\Base\Command\SpriteCommand.h" />
     <ClInclude Include="Engine\GameObject\User\InputManager\InputManager.h" />
     <ClInclude Include="Engine\GameObject\User\Player\Player.h">
-      <Filter>GameObject\User</Filter>
+      <Filter>GameObject\User\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\GameObject\User\Player\Wepon.h" />
+    <ClInclude Include="Engine\GameObject\User\Player\Wepon.h">
+      <Filter>GameObject\User\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\User\Enemy\Enemy.h">
+      <Filter>GameObject\User\Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -610,6 +620,12 @@
     </Filter>
     <Filter Include="GameObject\User\Core">
       <UniqueIdentifier>{d4d5bd11-e154-4a9a-b4ae-2044cd310347}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\User\Player">
+      <UniqueIdentifier>{e7b0f9da-a045-43d4-aa92-3c2c55e30ffd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\User\Enemy">
+      <UniqueIdentifier>{760aafe7-1fd4-4c44-ae4a-ff38c8b8e8bf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

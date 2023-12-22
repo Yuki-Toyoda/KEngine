@@ -33,6 +33,7 @@ private:
 	float theta_;
 	//回転の向き　０なら右回り1なら左回り
 	bool rotateDirection_;
+	Vector3 worldPos_;
 private://メンバ関数
 
 	void Move();

@@ -7,18 +7,20 @@ void Wepon::Init()
 	transform_.translate_.x +=distance_;
 	theta_ = 0.0f;
 	rotateDirection_ = false;
-	Sphere* sphere = new Sphere();
-	sphere->Init(&transform_.GetWorldPos(), &transform_.scale_.x);
-	
+	worldPos_ = transform_.GetWorldPos();
+	AddColliderSphere("Wepon", &worldPos_,&transform_.scale_.x);
 }
 
 void Wepon::Update()
 {
+	worldPos_ = transform_.GetWorldPos();
 	Move();
 }
 
 void Wepon::DisplayImGui()
 {
+	transform_.DisplayImGui();
+	ImGui::DragFloat3("worldPos", &worldPos_.x);
 }
 
 void Wepon::Move()
