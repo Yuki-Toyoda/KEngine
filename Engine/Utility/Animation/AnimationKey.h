@@ -162,7 +162,7 @@ inline void AnimationKey<T>::AddParam()
 
 	// 再生フレーム情報を渡す
 	std::string playFrameName = keyName + " : PlayFrame";
-	GlobalVariables::GetInstance()->SetValue(animationName_, playFrameName, playFrame_);
+	GlobalVariables::GetInstance()->AddItem(animationName_, playFrameName, playFrame_);
 
 	// イージング情報を渡す
 	std::string eName = keyName + " : EasingParameter";

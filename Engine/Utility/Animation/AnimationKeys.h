@@ -187,6 +187,9 @@ inline void AnimationKeys<T>::Update()
 template<typename T>
 inline void AnimationKeys<T>::DisplayImGui()
 {
+	// アニメーション名
+	std::string name = "Now SelectKeys : " + keysName_;
+	ImGui::Text(name.c_str());
 
 	// ボタンを押すとキーと追加
 	if (ImGui::Button("AddKey")) {

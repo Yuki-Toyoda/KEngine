@@ -41,11 +41,10 @@ public: // メンバ関数
 	void DisplayImGui();
 
 	/// <summary>
-	/// アニメーション作成関数
+	/// アニメーションパラメータ作成関数
 	/// </summary>
-	/// <param name="name">生成するアニメーション名</param>
-	/// <returns></returns>
-	void CreateAnimation(const std::string name);
+	/// <param name="name">生成するパラメータ名</param>
+	void CreateAnimationParameter(const std::string name);
 	
 	/// <summary>
 	/// 引数で指定したアニメーションに新しくキー配列を追加する関数
@@ -81,11 +80,4 @@ inline void AnimationManager::AddSelectAnimationKeys(const std::string& animatio
 		}
 	}
 	value;
-	//// 全てのアニメーションから一致するパラメーターを探す
-	//for (Animation& a : animations_) {
-	//	// 一致しているパラメーターを発見した場合それにキーを追加
-	//	if (a.name_ == animationName) {
-	//		a.AddAnimationKeys<T>(keyName, value);
-	//	}
-	//}
 }

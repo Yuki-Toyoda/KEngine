@@ -77,34 +77,22 @@ void AnimationManager::DisplayImGui()
 #endif // _DEBUG
 }
 
-void AnimationManager::CreateAnimation(const std::string name)
+void AnimationManager::CreateAnimationParameter(const std::string name)
 {
+	// 保存されているパラメーター内に同名のアニメーションが存在しない場合はパラメーターとして追加する
+	for (Animation& a : parameters_) {
+		// 同名のパラメーターが見つかった場合
+		if (a.name_ == name) {
+			// 処理を抜ける
+			return;
+		}
+	}
+
 	// 新しいアニメーションを生成
 	Animation newAnim;
 	// 生成したアニメーションを初期化する
 	newAnim.Init(name);
 
-	// 生成したアニメーションを配列に追加する
-	//animations_.push_back(newAnim);
-
-	if (parameters_.size() > 0) {
-		// 保存されているパラメーター内に同名のアニメーションが存在しない場合はパラメーターとして追加する
-		for (Animation& a : parameters_) {
-			// 同名のパラメーターが見つかった場合
-			if (a.name_ == name) {
-				// 処理を抜ける
-				break;
-			}
-			// パラメーター配列の終端要素まで到達した場合
-			if (&a == &parameters_[parameters_.size() - 1]) {
-				// 配列に要素を追加
-				parameters_.push_back(newAnim);
-			}
-		}
-	}
-	else {
-		// 配列に要素を追加
-		parameters_.push_back(newAnim);
-	}
-	
+	// 配列に要素を追加
+	parameters_.push_back(newAnim);
 }

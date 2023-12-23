@@ -20,7 +20,7 @@ void Animation::Update()
 void Animation::DisplayImGui()
 {
 	// アニメーション名
-	std::string name = "Now Select : " + name_;
+	std::string name = "Now SelectAnimation : " + name_;
 	ImGui::Text(name.c_str());
 
 	// メニューバーの表示
