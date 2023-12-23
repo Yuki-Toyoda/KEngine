@@ -39,6 +39,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// DirectXの初期化
 	dxCommon->Init(winApp);
 
+	// グローバル変数の読み込み
+	GlobalVariables::GetInstance()->LoadFiles();
+
 	// ImGuiの初期化
 	ImGuiManager* imguiManager = ImGuiManager::GetImstance();
 	imguiManager->Intialize(winApp, dxCommon);
@@ -77,9 +80,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// オーディオの初期化
 	audio = Audio::GetInstance();
 	audio->Init();
-
-	// グローバル変数の読み込み
-	GlobalVariables::GetInstance()->LoadFiles();
 
 	ImGui::CreateContext();
 	auto& io = ImGui::GetIO();

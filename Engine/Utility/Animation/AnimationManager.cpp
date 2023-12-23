@@ -85,7 +85,7 @@ void AnimationManager::CreateAnimation(const std::string name)
 	newAnim.Init(name);
 
 	// 生成したアニメーションを配列に追加する
-	animations_.push_back(newAnim);
+	//animations_.push_back(newAnim);
 
 	if (parameters_.size() > 0) {
 		// 保存されているパラメーター内に同名のアニメーションが存在しない場合はパラメーターとして追加する

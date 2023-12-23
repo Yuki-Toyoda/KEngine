@@ -17,10 +17,8 @@ void TestObject::Init()
 	// アニメーション作成
 	AnimationManager::GetInstance()->CreateAnimation("Test");
 	AnimationManager::GetInstance()->AddSelectAnimationKeys<float>("Test", "Float", &testFloatValue_);
+	AnimationManager::GetInstance()->AddSelectAnimationKeys<Vector2>("Test", "Vector2", &testVector2Value_);
 	AnimationManager::GetInstance()->AddSelectAnimationKeys<Vector3>("Test", "Vector3", &testVector3Value_);
-
-	AnimationManager::GetInstance()->CreateAnimation("Test2");
-	AnimationManager::GetInstance()->AddSelectAnimationKeys<Vector2>("Test2", "Vector2", &testVector2Value_);
 }
 
 void TestObject::Update()
@@ -31,6 +29,8 @@ void TestObject::DisplayImGui()
 {
 	// 基底クラスのImGuiを表示する
 	BaseObject::DisplayImGui();
+
+	a.DisplayImGui();
 }
 
 void TestObject::OnCollisionEnter(Collider* collider)

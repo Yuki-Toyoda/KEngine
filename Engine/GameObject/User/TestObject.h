@@ -1,5 +1,6 @@
 #pragma once
 #include "../BaseObject.h"
+#include "../../Utility/Animation/AnimationManager.h"
 
 /// <summary>
 /// テストオブジェクト
@@ -41,6 +42,9 @@ private: // プライベートなメンバ変数
 	float testFloatValue_ = 0.0f;
 	Vector2 testVector2Value_ = {0.0f, 0.0f};
 	Vector3 testVector3Value_ = { 0.0f, 0.0f, 0.0f };
+
+	
+	AnimationKey<float> a;
 
 };
 

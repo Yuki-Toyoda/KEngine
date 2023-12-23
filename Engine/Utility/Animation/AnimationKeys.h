@@ -194,7 +194,7 @@ inline void AnimationKeys<T>::DisplayImGui()
 	}
 
 	// 全てのキーのImGuiを表示
-	for (AnimationKey<T> key : keys_) {
+	for (AnimationKey<T>& key : keys_) {
 		key.DisplayImGui();
 	}
 
@@ -290,7 +290,8 @@ inline void AnimationKeys<T>::AddItem()
 	// キーの総数を取得
 	keyCount_ = (int32_t)keys_.size();
 	// キー総数情報追加
-	GlobalVariables::GetInstance()->AddItem(name_, name_ + " : KeyCount", keyCount_);
+	std::string keyName = keysName_ + " : KeyCount";
+	GlobalVariables::GetInstance()->AddItem(name_, keyName, keyCount_);
 
 	// 全てのキーの情報追加を行う
 	for (AnimationKey a : keys_) {
@@ -305,7 +306,8 @@ inline void AnimationKeys<T>::SetItem()
 	keyCount_ = (int32_t)keys_.size();
 
 	// キー総数情報追加
-	GlobalVariables::GetInstance()->SetValue(name_, name_ + " : KeyCount", keyCount_);
+	std::string keyName = keysName_ + " : KeyCount";
+	GlobalVariables::GetInstance()->SetValue(name_, keyName, keyCount_);
 
 	// キーが１つもなければ情報追加を行わない
 	if (keys_.size() != 0) {
@@ -320,7 +322,8 @@ template<typename T>
 inline void AnimationKeys<T>::ApplyItem()
 {
 	// キー総数の取得
-	keyCount_ = GlobalVariables::GetInstance()->GetIntValue(name_, name_ + " : KeyCount");
+	std::string keyName = keysName_ + " : KeyCount";
+	keyCount_ = GlobalVariables::GetInstance()->GetIntValue(name_, keyName);
 	
 	// キー配列を一度クリアする
 	keys_.clear();

@@ -80,12 +80,12 @@ inline void AnimationManager::AddSelectAnimationKeys(const std::string& animatio
 			a.AddAnimationKeys<T>(keyName);
 		}
 	}
-
-	// 全てのアニメーションから一致するパラメーターを探す
-	for (Animation& a : animations_) {
-		// 一致しているパラメーターを発見した場合それにキーを追加
-		if (a.name_ == animationName) {
-			a.AddAnimationKeys<T>(keyName, value);
-		}
-	}
+	value;
+	//// 全てのアニメーションから一致するパラメーターを探す
+	//for (Animation& a : animations_) {
+	//	// 一致しているパラメーターを発見した場合それにキーを追加
+	//	if (a.name_ == animationName) {
+	//		a.AddAnimationKeys<T>(keyName, value);
+	//	}
+	//}
 }

@@ -60,7 +60,7 @@ void Animation::DisplayImGui()
 		// 配列内の全てのキーを更新する
 		for (auto& keys : animationKeys_) {
 			std::visit([&](auto& key) {
-				// インデックスと一致した場合そのキーｍの情報を表示
+				// インデックスと一致した場合そのキーの情報を表示
 				if (imGuiSelectKey_ == (int)index) {
 					// ImGuiの表示関数
 					key.DisplayImGui();
