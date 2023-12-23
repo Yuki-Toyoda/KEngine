@@ -133,10 +133,14 @@ inline void AnimationKey<T>::DisplayImGui()
 		// エラー回避のため記述なし
 	}
 
+	// 再生フレームの設定
+	std::string playFrameName = keyName + " : PlayFrame";
+	ImGui::DragInt(playFrameName.c_str(), &playFrame_, 1.0f, 0);
+
 	// イージングパラメーターを設定
-	keyName = keyName + "EasingParameter";
+	std::string eName = keyName + " : EasingParameter";
 	int eParam = (int)eParam_;
-	ImGui::SliderInt(keyName.c_str(), &eParam, (int)KLib::ParamEaseLinear, (int)KLib::ParamEaseInOutBounce);
+	ImGui::SliderInt(eName.c_str(), &eParam, (int)KLib::ParamEaseLinear, (int)KLib::ParamEaseInOutBounce);
 	eParam_ = (KLib::EasingType)eParam;
 }
 
@@ -156,9 +160,13 @@ inline void AnimationKey<T>::AddParam()
 		GlobalVariables::GetInstance()->AddItem(animationName_, keyName, value_);
 	}
 
-	keyName = keyName + "EasingParameter";
+	// 再生フレーム情報を渡す
+	std::string playFrameName = keyName + " : PlayFrame";
+	GlobalVariables::GetInstance()->SetValue(animationName_, playFrameName, playFrame_);
+
 	// イージング情報を渡す
-	GlobalVariables::GetInstance()->AddItem(animationName_, keyName, eParam_);
+	std::string eName = keyName + " : EasingParameter";
+	GlobalVariables::GetInstance()->AddItem(animationName_, eName, eParam_);
 }
 
 template<typename T>
@@ -177,9 +185,13 @@ inline void AnimationKey<T>::SetParam()
 		GlobalVariables::GetInstance()->SetValue(animationName_, keyName, value_);
 	}
 
-	keyName = keyName + "EasingParameter";
+	// 再生フレーム情報を渡す
+	std::string playFrameName = keyName + " : PlayFrame";
+	GlobalVariables::GetInstance()->SetValue(animationName_, playFrameName, playFrame_);
+
 	// イージング情報を渡す
-	GlobalVariables::GetInstance()->SetValue(animationName_, keyName, eParam_);
+	std::string eName = keyName + " : EasingParameter";
+	GlobalVariables::GetInstance()->SetValue(animationName_, eName, eParam_);
 }
 
 template<typename T>
@@ -205,9 +217,13 @@ inline void AnimationKey<T>::ApplyParam()
 		value_ = GlobalVariables::GetInstance()->GetVector3Value(animationName_, keyName);
 	}
 
-	keyName = keyName + "EasingParameter";
+	// 再生フレーム情報を渡す
+	std::string playFrameName = keyName + " : PlayFrame";
+	playFrame_ = GlobalVariables::GetInstance()->GetIntValue(animationName_, playFrameName);
+
 	// イージング情報を渡す
-	eParam_ = (KLib::EasingType)GlobalVariables::GetInstance()->GetIntValue(animationName_, keyName);
+	std::string eName = keyName + " : EasingParameter";
+	eParam_ = (KLib::EasingType)GlobalVariables::GetInstance()->GetIntValue(animationName_, eName);
 
 	// 読み取ったイージングタイプを元に設定
 	switch (eParam_)

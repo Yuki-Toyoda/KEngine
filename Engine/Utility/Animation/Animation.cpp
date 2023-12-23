@@ -46,6 +46,20 @@ void Animation::DisplayImGui()
 			}
 			ImGui::EndMenu();
 		}
+		if (ImGui::BeginMenu("Edit"))
+		{
+			// キー名のアイテム表示
+			if (ImGui::MenuItem("SortKeys")) {
+				// 配列のサイズが1以上の時にキー情報を描画
+				if (animationKeys_.size() > 0) {
+					// 配列内の全てのキーをソートする
+					for (auto& keys : animationKeys_) {
+						std::visit([](auto& key) { key.SortKey(); }, keys);
+					}
+				}
+			}
+			ImGui::EndMenu();
+		}
 		ImGui::EndMenuBar();
 	}
 

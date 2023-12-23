@@ -46,6 +46,11 @@ public: // メンバ関数
 	/// </summary>
 	void DisplayImGui();
 
+	/// <summary>
+	/// キー配列のソートを行う関数
+	/// </summary>
+	void SortKey();
+
 private: // プライベートなメンバ関数
 
 	/// <summary>
@@ -58,11 +63,6 @@ private: // プライベートなメンバ関数
 	/// 次のキーへ遷移させる関数
 	/// </summary>
 	void NextKey();
-
-	/// <summary>
-	/// キー配列のソートを行う関数
-	/// </summary>
-	void SortKey();
 
 	/// <summary>
 	/// 調整項目クラスに値を追加する関数
@@ -188,7 +188,7 @@ template<typename T>
 inline void AnimationKeys<T>::DisplayImGui()
 {
 
-	// AddKey
+	// ボタンを押すとキーと追加
 	if (ImGui::Button("AddKey")) {
 		AddKey((int32_t)(keys_.size()));
 	}
@@ -281,7 +281,15 @@ template<typename T>
 inline void AnimationKeys<T>::SortKey()
 {
 	// キー配列を再生フレームが早い順にソート
-	keys_.sort([](AnimationKey<T>key1, AnimationKey<T>key2) {return key1.playFrame_ > key2.playFrame_; });
+	keys_.sort([](AnimationKey<T>key1, AnimationKey<T>key2) {return key1.playFrame_ < key2.playFrame_; });
+
+	// インデックス計算用
+	size_t i = 0;
+	// キーカウントも昇順に調整
+	for (AnimationKey<T>& k : keys_) {
+		k.playKeyCount_ = (int32_t)i;
+		i++;
+	}
 }
 
 template<typename T>
