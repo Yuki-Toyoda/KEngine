@@ -1,6 +1,7 @@
 #include "TestObject.h"
 #include "../../Resource/Texture/TextureManager.h"
 #include "../../Particle/ParticleEmitterManager.h"
+#include "../../Utility/Animation/AnimationManager.h"
 
 void TestObject::Init()
 {
@@ -12,6 +13,14 @@ void TestObject::Init()
 
 	// OBB生成
 	AddColliderOBB("Test", &transform_.scale_, &transform_.rotate_, &transform_.translate_);
+
+	// アニメーション作成
+	AnimationManager::GetInstance()->CreateAnimation("Test");
+	AnimationManager::GetInstance()->AddSelectAnimationKeys<float>("Test", "Float", &testFloatValue_);
+	AnimationManager::GetInstance()->AddSelectAnimationKeys<Vector3>("Test", "Vector3", &testVector3Value_);
+
+	AnimationManager::GetInstance()->CreateAnimation("Test2");
+	AnimationManager::GetInstance()->AddSelectAnimationKeys<Vector2>("Test2", "Vector2", &testVector2Value_);
 }
 
 void TestObject::Update()

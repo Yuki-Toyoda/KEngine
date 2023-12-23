@@ -38,12 +38,13 @@ void Animation::DisplayImGui()
 						if (ImGui::MenuItem(key.keysName_.c_str())) {
 							imGuiSelectKey_ = (int)index;
 						}
-						}, keys);
+					}, keys);
+
 					// 選択中インデックスインクリメント
 					index++;
 				}
-				ImGui::EndMenu();
 			}
+			ImGui::EndMenu();
 		}
 		ImGui::EndMenuBar();
 	}
@@ -69,6 +70,12 @@ void Animation::DisplayImGui()
 			index++;
 		}
 	}
+}
+
+void Animation::SaveAnimation()
+{
+	// 調整項目クラスに登録された値を外部ファイルに書き出す
+	GlobalVariables::GetInstance()->SaveFile(name_);
 }
 
 

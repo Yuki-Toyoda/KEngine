@@ -124,8 +124,9 @@ inline AnimationKeys<T>::AnimationKeys(const std::string& animationName, const s
 	// 再生トリガーは一度false
 	isPlay_ = false;
 
-	prevKey_ = AnimationKey<T>(name_, 0);
-	nextKey_ = AnimationKey<T>(name_, 0);
+	// キーの値を設定
+	prevKey_ = AnimationKey<T>(name_, keysName_, 0);
+	nextKey_ = AnimationKey<T>(name_, keysName_, 0);
 
 	// キー達を配列に追加
 	AddItem();
@@ -147,8 +148,9 @@ inline AnimationKeys<T>::AnimationKeys(const std::string& animationName, const s
 	// 再生トリガーは一度false
 	isPlay_ = false;
 
-	prevKey_ = AnimationKey<T>(name_, 0);
-	nextKey_ = AnimationKey<T>(name_, 0);
+	// キーの値を設定
+	prevKey_ = AnimationKey<T>(name_, keysName_, 0);
+	nextKey_ = AnimationKey<T>(name_, keysName_, 0);
 
 	// キー達を配列に追加
 	AddItem();
@@ -185,17 +187,28 @@ inline void AnimationKeys<T>::Update()
 template<typename T>
 inline void AnimationKeys<T>::DisplayImGui()
 {
+
+	// AddKey
+	if (ImGui::Button("AddKey")) {
+		AddKey((int32_t)(keys_.size()));
+	}
+
 	// 全てのキーのImGuiを表示
 	for (AnimationKey<T> key : keys_) {
 		key.DisplayImGui();
 	}
+
+	// パラメーター全てをセット
+	SetItem();
 }
 
 template<typename T>
 inline void AnimationKeys<T>::Play(const int32_t& keyIndex){
 #ifdef _DEBUG // デバッグ時のみ、キーの情報を読み取る
 	// キーの情報を読み取る
-	ApplyItem();
+	if (animateObject_ != nullptr) {
+		ApplyItem();
+	}
 #endif // _DEBUG
 
 	// そもそもアニメーションのキー数が2以下だった場合再生すらしない
@@ -212,9 +225,13 @@ inline void AnimationKeys<T>::Play(const int32_t& keyIndex){
 		playingKey_ = keys_.size() - 2;
 	}
 
+	// リストからイテレータで値を取得
+	auto pKeyIt = std::next(keys_.begin(), playingKey_);
+	auto nKeyIt = std::next(keys_.begin(), playingKey_ + 1);
+ 
 	// 現在のキーで値を設定
-	prevKey_ = std::next(keys_.begin(), playingKey_);
-	nextKey_ = std::next(keys_.begin(), playingKey_ + 1);
+	prevKey_ = *pKeyIt;
+	nextKey_ = *nKeyIt;
 
 	// 次のフレームとの差分を求める
 	int difFrame = nextKey_.playFrame_ - prevKey_.playFrame_;
@@ -222,13 +239,16 @@ inline void AnimationKeys<T>::Play(const int32_t& keyIndex){
 	// 遷移時間タイマーを (1フレームの時間 * 差分フレーム) で開始
 	lerpTimer_.Start(std::clamp(ImGui::GetIO().DeltaTime, 0.f, 0.1f) * difFrame);
 
+	// 再生開始
+	isPlay_ = true;
+
 }
 
 template<typename T>
 inline void AnimationKeys<T>::AddKey(int32_t keyIndex)
 {
 	// 新しいキーを生成
-	AnimationKey newKey = AnimationKey<T>(name_, keyIndex);
+	AnimationKey newKey = AnimationKey<T>(name_, keysName_, keyIndex);
 	// 生成したキーを管理配列に追加
 	keys_.push_back(newKey);
 
@@ -242,9 +262,13 @@ inline void AnimationKeys<T>::NextKey()
 	// 次のキーへ
 	playingKey_++;
 
-	// 現在フレームと次フレームの情報を取得
-	//prevKey_ = nextKey_;								// 前（現在）フレーム
-	//nextKey_ = std::next(keys_.begin(), playingKey_ + 1); // 次フレーム
+	// リストからイテレータで値を取得
+	auto pKeyIt = std::next(keys_.begin(), playingKey_);
+	auto nKeyIt = std::next(keys_.begin(), playingKey_ + 1);
+
+	// 現在のキーで値を設定
+	prevKey_ = *pKeyIt;
+	nextKey_ = *nKeyIt;
 
 	// 次のフレームとの差分を求める
 	int difFrame = nextKey_.playFrame_ - prevKey_.playFrame_;
@@ -263,12 +287,14 @@ inline void AnimationKeys<T>::SortKey()
 template<typename T>
 inline void AnimationKeys<T>::AddItem()
 {
+	// キーの総数を取得
+	keyCount_ = (int32_t)keys_.size();
 	// キー総数情報追加
 	GlobalVariables::GetInstance()->AddItem(name_, name_ + " : KeyCount", keyCount_);
 
-	// 配列分情報追加を行う
-	for (size_t i = 0; i < keys_.size(); i++) {
-		keys_[i].AddParam();
+	// 全てのキーの情報追加を行う
+	for (AnimationKey a : keys_) {
+		a.AddParam();
 	}
 }
 
@@ -276,16 +302,16 @@ template<typename T>
 inline void AnimationKeys<T>::SetItem()
 {
 	// キーの総数を取得
-	keyCount_ = keys_.size();
+	keyCount_ = (int32_t)keys_.size();
 
 	// キー総数情報追加
 	GlobalVariables::GetInstance()->SetValue(name_, name_ + " : KeyCount", keyCount_);
 
 	// キーが１つもなければ情報追加を行わない
 	if (keys_.size() != 0) {
-		// キーの値を追加する
-		for (size_t i = 0; i < keys_.size(); i++) {
-			keys_[i].SetParam();
+		// 全てのキーの情報セットを行う
+		for (AnimationKey a : keys_) {
+			a.SetParam();
 		}
 	}
 }
@@ -302,7 +328,7 @@ inline void AnimationKeys<T>::ApplyItem()
 	// 取得したキー総数を元にその数分キーを生成する
 	for (int i = 0; i < keyCount_; i++) {
 		// 新しいキーを生成
-		AnimationKey newKey = AnimationKey<T>(name_, i);
+		AnimationKey newKey = AnimationKey<T>(name_, keysName_, i);
 		// 生成したキーを管理配列に追加
 		keys_.push_back(newKey);
 	}

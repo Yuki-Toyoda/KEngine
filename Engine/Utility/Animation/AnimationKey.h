@@ -15,12 +15,15 @@ class AnimationKey
 {
 public: // コンストラクタ等
 
+	AnimationKey() = default;
+
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
 	/// <param name="animationName">アニメーション名</param>
+	/// <param name="keyName">キー名</param>
 	/// <param name="keyCount">配列上のインデックス</param>
-	AnimationKey(const std::string& animationName, int32_t keyCount);
+	AnimationKey(const std::string& animationName, const std::string& keyName, int32_t keyCount);
 
 public: // メンバ関数
 
@@ -56,6 +59,8 @@ public: // メンバ変数
 
 	// 大元のアニメーション名
 	std::string animationName_;
+	// キー名
+	std::string keyName_;
 
 	// イージングパラメーター
 	KLib::EasingType eParam_ = KLib::ParamEaseLinear;
@@ -65,7 +70,7 @@ public: // メンバ変数
 };
 
 template<typename T>
-inline AnimationKey<T>::AnimationKey(const std::string& animationName, int32_t keyCount)
+inline AnimationKey<T>::AnimationKey(const std::string& animationName, const std::string& keyName, int32_t keyCount)
 {
 	if constexpr (std::is_same_v<T, WorldTransform>) {
 		// worldTransformを初期化
@@ -80,8 +85,11 @@ inline AnimationKey<T>::AnimationKey(const std::string& animationName, int32_t k
 		value_ = { 0.0f };
 	}
 
-	// キー名の取得
+	// アニメーション名の取得
 	animationName_ = animationName;
+	// キー名の取得
+	keyName_ = keyName;
+
 	// 再生キーの位置を取得
 	playKeyCount_ = keyCount;
 
@@ -100,10 +108,8 @@ template<typename T>
 inline void AnimationKey<T>::DisplayImGui()
 {
 	// キー名の取得
-	std::string keyName = "key : " + std::to_string(playFrame_);
+	std::string keyName = "key : " + std::to_string(playKeyCount_);
 
-	// キー名をテキストで表示
-	ImGui::Text(keyName.c_str());
 	// スライダーの表示
 	if constexpr (std::is_same_v<T, WorldTransform>) {
 		value_.DisplayImGui(keyName);
@@ -138,7 +144,7 @@ template<typename T>
 inline void AnimationKey<T>::AddParam()
 {
 	// キー名の取得
-	std::string keyName = animationName_ + " key : " + std::to_string(playFrame_);
+	std::string keyName = keyName_ + " key : " + std::to_string(playKeyCount_);
 	if constexpr (std::is_same_v<T, WorldTransform>) {
 		// ワールドトランスフォーム内の情報を渡す
 		GlobalVariables::GetInstance()->AddItem(animationName_, keyName + " : Scale", value_.scale_);
@@ -150,6 +156,7 @@ inline void AnimationKey<T>::AddParam()
 		GlobalVariables::GetInstance()->AddItem(animationName_, keyName, value_);
 	}
 
+	keyName = keyName + "EasingParameter";
 	// イージング情報を渡す
 	GlobalVariables::GetInstance()->AddItem(animationName_, keyName, eParam_);
 }
@@ -158,7 +165,7 @@ template<typename T>
 inline void AnimationKey<T>::SetParam()
 {
 	// キー名の取得
-	std::string keyName = animationName_ + " key : " + std::to_string(playFrame_);
+	std::string keyName = keyName_ + " key : " + std::to_string(playKeyCount_);
 	if constexpr (std::is_same_v<T, WorldTransform>) {
 		// ワールドトランスフォーム内の情報を渡す
 		GlobalVariables::GetInstance()->SetValue(animationName_, keyName + " : Scale", value_.scale_);
@@ -179,7 +186,7 @@ template<typename T>
 inline void AnimationKey<T>::ApplyParam()
 {
 	// キー名の取得
-	std::string keyName = animationName_ + " key : " + std::to_string(playFrame_);
+	std::string keyName = keyName_ + " key : " + std::to_string(playKeyCount_);
 	if constexpr (std::is_same_v<T, WorldTransform>) {
 		value_.scale_ = GlobalVariables::GetInstance()->GetVector3Value(animationName_, keyName + " : Scale");
 		value_.rotate_ = GlobalVariables::GetInstance()->GetVector3Value(animationName_, keyName + " : Rotate");
@@ -200,7 +207,7 @@ inline void AnimationKey<T>::ApplyParam()
 
 	keyName = keyName + "EasingParameter";
 	// イージング情報を渡す
-	eParam_ = GlobalVariables::GetInstance()->GetIntValue(animationName_, keyName);
+	eParam_ = (KLib::EasingType)GlobalVariables::GetInstance()->GetIntValue(animationName_, keyName);
 
 	// 読み取ったイージングタイプを元に設定
 	switch (eParam_)
