@@ -43,6 +43,11 @@ public: // メンバ関数
 	/// <param name="object">コライダーがコールバックを行う対象のオブジェクト</param>
 	void AddCollider(const std::string& name, BaseObject* object);
 
+	/// <summary>
+	/// 親子関係セッター。(使い方はワールドトランスフォームと一緒)
+	/// </summary>
+	/// <param name="parent">セットするワールド座標</param>
+	/// <param name="parentType">親子関係フラグ</param>
 	void SetParent(WorldTransform* parent, uint8_t parentType = 0b111);
 
 private: // メンバ変数
@@ -70,8 +75,8 @@ public: // パブリックなメンバ変数
 	// 回転
 	Vector3 rotate_;
 
-	// コライダー
-	std::unique_ptr<Collider> collider_;
+	// 表示状態
+	bool isActive_ = true;
 
 };
 

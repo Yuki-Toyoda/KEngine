@@ -32,6 +32,9 @@ void Line::Init(const std::string& name, const Vector3& position, const Vector2&
 
 void Line::Update()
 {
+	// 表示状態切り替え
+	mesh_->isActive_ = isActive_;
+
 	// 回転角のリセット
 	if (rotate_.x >= (float)std::numbers::pi * 2.0f) {
 		rotate_.x -= (float)std::numbers::pi * 2.0f;
@@ -74,6 +77,7 @@ void Line::Update()
 void Line::DisplayImGui()
 {
 	if (ImGui::TreeNode("Line")) {
+		ImGui::Checkbox("IsActive", &isActive_);
 		ImGui::DragFloat3("Position", &position_.x, 0.05f);
 		ImGui::DragFloat2("Thickness", &thickness_.x, 0.05f);
 		ImGui::DragFloat("Length", &length_, 0.05f);
