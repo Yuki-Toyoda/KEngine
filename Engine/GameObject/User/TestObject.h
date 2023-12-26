@@ -43,8 +43,5 @@ private: // プライベートなメンバ変数
 	Vector2 testVector2Value_ = {0.0f, 0.0f};
 	Vector3 testVector3Value_ = { 0.0f, 0.0f, 0.0f };
 
-	
-	AnimationKey<float> a;
-
 };
 

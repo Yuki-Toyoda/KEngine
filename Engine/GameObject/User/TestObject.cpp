@@ -29,8 +29,6 @@ void TestObject::DisplayImGui()
 {
 	// 基底クラスのImGuiを表示する
 	BaseObject::DisplayImGui();
-
-	a.DisplayImGui();
 }
 
 void TestObject::OnCollisionEnter(Collider* collider)
