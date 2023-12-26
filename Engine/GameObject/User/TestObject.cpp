@@ -15,18 +15,26 @@ void TestObject::Init()
 	AddColliderOBB("Test", &transform_.scale_, &transform_.rotate_, &transform_.translate_);
 
 	// アニメーション作成
-	AnimationManager::GetInstance()->CreateAnimationParameter("Test");
+	/*AnimationManager::GetInstance()->CreateAnimationParameter("Test");
 	AnimationManager::GetInstance()->AddSelectAnimationKeys<float>("Test", "Float", &testFloatValue_);
 	AnimationManager::GetInstance()->AddSelectAnimationKeys<Vector2>("Test", "Vector2", &testVector2Value_);
-	AnimationManager::GetInstance()->AddSelectAnimationKeys<Vector3>("Test", "Vector3", &testVector3Value_);
+	AnimationManager::GetInstance()->AddSelectAnimationKeys<Vector3>("Test", "Vector3", &testVector3Value_);*/
+
+	line_ = std::make_unique<Line>();
+	line_->Init("TestLine", transform_.translate_, {0.35f, 0.35f}, 3.0f, TextureManager::Load("./Engine/Resource/Samples/Box", "uvChecker.png"));
+	line_->AddCollider("Line", this);
 }
 
 void TestObject::Update()
 {
+
+	line_->Update();
 }
 
 void TestObject::DisplayImGui()
 {
+	line_->DisplayImGui();
+
 	// 基底クラスのImGuiを表示する
 	BaseObject::DisplayImGui();
 }
