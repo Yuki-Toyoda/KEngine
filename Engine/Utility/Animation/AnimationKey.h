@@ -15,12 +15,15 @@ class AnimationKey
 {
 public: // コンストラクタ等
 
+	AnimationKey() = default;
+
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
 	/// <param name="animationName">アニメーション名</param>
-	/// <param name="playFrame">キーの位置</param>
-	AnimationKey(const std::string& animationName, int32_t playFrame);
+	/// <param name="keyName">キー名</param>
+	/// <param name="keyCount">配列上のインデックス</param>
+	AnimationKey(const std::string& animationName, const std::string& keyName, int32_t keyCount);
 
 public: // メンバ関数
 
@@ -42,36 +45,32 @@ public: // メンバ関数
 	/// </summary>
 	void ApplyParam();
 
-public: // アクセッサ等
-
-	/// <summary>
-	/// 任意型のパラメーターゲッター
-	/// </summary>
-	/// <returns>生成時の任意型ゲッター</returns>
-	T GetValue() { return value_; }
-
-	/// <summary>
-	/// 再生位置の取得
-	/// </summary>
-	/// <returns>再生位置</returns>
-	int32_t GetPlayFrame() { return playFlame_; }
-
-private: // メンバ変数
+public: // メンバ変数
 
 	// アニメーションさせるパラメーター
 	// 一応任意型。現在はint, int32_t, float, Vector2, Vector3, WorldTransformに対応予定
 	T value_;
 
-	// 終端フレーム
-	int32_t playFlame_;
+	// 再生されるキーのカウント
+	int32_t playKeyCount_ = 0;
 
-	// アニメーション名
+	// 終端フレーム
+	int32_t playFrame_ = 0;
+
+	// 大元のアニメーション名
 	std::string animationName_;
+	// キー名
+	std::string keyName_;
+
+	// イージングパラメーター
+	KLib::EasingType eParam_ = KLib::ParamEaseLinear;
+	// イージングの関数ポインタ
+	float(*ease_)(float) = nullptr;
 
 };
 
 template<typename T>
-inline AnimationKey<T>::AnimationKey(const std::string& animationName, int32_t playFrame)
+inline AnimationKey<T>::AnimationKey(const std::string& animationName, const std::string& keyName, int32_t keyCount)
 {
 	if constexpr (std::is_same_v<T, WorldTransform>) {
 		// worldTransformを初期化
@@ -88,8 +87,16 @@ inline AnimationKey<T>::AnimationKey(const std::string& animationName, int32_t p
 
 	// アニメーション名の取得
 	animationName_ = animationName;
-	// 再生位置の取得
-	playFlame_ = playFrame;
+	// キー名の取得
+	keyName_ = keyName;
+
+	// 再生キーの位置を取得
+	playKeyCount_ = keyCount;
+
+	// イージングパラメーター初期設定
+	eParam_ = KLib::ParamEaseLinear;
+	// イージング関数の初期設定代入
+	ease_ = KLib::EaseLinear;
 
 	// パラメーター追加
 	AddParam();
@@ -101,7 +108,9 @@ template<typename T>
 inline void AnimationKey<T>::DisplayImGui()
 {
 	// キー名の取得
-	std::string keyName = "key : " + std::to_string(playFlame_);
+	std::string keyName = "key : " + std::to_string(playKeyCount_);
+
+	// スライダーの表示
 	if constexpr (std::is_same_v<T, WorldTransform>) {
 		value_.DisplayImGui(keyName);
 	}else if constexpr (std::is_same_v<T, int32_t>) {
@@ -123,13 +132,23 @@ inline void AnimationKey<T>::DisplayImGui()
 	else {
 		// エラー回避のため記述なし
 	}
+
+	// 再生フレームの設定
+	std::string playFrameName = keyName + " : PlayFrame";
+	ImGui::DragInt(playFrameName.c_str(), &playFrame_, 1.0f, 0);
+
+	// イージングパラメーターを設定
+	std::string eName = keyName + " : EasingParameter";
+	int eParam = (int)eParam_;
+	ImGui::SliderInt(eName.c_str(), &eParam, (int)KLib::ParamEaseLinear, (int)KLib::ParamEaseInOutBounce);
+	eParam_ = (KLib::EasingType)eParam;
 }
 
 template<typename T>
 inline void AnimationKey<T>::AddParam()
 {
 	// キー名の取得
-	std::string keyName = animationName_ + " key : " + std::to_string(playFlame_);
+	std::string keyName = keyName_ + " key : " + std::to_string(playKeyCount_);
 	if constexpr (std::is_same_v<T, WorldTransform>) {
 		// ワールドトランスフォーム内の情報を渡す
 		GlobalVariables::GetInstance()->AddItem(animationName_, keyName + " : Scale", value_.scale_);
@@ -140,13 +159,21 @@ inline void AnimationKey<T>::AddParam()
 		// パラメーター内の情報を渡す
 		GlobalVariables::GetInstance()->AddItem(animationName_, keyName, value_);
 	}
+
+	// 再生フレーム情報を渡す
+	std::string playFrameName = keyName + " : PlayFrame";
+	GlobalVariables::GetInstance()->AddItem(animationName_, playFrameName, playFrame_);
+
+	// イージング情報を渡す
+	std::string eName = keyName + " : EasingParameter";
+	GlobalVariables::GetInstance()->AddItem(animationName_, eName, eParam_);
 }
 
 template<typename T>
 inline void AnimationKey<T>::SetParam()
 {
 	// キー名の取得
-	std::string keyName = animationName_ + " key : " + std::to_string(playFlame_);
+	std::string keyName = keyName_ + " key : " + std::to_string(playKeyCount_);
 	if constexpr (std::is_same_v<T, WorldTransform>) {
 		// ワールドトランスフォーム内の情報を渡す
 		GlobalVariables::GetInstance()->SetValue(animationName_, keyName + " : Scale", value_.scale_);
@@ -157,13 +184,21 @@ inline void AnimationKey<T>::SetParam()
 		// パラメーター内の情報を渡す
 		GlobalVariables::GetInstance()->SetValue(animationName_, keyName, value_);
 	}
+
+	// 再生フレーム情報を渡す
+	std::string playFrameName = keyName + " : PlayFrame";
+	GlobalVariables::GetInstance()->SetValue(animationName_, playFrameName, playFrame_);
+
+	// イージング情報を渡す
+	std::string eName = keyName + " : EasingParameter";
+	GlobalVariables::GetInstance()->SetValue(animationName_, eName, eParam_);
 }
 
 template<typename T>
 inline void AnimationKey<T>::ApplyParam()
 {
 	// キー名の取得
-	std::string keyName = animationName_ + " key : " + std::to_string(playFlame_);
+	std::string keyName = keyName_ + " key : " + std::to_string(playKeyCount_);
 	if constexpr (std::is_same_v<T, WorldTransform>) {
 		value_.scale_ = GlobalVariables::GetInstance()->GetVector3Value(animationName_, keyName + " : Scale");
 		value_.rotate_ = GlobalVariables::GetInstance()->GetVector3Value(animationName_, keyName + " : Rotate");
@@ -180,5 +215,57 @@ inline void AnimationKey<T>::ApplyParam()
 	}
 	else if constexpr (std::is_same_v<T, Vector3>) {
 		value_ = GlobalVariables::GetInstance()->GetVector3Value(animationName_, keyName);
+	}
+
+	// 再生フレーム情報を渡す
+	std::string playFrameName = keyName + " : PlayFrame";
+	playFrame_ = GlobalVariables::GetInstance()->GetIntValue(animationName_, playFrameName);
+
+	// イージング情報を渡す
+	std::string eName = keyName + " : EasingParameter";
+	eParam_ = (KLib::EasingType)GlobalVariables::GetInstance()->GetIntValue(animationName_, eName);
+
+	// 読み取ったイージングタイプを元に設定
+	switch (eParam_)
+	{
+	case KLib::ParamEaseLinear:
+		ease_ = KLib::EaseLinear;
+		break;
+	case KLib::ParamEaseInQuad:
+		ease_ = KLib::EaseInQuad;
+		break;
+	case KLib::ParamEaseOutQuad:
+		ease_ = KLib::EaseOutQuad;
+		break;
+	case KLib::ParamEaseInOutQuad:
+		ease_ = KLib::EaseInOutQuad;
+		break;
+	case KLib::ParamEaseInSine:
+		ease_ = KLib::EaseInSine;
+		break;
+	case KLib::ParamEaseOutSine:
+		ease_ = KLib::EaseOutSine;
+		break;
+	case KLib::ParamEaseInOutSine:
+		ease_ = KLib::EaseInOutSine;
+		break;
+	case KLib::ParamEaseInBack:
+		ease_ = KLib::EaseInBack;
+		break;
+	case KLib::ParamEaseOutBack:
+		ease_ = KLib::EaseOutBack;
+		break;
+	case KLib::ParamEaseInOutBack:
+		ease_ = KLib::EaseInOutBack;
+		break;
+	case KLib::ParamEaseInBounce:
+		ease_ = KLib::EaseInBounce;
+		break;
+	case KLib::ParamEaseOutBounce:
+		ease_ = KLib::EaseOutBounce;
+		break;
+	case KLib::ParamEaseInOutBounce:
+		ease_ = KLib::EaseInOutBounce;
+		break;
 	}
 }

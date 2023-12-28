@@ -167,14 +167,8 @@
     <ClCompile Include="Engine\Sprite\SpriteManager.cpp">
       <Filter>Sprite</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Utility\Animation\AnimationKey.cpp">
-      <Filter>Utility\Animation</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Scene\User\SampleScene.cpp">
       <Filter>Scene\User</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Utility\Animation\Animation.cpp">
-      <Filter>Utility\Animation</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\Samples\SampleSprite\SampleSprite.cpp">
       <Filter>GameObject\Samples\Sprite</Filter>
@@ -226,6 +220,16 @@
     <ClCompile Include="Engine\GameObject\User\TestObject.cpp">
       <Filter>GameObject\User</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Utility\Animation\AnimationManager.cpp">
+      <Filter>Utility\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Utility\Animation\Animation.cpp">
+      <Filter>Utility\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Base\Command\SpriteCommand.cpp">
+      <Filter>Base\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Utility\Line\Line.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -447,7 +451,7 @@
     <ClInclude Include="Engine\Scene\User\SampleScene.h">
       <Filter>Scene\User</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Utility\Animation\Animation.h">
+    <ClInclude Include="Engine\Utility\Animation\AnimationKeys.h">
       <Filter>Utility\Animation</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\Samples\SampleSprite\SampleSprite.h">
@@ -479,6 +483,16 @@
     <ClInclude Include="Engine\GameObject\User\Enemy\Enemy.h">
       <Filter>GameObject\User\Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Utility\Animation\AnimationManager.h">
+      <Filter>Utility\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Utility\Animation\Animation.h">
+      <Filter>Utility\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\Command\SpriteCommand.h">
+      <Filter>Base\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Utility\Line\Line.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -603,9 +617,6 @@
     <Filter Include="Sprite">
       <UniqueIdentifier>{89930de6-5713-4b33-a25e-c80afe7ab47c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utility\Animation">
-      <UniqueIdentifier>{e0beeaf0-3b5a-451f-96a4-9aaedb7e01b6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameObject\Samples\Sprite">
       <UniqueIdentifier>{cfbc2871-68a2-4a09-a052-431c3e871e78}</UniqueIdentifier>
     </Filter>
@@ -626,6 +637,9 @@
     </Filter>
     <Filter Include="GameObject\User\Enemy">
       <UniqueIdentifier>{760aafe7-1fd4-4c44-ae4a-ff38c8b8e8bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\Animation">
+      <UniqueIdentifier>{e0beeaf0-3b5a-451f-96a4-9aaedb7e01b6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

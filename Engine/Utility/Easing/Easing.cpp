@@ -88,7 +88,7 @@ float KLib::EaseOutBounce(float t)
 	}
 }
 
-float KLib::EaseInOutBouce(float t)
+float KLib::EaseInOutBounce(float t)
 {
 	return t < 0.5f
 		? (1.0f - KLib::EaseOutBounce(1.0f - 2.0f * t)) / 2.0f

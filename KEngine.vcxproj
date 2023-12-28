@@ -169,7 +169,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Sprite\Sprite.cpp" />
     <ClCompile Include="Engine\Sprite\SpriteManager.cpp" />
     <ClCompile Include="Engine\Utility\Animation\Animation.cpp" />
-    <ClCompile Include="Engine\Utility\Animation\AnimationKey.cpp" />
+    <ClCompile Include="Engine\Utility\Animation\AnimationManager.cpp" />
     <ClCompile Include="Engine\Utility\Easing\Easing.cpp" />
     <ClCompile Include="Engine\Utility\Timer\DeltaTimer.cpp" />
     <ClCompile Include="Externals\imgui\imgui.cpp" />
@@ -180,6 +180,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Externals\imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="Externals\imgui\imgui_tables.cpp" />
     <ClCompile Include="Externals\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Engine\Utility\Line\Line.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -278,7 +279,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Sprite\Sprite.h" />
     <ClInclude Include="Engine\Sprite\SpriteManager.h" />
     <ClInclude Include="Engine\Utility\Animation\Animation.h" />
+    <ClInclude Include="Engine\Utility\Animation\AnimationKeys.h" />
     <ClInclude Include="Engine\Utility\Animation\AnimationKey.h" />
+    <ClInclude Include="Engine\Utility\Animation\AnimationManager.h" />
     <ClInclude Include="Engine\Utility\Easing\Easing.h" />
     <ClInclude Include="Engine\Utility\KLib.h" />
     <ClInclude Include="Engine\Utility\Lerp\Lerp.h" />
@@ -292,6 +295,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Externals\imgui\imstb_rectpack.h" />
     <ClInclude Include="Externals\imgui\imstb_textedit.h" />
     <ClInclude Include="Externals\imgui\imstb_truetype.h" />
+    <ClInclude Include="Engine\Utility\Line\Line.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Object3D.hlsli">
