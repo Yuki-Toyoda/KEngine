@@ -67,10 +67,10 @@ void Wepon::OnCollisionEnter(Collider* collider)
 		parentCount_++;
 		if (lerpCount_ != 1.0f) {
 			lerpCount_ = 1.0f;
-			goalDistance_ = distance_ + (float)parentCount_ / 4.0f;
+			goalDistance_ = distance_ + (float)parentCount_ / 3.5f;
 			distance_ = Math::Linear(lerpCount_, distance_, goalDistance_);
 		}
 		lerpCount_ = 0.0f;
-		goalDistance_ = distance_ + (float)parentCount_ / 4.0f;
+		goalDistance_ = distance_ + (float)parentCount_ / 3.5f;
 	}
 }
