@@ -53,6 +53,8 @@ public: // サブクラス
 		TagWeapon, // 武器
 		TagEnemy,  // 敵
 		TagFloor,  // 床
+		TagChain,//鎖
+		TagObstacle,//障害物
 	};
 
 public: // メンバ関数

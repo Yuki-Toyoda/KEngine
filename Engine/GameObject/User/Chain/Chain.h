@@ -1,9 +1,12 @@
 #pragma once
-#include "../../BaseObject.h"
-#include"../Player/Wepon.h"
-class Enemy:public BaseObject
+#include"../../BaseObject.h"
+#include "../../../Utility/Line/Line.h"
+#include "../Player/Player.h"
+#include "../Player/Wepon.h"
+class Chain :public BaseObject
 {
-public:
+public: // メンバ関数
+
 	/// <summary>
 	/// 初期化関数
 	/// </summary>
@@ -19,25 +22,21 @@ public:
 	/// </summary>
 	void DisplayImGui() override;
 
+	
 public:
+	void SetWepon(Wepon* wepon) { wepon_ = wepon; }
+	void SetPlayer(Player* player) { player_ = player; }
 
-	//追従対象
-	void SetWepon( Wepon* target) { wepon_ = target; }
 private:
 	/// <summary>
 	/// 衝突した瞬間にコールバックされる関数
 	/// </summary>
 	/// <param name="collider">衝突したコライダー</param>
 	void OnCollisionEnter(Collider* collider) override;
-	
-
 private:
-	// 追従対象のワールド座標
- Wepon* wepon_ = nullptr;
 
- Vector3 worldPos_;
- bool isParent_;
- Vector3 velocity_;
+	std::unique_ptr<Line> line_;
+	Player* player_;
+	Wepon* wepon_;
+	float length_;
 };
-
-

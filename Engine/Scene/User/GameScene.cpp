@@ -12,7 +12,7 @@ void GameScene::Init(){
 	player = gameObjectManager_->CreateInstance<Player>("Player", BaseObject::TagPlayer);
 
 	Wepon* wepon = nullptr;
-	wepon = gameObjectManager_->CreateInstance<Wepon>("wepon", BaseObject::TagPlayer);
+	wepon = gameObjectManager_->CreateInstance<Wepon>("wepon", BaseObject::TagWeapon);
 	wepon->SetTarget(&player->transform_);
 	wepon->transform_.SetParent(&player->transform_, 0b001);
 	Enemy* enemy ;
@@ -21,8 +21,13 @@ void GameScene::Init(){
 		enemy->transform_.translate_.x = i * 2.0f;
 		enemy->SetWepon(wepon);
 	}
-
-
+	Chain* chain;
+	chain = gameObjectManager_->CreateInstance<Chain>("chain", BaseObject::TagChain);
+	chain->SetPlayer(player);
+	chain->SetWepon(wepon);
+	Obstacle* obstacle;
+	obstacle = gameObjectManager_->CreateInstance<Obstacle>("obstacle", BaseObject::TagObstacle);
+	obstacle->transform_.translate_.x = -8.0f;
 }
 
 void GameScene::Update()

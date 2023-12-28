@@ -9,6 +9,7 @@ void Wepon::Init()
 	rotateDirection_ = false;
 	worldPos_ = transform_.GetWorldPos();
 	AddColliderSphere("Wepon", &worldPos_,&transform_.scale_.x);
+	isChain_ = true;
 }
 
 void Wepon::Update()
@@ -22,8 +23,14 @@ void Wepon::Update()
 			isMove_ = true;
 		}
 	}
-	if (isMove_) {
+	if (Input::GetInstance()->PushKey(DIK_SPACE)) {
+		isChain_ = false;
+	}
+	if (isChain_) {
 		Move();
+	}
+	else {
+		ChainDeleted();
 	}
 }
 
@@ -35,22 +42,24 @@ void Wepon::DisplayImGui()
 
 void Wepon::Move()
 {
-	if (InputManager::RotateRight()) {
-		rotateDirection_ = false;
+	if (isMove_) {
+		if (InputManager::RotateRight()) {
+			rotateDirection_ = false;
+		}
+		if (InputManager::RotateLeft()) {
+			rotateDirection_ = true;
+		}
+		if (rotateDirection_) {
+			theta_ += 0.05f;
+			transform_.rotate_.z += 0.05f;
+		}
+		else {
+			theta_ -= 0.05f;
+			transform_.rotate_.z -= 0.05f;
+		}
 	}
-	if (InputManager::RotateLeft()) {
-		rotateDirection_ = true;
-	}
-	if (rotateDirection_) {
-		theta_ += 0.1f;
-		transform_.rotate_.z += 0.1f;
-	}
-	else {
-		theta_ -= 0.1f;
-		transform_.rotate_.z -= 0.1f;
-	}
-	transform_.translate_.x = std::cosf(theta_) * distance_;
-	transform_.translate_.y = std::sinf(theta_) * distance_;
+	transform_.translate_.x = std::cosf(theta_) * (distance_+transform_.scale_.x);
+	transform_.translate_.y = std::sinf(theta_) * (distance_+transform_.scale_.y);
 	if (lerpCount_ < 1.0f) {
 		lerpCount_+=0.1f;
 	}
@@ -60,17 +69,27 @@ void Wepon::Move()
 	distance_ = Math::Linear(lerpCount_, distance_, goalDistance_);
 }
 
+void Wepon::ChainDeleted()
+{
+	if (transform_.GetParent()) {
+       transform_.translate_ = transform_.GetWorldPos();
+	   transform_.SetParent(nullptr);
+	}
+	transform_.translate_.y -= 0.3f;
+
+}
+
 void Wepon::OnCollisionEnter(Collider* collider)
 {
 	collider;
 	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagEnemy) {
-		parentCount_++;
+		
 		if (lerpCount_ != 1.0f) {
 			lerpCount_ = 1.0f;
-			goalDistance_ = distance_ + (float)parentCount_ / 3.5f;
+			goalDistance_ = distance_ + 1.0f /2.5f;
 			distance_ = Math::Linear(lerpCount_, distance_, goalDistance_);
 		}
 		lerpCount_ = 0.0f;
-		goalDistance_ = distance_ + (float)parentCount_ / 3.5f;
+		goalDistance_ = distance_ + 1.0f / 2.5f;
 	}
 }

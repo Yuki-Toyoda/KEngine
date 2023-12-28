@@ -8,3 +8,5 @@
 #include"User//Player/Player.h"
 #include"User//Player/Wepon.h"
 #include "User/Enemy/Enemy.h"
+#include "User/Chain/Chain.h"
+#include "User/Enemy/Obstacle/Obstacle.h"
