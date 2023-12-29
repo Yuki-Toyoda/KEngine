@@ -8,6 +8,20 @@ void GameScene::Init(){
 	SkyDome* skyDome = nullptr;
 	skyDome = gameObjectManager_->CreateInstance<SkyDome>("SkyDome", BaseObject::TagNone);
 
+	// プレイヤー追加
+	Player* player = nullptr;
+	player = gameObjectManager_->CreateInstance<Player>("Player", BaseObject::TagPlayer);
+
+	FollowCamera* camera = nullptr;
+	camera = gameObjectManager_->CreateInstance<FollowCamera>("MainCamera", BaseObject::TagCamera);
+	camera->SetTarget(&player->transform_);
+	camera->UseThisCamera();
+	player->followCamera_ = camera;
+
+	Floor* floor = nullptr;
+	floor = gameObjectManager_->CreateInstance<Floor>("Floor", BaseObject::TagFloor);
+	floor->transform_.scale_ = { 100.0f, 0.35f, 100.0f };
+	floor->transform_.translate_.y = -0.35f;
 }
 
 void GameScene::Update()
