@@ -13,6 +13,7 @@ void TestObject::Init()
 
 	// OBB生成
 	AddColliderOBB("Test", &transform_.scale_, &transform_.rotate_, &transform_.translate_);
+	//AddColliderAABB("Test", &transform_.translate_, &transform_.scale_);
 
 	// アニメーション作成
 	/*AnimationManager::GetInstance()->CreateAnimationParameter("Test");

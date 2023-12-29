@@ -79,9 +79,9 @@ void Line::DisplayImGui()
 	if (ImGui::TreeNode("Line")) {
 		ImGui::Checkbox("IsActive", &isActive_);
 		ImGui::DragFloat3("Position", &position_.x, 0.05f);
-		ImGui::DragFloat2("Thickness", &thickness_.x, 0.05f);
-		ImGui::DragFloat("Length", &length_, 0.05f);
-		ImGui::DragFloat3("Rotate", &rotate_.x, 0.001f);
+		ImGui::DragFloat2("Thickness", &thickness_.x, 0.05f, 0.005f);
+		ImGui::DragFloat("Length", &length_, 0.05f, 0.005f);
+		ImGui::DragFloat3("Rotate", &rotate_.x, 0.005f);
 		ImGui::TreePop();
 	}
 }

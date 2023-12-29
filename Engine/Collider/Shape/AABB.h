@@ -23,6 +23,12 @@ public: // メンバ関数
 		size_ = size;	  // 大きさ設定
 	}
 
+	void InitA(Vector3* min, Vector3* max) {
+		colliderShape_ = ColliderShape::AABB; // 形状設定
+		min_ = min;
+		max_ = max;
+	}
+
 	/// <summary>
 	/// ImGui表示関数
 	/// </summary>
@@ -41,12 +47,23 @@ public: // メンバ関数
 	/// 最小点ゲッター
 	/// </summary>
 	/// <returns>最小点</returns>
-	const Vector3 GetMin() override { return (*center_ - *size_); }
+	const Vector3 GetMin() override { 
+		if (min_ != nullptr) {
+			return *min_;
+		}
+
+		return (*center_ - *size_); 
+	}
 	/// <summary>
 	/// 最大点ゲッター
 	/// </summary>
 	/// <returns>最大点</returns>
-	const Vector3 GetMax() override { return (*center_ + *size_); }
+	const Vector3 GetMax() override { 
+		if (min_ != nullptr) {
+			return *max_;
+		}
+		return (*center_ + *size_); 
+	}
 
 private: // メンバ変数
 
@@ -54,5 +71,8 @@ private: // メンバ変数
 	Vector3* center_;
 	// 大きさ
 	Vector3* size_;
+
+	Vector3* min_ = nullptr;
+	Vector3* max_ = nullptr;
 
 };
