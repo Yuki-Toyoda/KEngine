@@ -414,12 +414,14 @@ bool CollisionManager::IsCollisionSphereWithOBB(BaseShape* shapeA, BaseShape* sh
 	// obbの座標軸取得
 	std::vector<Vector3> otientatuons = shapeB->GetOtientatuons();
 
+	Matrix4x4 t = Math::MakeAffineMatrix(obbSize, shapeB->GetRotate(), obbCenter);
+
 	// obbのワールド行列を取得
 	Matrix4x4 obbWorldMatrix = {
-		otientatuons[0].x, otientatuons[1].x, otientatuons[2].x, 0.0f,
-		otientatuons[0].y, otientatuons[1].y, otientatuons[2].y, 0.0f,
-		otientatuons[0].z, otientatuons[1].z, otientatuons[2].z, 0.0f,
-		obbCenter.x, obbCenter.y, obbCenter.z, 1.0f
+		otientatuons[0].x, otientatuons[0].y, otientatuons[0].z, 0.0f,
+		otientatuons[1].x, otientatuons[1].y, otientatuons[1].z, 0.0f,
+		otientatuons[2].x, otientatuons[2].y, otientatuons[2].z, 0.0f,
+		t.m[3][0], t.m[3][1], t.m[3][2], 1.0f
 	};
 
 	// 逆行列を求める
