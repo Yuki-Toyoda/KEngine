@@ -59,7 +59,7 @@ public: // メンバ関数
 	/// </summary>
 	/// <returns>最大点</returns>
 	const Vector3 GetMax() override { 
-		if (min_ != nullptr) {
+		if (max_ != nullptr) {
 			return *max_;
 		}
 		return (*center_ + *size_); 

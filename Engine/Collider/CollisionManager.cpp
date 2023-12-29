@@ -429,9 +429,10 @@ bool CollisionManager::IsCollisionSphereWithOBB(BaseShape* shapeA, BaseShape* sh
 	Vector3 centerInOBBLocalSpace = Math::Transform(sphereCenter, invObbWorldMatrix);
 
 	// aabbのローカル座標
-	Vector3 aabbMin = Vector3(-obbSize.x, -obbSize.y, -obbSize.z);
+	//Vector3 aabbMin = Vector3(-obbSize.x, -obbSize.y, -obbSize.z);
+	Vector3 aabbCenter = Vector3(0.0f, 0.0f, 0.0f);
 	AABB aabbLocal;
-	aabbLocal.InitA(&aabbMin, &obbSize);
+	aabbLocal.Init(&aabbCenter, &obbSize);
 
 	// 球のローカル座標
 	Sphere sphereLocal;

@@ -88,7 +88,7 @@ void Line::DisplayImGui()
 
 void Line::AddCollider(const std::string& name, BaseObject* object)
 {
-	object->AddColliderOBB(name, &transform_.scale_, &transform_.rotate_, &transform_.translate_, true);
+	object->AddColliderOBB(name, &transform_.scale_, &transform_.rotate_, &transform_.translate_);
 }
 
 void Line::SetParent(WorldTransform* parent, uint8_t parentType)

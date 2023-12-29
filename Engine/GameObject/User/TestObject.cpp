@@ -9,11 +9,11 @@ void TestObject::Init()
 	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Box", "Box.obj");
 
 	/// ~スプライトの追加関数~
-	AddSprite("TestSprite", { 0.0f, 0.0f }, { 512.0f, 512.0f }, TextureManager::Load("./Engine/Resource/Samples/Box", "uvChecker.png"));
+	//AddSprite("TestSprite", { 0.0f, 0.0f }, { 512.0f, 512.0f }, TextureManager::Load("./Engine/Resource/Samples/Box", "uvChecker.png"));
 
 	// OBB生成
-	AddColliderOBB("Test", &transform_.scale_, &transform_.rotate_, &transform_.translate_);
-	//AddColliderAABB("Test", &transform_.translate_, &transform_.scale_);
+	//AddColliderOBB("Test", &transform_.scale_, &transform_.rotate_, &transform_.translate_);
+	AddColliderAABB("Test", &transform_.translate_, &transform_.scale_);
 
 	// アニメーション作成
 	/*AnimationManager::GetInstance()->CreateAnimationParameter("Test");
