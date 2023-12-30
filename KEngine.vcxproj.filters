@@ -218,6 +218,10 @@
     <ClCompile Include="Engine\Base\Command\SpriteCommand.cpp">
       <Filter>Base\Command</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Utility\Line\Line.cpp" />
+    <ClCompile Include="Engine\GameObject\Samples\SampleSphere\SampleSphere.cpp">
+      <Filter>GameObject\Samples\Sphere</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\GameObject\User\Player\Player.cpp">
       <Filter>GameObject\User\Player</Filter>
     </ClCompile>
@@ -477,6 +481,10 @@
     <ClInclude Include="Engine\Base\Command\SpriteCommand.h">
       <Filter>Base\Command</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Utility\Line\Line.h" />
+    <ClInclude Include="Engine\GameObject\Samples\SampleSphere\SampleSphere.h">
+      <Filter>GameObject\Samples\Sphere</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\GameObject\User\Player\Player.h">
       <Filter>GameObject\User\Player</Filter>
     </ClInclude>
@@ -632,6 +640,9 @@
     </Filter>
     <Filter Include="Utility\Animation">
       <UniqueIdentifier>{e0beeaf0-3b5a-451f-96a4-9aaedb7e01b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Samples\Sphere">
+      <UniqueIdentifier>{e2052d27-98b3-431d-8362-043ed86199a5}</UniqueIdentifier>
     </Filter>
     <Filter Include="GameObject\User\Player">
       <UniqueIdentifier>{898fb67c-d21e-490d-87f1-abf6b46c0d32}</UniqueIdentifier>

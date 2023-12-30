@@ -1,15 +1,15 @@
 #pragma once
-#include "../BaseObject.h"
-#include "../../Utility/Animation/AnimationManager.h"
-#include "../../Utility/Line/Line.h"
+#include "../../BaseObject.h"
 
 /// <summary>
-/// テストオブジェクト
+/// 球のサンプル
 /// </summary>
-class TestObject : public BaseObject
+class SampleSphere : public BaseObject
 {
+public: // メンバ関数
+
 	/// <summary>
-	/// 初期化関数
+	/// 初期化
 	/// </summary>
 	void Init() override;
 
@@ -17,13 +17,6 @@ class TestObject : public BaseObject
 	/// 更新関数
 	/// </summary>
 	void Update() override;
-
-	/// <summary>
-	/// ImGuiを表示させる関数
-	/// </summary>
-	void DisplayImGui() override;
-
-public: // その他関数
 
 	/// <summary>
 	/// 衝突した瞬間にコールバックされる関数
@@ -36,15 +29,5 @@ public: // その他関数
 	/// </summary>
 	/// <param name="collider">衝突していたコライダー<</param>
 	void OnCollisionExit(Collider* collider) override;
-
-private: // プライベートなメンバ変数
-
-	// テスト用変数達
-	float testFloatValue_ = 0.0f;
-	Vector2 testVector2Value_ = {0.0f, 0.0f};
-	Vector3 testVector3Value_ = { 0.0f, 0.0f, 0.0f };
-
-	// 線だ！！！
-	std::unique_ptr<Line> line_;
 };
 

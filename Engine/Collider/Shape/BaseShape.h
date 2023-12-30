@@ -79,12 +79,18 @@ public: // OBB用関数群
 	/// </summary>
 	/// <returns>座標軸</returns>
 	virtual const std::vector<Vector3> GetOtientatuons() { return std::vector<Vector3>(); }
-	
+
 	/// <summary>
 	/// 座標軸の半分の長さゲッター
 	/// </summary>
 	/// <returns></returns>
 	virtual const Vector3 GetSize() { return Vector3(0.0f, 0.0f, 0.0f); }
+
+	/// <summary>
+	/// 回転角ゲッター
+	/// </summary>
+	/// <returns>回転角</returns>
+	virtual const Vector3 GetRotate() { return Vector3(0.0f, 0.0f, 0.0f); }
 
 protected: // メンバ関数
 
