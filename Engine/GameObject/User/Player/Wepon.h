@@ -1,10 +1,14 @@
 #pragma once
 #include "../../BaseObject.h"
 #include "../InputManager/InputManager.h"
+#include <optional>
 class Wepon:public BaseObject
 {
 public:
-
+	enum class Behavior {
+		kRoot,
+		kAtack,
+	};
 	/// <summary>
 	/// 初期化関数
 	/// </summary>
@@ -20,13 +24,9 @@ public:
 	/// </summary>
 	void DisplayImGui() override;
 
-public:
-	//追従対象
-	void SetTarget(const WorldTransform* target) { target_ = target; }
-	float GetDistance() { return distance_; }
-	void AddParentCount() { parentCount_++; }
-	void DeleteChain() { isChain_ = false; }
+	void Reset();
 private:
+	
 	// 追従対象のワールド座標
 	const WorldTransform* target_ = nullptr;
 	//追従対象からの距離
@@ -44,15 +44,32 @@ private:
 	float lerpCount_;
 	//鎖がつながっているか
 	bool isChain_;
+	//攻撃待機か
+	bool isAtack_;
+	//	攻撃が終わったか
+	bool isAtackEnd_;
+	//behavior
+	std::optional<Behavior>behaviorRequest_ = std::nullopt;
+	Behavior behavior_ = Behavior::kRoot;
+	bool isBreak_;
 private://メンバ関数
 
 	void Move();
 	void ChainDeleted();
+	void Atack();
 	/// <summary>
 	/// 衝突した瞬間にコールバックされる関数
 	/// </summary>
 	/// <param name="collider">衝突したコライダー</param>
 	void OnCollisionEnter(Collider* collider) override;
-
+public:
+	//追従対象
+	void SetTarget(const WorldTransform* target) { target_ = target; }
+	float GetDistance() { return distance_; }
+	void AddParentCount() { parentCount_++; }
+	void DeleteChain() { isChain_ = false; }
+	Behavior GetBehavior() { return behavior_; }
+	bool GetISBreak() { return isBreak_; }
+	bool GetIsAtackEnd() { return isAtackEnd_; }
 };
 

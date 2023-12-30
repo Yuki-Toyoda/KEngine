@@ -3,41 +3,87 @@
 void Wepon::Init()
 {
 	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Box", "Box.obj");
+	AddColliderSphere("Wepon", &worldPos_, &transform_.scale_.x);
 	distance_ = 5.0f;
 	transform_.translate_.x +=distance_;
 	theta_ = 0.0f;
 	rotateDirection_ = false;
 	worldPos_ = transform_.GetWorldPos();
-	AddColliderSphere("Wepon", &worldPos_,&transform_.scale_.x);
+	
 	isChain_ = true;
+	behavior_ = Behavior::kRoot;
+	isAtack_ = false;
+	parentCount_ = 0;
+	goalDistance_ = distance_;
+	isBreak_ = false;
 }
 
 void Wepon::Update()
 {
-	worldPos_ = transform_.GetWorldPos();
-	if (Input::GetInstance()->PushKey(DIK_LSHIFT)) {
-		if (isMove_) {
-			isMove_ = false;
+	if (Input::GetInstance()->PushKey(DIK_RETURN)) {
+		isBreak_ = true;
+	}
+	if (behaviorRequest_) {
+		behavior_ = behaviorRequest_.value();
+		behaviorRequest_ = std::nullopt;
+	}
+	switch (behavior_) {
+	case Behavior::kAtack:
+		if (!isAtackEnd_) {
+			Atack();
+			if (isChain_) {
+				Move();
+			}
+		}
+		break;
+	case Behavior::kRoot:
+		if (Input::GetInstance()->PushKey(DIK_LSHIFT)) {
+			if (isMove_) {
+				isMove_ = false;
+			}
+			else {
+				isMove_ = true;
+			}
+		}
+		
+		if (isChain_) {
+			Move();
 		}
 		else {
-			isMove_ = true;
+			ChainDeleted();
 		}
+		if (Input::GetInstance()->PushKey(DIK_SPACE)) {
+			isAtack_ = true;
+		}
+		break;
+	default:
+		break;
 	}
-	if (Input::GetInstance()->PushKey(DIK_SPACE)) {
-		isChain_ = false;
-	}
-	if (isChain_) {
-		Move();
-	}
-	else {
-		ChainDeleted();
-	}
+	worldPos_ = transform_.GetWorldPos();
+	
 }
 
 void Wepon::DisplayImGui()
 {
 	transform_.DisplayImGui();
 	ImGui::DragFloat3("worldPos", &worldPos_.x);
+	ImGui::DragFloat("theta", &theta_);
+}
+
+void Wepon::Reset()
+{
+	distance_ = 5.0f;
+	transform_.translate_.x += distance_;
+	theta_ = 0.0f;
+	rotateDirection_ = false;
+	worldPos_ = transform_.GetWorldPos();
+	isChain_ = true;
+	behavior_ = Behavior::kRoot;
+	isAtack_ = false;
+	parentCount_ = 0;
+	goalDistance_ = distance_;
+	isBreak_ = false;
+	isAtackEnd_ = false;
 }
 
 void Wepon::Move()
@@ -50,10 +96,16 @@ void Wepon::Move()
 			rotateDirection_ = true;
 		}
 		if (rotateDirection_) {
+			if(theta_>=(2.0f*3.14159265f)){
+				theta_ = 0.0f;
+			}
 			theta_ += 0.05f;
 			transform_.rotate_.z += 0.05f;
 		}
 		else {
+			if (theta_ <= -(2.0f * 3.14159265f)) {
+				theta_ = 0.0f;
+			}
 			theta_ -= 0.05f;
 			transform_.rotate_.z -= 0.05f;
 		}
@@ -67,6 +119,20 @@ void Wepon::Move()
 		lerpCount_ = 1.0f;
 	}
 	distance_ = Math::Linear(lerpCount_, distance_, goalDistance_);
+	
+	if (isAtack_) {
+		if (rotateDirection_) {
+			if (theta_ >= (1.5f * 3.14159265f)) {
+				behaviorRequest_ = Behavior::kAtack;
+			}
+		}
+		else {
+			if (theta_ <= -(1.5f * 3.14159265f)) {
+				behaviorRequest_ = Behavior::kAtack;
+			}
+		}
+	}
+
 }
 
 void Wepon::ChainDeleted()
@@ -76,6 +142,27 @@ void Wepon::ChainDeleted()
 	   transform_.SetParent(nullptr);
 	}
 	transform_.translate_.y -= 0.3f;
+
+}
+
+void Wepon::Atack()
+{
+	
+	goalDistance_ += 0.1f;
+	if (rotateDirection_) {
+		if (theta_ >= (1.5f * 3.14159265f)&& theta_ <= (1.75f * 3.14159265f)) {
+			//ChainDeleted();
+			//isChain_ = false;
+			isAtackEnd_ = true;
+		}
+	}
+	else {
+		if (theta_ <= -(0.5f * 3.14159265f)&& theta_ >= -(0.75f * 3.14159265f)) {
+			//ChainDeleted();
+			//isChain_ = false;
+			isAtackEnd_ = true;
+		}
+	}
 
 }
 

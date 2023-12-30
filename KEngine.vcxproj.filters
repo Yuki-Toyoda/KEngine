@@ -77,6 +77,8 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\GameObject\User\Chain\Chain.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\Obstacle\Obstacle.cpp" />
+    <ClCompile Include="Engine\GameObject\User\camera\InGameCamera.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Random\RandomEngine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h" />
@@ -169,6 +171,8 @@
     <ClInclude Include="Engine\Utility\Line\Line.h" />
     <ClInclude Include="Engine\GameObject\User\Chain\Chain.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\Obstacle\Obstacle.h" />
+    <ClInclude Include="Engine\GameObject\User\camera\InGameCamera.h" />
+    <ClInclude Include="Engine\GameObject\User\Random\RandomEngine.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Object3D.hlsli" />

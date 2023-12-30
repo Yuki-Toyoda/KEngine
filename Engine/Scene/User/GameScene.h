@@ -18,6 +18,13 @@ public: // メンバ関数
 	void Update() override;
 
 private: // メンバ変数
-	
+	void AtackAfterInit();
+
+private:
+	Player*player_;
+	Wepon* wepon_;
+	std::list<Enemy*>enemies_;
+	Chain* chain_;
+	InGameCamera* camera_;
 };
 
