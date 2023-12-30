@@ -31,6 +31,6 @@ void Chain::OnCollisionEnter(Collider* collider)
 {
 	//障害物と当たったら
 	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagObstacle) {
-		//wepon_->DeleteChain();
+		wepon_->DeleteChain();
 	}
 }

@@ -31,9 +31,8 @@ void Wepon::Update()
 	case Behavior::kAtack:
 		if (!isAtackEnd_) {
 			Atack();
-			if (isChain_) {
-				Move();
-			}
+			Move();
+			
 		}
 		break;
 	case Behavior::kRoot:
@@ -132,7 +131,7 @@ void Wepon::Move()
 			}
 		}
 	}
-
+	
 }
 
 void Wepon::ChainDeleted()
@@ -142,7 +141,9 @@ void Wepon::ChainDeleted()
 	   transform_.SetParent(nullptr);
 	}
 	transform_.translate_.y -= 0.3f;
-
+	if (!isChain_ && transform_.translate_.y <= -20.0f) {
+		isBreak_ = true;
+	}
 }
 
 void Wepon::Atack()
