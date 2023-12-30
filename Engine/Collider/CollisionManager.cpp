@@ -110,7 +110,7 @@ bool CollisionManager::CheckCollisionPair(Collider* colliderA, Collider* collide
 		{
 		case BaseShape::Sphere: // コライダーBが球の場合
 			// 球同士の当たり判定を検証する
-			result = IsCollisionSphere(colliderA->GetColliderShape(), colliderB->GetColliderShape());
+			result = IsCollisionSphereWithOBB(colliderB->GetColliderShape(), colliderA->GetColliderShape());
 			break;
 		case BaseShape::AABB: // コライダーBがAABBの場合
 			
@@ -403,34 +403,43 @@ bool CollisionManager::IsCollisionSphereWithAABB(BaseShape* shapeA, BaseShape* s
 
 bool CollisionManager::IsCollisionSphereWithOBB(BaseShape* shapeA, BaseShape* shapeB)
 {
+	// 球の中心座標取得
 	Vector3 sphereCenter = shapeA->GetCenter();
 	float sphereRadius = shapeA->GetRadius();
 
-	std::vector<Vector3> otientatuons = shapeB->GetOtientatuons();
+	// obbの中心座標取得
 	Vector3 obbCenter = shapeB->GetCenter();
+	// obbのサイズ取得
 	Vector3 obbSize = shapeB->GetSize();
+	// obbの座標軸取得
+	std::vector<Vector3> otientatuons = shapeB->GetOtientatuons();
 
+	Matrix4x4 t = Math::MakeAffineMatrix(obbSize, shapeB->GetRotate(), obbCenter);
+
+	// obbのワールド行列を取得
 	Matrix4x4 obbWorldMatrix = {
-		otientatuons[0].x, otientatuons[1].x, otientatuons[2].x, 0,
-		otientatuons[0].y, otientatuons[1].y, otientatuons[2].y, 0,
-		otientatuons[0].z, otientatuons[1].z, otientatuons[2].z, 0,
-		obbCenter.x, obbCenter.y, obbCenter.z, 1 };
+		otientatuons[0].x, otientatuons[0].y, otientatuons[0].z, 0.0f,
+		otientatuons[1].x, otientatuons[1].y, otientatuons[1].z, 0.0f,
+		otientatuons[2].x, otientatuons[2].y, otientatuons[2].z, 0.0f,
+		t.m[3][0], t.m[3][1], t.m[3][2], 1.0f
+	};
 
-	Matrix4x4 obbWorldMatrixInverse = Math::Inverse(obbWorldMatrix);
+	// 逆行列を求める
+	Matrix4x4 invObbWorldMatrix = Math::Inverse(obbWorldMatrix);
 
-	Vector3 centerInOBBLocalSpace = Math::Transform(sphereCenter, obbWorldMatrixInverse);
+	// obbのローカル座標を求める
+	Vector3 centerInOBBLocalSpace = Math::Transform(sphereCenter, invObbWorldMatrix);
 
-	Vector3 aabbTranslate = Vector3(-obbSize.x, -obbSize.y, -obbSize.z);
-	Vector3 aabbSize = Vector3(obbSize.x, obbSize.y, obbSize.z);
+	// aabbのローカル座標
+	//Vector3 aabbMin = Vector3(-obbSize.x, -obbSize.y, -obbSize.z);
+	Vector3 aabbCenter = Vector3(0.0f, 0.0f, 0.0f);
+	AABB aabbLocal;
+	aabbLocal.Init(&aabbCenter, &obbSize);
 
-	AABB aabbOBBLocal;
-	aabbOBBLocal.Init(
-		&aabbTranslate, &aabbSize);
+	// 球のローカル座標
+	Sphere sphereLocal;
+	sphereLocal.Init(&centerInOBBLocalSpace, &sphereRadius);
 
-
-	Sphere sphereOBBLocal;
-	sphereOBBLocal.Init(&centerInOBBLocalSpace, &sphereRadius);
-
-	// ローカル空間で衝突
-	return IsCollisionSphereWithAABB(&sphereOBBLocal, &aabbOBBLocal);
+	// ローカル空間で衝突しているか確認
+	return IsCollisionSphereWithAABB(&sphereLocal, &aabbLocal);
 }

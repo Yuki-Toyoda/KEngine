@@ -60,6 +60,11 @@ public: // メンバ関数
 		Vector3 o2 = { rMat.m[1][0], rMat.m[1][1], rMat.m[1][2] };
 		Vector3 o3 = { rMat.m[2][0], rMat.m[2][1], rMat.m[2][2] };
 
+		// 各列の正規化を行う
+		o1 = Math::Normalize(o1);
+		o2 = Math::Normalize(o2);
+		o3 = Math::Normalize(o3);
+
 		// 回転軸格納用
 		std::vector<Vector3> o;
 		o.push_back(o1);
@@ -75,6 +80,12 @@ public: // メンバ関数
 	/// </summary>
 	/// <returns></returns>
 	const Vector3 GetSize() override { return *scale_; }
+
+	/// <summary>
+	/// 回転角ゲッター
+	/// </summary>
+	/// <returns>回転角</returns>
+	const Vector3 GetRotate() { return *rotate_; }
 
 private: // メンバ変数
 

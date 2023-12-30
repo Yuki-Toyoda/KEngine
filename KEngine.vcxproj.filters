@@ -79,6 +79,9 @@
     <ClCompile Include="Engine\GameObject\User\Enemy\Obstacle\Obstacle.cpp" />
     <ClCompile Include="Engine\GameObject\User\camera\InGameCamera.cpp" />
     <ClCompile Include="Engine\GameObject\User\Random\RandomEngine.cpp" />
+    <ClCompile Include="Engine\GameObject\Samples\SampleSphere\SampleSphere.cpp">
+      <Filter>GameObject\Samples\Sphere</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h" />
@@ -173,6 +176,154 @@
     <ClInclude Include="Engine\GameObject\User\Enemy\Obstacle\Obstacle.h" />
     <ClInclude Include="Engine\GameObject\User\camera\InGameCamera.h" />
     <ClInclude Include="Engine\GameObject\User\Random\RandomEngine.h" />
+    <ClInclude Include="Engine\GameObject\Samples\SampleSphere\SampleSphere.h">
+      <Filter>GameObject\Samples\Sphere</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Externals\imgui\.editorconfig">
+      <Filter>ImGui</Filter>
+    </None>
+    <None Include="Externals\imgui\.gitattributes">
+      <Filter>ImGui</Filter>
+    </None>
+    <None Include="Externals\imgui\.gitignore">
+      <Filter>ImGui</Filter>
+    </None>
+    <None Include="Engine\Resource\Shader\Object3D.hlsli">
+      <Filter>Resource\Shader</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Audio">
+      <UniqueIdentifier>{cdc28735-ee58-4706-8c55-9d7742cc5bd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Base">
+      <UniqueIdentifier>{d34b0994-e5d0-4d38-8b5f-dd920dcb028c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Debug">
+      <UniqueIdentifier>{a29e6f5f-3afe-4782-9daa-52cd64fb7cf0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GlobalVariables">
+      <UniqueIdentifier>{0e34d352-1728-40ee-a487-bf65837d942a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImGui">
+      <UniqueIdentifier>{13a20c8e-a633-49aa-adb7-a30fe43c4191}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{2e94133f-b53e-4903-b4ae-b109bdd76131}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{f2cd2653-c2e1-45f0-b0b9-481baba94153}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource">
+      <UniqueIdentifier>{b2c8cb73-410f-4267-8a42-247c59b88259}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader">
+      <UniqueIdentifier>{a755d675-5c8f-4292-994d-c54898f118d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Texture">
+      <UniqueIdentifier>{114b41e8-1d06-4ce6-b12f-46be87dd982c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Base\DescriptorHeaps">
+      <UniqueIdentifier>{f6691631-5f63-4089-be0c-897e9b375f7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Base\Device">
+      <UniqueIdentifier>{0dafb9af-fe60-4b81-a141-9b7f32c2f190}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Base\PSO">
+      <UniqueIdentifier>{66b5ba43-5908-4908-85e4-3696756ae501}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Primitive">
+      <UniqueIdentifier>{5fc9c809-8734-4f5e-8651-85bdbe200e78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Base\Command">
+      <UniqueIdentifier>{827fb3a2-eba9-4bf6-aee3-bca0159d7145}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Material">
+      <UniqueIdentifier>{c3f5e39c-9e6c-4ace-9726-921e54810c5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Primitive\3d">
+      <UniqueIdentifier>{5da4eff7-609f-4695-88a1-eed539634028}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject">
+      <UniqueIdentifier>{aa622da1-e859-4aeb-956f-1b00f16f033f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{6d872bc3-86ed-45ab-8f90-5be9ba0d9f05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Core">
+      <UniqueIdentifier>{d4d5bd11-e154-4a9a-b4ae-2044cd310347}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\User">
+      <UniqueIdentifier>{19111d30-375b-42f5-892b-22a7a66dd627}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Samples">
+      <UniqueIdentifier>{89284fb6-f950-449c-974e-bdfdbe7ea9ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Samples\Box">
+      <UniqueIdentifier>{106e3ed8-07e4-4837-88ba-8cb84b198b23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Samples\SkyDome">
+      <UniqueIdentifier>{8065e286-0718-421c-ba52-72d1062819ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Collider">
+      <UniqueIdentifier>{3d74ac5f-3244-4942-8648-980e216271a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Collider\Shape">
+      <UniqueIdentifier>{90624c1b-4e9d-4395-a179-30f1589e163f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Samples\Player">
+      <UniqueIdentifier>{d84aac2d-9489-49be-88ec-37601d17a574}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Samples\ThirdPersonCamera">
+      <UniqueIdentifier>{784d2395-7411-4e99-b57a-9e0c77c24159}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Samples\Weapon">
+      <UniqueIdentifier>{cb785a87-d86d-4783-8dd2-88fede289ea2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Samples\Floor">
+      <UniqueIdentifier>{19b08627-6d9c-4f7d-8046-cd5783ffc7ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Samples\Enemy">
+      <UniqueIdentifier>{283a43bf-5d01-4128-8024-64fd4fa2aac4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{c507d589-1a82-40b2-ac1c-f171606562f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\Timer">
+      <UniqueIdentifier>{05111ea3-bc1b-452c-94f8-cbb5372fffa9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\Lerp">
+      <UniqueIdentifier>{4b65be02-5225-4357-ad00-042292f13c38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\Easing">
+      <UniqueIdentifier>{e8356644-0f27-4d8e-8218-41dd7d1d5dc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Primitive\2d">
+      <UniqueIdentifier>{ed71e37f-4dd0-470a-a23c-c86e4fe2e5da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sprite">
+      <UniqueIdentifier>{89930de6-5713-4b33-a25e-c80afe7ab47c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Samples\Sprite">
+      <UniqueIdentifier>{cfbc2871-68a2-4a09-a052-431c3e871e78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Particle">
+      <UniqueIdentifier>{35ed7eb1-48ce-4485-9d6f-e794d8493628}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\User">
+      <UniqueIdentifier>{e4d282eb-c22f-46f5-a5d1-e5fa5125b0e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Particle\user">
+      <UniqueIdentifier>{2347873e-0749-4013-b89a-e0b69857473d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\Animation">
+      <UniqueIdentifier>{e0beeaf0-3b5a-451f-96a4-9aaedb7e01b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Samples\Sphere">
+      <UniqueIdentifier>{e2052d27-98b3-431d-8362-043ed86199a5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Object3D.hlsli" />

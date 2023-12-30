@@ -10,3 +10,4 @@
 #include "Samples/SampleWeapon/SampleWeapon.h"
 #include "Samples/SampleFloor/SampleFloor.h"
 #include "Samples/SampleEnemy/SampleEnemy.h"
+#include "Samples/SampleSphere/SampleSphere.h"
