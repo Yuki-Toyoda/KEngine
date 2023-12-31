@@ -52,6 +52,8 @@ private:
 	std::optional<Behavior>behaviorRequest_ = std::nullopt;
 	Behavior behavior_ = Behavior::kRoot;
 	bool isBreak_;
+	float kMoveRotateForce_=0.05f;
+	float kAtackRotateForce_=0.2f;
 private://メンバ関数
 
 	void Move();

@@ -31,7 +31,7 @@ void Wepon::Update()
 	case Behavior::kAtack:
 		if (!isAtackEnd_) {
 			Atack();
-			Move();
+			//Move();
 			
 		}
 		break;
@@ -73,6 +73,7 @@ void Wepon::Reset()
 {
 	distance_ = 5.0f;
 	transform_.translate_.x += distance_;
+	transform_.rotate_ = { 0.0f,0.0f,0.0f };
 	theta_ = 0.0f;
 	rotateDirection_ = false;
 	worldPos_ = transform_.GetWorldPos();
@@ -98,15 +99,15 @@ void Wepon::Move()
 			if(theta_>=(2.0f*3.14159265f)){
 				theta_ = 0.0f;
 			}
-			theta_ += 0.05f;
-			transform_.rotate_.z += 0.05f;
+			theta_ += kMoveRotateForce_;
+			transform_.rotate_.z += kMoveRotateForce_;
 		}
 		else {
 			if (theta_ <= -(2.0f * 3.14159265f)) {
 				theta_ = 0.0f;
 			}
-			theta_ -= 0.05f;
-			transform_.rotate_.z -= 0.05f;
+			theta_ -= kMoveRotateForce_;
+			transform_.rotate_.z -= kMoveRotateForce_;
 		}
 	}
 	transform_.translate_.x = std::cosf(theta_) * (distance_+transform_.scale_.x);
@@ -121,7 +122,7 @@ void Wepon::Move()
 	
 	if (isAtack_) {
 		if (rotateDirection_) {
-			if (theta_ >= (1.5f * 3.14159265f)) {
+			if (theta_ >= (0.5f * 3.14159265f)) {
 				behaviorRequest_ = Behavior::kAtack;
 			}
 		}
@@ -149,7 +150,7 @@ void Wepon::ChainDeleted()
 void Wepon::Atack()
 {
 	
-	goalDistance_ += 0.1f;
+	goalDistance_ += 0.3f;
 	if (rotateDirection_) {
 		if (theta_ >= (1.5f * 3.14159265f)&& theta_ <= (1.75f * 3.14159265f)) {
 			//ChainDeleted();
@@ -164,7 +165,22 @@ void Wepon::Atack()
 			isAtackEnd_ = true;
 		}
 	}
-
+	if (rotateDirection_) {
+		if (theta_ >= (2.0f * 3.14159265f)) {
+			theta_ = 0.0f;
+		}
+		theta_ += kAtackRotateForce_;
+		transform_.rotate_.z += kAtackRotateForce_;
+	}
+	else {
+		if (theta_ <= -(2.0f * 3.14159265f)) {
+			theta_ = 0.0f;
+		}
+		theta_ -= kAtackRotateForce_;
+		transform_.rotate_.z -= kAtackRotateForce_;
+	}
+	transform_.translate_.x = std::cosf(theta_) * (distance_ + transform_.scale_.x);
+	transform_.translate_.y = std::sinf(theta_) * (distance_ + transform_.scale_.y);
 }
 
 void Wepon::OnCollisionEnter(Collider* collider)
