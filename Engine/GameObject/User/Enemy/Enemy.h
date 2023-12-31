@@ -1,6 +1,7 @@
 #pragma once
 #include "../../BaseObject.h"
 #include"../Player/Wepon.h"
+#include "../../../Audio/Audio.h"
 class Enemy:public BaseObject
 {
 public:
@@ -33,6 +34,7 @@ private:
 	
 
 private:
+	Audio* audio_;
 	// 追従対象のワールド座標
  Wepon* wepon_ = nullptr;
  //初期化時の座標
@@ -40,6 +42,7 @@ private:
  Vector3 worldPos_;
  bool isParent_;
  Vector3 velocity_;
+ uint32_t soundHandleStick_;
 };
 
 

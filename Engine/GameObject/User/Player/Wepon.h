@@ -2,6 +2,7 @@
 #include "../../BaseObject.h"
 #include "../InputManager/InputManager.h"
 #include <optional>
+#include "../../../Audio/Audio.h"
 class Wepon:public BaseObject
 {
 public:
@@ -26,7 +27,7 @@ public:
 
 	void Reset();
 private:
-	
+	Audio* audio_;
 	// 追従対象のワールド座標
 	const WorldTransform* target_ = nullptr;
 	//追従対象からの距離
@@ -54,6 +55,8 @@ private:
 	bool isBreak_;
 	float kMoveRotateForce_=0.05f;
 	float kAtackRotateForce_=0.2f;
+	uint32_t soundHandleslam_;
+	uint32_t soundHandleDamage_;
 private://メンバ関数
 
 	void Move();

@@ -2,12 +2,14 @@
 
 void Enemy::Init()
 {
+	audio_ = Audio::GetInstance();
 	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Box", "Box.obj");
 	AddColliderSphere("Enemy", &worldPos_, &transform_.scale_.x);
 	transform_.scale_ = { 0.2f,0.2f,0.2f };
 	worldPos_ = transform_.GetWorldPos();
 	
 	isParent_ = false;
+	soundHandleStick_ = audio_->LoadWave("stick.wav");
 }
 
 void Enemy::Update()
@@ -62,6 +64,7 @@ void Enemy::OnCollisionEnter(Collider* collider)
 			transform_.SetParent(&wepon_->transform_);
 			//ペアレントしてる数を加算
 			wepon_->AddParentCount();
+			audio_->PlayWave(soundHandleStick_);
 		}
 	}
 	//鎖とぶつかった

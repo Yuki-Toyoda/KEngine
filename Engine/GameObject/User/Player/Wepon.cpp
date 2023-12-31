@@ -2,6 +2,9 @@
 #include "../../GameObjectManager.h"
 void Wepon::Init()
 {
+	audio_ = Audio::GetInstance();
+	soundHandleslam_ = audio_->LoadWave("slam.wav");
+	soundHandleDamage_= audio_->LoadWave("damege.wav");
 	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Box", "Box.obj");
 	AddColliderSphere("Wepon", &worldPos_, &transform_.scale_.x);
 	distance_ = 5.0f;
@@ -120,18 +123,29 @@ void Wepon::Move()
 	}
 	distance_ = Math::Linear(lerpCount_, distance_, goalDistance_);
 	
-	if (isAtack_) {
+	
 		if (rotateDirection_) {
 			if (theta_ >= (0.5f * 3.14159265f)) {
-				behaviorRequest_ = Behavior::kAtack;
+				if (theta_ <= (0.51f * 3.14159265f)) {
+					audio_->PlayWave(soundHandleslam_);
+					
+				}
+				if (isAtack_) {
+					behaviorRequest_ = Behavior::kAtack;
+				}
 			}
 		}
 		else {
-			if (theta_ <= -(1.5f * 3.14159265f)) {
-				behaviorRequest_ = Behavior::kAtack;
+			if (theta_ <= -(1.49f * 3.14159265f)) {
+				if (theta_ >= -(1.5f * 3.14159265f)) {
+					audio_->PlayWave(soundHandleslam_);
+				}
+				if (isAtack_) {
+					behaviorRequest_ = Behavior::kAtack;
+				}
 			}
 		}
-	}
+	
 	
 }
 
@@ -156,6 +170,7 @@ void Wepon::Atack()
 			//ChainDeleted();
 			//isChain_ = false;
 			isAtackEnd_ = true;
+			audio_->PlayWave(soundHandleDamage_);
 		}
 	}
 	else {
@@ -163,6 +178,7 @@ void Wepon::Atack()
 			//ChainDeleted();
 			//isChain_ = false;
 			isAtackEnd_ = true;
+			audio_->PlayWave(soundHandleDamage_);
 		}
 	}
 	if (rotateDirection_) {
