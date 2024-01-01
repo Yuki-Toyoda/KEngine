@@ -69,6 +69,16 @@ public: // メンバ変数
 	// ImGui用変数
 	int imGuiSelectKey_; // 選択中キー
 
+	// ループトリガー
+	bool isLoop_ = false;
+
+	// 全てのキーの終了状態トリガー
+	bool isAllKeyEnd_ = false;
+	// アニメーション終了トリガー
+	bool isEnd_ = false;
+
+	bool isDestruction_ = false;
+
 };
 
 template<typename T>
@@ -88,7 +98,7 @@ inline void Animation::AddAnimationKeys(const std::string keyName, T* value)
 
 	// 同名キー配列が見つからなかった場合、キーの追加処理を行う
 	AnimationKeys newKeys = AnimationKeys<T>(name_, keyName, value); // 新しいキーの生成
-	animationKeys_.push_back(newKeys);								    // 配列に追加
+	animationKeys_.push_back(newKeys);								 // 配列に追加
 }
 
 template<typename T>

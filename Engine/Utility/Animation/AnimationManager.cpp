@@ -8,9 +8,17 @@ void AnimationManager::Init()
 
 void AnimationManager::Update()
 {
+	// 終了したアニメーションを削除
+	animations_.remove_if([](std::unique_ptr<Animation>& animation) {
+		if (animation->isDestruction_) {
+			return true;
+		}
+		return false;
+	});
+
 	// 全てのアニメーションを更新する
-	for (Animation& a : animations_) {
-		a.Update();
+	for (std::unique_ptr<Animation>& a : animations_) {
+		a->Update();
 	}
 }
 
@@ -36,7 +44,7 @@ void AnimationManager::DisplayImGui()
 				}
 				if (ImGui::MenuItem("SaveALL")) {
 					// 全てのアニメーションの保存を行う
-					for (Animation& a : animations_) {
+					for (Animation& a : parameters_) {
 						a.SaveAnimation();
 					}
 				}
@@ -95,4 +103,22 @@ void AnimationManager::CreateAnimationParameter(const std::string name)
 
 	// 配列に要素を追加
 	parameters_.push_back(newAnim);
+}
+
+Animation* AnimationManager::CreateAnimation(const std::string& name)
+{
+	// 新しいアニメーションを生成
+	std::unique_ptr<Animation> newAnimation = std::make_unique<Animation>();
+	// 生成したアニメーションの初期化
+	newAnimation->Init(name);
+
+	// 返還用インスタンス生成
+	Animation* returnAnimation = newAnimation.get();
+
+	// 生成したアニメーションを配列に追加
+	animations_.push_back(std::move(newAnimation));
+
+	// 生成したアニメーションを返す
+	return returnAnimation;
+
 }

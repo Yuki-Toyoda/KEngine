@@ -180,6 +180,10 @@ inline void AnimationKeys<T>::Update()
 				// 次のキーへ
 				NextKey();
 			}
+			else {
+				// 終了トリガーtrue
+				isEnd_ = true;
+			}
 		}
 	}
 }

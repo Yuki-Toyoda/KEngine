@@ -11,10 +11,49 @@ void Animation::Init(const std::string& name)
 
 void Animation::Update()
 {
+	// 一度全てのキーは終了している状態に
+	isAllKeyEnd_ = true;
+
 	// 配列内の全てのキーを更新する
 	for (auto& keys : animationKeys_) {
-		std::visit([](auto& key) { key.Update(); }, keys);
+		std::visit([](auto& key) { 
+			// キーを更新
+			key.Update(); 
+		}, keys);
 	}
+
+	// 配列内の全てのキーが終了しているかを確認
+	for (auto& keys : animationKeys_) {
+		std::visit([&](auto& key) {
+			if (!key.isEnd_) {
+				// この時点で全てのキーは終了していない
+				isAllKeyEnd_ = false;
+			}
+		}, keys);
+		
+		// 全てのキーが終了していない時点でループを抜ける
+		if (!isAllKeyEnd_) {
+			break;
+		}
+	}
+
+	// 全てのキーが終了しているなら
+	if (isAllKeyEnd_) {
+		// ループするのであれば
+		if (isLoop_) {
+			for (auto& keys : animationKeys_) {
+				std::visit([](auto& key) {
+					// 最初のフレームからキーを再生
+					key.Play(0);
+				}, keys);
+			}
+		}
+		else {
+			// アニメーションは終了している
+			isEnd_ = false;
+		}
+	}
+
 }
 
 void Animation::DisplayImGui()
