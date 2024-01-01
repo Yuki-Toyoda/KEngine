@@ -1,4 +1,7 @@
 #include "Player.h"
+#include "../LockOn/LockOn.h"
+#include "../FollowCamera/FollowCamera.h"
+#include "../Enemy/Enemy.h"
 
 void Player::Init()
 {
@@ -40,6 +43,24 @@ void Player::Update()
 
 	// 現在の行動状態の更新を行う
 	state_->Update();
+
+	if (followCamera_ != nullptr) {
+		if (!followCamera_->GetEnableZForcus()) {
+			followCamera_->SetTargetAngle(followCamera_->transform_.rotate_.y);
+		}
+
+		if (followCamera_->GetLockOn()->GetIsLockOn()) {
+			// ロックオン対象の座標
+			Vector3 targetPos = followCamera_->GetLockOn()->target_->transform_.translate_;
+			// 追従対象からロックオン対象への差分ベクトル
+			Vector3 sub = targetPos - transform_.translate_;
+			// 方向ベクトルを元にプレイヤーがいる角度を求める
+			targetAngle_ = std::atan2(sub.x, sub.z);
+
+			// 身体を回転させる
+			transform_.rotate_.y = Math::LerpShortAngle(transform_.rotate_.y, targetAngle_, 0.1f);
+		}
+	}
 }
 
 void Player::DisplayImGui()

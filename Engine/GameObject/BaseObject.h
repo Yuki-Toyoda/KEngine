@@ -97,6 +97,12 @@ public: // アクセッサ等
 	bool GetIsDestroy() { return isDestroy_; }
 
 	/// <summary>
+	/// 破壊トリガー状態のゲッター
+	/// </summary>
+	/// <returns>破壊トリガー状態</returns>
+	const bool GetIsDestroy() const { return isDestroy_; }
+
+	/// <summary>
 	/// オブジェクト名セッター
 	/// </summary>
 	/// <param name="name">設定するオブジェクト名</param>

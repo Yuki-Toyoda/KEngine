@@ -1,4 +1,6 @@
 #include "FollowCamera.h"
+#include "../LockOn/LockOn.h"
+#include "../Enemy/Enemy.h"
 
 void FollowCamera::Init()
 {
@@ -20,23 +22,52 @@ void FollowCamera::Update()
 	if (targetAngle_ >= (float)std::numbers::pi * 2.0f || (float)-std::numbers::pi * 2.0f >= targetAngle_)
 		targetAngle_ = 0.0f;*/
 
-	if (joyState_.Gamepad.bLeftTrigger >= 10.0f) {
-		// 目標角度をプレイヤーの真後ろに
-		targetAngle_ = target_->rotate_.y;
+	if (joyState_.Gamepad.bLeftTrigger >= 35.0f) {
+		// ロックオンを有効
+		if (!lockOn_->EnableLockOn()) {
+			// 目標角度をプレイヤーの真後ろに
+			targetAngle_ = target_->rotate_.y;
+			// 角度補正速度を設定
+			correctionSpeed_ = zForcusCorrectionSpeed_;
+		}
+		else {
+			// ロックオン対象の座標
+			Vector3 targetPos = lockOn_->target_->transform_.translate_;
+			// 追従対象からロックオン対象への差分ベクトル
+			Vector3 sub = targetPos - target_->translate_;
+			//sub = Math::Normalize(sub);
+
+			// 方向ベクトルを元にプレイヤーがいる角度を求める
+			//targetAngle_ = Math::Angle({ 0.0f, 0.0f, 1.0f }, sub);
+			targetAngle_ = std::atan2(sub.x, sub.z);
+
+			/*if (targetAngle_ >= (float)std::numbers::pi * 2.0f) {
+				targetAngle_ -= (float)std::numbers::pi * 2.0f;
+			}
+			if (targetAngle_ <= -(float)std::numbers::pi * 2.0f) {
+				targetAngle_ += (float)std::numbers::pi * 2.0f;
+			}*/
+
+			// 角度補正速度を設定
+			correctionSpeed_ = zEnemyForcusCorrectionSpeed_;
+		}
+
 		// Z注目を有効に
 		enableZForcus_ = true;
-		// 角度補正速度を設定
-		correctionSpeed_ = zForcusCorrectionSpeed_;
 	}
 	else {
 		// Z注目をしていないに
 		enableZForcus_ = false;
 		// 角度補正速度を設定
 		correctionSpeed_ = normalCorrectionSpeed_;
+
+		// ロックオンを無効
+		lockOn_->DisableLockOn();
 	}
 
 	// 回転させる
 	transform_.rotate_.y = Math::LerpShortAngle(transform_.rotate_.y, targetAngle_, correctionSpeed_);
+	
 
 	// 追従対象の更新
 	UpdateTarget();
@@ -46,6 +77,9 @@ void FollowCamera::DisplayImGui()
 {
 	// 基底クラスのImGuiを表示
 	Camera::DisplayImGui();
+
+	// 目標角度表示
+	ImGui::DragFloat("TargetAngle", &targetAngle_);
 }
 
 void FollowCamera::UpdateTarget()

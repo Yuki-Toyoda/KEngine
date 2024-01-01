@@ -88,6 +88,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\GameObject\User\Enemy\Enemy.cpp" />
     <ClCompile Include="Engine\Audio\Audio.cpp" />
     <ClCompile Include="Engine\Base\Command\BaseCommand.cpp" />
     <ClCompile Include="Engine\Base\Command\CommandManager.cpp" />
@@ -166,11 +167,13 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Externals\imgui\imgui_tables.cpp" />
     <ClCompile Include="Externals\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Engine\Utility\Line\Line.cpp" />
+    <ClCompile Include="Engine\GameObject\User\LockOn\LockOn.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\GameObject\Samples\SampleSphere\SampleSphere.cpp" />
     <ClCompile Include="Engine\GameObject\User\Player\Player.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\GameObject\User\Enemy\Enemy.h" />
     <ClInclude Include="Engine\Audio\Audio.h" />
     <ClInclude Include="Engine\Base\Command\BaseCommand.h" />
     <ClInclude Include="Engine\Base\Command\CommandManager.h" />
@@ -272,6 +275,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Utility\Line\Line.h" />
     <ClInclude Include="Engine\GameObject\Samples\SampleSphere\SampleSphere.h" />
     <ClInclude Include="Engine\GameObject\User\Player\Player.h" />
+    <ClInclude Include="Engine\GameObject\User\LockOn\LockOn.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Object3D.hlsli">

@@ -14,6 +14,7 @@ void Floor::Init()
 
 void Floor::Update()
 {
+
 }
 
 void Floor::DisplayImGui()

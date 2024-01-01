@@ -12,16 +12,30 @@ void GameScene::Init(){
 	Player* player = nullptr;
 	player = gameObjectManager_->CreateInstance<Player>("Player", BaseObject::TagPlayer);
 
+	// 追従カメラ生成
 	FollowCamera* camera = nullptr;
 	camera = gameObjectManager_->CreateInstance<FollowCamera>("MainCamera", BaseObject::TagCamera);
 	camera->SetTarget(&player->transform_);
 	camera->UseThisCamera();
 	player->followCamera_ = camera;
 
+	// 床生成
 	Floor* floor = nullptr;
 	floor = gameObjectManager_->CreateInstance<Floor>("Floor", BaseObject::TagFloor);
 	floor->transform_.scale_ = { 100.0f, 0.35f, 100.0f };
 	floor->transform_.translate_.y = -0.35f;
+
+	// 敵生成
+	Enemy* enemy = nullptr;
+	enemy = gameObjectManager_->CreateInstance<Enemy>("Enemy", BaseObject::TagEnemy);
+	enemy->transform_.translate_ = { 0.0f, 3.0f, 10.0f };
+
+	// ロックオンクラス生成
+	LockOn* lockOn = nullptr;
+	lockOn = gameObjectManager_->CreateInstance<LockOn>("LockOn", BaseObject::TagPlayer);
+	lockOn->SetCamera(camera);
+	camera->SetLockOn(lockOn);
+	player->lockOn_ = lockOn;
 }
 
 void GameScene::Update()

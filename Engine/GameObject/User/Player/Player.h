@@ -5,6 +5,8 @@
 
 // クラスの前方宣言
 class FollowCamera;
+class LockOn;
+class Line;
 
 /// <summary>
 /// プレイヤー
@@ -46,6 +48,12 @@ public: // パブリックなメンバ変数
 	// 追従カメラ格納用
 	FollowCamera* followCamera_ = nullptr;
 
+	// ロックオンクラス
+	LockOn* lockOn_ = nullptr;
+
+	// 追従対象の目標角度
+	float targetAngle_ = 0.0f;
+
 private: // メンバ変数
 
 	// 身体のトランスフォーム
@@ -60,5 +68,7 @@ private: // メンバ変数
 	// 行動状態格納変数
 	std::unique_ptr<IState> state_;
 
-};
+	// 攻撃判定用線
+	std::unique_ptr<Line> AttackLine_;
 
+};

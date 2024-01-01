@@ -218,7 +218,6 @@
     <ClCompile Include="Engine\Base\Command\SpriteCommand.cpp">
       <Filter>Base\Command</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Utility\Line\Line.cpp" />
     <ClCompile Include="Engine\GameObject\Samples\SampleSphere\SampleSphere.cpp">
       <Filter>GameObject\Samples\Sphere</Filter>
     </ClCompile>
@@ -228,8 +227,21 @@
     <ClCompile Include="Engine\GameObject\User\Player\State\Root.cpp">
       <Filter>GameObject\User\Player\State</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\GameObject\User\FollowCamera\FollowCamera.cpp" />
-    <ClCompile Include="Engine\GameObject\User\Floor\Floor.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Floor\Floor.cpp">
+      <Filter>GameObject\User\Floor</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\User\FollowCamera\FollowCamera.cpp">
+      <Filter>GameObject\User\FollowCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\User\Enemy\Enemy.cpp">
+      <Filter>GameObject\User\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Utility\Line\Line.cpp">
+      <Filter>Utility\Line</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\User\LockOn\LockOn.cpp">
+      <Filter>GameObject\User\LockOn</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -481,7 +493,6 @@
     <ClInclude Include="Engine\Base\Command\SpriteCommand.h">
       <Filter>Base\Command</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Utility\Line\Line.h" />
     <ClInclude Include="Engine\GameObject\Samples\SampleSphere\SampleSphere.h">
       <Filter>GameObject\Samples\Sphere</Filter>
     </ClInclude>
@@ -497,8 +508,21 @@
     <ClInclude Include="Engine\GameObject\User\Player\State\IState.h">
       <Filter>GameObject\User\Player\State</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\GameObject\User\FollowCamera\FollowCamera.h" />
-    <ClInclude Include="Engine\GameObject\User\Floor\Floor.h" />
+    <ClInclude Include="Engine\GameObject\User\Floor\Floor.h">
+      <Filter>GameObject\User\Floor</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\User\FollowCamera\FollowCamera.h">
+      <Filter>GameObject\User\FollowCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\User\Enemy\Enemy.h">
+      <Filter>GameObject\User\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Utility\Line\Line.h">
+      <Filter>Utility\Line</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\User\LockOn\LockOn.h">
+      <Filter>GameObject\User\LockOn</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -649,6 +673,21 @@
     </Filter>
     <Filter Include="GameObject\User\Player\State">
       <UniqueIdentifier>{c55acdda-0e12-447a-a0b5-35f8ac20d855}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\User\Floor">
+      <UniqueIdentifier>{76981130-ad59-4ba3-a8af-f25c3db99f43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\User\FollowCamera">
+      <UniqueIdentifier>{c328e627-d767-4560-8fd1-521e56802d5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\User\Enemy">
+      <UniqueIdentifier>{47e65cae-7cd6-4ee9-9b78-45fc4264d132}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\Line">
+      <UniqueIdentifier>{19af9528-1eb7-4597-8d66-94769ceaf9a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\User\LockOn">
+      <UniqueIdentifier>{6d8f812c-b65e-4e80-ac82-a06477ca058d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

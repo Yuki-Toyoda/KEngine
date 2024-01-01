@@ -1,5 +1,9 @@
 #pragma once
 #include "../../Core/Camera.h"
+#include "../../../Utility/KLib.h"
+
+// クラスの前方宣言
+class LockOn;
 
 /// <summary>
 /// 追従カメラ
@@ -29,6 +33,17 @@ public: // メンバ関数
 	void UpdateTarget();
 
 public: // アクセッサ等
+
+	/// <summary>
+	/// ロックオンクラスセッター
+	/// </summary>
+	/// <param name="lockOn">ロックオンクラス</param>
+	void SetLockOn(LockOn* lockOn) { lockOn_ = lockOn; }
+	/// <summary>
+	/// ロックオンクラス
+	/// </summary>
+	/// <returns>ロックオン</returns>
+	LockOn* GetLockOn() { return lockOn_; }
 
 	/// <summary>
 	/// 追従対象セッター
@@ -64,6 +79,9 @@ private: // プライベートなメンバ関数
 
 private: // メンバ変数
 
+	// ロックオンクラス
+	LockOn* lockOn_ = nullptr;
+
 	// コントローラー入力
 	XINPUT_STATE joyState_; // 現在フレーム用
 	XINPUT_STATE preJoyState_; // 前フレーム用
@@ -80,6 +98,8 @@ private: // メンバ変数
 	const float normalCorrectionSpeed_ = 0.005f;
 	// Z注目時のカメラ角度補正速度
 	const float zForcusCorrectionSpeed_ = 0.25f;
+	// Z注目で敵をロックオンしたときのカメラ角度補正速度
+	const float zEnemyForcusCorrectionSpeed_ = 0.35f;
 
 	// 追従対象の残像座標
 	Vector3 interTarget_ = {};

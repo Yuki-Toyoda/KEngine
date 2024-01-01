@@ -140,6 +140,29 @@ public: // アクセッサ等
 	}
 
 	/// <summary>
+	/// 指定した型のゲームオブジェクトを一括取得する関数
+	/// </summary>
+	/// <typeparam name="SelectObject">取得するオブジェクトの型</typeparam>
+	/// <returns>オブジェクト達(list)</returns>
+	template<IsBaseObject SelectObject>
+	inline std::list<SelectObject*> GetGameObjectList() {
+		// 返還用
+		std::list<SelectObject*> result;
+
+		// 全オブジェクトから同名のオブジェクトがないか探す
+		for (std::unique_ptr<BaseObject>& object : objects_) {
+			// そのオブジェクトを選択型に返還
+			SelectObject* o = dynamic_cast<SelectObject*>(object.get());
+			// 結果がnullptr以外だったらそれを配列に追加
+			if (o != nullptr)
+				result.push_back(o);
+		}
+
+		// 返還するオブジェクトがなかった場合nullptrを返す
+		return result;
+	}
+
+	/// <summary>
 	/// 現在使用中のカメラを取得する関数
 	/// </summary>
 	/// <returns>現在使用中のカメラ</returns>

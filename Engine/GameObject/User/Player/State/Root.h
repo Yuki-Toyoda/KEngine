@@ -26,7 +26,7 @@ public: // メンバ関数
 private: // メンバ変数
 
 	// スティックのデッドゾーン
-	const float deadZone_ = 0.7f;
+	const float deadZone_ = 1.0f;
 
 	// 移動速度
 	const float kMaxSpeed_ = 0.15f;
