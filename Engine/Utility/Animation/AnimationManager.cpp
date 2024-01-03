@@ -73,7 +73,7 @@ void AnimationManager::DisplayImGui()
 	// パラメーター配列に要素がある場合
 	if (parameters_.size() > 0) {
 		// 選択中のアニメーションのImGuiを表示
-		parameters_[imGuiSelectAnimation_].DisplayImGui();
+		parameters_[imGuiSelectAnimation_].DisplayParameterImGui();
 	}
 	else {
 		// アニメーションがない
@@ -105,12 +105,21 @@ void AnimationManager::CreateAnimationParameter(const std::string name)
 	parameters_.push_back(newAnim);
 }
 
-Animation* AnimationManager::CreateAnimation(const std::string& name)
+Animation* AnimationManager::CreateAnimation(const std::string& name, const std::string& parameterName)
 {
+	// 保存されているパラメーター内に同名のアニメーションが存在しない場合はパラメーターとして追加する
+	for (std::unique_ptr<Animation>& a : animations_) {
+		// 同名のアニメーションが見つかった場合
+		if (a->name_ == name) {
+			// 作成は行わず、そのアニメーションを返す
+			return a.get();
+		}
+	}
+
 	// 新しいアニメーションを生成
 	std::unique_ptr<Animation> newAnimation = std::make_unique<Animation>();
 	// 生成したアニメーションの初期化
-	newAnimation->Init(name);
+	newAnimation->Init(name, parameterName);
 
 	// 返還用インスタンス生成
 	Animation* returnAnimation = newAnimation.get();
@@ -120,5 +129,4 @@ Animation* AnimationManager::CreateAnimation(const std::string& name)
 
 	// 生成したアニメーションを返す
 	return returnAnimation;
-
 }

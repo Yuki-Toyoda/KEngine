@@ -22,7 +22,7 @@ void TestObject::Init()
 	AnimationManager::GetInstance()->AddSelectAnimationKeys<Vector3>("Test", "Translate");
 
 	// アニメーションの作成
-	animation_ = AnimationManager::GetInstance()->CreateAnimation("Test");
+	animation_ = AnimationManager::GetInstance()->CreateAnimation("TestAnimation", "Test");
 	animation_->AddAnimationKeys<Vector3>("Scale", &transform_.scale_);
 	animation_->AddAnimationKeys<Vector3>("Rotate", &transform_.rotate_);
 	animation_->AddAnimationKeys<Vector3>("Translate", &transform_.translate_);
@@ -45,17 +45,14 @@ void TestObject::Update()
 
 void TestObject::DisplayImGui()
 {
-	//line_->DisplayImGui();
+	//line_->DisplayParameterImGui();
 
 	// 基底クラスのImGuiを表示する
-	//BaseObject::DisplayImGui();
+	//BaseObject::DisplayParameterImGui();
 
 	transform_.DisplayImGui();
 
-	if (ImGui::Button("Play")) {
-		// アニメーションの再生
-		animation_->Play();
-	}
+	animation_->DisplayImGui();
 
 	timer_.DisplayImGui("timer");
 }

@@ -9,6 +9,17 @@ void Animation::Init(const std::string& name)
 	animationKeys_.clear();
 }
 
+void Animation::Init(const std::string& name, const std::string& parameterName)
+{
+	// アニメーション名の取得
+	name_ = name;
+	// パラメータ名の取得
+	parameterName_ = parameterName;
+
+	// キー配列クリア
+	animationKeys_.clear();
+}
+
 void Animation::Update()
 {
 	// 一度全てのキーは終了している状態に
@@ -79,7 +90,66 @@ void Animation::Stop()
 	}
 }
 
+bool Animation::GetIsPlay()
+{
+
+	// 値返還用
+	bool isPlay = false;
+
+	// キー配列が１つでも再生されているのであれば再生中である
+	for (auto& keys : animationKeys_) {
+		std::visit([&isPlay](auto& key) {
+			// １つでも再生されていればtrueを返す
+			if (key.isPlay_) {
+				isPlay = true;
+			}
+
+		}, keys);
+	}
+
+	// 再生中でない
+	return isPlay;
+}
+
 void Animation::DisplayImGui()
+{
+	if (ImGui::TreeNode(name_.c_str())) {
+		
+		// 再生中ならストップを可能に
+		if (GetIsPlay()) {
+			// ボタンを押したら再生停止
+			if (ImGui::Button("Stop")) {
+				Stop();
+			}
+		}
+		else {
+			// ボタンを押したら再生開始
+			if (ImGui::Button("Play")) {
+				Play();
+			}
+		}
+
+		// 表示テキスト
+		std::string display;
+
+		// 再生状態の表示
+		if(GetIsPlay()) {
+			display = "PlayState : Playing";
+		}
+		else {
+			display = "PlayState : Ending";
+		}
+		ImGui::Text(display.c_str());
+
+		// 読み込んでいるパラメータ名の表示
+		display = "ReadingParameter : " + parameterName_;
+		ImGui::Text(display.c_str());
+
+		ImGui::TreePop();
+	}
+}
+
+void Animation::DisplayParameterImGui()
 {
 	// アニメーション名
 	std::string name = "Now SelectAnimation : " + name_;

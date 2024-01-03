@@ -18,6 +18,13 @@ public: // メンバ関数
 	void Init(const std::string& name);
 	
 	/// <summary>
+	/// 初期化関数
+	/// </summary>
+	/// <param name="name">アニメーション名</param>
+	/// <param name="parameterName">読み込むパラメータ名</param>
+	void Init(const std::string& name, const std::string& parameterName);
+
+	/// <summary>
 	/// 更新関数
 	/// </summary>
 	void Update();
@@ -42,12 +49,20 @@ public: // メンバ関数
 	void AddAnimationKeys(const std::string keyName, T* value);
 
 	/// <summary>
-	/// アニメーションキー配列を追加する関数
+	/// (ユーザー呼び出し禁止)アニメーションキー配列を追加する関数
 	/// </summary>
 	/// <typeparam keyName="T">追加するキーの型名</typeparam>
 	/// <param keyName="keyName">追加するキー配列の名前</param>
 	template<typename T>
 	void AddAnimationKeys(const std::string keyName);
+
+public: // アクセッサ等
+
+	/// <summary>
+	/// アニメーションの再生状態ゲッター
+	/// </summary>
+	/// <returns>再生中か</returns>
+	bool GetIsPlay();
 
 public: // その他関数群
 
@@ -55,6 +70,11 @@ public: // その他関数群
 	/// ImGui表示関数
 	/// </summary>
 	void DisplayImGui();
+
+	/// <summary>
+	/// (ユーザー呼び出し禁止)パラメータ用ImGui表示関数
+	/// </summary>
+	void DisplayParameterImGui();
 
 	/// <summary>
 	/// 呼び出した際、アニメーションを保存する
@@ -65,6 +85,9 @@ public: // メンバ変数
 
 	// アニメーション名
 	std::string name_;
+
+	// 読み込むパラメータ名
+	std::string parameterName_;
 
 	// アニメーションキー配列をまとめた配列
 	std::vector<std::variant<
@@ -108,7 +131,7 @@ inline void Animation::AddAnimationKeys(const std::string keyName, T* value)
 	}
 
 	// 同名キー配列が見つからなかった場合、キーの追加処理を行う
-	AnimationKeys newKeys = AnimationKeys<T>(name_, keyName, value); // 新しいキーの生成
+	AnimationKeys newKeys = AnimationKeys<T>(parameterName_, keyName, value); // 新しいキーの生成
 	animationKeys_.push_back(newKeys);								 // 配列に追加
 }
 

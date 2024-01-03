@@ -59,8 +59,9 @@ public: // メンバ関数
 	/// アニメーション作成関数
 	/// </summary>
 	/// <param name="name">作成するアニメーション名</param>
-	/// <returns>アニメーション名</returns>
-	Animation* CreateAnimation(const std::string& name);
+	/// <param name="parameterName">アニメーション再生時に読み込むパラメータ名</param>
+	/// <returns>アニメーション本体</returns>
+	Animation* CreateAnimation(const std::string& name, const std::string& parameterName);
 
 private: // メンバ変数
 
