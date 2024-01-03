@@ -242,6 +242,7 @@
     <ClCompile Include="Engine\GameObject\User\LockOn\LockOn.cpp">
       <Filter>GameObject\User\LockOn</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\GameObject\User\Player\State\Attack.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -523,6 +524,7 @@
     <ClInclude Include="Engine\GameObject\User\LockOn\LockOn.h">
       <Filter>GameObject\User\LockOn</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\GameObject\User\Player\State\Attack.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">

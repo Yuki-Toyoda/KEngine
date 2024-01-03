@@ -41,6 +41,7 @@ void Animation::Update()
 	if (isAllKeyEnd_) {
 		// ループするのであれば
 		if (isLoop_) {
+			// 全てのキーを
 			for (auto& keys : animationKeys_) {
 				std::visit([](auto& key) {
 					// 最初のフレームからキーを再生
@@ -54,6 +55,28 @@ void Animation::Update()
 		}
 	}
 
+}
+
+void Animation::Play()
+{
+	// 全てのキーを
+	for (auto& keys : animationKeys_) {
+		std::visit([](auto& key) {
+			// 最初のフレームからキーを再生
+			key.Play(0);
+		}, keys);
+	}
+}
+
+void Animation::Stop()
+{
+	// 全てのキーを
+	for (auto& keys : animationKeys_) {
+		std::visit([](auto& key) {
+			// 再生停止
+			key.isPlay_ = false;
+			}, keys);
+	}
 }
 
 void Animation::DisplayImGui()

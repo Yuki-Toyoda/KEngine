@@ -23,6 +23,16 @@ public: // メンバ関数
 	void Update();
 
 	/// <summary>
+	/// 再生関数
+	/// </summary>
+	void Play();
+
+	/// <summary>
+	/// 停止関数
+	/// </summary>
+	void Stop();
+
+	/// <summary>
 	/// アニメーションキー配列を追加する関数
 	/// </summary>
 	/// <typeparam keyName="T">追加するキーの型名</typeparam>
@@ -77,6 +87,7 @@ public: // メンバ変数
 	// アニメーション終了トリガー
 	bool isEnd_ = false;
 
+	// アニメーションの破棄トリガー
 	bool isDestruction_ = false;
 
 };
