@@ -21,6 +21,11 @@ void TestObject::Init()
 	AnimationManager::GetInstance()->AddSelectAnimationKeys<Vector3>("Test", "Rotate");
 	AnimationManager::GetInstance()->AddSelectAnimationKeys<Vector3>("Test", "Translate");
 
+	AnimationManager::GetInstance()->CreateAnimationParameter("Test2");
+	AnimationManager::GetInstance()->AddSelectAnimationKeys<Vector3>("Test2", "Scale");
+	AnimationManager::GetInstance()->AddSelectAnimationKeys<Vector3>("Test2", "Rotate");
+	AnimationManager::GetInstance()->AddSelectAnimationKeys<Vector3>("Test2", "Translate");
+
 	// アニメーションの作成
 	animation_ = AnimationManager::GetInstance()->CreateAnimation("TestAnimation", "Test");
 	animation_->AddAnimationKeys<Vector3>("Scale", &transform_.scale_);
@@ -31,16 +36,11 @@ void TestObject::Init()
 	line_->Init("TestLine", transform_.translate_, {0.35f, 0.35f}, 3.0f, TextureManager::Load("./Engine/Resource/Samples/Box", "uvChecker.png"));
 	line_->AddCollider("Line", this);*/
 
-	// タイマースタート
-	timer_.Start(3.0f);
 }
 
 void TestObject::Update()
 {
 
-	//line_->Update();
-	
-	timer_.Update();
 }
 
 void TestObject::DisplayImGui()
@@ -54,7 +54,15 @@ void TestObject::DisplayImGui()
 
 	animation_->DisplayImGui();
 
-	timer_.DisplayImGui("timer");
+	// 読み込むパラメータを変更
+	if (ImGui::Button("ChangeParam")) {
+		if (animation_->parameterName_ == "Test") {
+			animation_->ChangeParameter("Test2");
+		}
+		else {
+			animation_->ChangeParameter("Test");
+		}
+	}
 }
 
 void TestObject::OnCollisionEnter(Collider* collider)

@@ -34,7 +34,7 @@ void AnimationManager::DisplayImGui()
 			// パラメーター配列に要素がある場合
 			if (parameters_.size() > 0) {
 				// 配列終端より超過したパラメーターを選択していた場合その範囲を制限
-				if (parameters_.size() >= imGuiSelectAnimation_) {
+				if (parameters_.size() <= imGuiSelectAnimation_) {
 					imGuiSelectAnimation_ = (int)parameters_.size() - 1;
 				}
 				// 表示中のアニメーションのキー情報保存

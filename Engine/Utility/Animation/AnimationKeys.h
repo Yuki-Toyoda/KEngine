@@ -165,7 +165,7 @@ inline void AnimationKeys<T>::Update()
 	keyCount_ = (int)keys_.size();
 
 	// 再生中か、キーのサイズが2以上の時
-	if (isPlay_ && keys_.size() >= 2) {
+	if (isPlay_ && keys_.size() >= 2 && animateObject_ != nullptr) {
 		// 再生中フレームで遷移させる
 		*animateObject_ = KLib::Lerp<T>(prevKey_.value_, nextKey_.value_, nextKey_.ease_(lerpTimer_.GetProgress()));
 

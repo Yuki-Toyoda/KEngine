@@ -64,6 +64,13 @@ public: // アクセッサ等
 	/// <returns>再生中か</returns>
 	bool GetIsPlay();
 
+	/// <summary>
+	/// <para>アニメーション再生時に読み込むパラメータを変更する関数</para>
+	/// <para>変更したパラメータが同名のキー情報を持っている必要アリ</para>
+	/// </summary>
+	/// <param name="name">読み込むパラメータ名</param>
+	void ChangeParameter(const std::string name);
+
 public: // その他関数群
 
 	/// <summary>

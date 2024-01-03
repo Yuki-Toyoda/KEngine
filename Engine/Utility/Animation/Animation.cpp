@@ -111,6 +111,19 @@ bool Animation::GetIsPlay()
 	return isPlay;
 }
 
+void Animation::ChangeParameter(const std::string name)
+{
+	parameterName_ = name;
+
+	// キー配列が１つでも再生されているのであれば再生中である
+	for (auto& keys : animationKeys_) {
+		std::visit([&](auto& key) {
+			// １つでも再生されていればtrueを返す
+			key.name_ = parameterName_;
+			}, keys);
+	}
+}
+
 void Animation::DisplayImGui()
 {
 	if (ImGui::TreeNode(name_.c_str())) {
