@@ -243,6 +243,7 @@
       <Filter>GameObject\User\LockOn</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\User\Player\State\Attack.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Player\State\RotatingSlash.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -525,6 +526,7 @@
       <Filter>GameObject\User\LockOn</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\User\Player\State\Attack.h" />
+    <ClInclude Include="Engine\GameObject\User\Player\State\RotatingSlash.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">

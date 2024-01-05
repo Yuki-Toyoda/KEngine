@@ -217,6 +217,14 @@ inline void AnimationKeys<T>::DisplayImGui()
 	std::string name = "Now SelectKeys : " + keysName_;
 	ImGui::Text(name.c_str());
 
+	// 破棄するキーがある場合削除する
+	keys_.remove_if([](AnimationKey<T>& key) {
+		if (key.isDelete_) {
+			return true;
+		}
+		return false;
+		});
+
 	// ボタンを押すとキーと追加
 	if (ImGui::Button("AddKey")) {
 		AddKey((int32_t)(keys_.size()));

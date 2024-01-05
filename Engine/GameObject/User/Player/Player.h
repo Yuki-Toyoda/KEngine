@@ -35,6 +35,14 @@ public: // メンバ関数
 	/// <param name="newState"></param>
 	void ChangeState(std::unique_ptr<IState> newState);
 
+private: // プライベートなメンバ関数
+
+	/// <summary>
+	/// パラメータを作成する
+	/// </summary>
+	/// <param name="name">作成するパラメータ</param>
+	void CreateParameter(const std::string& name);
+
 public: // パブリックなメンバ変数
 
 	// 入力検知用
@@ -61,6 +69,8 @@ public: // パブリックなメンバ変数
 	bool canAttack_ = true;
 	// 攻撃中か
 	bool isAttacking_ = false;
+
+	
 
 private: // メンバ変数
 

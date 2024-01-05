@@ -118,6 +118,8 @@ void Animation::ChangeParameter(const std::string name, bool isChange)
 {
 	parameterName_ = name;
 
+	isEnd_ = false;
+
 	// 全キー配列の読み込みパラメータを変更する
 	for (auto& keys : animationKeys_) {
 		std::visit([&](auto& key) {

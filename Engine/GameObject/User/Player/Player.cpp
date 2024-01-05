@@ -31,51 +31,18 @@ void Player::Init()
 
 	// アニメーションパラメータの追加
 
-	// 待機状態
-	animManager_->CreateAnimationParameter("Player_Idle");
-	animManager_->AddSelectAnimationKeys<Vector3>("Player_Idle", "Body_Scale");
-	animManager_->AddSelectAnimationKeys<Vector3>("Player_Idle", "Body_Rotate");
-	animManager_->AddSelectAnimationKeys<Vector3>("Player_Idle", "Body_Translate");
-	animManager_->AddSelectAnimationKeys<Vector3>("Player_Idle", "Head_Scale");
-	animManager_->AddSelectAnimationKeys<Vector3>("Player_Idle", "Head_Rotate");
-	animManager_->AddSelectAnimationKeys<Vector3>("Player_Idle", "Head_Translate");
-	animManager_->AddSelectAnimationKeys<Vector3>("Player_Idle", "Arm_R_Scale");
-	animManager_->AddSelectAnimationKeys<Vector3>("Player_Idle", "Arm_R_Rotate");
-	animManager_->AddSelectAnimationKeys<Vector3>("Player_Idle", "Arm_R_Translate");
-	animManager_->AddSelectAnimationKeys<Vector3>("Player_Idle", "Arm_L_Scale");
-	animManager_->AddSelectAnimationKeys<Vector3>("Player_Idle", "Arm_L_Rotate");
-	animManager_->AddSelectAnimationKeys<Vector3>("Player_Idle", "Arm_L_Translate");
-
-	// 待機状態
-	animManager_->CreateAnimationParameter("Player_Run");
-	animManager_->AddSelectAnimationKeys<Vector3>("Player_Run", "Body_Scale");
-	animManager_->AddSelectAnimationKeys<Vector3>("Player_Run", "Body_Rotate");
-	animManager_->AddSelectAnimationKeys<Vector3>("Player_Run", "Body_Translate");
-	animManager_->AddSelectAnimationKeys<Vector3>("Player_Run", "Head_Scale");
-	animManager_->AddSelectAnimationKeys<Vector3>("Player_Run", "Head_Rotate");
-	animManager_->AddSelectAnimationKeys<Vector3>("Player_Run", "Head_Translate");
-	animManager_->AddSelectAnimationKeys<Vector3>("Player_Run", "Arm_R_Scale");
-	animManager_->AddSelectAnimationKeys<Vector3>("Player_Run", "Arm_R_Rotate");
-	animManager_->AddSelectAnimationKeys<Vector3>("Player_Run", "Arm_R_Translate");
-	animManager_->AddSelectAnimationKeys<Vector3>("Player_Run", "Arm_L_Scale");
-	animManager_->AddSelectAnimationKeys<Vector3>("Player_Run", "Arm_L_Rotate");
-	animManager_->AddSelectAnimationKeys<Vector3>("Player_Run", "Arm_L_Translate");
-
-	// 横切り
-	animManager_->CreateAnimationParameter("Player_HorizontalSlash");
-	animManager_->AddSelectAnimationKeys<Vector3>("Player_HorizontalSlash", "Body_Scale");
-	animManager_->AddSelectAnimationKeys<Vector3>("Player_HorizontalSlash", "Body_Rotate");
-	animManager_->AddSelectAnimationKeys<Vector3>("Player_HorizontalSlash", "Body_Translate");
-	animManager_->AddSelectAnimationKeys<Vector3>("Player_HorizontalSlash", "Head_Scale");
-	animManager_->AddSelectAnimationKeys<Vector3>("Player_HorizontalSlash", "Head_Rotate");
-	animManager_->AddSelectAnimationKeys<Vector3>("Player_HorizontalSlash", "Head_Translate");
-	animManager_->AddSelectAnimationKeys<Vector3>("Player_HorizontalSlash", "Arm_R_Scale");
-	animManager_->AddSelectAnimationKeys<Vector3>("Player_HorizontalSlash", "Arm_R_Rotate");
-	animManager_->AddSelectAnimationKeys<Vector3>("Player_HorizontalSlash", "Arm_R_Translate");
-	animManager_->AddSelectAnimationKeys<Vector3>("Player_HorizontalSlash", "Arm_L_Scale");
-	animManager_->AddSelectAnimationKeys<Vector3>("Player_HorizontalSlash", "Arm_L_Rotate");
-	animManager_->AddSelectAnimationKeys<Vector3>("Player_HorizontalSlash", "Arm_L_Translate");
-
+	// 待機状態のパラメータの生成
+	CreateParameter("Player_Idle");
+	// 走りアニメーションのパラメータの生成
+	CreateParameter("Player_Run");
+	// 横切りのパラメータの生成
+	CreateParameter("Player_HorizontalSlash");
+	// 回転切りのチャージのパラメータの生成
+	CreateParameter("Player_RotaingSlashCharge");
+	// 回転切りのチャージ中のパラメータの生成
+	CreateParameter("Player_RotaingSlashChargeing");
+	// 回転切りのパラメータの生成
+	CreateParameter("Player_RotaingSlash");
 
 	// アニメーションの作成
 	playerAnim_ = AnimationManager::GetInstance()->CreateAnimation("PlayerAnimation", "Player_Idle");
@@ -105,11 +72,13 @@ void Player::Init()
 	AddMesh(&armTransform_L_, color_, "./Resources/Sword", "Sword.obj");
 	AddMesh(&armTransform_R_, color_, "./Resources/Shield", "Shiled.obj");
 
+	// 攻撃用の線の追加
 	attackLine_ = std::make_unique<Line>();
 	attackLine_->Init("AttackLine", {-1000.0f, 100.0f, 0.0f}, {0.35f, 0.35f}, 1.0f, TextureManager::Load("./Engine/Resource/Samples/Box", "uvChecker.png"));
 	attackLine_->SetParent(&armTransform_L_);
 	attackLine_->AddCollider("Sword", this);
 	attackLine_->rotate_.x = (float)std::numbers::pi / 2.0f;
+	attackLine_->isActive_ = false;
 
 	// 行動状態を待機状態に変更
 	ChangeState(std::make_unique<Root>());
@@ -178,6 +147,15 @@ void Player::DisplayImGui()
 		if (ImGui::Button("HorizontalSlash")) {
 			playerAnim_->ChangeParameter("Player_HorizontalSlash", true);
 		}
+		if (ImGui::Button("RotaingSlashCharge")) {
+			playerAnim_->ChangeParameter("Player_RotaingSlashCharge", true);
+		}
+		if (ImGui::Button("RotaingSlashChargeing")) {
+			playerAnim_->ChangeParameter("Player_RotaingSlashChargeing", true);
+		}
+		if (ImGui::Button("RotaingSlash")) {
+			playerAnim_->ChangeParameter("Player_RotaingSlash", true);
+		}
 		ImGui::TreePop();
 	}
 
@@ -197,4 +175,22 @@ void Player::ChangeState(std::unique_ptr<IState> newState)
 
 	// 初期化した新しいステートを代入
 	state_ = std::move(newState);
+}
+
+void Player::CreateParameter(const std::string& name)
+{
+	// パラメータの生成
+	animManager_->CreateAnimationParameter(name);
+	animManager_->AddSelectAnimationKeys<Vector3>(name, "Body_Scale");
+	animManager_->AddSelectAnimationKeys<Vector3>(name, "Body_Rotate");
+	animManager_->AddSelectAnimationKeys<Vector3>(name, "Body_Translate");
+	animManager_->AddSelectAnimationKeys<Vector3>(name, "Head_Scale");
+	animManager_->AddSelectAnimationKeys<Vector3>(name, "Head_Rotate");
+	animManager_->AddSelectAnimationKeys<Vector3>(name, "Head_Translate");
+	animManager_->AddSelectAnimationKeys<Vector3>(name, "Arm_R_Scale");
+	animManager_->AddSelectAnimationKeys<Vector3>(name, "Arm_R_Rotate");
+	animManager_->AddSelectAnimationKeys<Vector3>(name, "Arm_R_Translate");
+	animManager_->AddSelectAnimationKeys<Vector3>(name, "Arm_L_Scale");
+	animManager_->AddSelectAnimationKeys<Vector3>(name, "Arm_L_Rotate");
+	animManager_->AddSelectAnimationKeys<Vector3>(name, "Arm_L_Translate");
 }

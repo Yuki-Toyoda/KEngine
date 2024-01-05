@@ -131,6 +131,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\GameObject\User\Floor\Floor.cpp" />
     <ClCompile Include="Engine\GameObject\User\FollowCamera\FollowCamera.cpp" />
     <ClCompile Include="Engine\GameObject\User\Player\State\Root.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Player\State\RotatingSlash.cpp" />
     <ClCompile Include="Engine\GameObject\User\TestObject.cpp" />
     <ClCompile Include="Engine\GameObject\WorldTransform.cpp" />
     <ClCompile Include="Engine\GlobalVariables\GlobalVariables.cpp" />
@@ -227,6 +228,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\GameObject\User\FollowCamera\FollowCamera.h" />
     <ClInclude Include="Engine\GameObject\User\Player\State\IState.h" />
     <ClInclude Include="Engine\GameObject\User\Player\State\Root.h" />
+    <ClInclude Include="Engine\GameObject\User\Player\State\RotatingSlash.h" />
     <ClInclude Include="Engine\GameObject\User\Player\State\StateList.h" />
     <ClInclude Include="Engine\GameObject\User\TestObject.h" />
     <ClInclude Include="Engine\GameObject\WorldTransform.h" />
