@@ -57,7 +57,7 @@ void TestObject::DisplayImGui()
 	// 読み込むパラメータを変更
 	if (ImGui::Button("ChangeParam")) {
 		if (animation_->parameterName_ == "Test") {
-			animation_->ChangeParameter("Test2");
+			animation_->ChangeParameter("Test2", true);
 		}
 		else {
 			animation_->ChangeParameter("Test");

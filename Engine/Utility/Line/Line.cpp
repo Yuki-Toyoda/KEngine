@@ -57,11 +57,17 @@ void Line::Update()
 		rotate_.z += (float)std::numbers::pi * 2.0f;
 	}
 
-	transform_.translate_ = position_;
-	transform_.scale_ = Vector3(thickness_.x, length_, thickness_.y);
-	//mesh_->material_.uvTransform_.scale_ = transform_.scale_;
-	transform_.rotate_ = rotate_;
+
+	// 親がいるのであれば
+	if (transform_.GetParent() != nullptr) {
+		worldPos_ = transform_.GetWorldPos();
+	}
 	
+	transform_.translate_ = position_;
+	transform_.rotate_ = rotate_;
+
+	transform_.scale_ = Vector3(thickness_.x, length_, thickness_.y);
+
 	// オフセットを求めるよ
 	Vector3 offset = { 0.0f, length_, 0.0f };
 	// 回転角を元に回転行列を求める
@@ -69,8 +75,6 @@ void Line::Update()
 
 	// オフセットを元に移動
 	transform_.translate_ = position_ + Math::Transform(offset, rotateMat);
-
-	// 
 	
 }
 
@@ -79,8 +83,8 @@ void Line::DisplayImGui()
 	if (ImGui::TreeNode("Line")) {
 		ImGui::Checkbox("IsActive", &isActive_);
 		ImGui::DragFloat3("Position", &position_.x, 0.05f);
-		ImGui::DragFloat2("Thickness", &thickness_.x, 0.05f, 0.005f);
-		ImGui::DragFloat("Length", &length_, 0.05f, 0.005f);
+		ImGui::DragFloat2("Thickness", &thickness_.x, 0.05f, 0.05f);
+		ImGui::DragFloat("Length", &length_, 0.05f, 0.05f);
 		ImGui::DragFloat3("Rotate", &rotate_.x, 0.005f);
 		ImGui::TreePop();
 	}
@@ -88,7 +92,12 @@ void Line::DisplayImGui()
 
 void Line::AddCollider(const std::string& name, BaseObject* object)
 {
-	object->AddColliderOBB(name, &transform_.scale_, &transform_.rotate_, &transform_.translate_);
+	if (transform_.GetParent() != nullptr) {
+		object->AddColliderOBB(name, &transform_.scale_, &transform_.rotate_, &worldPos_);
+	}
+	else {
+		object->AddColliderOBB(name, &transform_.scale_, &transform_.rotate_, &transform_.translate_);
+	}
 }
 
 void Line::SetParent(WorldTransform* parent, uint8_t parentType)

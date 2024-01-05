@@ -69,7 +69,19 @@ public: // アクセッサ等
 	/// <para>変更したパラメータが同名のキー情報を持っている必要アリ</para>
 	/// </summary>
 	/// <param name="name">読み込むパラメータ名</param>
-	void ChangeParameter(const std::string name);
+	/// <param name="isChange">実行時にそのパラメータへの強制的な遷移を行うか</param>
+	void ChangeParameter(const std::string name, bool isChange = false);
+
+	/// <summary>
+	/// 読み込み中パラメータゲッター
+	/// </summary>
+	const std::string GetReadingParameterName() { return parameterName_; }
+
+	/// <summary>
+	/// アニメーション全体の進捗ゲッター
+	/// </summary>
+	/// <returns>アニメーション全体の進捗</returns>
+	float GetAnimationProgress();
 
 public: // その他関数群
 

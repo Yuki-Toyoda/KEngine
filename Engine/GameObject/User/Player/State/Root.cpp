@@ -6,7 +6,19 @@
 
 void Root::Init()
 {
-	
+	// アニメーションをループする状態に
+	player_->playerAnim_->isLoop_ = true;
+
+	// 目標角度はプレイヤーの向き
+	targetAngle_ = player_->transform_.rotate_.y;
+
+	// 線の座標を戻す
+	player_->attackLine_->position_ = { -1000.0f, 100.0f, 0.0f };
+
+	// プレイヤーアニメーションを変更
+	if (player_->playerAnim_->GetReadingParameterName() != "Player_Idle") {
+		player_->playerAnim_->ChangeParameter("Player_Idle", true);
+	}
 }
 
 void Root::Update()
@@ -27,6 +39,11 @@ void Root::Update()
 	if (isMoving_) {
 		// 移動ベクトルの正規化を行う
 		move = Math::Normalize(move);
+
+		// プレイヤーアニメーションを変更
+		if (player_->playerAnim_->GetReadingParameterName() != "Player_Run") {
+			player_->playerAnim_->ChangeParameter("Player_Run", true);
+		}
 
 		// プレイヤーに追従カメラがセットされている場合
 		if (player_->followCamera_ != nullptr) {
@@ -55,6 +72,12 @@ void Root::Update()
 
 		// 移動ベクトルに最大速度を掛ける
 		move = move * kMaxSpeed_;
+	}
+	else {
+		// プレイヤーアニメーションを変更
+		if (player_->playerAnim_->GetReadingParameterName() != "Player_Idle") {
+			player_->playerAnim_->ChangeParameter("Player_Idle", true);
+		}
 	}
 
 	//if (player_->followCamera_->GetLockOn()->GetIsLockOn()) {

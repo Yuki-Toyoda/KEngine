@@ -2,11 +2,11 @@
 #include "../../BaseObject.h"
 #include "../../../Input/Input.h"
 #include "State/StateList.h"
+#include "../../../Utility/Animation/AnimationManager.h"
 
 // クラスの前方宣言
 class FollowCamera;
 class LockOn;
-class Line;
 
 /// <summary>
 /// プレイヤー
@@ -28,8 +28,6 @@ public: // メンバ関数
 	// ImGui表示関数
 	// ImGuiを表示させたい場合はこの関数に処理を追記
 	void DisplayImGui() override;
-
-private: // その他関数
 
 	/// <summary>
 	/// 行動状態変更関数
@@ -54,6 +52,16 @@ public: // パブリックなメンバ変数
 	// 追従対象の目標角度
 	float targetAngle_ = 0.0f;
 
+	// キャラクターアニメーション
+	Animation* playerAnim_;
+
+	// 攻撃判定用線
+	std::unique_ptr <Line> attackLine_;
+	// 攻撃可能か
+	bool canAttack_ = true;
+	// 攻撃中か
+	bool isAttacking_ = false;
+
 private: // メンバ変数
 
 	// 身体のトランスフォーム
@@ -68,7 +76,7 @@ private: // メンバ変数
 	// 行動状態格納変数
 	std::unique_ptr<IState> state_;
 
-	// 攻撃判定用線
-	std::unique_ptr<Line> AttackLine_;
+	// アニメーションマネージャ
+	AnimationManager* animManager_;
 
 };

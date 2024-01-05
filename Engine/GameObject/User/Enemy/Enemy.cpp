@@ -22,5 +22,19 @@ void Enemy::Update()
 
 void Enemy::DisplayImGui()
 {
+	transform_.DisplayImGui();
+}
 
+void Enemy::OnCollisionEnter(Collider* collider)
+{
+	int a = 0;
+	// 剣と衝突していたら
+	if (collider->GetColliderName() == "Sword") {
+		a = 1;
+	}
+}
+
+void Enemy::OnCollisionExit(Collider* collider)
+{
+	collider;
 }

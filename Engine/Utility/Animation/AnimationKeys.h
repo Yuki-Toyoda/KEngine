@@ -51,6 +51,26 @@ public: // メンバ関数
 	/// </summary>
 	void SortKey();
 
+public: // アクセッサ等
+
+	/// <summary>
+	/// アニメーションフレーム数の取得
+	/// </summary>
+	/// <returns>アニメーション全体のフレーム数</returns>
+	int32_t GetAnimationFrameCount() { 
+		if (keys_.size() != 0) {
+			return keys_.back().playFrame_;
+		}
+
+		return 0;
+	}
+
+	/// <summary>
+	/// キー配列ごとのアニメーション進捗ゲッター
+	/// </summary>
+	/// <returns>アニメーション進捗</returns>
+	float GetKeysProgress() { return animTimer_.GetProgress(); }
+
 private: // プライベートなメンバ関数
 
 	/// <summary>
@@ -222,6 +242,8 @@ inline void AnimationKeys<T>::Play(const int32_t& keyIndex){
 
 	// そもそもアニメーションのキー数が2以下だった場合再生すらしない
 	if (keys_.size() < 2) { 
+		isEnd_ = true;
+		isPlay_ = false;
 		return;
 	}
 	
@@ -247,9 +269,13 @@ inline void AnimationKeys<T>::Play(const int32_t& keyIndex){
 
 	// 遷移時間タイマーを (1フレームの時間 * 差分フレーム) で開始
 	lerpTimer_.Start(std::clamp(ImGui::GetIO().DeltaTime, 0.f, 0.1f) * difFrame);
+	// アニメーション時間タイマーを(1フレームの時間 * 最終フレーム) で開始
+	animTimer_.Start(std::clamp(ImGui::GetIO().DeltaTime, 0.f, 0.1f) * keys_.back().playFrame_);
 
 	// 再生開始
 	isPlay_ = true;
+	// 再生中
+	isEnd_ = false;
 
 }
 

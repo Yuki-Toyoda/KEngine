@@ -62,7 +62,7 @@ void Animation::Update()
 		}
 		else {
 			// アニメーションは終了している
-			isEnd_ = false;
+			isEnd_ = true;
 		}
 	}
 
@@ -77,6 +77,9 @@ void Animation::Play()
 			key.Play(0);
 		}, keys);
 	}
+
+	// アニメーションは終了していない
+	isEnd_ = false;
 }
 
 void Animation::Stop()
@@ -111,17 +114,45 @@ bool Animation::GetIsPlay()
 	return isPlay;
 }
 
-void Animation::ChangeParameter(const std::string name)
+void Animation::ChangeParameter(const std::string name, bool isChange)
 {
 	parameterName_ = name;
 
-	// キー配列が１つでも再生されているのであれば再生中である
+	// 全キー配列の読み込みパラメータを変更する
 	for (auto& keys : animationKeys_) {
 		std::visit([&](auto& key) {
-			// １つでも再生されていればtrueを返す
+			// 読み込みパラメータ名変更
 			key.name_ = parameterName_;
 			}, keys);
 	}
+
+	// 強制遷移を行うのであればキーの最初から再生
+	if (isChange) {
+		// 再生中ならそれで再生
+		if (GetIsPlay()) {
+			Play();
+		}
+	}
+}
+
+float Animation::GetAnimationProgress()
+{
+	// フレーム最大数
+	int32_t maxFrameCount = 0;
+	// 返還用変数
+	float progress = 0.0f;
+
+	for (auto& keys : animationKeys_) {
+		std::visit([&maxFrameCount, &progress](auto& key) {
+			// アニメーションのフレーム数が最も大きい値を探してその進捗を受け取る
+			if (maxFrameCount < key.GetAnimationFrameCount()) {
+				progress = key.GetKeysProgress();
+				maxFrameCount = key.GetAnimationFrameCount();
+			}
+			}, keys);
+	}
+
+	return progress;
 }
 
 void Animation::DisplayImGui()
@@ -157,6 +188,13 @@ void Animation::DisplayImGui()
 		// 読み込んでいるパラメータ名の表示
 		display = "ReadingParameter : " + parameterName_;
 		ImGui::Text(display.c_str());
+
+		// ループ設定
+		ImGui::Checkbox("isLoop", &isLoop_);
+
+		// アニメーションの進捗
+		float progress = GetAnimationProgress();
+		ImGui::Text("Progress : %4.2f", progress);
 
 		ImGui::TreePop();
 	}
