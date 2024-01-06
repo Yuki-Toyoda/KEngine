@@ -22,8 +22,8 @@ void GameScene::Init(){
 	// 床生成
 	Floor* floor = nullptr;
 	floor = gameObjectManager_->CreateInstance<Floor>("Floor", BaseObject::TagFloor);
-	floor->transform_.scale_ = { 100.0f, 0.35f, 100.0f };
-	floor->transform_.translate_.y = -0.35f;
+	floor->transform_.scale_ = { 100.0f, 1.0f, 100.0f };
+	floor->transform_.translate_.y = -1.0f;
 
 	// 敵生成
 	Enemy* enemy = nullptr;

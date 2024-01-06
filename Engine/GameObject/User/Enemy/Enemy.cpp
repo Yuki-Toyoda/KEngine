@@ -18,6 +18,7 @@ void Enemy::Init()
 
 void Enemy::Update()
 {
+
 }
 
 void Enemy::DisplayImGui()
@@ -27,14 +28,16 @@ void Enemy::DisplayImGui()
 
 void Enemy::OnCollisionEnter(Collider* collider)
 {
-	int a = 0;
 	// 剣と衝突していたら
 	if (collider->GetColliderName() == "Sword") {
-		a = 1;
+		color_ = { 1.0f, 0.0f, 0.0f, 1.0f };
 	}
 }
 
 void Enemy::OnCollisionExit(Collider* collider)
 {
-	collider;
+	// 剣と衝突していたら
+	if (collider->GetColliderName() == "Sword") {
+		color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
+	}
 }

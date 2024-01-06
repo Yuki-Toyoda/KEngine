@@ -75,6 +75,18 @@ public: // アクセッサ等
 	/// <returns>オフセットなしのビュー行列</returns>
 	const Matrix4x4 GetViewMatrixNoOffset();
 
+	/// <summary>
+	/// 衝突時のみコールバックされ続ける関数
+	/// </summary>
+	/// <param name="collider">衝突したコライダー</param>
+	void OnCollision(Collider* collider) override;
+	
+	/// <summary>
+	/// 衝突時にコールバックされ続ける関数
+	/// </summary>
+	/// <param name="collider">衝突したコライダー</param>
+	void OnCollisionExit(Collider* collider) override;
+
 private: // プライベートなメンバ関数
 
 	/// <summary>
@@ -98,9 +110,15 @@ private: // メンバ変数
 	// オフセットなしのカメラのワールドトランスフォーム
 	WorldTransform noOffsetTransform_;
 
+	// カメラの当たり判定半径
+	float colliderRadius_ = 0.1f;
+
 	// 追従対象の目標角度
 	float targetAngleX_ = 0.0f;
 	float targetAngleY_ = 0.0f;
+	// 床と衝突していた際のオフセット値
+	float targetAngleXOffset_ = 0.0f;
+
 	// 目標角度への補正スピード
 	float correctionSpeed_ = 0.035f;
 
@@ -109,7 +127,7 @@ private: // メンバ変数
 	// Z注目時のカメラ角度補正速度
 	const float zForcusCorrectionSpeed_ = 0.25f;
 	// Z注目で敵をロックオンしたときのカメラ角度補正速度
-	const float zEnemyForcusCorrectionSpeed_ = 0.35f;
+	const float zEnemyForcusCorrectionSpeed_ = 0.25f;
 
 	// 追従対象の残像座標
 	Vector3 interTarget_ = {};
@@ -124,6 +142,6 @@ private: // メンバ変数
 	Vector3 offset_ = kOffset_;
 
 	// ロックオン時の回転角
-	const float kOffsetRotate_ = 0.05f;
+	float kOffsetRotate_ = 0.05f;
 };
 

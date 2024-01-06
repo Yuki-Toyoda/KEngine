@@ -112,21 +112,32 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\GameObject\GameObjectManager.cpp" />
     <ClCompile Include="Engine\GameObject\Samples\SampleBox\SampleBox.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\Samples\SampleEnemy\SampleEnemy.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\Samples\SampleFloor\SampleFloor.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\Samples\SamplePlayer\SamplePlayer.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\Samples\SampleSkyDome\SkyDome.cpp" />
-    <ClCompile Include="Engine\GameObject\Samples\SampleSprite\SampleSprite.cpp" />
-    <ClCompile Include="Engine\GameObject\Samples\SampleThirdPersonCamera\ThirdPersonCamera.cpp" />
+    <ClCompile Include="Engine\GameObject\Samples\SampleSprite\SampleSprite.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\Samples\SampleThirdPersonCamera\ThirdPersonCamera.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Engine\GameObject\Samples\SampleWeapon\SampleWeapon.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\User\Floor\Floor.cpp" />
     <ClCompile Include="Engine\GameObject\User\FollowCamera\FollowCamera.cpp" />
@@ -171,7 +182,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Utility\Line\Line.cpp" />
     <ClCompile Include="Engine\GameObject\User\LockOn\LockOn.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Engine\GameObject\Samples\SampleSphere\SampleSphere.cpp" />
+    <ClCompile Include="Engine\GameObject\Samples\SampleSphere\SampleSphere.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Engine\GameObject\User\Player\Player.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -208,21 +222,32 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\GameObject\SampleList.h" />
     <ClInclude Include="Engine\GameObject\Samples\SampleBox\SampleBox.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\Samples\SampleEnemy\SampleEnemy.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\Samples\SampleFloor\SampleFloor.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\Samples\SamplePlayer\SamplePlayer.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\Samples\SampleSkyDome\SkyDome.h" />
-    <ClInclude Include="Engine\GameObject\Samples\SampleSprite\SampleSprite.h" />
-    <ClInclude Include="Engine\GameObject\Samples\SampleThirdPersonCamera\ThirdPersonCamera.h" />
+    <ClInclude Include="Engine\GameObject\Samples\SampleSprite\SampleSprite.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\Samples\SampleThirdPersonCamera\ThirdPersonCamera.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="Engine\GameObject\Samples\SampleWeapon\SampleWeapon.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\User\Floor\Floor.h" />
     <ClInclude Include="Engine\GameObject\User\FollowCamera\FollowCamera.h" />
@@ -277,7 +302,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Externals\imgui\imstb_textedit.h" />
     <ClInclude Include="Externals\imgui\imstb_truetype.h" />
     <ClInclude Include="Engine\Utility\Line\Line.h" />
-    <ClInclude Include="Engine\GameObject\Samples\SampleSphere\SampleSphere.h" />
+    <ClInclude Include="Engine\GameObject\Samples\SampleSphere\SampleSphere.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="Engine\GameObject\User\Player\Player.h" />
     <ClInclude Include="Engine\GameObject\User\LockOn\LockOn.h" />
   </ItemGroup>

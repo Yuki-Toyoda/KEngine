@@ -241,12 +241,11 @@ inline void AnimationKeys<T>::DisplayImGui()
 
 template<typename T>
 inline void AnimationKeys<T>::Play(const int32_t& keyIndex){
-#ifdef _DEBUG // デバッグ時のみ、キーの情報を読み取る
+	
 	// キーの情報を読み取る
 	if (animateObject_ != nullptr) {
 		ApplyItem();
 	}
-#endif // _DEBUG
 
 	// そもそもアニメーションのキー数が2以下だった場合再生すらしない
 	if (keys_.size() < 2) { 

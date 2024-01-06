@@ -81,7 +81,7 @@ private: // メンバ変数
 	std::list<Enemy*> enemies_;
 
 	// ロックオン最小距離
-	float minDistance_ = 10.0f;
+	float minDistance_ = 5.0f;
 	// ロックオン最大距離
 	float maxDistance_ = 30.0f;
 	// 角度範囲
