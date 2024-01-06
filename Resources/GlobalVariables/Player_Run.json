@@ -149,7 +149,7 @@
         ],
         "Body_Translate key : 2 : EasingParameter": 3,
         "Body_Translate key : 2 : PlayFrame": 30,
-        "Head_Rotate : KeyCount": 0,
+        "Head_Rotate : KeyCount": 2,
         "Head_Rotate key : 0": [
             0.0,
             0.0,
@@ -157,6 +157,13 @@
         ],
         "Head_Rotate key : 0 : EasingParameter": 0,
         "Head_Rotate key : 0 : PlayFrame": 0,
+        "Head_Rotate key : 1": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Head_Rotate key : 1 : EasingParameter": 0,
+        "Head_Rotate key : 1 : PlayFrame": 10,
         "Head_Scale : KeyCount": 0,
         "Head_Scale key : 0": [
             0.0,

@@ -86,7 +86,7 @@ void Root::Update()
 	//	// 追従対象からロックオン対象への差分ベクトル
 	//	Vector3 sub = targetPos - player_->transform_.translate_;
 	//	// 方向ベクトルを元にプレイヤーがいる角度を求める
-	//	targetAngle_ = std::atan2(sub.x, sub.z);
+	//	targetAngleY_ = std::atan2(sub.x, sub.z);
 	//}
 
 	// プレイヤーを移動方向に回転させる
@@ -95,7 +95,7 @@ void Root::Update()
 	}
 
 	// 目標角度と現在角度が一致していたら移動させる
-	/*float subDirection = player_->transform_.rotate_.y - targetAngle_;
+	/*float subDirection = player_->transform_.rotate_.y - targetAngleY_;
 	if (subDirection < 0.0f) {
 		subDirection *= -1.0f;
 	}*/

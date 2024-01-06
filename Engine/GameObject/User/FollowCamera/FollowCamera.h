@@ -61,13 +61,19 @@ public: // アクセッサ等
 	/// 目標角度セッター
 	/// </summary>
 	/// <param name="targetAngle">目標角度</param>
-	void SetTargetAngle(const float& targetAngle) { targetAngle_ = targetAngle; }
+	void SetTargetAngle(const float& targetAngle) { targetAngleY_ = targetAngle; }
 
 	/// <summary>
 	/// カメラの角度補正速度セッター
 	/// </summary>
 	/// <param name="correctionSpeed">カメラの角度補正速度</param>
 	void SetCorrectionSpeed(const float& correctionSpeed) { correctionSpeed_ = correctionSpeed; }
+
+	/// <summary>
+	/// オフセットなしのビュー行列のゲッター
+	/// </summary>
+	/// <returns>オフセットなしのビュー行列</returns>
+	const Matrix4x4 GetViewMatrixNoOffset();
 
 private: // プライベートなメンバ関数
 
@@ -89,8 +95,12 @@ private: // メンバ変数
 	// 追従対象のワールド座標
 	const WorldTransform* target_ = nullptr;
 
+	// オフセットなしのカメラのワールドトランスフォーム
+	WorldTransform noOffsetTransform_;
+
 	// 追従対象の目標角度
-	float targetAngle_ = 0.0f;
+	float targetAngleX_ = 0.0f;
+	float targetAngleY_ = 0.0f;
 	// 目標角度への補正スピード
 	float correctionSpeed_ = 0.035f;
 
@@ -110,6 +120,10 @@ private: // メンバ変数
 	bool enableZForcus_ = false;
 
 	// オフセット
-	const Vector3 offset_ = { 0.0f, 2.0f, -10.0f };
+	const Vector3 kOffset_ = { 0.0f, 2.0f, -10.0f };
+	Vector3 offset_ = kOffset_;
+
+	// ロックオン時の回転角
+	const float kOffsetRotate_ = 0.05f;
 };
 

@@ -63,7 +63,7 @@ void LockOn::SerchEnemy()
 		// ワールド座標の取得
 		Vector3 worldPosition = enemy->transform_.GetWorldPos();
 		// ワールドからビュー座標に変換する
-		Vector3 positionView = Math::Transform(worldPosition, camera_->GetViewMatrix());
+		Vector3 positionView = Math::Transform(worldPosition, camera_->GetViewMatrixNoOffset());
 
 		// 距離条件にあっているかチェック
 		if (minDistance_ <= positionView.z && positionView.z <= maxDistance_) {
@@ -103,7 +103,7 @@ bool LockOn::IsOutOfRange()
 	// ワールド座標の取得
 	Vector3 worldPosition = target_->transform_.GetWorldPos();
 	// ワールドからビュー座標に変換する
-	Vector3 positionView = Math::Transform(worldPosition, camera_->GetViewMatrix());
+	Vector3 positionView = Math::Transform(worldPosition, camera_->GetViewMatrixNoOffset());
 
 	// 距離条件にあっているかチェック
 	if (minDistance_ <= positionView.z && positionView.z <= maxDistance_) {
