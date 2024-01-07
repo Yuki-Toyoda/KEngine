@@ -46,19 +46,25 @@ public: // メンバ関数
 	/// <param name="isPlayer">プレイヤーに向けたベクトルか</param>
 	void SetVelocity(const bool& isPlayer);
 
+	/// <summary>
+	/// 跳ね返し状態のセッター
+	/// </summary>
+	/// <param name="isReturn">跳ね返したか</param>
+	void SetIsReturn(bool isReturn) { isReturn_ = isReturn; }
+
 private: // メンバ変数
 
 	// 発射ベクトル
 	Vector3 velocity_ = { 0.0f, 0.0f, 0.0f };
 	// 発射スピード
-	float speed_ = 0.5f;
+	float speed_ = 0.25f;
 	// 最大発射スピード
 	const float maxSpeed_ = 3.0f;
 
 	// プレイヤーへ発射されているか
 	bool isPlayer_ = false;
 
-	// そもそも発射されているか
+	// 一度跳ね返しているか
 	bool isReturn_ = false;
 
 	// プレイヤーの座標

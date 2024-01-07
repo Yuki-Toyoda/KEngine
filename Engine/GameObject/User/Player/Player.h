@@ -70,23 +70,25 @@ public: // パブリックなメンバ変数
 	// 攻撃中か
 	bool isAttacking_ = false;
 
+	// コライダー座標
+	WorldTransform colliderTransform_;
+
+	// 頭のトランスフォーム
+	WorldTransform headTransform_;
+
 private: // メンバ変数
 
 	// 身体のトランスフォーム
 	WorldTransform bodyTransform_;
-	// 頭のトランスフォーム
-	WorldTransform headTransform_;
 	// 右腕のトランスフォーム
 	WorldTransform armTransform_R_;
 	// 左腕のトランスフォーム
 	WorldTransform armTransform_L_;
 
-	// コライダー座標
-	WorldTransform colliderTransform_;
 	// コライダーのワールド座標
 	Vector3 colliderWorldPos_;
 	// コライダー半径
-	float colliderRadius_ = 0.5f;
+	float colliderRadius_ = 0.25f;
 
 	// 行動状態格納変数
 	std::unique_ptr<IState> state_;

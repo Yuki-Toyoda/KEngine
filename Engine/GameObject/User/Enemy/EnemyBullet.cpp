@@ -23,17 +23,19 @@ void EnemyBullet::DisplayImGui()
 void EnemyBullet::OnCollisionEnter(Collider* collider)
 {
 	// プレイヤーの剣と衝突していたら
-	if (collider->GetColliderName() == "Sword" || isPlayer_) {
+	if (collider->GetColliderName() == "Sword" && isPlayer_) {
 		SetVelocity(false);
+		isReturn_ = true;
 	}
 
 	// ボスと衝突したら
-	if (collider->GetColliderName() == "Boss" || !isPlayer_) {
-		//SetVelocity(true);
+	if (collider->GetColliderName() == "Boss" && isReturn_) {
+		SetVelocity(true);
+		isReturn_ = false;
 	}
 
 	// プレイヤー、または床と衝突したら
-	if (isPlayer_ ||collider->GetColliderName() == "PlayerCollider"
+	if (collider->GetColliderName() == "PlayerCollider"
 		|| collider->GetGameObject()->GetObjectTag() == TagFloor) {
 		// このオブジェクトを破壊する
 		Destroy();
@@ -47,12 +49,12 @@ void EnemyBullet::SetVelocity(const bool& isPlayer)
 
 	if (isPlayer) {
 		// プレイヤーから敵への方向ベクトルを求める
-		sub = player_->translate_ - enemy_->translate_;
+		sub = player_->GetWorldPos() - enemy_->GetWorldPos();
 		isPlayer_ = true;
 	}
 	else {
 		// プレイヤーから敵への方向ベクトルを求める
-		sub = enemy_->translate_ - player_->translate_;
+		sub = enemy_->GetWorldPos() - player_->GetWorldPos();
 		isPlayer_ = false;
 	}
 	// 求めた差分ベクトルを正規化
