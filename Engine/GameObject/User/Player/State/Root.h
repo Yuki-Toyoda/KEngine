@@ -31,6 +31,8 @@ private: // メンバ変数
 	// 移動速度
 	const float kMaxSpeed_ = 0.15f;
 
+	const float kMaxZforcusSpeed_ = 0.1f;
+
 	// 現在の移動速度
 	Vector3 speed_ = { 0.0f };
 

@@ -98,14 +98,14 @@ public: // アクセッサ等
 	template<IsBaseObject SelectObject>
 	inline SelectObject* GetGameObject(std::string name) {
 		// 返還用
-		SelectObject* result = new BaseObject();
+		SelectObject* result;
 
 		// 全オブジェクトから同名のオブジェクトがないか探す
-		for (BaseObject* object : objects_) {
+		for (std::unique_ptr<BaseObject>& object : objects_) {
 			// 同名オブジェクトを見つけた場合
 			if (object->GetObjectName() == name) {
 				// そのオブジェクトを選択型に返還
-				result = dynamic_cast<SelectObject*>(object);
+				result = dynamic_cast<SelectObject*>(object.get());
 				// 結果がnullptr以外だったらそれを返す
 				if (result != nullptr)
 					return result;

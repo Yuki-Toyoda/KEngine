@@ -89,6 +89,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Engine\GameObject\User\Enemy\EnemyBullet.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\State\EnemyRally.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\State\EnemyShot.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\State\EnemyRoot.cpp" />
     <ClCompile Include="Engine\GameObject\User\Player\State\Attack.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\Enemy.cpp" />
     <ClCompile Include="Engine\Audio\Audio.cpp" />
@@ -191,6 +194,11 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\GameObject\User\Enemy\EnemyBullet.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyRally.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyShot.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyStateList.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\State\IEnemyState.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyRoot.h" />
     <ClInclude Include="Engine\GameObject\User\Player\State\Attack.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\Enemy.h" />
     <ClInclude Include="Engine\Audio\Audio.h" />

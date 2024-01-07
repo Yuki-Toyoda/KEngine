@@ -71,7 +71,12 @@ void Root::Update()
 		}
 
 		// 移動ベクトルに最大速度を掛ける
-		move = move * kMaxSpeed_;
+		if (player_->followCamera_->GetEnableZForcus()) {
+			move = move * kMaxZforcusSpeed_;
+		}
+		else {
+			move = move * kMaxSpeed_;
+		}
 	}
 	else {
 		// プレイヤーアニメーションを変更

@@ -40,14 +40,26 @@ public: // メンバ関数
 	/// <param name="transform">敵座標</param>
 	void SetEnemyTransform(const WorldTransform* transform) { enemy_ = transform; }
 
+	/// <summary>
+	/// 速度のセッター
+	/// </summary>
+	/// <param name="isPlayer">プレイヤーに向けたベクトルか</param>
+	void SetVelocity(const bool& isPlayer);
+
 private: // メンバ変数
 
 	// 発射ベクトル
 	Vector3 velocity_ = { 0.0f, 0.0f, 0.0f };
 	// 発射スピード
-	float speed_ = 1.0f;
+	float speed_ = 0.5f;
 	// 最大発射スピード
 	const float maxSpeed_ = 3.0f;
+
+	// プレイヤーへ発射されているか
+	bool isPlayer_ = false;
+
+	// そもそも発射されているか
+	bool isReturn_ = false;
 
 	// プレイヤーの座標
 	const WorldTransform* player_ = nullptr;

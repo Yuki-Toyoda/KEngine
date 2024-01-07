@@ -28,7 +28,8 @@ void GameScene::Init(){
 	// 敵生成
 	Enemy* enemy = nullptr;
 	enemy = gameObjectManager_->CreateInstance<Enemy>("Enemy", BaseObject::TagEnemy);
-	enemy->transform_.translate_ = { 0.0f, 2.0f, 10.0f };
+	enemy->transform_.translate_ = { 0.0f, 1.5f, 10.0f };
+	enemy->SetPlayerPos(&player->transform_);
 
 	// ロックオンクラス生成
 	LockOn* lockOn = nullptr;

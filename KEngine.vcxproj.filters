@@ -245,6 +245,9 @@
     <ClCompile Include="Engine\GameObject\User\Player\State\Attack.cpp" />
     <ClCompile Include="Engine\GameObject\User\Player\State\RotatingSlash.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\EnemyBullet.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\State\EnemyRally.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\State\EnemyShot.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\State\EnemyRoot.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -529,6 +532,11 @@
     <ClInclude Include="Engine\GameObject\User\Player\State\Attack.h" />
     <ClInclude Include="Engine\GameObject\User\Player\State\RotatingSlash.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\EnemyBullet.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyRally.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyShot.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyStateList.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\State\IEnemyState.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyRoot.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">

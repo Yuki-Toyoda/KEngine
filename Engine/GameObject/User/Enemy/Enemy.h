@@ -1,5 +1,7 @@
 #pragma once
 #include "../../BaseObject.h"
+#include "../../../Utility/Animation/AnimationManager.h"
+#include "State/EnemyStateList.h"
 
 /// <summary>
 /// 敵クラス
@@ -40,11 +42,39 @@ public: // メンバ関数
 	/// <param name="collider">衝突していたコライダー<</param>
 	void OnCollisionExit(Collider* collider) override;
 
+	/// <summary>
+	/// パラメータを作成する
+	/// </summary>
+	/// <param name="name">作成するパラメータ</param>
+	void CreateParameter(const std::string& name);
+
+	/// <summary>
+	/// 行動状態変更関数
+	/// </summary>
+	/// <param name="newState"></param>
+	void ChangeState(std::unique_ptr<IEnemyState> newState);
+
+	/// <summary>
+	/// プレイヤー座標セッター
+	/// </summary>
+	/// <param name="playerPos">プレイヤー座標</param>
+	void SetPlayerPos(const WorldTransform* playerPos) { playerPos_ = playerPos; }
+
 public: // パブリックなメンバ変数
 
-	
+	// 左腕のトランスフォーム
+	WorldTransform armTransform_L_;
+
+	// 敵アニメーション
+	Animation* enemyAnim_;
 
 private: // メンバ変数
+
+	// アニメーションマネージャ
+	AnimationManager* animManager_;
+
+	// 行動
+	std::unique_ptr<IEnemyState> state_;
 
 	// 身体のトランスフォーム
 	WorldTransform bodyTransform_;
@@ -52,14 +82,15 @@ private: // メンバ変数
 	WorldTransform headTransform_;
 	// 右腕のトランスフォーム
 	WorldTransform armTransform_R_;
-	// 左腕のトランスフォーム
-	WorldTransform armTransform_L_;
 
-	// 当たり判定のトランスフォーム
-	WorldTransform colliderTransform_;
-
+	// 当たり判定ワールド座標
+	Vector3 worldPos_;
+	// 当たり判定半径
 	float colliderRadius_ = 1.0f;
 
-	Vector3 worldPos_;
+	// プレイヤー座標
+	const WorldTransform* playerPos_ = nullptr;
+	// プレイヤーへの角度
+	float targetAngle_ = 0.0f;
 };
 
