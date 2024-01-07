@@ -56,12 +56,6 @@ void Line::Update()
 	if (rotate_.z <= -(float)std::numbers::pi * 2.0f) {
 		rotate_.z += (float)std::numbers::pi * 2.0f;
 	}
-
-
-	// 親がいるのであれば
-	if (transform_.GetParent() != nullptr) {
-		worldPos_ = transform_.GetWorldPos();
-	}
 	
 	transform_.translate_ = position_;
 	transform_.rotate_ = rotate_;
@@ -76,6 +70,11 @@ void Line::Update()
 	// オフセットを元に移動
 	transform_.translate_ = position_ + Math::Transform(offset, rotateMat);
 	
+	// 親がいるのであれば
+	if (transform_.GetParent() != nullptr) {
+		worldPos_ = transform_.GetWorldPos();
+	}
+
 }
 
 void Line::DisplayImGui()

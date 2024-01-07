@@ -70,8 +70,6 @@ public: // パブリックなメンバ変数
 	// 攻撃中か
 	bool isAttacking_ = false;
 
-	
-
 private: // メンバ変数
 
 	// 身体のトランスフォーム
@@ -82,6 +80,13 @@ private: // メンバ変数
 	WorldTransform armTransform_R_;
 	// 左腕のトランスフォーム
 	WorldTransform armTransform_L_;
+
+	// コライダー座標
+	WorldTransform colliderTransform_;
+	// コライダーのワールド座標
+	Vector3 colliderWorldPos_;
+	// コライダー半径
+	float colliderRadius_ = 0.5f;
 
 	// 行動状態格納変数
 	std::unique_ptr<IState> state_;

@@ -27,6 +27,12 @@ public: // メンバ関数
 	/// </summary>
 	/// <param name="collider">衝突したコライダー</param>
 	void OnCollisionEnter(Collider* collider) override;
+	
+	/// <summary>
+	/// 衝突した瞬間にコールバックされる関数
+	/// </summary>
+	/// <param name="collider">衝突したコライダー</param>
+	void OnCollision(Collider* collider) override;
 
 	/// <summary>
 	/// 衝突していたオブジェクトから離れた時のコールバック関数
@@ -34,10 +40,26 @@ public: // メンバ関数
 	/// <param name="collider">衝突していたコライダー<</param>
 	void OnCollisionExit(Collider* collider) override;
 
-private: // その他関数
+public: // パブリックなメンバ変数
+
+	
+
+private: // メンバ変数
 
 	// 身体のトランスフォーム
 	WorldTransform bodyTransform_;
+	// 頭のトランスフォーム
+	WorldTransform headTransform_;
+	// 右腕のトランスフォーム
+	WorldTransform armTransform_R_;
+	// 左腕のトランスフォーム
+	WorldTransform armTransform_L_;
 
+	// 当たり判定のトランスフォーム
+	WorldTransform colliderTransform_;
+
+	float colliderRadius_ = 1.0f;
+
+	Vector3 worldPos_;
 };
 

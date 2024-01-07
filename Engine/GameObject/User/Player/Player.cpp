@@ -27,7 +27,9 @@ void Player::Init()
 	armTransform_L_.Init();
 	armTransform_L_.SetParent(&bodyTransform_, 0b111);
 	armTransform_L_.translate_ = { 0.0f, 1.3f, 0.0f };
-
+	colliderTransform_.Init();
+	colliderTransform_.SetParent(&bodyTransform_, 0b111);
+	colliderTransform_.translate_ = { 0.0f, 0.65f, 0.0f };
 
 	// アニメーションパラメータの追加
 
@@ -71,6 +73,10 @@ void Player::Init()
 	AddMesh(&armTransform_L_, color_, "./Resources/Player", "Arm_L.obj");
 	AddMesh(&armTransform_L_, color_, "./Resources/Sword", "Sword.obj");
 	AddMesh(&armTransform_R_, color_, "./Resources/Shield", "Shiled.obj");
+
+	// コライダーの追加
+	colliderWorldPos_ = colliderTransform_.GetWorldPos();
+	AddColliderSphere("PlayerCollider", &colliderWorldPos_, &colliderRadius_);
 
 	// 攻撃用の線の追加
 	attackLine_ = std::make_unique<Line>();
@@ -124,6 +130,8 @@ void Player::Update()
 
 	// 線の更新
 	attackLine_->Update();
+
+	colliderWorldPos_ = colliderTransform_.GetWorldPos();
 }
 
 void Player::DisplayImGui()
@@ -164,6 +172,10 @@ void Player::DisplayImGui()
 
 	// 線のImGui表示
 	attackLine_->DisplayImGui();
+
+	colliderTransform_.DisplayImGui("collider");
+	Vector3 world = colliderTransform_.GetWorldPos();
+	ImGui::DragFloat3("colliderWorldPos", &world.x);
 }
 
 void Player::ChangeState(std::unique_ptr<IState> newState)

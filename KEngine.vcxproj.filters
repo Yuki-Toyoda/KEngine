@@ -244,6 +244,7 @@
     </ClCompile>
     <ClCompile Include="Engine\GameObject\User\Player\State\Attack.cpp" />
     <ClCompile Include="Engine\GameObject\User\Player\State\RotatingSlash.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\EnemyBullet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -527,6 +528,7 @@
     </ClInclude>
     <ClInclude Include="Engine\GameObject\User\Player\State\Attack.h" />
     <ClInclude Include="Engine\GameObject\User\Player\State\RotatingSlash.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\EnemyBullet.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">

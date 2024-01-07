@@ -80,11 +80,11 @@ void Root::Update()
 		}
 	}
 
-	//if (player_->followCamera_->GetLockOn()->GetIsLockOn()) {
+	//if (enemy_->followCamera_->GetLockOn()->GetIsLockOn()) {
 	//	// ロックオン対象の座標
-	//	Vector3 targetPos = player_->followCamera_->GetLockOn()->target_->transform_.translate_;
+	//	Vector3 targetPos = enemy_->followCamera_->GetLockOn()->target_->transform_.translate_;
 	//	// 追従対象からロックオン対象への差分ベクトル
-	//	Vector3 sub = targetPos - player_->transform_.translate_;
+	//	Vector3 sub = targetPos - enemy_->transform_.translate_;
 	//	// 方向ベクトルを元にプレイヤーがいる角度を求める
 	//	targetAngleY_ = std::atan2(sub.x, sub.z);
 	//}
@@ -95,7 +95,7 @@ void Root::Update()
 	}
 
 	// 目標角度と現在角度が一致していたら移動させる
-	/*float subDirection = player_->transform_.rotate_.y - targetAngleY_;
+	/*float subDirection = enemy_->transform_.rotate_.y - targetAngleY_;
 	if (subDirection < 0.0f) {
 		subDirection *= -1.0f;
 	}*/
