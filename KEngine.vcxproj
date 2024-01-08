@@ -90,7 +90,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   <ItemGroup>
     <ClCompile Include="Engine\GameObject\User\Enemy\EnemyBullet.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\State\EnemyDown.cpp" />
-    <ClCompile Include="Engine\GameObject\User\Enemy\State\EnemyRally.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\State\EnemyShot.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\State\EnemyRoot.cpp" />
     <ClCompile Include="Engine\GameObject\User\Player\State\Attack.cpp" />
@@ -196,7 +195,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   <ItemGroup>
     <ClInclude Include="Engine\GameObject\User\Enemy\EnemyBullet.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyDown.h" />
-    <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyRally.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyShot.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyStateList.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\State\IEnemyState.h" />

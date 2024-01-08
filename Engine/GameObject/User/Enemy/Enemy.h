@@ -75,6 +75,17 @@ private: // メンバ変数
 
 	// 行動
 	std::unique_ptr<IEnemyState> state_;
+	// 行動変更クールタイム
+	KLib::DeltaTimer stateChangeTimer_;
+	// 行動変更クールタイム定数値
+	const float kStateChangeCoolTime_ = 1.5f;
+
+	// HP
+	int32_t hp_ = 25;
+	// ヒットクールタイムタイマー
+	KLib::DeltaTimer hitCoolTimeTimer_;
+	// ヒットクールタイム定数値
+	const float kHitCoolTime_ = 0.35f;
 
 	// 身体のトランスフォーム
 	WorldTransform bodyTransform_;

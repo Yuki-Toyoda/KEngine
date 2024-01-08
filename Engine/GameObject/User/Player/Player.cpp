@@ -45,6 +45,8 @@ void Player::Init()
 	CreateParameter("Player_RotaingSlashChargeing");
 	// 回転切りのパラメータの生成
 	CreateParameter("Player_RotaingSlash");
+	// ダメージのパラメータの生成
+	CreateParameter("Player_Damage");
 
 	// アニメーションの作成
 	playerAnim_ = AnimationManager::GetInstance()->CreateAnimation("PlayerAnimation", "Player_Idle");
@@ -131,7 +133,11 @@ void Player::Update()
 	// 線の更新
 	attackLine_->Update();
 
+	//コライダーのワールド座標更新
 	colliderWorldPos_ = colliderTransform_.GetWorldPos();
+
+	// ヒットクールタイム更新
+	hitCoolTimeTimer_.Update();
 }
 
 void Player::DisplayImGui()
@@ -141,6 +147,8 @@ void Player::DisplayImGui()
 	headTransform_.DisplayImGuiWithTreeNode("HeadTransform");
 	armTransform_R_.DisplayImGuiWithTreeNode("Arm_R_Transform");
 	armTransform_L_.DisplayImGuiWithTreeNode("Arm_L_BodyTransform");
+
+	ImGui::DragInt("HP", &hp_);
 
 	// プレイヤーのアニメーションImGui
 	playerAnim_->DisplayImGui();
@@ -187,6 +195,17 @@ void Player::ChangeState(std::unique_ptr<IState> newState)
 
 	// 初期化した新しいステートを代入
 	state_ = std::move(newState);
+}
+
+void Player::Damage()
+{
+	// ヒットクールタイムが終了していれば
+	if (hitCoolTimeTimer_.GetIsFinish()) {
+		// HPを減らす
+		hp_--;
+		// 命中クールタイムリセット
+		hitCoolTimeTimer_.Start(kHitCoolTime_);
+	}
 }
 
 void Player::CreateParameter(const std::string& name)

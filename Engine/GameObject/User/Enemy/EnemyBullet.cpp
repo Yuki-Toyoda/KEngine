@@ -1,4 +1,6 @@
 #include "EnemyBullet.h"
+#include "../Player/Player.h"
+#include "../../GameObjectManager.h"
 
 void EnemyBullet::Init()
 {
@@ -37,6 +39,14 @@ void EnemyBullet::OnCollisionEnter(Collider* collider)
 	// プレイヤー、または床と衝突したら
 	if (collider->GetColliderName() == "PlayerCollider"
 		|| collider->GetGameObject()->GetObjectTag() == TagFloor) {
+		// プレイヤーの場合ダメージ処理を行う
+		if (collider->GetColliderName() == "PlayerCollider") {
+			// プレイヤーを取得
+			Player* p = GameObjectManager::GetInstance()->GetGameObject<Player>("Player");
+			// ダメージ処理を行う
+			p->Damage();
+		}
+
 		// このオブジェクトを破壊する
 		Destroy();
 	}

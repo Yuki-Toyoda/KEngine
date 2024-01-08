@@ -35,6 +35,11 @@ public: // メンバ関数
 	/// <param name="newState"></param>
 	void ChangeState(std::unique_ptr<IState> newState);
 
+	/// <summary>
+	/// ダメージ処理関数
+	/// </summary>
+	void Damage();
+
 private: // プライベートなメンバ関数
 
 	/// <summary>
@@ -84,6 +89,13 @@ private: // メンバ変数
 	WorldTransform armTransform_R_;
 	// 左腕のトランスフォーム
 	WorldTransform armTransform_L_;
+
+	// HP
+	int32_t hp_ = 6;
+	// ヒットクールタイムタイマー
+	KLib::DeltaTimer hitCoolTimeTimer_;
+	// ヒットクールタイム定数値
+	const float kHitCoolTime_ = 0.35f;
 
 	// コライダーのワールド座標
 	Vector3 colliderWorldPos_;

@@ -69,6 +69,9 @@ void Enemy::Init()
 
 	// 行動変更
 	ChangeState(std::make_unique<EnemyRoot>());
+	// 行動変更タイマーリセット
+	stateChangeTimer_.Start(kStateChangeCoolTime_);
+
 }
 
 void Enemy::Update()
@@ -86,8 +89,31 @@ void Enemy::Update()
 		transform_.rotate_.y = Math::LerpShortAngle(transform_.rotate_.y, targetAngle_, 0.1f);
 	}
 
+	// 行動変更タイマーが終了していれば
+	if (stateChangeTimer_.GetIsFinish()) {
+		// ダウン状態でない限り変更を行わない
+		if (state_->GetStateName() != "Down" && state_->GetStateName() != "Shot") {
+			// y座標が特定の値に達してれば
+			if (transform_.translate_.y >= 3.9f) {
+				if (GameObjectManager::GetInstance()->GetGameObject<EnemyBullet>("EnemyBullet") == nullptr) {
+					// 敵が弾を撃つ
+					ChangeState(std::make_unique<EnemyShot>());
+					// 行動変更タイマーリセット
+					stateChangeTimer_.Start(kStateChangeCoolTime_);
+				}
+			}
+		}
+	}
+
 	// 現在行動を更新
 	state_->Update();
+
+	// ヒットクールタイムタイマー更新
+	hitCoolTimeTimer_.Update();
+	// 行動変更クールタイムタイマー更新
+	if (state_->GetStateName() == "Root") {
+		stateChangeTimer_.Update();
+	}
 
 	// ワールド座標の取得
 	worldPos_ = transform_.GetWorldPos();
@@ -103,6 +129,8 @@ void Enemy::DisplayImGui()
 	armTransform_L_.DisplayImGuiWithTreeNode("Arm_L_Transform");
 
 	enemyAnim_->DisplayImGui();
+
+	ImGui::DragInt("HP", &hp_);
 
 	// アニメーションの読み込みパラメータ変更
 	if (ImGui::TreeNode("ChangeReadParameter")) {
@@ -203,7 +231,13 @@ void Enemy::OnCollision(Collider* collider)
 {
 	// 剣と衝突していたら
 	if (collider->GetColliderName() == "Sword") {
-		//color_ = { 1.0f, 0.0f, 0.0f, 1.0f };
+		// ヒットクールタイムが終了していれば
+		if (hitCoolTimeTimer_.GetIsFinish()) {
+			// HPを減らす
+			hp_--;
+			// クールタイムタイマー開始
+			hitCoolTimeTimer_.Start(kHitCoolTime_);
+		}
 	}
 }
 
