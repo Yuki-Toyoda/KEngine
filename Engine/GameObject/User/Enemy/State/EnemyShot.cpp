@@ -44,7 +44,7 @@ void EnemyShot::Update()
 		}
 
 		// 弾の座標を左手に合わせる
-		bullet_->transform_.translate_ = enemy_->armTransform_L_.GetWorldPos();
+		//bullet_->transform_.translate_ = enemy_->armTransform_L_.GetWorldPos();
 	}
 
 	// チャージ中アニメーションの場合
@@ -64,7 +64,7 @@ void EnemyShot::Update()
 		}
 
 		// 弾の座標を左手に合わせる
-		bullet_->transform_.translate_ = enemy_->armTransform_L_.GetWorldPos();
+		//bullet_->transform_.translate_ = enemy_->armTransform_L_.GetWorldPos();
 		
 		// タイマーを更新
 		timer_.Update();

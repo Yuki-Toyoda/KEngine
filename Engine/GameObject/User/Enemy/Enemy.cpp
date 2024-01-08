@@ -1,4 +1,6 @@
 #include "Enemy.h"
+#include "EnemyBullet.h"
+#include "../../GameObjectManager.h"
 
 void Enemy::Init()
 {
@@ -29,6 +31,8 @@ void Enemy::Init()
 	CreateParameter("Enemy_Charging");
 	// 弾発射のアニメーション
 	CreateParameter("Enemy_Shot");
+	// 弾の跳ね返しアニメーション
+	CreateParameter("Enemy_Rally");
 
 	// アニメーションの作成
 	enemyAnim_ = AnimationManager::GetInstance()->CreateAnimation("EnemyAnimation", "Enemy_Idle");
@@ -107,6 +111,9 @@ void Enemy::DisplayImGui()
 		if (ImGui::Button("Shot")) {
 			enemyAnim_->ChangeParameter("Enemy_Shot", true);
 		}
+		if (ImGui::Button("Rally")) {
+			enemyAnim_->ChangeParameter("Enemy_Rally", true);
+		}
 		ImGui::TreePop();
 	}
 
@@ -124,6 +131,17 @@ void Enemy::OnCollisionEnter(Collider* collider)
 	// 剣と衝突していたら
 	if (collider->GetColliderName() == "Sword") {
 		color_ = { 1.0f, 0.0f, 0.0f, 1.0f };
+	}
+
+	// 弾と衝突していたら
+	if (collider->GetColliderName() == "Bullet") {
+		EnemyBullet* b = GameObjectManager::GetInstance()->GetGameObject<EnemyBullet>("EnemyBullet");
+		if (b->GetIsReturn()) {
+			// アニメーションを変更
+			// ループを切る
+			enemyAnim_->isLoop_ = false;
+			enemyAnim_->ChangeParameter("Enemy_Rally", true);
+		}
 	}
 }
 

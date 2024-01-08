@@ -14,6 +14,15 @@ void EnemyRoot::Init()
 
 void EnemyRoot::Update()
 {
+	// アニメーションを変更
+	if (enemy_->enemyAnim_->GetReadingParameterName() != "Enemy_Idle") {
+		// ループを切る
+		if (enemy_->enemyAnim_->isEnd_) {
+			enemy_->enemyAnim_->isLoop_ = true;
+			enemy_->enemyAnim_->ChangeParameter("Enemy_Idle", true);
+		}
+	}
+
 	// 最高高度に達していない場合
 	if (enemy_->transform_.translate_.y < kHeight_) {
 		// 最高高度に線形補間を行う

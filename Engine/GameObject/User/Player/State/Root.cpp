@@ -23,6 +23,7 @@ void Root::Init()
 
 void Root::Update()
 {
+
 	// 移動中フラグをfalse
 	isMoving_ = false;
 

@@ -6,7 +6,7 @@ void EnemyBullet::Init()
 	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Sphere", "Sphere.obj");
 
 	// 球のコライダー追加
-	AddColliderSphere("Sphere", &transform_.translate_, &transform_.scale_.x);
+	AddColliderSphere("Bullet", &transform_.translate_, &transform_.scale_.x);
 }
 
 void EnemyBullet::Update()
@@ -49,12 +49,12 @@ void EnemyBullet::SetVelocity(const bool& isPlayer)
 
 	if (isPlayer) {
 		// プレイヤーから敵への方向ベクトルを求める
-		sub = player_->GetWorldPos() - enemy_->GetWorldPos();
+		sub = player_->GetWorldPos() - transform_.GetWorldPos();
 		isPlayer_ = true;
 	}
 	else {
 		// プレイヤーから敵への方向ベクトルを求める
-		sub = enemy_->GetWorldPos() - player_->GetWorldPos();
+		sub = enemy_->GetWorldPos() - transform_.GetWorldPos();
 		isPlayer_ = false;
 	}
 	// 求めた差分ベクトルを正規化

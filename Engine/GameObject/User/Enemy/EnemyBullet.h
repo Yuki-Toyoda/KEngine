@@ -51,6 +51,11 @@ public: // メンバ関数
 	/// </summary>
 	/// <param name="isReturn">跳ね返したか</param>
 	void SetIsReturn(bool isReturn) { isReturn_ = isReturn; }
+	/// <summary>
+	/// 跳ね返し状態のゲッター
+	/// </summary>
+	/// <returns>跳ね返しているのか</returns>
+	bool GetIsReturn() { return isReturn_; }
 
 private: // メンバ変数
 
