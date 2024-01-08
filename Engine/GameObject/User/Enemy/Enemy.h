@@ -92,5 +92,10 @@ private: // メンバ変数
 	const WorldTransform* playerPos_ = nullptr;
 	// プレイヤーへの角度
 	float targetAngle_ = 0.0f;
+
+	// ラリー回数記録用
+	int32_t rallyCount_ = 0;
+	// ラリーを行う最大回数
+	const int32_t kMaxRallyCount_ = 5;
 };
 

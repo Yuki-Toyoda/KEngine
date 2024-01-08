@@ -248,6 +248,7 @@
     <ClCompile Include="Engine\GameObject\User\Enemy\State\EnemyRally.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\State\EnemyShot.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\State\EnemyRoot.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\State\EnemyDown.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -537,6 +538,7 @@
     <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyStateList.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\State\IEnemyState.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyRoot.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyDown.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">

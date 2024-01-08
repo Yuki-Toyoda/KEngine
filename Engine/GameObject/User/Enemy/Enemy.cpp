@@ -33,6 +33,10 @@ void Enemy::Init()
 	CreateParameter("Enemy_Shot");
 	// 弾の跳ね返しアニメーション
 	CreateParameter("Enemy_Rally");
+	// ダウンモーション
+	CreateParameter("Enemy_Down");
+	// ダウン中モーション
+	CreateParameter("Enemy_Downing");
 
 	// アニメーションの作成
 	enemyAnim_ = AnimationManager::GetInstance()->CreateAnimation("EnemyAnimation", "Enemy_Idle");
@@ -69,15 +73,18 @@ void Enemy::Init()
 
 void Enemy::Update()
 {
-	// 差分ベクトルを求める
-	Vector3 sub = transform_.translate_ - playerPos_->translate_;
-	//sub = Math::Normalize(sub);
+	// ダウン状態でない限り
+	if (state_->GetStateName() != "Down") {
+		// 差分ベクトルを求める
+		Vector3 sub = transform_.translate_ - playerPos_->translate_;
+		//sub = Math::Normalize(sub);
 
-	// 目標角度の取得
-	targetAngle_ = std::atan2(sub.x, sub.z);
+		// 目標角度の取得
+		targetAngle_ = std::atan2(sub.x, sub.z);
 
-	// 目標角度に向かって徐々に補間
-	transform_.rotate_.y = Math::LerpShortAngle(transform_.rotate_.y, targetAngle_, 0.1f);
+		// 目標角度に向かって徐々に補間
+		transform_.rotate_.y = Math::LerpShortAngle(transform_.rotate_.y, targetAngle_, 0.1f);
+	}
 
 	// 現在行動を更新
 	state_->Update();
@@ -114,6 +121,12 @@ void Enemy::DisplayImGui()
 		if (ImGui::Button("Rally")) {
 			enemyAnim_->ChangeParameter("Enemy_Rally", true);
 		}
+		if (ImGui::Button("Down")) {
+			enemyAnim_->ChangeParameter("Enemy_Down", true);
+		}
+		if (ImGui::Button("Downing")) {
+			enemyAnim_->ChangeParameter("Enemy_Downing", true);
+		}
 		ImGui::TreePop();
 	}
 
@@ -122,6 +135,14 @@ void Enemy::DisplayImGui()
 		// ボタンを押したら行動を設定
 		if (ImGui::Button("PlayShot")) {
 			ChangeState(std::make_unique<EnemyShot>());
+		}
+	}
+
+	// 発射時の行動でない場合
+	if (state_->GetStateName() != "Down") {
+		// ボタンを押したら行動を設定
+		if (ImGui::Button("PlayDown")) {
+			ChangeState(std::make_unique<EnemyDown>());
 		}
 	}
 }
@@ -137,10 +158,43 @@ void Enemy::OnCollisionEnter(Collider* collider)
 	if (collider->GetColliderName() == "Bullet") {
 		EnemyBullet* b = GameObjectManager::GetInstance()->GetGameObject<EnemyBullet>("EnemyBullet");
 		if (b->GetIsReturn()) {
-			// アニメーションを変更
-			// ループを切る
-			enemyAnim_->isLoop_ = false;
-			enemyAnim_->ChangeParameter("Enemy_Rally", true);
+			// ラリー回数が最大数を超えていなければ
+			if (rallyCount_ < kMaxRallyCount_) {
+				int percent = Math::Random(rallyCount_, 6);
+				if (rallyCount_ == 0) {
+					rallyCount_ = 0;
+				}
+
+				if (percent == 6) {
+					// ダウン状態に
+					ChangeState(std::make_unique<EnemyDown>());
+
+					// 衝突した弾を破壊
+					collider->GetGameObject()->Destroy();
+
+					// ラリー回数リセット
+					rallyCount_ = 0;
+				}
+				else {
+					// アニメーションを変更
+					// ループを切る
+					enemyAnim_->isLoop_ = false;
+					enemyAnim_->ChangeParameter("Enemy_Rally", true);
+					// ラリー回数加算
+					rallyCount_++;
+				}
+
+			}
+			else {
+				// ダウン状態に
+				ChangeState(std::make_unique<EnemyDown>());
+
+				// 衝突した弾を破壊
+				collider->GetGameObject()->Destroy();
+
+				// ラリー回数リセット
+				rallyCount_ = 0;
+			}
 		}
 	}
 }
