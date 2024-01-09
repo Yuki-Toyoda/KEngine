@@ -16,6 +16,19 @@ bool Collider::GetPrevCollisionObject()
 	return false;
 }
 
+void Collider::OverridePrevCollisionObjectList(std::list<Collider*> objectList)
+{
+	// 破壊フラグの立ったオブジェクトを削除
+	objectList.remove_if([](Collider* c) {
+		if (c->GetGameObject()->GetIsDestroy()) {
+			return true;
+		}
+		return false;
+		});
+
+	prevCollisionObjects_ = objectList;
+}
+
 void Collider::DeletePrevCollisionObject(const std::string& name)
 {
 	// リスト内の全てのコライダーのペアを検証する

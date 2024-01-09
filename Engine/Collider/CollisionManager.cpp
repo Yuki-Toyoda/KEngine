@@ -64,10 +64,11 @@ void CollisionManager::CheckAllCollision()
 	}
 }
 
-bool CollisionManager::CheckCollisionPair(Collider* colliderA, Collider* colliderB, bool isCheckExit)
+bool CollisionManager::CheckCollisionPair(Collider* colliderA, Collider* colliderB, bool isCheckExit, bool isCheckEnter)
 {
 	// コライダーが所持しているゲームオブジェクトが同一の場合当たり判定を取らない
-	if (colliderA->GetGameObject() == colliderB->GetGameObject())
+	if (colliderA->GetGameObject() == colliderB->GetGameObject() || 
+		colliderA->GetGameObject()->GetIsDestroy() || colliderB->GetGameObject()->GetIsDestroy())
 		return false;
 
 	// 結果格納用
@@ -113,7 +114,7 @@ bool CollisionManager::CheckCollisionPair(Collider* colliderA, Collider* collide
 			result = IsCollisionSphereWithOBB(colliderB->GetColliderShape(), colliderA->GetColliderShape());
 			break;
 		case BaseShape::AABB: // コライダーBがAABBの場合
-			
+
 			break;
 		case BaseShape::OBB: // コライダーBがOBBの場合
 			// 球とAABBの当たり判定を検証する
@@ -129,7 +130,11 @@ bool CollisionManager::CheckCollisionPair(Collider* colliderA, Collider* collide
 		colliderA->AddNowCollisionObject(colliderB); // 前フレーム衝突したオブジェクトリストに衝突しているオブジェクトを追加
 		colliderB->GetGameObject()->OnCollision(colliderA); // B
 		colliderB->AddNowCollisionObject(colliderA); // 前フレーム衝突したオブジェクトリストに衝突しているオブジェクトを追加
+	}
 
+	if (result && isCheckEnter) {
+		//colliderA->AddNowCollisionObject(colliderB); // 前フレーム衝突したオブジェクトリストに衝突しているオブジェクトを追加
+		//colliderB->AddNowCollisionObject(colliderA); // 前フレーム衝突したオブジェクトリストに衝突しているオブジェクトを追加
 	}
 
 	return result;
@@ -139,7 +144,7 @@ bool CollisionManager::CheckCollisionPair(Collider* colliderA, Collider* collide
 void CollisionManager::CheckCollisionEnter(Collider* colliderA, Collider* colliderB)
 {
 	// 前フレームにそのオブジェクトが衝突していなければ
-	if (CheckCollisionPair(colliderA, colliderB, true)) {
+	if (CheckCollisionPair(colliderA, colliderB, true, true)) {
 		if (!colliderA->GetPrevCollisionObject(colliderB->GetGameObject()->GetObjectName()) &&
 			!colliderB->GetPrevCollisionObject(colliderA->GetGameObject()->GetObjectName())) {
 			// 衝突した関数を呼び出す

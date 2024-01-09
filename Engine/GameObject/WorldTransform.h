@@ -55,6 +55,11 @@ public: // パブリックメンバ関数
 	/// </summary>
 	/// <param name="id">ウィンドウ表示名</param>
 	void DisplayImGui(const std::string& id);
+	/// <summary>
+	/// デバッグ用ImGui表示関数
+	/// </summary>
+	/// <param name="id">ツリーノード名</param>
+	void DisplayImGuiWithTreeNode(const std::string& id);
 
 private: // メンバ変数
 

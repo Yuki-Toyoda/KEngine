@@ -82,7 +82,7 @@ public: // アクセッサ等
 	/// 前フレーム衝突したオブジェクトリストの上書き関数
 	/// </summary>
 	/// <param name="objectList">前フレーム衝突したオブジェクトリスト</param>
-	void OverridePrevCollisionObjectList(std::list<Collider*> objectList) { prevCollisionObjects_ = objectList; }
+	void OverridePrevCollisionObjectList(std::list<Collider*> objectList);
 	/// <summary>
 	/// 前フレーム衝突したオブジェクトリストのゲッター
 	/// </summary>

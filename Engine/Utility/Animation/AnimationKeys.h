@@ -51,6 +51,26 @@ public: // メンバ関数
 	/// </summary>
 	void SortKey();
 
+public: // アクセッサ等
+
+	/// <summary>
+	/// アニメーションフレーム数の取得
+	/// </summary>
+	/// <returns>アニメーション全体のフレーム数</returns>
+	int32_t GetAnimationFrameCount() { 
+		if (keys_.size() != 0) {
+			return keys_.back().playFrame_;
+		}
+
+		return 0;
+	}
+
+	/// <summary>
+	/// キー配列ごとのアニメーション進捗ゲッター
+	/// </summary>
+	/// <returns>アニメーション進捗</returns>
+	float GetKeysProgress() { return animTimer_.GetProgress(); }
+
 private: // プライベートなメンバ関数
 
 	/// <summary>
@@ -165,7 +185,7 @@ inline void AnimationKeys<T>::Update()
 	keyCount_ = (int)keys_.size();
 
 	// 再生中か、キーのサイズが2以上の時
-	if (isPlay_ && keys_.size() <= 2) {
+	if (isPlay_ && keys_.size() >= 2 && animateObject_ != nullptr) {
 		// 再生中フレームで遷移させる
 		*animateObject_ = KLib::Lerp<T>(prevKey_.value_, nextKey_.value_, nextKey_.ease_(lerpTimer_.GetProgress()));
 
@@ -180,6 +200,12 @@ inline void AnimationKeys<T>::Update()
 				// 次のキーへ
 				NextKey();
 			}
+			else {
+				// 終了トリガーtrue
+				isEnd_ = true;
+				// 再生中でない
+				isPlay_ = false;
+			}
 		}
 	}
 }
@@ -190,6 +216,14 @@ inline void AnimationKeys<T>::DisplayImGui()
 	// アニメーション名
 	std::string name = "Now SelectKeys : " + keysName_;
 	ImGui::Text(name.c_str());
+
+	// 破棄するキーがある場合削除する
+	keys_.remove_if([](AnimationKey<T>& key) {
+		if (key.isDelete_) {
+			return true;
+		}
+		return false;
+		});
 
 	// ボタンを押すとキーと追加
 	if (ImGui::Button("AddKey")) {
@@ -207,15 +241,16 @@ inline void AnimationKeys<T>::DisplayImGui()
 
 template<typename T>
 inline void AnimationKeys<T>::Play(const int32_t& keyIndex){
-#ifdef _DEBUG // デバッグ時のみ、キーの情報を読み取る
+	
 	// キーの情報を読み取る
 	if (animateObject_ != nullptr) {
 		ApplyItem();
 	}
-#endif // _DEBUG
 
 	// そもそもアニメーションのキー数が2以下だった場合再生すらしない
 	if (keys_.size() < 2) { 
+		isEnd_ = true;
+		isPlay_ = false;
 		return;
 	}
 	
@@ -225,7 +260,7 @@ inline void AnimationKeys<T>::Play(const int32_t& keyIndex){
 	// アニメーションの最終フレームを超過していた場合1フレーム前までさかのぼる
 	if (playingKey_ >= keys_.size()) {
 		// 最終フレームの１つ前のフレームに設定
-		playingKey_ = keys_.size() - 2;
+		playingKey_ = (int)keys_.size() - 2;
 	}
 
 	// リストからイテレータで値を取得
@@ -241,9 +276,13 @@ inline void AnimationKeys<T>::Play(const int32_t& keyIndex){
 
 	// 遷移時間タイマーを (1フレームの時間 * 差分フレーム) で開始
 	lerpTimer_.Start(std::clamp(ImGui::GetIO().DeltaTime, 0.f, 0.1f) * difFrame);
+	// アニメーション時間タイマーを(1フレームの時間 * 最終フレーム) で開始
+	animTimer_.Start(std::clamp(ImGui::GetIO().DeltaTime, 0.f, 0.1f) * keys_.back().playFrame_);
 
 	// 再生開始
 	isPlay_ = true;
+	// 再生中
+	isEnd_ = false;
 
 }
 
@@ -267,17 +306,19 @@ inline void AnimationKeys<T>::NextKey()
 
 	// リストからイテレータで値を取得
 	auto pKeyIt = std::next(keys_.begin(), playingKey_);
-	auto nKeyIt = std::next(keys_.begin(), playingKey_ + 1);
-
 	// 現在のキーで値を設定
 	prevKey_ = *pKeyIt;
-	nextKey_ = *nKeyIt;
 
-	// 次のフレームとの差分を求める
-	int difFrame = nextKey_.playFrame_ - prevKey_.playFrame_;
+	if (keyCount_ - 1 != playingKey_) {
+		auto nKeyIt = std::next(keys_.begin(), playingKey_ + 1);
+		nextKey_ = *nKeyIt;
 
-	// 遷移時間タイマーを (1フレームの時間 * 差分フレーム) で開始
-	lerpTimer_.Start(std::clamp(ImGui::GetIO().DeltaTime, 0.f, 0.1f) * difFrame);
+		// 次のフレームとの差分を求める
+		int difFrame = nextKey_.playFrame_ - prevKey_.playFrame_;
+
+		// 遷移時間タイマーを (1フレームの時間 * 差分フレーム) で開始
+		lerpTimer_.Start(std::clamp(ImGui::GetIO().DeltaTime, 0.f, 0.1f) * difFrame);
+	}
 }
 
 template<typename T>
