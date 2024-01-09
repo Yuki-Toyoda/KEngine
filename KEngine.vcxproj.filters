@@ -242,13 +242,27 @@
     <ClCompile Include="Engine\GameObject\User\LockOn\LockOn.cpp">
       <Filter>GameObject\User\LockOn</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\GameObject\User\Player\State\Attack.cpp" />
-    <ClCompile Include="Engine\GameObject\User\Player\State\RotatingSlash.cpp" />
-    <ClCompile Include="Engine\GameObject\User\Enemy\EnemyBullet.cpp" />
-    <ClCompile Include="Engine\GameObject\User\Enemy\State\EnemyShot.cpp" />
-    <ClCompile Include="Engine\GameObject\User\Enemy\State\EnemyRoot.cpp" />
-    <ClCompile Include="Engine\GameObject\User\Enemy\State\EnemyDown.cpp" />
-    <ClCompile Include="Engine\GameObject\User\Player\State\Damage.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Player\State\Attack.cpp">
+      <Filter>GameObject\User\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\User\Player\State\Damage.cpp">
+      <Filter>GameObject\User\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\User\Player\State\RotatingSlash.cpp">
+      <Filter>GameObject\User\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\User\Enemy\EnemyBullet.cpp">
+      <Filter>GameObject\User\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\User\Enemy\State\EnemyDown.cpp">
+      <Filter>GameObject\User\Enemy\State</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\User\Enemy\State\EnemyRoot.cpp">
+      <Filter>GameObject\User\Enemy\State</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\User\Enemy\State\EnemyShot.cpp">
+      <Filter>GameObject\User\Enemy\State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -530,15 +544,33 @@
     <ClInclude Include="Engine\GameObject\User\LockOn\LockOn.h">
       <Filter>GameObject\User\LockOn</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\GameObject\User\Player\State\Attack.h" />
-    <ClInclude Include="Engine\GameObject\User\Player\State\RotatingSlash.h" />
-    <ClInclude Include="Engine\GameObject\User\Enemy\EnemyBullet.h" />
-    <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyShot.h" />
-    <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyStateList.h" />
-    <ClInclude Include="Engine\GameObject\User\Enemy\State\IEnemyState.h" />
-    <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyRoot.h" />
-    <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyDown.h" />
-    <ClInclude Include="Engine\GameObject\User\Player\State\Damage.h" />
+    <ClInclude Include="Engine\GameObject\User\Player\State\Attack.h">
+      <Filter>GameObject\User\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\User\Player\State\Damage.h">
+      <Filter>GameObject\User\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\User\Player\State\RotatingSlash.h">
+      <Filter>GameObject\User\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\User\Enemy\EnemyBullet.h">
+      <Filter>GameObject\User\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyDown.h">
+      <Filter>GameObject\User\Enemy\State</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyRoot.h">
+      <Filter>GameObject\User\Enemy\State</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyShot.h">
+      <Filter>GameObject\User\Enemy\State</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyStateList.h">
+      <Filter>GameObject\User\Enemy\State</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\User\Enemy\State\IEnemyState.h">
+      <Filter>GameObject\User\Enemy\State</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -704,6 +736,9 @@
     </Filter>
     <Filter Include="GameObject\User\LockOn">
       <UniqueIdentifier>{6d8f812c-b65e-4e80-ac82-a06477ca058d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\User\Enemy\State">
+      <UniqueIdentifier>{9f2a1679-77ba-4816-97f2-9cee33a3b8fb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

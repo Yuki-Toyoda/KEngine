@@ -206,7 +206,7 @@ void Enemy::OnCollisionEnter(Collider* collider)
 			if (rallyCount_ < kMaxRallyCount_) {
 				int percent = Math::Random(rallyCount_, 6);
 				if (rallyCount_ == 1) {
-					rallyCount_ = 0;
+					percent = 0;
 				}
 
 				if (percent == 6) {
