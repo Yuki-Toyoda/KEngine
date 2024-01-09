@@ -38,6 +38,8 @@ void Enemy::Init()
 	CreateParameter("Enemy_Down");
 	// ダウン中モーション
 	CreateParameter("Enemy_Downing");
+	// ダメージアニメーション
+	CreateParameter("Enemy_Damage");
 
 	// アニメーションの作成
 	enemyAnim_ = AnimationManager::GetInstance()->CreateAnimation("EnemyAnimation", "Enemy_Idle");
@@ -171,6 +173,9 @@ void Enemy::DisplayImGui()
 		if (ImGui::Button("Downing")) {
 			enemyAnim_->ChangeParameter("Enemy_Downing", true);
 		}
+		if (ImGui::Button("Damage")) {
+			enemyAnim_->ChangeParameter("Enemy_Damage", true);
+		}
 		ImGui::TreePop();
 	}
 
@@ -203,7 +208,7 @@ void Enemy::OnCollisionEnter(Collider* collider)
 		EnemyBullet* b = GameObjectManager::GetInstance()->GetGameObject<EnemyBullet>("EnemyBullet");
 		if (b->GetIsReturn()) {
 			// ラリー回数が最大数を超えていなければ
-			if (rallyCount_ < kMaxRallyCount_) {
+			if (rallyCount_ <= kMaxRallyCount_) {
 				int percent = Math::Random(rallyCount_, 6);
 				if (rallyCount_ == 1) {
 					percent = 0;
@@ -248,11 +253,16 @@ void Enemy::OnCollision(Collider* collider)
 	// 剣と衝突していたら
 	if (collider->GetColliderName() == "Sword") {
 		// ヒットクールタイムが終了していれば
-		if (hitCoolTimeTimer_.GetIsFinish()) {
+		if (hitCoolTimeTimer_.GetIsFinish() && state_->GetStateName() == "Down") {
 			// HPを減らす
 			hp_--;
 			// クールタイムタイマー開始
 			hitCoolTimeTimer_.Start(kHitCoolTime_);
+
+			// ループを切る
+			enemyAnim_->isLoop_ = false;
+			enemyAnim_->ChangeParameter("Enemy_Damage", true);
+
 		}
 	}
 }
