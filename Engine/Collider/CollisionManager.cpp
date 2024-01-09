@@ -67,9 +67,11 @@ void CollisionManager::CheckAllCollision()
 bool CollisionManager::CheckCollisionPair(Collider* colliderA, Collider* colliderB, bool isCheckExit, bool isCheckEnter)
 {
 	// コライダーが所持しているゲームオブジェクトが同一の場合当たり判定を取らない
-	if (colliderA->GetGameObject() == colliderB->GetGameObject() || 
-		colliderA->GetGameObject()->GetIsDestroy() || colliderB->GetGameObject()->GetIsDestroy())
+	if (colliderA->GetGameObject() == colliderB->GetGameObject() ||
+		colliderA->GetGameObject()->GetIsDestroy() || colliderB->GetGameObject()->GetIsDestroy() ||
+		!colliderA->GetIsActive() || !colliderA->GetIsActive()) {
 		return false;
+	}
 
 	// 結果格納用
 	bool result = false;
