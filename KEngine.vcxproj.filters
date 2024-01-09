@@ -119,9 +119,6 @@
     <ClCompile Include="Engine\Scene\User\GameScene.cpp">
       <Filter>Scene\User</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\GameObject\Samples\SampleBox\SampleBox.cpp">
-      <Filter>GameObject\Samples\Box</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\GameObject\Samples\SampleSkyDome\SkyDome.cpp">
       <Filter>GameObject\Samples\SkyDome</Filter>
     </ClCompile>
@@ -133,21 +130,6 @@
     </ClCompile>
     <ClCompile Include="Engine\Collider\CollisionManager.cpp">
       <Filter>Collider</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject\Samples\SamplePlayer\SamplePlayer.cpp">
-      <Filter>GameObject\Samples\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject\Samples\SampleThirdPersonCamera\ThirdPersonCamera.cpp">
-      <Filter>GameObject\Samples\ThirdPersonCamera</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject\Samples\SampleFloor\SampleFloor.cpp">
-      <Filter>GameObject\Samples\Floor</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject\Samples\SampleWeapon\SampleWeapon.cpp">
-      <Filter>GameObject\Samples\Weapon</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject\Samples\SampleEnemy\SampleEnemy.cpp">
-      <Filter>GameObject\Samples\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Math\Quaternion.cpp">
       <Filter>Math</Filter>
@@ -172,9 +154,6 @@
     </ClCompile>
     <ClCompile Include="Engine\GameObject\Samples\SampleSprite\SampleSprite.cpp">
       <Filter>GameObject\Samples\Sprite</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject\User\TestObject.cpp">
-      <Filter>GameObject\User</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Audio\Audio.cpp">
       <Filter>Audio</Filter>
@@ -221,47 +200,11 @@
     <ClCompile Include="Engine\GameObject\Samples\SampleSphere\SampleSphere.cpp">
       <Filter>GameObject\Samples\Sphere</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\GameObject\User\Player\Player.cpp">
-      <Filter>GameObject\User\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject\User\Player\State\Root.cpp">
-      <Filter>GameObject\User\Player\State</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject\User\Floor\Floor.cpp">
-      <Filter>GameObject\User\Floor</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject\User\FollowCamera\FollowCamera.cpp">
-      <Filter>GameObject\User\FollowCamera</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject\User\Enemy\Enemy.cpp">
-      <Filter>GameObject\User\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Utility\Line\Line.cpp">
       <Filter>Utility\Line</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\GameObject\User\LockOn\LockOn.cpp">
-      <Filter>GameObject\User\LockOn</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject\User\Player\State\Attack.cpp">
-      <Filter>GameObject\User\Player\State</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject\User\Player\State\Damage.cpp">
-      <Filter>GameObject\User\Player\State</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject\User\Player\State\RotatingSlash.cpp">
-      <Filter>GameObject\User\Player\State</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject\User\Enemy\EnemyBullet.cpp">
-      <Filter>GameObject\User\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject\User\Enemy\State\EnemyDown.cpp">
-      <Filter>GameObject\User\Enemy\State</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject\User\Enemy\State\EnemyRoot.cpp">
-      <Filter>GameObject\User\Enemy\State</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject\User\Enemy\State\EnemyShot.cpp">
-      <Filter>GameObject\User\Enemy\State</Filter>
+    <ClCompile Include="Engine\GameObject\User\TestObject.cpp">
+      <Filter>GameObject\User\TestObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -406,9 +349,6 @@
     <ClInclude Include="Engine\Scene\User\GameScene.h">
       <Filter>Scene\User</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\GameObject\Samples\SampleBox\SampleBox.h">
-      <Filter>GameObject\Samples\Box</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\GameObject\Samples\SampleSkyDome\SkyDome.h">
       <Filter>GameObject\Samples\SkyDome</Filter>
     </ClInclude>
@@ -435,21 +375,6 @@
     </ClInclude>
     <ClInclude Include="Engine\Collider\Shape\Sphere.h">
       <Filter>Collider\Shape</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameObject\Samples\SamplePlayer\SamplePlayer.h">
-      <Filter>GameObject\Samples\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameObject\Samples\SampleThirdPersonCamera\ThirdPersonCamera.h">
-      <Filter>GameObject\Samples\ThirdPersonCamera</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameObject\Samples\SampleFloor\SampleFloor.h">
-      <Filter>GameObject\Samples\Floor</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameObject\Samples\SampleWeapon\SampleWeapon.h">
-      <Filter>GameObject\Samples\Weapon</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameObject\Samples\SampleEnemy\SampleEnemy.h">
-      <Filter>GameObject\Samples\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Math\Quaternion.h">
       <Filter>Math</Filter>
@@ -490,9 +415,6 @@
     <ClInclude Include="Engine\GameObject\Samples\SampleSprite\SampleSprite.h">
       <Filter>GameObject\Samples\Sprite</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\GameObject\User\TestObject.h">
-      <Filter>GameObject\User</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Particle\IParticleEmitter.h">
       <Filter>Particle</Filter>
     </ClInclude>
@@ -517,59 +439,11 @@
     <ClInclude Include="Engine\GameObject\Samples\SampleSphere\SampleSphere.h">
       <Filter>GameObject\Samples\Sphere</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\GameObject\User\Player\Player.h">
-      <Filter>GameObject\User\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameObject\User\Player\State\StateList.h">
-      <Filter>GameObject\User\Player\State</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameObject\User\Player\State\Root.h">
-      <Filter>GameObject\User\Player\State</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameObject\User\Player\State\IState.h">
-      <Filter>GameObject\User\Player\State</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameObject\User\Floor\Floor.h">
-      <Filter>GameObject\User\Floor</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameObject\User\FollowCamera\FollowCamera.h">
-      <Filter>GameObject\User\FollowCamera</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameObject\User\Enemy\Enemy.h">
-      <Filter>GameObject\User\Enemy</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Utility\Line\Line.h">
       <Filter>Utility\Line</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\GameObject\User\LockOn\LockOn.h">
-      <Filter>GameObject\User\LockOn</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameObject\User\Player\State\Attack.h">
-      <Filter>GameObject\User\Player\State</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameObject\User\Player\State\Damage.h">
-      <Filter>GameObject\User\Player\State</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameObject\User\Player\State\RotatingSlash.h">
-      <Filter>GameObject\User\Player\State</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameObject\User\Enemy\EnemyBullet.h">
-      <Filter>GameObject\User\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyDown.h">
-      <Filter>GameObject\User\Enemy\State</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyRoot.h">
-      <Filter>GameObject\User\Enemy\State</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyShot.h">
-      <Filter>GameObject\User\Enemy\State</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyStateList.h">
-      <Filter>GameObject\User\Enemy\State</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameObject\User\Enemy\State\IEnemyState.h">
-      <Filter>GameObject\User\Enemy\State</Filter>
+    <ClInclude Include="Engine\GameObject\User\TestObject.h">
+      <Filter>GameObject\User\TestObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -653,9 +527,6 @@
     <Filter Include="GameObject\Samples">
       <UniqueIdentifier>{89284fb6-f950-449c-974e-bdfdbe7ea9ed}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameObject\Samples\Box">
-      <UniqueIdentifier>{106e3ed8-07e4-4837-88ba-8cb84b198b23}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameObject\Samples\SkyDome">
       <UniqueIdentifier>{8065e286-0718-421c-ba52-72d1062819ab}</UniqueIdentifier>
     </Filter>
@@ -664,21 +535,6 @@
     </Filter>
     <Filter Include="Collider\Shape">
       <UniqueIdentifier>{90624c1b-4e9d-4395-a179-30f1589e163f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject\Samples\Player">
-      <UniqueIdentifier>{d84aac2d-9489-49be-88ec-37601d17a574}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject\Samples\ThirdPersonCamera">
-      <UniqueIdentifier>{784d2395-7411-4e99-b57a-9e0c77c24159}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject\Samples\Weapon">
-      <UniqueIdentifier>{cb785a87-d86d-4783-8dd2-88fede289ea2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject\Samples\Floor">
-      <UniqueIdentifier>{19b08627-6d9c-4f7d-8046-cd5783ffc7ca}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject\Samples\Enemy">
-      <UniqueIdentifier>{283a43bf-5d01-4128-8024-64fd4fa2aac4}</UniqueIdentifier>
     </Filter>
     <Filter Include="Utility">
       <UniqueIdentifier>{c507d589-1a82-40b2-ac1c-f171606562f1}</UniqueIdentifier>
@@ -716,29 +572,11 @@
     <Filter Include="GameObject\Samples\Sphere">
       <UniqueIdentifier>{e2052d27-98b3-431d-8362-043ed86199a5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameObject\User\Player">
-      <UniqueIdentifier>{898fb67c-d21e-490d-87f1-abf6b46c0d32}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject\User\Player\State">
-      <UniqueIdentifier>{c55acdda-0e12-447a-a0b5-35f8ac20d855}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject\User\Floor">
-      <UniqueIdentifier>{76981130-ad59-4ba3-a8af-f25c3db99f43}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject\User\FollowCamera">
-      <UniqueIdentifier>{c328e627-d767-4560-8fd1-521e56802d5f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject\User\Enemy">
-      <UniqueIdentifier>{47e65cae-7cd6-4ee9-9b78-45fc4264d132}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Utility\Line">
       <UniqueIdentifier>{19af9528-1eb7-4597-8d66-94769ceaf9a6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameObject\User\LockOn">
-      <UniqueIdentifier>{6d8f812c-b65e-4e80-ac82-a06477ca058d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObject\User\Enemy\State">
-      <UniqueIdentifier>{9f2a1679-77ba-4816-97f2-9cee33a3b8fb}</UniqueIdentifier>
+    <Filter Include="GameObject\User\TestObject">
+      <UniqueIdentifier>{52c77563-6463-40a5-856f-83b0927ce8e1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
