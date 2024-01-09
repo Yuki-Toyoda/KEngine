@@ -12,7 +12,7 @@ void Wepon::Init()
 	theta_ = 0.0f;
 	rotateDirection_ = false;
 	worldPos_ = transform_.GetWorldPos();
-	
+	isMove_ = true;
 	isChain_ = true;
 	behavior_ = Behavior::kRoot;
 	isAtack_ = false;
