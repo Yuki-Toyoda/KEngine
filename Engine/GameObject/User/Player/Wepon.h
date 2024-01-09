@@ -3,13 +3,14 @@
 #include "../InputManager/InputManager.h"
 #include <optional>
 #include "../../../Audio/Audio.h"
+enum class Behavior {
+	kRoot,
+	kAtack,
+};
 class Wepon:public BaseObject
 {
 public:
-	enum class Behavior {
-		kRoot,
-		kAtack,
-	};
+	
 	/// <summary>
 	/// 初期化関数
 	/// </summary>
@@ -54,6 +55,7 @@ private:
 	Behavior behavior_ = Behavior::kRoot;
 	bool isBreak_;
 	float kMoveRotateForce_=0.05f;
+	float moveRotateForce_ = 0.0f;
 	float kAtackRotateForce_=0.2f;
 	uint32_t soundHandleslam_;
 	uint32_t soundHandleDamage_;

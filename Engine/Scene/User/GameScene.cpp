@@ -27,11 +27,20 @@ void GameScene::Init(){
 	chain_->SetPlayer(player_);
 	chain_->SetWepon(wepon_);
 	Obstacle* obstacle;
-	obstacle = gameObjectManager_->CreateInstance<Obstacle>("obstacle", BaseObject::TagObstacle);
-	obstacle->transform_.translate_.x = -8.0f;
+	for (int i = 0; i < 5; i++) {
+		obstacle = gameObjectManager_->CreateInstance<Obstacle>("obstacle", BaseObject::TagObstacle);
+		obstacle->transform_.translate_.x = -8.0f;
+		obstacles_.push_back(obstacle);
+	}
+	obstacles_[0]->transform_.translate_ = { 10.0f,6.0f,0.0f };
+	obstacles_[1]->transform_.translate_ = { -10.0f,-6.0f,0.0f };
+	obstacles_[2]->transform_.translate_ = { 18.0f,-16.0f,0.0f };
+	obstacles_[3]->transform_.translate_ = { -18.0f,6.0f,0.0f };
+	obstacles_[4]->transform_.translate_ = { 15.0f,18.0f,0.0f };
 	camera_ = nullptr;
 	camera_ = gameObjectManager_->CreateInstance<InGameCamera>("Incamera", BaseObject::TagCamera);
 	camera_->UseThisCamera();
+	camera_->fov_ = 0.85f;
 }
 
 void GameScene::Update()

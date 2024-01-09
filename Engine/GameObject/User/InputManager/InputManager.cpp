@@ -32,6 +32,25 @@ bool InputManager::MoveRight()
     return false;
 }
 
+Vector3 InputManager::Move()
+{
+    Vector3 velocity = {0.0f,0.0f,0.0f};
+    if (Input::GetInstance()->PushKey(DIK_LEFT)) {
+        velocity.x = -1.0f;
+    }
+    if (Input::GetInstance()->PushKey(DIK_RIGHT)) {
+        velocity.x = 1.0f;
+    }
+    if (Input::GetInstance()->PushKey(DIK_UP)) {
+        velocity.y = 1.0f;
+    }
+    if (Input::GetInstance()->PushKey(DIK_DOWN)) {
+        velocity.y = -1.0f;
+    }
+    velocity.z = 0.0f;
+    return velocity;
+}
+
 bool InputManager::RotateRight()
 {
     if (Input::GetInstance()->PushKey(DIK_D)) {

@@ -25,5 +25,6 @@ public: // メンバ関数
 
 		Vector3 velocity_;
 		float moveSpeed_ = 0.1f;
+		Vector3 worldPos_;
 };
 

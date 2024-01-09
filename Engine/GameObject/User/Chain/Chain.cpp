@@ -19,6 +19,12 @@ void Chain::Update()
 	transform_.rotate_ = line_->rotate_;
 	transform_.scale_ = { line_->length_,0.35f,0.35f };
 	line_->Update();
+	if (wepon_->GetBehavior() == Behavior::kAtack) {
+		colliders_.front()->SetIsActive(false);
+	}
+	else {
+		colliders_.front()->SetIsActive(true);
+	}
 
 }
 

@@ -24,6 +24,7 @@ private:
 	Player*player_;
 	Wepon* wepon_;
 	std::list<Enemy*>enemies_;
+	std::vector<Obstacle*> obstacles_;
 	Chain* chain_;
 	InGameCamera* camera_;
 };

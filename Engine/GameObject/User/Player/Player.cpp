@@ -5,24 +5,14 @@ void Player::Init()
 	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Box", "Box.obj");
 
 	velocity_ = { 0.0f,0.0f,0.0f };
+	AddColliderSphere("Enemy", &worldPos_, &transform_.scale_.x);
 }
 
 void Player::Update()
 {
 	velocity_ = { 0.0f,0.0f,0.0f };
-	if (InputManager::MoveUp()) {
-		velocity_.y = 1.0f;
-	}
-	if (InputManager::MoveDown()) {
-	   velocity_.y = -1.0f ;
-	}
-	if (InputManager::MoveLeft()) {
-		velocity_.x  =  -1.0f ;
-	}
-	if (InputManager::MoveRight()) {
-		velocity_.x = 1.0f;
-	}
-	
+
+	velocity_ = InputManager::Move();
 	transform_.translate_ = transform_.translate_ + (Math::Normalize(velocity_) * moveSpeed_);
 	
 }

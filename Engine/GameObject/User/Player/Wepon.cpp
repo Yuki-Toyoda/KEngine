@@ -62,7 +62,12 @@ void Wepon::Update()
 		break;
 	}
 	worldPos_ = transform_.GetWorldPos();
-	
+	if (GetBehavior() == Behavior::kAtack) {
+		colliders_.front()->SetIsActive(false);
+	}
+	else {
+		colliders_.front()->SetIsActive(true);
+	}
 }
 
 void Wepon::DisplayImGui()
@@ -102,17 +107,25 @@ void Wepon::Move()
 			if(theta_>=(2.0f*3.14159265f)){
 				theta_ = 0.0f;
 			}
-			theta_ += kMoveRotateForce_;
-			transform_.rotate_.z += kMoveRotateForce_;
+			if (moveRotateForce_ <= kMoveRotateForce_) {
+				moveRotateForce_ += 0.01f;
+			}
+			
+			
 		}
 		else {
+
 			if (theta_ <= -(2.0f * 3.14159265f)) {
 				theta_ = 0.0f;
 			}
-			theta_ -= kMoveRotateForce_;
-			transform_.rotate_.z -= kMoveRotateForce_;
+			if (moveRotateForce_ >= -kMoveRotateForce_) {
+				moveRotateForce_ -= 0.01f;
+			}
+			
 		}
 	}
+	theta_ += moveRotateForce_;
+	transform_.rotate_.z += moveRotateForce_;
 	transform_.translate_.x = std::cosf(theta_) * (distance_+transform_.scale_.x);
 	transform_.translate_.y = std::sinf(theta_) * (distance_+transform_.scale_.y);
 	if (lerpCount_ < 1.0f) {
