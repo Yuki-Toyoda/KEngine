@@ -1,14 +1,10 @@
 #pragma once
-#include "IState.h"
-#include "../../../../Utility/KLib.h"
-
-// クラスの前方宣言
-class Camera;
+#include "IEnemyState.h"
 
 /// <summary>
-/// ダメージを喰らった時の処理
+/// 敵の死亡アニメーションの状態
 /// </summary>
-class Damage : public IState
+class EnemyDead : public IEnemyState
 {
 public: // メンバ関数
 
@@ -28,14 +24,6 @@ public: // メンバ関数
 	void DisplayImGui() override;
 
 private: // メンバ変数
-
-	Vector3 velocity_;
-
-	bool isDead_ = false;
-
-	Camera* c;
-
-	KLib::DeltaTimer timer_;
 
 };
 

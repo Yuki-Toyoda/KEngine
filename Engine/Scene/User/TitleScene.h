@@ -20,5 +20,9 @@ public: // メンバ関数
 
 private: // メンバ変数
 
+	// コントローラー入力
+	XINPUT_STATE joyState_; // 現在フレーム用
+	XINPUT_STATE preJoyState_; // 前フレーム用
+
 };
 

@@ -32,7 +32,7 @@ void EnemyBullet::OnCollisionEnter(Collider* collider)
 		SetVelocity(false, e->GetRallyCount());
 		isReturn_ = true;
 
-		ParticleEmitterManager::GetInstance()->CreateEmitter<IParticleEmitter, IParticle>("test", 100, 10, transform_.translate_, 0.1f, 0.1f, TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png"));
+		ParticleEmitterManager::GetInstance()->CreateEmitter<IParticleEmitter, IParticle>("test", 10, 5, transform_.translate_, 0.1f, 0.15f, TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png"));
 	}
 
 	// ボスと衝突したら
@@ -41,7 +41,7 @@ void EnemyBullet::OnCollisionEnter(Collider* collider)
 		SetVelocity(true, e->GetRallyCount());
 		isReturn_ = false;
 
-		ParticleEmitterManager::GetInstance()->CreateEmitter<IParticleEmitter, IParticle>("test", 100, 10, transform_.translate_, 0.1f, 0.1f, TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png"));
+		ParticleEmitterManager::GetInstance()->CreateEmitter<IParticleEmitter, IParticle>("test", 10, 5, transform_.translate_, 0.1f, 0.15f, TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png"));
 	}
 
 	// プレイヤー、または床と衝突したら
@@ -49,6 +49,7 @@ void EnemyBullet::OnCollisionEnter(Collider* collider)
 		|| collider->GetGameObject()->GetObjectTag() == TagFloor) {
 		// プレイヤーの場合ダメージ処理を行う
 		if (collider->GetColliderName() == "PlayerCollider") {
+			ParticleEmitterManager::GetInstance()->CreateEmitter<IParticleEmitter, IParticle>("test", 10, 10, transform_.translate_, 0.1f, 0.15f, TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png"));
 			// プレイヤーを取得
 			Player* p = GameObjectManager::GetInstance()->GetGameObject<Player>("Player");
 			// ダメージ処理を行う

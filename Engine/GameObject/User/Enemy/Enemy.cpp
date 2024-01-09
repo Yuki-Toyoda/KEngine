@@ -2,6 +2,7 @@
 #include "EnemyBullet.h"
 #include "../Player/Player.h"
 #include "../../GameObjectManager.h"
+#include "../../../Particle/ParticleEmitterManager.h"
 
 void Enemy::Init()
 {
@@ -40,6 +41,9 @@ void Enemy::Init()
 	CreateParameter("Enemy_Downing");
 	// ダメージアニメーション
 	CreateParameter("Enemy_Damage");
+	// 死亡アニメーション
+	CreateParameter("Enemy_Dead");
+
 
 	// アニメーションの作成
 	enemyAnim_ = AnimationManager::GetInstance()->CreateAnimation("EnemyAnimation", "Enemy_Idle");
@@ -55,6 +59,8 @@ void Enemy::Init()
 	enemyAnim_->AddAnimationKeys<Vector3>("Arm_L_Scale", &armTransform_L_.scale_);
 	enemyAnim_->AddAnimationKeys<Vector3>("Arm_L_Rotate", &armTransform_L_.rotate_);
 	enemyAnim_->AddAnimationKeys<Vector3>("Arm_L_Translate", &armTransform_L_.translate_);
+	enemyAnim_->AddAnimationKeys<Vector3>("Translate", &transform_.translate_);
+	enemyAnim_->AddAnimationKeys <float> ("Alpha", &color_.w);
 
 	// ループ状態にする
 	enemyAnim_->isLoop_ = true;
@@ -79,31 +85,34 @@ void Enemy::Init()
 
 void Enemy::Update()
 {
-	// ダウン状態でない限り
-	if (state_->GetStateName() != "Down") {
-		// 差分ベクトルを求める
-		Vector3 sub = transform_.translate_ - playerPos_->translate_;
-		//sub = Math::Normalize(sub);
+	// 死亡していなければ
+	if (hp_ > 0) {
+		// ダウン状態でない限り
+		if (state_->GetStateName() != "Down") {
+			// 差分ベクトルを求める
+			Vector3 sub = transform_.translate_ - playerPos_->translate_;
+			//sub = Math::Normalize(sub);
 
-		// 目標角度の取得
-		targetAngle_ = std::atan2(sub.x, sub.z);
+			// 目標角度の取得
+			targetAngle_ = std::atan2(sub.x, sub.z);
 
-		// 目標角度に向かって徐々に補間
-		transform_.rotate_.y = Math::LerpShortAngle(transform_.rotate_.y, targetAngle_, 0.1f);
-	}
+			// 目標角度に向かって徐々に補間
+			transform_.rotate_.y = Math::LerpShortAngle(transform_.rotate_.y, targetAngle_, 0.1f);
+		}
 
-	// 行動変更タイマーが終了していれば
-	if (stateChangeTimer_.GetIsFinish()) {
-		// ダウン状態でない限り変更を行わない
-		if (state_->GetStateName() != "Down" && state_->GetStateName() != "Shot") {
-			// y座標が特定の値に達してれば
-			if (transform_.translate_.y >= 3.9f) {
-				if (GameObjectManager::GetInstance()->GetGameObject<EnemyBullet>("EnemyBullet") == nullptr) {
-					// 敵が弾を撃つ
-					ChangeState(std::make_unique<EnemyShot>());
-					rallyCount_ = 0;
-					// 行動変更タイマーリセット
-					stateChangeTimer_.Start(kStateChangeCoolTime_);
+		// 行動変更タイマーが終了していれば
+		if (stateChangeTimer_.GetIsFinish()) {
+			// ダウン状態でない限り変更を行わない
+			if (state_->GetStateName() != "Down" && state_->GetStateName() != "Shot") {
+				// y座標が特定の値に達してれば
+				if (transform_.translate_.y >= 3.9f) {
+					if (GameObjectManager::GetInstance()->GetGameObject<EnemyBullet>("EnemyBullet") == nullptr) {
+						// 敵が弾を撃つ
+						ChangeState(std::make_unique<EnemyShot>());
+						rallyCount_ = 0;
+						// 行動変更タイマーリセット
+						stateChangeTimer_.Start(kStateChangeCoolTime_);
+					}
 				}
 			}
 		}
@@ -112,27 +121,34 @@ void Enemy::Update()
 	// 現在行動を更新
 	state_->Update();
 
-	// ヒットクールタイムタイマー更新
-	hitCoolTimeTimer_.Update();
-	// 行動変更クールタイムタイマー更新
-	if (state_->GetStateName() == "Root"
-		&& GameObjectManager::GetInstance()->GetGameObject<EnemyBullet>("EnemyBullet") == nullptr
-		&& GameObjectManager::GetInstance()->GetGameObject<Player>("Player")->GetStateName() != "Damage") {
-		stateChangeTimer_.Update();
-	}
-
-	// 行動変更クールタイムタイマー更新
-	if (enemyAnim_->GetReadingParameterName() == "Enemy_Rally") {
-		if (enemyAnim_->isLoop_) {
-			enemyAnim_->isLoop_ = false;
+	// 死亡していなければ
+	if (hp_ > 0) {
+		// ヒットクールタイムタイマー更新
+		hitCoolTimeTimer_.Update();
+		// 行動変更クールタイムタイマー更新
+		if (state_->GetStateName() == "Root"
+			&& GameObjectManager::GetInstance()->GetGameObject<EnemyBullet>("EnemyBullet") == nullptr
+			&& GameObjectManager::GetInstance()->GetGameObject<Player>("Player")->GetStateName() != "Damage") {
+			stateChangeTimer_.Update();
 		}
 
-		if (enemyAnim_->isEnd_) {
-			// 行動変更
-			ChangeState(std::make_unique<EnemyRoot>());
+		// 行動変更クールタイムタイマー更新
+		if (enemyAnim_->GetReadingParameterName() == "Enemy_Rally") {
+			if (enemyAnim_->isLoop_) {
+				enemyAnim_->isLoop_ = false;
+			}
+
+			if (enemyAnim_->isEnd_) {
+				// 行動変更
+				ChangeState(std::make_unique<EnemyRoot>());
+			}
 		}
 	}
-
+	else {
+		if (state_->GetStateName() != "Dead") {
+			ChangeState(std::make_unique<EnemyDead>());
+		}
+	}
 	// ワールド座標の取得
 	worldPos_ = transform_.GetWorldPos();
 }
@@ -176,6 +192,9 @@ void Enemy::DisplayImGui()
 		if (ImGui::Button("Damage")) {
 			enemyAnim_->ChangeParameter("Enemy_Damage", true);
 		}
+		if (ImGui::Button("Dead")) {
+			enemyAnim_->ChangeParameter("Enemy_Dead", true);
+		}
 		ImGui::TreePop();
 	}
 
@@ -194,27 +213,53 @@ void Enemy::DisplayImGui()
 			ChangeState(std::make_unique<EnemyDown>());
 		}
 	}
+
+	// 発射時の行動でない場合
+	if (state_->GetStateName() != "Dead") {
+		// ボタンを押したら行動を設定
+		if (ImGui::Button("PlayDead")) {
+			ChangeState(std::make_unique<EnemyDead>());
+		}
+	}
 }
 
 void Enemy::OnCollisionEnter(Collider* collider)
 {
-	// 剣と衝突していたら
-	if (collider->GetColliderName() == "Sword") {
-		color_ = { 1.0f, 0.0f, 0.0f, 1.0f };
-	}
+	// 死亡していなければ
+	if (hp_ > 0) {
 
-	// 弾と衝突していたら
-	if (collider->GetColliderName() == "Bullet") {
-		EnemyBullet* b = GameObjectManager::GetInstance()->GetGameObject<EnemyBullet>("EnemyBullet");
-		if (b->GetIsReturn()) {
-			// ラリー回数が最大数を超えていなければ
-			if (rallyCount_ <= kMaxRallyCount_) {
-				int percent = Math::Random(rallyCount_, 6);
-				if (rallyCount_ == 1) {
-					percent = 0;
+		// 弾と衝突していたら
+		if (collider->GetColliderName() == "Bullet") {
+			EnemyBullet* b = GameObjectManager::GetInstance()->GetGameObject<EnemyBullet>("EnemyBullet");
+			if (b->GetIsReturn()) {
+				// ラリー回数が最大数を超えていなければ
+				if (rallyCount_ <= kMaxRallyCount_) {
+					int percent = Math::Random(rallyCount_, 6);
+					if (rallyCount_ == 1) {
+						percent = 0;
+					}
+
+					if (percent == 6) {
+						// ダウン状態に
+						ChangeState(std::make_unique<EnemyDown>());
+
+						// 衝突した弾を破壊
+						collider->GetGameObject()->Destroy();
+
+						// ラリー回数リセット
+						rallyCount_ = 0;
+					}
+					else {
+						// アニメーションを変更
+						// ループを切る
+						enemyAnim_->isLoop_ = false;
+						enemyAnim_->ChangeParameter("Enemy_Rally", true);
+						// ラリー回数加算
+						rallyCount_++;
+					}
+
 				}
-
-				if (percent == 6) {
+				else {
 					// ダウン状態に
 					ChangeState(std::make_unique<EnemyDown>());
 
@@ -224,25 +269,6 @@ void Enemy::OnCollisionEnter(Collider* collider)
 					// ラリー回数リセット
 					rallyCount_ = 0;
 				}
-				else {
-					// アニメーションを変更
-					// ループを切る
-					enemyAnim_->isLoop_ = false;
-					enemyAnim_->ChangeParameter("Enemy_Rally", true);
-					// ラリー回数加算
-					rallyCount_++;
-				}
-
-			}
-			else {
-				// ダウン状態に
-				ChangeState(std::make_unique<EnemyDown>());
-
-				// 衝突した弾を破壊
-				collider->GetGameObject()->Destroy();
-
-				// ラリー回数リセット
-				rallyCount_ = 0;
 			}
 		}
 	}
@@ -250,28 +276,23 @@ void Enemy::OnCollisionEnter(Collider* collider)
 
 void Enemy::OnCollision(Collider* collider)
 {
-	// 剣と衝突していたら
-	if (collider->GetColliderName() == "Sword") {
-		// ヒットクールタイムが終了していれば
-		if (hitCoolTimeTimer_.GetIsFinish() && state_->GetStateName() == "Down") {
-			// HPを減らす
-			hp_--;
-			// クールタイムタイマー開始
-			hitCoolTimeTimer_.Start(kHitCoolTime_);
+	// 死亡していなければ
+	if (hp_ > 0) {
+		// 剣と衝突していたら
+		if (collider->GetColliderName() == "Sword") {
+			// ヒットクールタイムが終了していれば
+			if (hitCoolTimeTimer_.GetIsFinish() && state_->GetStateName() == "Down") {
+				// HPを減らす
+				hp_--;
+				// クールタイムタイマー開始
+				hitCoolTimeTimer_.Start(kHitCoolTime_);
 
-			// ループを切る
-			enemyAnim_->isLoop_ = false;
-			enemyAnim_->ChangeParameter("Enemy_Damage", true);
-
+				// ループを切る
+				enemyAnim_->isLoop_ = false;
+				enemyAnim_->ChangeParameter("Enemy_Damage", true);
+				ParticleEmitterManager::GetInstance()->CreateEmitter<IParticleEmitter, IParticle>("test", 3, 3, transform_.translate_, 0.1f, 0.15f, TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png"));
+			}
 		}
-	}
-}
-
-void Enemy::OnCollisionExit(Collider* collider)
-{
-	// 剣と衝突していたら
-	if (collider->GetColliderName() == "Sword") {
-		color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
 	}
 }
 
@@ -291,6 +312,9 @@ void Enemy::CreateParameter(const std::string& name)
 	animManager_->AddSelectAnimationKeys<Vector3>(name, "Arm_L_Scale");
 	animManager_->AddSelectAnimationKeys<Vector3>(name, "Arm_L_Rotate");
 	animManager_->AddSelectAnimationKeys<Vector3>(name, "Arm_L_Translate");
+	animManager_->AddSelectAnimationKeys<Vector3>(name, "Translate");
+	animManager_->AddSelectAnimationKeys<float>(name, "Alpha");
+
 }
 
 void Enemy::ChangeState(std::unique_ptr<IEnemyState> newState)

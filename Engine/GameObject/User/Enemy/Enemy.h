@@ -37,12 +37,6 @@ public: // メンバ関数
 	void OnCollision(Collider* collider) override;
 
 	/// <summary>
-	/// 衝突していたオブジェクトから離れた時のコールバック関数
-	/// </summary>
-	/// <param name="collider">衝突していたコライダー<</param>
-	void OnCollisionExit(Collider* collider) override;
-
-	/// <summary>
 	/// パラメータを作成する
 	/// </summary>
 	/// <param name="name">作成するパラメータ</param>
@@ -61,6 +55,12 @@ public: // メンバ関数
 	void SetPlayerPos(const WorldTransform* playerPos) { playerPos_ = playerPos; }
 
 	/// <summary>
+	/// 死亡状態ゲッター
+	/// </summary>
+	/// <returns>死亡状態</returns>
+	bool GetIsDead() { return isDead_; }
+
+	/// <summary>
 	/// 打ち返し回数のゲッター
 	/// </summary>
 	/// <returns>打ち返し回数</returns>
@@ -73,6 +73,9 @@ public: // パブリックなメンバ変数
 
 	// 敵アニメーション
 	Animation* enemyAnim_;
+
+	// 死亡トリガー
+	bool isDead_ = false;
 
 private: // メンバ変数
 

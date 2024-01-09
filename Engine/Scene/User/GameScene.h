@@ -20,7 +20,10 @@ public: // メンバ関数
 
 private: // メンバ変数
 
-
+	// 敵
+	Enemy* enemy_ = nullptr;
+	// プレイヤー
+	Player* player_ = nullptr;
 
 };
 

@@ -11,7 +11,7 @@ SceneManager* SceneManager::GetInstance()
 void SceneManager::Init()
 {
 	// シーン初期化
-	currentScene_ = new GameScene(); // タイトルシーン生成
+	currentScene_ = new TitleScene(); // タイトルシーン生成
 	currentScene_->PreInitialize(); // 共通初期化を行う
 	currentScene_->Init(); // 初期化を行う
 }

@@ -88,6 +88,14 @@ public: // パブリックなメンバ変数
 	// 頭のトランスフォーム
 	WorldTransform headTransform_;
 
+	// 移動可能か
+	bool canMove_ = true;
+
+	// HP
+	int32_t hp_ = 6;
+	// 死亡トリガー
+	bool isDead_ = false;
+
 private: // メンバ変数
 
 	// 身体のトランスフォーム
@@ -97,8 +105,8 @@ private: // メンバ変数
 	// 左腕のトランスフォーム
 	WorldTransform armTransform_L_;
 
-	// HP
-	int32_t hp_ = 6;
+	Vector2 hertUITranslate_[6];
+	Vector2 hertUISize_[6];
 	// ヒットクールタイムタイマー
 	KLib::DeltaTimer hitCoolTimeTimer_;
 	// ヒットクールタイム定数値

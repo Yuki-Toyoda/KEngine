@@ -1,6 +1,8 @@
 #include "Damage.h"
 #include "Root.h"
 #include "../Player.h"
+#include "../../../GameObjectManager.h"
+#include "../../../Core/Camera.h"
 
 void Damage::Init()
 {
@@ -19,6 +21,17 @@ void Damage::Init()
 	velocity_ = { 0.0f, 0.0f, -0.1f };
 	Matrix4x4 rotateMat = Math::MakeRotateYMatrix(player_->transform_.rotate_.y);
 	velocity_ = Math::Transform(velocity_, rotateMat);
+
+	// プレイヤーのHPが0以下の時ゲームオーバー
+	if (player_->hp_ <= 0) {
+		// カメラ移動
+		c = GameObjectManager::GetInstance()->CreateInstance<Camera>("StagingCamera", BaseObject::TagCamera);
+		c->transform_.SetParent(&player_->transform_);
+		c->transform_.translate_ = { 0.0f, 5.0f, -1.15f };
+		c->transform_.rotate_ = { (float)std::numbers::pi / 2.0f, 0.0f, 0.0f };
+		c->fov_ = 0.6f;
+		c->UseThisCamera();
+	}
 }
 
 void Damage::Update()
@@ -30,9 +43,25 @@ void Damage::Update()
 			player_->transform_.translate_ += velocity_;
 		}
 		
-		// アニメーションの9割りが終了していた場合、スティックの入力があった場合待機状態へ移行
-		if (player_->playerAnim_->GetAnimationProgress() >= 0.9f) {
-			
+		// プレイヤーのHPが0以下の時ゲームオーバー
+		if (player_->hp_ <= 0) {
+			// アニメーションの9割りが終了していた場合、スティックの入力があった場合待機状態へ移行
+			if (player_->playerAnim_->GetAnimationProgress() >= 0.5f && !isDead_) {
+				player_->playerAnim_->Stop();
+				isDead_ = true;
+				timer_.Start(1.5f);
+			}
+
+			if (isDead_) {
+				if (timer_.GetIsFinish()) {
+					player_->isDead_ = true;
+				}
+				else {
+					c->transform_.translate_.z -= 0.0025f;
+				}
+				
+				timer_.Update();
+			}
 		}
 
 		// アニメーションが終了していれば

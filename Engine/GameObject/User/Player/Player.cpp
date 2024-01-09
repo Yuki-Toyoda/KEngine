@@ -91,6 +91,16 @@ void Player::Init()
 	// 行動状態を待機状態に変更
 	ChangeState(std::make_unique<Root>());
 
+	// UIの追加
+	for (int i = 0; i < 6; i++) {
+		hertUISize_[i] = {48.0f, 48.0f };
+		hertUITranslate_[i] = { (hertUISize_->x) + (hertUISize_->x * i) , 32.0f };
+		AddSprite("Hert", hertUITranslate_[i], hertUISize_[i], TextureManager::Load("./Resources", "Hert.png"));
+		sprites_[i]->color_ = { 1.0f, 0.0f, 0.15f, 1.0f };
+	}
+
+
+	AddSprite("UI", {0.0f, 0.0f}, {1280.0f ,720.0f}, TextureManager::Load("./Resources", "UI.png"));
 }
 
 void Player::Update()
@@ -99,47 +109,55 @@ void Player::Update()
 	preJoyState_ = joyState_; // 前フレームの入力取得
 	input_->GetJoystickState(0, joyState_); // 現在フレームの入力取得
 
-	// 現在の行動状態の更新を行う
-	state_->Update();
+	if (canMove_) {
+		// 現在の行動状態の更新を行う
+		state_->Update();
 
-	if (followCamera_ != nullptr) {
-		if (!followCamera_->GetEnableZForcus()) {
-			followCamera_->SetTargetAngle(followCamera_->transform_.rotate_.y);
-		}
+		if (followCamera_ != nullptr) {
+			if (!followCamera_->GetEnableZForcus()) {
+				followCamera_->SetTargetAngle(followCamera_->transform_.rotate_.y);
+			}
 
-		if (followCamera_->GetLockOn()->GetIsLockOn()) {
-			// ロックオン対象の座標
-			Vector3 targetPos = followCamera_->GetLockOn()->target_->transform_.translate_;
-			// 追従対象からロックオン対象への差分ベクトル
-			Vector3 sub = targetPos - transform_.translate_;
-			// 方向ベクトルを元にプレイヤーがいる角度を求める
-			targetAngle_ = std::atan2(sub.x, sub.z);
+			if (followCamera_->GetLockOn()->GetIsLockOn()) {
+				// ロックオン対象の座標
+				Vector3 targetPos = followCamera_->GetLockOn()->target_->transform_.translate_;
+				// 追従対象からロックオン対象への差分ベクトル
+				Vector3 sub = targetPos - transform_.translate_;
+				// 方向ベクトルを元にプレイヤーがいる角度を求める
+				targetAngle_ = std::atan2(sub.x, sub.z);
 
-			// 身体を回転させる
-			transform_.rotate_.y = Math::LerpShortAngle(transform_.rotate_.y, targetAngle_, 0.1f);
-		}
-	}
-
-	// 攻撃可能か
-	if (state_->GetStateName() != "Damage") {
-		if (canAttack_ && !isAttacking_) {
-			// Aボタンを押すと攻撃する
-			if (joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A &&
-				!(preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A)) {
-				// 行動を変更
-				ChangeState(std::make_unique<Attack>());
+				// 身体を回転させる
+				transform_.rotate_.y = Math::LerpShortAngle(transform_.rotate_.y, targetAngle_, 0.1f);
 			}
 		}
+
+		// 攻撃可能か
+		if (state_->GetStateName() != "Damage") {
+			if (canAttack_ && !isAttacking_) {
+				// Aボタンを押すと攻撃する
+				if (joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A &&
+					!(preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A)) {
+					// 行動を変更
+					ChangeState(std::make_unique<Attack>());
+				}
+			}
+		}
+
+		// 線の更新
+		attackLine_->Update();
+
+		//コライダーのワールド座標更新
+		colliderWorldPos_ = colliderTransform_.GetWorldPos();
+
+		// ヒットクールタイム更新
+		hitCoolTimeTimer_.Update();
 	}
-
-	// 線の更新
-	attackLine_->Update();
-
-	//コライダーのワールド座標更新
-	colliderWorldPos_ = colliderTransform_.GetWorldPos();
-
-	// ヒットクールタイム更新
-	hitCoolTimeTimer_.Update();
+	else {
+		if (playerAnim_->GetReadingParameterName() != "Player_Idle") {
+			playerAnim_->isLoop_ = true;
+			playerAnim_->ChangeParameter("Player_Idle", true);
+		}
+	}
 }
 
 void Player::DisplayImGui()
@@ -208,6 +226,9 @@ void Player::HitDamage(const Vector3& translate)
 	if (hitCoolTimeTimer_.GetIsFinish()) {
 		// HPを減らす
 		hp_--;
+
+		// スプライトの色を変更
+		sprites_[hp_]->color_ = { 0.15f, 0.15f, 0.15f, 1.0f };
 
 		// 弾の座標からプレイヤーの方向ベクトルを求める
 		Vector3 sub = translate - transform_.translate_;
