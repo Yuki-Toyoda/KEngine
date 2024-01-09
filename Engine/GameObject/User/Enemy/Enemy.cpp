@@ -1,5 +1,6 @@
 #include "Enemy.h"
 #include "EnemyBullet.h"
+#include "../Player/Player.h"
 #include "../../GameObjectManager.h"
 
 void Enemy::Init()
@@ -98,6 +99,7 @@ void Enemy::Update()
 				if (GameObjectManager::GetInstance()->GetGameObject<EnemyBullet>("EnemyBullet") == nullptr) {
 					// 敵が弾を撃つ
 					ChangeState(std::make_unique<EnemyShot>());
+					rallyCount_ = 0;
 					// 行動変更タイマーリセット
 					stateChangeTimer_.Start(kStateChangeCoolTime_);
 				}
@@ -111,8 +113,22 @@ void Enemy::Update()
 	// ヒットクールタイムタイマー更新
 	hitCoolTimeTimer_.Update();
 	// 行動変更クールタイムタイマー更新
-	if (state_->GetStateName() == "Root") {
+	if (state_->GetStateName() == "Root"
+		&& GameObjectManager::GetInstance()->GetGameObject<EnemyBullet>("EnemyBullet") == nullptr
+		&& GameObjectManager::GetInstance()->GetGameObject<Player>("Player")->GetStateName() != "Damage") {
 		stateChangeTimer_.Update();
+	}
+
+	// 行動変更クールタイムタイマー更新
+	if (enemyAnim_->GetReadingParameterName() == "Enemy_Rally") {
+		if (enemyAnim_->isLoop_) {
+			enemyAnim_->isLoop_ = false;
+		}
+
+		if (enemyAnim_->isEnd_) {
+			// 行動変更
+			ChangeState(std::make_unique<EnemyRoot>());
+		}
 	}
 
 	// ワールド座標の取得
@@ -189,7 +205,7 @@ void Enemy::OnCollisionEnter(Collider* collider)
 			// ラリー回数が最大数を超えていなければ
 			if (rallyCount_ < kMaxRallyCount_) {
 				int percent = Math::Random(rallyCount_, 6);
-				if (rallyCount_ == 0) {
+				if (rallyCount_ == 1) {
 					rallyCount_ = 0;
 				}
 

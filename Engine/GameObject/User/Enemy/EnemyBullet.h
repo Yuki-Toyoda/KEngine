@@ -44,7 +44,8 @@ public: // メンバ関数
 	/// 速度のセッター
 	/// </summary>
 	/// <param name="isPlayer">プレイヤーに向けたベクトルか</param>
-	void SetVelocity(const bool& isPlayer);
+	/// <param name="rallyCount">打ち返し回数</param>
+	void SetVelocity(const bool& isPlayer, const int32_t& rallyCount);
 
 	/// <summary>
 	/// 跳ね返し状態のセッター
@@ -64,7 +65,9 @@ private: // メンバ変数
 	// 発射スピード
 	float speed_ = 0.25f;
 	// 最大発射スピード
-	const float maxSpeed_ = 3.0f;
+	const float maxSpeed_ = 0.5f;
+
+	const float kAcceleration_ = 0.035f;
 
 	// プレイヤーへ発射されているか
 	bool isPlayer_ = false;

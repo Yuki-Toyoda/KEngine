@@ -60,6 +60,12 @@ public: // メンバ関数
 	/// <param name="playerPos">プレイヤー座標</param>
 	void SetPlayerPos(const WorldTransform* playerPos) { playerPos_ = playerPos; }
 
+	/// <summary>
+	/// 打ち返し回数のゲッター
+	/// </summary>
+	/// <returns>打ち返し回数</returns>
+	int32_t GetRallyCount() { return rallyCount_; }
+
 public: // パブリックなメンバ変数
 
 	// 左腕のトランスフォーム

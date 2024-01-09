@@ -8,6 +8,8 @@
 
 void RotatingSlash::Init()
 {
+	stateName_ = "RotatingSlash";
+
 	// プレイヤーのアニメーションの変更
 	player_->playerAnim_->ChangeParameter("Player_RotaingSlashCharge", true);
 	// アニメーションのループを無効

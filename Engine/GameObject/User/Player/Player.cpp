@@ -121,12 +121,14 @@ void Player::Update()
 	}
 
 	// 攻撃可能か
-	if (canAttack_ && !isAttacking_) {
-		// Aボタンを押すと攻撃する
-		if (joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A &&
-			!(preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A)) {
-			// 行動を変更
-			ChangeState(std::make_unique<Attack>());
+	if (state_->GetStateName() != "Damage") {
+		if (canAttack_ && !isAttacking_) {
+			// Aボタンを押すと攻撃する
+			if (joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A &&
+				!(preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A)) {
+				// 行動を変更
+				ChangeState(std::make_unique<Attack>());
+			}
 		}
 	}
 
@@ -172,6 +174,9 @@ void Player::DisplayImGui()
 		if (ImGui::Button("RotaingSlash")) {
 			playerAnim_->ChangeParameter("Player_RotaingSlash", true);
 		}
+		if (ImGui::Button("Damage")) {
+			playerAnim_->ChangeParameter("Player_Damage", true);
+		}
 		ImGui::TreePop();
 	}
 
@@ -197,12 +202,22 @@ void Player::ChangeState(std::unique_ptr<IState> newState)
 	state_ = std::move(newState);
 }
 
-void Player::Damage()
+void Player::HitDamage(const Vector3& translate)
 {
 	// ヒットクールタイムが終了していれば
 	if (hitCoolTimeTimer_.GetIsFinish()) {
 		// HPを減らす
 		hp_--;
+
+		// 弾の座標からプレイヤーの方向ベクトルを求める
+		Vector3 sub = translate - transform_.translate_;
+		// 角度を求める
+		transform_.rotate_.y = std::atan2(sub.x, sub.z);
+
+		ChangeState(std::make_unique<Damage>());
+
+		lockOn_->DisableLockOn();
+
 		// 命中クールタイムリセット
 		hitCoolTimeTimer_.Start(kHitCoolTime_);
 	}

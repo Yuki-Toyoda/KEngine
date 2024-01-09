@@ -6,6 +6,8 @@
 
 void Root::Init()
 {
+	stateName_ = "Root";
+
 	// アニメーションをループする状態に
 	player_->playerAnim_->isLoop_ = true;
 

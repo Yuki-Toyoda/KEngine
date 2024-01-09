@@ -8,6 +8,8 @@
 
 void Attack::Init()
 {
+	stateName_ = "Attack";
+
 	// プレイヤーのアニメーションの変更
 	player_->playerAnim_->ChangeParameter("Player_HorizontalSlash", true);
 	// アニメーションのループを無効

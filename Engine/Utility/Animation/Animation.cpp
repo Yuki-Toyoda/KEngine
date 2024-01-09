@@ -80,6 +80,8 @@ void Animation::Play()
 
 	// アニメーションは終了していない
 	isEnd_ = false;
+	// 全てのキーは終了していない
+	isAllKeyEnd_ = false;
 }
 
 void Animation::Stop()

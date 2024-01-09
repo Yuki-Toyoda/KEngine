@@ -36,9 +36,16 @@ public: // メンバ関数
 	void ChangeState(std::unique_ptr<IState> newState);
 
 	/// <summary>
+	/// 行動状態の取得
+	/// </summary>
+	/// <returns></returns>
+	const std::string GetStateName() { return state_->GetStateName(); }
+
+	/// <summary>
 	/// ダメージ処理関数
 	/// </summary>
-	void Damage();
+	/// <param name="translate">衝突したやつの座標</param>
+	void HitDamage(const Vector3& translate);
 
 private: // プライベートなメンバ関数
 

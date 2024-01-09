@@ -12,7 +12,7 @@ void EnemyShot::Init()
 	// 弾を生成する
 	bullet_ = GameObjectManager::GetInstance()->CreateInstance<EnemyBullet>("EnemyBullet", BaseObject::TagEnemy);
 	// 弾の座標を左手に合わせる
-	bullet_->transform_.translate_ = enemy_->armTransform_L_.GetWorldPos();
+	bullet_->transform_.translate_ = enemy_->armTransform_L_.GetWorldPos() + enemy_->armTransform_L_.translate_;
 	// プレイヤーの座標をセット
 	Player* player = GameObjectManager::GetInstance()->GetGameObject<Player>("Player");
 	bullet_->SetPlayerTransform(&player->headTransform_);
@@ -44,7 +44,7 @@ void EnemyShot::Update()
 		}
 
 		// 弾の座標を左手に合わせる
-		//bullet_->transform_.translate_ = enemy_->armTransform_L_.GetWorldPos();
+		//bullet_->transform_.translate_ = enemy_->armTransform_L_.GetWorldPos() + enemy_->armTransform_L_.translate_;
 	}
 
 	// チャージ中アニメーションの場合
@@ -56,7 +56,7 @@ void EnemyShot::Update()
 			// 次のアニメーションを設定
 			enemy_->enemyAnim_->ChangeParameter("Enemy_Shot", true);
 			// プレイヤーに向かって弾を発射する
-			bullet_->SetVelocity(true);
+			bullet_->SetVelocity(true, enemy_->GetRallyCount());
 			// 
 
 			// その後の処理を強制終了
@@ -64,7 +64,7 @@ void EnemyShot::Update()
 		}
 
 		// 弾の座標を左手に合わせる
-		//bullet_->transform_.translate_ = enemy_->armTransform_L_.GetWorldPos();
+		//bullet_->transform_.translate_ = enemy_->armTransform_L_.GetWorldPos() + enemy_->armTransform_L_.translate_;
 		
 		// タイマーを更新
 		timer_.Update();
