@@ -46,5 +46,10 @@ private: // プライベートなメンバ変数
 
 	// 線だ！！！
 	std::unique_ptr<Line> line_;
+
+	KLib::DeltaTimer timer_;
+
+	// アニメーションの管理用
+	Animation* animation_ = nullptr;
 };
 

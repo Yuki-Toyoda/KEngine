@@ -75,6 +75,9 @@ public: // パブリックなメンバ変数
 	// 回転
 	Vector3 rotate_;
 
+	// 親がいる場合のワールド座標
+	Vector3 worldPos_;
+
 	// 表示状態
 	bool isActive_ = true;
 

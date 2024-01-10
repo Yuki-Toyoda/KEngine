@@ -1,4 +1,5 @@
 #include "SkyDome.h"
+#include "../../../Resource/Texture/TextureManager.h"
 
 void SkyDome::Init()
 {

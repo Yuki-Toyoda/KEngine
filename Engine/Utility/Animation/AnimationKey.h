@@ -67,6 +67,8 @@ public: // メンバ変数
 	// イージングの関数ポインタ
 	float(*ease_)(float) = nullptr;
 
+	// 編集用削除トリガー
+	bool isDelete_ = false;
 };
 
 template<typename T>
@@ -110,23 +112,30 @@ inline void AnimationKey<T>::DisplayImGui()
 	// キー名の取得
 	std::string keyName = "key : " + std::to_string(playKeyCount_);
 
+	// キーの削除を行う
+	std::string deleteButtonName = "delete : " + keyName;
+
+	ImGui::Text(keyName.c_str());
+
+	ImGui::SameLine();
+	// ボタンを押したら削除する
+	if (ImGui::Button(deleteButtonName.c_str())) {
+		isDelete_ = true;
+	}
+
 	// スライダーの表示
 	if constexpr (std::is_same_v<T, WorldTransform>) {
 		value_.DisplayImGui(keyName);
 	}else if constexpr (std::is_same_v<T, int32_t>) {
-		ImGui::Text(keyName.c_str());
+		
 		ImGui::DragInt(keyName.c_str(), &value_, 1.0f, 0);
 	}else if constexpr (std::is_same_v<T, int>) {
-		ImGui::Text(keyName.c_str());
 		ImGui::DragInt(keyName.c_str(), &value_, 1.0f);
 	}else if constexpr (std::is_same_v<T, float>) {
-		ImGui::Text(keyName.c_str());
 		ImGui::DragFloat(keyName.c_str(), &value_, 0.01f);
 	}else if constexpr (std::is_same_v<T, Vector2>) {
-		ImGui::Text(keyName.c_str());
 		ImGui::DragFloat2(keyName.c_str(), &value_.x, 0.01f);
 	}else if constexpr (std::is_same_v<T, Vector3>) {
-		ImGui::Text(keyName.c_str());
 		ImGui::DragFloat3(keyName.c_str(), &value_.x, 0.01f);
 	}
 	else {

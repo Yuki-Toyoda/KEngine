@@ -22,15 +22,12 @@ void SceneManager::Init()
 
 void SceneManager::Update()
 {
+#ifdef _DEBUG
 
 	// FPSカウンターの表示
 	ImGui::Begin("Control panel");
 	ImGui::Text("Frame rate: %6.2f fps", ImGui::GetIO().Framerate);
 	ImGui::End();
-
-#ifdef _DEBUG
-
-	
 
 #endif // _DEBUG
 

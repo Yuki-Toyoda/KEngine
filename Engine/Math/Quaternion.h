@@ -14,11 +14,26 @@ struct Quaternion {
 	inline const Vector3& vec() const { return *reinterpret_cast<const Vector3*>(&x); }
 
 	/// <summary>
+	/// 演算子のオーバーロード(+)
+	/// </summary>
+	/// <param name="q">クォータニオン</param>
+	/// <returns>積</returns>
+	Quaternion operator+ (const Quaternion q) const;
+
+	/// <summary>
 	/// 演算子のオーバーロード(*)
 	/// </summary>
 	/// <param name="q">クォータニオン</param>
 	/// <returns>積</returns>
 	Quaternion operator* (const Quaternion q) const;
+
+	/// <summary>
+	/// 演算子のオーバーロード(*)
+	/// </summary>
+	/// <param name="f">float</param>
+	/// <returns>積</returns>
+	Quaternion operator* (const float f) const;
+
 
 	/// <summary>
 	/// 演算子のオーバーロード(/)

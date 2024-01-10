@@ -15,29 +15,54 @@ void TestObject::Init()
 	AddColliderOBB("Test", &transform_.scale_, &transform_.rotate_, &transform_.translate_);
 	//AddColliderAABB("Test", &transform_.translate_, &transform_.scale_);
 
-	// アニメーション作成
-	/*AnimationManager::GetInstance()->CreateAnimationParameter("Test");
-	AnimationManager::GetInstance()->AddSelectAnimationKeys<float>("Test", "Float", &testFloatValue_);
-	AnimationManager::GetInstance()->AddSelectAnimationKeys<Vector2>("Test", "Vector2", &testVector2Value_);
-	AnimationManager::GetInstance()->AddSelectAnimationKeys<Vector3>("Test", "Vector3", &testVector3Value_);*/
+	// アニメーションのパラメータ作成
+	AnimationManager::GetInstance()->CreateAnimationParameter("Test");
+	AnimationManager::GetInstance()->AddSelectAnimationKeys<Vector3>("Test", "Scale");
+	AnimationManager::GetInstance()->AddSelectAnimationKeys<Vector3>("Test", "Rotate");
+	AnimationManager::GetInstance()->AddSelectAnimationKeys<Vector3>("Test", "Translate");
 
-	line_ = std::make_unique<Line>();
+	AnimationManager::GetInstance()->CreateAnimationParameter("Test2");
+	AnimationManager::GetInstance()->AddSelectAnimationKeys<Vector3>("Test2", "Scale");
+	AnimationManager::GetInstance()->AddSelectAnimationKeys<Vector3>("Test2", "Rotate");
+	AnimationManager::GetInstance()->AddSelectAnimationKeys<Vector3>("Test2", "Translate");
+
+	// アニメーションの作成
+	animation_ = AnimationManager::GetInstance()->CreateAnimation("TestAnimation", "Test");
+	animation_->AddAnimationKeys<Vector3>("Scale", &transform_.scale_);
+	animation_->AddAnimationKeys<Vector3>("Rotate", &transform_.rotate_);
+	animation_->AddAnimationKeys<Vector3>("Translate", &transform_.translate_);
+
+	/*line_ = std::make_unique<Line>();
 	line_->Init("TestLine", transform_.translate_, {0.35f, 0.35f}, 3.0f, TextureManager::Load("./Engine/Resource/Samples/Box", "uvChecker.png"));
-	line_->AddCollider("Line", this);
+	line_->AddCollider("Line", this);*/
+
 }
 
 void TestObject::Update()
 {
 
-	line_->Update();
 }
 
 void TestObject::DisplayImGui()
 {
-	line_->DisplayImGui();
+	//line_->DisplayParameterImGui();
 
 	// 基底クラスのImGuiを表示する
-	BaseObject::DisplayImGui();
+	//BaseObject::DisplayParameterImGui();
+
+	transform_.DisplayImGui();
+
+	animation_->DisplayImGui();
+
+	// 読み込むパラメータを変更
+	if (ImGui::Button("ChangeParam")) {
+		if (animation_->parameterName_ == "Test") {
+			animation_->ChangeParameter("Test2", true);
+		}
+		else {
+			animation_->ChangeParameter("Test");
+		}
+	}
 }
 
 void TestObject::OnCollisionEnter(Collider* collider)

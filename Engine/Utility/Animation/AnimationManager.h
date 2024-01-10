@@ -52,14 +52,21 @@ public: // メンバ関数
 	/// <typeparam name="T">追加するキー配列の型</typeparam>
 	/// <param name="animationName">アニメーション名</param>
 	/// <param name="keyName">追加するキー名</param>
-	/// <param name="value">アニメーションさせる値</param>
 	template<typename T>
-	void AddSelectAnimationKeys(const std::string& animationName, const std::string& keyName, T* value);
+	void AddSelectAnimationKeys(const std::string& animationName, const std::string& keyName);
+
+	/// <summary>
+	/// アニメーション作成関数
+	/// </summary>
+	/// <param name="name">作成するアニメーション名</param>
+	/// <param name="parameterName">アニメーション再生時に読み込むパラメータ名</param>
+	/// <returns>アニメーション本体</returns>
+	Animation* CreateAnimation(const std::string& name, const std::string& parameterName);
 
 private: // メンバ変数
 
 	// アニメーション配列
-	std::vector<Animation> animations_;
+	std::list<std::unique_ptr<Animation>> animations_;
 
 	// パラメーター格納用
 	std::vector<Animation> parameters_;
@@ -70,7 +77,7 @@ private: // メンバ変数
 };
 
 template<typename T>
-inline void AnimationManager::AddSelectAnimationKeys(const std::string& animationName, const std::string& keyName, T* value)
+inline void AnimationManager::AddSelectAnimationKeys(const std::string& animationName, const std::string& keyName)
 {
 	// 全てのパラメーターから一致するパラメーターを探す
 	for (Animation& a : parameters_) {
@@ -79,5 +86,4 @@ inline void AnimationManager::AddSelectAnimationKeys(const std::string& animatio
 			a.AddAnimationKeys<T>(keyName);
 		}
 	}
-	value;
 }
