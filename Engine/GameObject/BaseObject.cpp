@@ -64,6 +64,16 @@ void BaseObject::PreUpdate()
 		transform_.rotate_.z += (float)std::numbers::pi * 2.0f;
 	}
 	
+	if (!isActive_) {
+		for (BasePrimitive* m : meshes_) {
+			m->isActive_ = false;
+		}
+	}
+	else {
+		for (BasePrimitive* m : meshes_) {
+			m->isActive_ = true;
+		}
+	}
 }
 
 void BaseObject::PostUpdate()
@@ -78,6 +88,9 @@ void BaseObject::PostUpdate()
 
 void BaseObject::DisplayImGui()
 {
+	// 表示状態の切り替え
+	ImGui::Checkbox("isActive", &isActive_);
+
 	// トランスフォーム内の情報を表示
 	transform_.DisplayImGui();
 

@@ -50,6 +50,9 @@ void TestObject::DisplayImGui()
 	// 基底クラスのImGuiを表示する
 	//BaseObject::DisplayParameterImGui();
 
+	// 表示状態の切り替え
+	ImGui::Checkbox("isActive", &isActive_);
+
 	transform_.DisplayImGui();
 
 	animation_->DisplayImGui();
