@@ -20,14 +20,14 @@ void GameScene::Init(){
 	// プレイヤーを渡す
 	am->SetPlayer(player_);
 
-	/*Enemy* enemy ;
-	for (int i = 0; i < 15; i++) {
+	Enemy* enemy ;
+	for (int i = 0; i < 10; i++) {
 		enemy = gameObjectManager_->CreateInstance<Enemy>("Enemy", BaseObject::TagEnemy);
 		enemy->transform_.translate_.x = i * 2.0f;
 		enemy->SetWepon(wepon_);
 		enemy->SetStartTransform();
 		enemies_.push_back(enemy);
-	}*/
+	}
 	
 	chain_ = gameObjectManager_->CreateInstance<Chain>("chain", BaseObject::TagChain);
 	chain_->SetPlayer(player_);

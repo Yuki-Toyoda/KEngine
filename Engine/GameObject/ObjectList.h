@@ -12,3 +12,4 @@
 #include "User/Enemy/Obstacle/Obstacle.h"
 #include "User/camera/InGameCamera.h"
 #include "User/Player/PlayerAnimManager.h"
+#include"User/UIManager/InGameUIManager.h"
