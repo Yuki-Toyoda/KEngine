@@ -69,7 +69,7 @@ void HighEnemy::Reset()
 	HP_ = 4;
 	if (midEnemy_[0]) {
 		midEnemy_[0]->Reset();
-		midEnemy_[0]->Destroy();
+		
 	}if (midEnemy_[1]) {
 		midEnemy_[1]->Reset();
 	}
