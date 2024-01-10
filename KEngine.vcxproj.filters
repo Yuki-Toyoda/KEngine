@@ -88,6 +88,7 @@
       <Filter>GameObject\User\TestObject</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\User\Player\PlayerAnimManager.cpp" />
+    <ClCompile Include="Engine\GameObject\User\UIManager\InGameUIManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h" />
@@ -191,6 +192,7 @@
       <Filter>GameObject\User\TestObject</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\User\Player\PlayerAnimManager.h" />
+    <ClInclude Include="Engine\GameObject\User\UIManager\InGameUIManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">

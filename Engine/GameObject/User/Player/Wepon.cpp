@@ -148,7 +148,7 @@ void Wepon::Move()
 	else {
 		lerpCount_ = 1.0f;
 	}
-	//distance_ = Math::Linear(lerpCount_, distance_, goalDistance_);
+	distance_ = Math::Linear(lerpCount_, distance_, goalDistance_);
 	
 	
 		if (rotateDirection_) {

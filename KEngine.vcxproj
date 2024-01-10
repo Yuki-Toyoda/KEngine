@@ -128,6 +128,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\GameObject\User\Player\Wepon.cpp" />
     <ClCompile Include="Engine\GameObject\User\Random\RandomEngine.cpp" />
     <ClCompile Include="Engine\GameObject\User\TestObject.cpp" />
+    <ClCompile Include="Engine\GameObject\User\UIManager\InGameUIManager.cpp" />
     <ClCompile Include="Engine\GameObject\WorldTransform.cpp" />
     <ClCompile Include="Engine\GlobalVariables\GlobalVariables.cpp" />
     <ClCompile Include="Engine\Input\Input.cpp" />
@@ -220,6 +221,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\GameObject\User\Player\Wepon.h" />
     <ClInclude Include="Engine\GameObject\User\Random\RandomEngine.h" />
     <ClInclude Include="Engine\GameObject\User\TestObject.h" />
+    <ClInclude Include="Engine\GameObject\User\UIManager\InGameUIManager.h" />
     <ClInclude Include="Engine\GameObject\WorldTransform.h" />
     <ClInclude Include="Engine\GlobalVariables\GlobalVariables.h" />
     <ClInclude Include="Engine\Input\Input.h" />

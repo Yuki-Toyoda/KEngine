@@ -50,6 +50,9 @@ void PlayerAnimManager::Update()
 
 void PlayerAnimManager::DisplayImGui()
 {
+	// 表示状態の切り替え
+	ImGui::Checkbox("isActive", &isActive_);
+
 	// 各種パーツの情報表示
 	bodyTransform_.DisplayImGuiWithTreeNode("body");
 	wingTransform_L_.DisplayImGuiWithTreeNode("wing_L");
