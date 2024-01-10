@@ -38,6 +38,16 @@ void InGameUIManager::Update()
 	sprites_[3]->translate_ = Vector2(1022.0f, 0.0f) + Vector2(move.x, move.z);
 
 	// Aボタンを押すとUIを変化させる
+	if (joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_START) {
+		// UIを変更する
+		sprites_[0]->texBase_ = Vector2(448.0f, 0.0f);
+	}
+	else {
+		// UIを変更する
+		sprites_[0]->texBase_ = Vector2(0.0f, 0.0f);
+	}
+
+	// Aボタンを押すとUIを変化させる
 	if (joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A) {
 		// UIを変更する
 		sprites_[1]->texBase_ = Vector2(768.0f, 0.0f);
