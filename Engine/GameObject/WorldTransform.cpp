@@ -8,13 +8,13 @@ const int FLAG_TRANSLATE = 0b001; // 座標用フラグ
 WorldTransform::WorldTransform()
 {
 	// 初期化
-	Initialize();
+	Init();
 }
 
 WorldTransform::WorldTransform(Vector3 scale, Vector3 rotate, Vector3 translate)
 {
 	// 初期化
-	Initialize();
+	Init();
 	
 	// パブリックメンバ変数に代入
 	scale_ = scale;
@@ -25,7 +25,7 @@ WorldTransform::WorldTransform(Vector3 scale, Vector3 rotate, Vector3 translate)
 WorldTransform::WorldTransform(Vector3 rotate, Vector3 translate)
 {
 	// 初期化
-	Initialize();
+	Init();
 
 	// パブリックメンバ変数に代入
 	rotate_ = rotate;
@@ -35,13 +35,13 @@ WorldTransform::WorldTransform(Vector3 rotate, Vector3 translate)
 WorldTransform::WorldTransform(Vector3 translate)
 {
 	// 初期化
-	Initialize();
+	Init();
 
 	// パブリックメンバ変数に代入
 	translate_ = translate;
 }
 
-void WorldTransform::Initialize()
+void WorldTransform::Init()
 {
 	// パブリックメンバ変数初期化
 	scale_ = { 1.0f, 1.0f, 1.0f };
@@ -58,6 +58,25 @@ void WorldTransform::DisplayImGui()
 	ImGui::DragFloat3("Scale", &scale_.x, 0.01f);		  // 拡縮
 	ImGui::DragFloat3("Rotate", &rotate_.x, 0.01f);		  // 回転
 	ImGui::DragFloat3("Translate", &translate_.x, 0.01f); // 位置座標
+}
+
+void WorldTransform::DisplayImGui(const std::string& id)
+{
+	// 各種項目をImGuiにて表示
+	ImGui::Text(id.c_str());
+	ImGui::DragFloat3("Scale", &scale_.x, 0.01f);		  // 拡縮
+	ImGui::DragFloat3("Rotate", &rotate_.x, 0.01f);		  // 回転
+	ImGui::DragFloat3("Translate", &translate_.x, 0.01f); // 位置座標
+}
+
+void WorldTransform::DisplayImGuiWithTreeNode(const std::string& id)
+{
+	if (ImGui::TreeNode(id.c_str())) {
+		ImGui::DragFloat3("Scale", &scale_.x, 0.01f);		  // 拡縮
+		ImGui::DragFloat3("Rotate", &rotate_.x, 0.01f);		  // 回転
+		ImGui::DragFloat3("Translate", &translate_.x, 0.01f); // 位置座標
+		ImGui::TreePop();
+	}
 }
 
 void WorldTransform::SetParent(WorldTransform* parent, uint8_t parentType)
@@ -116,6 +135,71 @@ Vector3 WorldTransform::GetWorldPos() const
 	Vector3 result = {
 		matWorld.m[3][0], matWorld.m[3][1], matWorld.m[3][2]
 	};
+	// 結果を返す
+	return result;
+}
+
+WorldTransform WorldTransform::operator+(const WorldTransform wt) const
+{
+	// 変換用インスタンス
+	WorldTransform result = *this;
+	// 計算
+	result.scale_ = this->scale_ + wt.scale_;
+	result.rotate_ = this->rotate_ + wt.rotate_;
+	result.translate_ = this->translate_ + wt.translate_;
+
+	// 結果を返す
+	return result;
+}
+
+WorldTransform WorldTransform::operator-(const WorldTransform wt) const
+{
+	// 変換用インスタンス
+	WorldTransform result = *this;
+	// 計算
+	result.scale_ = this->scale_ - wt.scale_;
+	result.rotate_ = this->rotate_ - wt.rotate_;
+	result.translate_ = this->translate_ - wt.translate_;
+
+	// 結果を返す
+	return result;
+}
+
+WorldTransform WorldTransform::operator*(const WorldTransform wt) const
+{
+	// 変換用インスタンス
+	WorldTransform result = *this;
+	// 計算
+	result.scale_ = this->scale_ * wt.scale_;
+	result.rotate_ = this->rotate_ * wt.rotate_;
+	result.translate_ = this->translate_ * wt.translate_;
+
+	// 結果を返す
+	return result;
+}
+
+WorldTransform WorldTransform::operator*(const float f) const
+{
+	// 変換用インスタンス
+	WorldTransform result = *this;
+	// 計算
+	result.scale_ = this->scale_ * f;
+	result.rotate_ = this->rotate_ * f;
+	result.translate_ = this->translate_ * f;
+
+	// 結果を返す
+	return result;
+}
+
+WorldTransform WorldTransform::operator/(const WorldTransform wt) const
+{
+	// 変換用インスタンス
+	WorldTransform result = *this;
+	// 計算
+	result.scale_ = this->scale_ / wt.scale_;
+	result.rotate_ = this->rotate_ / wt.rotate_;
+	result.translate_ = this->translate_ / wt.translate_;
+
 	// 結果を返す
 	return result;
 }

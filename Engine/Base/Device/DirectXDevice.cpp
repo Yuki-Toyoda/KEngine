@@ -7,7 +7,7 @@
 
 using namespace Microsoft::WRL;
 
-void DirectXDevice::Initialize()
+void DirectXDevice::Init()
 {
 	// 結果確認用
 	HRESULT result = S_FALSE;

@@ -8,7 +8,7 @@
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
 
-void CommandManager::Initialize(ID3D12Device* device)
+void CommandManager::Init(ID3D12Device* device)
 {
 	// 結果確認用
 	HRESULT result = S_FALSE;
@@ -40,48 +40,89 @@ void CommandManager::Initialize(ID3D12Device* device)
 
 void CommandManager::DrawCall()
 {
+	// 結果確認用
+	HRESULT result = S_FALSE;
+
 	// コマンドリストの取得
 	ID3D12GraphicsCommandList* cmdList = commandList_.Get();
 
-	// 描画前処理を行う
-	commands_[0]->PreDraw(cmdList);
-
-	// コマンドリストにルートシグネチャの設定
-	cmdList->SetGraphicsRootSignature(rootSignature_.Get());
-	// 形状を設定する
-	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
 	// 
-	for (int i = 0; i < 5; i++) {
-		// PSOを取得、コマンドリストにセット
-		cmdList->SetPipelineState(commands_[0]->GetPSOState(i));
+	for (int i = 0; i < (int)commands_.size(); i++) {
+		// 描画前処理を行う
+		commands_[i]->PreDraw(cmdList);
 
-		// シグネチャのテーブル設定
-		// 0 : バッファのインデックス情報
-		// 1 : 光源情報
-		// 2 : 頂点データ
-		// 3 : viewProjection行列
-		// 4 : worldTransform
-		// 5 : マテリアル情報
-		// 6 : テクスチャ
-		cmdList->SetGraphicsRootDescriptorTable(0, commands_[0]->indexBuffers_[i]->view);
-		cmdList->SetGraphicsRootConstantBufferView(1, lightBuffer_->view);
-		cmdList->SetGraphicsRootDescriptorTable(2, vertexBuffer_->view);
-		cmdList->SetGraphicsRootDescriptorTable(3, viewProjectionBuffer_->view);
-		cmdList->SetGraphicsRootDescriptorTable(4, worldTransformBuffer_->view);
-		cmdList->SetGraphicsRootDescriptorTable(5, materialBuffer_->view);
-		cmdList->SetGraphicsRootDescriptorTable(6, textureBuffer_->view);
+		// コマンドリストにルートシグネチャの設定
+		cmdList->SetGraphicsRootSignature(rootSignature_.Get());
+		// 形状を設定する
+		cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		
+		for (int j = 0; j < 5; j++) {
+			// PSOを取得、コマンドリストにセット
+			cmdList->SetPipelineState(commands_[i]->GetPSOState(j));
 
-		// バッファ内の全3角形を描画
-		cmdList->DrawInstanced(3, commands_[0]->indexBuffers_[i]->usedCount / 3, 0, 0);
+			// シグネチャのテーブル設定
+			// 0 : バッファのインデックス情報
+			// 1 : 光源情報
+			// 2 : 頂点データ
+			// 3 : viewProjection行列
+			// 4 : worldTransform
+			// 5 : マテリアル情報
+			// 6 : テクスチャ
+			cmdList->SetGraphicsRootDescriptorTable(0, commands_[i]->indexBuffers_[j]->view);
+			cmdList->SetGraphicsRootConstantBufferView(1, lightBuffer_->view);
+			cmdList->SetGraphicsRootDescriptorTable(2, vertexBuffer_->view);
+			cmdList->SetGraphicsRootDescriptorTable(3, viewProjectionBuffer_->view);
+			cmdList->SetGraphicsRootDescriptorTable(4, worldTransformBuffer_->view);
+			cmdList->SetGraphicsRootDescriptorTable(5, materialBuffer_->view);
+			cmdList->SetGraphicsRootDescriptorTable(6, textureBuffer_->view);
+
+			// インデックスバッファが１つも入っていなければ描画しない
+			if (commands_[i]->indexBuffers_[j]->usedCount > 0) {
+				// バッファ内の全3角形を描画
+				cmdList->DrawInstanced(3, commands_[i]->indexBuffers_[j]->usedCount / 3, 0, 0);
+			}
+		}
+
+		// メイン描画コマンドの場合処理を一旦抜ける
+		if (i == (int)commands_.size() - 1) {
+			break;
+		}
+
+		// 描画後処理
+		commands_[i]->PostDraw(commandList_.Get());
+
+		// GPUにコマンドリストの命令を実行するよう指示する
+		ID3D12CommandList* commandLists[] = { commandList_.Get() };
+		commandQueue_->ExecuteCommandLists(1, commandLists);
+
+		// GPUの処理がここまでたどり着いた時にFenceに指定した値を代入するようSignalを送る
+		commandQueue_->Signal(fence_.Get(), ++fenceVal_);
+		// FenceのSignal値が指定した値かどうかを確認する
+		if (fence_->GetCompletedValue() != fenceVal_) {
+			// FenceのSignalを待つためのイベントを生成
+			HANDLE fenceEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
+			// イベントが生成出来ているか確認
+			assert(fenceEvent != nullptr);
+			// 指定したSignal値にたどり着いていないため、待機するイベントを設定
+			fence_->SetEventOnCompletion(fenceVal_, fenceEvent);
+			// イベント終了まで待機
+			WaitForSingleObject(fenceEvent, INFINITE);
+			// 終了したら閉じる
+			CloseHandle(fenceEvent);
+		}
+		result;
+		// 次のコマンドリストを準備
+		result = commandAllocator_->Reset();
+		assert(SUCCEEDED(result));
+		result = commandList_->Reset(commandAllocator_.Get(), nullptr);
+		assert(SUCCEEDED(result));
 	}
 }
 
 void CommandManager::PostDraw()
 {
 	// 描画後処理
-	commands_[0]->PostDraw(commandList_.Get());
-
+	commands_[(int)commands_.size() - 1]->PostDraw(commandList_.Get());
 	// GPUにコマンドリストの命令を実行するよう指示する
 	ID3D12CommandList* commandLists[] = { commandList_.Get() };
 	commandQueue_->ExecuteCommandLists(1, commandLists);
@@ -139,6 +180,9 @@ void CommandManager::SetHeaps(RTV* rtv, SRV* srv, DSV* dsv, std::wstring vs, std
 
 	// 描画コマンドクラスの実体を宣言
 	commands_.push_back(new MainCommand()); // メイン描画コマンドを追加
+	commands_.push_back(new ParticleCommand()); // パーティクル描画コマンドを追加
+	commands_.push_back(new SpriteCommand()); // パーティクル描画コマンドを追加
+	//commands_.push_back(new MainCommand()); // スプライト描画コマンドを追加
 	// 全ての描画コマンドの初期化
 	for (int i = 0; i < commands_.size(); i++) {
 		commands_[i]->SetDescriptorHeap(rtv_, srv_, dsv_); // ヒープをセット
@@ -149,7 +193,7 @@ void CommandManager::SetHeaps(RTV* rtv, SRV* srv, DSV* dsv, std::wstring vs, std
 			buffers.push_back(CreateBuffer(sizeof(IndexInfoStruct) * commands_[i]->kMaxIndex));
 		}
 		// リソースの生成を行う
-		commands_[i]->Initialize(device_, dxc_.get(), rootSignature_.Get(), buffers, vs, ps); // 初期化
+		commands_[i]->Init(device_, dxc_.get(), rootSignature_.Get(), buffers, vs, ps); // 初期化
 	}
 
 	// ストラクチャーバッファを生成
@@ -167,7 +211,7 @@ Matrix4x4* const CommandManager::GetViewProjection() const {
 void CommandManager::SetDrawData(BasePrimitive* primitive)
 {
 	// いろいろ最大数を超えていないかチェック
-	assert(commands_[0]->indexBuffers_[primitive->blendMode_]->usedCount < commands_[0]->kMaxIndex); // インデックス情報
+	assert(commands_[(int)primitive->primitiveType_]->indexBuffers_[primitive->blendMode_]->usedCount < commands_[(int)primitive->primitiveType_]->kMaxIndex); // インデックス情報
 	assert(vertexBuffer_->usedCount < kMaxVertex);							 // 頂点数
 	assert(worldTransformBuffer_->usedCount < kMaxWorldTransform);			 // ワールドトランスフォーム
 	assert(materialBuffer_->usedCount < kMaxMaterial);						 // マテリアル数
@@ -198,7 +242,7 @@ void CommandManager::SetDrawData(BasePrimitive* primitive)
 
 	// Indexの分だけIndexInfoを求める
 	for (int i = 0; i < primitive->GetIndexCount(); i++) {
-		commands_[0]->indexBuffers_[primitive->blendMode_]->indexData[commands_[0]->indexBuffers_[primitive->blendMode_]->usedCount++] = IndexInfoStruct{
+		commands_[(int)primitive->primitiveType_]->indexBuffers_[primitive->blendMode_]->indexData[commands_[(int)primitive->primitiveType_]->indexBuffers_[primitive->blendMode_]->usedCount++] = IndexInfoStruct{
 			startIndexNum + primitive->indexes_[i],
 			useCamera,
 			worldMatrix,

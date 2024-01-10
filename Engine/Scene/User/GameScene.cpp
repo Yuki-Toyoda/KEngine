@@ -1,7 +1,8 @@
 #include "GameScene.h"
 #include "../SceneManager.h"
+#include "../../GameObject/SampleList.h"
 
-void GameScene::Initialize(){
+void GameScene::Init(){
 
 	// スカイドーム生成
 	SkyDome* skyDome = nullptr;

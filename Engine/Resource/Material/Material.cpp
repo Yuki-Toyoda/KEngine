@@ -3,5 +3,5 @@
 Material::Material()
 {
 	// uvトランスフォーム初期化
-	uvTransform_.Initialize();
+	uvTransform_.Init();
 }

@@ -4,7 +4,31 @@
 /// </summary>
 namespace KLib {
 
+	/// <summary>
+	/// イージングパラメーター列挙子
+	/// </summary>
+	enum EasingType {
+		ParamEaseLinear,
+		ParamEaseInQuad,
+		ParamEaseOutQuad,
+		ParamEaseInOutQuad,
+		ParamEaseInSine,
+		ParamEaseOutSine,
+		ParamEaseInOutSine,
+		ParamEaseInBack,
+		ParamEaseOutBack,
+		ParamEaseInOutBack,
+		ParamEaseInBounce,
+		ParamEaseOutBounce,
+		ParamEaseInOutBounce
+	};
 
+	/// <summary>
+	/// Linear関数
+	/// </summary>
+	/// <param name="t">現在のt(0.0 ~ 1.0)</param>
+	/// <returns>イージングされた値</returns>
+	inline float EaseLinear(float t) { return t; }
 
 	/// <summary>
 	/// EaseInQuad関数
@@ -80,6 +104,6 @@ namespace KLib {
 	/// </summary>
 	/// <param name="t">現在のt(0.0 ~ 1.0)</param>
 	/// <returns>イージングされた値</returns>
-	float EaseInOutBouce(float t);
+	float EaseInOutBounce(float t);
 
 }

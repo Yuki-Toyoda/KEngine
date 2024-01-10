@@ -2,16 +2,16 @@
 #include "../../BaseObject.h"
 
 /// <summary>
-/// 床のサンプル
+/// スプライトの描画を行うサンプル
 /// </summary>
-class SampleFloor : public BaseObject
+class SampleSprite : public BaseObject
 {
 public: // メンバ関数
 
 	/// <summary>
 	/// 初期化関数
 	/// </summary>
-	void Initialize() override;
+	void Init() override;
 
 	/// <summary>
 	/// 更新関数

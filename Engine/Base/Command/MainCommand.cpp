@@ -80,8 +80,8 @@ void MainCommand::CreatePSO(ID3D12Device* device, DXC* dxc, ID3D12RootSignature*
 {
 	// ブレンドモードの数だけPSOを生成する
 	for (int i = 0; i < 5; i++) {
-		std::unique_ptr<PSO> newPSO = std::make_unique<PSO>(); // インスタンスを生成
-		newPSO->Initialize(device, signature, dxc, vs, ps, i, wire); // 初期化
+		std::unique_ptr<PSO> newPSO = std::make_unique<PSO>();		 // インスタンスを生成
+		newPSO->Init(device, signature, dxc, vs, ps, i, true, wire); // 初期化
 
 		// PSO配列に追加
 		pso_.push_back(std::move(newPSO));

@@ -18,7 +18,7 @@ public: // メンバ関数
 	/// <param name="device">DirextX12のデバイス</param>
 	/// <param name="width">画面横幅</param>
 	/// <param name="height">画面縦幅</param>
-	void Initialize(ID3D12Device* device, int32_t width, int32_t height);
+	void Init(ID3D12Device* device, int32_t width, int32_t height);
 
 	/// <summary>
 	/// 深度クリア関数

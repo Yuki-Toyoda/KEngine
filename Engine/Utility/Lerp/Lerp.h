@@ -16,7 +16,8 @@ namespace KLib {
 	template<typename T>
 	inline T Lerp(const T& start, const T& end, float t) {
 		// 線形補間した値を返す
-		return start + (end - start) * t;
+		//return start + (end - start) * t;
+		return static_cast<T>(start * (1.0f - t) + end * t);
 	}
 
 }

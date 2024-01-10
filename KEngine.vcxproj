@@ -92,6 +92,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Base\Command\BaseCommand.cpp" />
     <ClCompile Include="Engine\Base\Command\CommandManager.cpp" />
     <ClCompile Include="Engine\Base\Command\MainCommand.cpp" />
+    <ClCompile Include="Engine\Base\Command\ParticleCommand.cpp" />
+    <ClCompile Include="Engine\Base\Command\SpriteCommand.cpp" />
     <ClCompile Include="Engine\Base\DescriptorHeaps\BaseDescriptorHeap.cpp" />
     <ClCompile Include="Engine\Base\DescriptorHeaps\DSV.cpp" />
     <ClCompile Include="Engine\Base\DescriptorHeaps\RTV.cpp" />
@@ -106,18 +108,21 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\GameObject\BaseObject.cpp" />
     <ClCompile Include="Engine\GameObject\Core\Camera.cpp" />
     <ClCompile Include="Engine\GameObject\GameObjectManager.cpp" />
-    <ClCompile Include="Engine\GameObject\Samples\SampleBox\SampleBox.cpp" />
-    <ClCompile Include="Engine\GameObject\Samples\SampleEnemy\SampleEnemy.cpp" />
-    <ClCompile Include="Engine\GameObject\Samples\SampleFloor\SampleFloor.cpp" />
-    <ClCompile Include="Engine\GameObject\Samples\SamplePlayer\SamplePlayer.cpp" />
     <ClCompile Include="Engine\GameObject\Samples\SampleSkyDome\SkyDome.cpp" />
-    <ClCompile Include="Engine\GameObject\Samples\SampleThirdPersonCamera\ThirdPersonCamera.cpp" />
-    <ClCompile Include="Engine\GameObject\Samples\SampleWeapon\SampleWeapon.cpp" />
+    <ClCompile Include="Engine\GameObject\Samples\SampleSprite\SampleSprite.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\User\TestObject.cpp" />
     <ClCompile Include="Engine\GameObject\WorldTransform.cpp" />
     <ClCompile Include="Engine\GlobalVariables\GlobalVariables.cpp" />
     <ClCompile Include="Engine\Input\Input.cpp" />
     <ClCompile Include="Engine\Math\Math.cpp" />
     <ClCompile Include="Engine\Math\Quaternion.cpp" />
+    <ClCompile Include="Engine\Particle\IParticle.cpp" />
+    <ClCompile Include="Engine\Particle\IParticleEmitter.cpp" />
+    <ClCompile Include="Engine\Particle\ParticleEmitterManager.cpp" />
+    <ClCompile Include="Engine\Primitive\2d\Plane.cpp" />
     <ClCompile Include="Engine\Primitive\3d\Mesh.cpp" />
     <ClCompile Include="Engine\Primitive\3d\MeshManager.cpp" />
     <ClCompile Include="Engine\Primitive\BasePrimitive.cpp" />
@@ -128,7 +133,12 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Scene\BaseScene.cpp" />
     <ClCompile Include="Engine\Scene\SceneManager.cpp" />
     <ClCompile Include="Engine\Scene\User\GameScene.cpp" />
+    <ClCompile Include="Engine\Scene\User\SampleScene.cpp" />
     <ClCompile Include="Engine\Scene\User\TitleScene.cpp" />
+    <ClCompile Include="Engine\Sprite\Sprite.cpp" />
+    <ClCompile Include="Engine\Sprite\SpriteManager.cpp" />
+    <ClCompile Include="Engine\Utility\Animation\Animation.cpp" />
+    <ClCompile Include="Engine\Utility\Animation\AnimationManager.cpp" />
     <ClCompile Include="Engine\Utility\Easing\Easing.cpp" />
     <ClCompile Include="Engine\Utility\Timer\DeltaTimer.cpp" />
     <ClCompile Include="Externals\imgui\imgui.cpp" />
@@ -139,13 +149,20 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Externals\imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="Externals\imgui\imgui_tables.cpp" />
     <ClCompile Include="Externals\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Engine\Utility\Line\Line.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Engine\GameObject\Samples\SampleSphere\SampleSphere.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h" />
     <ClInclude Include="Engine\Base\Command\BaseCommand.h" />
     <ClInclude Include="Engine\Base\Command\CommandManager.h" />
     <ClInclude Include="Engine\Base\Command\MainCommand.h" />
+    <ClInclude Include="Engine\Base\Command\ParticleCommand.h" />
+    <ClInclude Include="Engine\Base\Command\SpriteCommand.h" />
     <ClInclude Include="Engine\Base\DescriptorHeaps\BaseDescriptorHeap.h" />
     <ClInclude Include="Engine\Base\DescriptorHeaps\DSV.h" />
     <ClInclude Include="Engine\Base\DescriptorHeaps\RTV.h" />
@@ -168,13 +185,13 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\GameObject\Core\Camera.h" />
     <ClInclude Include="Engine\GameObject\GameObjectManager.h" />
     <ClInclude Include="Engine\GameObject\ObjectList.h" />
-    <ClInclude Include="Engine\GameObject\Samples\SampleBox\SampleBox.h" />
-    <ClInclude Include="Engine\GameObject\Samples\SampleEnemy\SampleEnemy.h" />
-    <ClInclude Include="Engine\GameObject\Samples\SampleFloor\SampleFloor.h" />
-    <ClInclude Include="Engine\GameObject\Samples\SamplePlayer\SamplePlayer.h" />
+    <ClInclude Include="Engine\GameObject\SampleList.h" />
     <ClInclude Include="Engine\GameObject\Samples\SampleSkyDome\SkyDome.h" />
-    <ClInclude Include="Engine\GameObject\Samples\SampleThirdPersonCamera\ThirdPersonCamera.h" />
-    <ClInclude Include="Engine\GameObject\Samples\SampleWeapon\SampleWeapon.h" />
+    <ClInclude Include="Engine\GameObject\Samples\SampleSprite\SampleSprite.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\User\TestObject.h" />
     <ClInclude Include="Engine\GameObject\WorldTransform.h" />
     <ClInclude Include="Engine\GlobalVariables\GlobalVariables.h" />
     <ClInclude Include="Engine\Input\Input.h" />
@@ -184,6 +201,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Math\Vector2.h" />
     <ClInclude Include="Engine\Math\Vector3.h" />
     <ClInclude Include="Engine\Math\Vector4.h" />
+    <ClInclude Include="Engine\Particle\IParticle.h" />
+    <ClInclude Include="Engine\Particle\IParticleEmitter.h" />
+    <ClInclude Include="Engine\Particle\ParticleEmitterManager.h" />
+    <ClInclude Include="Engine\Primitive\2d\Plane.h" />
     <ClInclude Include="Engine\Primitive\3d\Mesh.h" />
     <ClInclude Include="Engine\Primitive\3d\MeshManager.h" />
     <ClInclude Include="Engine\Primitive\BasePrimitive.h" />
@@ -195,7 +216,14 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Scene\SceneList.h" />
     <ClInclude Include="Engine\Scene\SceneManager.h" />
     <ClInclude Include="Engine\Scene\User\GameScene.h" />
+    <ClInclude Include="Engine\Scene\User\SampleScene.h" />
     <ClInclude Include="Engine\Scene\User\TitleScene.h" />
+    <ClInclude Include="Engine\Sprite\Sprite.h" />
+    <ClInclude Include="Engine\Sprite\SpriteManager.h" />
+    <ClInclude Include="Engine\Utility\Animation\Animation.h" />
+    <ClInclude Include="Engine\Utility\Animation\AnimationKeys.h" />
+    <ClInclude Include="Engine\Utility\Animation\AnimationKey.h" />
+    <ClInclude Include="Engine\Utility\Animation\AnimationManager.h" />
     <ClInclude Include="Engine\Utility\Easing\Easing.h" />
     <ClInclude Include="Engine\Utility\KLib.h" />
     <ClInclude Include="Engine\Utility\Lerp\Lerp.h" />
@@ -209,6 +237,11 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Externals\imgui\imstb_rectpack.h" />
     <ClInclude Include="Externals\imgui\imstb_textedit.h" />
     <ClInclude Include="Externals\imgui\imstb_truetype.h" />
+    <ClInclude Include="Engine\Utility\Line\Line.h" />
+    <ClInclude Include="Engine\GameObject\Samples\SampleSphere\SampleSphere.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Object3D.hlsli">

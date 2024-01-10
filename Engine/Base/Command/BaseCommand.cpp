@@ -1,7 +1,7 @@
 #include "BaseCommand.h"
 #include "../DescriptorHeaps/SRV.h"
 
-void BaseCommand::Initialize(ID3D12Device* device, DXC* dxc, ID3D12RootSignature* signature, std::vector<ID3D12Resource*> resource, std::wstring vs, std::wstring ps)
+void BaseCommand::Init(ID3D12Device* device, DXC* dxc, ID3D12RootSignature* signature, std::vector<ID3D12Resource*> resource, std::wstring vs, std::wstring ps)
 {
 	// PSOの生成
 	CreatePSO(device, dxc, signature, vs, ps);

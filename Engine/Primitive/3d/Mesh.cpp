@@ -25,7 +25,7 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 	MeshManager* meshManaer = MeshManager::GetInstance();
 
 	// 頂点マップ内を探索し同名のファイルパスのメッシュが読み込まれているか確認
-	if (meshManaer->meshVertexMap_.find(filePath) != meshManaer->meshVertexMap_.end()){
+	if (meshManaer->meshVertexMap_.count(filePath)){
 		// 読み込まれていた場合は各種情報を渡す
 		vertices_ = meshManaer->meshVertexMap_[filePath]; // 頂点
 		indexes_ = meshManaer->meshIndexMap_[filePath];	  // インデックス

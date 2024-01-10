@@ -31,7 +31,7 @@ public: // パブリックなメンバ関数
 	/// <param name="resource">インデックスバッファリソース</param>
 	/// <param name="vs">使用する頂点シェーダ</param>
 	/// <param name="ps">使用するピクセルシェーダ</param>
-	void Initialize(ID3D12Device* device, DXC* dxc, ID3D12RootSignature* signature, std::vector<ID3D12Resource*> resource, std::wstring vs, std::wstring ps);	
+	void Init(ID3D12Device* device, DXC* dxc, ID3D12RootSignature* signature, std::vector<ID3D12Resource*> resource, std::wstring vs, std::wstring ps);	
 
 public: // 純粋仮想関数
 

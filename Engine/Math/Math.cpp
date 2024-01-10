@@ -212,6 +212,34 @@ float Math::LerpShortAngle(float a, float b, float t)
 
 }
 
+float Math::Cross(Vector2 lhs, Vector2 rhs)
+{
+	return lhs.x * rhs.y - rhs.x * lhs.y;
+}
+
+float Math::Angle(const Vector3& from, const Vector3& to)
+{
+	// 内積を求める
+	float dot = Dot(from, to);
+	Vector2 vFrom = { from.x, from.z };
+	Vector2 vTo = { to.x, to.z };
+
+	if (dot >= 1.0f) {
+		return 0.0f;
+	}
+
+	if (dot <= -1.0f) {
+		return (float)std::numbers::pi;
+	}
+
+	if (Cross(vFrom, vTo) > 0.0f) {
+		return -std::acosf(dot);
+	}
+	else {
+		return std::acosf(dot);
+	}
+}
+
 Vector3 Math::Normalize(const Vector3& v)
 {
 	// 正規化するベクトルの長さを求める

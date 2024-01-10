@@ -9,123 +9,53 @@ struct Vector3 final {
 
 	// 演算子オーバーロード(+)
 	Vector3 operator+(const Vector3 v) const {
-		// 結果格納用
-		Vector3 result;
-
-		// 計算処理
-		result.x = x + v.x;
-		result.y = y + v.y;
-		result.z = z + v.z;
-
-		// 計算結果の返却
-		return result;
+		return { (this->x) + (v.x), (this->y) + (v.y), (this->z) + (v.z)};
 	}
 	// 演算子オーバーロード(+=)
-	Vector3 operator+=(const Vector3 v) const {
-		// 結果格納用
-		Vector3 result;
-
-		// 計算処理
-		result.x = x + v.x;
-		result.y = y + v.y;
-		result.z = z + v.z;
-
-		// 計算結果の返却
-		return result;
+	void operator+=(const Vector3 v) {
+		this->x += v.x;
+		this->y += v.y;
+		this->z += v.z;
 	}
 
 	// 演算子オーバーロード(-)
 	Vector3 operator-(const Vector3 v) const {
-		// 結果格納用
-		Vector3 result;
-
-		// 計算処理
-		result.x = x - v.x;
-		result.y = y - v.y;
-		result.z = z - v.z;
-
-		// 計算結果の返却
-		return result;
+		return { (this->x) - (v.x), (this->y) - (v.y), (this->z) - (v.z) };
 	}
 
 	// 演算子オーバーロード(-=)
-	Vector3 operator-=(const Vector3 v) const {
-		// 結果格納用
-		Vector3 result;
-
-		// 計算処理
-		result.x = x - v.x;
-		result.y = y - v.y;
-		result.z = z - v.z;
-
-		// 計算結果の返却
-		return result;
+	Vector3 operator-=(const Vector3 v) {
+		this->x -= v.x;
+		this->y -= v.y;
+		this->z -= v.z;
+		return *this;
 	}
 
 	// 演算子オーバーロード(*)
 	Vector3 operator*(const Vector3 v) const {
-		// 結果格納用
-		Vector3 result;
-
-		// 計算処理
-		result.x = x * v.x;
-		result.y = y * v.y;
-		result.z = z * v.z;
-
-		// 計算結果の返却
-		return result;
+		return { (this->x) * (v.x), (this->y) * (v.y), (this->z) * (v.z) };
 	}
 	// 演算子オーバーロード(*)
 	Vector3 operator*(const float v) const {
-		// 結果格納用
-		Vector3 result;
-
-		// 計算処理
-		result.x = x * v;
-		result.y = y * v;
-		result.z = z * v;
-
-		// 計算結果の返却
-		return result;
+		return { (this->x) * (v), (this->y) * (v), (this->z) * (v) };
 	}
 	// 演算子オーバーロード(*=)
-	Vector3 operator*=(const Vector3 v) const {
-		// 結果格納用
-		Vector3 result;
-
-		// 計算処理
-		result.x = x * v.x;
-		result.y = y * v.y;
-		result.z = z * v.z;
-
-		// 計算結果の返却
-		return result;
+	Vector3 operator*=(const Vector3 v) {
+		this->x *= v.x;
+		this->y *= v.y;
+		this->z *= v.z;
+		return *this;
 	}
 
 	// 演算子オーバーロード(/)
-	Vector3 operator/(const Vector3 v) {
-		// 結果格納用
-		Vector3 result;
-
-		// 計算処理
-		result.x = x / v.x;
-		result.y = y / v.y;
-		result.z = z / v.z;
-
-		// 計算結果を返す
-		return result;
+	Vector3 operator/(const Vector3 v) const {
+		return { (this->x) / (v.x), (this->y) / (v.y), (this->z) / (v.z) };
 	}
 	// 演算子オーバーロード(/=)
 	Vector3 operator/=(const Vector3 v) {
-		// 結果格納用
-		Vector3 result;
-
-		// 計算処理
-		result.x = x / v.x;
-		result.y = y / v.y;
-		result.z = z / v.z;
-
-		// 計算結果を返す
-		return result;
+		this->x /= v.x;
+		this->y /= v.y;
+		this->z /= v.z;
+		return *this;
 	}
 };

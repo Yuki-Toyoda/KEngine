@@ -48,7 +48,7 @@ private: // プライベートなメンバ関数
 	/// <param name="colliderA">コライダーA</param>
 	/// <param name="colliderB">コライダーB</param>
 	/// <returns></returns>
-	bool CheckCollisionPair(Collider* colliderA, Collider* colliderB, bool isCheckExit);
+	bool CheckCollisionPair(Collider* colliderA, Collider* colliderB, bool isCheckExit, bool isCheckEnter = false);
 	
 	/// <summary>
 	/// 引数で指定されたコライダーの衝突した瞬間を検証する関数
@@ -81,12 +81,28 @@ private: // プライベートなメンバ関数
 	bool IsCollisionAABB(BaseShape* shapeA, BaseShape* shapeB);
 
 	/// <summary>
+	/// OBB同士の衝突検証関数
+	/// </summary>
+	/// <param name="shapeA">形状A</param>
+	/// <param name="shapeB">形状B</param>
+	/// <returns>衝突しているか</returns>
+	bool isCollisionOBB(BaseShape* shapeA, BaseShape* shapeB);
+
+	/// <summary>
 	/// 球とAABBの衝突検証関数
 	/// </summary>
-	/// <param name="shapeA"></param>
-	/// <param name="shapeB"></param>
-	/// <returns></returns>
+	/// <param name="shapeA">形状A</param>
+	/// <param name="shapeB">形状B</param>
+	/// <returns>衝突しているか</returns>
 	bool IsCollisionSphereWithAABB(BaseShape* shapeA, BaseShape* shapeB);
+
+	/// <summary>
+	/// 球とOBBの衝突検証関数
+	/// </summary>
+	/// <param name="shapeA">形状A</param>
+	/// <param name="shapeB">形状B</param>
+	/// <returns>衝突しているか</returns>
+	bool IsCollisionSphereWithOBB(BaseShape* shapeA, BaseShape* shapeB);
 
 private: // メンバ変数
 

@@ -8,101 +8,49 @@ struct Vector2 final {
 
 	// 演算子オーバーロード(+)
 	Vector2 operator+(const Vector2 v) {
-		// 結果格納用
-		Vector2 result;
-
-		// 計算処理
-		result.x = x + v.x;
-		result.y = y + v.y;
-
-		// 計算結果を返す
-		return result;
+		return { (this->x) + (v.x), (this->y) + (v.y) };
 	}
 	// 演算子オーバーロード(+=)
 	Vector2 operator+=(const Vector2 v) {
-		// 結果格納用
-		Vector2 result;
-
-		// 計算処理
-		result.x = x + v.x;
-		result.y = y + v.y;
-
-		// 計算結果を返す
-		return result;
+		this->x += v.x;
+		this->y += v.y;
+		return *this;
 	}
 
 	// 演算子オーバーロード(-)
 	Vector2 operator-(const Vector2 v) {
-		// 結果格納用
-		Vector2 result;
-
-		// 計算処理
-		result.x = x - v.x;
-		result.y = y - v.y;
-
-		// 計算結果を返す
-		return result;
+		return { (this->x) - (v.x), (this->y) - (v.y) };
 	}
 	// 演算子オーバーロード(-=)
 	Vector2 operator-=(const Vector2 v) {
-		// 結果格納用
-		Vector2 result;
-
-		// 計算処理
-		result.x = x - v.x;
-		result.y = y - v.y;
-
-		// 計算結果を返す
-		return result;
+		this->x -= v.x;
+		this->y -= v.y;
+		return *this;
 	}
 
 	// 演算子オーバーロード(*)
 	Vector2 operator*(const Vector2 v) {
-		// 結果格納用
-		Vector2 result;
-
-		// 計算処理
-		result.x = x * v.x;
-		result.y = y * v.y;
-
-		// 計算結果を返す
-		return result;
+		return { (this->x) * (v.x), (this->y) * (v.y) };
+	}
+	// 演算子オーバーロード(*)
+	Vector2 operator*(const float v) const {
+		return { (this->x) * (v), (this->y) * (v) };
 	}
 	// 演算子オーバーロード(*=)
 	Vector2 operator*=(const Vector2 v) {
-		// 結果格納用
-		Vector2 result;
-
-		// 計算処理
-		result.x = x * v.x;
-		result.y = y * v.y;
-
-		// 計算結果を返す
-		return result;
+		this->x *= v.x;
+		this->y *= v.y;
+		return *this;
 	}
 
 	// 演算子オーバーロード(/)
 	Vector2 operator/(const Vector2 v) {
-		// 結果格納用
-		Vector2 result;
-
-		// 計算処理
-		result.x = x / v.x;
-		result.y = y / v.y;
-
-		// 計算結果を返す
-		return result;
+		return { (this->x) / (v.x), (this->y) / (v.y) };
 	}
 	// 演算子オーバーロード(/=)
 	Vector2 operator/=(const Vector2 v) {
-		// 結果格納用
-		Vector2 result;
-
-		// 計算処理
-		result.x = x / v.x;
-		result.y = y / v.y;
-
-		// 計算結果を返す
-		return result;
+		this->x /= v.x;
+		this->y /= v.y;
+		return *this;
 	}
 };

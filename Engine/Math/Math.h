@@ -260,6 +260,22 @@ public:	// メンバ関数
 	static float LerpShortAngle(float a, float b, float t);
 
 	/// <summary>
+	/// 二次元ベクトルのクロス積を求める
+	/// </summary>
+	/// <param name="lhs">ベクトル1</param>
+	/// <param name="rhs">ベクトル2</param>
+	/// <returns>クロス積</returns>
+	static float Cross(Vector2 lhs, Vector2 rhs);
+
+	/// <summary>
+	/// 回転角を求める
+	/// </summary>
+	/// <param name="from"></param>
+	/// <param name="to"></param>
+	/// <returns></returns>
+	static float Angle(const Vector3& from, const Vector3& to);
+
+	/// <summary>
 	/// ベクトル正規化関数
 	/// </summary>
 	/// <param name="v">ベクトル</param>

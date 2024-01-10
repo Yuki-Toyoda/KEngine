@@ -6,7 +6,10 @@
 #include "Engine/Primitive/PrimitiveManager.h"
 #include "Engine/Scene/SceneManager.h"
 #include "Engine/GameObject/GameObjectManager.h"
+#include "Engine/Sprite/SpriteManager.h"
 #include "Engine/Resource/Texture/TextureManager.h"
+#include "Engine/Particle/ParticleEmitterManager.h"
+#include "Engine/Utility/Animation/AnimationManager.h"
 #include "Engine/GlobalVariables/GlobalVariables.h"
 #include "Engine/Collider/CollisionManager.h"
 #include "Engine/Input/Input.h"
@@ -32,9 +35,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// DirectX汎用クラスのインスタンスを取得
 	dxCommon = DirectXCommon::GetInstance();
 	// テクスチャマネージャ初期化
-	TextureManager::GetInstance()->Initialize();
+	TextureManager::GetInstance()->Init();
 	// DirectXの初期化
-	dxCommon->Initialize(winApp);
+	dxCommon->Init(winApp);
+
+	// グローバル変数の読み込み
+	GlobalVariables::GetInstance()->LoadFiles();
 
 	// ImGuiの初期化
 	ImGuiManager* imguiManager = ImGuiManager::GetImstance();
@@ -42,29 +48,38 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// 形状マネージャの初期化
 	PrimitiveManager* primitiveManager = PrimitiveManager::GetInstance();
-	primitiveManager->Initialize();
+	primitiveManager->Init();
+
+	// アニメーションマネージャの初期化
+	AnimationManager* animationNanager = AnimationManager::GetInstance();
+	animationNanager->Init();
 
 	// オブジェクトマネージャーの初期化
 	GameObjectManager* gameObjectManager = GameObjectManager::GetInstance();
-	gameObjectManager->Initialize();
+	gameObjectManager->Init();
+
+	// スプライトマネージャの初期化
+	SpriteManager* spriteManager = SpriteManager::GetInstance();
+	spriteManager->Init();
 
 	// 衝突マネージャーの初期化
 	CollisionManager* collisionManager = CollisionManager::GetInstance();
 
 	// シーンマネージャーの初期化
 	SceneManager* sceneManager = SceneManager::GetInstance();
-	sceneManager->Initialize();
+	sceneManager->Init();
+
+	// パーティクルマネージャの初期化
+	ParticleEmitterManager* particleEmitterManager = ParticleEmitterManager::GetInstance();
+	particleEmitterManager->Init();
 
 	// 入力の初期化
 	input = Input::GetInstance();
-	input->Initialize();
+	input->Init();
 
 	// オーディオの初期化
 	audio = Audio::GetInstance();
-	audio->Initialize();
-
-	// グローバル変数の読み込み
-	GlobalVariables::GetInstance()->LoadFiles();
+	audio->Init();
 
 	ImGui::CreateContext();
 	auto& io = ImGui::GetIO();
@@ -97,6 +112,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			// オブジェクトマネージャー更新
 			gameObjectManager->Update();
+			// スプライトマネージャ更新
+			spriteManager->Update();
+			// パーティクルマネージャ更新
+			particleEmitterManager->Update();
+			particleEmitterManager->DisplayImGui();
+
+			// アニメーションマネージャ更新
+			animationNanager->Update();
+			animationNanager->DisplayImGui();
 
 			// 衝突判定検証
 			collisionManager->CheckAllCollision();
@@ -130,10 +154,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	collisionManager->ListClear();
 
 	// 全オブジェクトを削除
-	gameObjectManager->Initialize();
+	gameObjectManager->Init();
+	// 読み込みスプライト削除
+	spriteManager->Init();
+	// 全パーティクル削除
+	particleEmitterManager->Init();
 
 	// 読み込み形状を削除
-	primitiveManager->Initialize();
+	primitiveManager->Init();
+
+	// 全アニメーション削除
+	animationNanager->Init();
 
 	// 音解放処理
 	audio->Finalize();

@@ -31,13 +31,14 @@ public: // メンバ関数
 	/// <param name="ps">使用するピクセルシェーダまでのファイルパス</param>
 	/// <param name="blendType">ブレンド設定</param>
 	/// <param name="wire">ワイヤーフレーム状態にするか 0 : 通常表示 ** 1 : ワイヤー表示</param>
-	void Initialize(
+	void Init(
 		ID3D12Device* device, 
 		ID3D12RootSignature* signature, 
 		DXC* dxc, 
 		std::wstring vs, 
 		std::wstring ps, 
 		int blendType,
+		bool isWriteDSV,
 		UINT wire);
 
 private: // プライベートなメンバ関数
@@ -56,8 +57,9 @@ private: // プライベートなメンバ関数
 	/// <summary>
 	/// 深度ステンシルビュー設定を行う関数
 	/// </summary>
+	/// <param name="isWriteDSV">Depthを書き込むか</param>
 	/// <returns>深度ステンシルビュー設定</returns>
-	D3D12_DEPTH_STENCIL_DESC SettingDepthStencilState();
+	D3D12_DEPTH_STENCIL_DESC SettingDepthStencilState(bool isWriteDSV = false);
 
 	/// <summary>
 	/// 頂点シェーダ生成関数

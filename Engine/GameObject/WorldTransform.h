@@ -43,12 +43,23 @@ public: // パブリックメンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize();
+	void Init();
 
 	/// <summary>
 	/// デバッグ用ImGui表示関数
 	/// </summary>
 	void DisplayImGui();
+
+	/// <summary>
+	/// デバッグ用ImGui表示関数
+	/// </summary>
+	/// <param name="id">ウィンドウ表示名</param>
+	void DisplayImGui(const std::string& id);
+	/// <summary>
+	/// デバッグ用ImGui表示関数
+	/// </summary>
+	/// <param name="id">ツリーノード名</param>
+	void DisplayImGuiWithTreeNode(const std::string& id);
 
 private: // メンバ変数
 
@@ -98,5 +109,21 @@ public: // アクセッサ等
 	/// </summary>
 	/// <returns>ワールド座標</returns>
 	Vector3 GetWorldPos() const;
+
+public: // 演算子オーバーロード
+
+	// 演算子オーバーロード(+)
+	WorldTransform operator+(const WorldTransform wt) const;
+
+	// 演算子オーバーロード(-)
+	WorldTransform operator-(const WorldTransform wt) const;
+
+	// 演算子オーバーロード(*)
+	WorldTransform operator*(const WorldTransform wt) const;
+	// 演算子オーバーロード(*)(float)
+	WorldTransform operator*(const float f) const;
+
+	// 演算子オーバーロード(/)
+	WorldTransform operator/(const WorldTransform wt) const;
 
 };

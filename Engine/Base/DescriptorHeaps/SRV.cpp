@@ -2,7 +2,7 @@
 
 using namespace Microsoft::WRL;
 
-void SRV::Initialize(ID3D12Device* device)
+void SRV::Init(ID3D12Device* device)
 {
 	// デバイスを取得
 	device_ = device;

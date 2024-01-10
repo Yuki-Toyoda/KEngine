@@ -13,7 +13,7 @@ public: // メンバ関数
 	/// 初期化関数
 	/// </summary>
 	/// <param name="device">DirectX12のデバイス</param>
-	void Initialize(ID3D12Device* device);
+	void Init(ID3D12Device* device);
 
 public: // アクセッサ等
 

@@ -1,6 +1,6 @@
 #include "PSO.h"
 
-void PSO::Initialize(ID3D12Device* device, ID3D12RootSignature* signature, DXC* dxc, std::wstring vs, std::wstring ps, int blendType, UINT wire)
+void PSO::Init(ID3D12Device* device, ID3D12RootSignature* signature, DXC* dxc, std::wstring vs, std::wstring ps, int blendType, bool isWriteDSV = true, UINT wire = false)
 {
 	// 結果確認用
 	HRESULT result = S_FALSE;
@@ -14,7 +14,7 @@ void PSO::Initialize(ID3D12Device* device, ID3D12RootSignature* signature, DXC* 
 	graphicPipelineStateDesc.pRootSignature = signature; // RootSignature取得
 	graphicPipelineStateDesc.BlendState = SettingBlendState(blendType); // ブレンド設定
 	graphicPipelineStateDesc.RasterizerState = SettingRasterizerDesc(wire); // ラスタライザ設定
-	graphicPipelineStateDesc.DepthStencilState = SettingDepthStencilState(); // 深度ステンシルビュー設定
+	graphicPipelineStateDesc.DepthStencilState = SettingDepthStencilState(isWriteDSV); // 深度ステンシルビュー設定
 	graphicPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT; // フォーマット設定
 	// シェーダーの取得
 	graphicPipelineStateDesc.VS = { vertexBlob->GetBufferPointer(), vertexBlob->GetBufferSize() }; // 頂点シェーダー
@@ -69,12 +69,13 @@ D3D12_BLEND_DESC PSO::SettingBlendState(int state)
 		blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_ONE;
 		break; // 乗算の設定
 	case 3:
-		blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_REV_SUBTRACT;
-		blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_ONE;
+		blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_ZERO;
+		blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
+		blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_SRC_COLOR;
 		break; // スクリーンの設定
 	case 4:
-		blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_ZERO;
-		blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_SRC_COLOR;
+		blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_INV_DEST_COLOR;
+		blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_ONE;
 		break;
 	default: // それ以外の場合は処理なしで抜ける
 		break;
@@ -109,14 +110,19 @@ D3D12_RASTERIZER_DESC PSO::SettingRasterizerDesc(UINT wire)
 	return rasterrizerDesc;
 }
 
-D3D12_DEPTH_STENCIL_DESC PSO::SettingDepthStencilState()
+D3D12_DEPTH_STENCIL_DESC PSO::SettingDepthStencilState(bool isWriteDSV)
 {
 	// デプスステンシルビューの設定を行う
 	D3D12_DEPTH_STENCIL_DESC depthStencilDesc{};
 	// 深度の機能を有効
 	depthStencilDesc.DepthEnable = true;
 	// 書き込む
-	depthStencilDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
+	if (isWriteDSV) {
+		depthStencilDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
+	}
+	else {
+		depthStencilDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;
+	}
 	// 比較関数はlessEqual 近ければ描画
 	depthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
 

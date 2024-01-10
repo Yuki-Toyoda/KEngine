@@ -5,7 +5,36 @@
 #include "../../Externals/imgui/imgui.h"
 #include "WorldTransform.h"
 #include "../Primitive/PrimitiveManager.h"
+#include "../Sprite/SpriteManager.h"
 #include "../Collider/CollisionManager.h"
+
+/// 最小構成
+/*
+#include "../../BaseObject.h"
+
+/// <summary>
+/// 任意のクラス名
+/// </summary>
+class 任意のクラス名 : public BaseObject
+{
+public: // メンバ関数
+
+	/// <summary>
+	/// 初期化関数
+	/// </summary>
+	void Init() override;
+
+	/// <summary>
+	/// 更新関数
+	/// </summary>
+	void Update() override;
+
+private: // メンバ変数
+
+	// メンバ変数をここに
+
+};
+*/
 
 /// <summary>
 /// 全オブジェクトの基底クラス
@@ -28,6 +57,8 @@ public: // サブクラス
 
 public: // メンバ関数
 
+	// コンストラクタ
+	BaseObject() = default;
 	// 仮想デストラクタ
 	virtual ~BaseObject();
 
@@ -35,13 +66,15 @@ public: // メンバ関数
 	void PreInitialize(std::string name, Tag tag);
 	// (ユーザー呼び出し禁止)共通更新関数
 	void PreUpdate();
+	// (ユーザー呼び出し禁止)更新後関数
+	void PostUpdate();
 
 	/// <summary>
 	/// 初期化関数
 	/// </summary>
 	/// <param name="name">オブジェクト名</param>
 	/// <param name="tag">所属タグ</param>
-	virtual void Initialize() = 0;
+	virtual void Init() = 0;
 
 	// 更新関数
 	virtual void Update() = 0;
@@ -62,6 +95,12 @@ public: // アクセッサ等
 	/// </summary>
 	/// <returns>破壊トリガー状態</returns>
 	bool GetIsDestroy() { return isDestroy_; }
+
+	/// <summary>
+	/// 破壊トリガー状態のゲッター
+	/// </summary>
+	/// <returns>破壊トリガー状態</returns>
+	const bool GetIsDestroy() const { return isDestroy_; }
 
 	/// <summary>
 	/// オブジェクト名セッター
@@ -86,30 +125,58 @@ public: // アクセッサ等
 	const Tag GetObjectTag() { return tag_; }
 
 	/// <summary>
-	/// コライダーゲッター
+	/// コライダー追加関数(球)
 	/// </summary>
-	/// <returns>コライダー</returns>
-	Collider* GetCollider() { return collider_.get(); }
+	/// <param name="name">追加するコライダー名称</param>
+	/// <param name="center">中心座標</param>
+	/// <param name="radius">半径</param>
+	/// <param name="enable">登録時にコライダーを有効化するか</param>
+	void AddColliderSphere(const std::string& name, Vector3* center, float* radius, bool enable = true);
+
+	/// <summary>
+	/// コライダー追加関数(AABB)
+	/// </summary>
+	/// <param name="name">追加するコライダー名称</param>
+	/// <param name="center">中心座標</param>
+	/// <param name="size">大きさ</param>
+	/// <param name="enable">登録時にコライダーを有効化するか</param>
+	void AddColliderAABB(const std::string& name, Vector3* center, Vector3* size, bool enable = true);
+
+	/// <summary>
+	/// コライダー追加関数(OBB)
+	/// </summary>
+	/// <param name="name">追加するコライダー名称</param>
+	/// <param name="scale">大きさ</param>
+	/// <param name="rotate">回転角</param>
+	/// <param name="translate">中心座標</param>
+	/// <param name="enable">登録時にコライダーを有効化するか</param>
+	void AddColliderOBB(const std::string& name, Vector3* scale, Vector3* rotate, Vector3* translate, bool enable = true);
+
+	/// <summary>
+	/// 指定した名称のコライダーを削除する関数
+	/// </summary>
+	/// <param name="name">削除するコライダー</param>
+	void DeleteCollider(const std::string& name);
 
 public: // その他関数群
 
 	/// <summary>
 	/// 衝突した瞬間にコールバックされる関数
 	/// </summary>
-	/// <param name="object">衝突したオブジェクト</param>
-	virtual void OnCollisionEnter(BaseObject* object) { object; }
+	/// <param name="object">衝突したコライダー</param>
+	virtual void OnCollisionEnter(Collider* collider) { collider; }
 
 	/// <summary>
 	/// 衝突時コールバック関数
 	/// </summary>
-	/// <param name="object">衝突したオブジェクト</param>
-	virtual void OnCollision(BaseObject* object) { object; }
+	/// <param name="collider">衝突したコライダー<</param>
+	virtual void OnCollision(Collider* collider) { collider; }
 
 	/// <summary>
 	/// 衝突していたオブジェクトから離れた時のコールバック関数
 	/// </summary>
-	/// <param name="object">衝突していたオブジェクト</param>
-	virtual void OnCollisionExit(BaseObject* object) { object; }
+	/// <param name="collider">衝突していたコライダー<</param>
+	virtual void OnCollisionExit(Collider* collider) { collider; }
 
 protected: // プライベートなメンバ関数
 
@@ -123,6 +190,15 @@ protected: // プライベートなメンバ関数
 	/// <param name="enableLighting">ライティングを有効にするか</param>
 	void AddMesh(WorldTransform* wt, Vector4& color, const std::string& path, const std::string& fileName, bool enableLighting = true);
 
+	/// <summary>
+	/// スプライト追加関数
+	/// </summary>
+	/// <param name="name">追加するスプライト名</param>
+	/// <param name="position">初期座標</param>
+	/// <param name="size">大きさ</param>
+	/// <param name="texture">テクスチャ</param>
+	void AddSprite(const std::string& name, const Vector2& position, const Vector2& size, Texture* texture);
+
 public: // パブリックなメンバ変数
 
 	// 表示状態切り替えトリガー
@@ -132,7 +208,9 @@ public: // パブリックなメンバ変数
 	WorldTransform transform_;
 
 	// メッシュリスト
-	std::vector<Mesh*> meshes_;
+	std::vector<BasePrimitive*> meshes_;
+	// スプライトリスト
+	std::vector<Sprite*> sprites_;
 
 protected: // 継承メンバ変数
 
@@ -153,8 +231,7 @@ protected: // 継承メンバ変数
 	Vector4 color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
 
 	// コライダー
-	std::unique_ptr<Collider> collider_;
-
+	std::list<std::unique_ptr<Collider>> colliders_;
 };
 
 /// <summary>
