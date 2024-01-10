@@ -11,3 +11,4 @@
 #include "User/Chain/Chain.h"
 #include "User/Enemy/Obstacle/Obstacle.h"
 #include "User/camera/InGameCamera.h"
+#include "User/Player/PlayerAnimManager.h"

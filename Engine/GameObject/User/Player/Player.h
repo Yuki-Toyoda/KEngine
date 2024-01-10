@@ -21,10 +21,11 @@ public: // メンバ関数
 	void DisplayImGui() override;
 
 
-	private:
+private: // メンバ変数
 
 		Vector3 velocity_;
 		float moveSpeed_ = 0.1f;
 		Vector3 worldPos_;
+
 };
 

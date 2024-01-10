@@ -14,14 +14,20 @@ void GameScene::Init(){
 	wepon_ = gameObjectManager_->CreateInstance<Wepon>("wepon", BaseObject::TagWeapon);
 	wepon_->SetTarget(&player_->transform_);
 	wepon_->transform_.SetParent(&player_->transform_, 0b001);
-	Enemy* enemy ;
+
+	// プレイヤーアニメーションマネージャの生成
+	PlayerAnimManager* am = gameObjectManager_->CreateInstance<PlayerAnimManager>("playerAnim", BaseObject::TagPlayer);
+	// プレイヤーを渡す
+	am->SetPlayer(player_);
+
+	/*Enemy* enemy ;
 	for (int i = 0; i < 15; i++) {
 		enemy = gameObjectManager_->CreateInstance<Enemy>("Enemy", BaseObject::TagEnemy);
 		enemy->transform_.translate_.x = i * 2.0f;
 		enemy->SetWepon(wepon_);
 		enemy->SetStartTransform();
 		enemies_.push_back(enemy);
-	}
+	}*/
 	
 	chain_ = gameObjectManager_->CreateInstance<Chain>("chain", BaseObject::TagChain);
 	chain_->SetPlayer(player_);
@@ -41,6 +47,7 @@ void GameScene::Init(){
 	camera_ = gameObjectManager_->CreateInstance<InGameCamera>("Incamera", BaseObject::TagCamera);
 	camera_->UseThisCamera();
 	camera_->fov_ = 0.85f;
+
 }
 
 void GameScene::Update()

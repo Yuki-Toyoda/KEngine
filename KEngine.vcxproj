@@ -122,6 +122,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\GameObject\User\Enemy\Obstacle\Obstacle.cpp" />
     <ClCompile Include="Engine\GameObject\User\InputManager\InputManager.cpp" />
     <ClCompile Include="Engine\GameObject\User\Player\Player.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Player\PlayerAnimManager.cpp" />
     <ClCompile Include="Engine\GameObject\User\Player\Wepon.cpp" />
     <ClCompile Include="Engine\GameObject\User\Random\RandomEngine.cpp" />
     <ClCompile Include="Engine\GameObject\User\TestObject.cpp" />
@@ -211,6 +212,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\GameObject\User\Enemy\Obstacle\Obstacle.h" />
     <ClInclude Include="Engine\GameObject\User\InputManager\InputManager.h" />
     <ClInclude Include="Engine\GameObject\User\Player\Player.h" />
+    <ClInclude Include="Engine\GameObject\User\Player\PlayerAnimManager.h" />
     <ClInclude Include="Engine\GameObject\User\Player\Wepon.h" />
     <ClInclude Include="Engine\GameObject\User\Random\RandomEngine.h" />
     <ClInclude Include="Engine\GameObject\User\TestObject.h" />

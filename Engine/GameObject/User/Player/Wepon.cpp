@@ -5,7 +5,7 @@ void Wepon::Init()
 	audio_ = Audio::GetInstance();
 	soundHandleslam_ = audio_->LoadWave("slam.wav");
 	soundHandleDamage_= audio_->LoadWave("damege.wav");
-	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Box", "Box.obj");
+	AddMesh(&transform_, color_, "./Resources/WeaponCube", "weaponCube.obj");
 	AddColliderSphere("Wepon", &worldPos_, &transform_.scale_.x);
 	distance_ = 5.0f;
 	transform_.translate_.x +=distance_;
@@ -75,6 +75,8 @@ void Wepon::DisplayImGui()
 	transform_.DisplayImGui();
 	ImGui::DragFloat3("worldPos", &worldPos_.x);
 	ImGui::DragFloat("theta", &theta_);
+
+	ImGui::DragFloat("Distance", &distance_);
 }
 
 void Wepon::Reset()
@@ -136,7 +138,7 @@ void Wepon::Move()
 	else {
 		lerpCount_ = 1.0f;
 	}
-	distance_ = Math::Linear(lerpCount_, distance_, goalDistance_);
+	//distance_ = Math::Linear(lerpCount_, distance_, goalDistance_);
 	
 	
 		if (rotateDirection_) {

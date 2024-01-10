@@ -2,8 +2,6 @@
 
 void Player::Init()
 {
-	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Box", "Box.obj");
-
 	velocity_ = { 0.0f,0.0f,0.0f };
 	AddColliderSphere("Enemy", &worldPos_, &transform_.scale_.x);
 }

@@ -5,6 +5,7 @@ void SkyDome::Init()
 {
 	// メッシュを追加
 	AddMesh(&transform_, color_, "./Engine/Resource/Samples/SkyDome", "SkyDome.obj", false);
+	meshes_[0]->texture_ = TextureManager::Load("./Resources", "SkyDome.png");
 }
 
 void SkyDome::Update()
