@@ -11,3 +11,5 @@
 #include "User/Chain/Chain.h"
 #include "User/Enemy/Obstacle/Obstacle.h"
 #include "User/camera/InGameCamera.h"
+#include "User/Enemy/MidEnemy.h"
+#include "User/Enemy/HighEnemy.h"

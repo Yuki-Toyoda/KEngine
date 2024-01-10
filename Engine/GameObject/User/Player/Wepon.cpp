@@ -68,6 +68,15 @@ void Wepon::Update()
 	else {
 		colliders_.front()->SetIsActive(true);
 	}
+	if (parentCount_ < 5) {
+		size_ = low;
+	}
+	else if (parentCount_ < 10) {
+		size_= mid;
+	}
+	else {
+		size_ = high;
+	}
 }
 
 void Wepon::DisplayImGui()
@@ -75,6 +84,7 @@ void Wepon::DisplayImGui()
 	transform_.DisplayImGui();
 	ImGui::DragFloat3("worldPos", &worldPos_.x);
 	ImGui::DragFloat("theta", &theta_);
+	ImGui::InputInt("parentCount", &parentCount_);
 }
 
 void Wepon::Reset()

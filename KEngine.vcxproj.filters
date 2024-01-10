@@ -76,6 +76,8 @@
     <ClCompile Include="Engine\GameObject\Samples\SampleSphere\SampleSphere.cpp">
       <Filter>GameObject\Samples\Sphere</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\GameObject\User\Enemy\MidEnemy.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\HighEnemy.cpp" />
     <ClCompile Include="Engine\Utility\Line\Line.cpp">
       <Filter>Utility\Line</Filter>
     </ClCompile>
@@ -176,6 +178,8 @@
     <ClInclude Include="Engine\GameObject\Samples\SampleSphere\SampleSphere.h">
       <Filter>GameObject\Samples\Sphere</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\GameObject\User\Enemy\MidEnemy.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\HighEnemy.h" />
     <ClInclude Include="Engine\Utility\Line\Line.h">
       <Filter>Utility\Line</Filter>
     </ClInclude>

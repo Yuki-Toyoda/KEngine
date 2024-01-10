@@ -17,7 +17,7 @@ void GameScene::Init(){
 	Enemy* enemy ;
 	for (int i = 0; i < 15; i++) {
 		enemy = gameObjectManager_->CreateInstance<Enemy>("Enemy", BaseObject::TagEnemy);
-		enemy->transform_.translate_.x = i * 2.0f;
+		
 		enemy->SetWepon(wepon_);
 		enemy->SetStartTransform();
 		enemies_.push_back(enemy);
@@ -26,17 +26,31 @@ void GameScene::Init(){
 	chain_ = gameObjectManager_->CreateInstance<Chain>("chain", BaseObject::TagChain);
 	chain_->SetPlayer(player_);
 	chain_->SetWepon(wepon_);
-	Obstacle* obstacle;
+	/*Obstacle* obstacle;
 	for (int i = 0; i < 5; i++) {
 		obstacle = gameObjectManager_->CreateInstance<Obstacle>("obstacle", BaseObject::TagObstacle);
 		obstacle->transform_.translate_.x = -8.0f;
 		obstacles_.push_back(obstacle);
+	}*/
+	MidEnemy* midenemy;
+	for (int i = 0; i < 3; i++) {
+		midenemy = gameObjectManager_->CreateInstance<MidEnemy>("midEnemy", BaseObject::TagEnemy);
+	
+		midenemy->SetWepon(wepon_);
+		midEnemies_.push_back(midenemy);
 	}
-	obstacles_[0]->transform_.translate_ = { 10.0f,6.0f,0.0f };
+	/*obstacles_[0]->transform_.translate_ = { 10.0f,6.0f,0.0f };
 	obstacles_[1]->transform_.translate_ = { -10.0f,-6.0f,0.0f };
 	obstacles_[2]->transform_.translate_ = { 18.0f,-16.0f,0.0f };
 	obstacles_[3]->transform_.translate_ = { -18.0f,6.0f,0.0f };
-	obstacles_[4]->transform_.translate_ = { 15.0f,18.0f,0.0f };
+	obstacles_[4]->transform_.translate_ = { 15.0f,18.0f,0.0f };*/
+	HighEnemy* highenemy;
+	for (int i = 0; i < 3; i++) {
+		highenemy = gameObjectManager_->CreateInstance<HighEnemy>("highEnemy", BaseObject::TagEnemy);
+		
+		highenemy->SetWepon(wepon_);
+		highEnemies_.push_back(highenemy);
+	}
 	camera_ = nullptr;
 	camera_ = gameObjectManager_->CreateInstance<InGameCamera>("Incamera", BaseObject::TagCamera);
 	camera_->UseThisCamera();
@@ -67,12 +81,19 @@ void GameScene::AtackAfterInit()
 	
 	//wepon = gameObjectManager_->CreateInstance<Wepon>("wepon", BaseObject::TagWeapon);
 	wepon_->SetTarget(&player_->transform_);
-
 	wepon_->Reset();
 	wepon_->transform_.SetParent(&player_->transform_, 0b001);
 	
 	chain_->SetWepon(wepon_);
 	for (Enemy* enemy : enemies_) {
+		enemy->Reset();
+		enemy->SetWepon(wepon_);
+	}
+	for (MidEnemy* enemy : midEnemies_) {
+		enemy->Reset();
+		enemy->SetWepon(wepon_);
+	}
+	for (HighEnemy* enemy : highEnemies_) {
 		enemy->Reset();
 		enemy->SetWepon(wepon_);
 	}

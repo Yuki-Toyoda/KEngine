@@ -37,7 +37,8 @@ Vector3 InputManager::Move()
     Vector3 velocity = {0.0f,0.0f,0.0f};
    // XINPUT_STATE joyState;
     
-    
+    velocity = { (float)joyState_.Gamepad.sThumbLX / SHRT_MAX,
+       (float)joyState_.Gamepad.sThumbLY / SHRT_MAX,0.0f };
     if (Input::GetInstance()->PushKey(DIK_LEFT)) {
         velocity.x = -1.0f;
     }
@@ -51,9 +52,8 @@ Vector3 InputManager::Move()
         velocity.y = -1.0f;
     }
    
-    velocity={ (float)joyState_.Gamepad.sThumbLX / SHRT_MAX, 
-        (float)joyState_.Gamepad.sThumbLY / SHRT_MAX,0.0f
-};
+   
+
 
     velocity.z = 0.0f;
     return velocity;

@@ -7,6 +7,11 @@ enum class Behavior {
 	kRoot,
 	kAtack,
 };
+enum Size {
+	low,
+	mid,
+	high,
+};
 class Wepon:public BaseObject
 {
 public:
@@ -27,6 +32,12 @@ public:
 	void DisplayImGui() override;
 
 	void Reset();
+	/// <summary>
+/// 衝突した瞬間にコールバックされる関数
+/// </summary>
+/// <param name="collider">衝突したコライダー</param>
+	void OnCollisionEnter(Collider* collider) override;
+	Size GetSize() { return size_; }
 private:
 	Audio* audio_;
 	// 追従対象のワールド座標
@@ -59,16 +70,13 @@ private:
 	float kAtackRotateForce_=0.2f;
 	uint32_t soundHandleslam_;
 	uint32_t soundHandleDamage_;
+	Size size_;
 private://メンバ関数
 
 	void Move();
 	void ChainDeleted();
 	void Atack();
-	/// <summary>
-	/// 衝突した瞬間にコールバックされる関数
-	/// </summary>
-	/// <param name="collider">衝突したコライダー</param>
-	void OnCollisionEnter(Collider* collider) override;
+
 public:
 	//追従対象
 	void SetTarget(const WorldTransform* target) { target_ = target; }

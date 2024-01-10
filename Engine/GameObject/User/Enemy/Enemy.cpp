@@ -32,6 +32,10 @@ void Enemy::Update()
 		velocity_ = velocity_ * 0.8f;
 		transform_.translate_ += velocity_;
 	}
+	else {
+		SubtractVelocity();
+		transform_.translate_ += hitvelocity_;
+	}
 	
 }
 
@@ -50,7 +54,7 @@ void Enemy::Reset()
 {
 	transform_.scale_ = { 0.6f,0.6f,0.6f };
 	worldPos_ = transform_.GetWorldPos();
-
+	color_ = { 1.0f,1.0f,1.0f,1.0f };
 	isParent_ = false;
 	SetObjectTag(BaseObject::TagEnemy);
 	transform_.SetParent(nullptr);
@@ -59,6 +63,18 @@ void Enemy::Reset()
 	// 調整項目クラスから値読み込み
 	transform_.translate_ = GlobalVariables::GetInstance()->GetVector3Value(name_, "Translate");
 	//transform_.translate_ = startTranslate_;
+	hitvelocity_ = { 0.0f,0.0f,0.0f };
+}
+
+void Enemy::SubtractVelocity()
+{
+	hitvelocity_ = hitvelocity_ * 0.8f;
+	if (std::abs(hitvelocity_.x) <= 0.01f) {
+		hitvelocity_.x = 0.0f;
+	}
+	if (std::abs(hitvelocity_.y) <= 0.01f) {
+		hitvelocity_.y = 0.0f;
+	}
 }
 
 void Enemy::OnCollisionEnter(Collider* collider)
@@ -67,13 +83,13 @@ void Enemy::OnCollisionEnter(Collider* collider)
 	//武器とぶつかった
 
 	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagWeapon) {
-		if (GetObjectTag() != BaseObject::TagPlayer) {
+		if (GetObjectTag() == BaseObject::TagEnemy) {
 			color_ = { 1.0f,0.0f,0.0f,1.0f };
-			SetObjectTag(BaseObject::TagWeapon);
+			
 			//ワールドポジションを計算
 			Vector3 world = transform_.GetWorldPos();
 			Vector3 weponWorld = wepon_->transform_.GetWorldPos();
-
+			hitvelocity_ = { 0.0f,0.0f,0.0f };
 			Vector3 pos = world - weponWorld;
 			Matrix4x4 rotateMat = Math::MakeRotateXYZMatrix(wepon_->transform_.rotate_ * -1.0f);
 			transform_.translate_ = Math::TransformNormal(pos, rotateMat);
@@ -81,14 +97,18 @@ void Enemy::OnCollisionEnter(Collider* collider)
 			transform_.SetParent(&wepon_->transform_);
 			//ペアレントしてる数を加算
 			wepon_->AddParentCount();
+			wepon_->OnCollisionEnter(colliders_.front().get());
 			audio_->PlayWave(soundHandleStick_);
+			SetObjectTag(BaseObject::TagWeapon);
+			
+			return;
 		}
 	}
 	//鎖とぶつかった
 	else if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagChain) {
 		if (GetObjectTag() == BaseObject::TagEnemy) {
 			color_ = { 1.0f,0.0f,0.0f,1.0f };
-			
+			hitvelocity_ = { 0.0f,0.0f,0.0f };
 			isParent_ = true;
 
 		}
