@@ -1,5 +1,6 @@
 #pragma once
 #include "../../BaseObject.h"
+#include "../../../Input/Input.h"
 
 /// <summary>
 /// インゲーム内でのUIマネージャ
@@ -23,8 +24,13 @@ public: // メンバ関数
 	/// </summary>
 	void DisplayImGui() override;
 
-
 private: // メンバ変数
+
+	// 入力検知用
+	Input* input_ = nullptr;
+	// コントローラー入力
+	XINPUT_STATE joyState_; // 現在フレーム用
+	XINPUT_STATE preJoyState_; // 前フレーム用
 
 };
 
