@@ -54,7 +54,7 @@ void Wepon::Update()
 		else {
 			ChainDeleted();
 		}
-		if (Input::GetInstance()->PushKey(DIK_SPACE)) {
+		if (InputManager::Atack()) {
 			isAtack_ = true;
 		}
 		break;
@@ -97,11 +97,13 @@ void Wepon::Reset()
 void Wepon::Move()
 {
 	if (isMove_) {
-		if (InputManager::RotateRight()) {
-			rotateDirection_ = false;
-		}
-		if (InputManager::RotateLeft()) {
-			rotateDirection_ = true;
+		if (InputManager::ChangeRotate()) {
+			if (rotateDirection_) {
+				rotateDirection_ = false;
+			}
+			else {
+				rotateDirection_ = true;
+			}
 		}
 		if (rotateDirection_) {
 			if(theta_>=(2.0f*3.14159265f)){

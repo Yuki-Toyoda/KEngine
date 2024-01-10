@@ -11,7 +11,12 @@ public:
 	static Vector3 Move();
 	static bool RotateRight();
 	static bool RotateLeft();
+	static bool ChangeRotate();
+	static bool Atack();
+	static void Init();
+	static void Update();
 private:
-
+	static XINPUT_STATE joyState_;
+	static XINPUT_STATE preJoyState_;
 };
 

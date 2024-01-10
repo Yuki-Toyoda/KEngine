@@ -35,6 +35,9 @@ bool InputManager::MoveRight()
 Vector3 InputManager::Move()
 {
     Vector3 velocity = {0.0f,0.0f,0.0f};
+   // XINPUT_STATE joyState;
+    
+    
     if (Input::GetInstance()->PushKey(DIK_LEFT)) {
         velocity.x = -1.0f;
     }
@@ -47,6 +50,11 @@ Vector3 InputManager::Move()
     if (Input::GetInstance()->PushKey(DIK_DOWN)) {
         velocity.y = -1.0f;
     }
+   
+    velocity={ (float)joyState_.Gamepad.sThumbLX / SHRT_MAX, 
+        (float)joyState_.Gamepad.sThumbLY / SHRT_MAX,0.0f
+};
+
     velocity.z = 0.0f;
     return velocity;
 }
@@ -67,4 +75,36 @@ bool InputManager::RotateLeft()
     return false;
 }
 
+bool InputManager::ChangeRotate()
+{
+    if (joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_X &&
+        !(preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_X)) {
+        return true;
+    }
+    return false;
+}
 
+bool InputManager::Atack()
+{
+    if (joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A &&
+        !(preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A)) {
+        return true;
+    }
+    return false;
+}
+
+void InputManager::Init()
+{
+    Input::GetInstance()->GetJoystickState(0, joyState_); // 現在フレームの入力取得
+    preJoyState_ = joyState_;
+}
+
+void InputManager::Update()
+{
+    preJoyState_ = joyState_;
+    Input::GetInstance()->GetJoystickState(0, joyState_);
+}
+
+
+XINPUT_STATE InputManager::joyState_;
+XINPUT_STATE InputManager::preJoyState_;

@@ -3,7 +3,7 @@
 #include "../../GameObject/SampleList.h"
 
 void GameScene::Init(){
-	
+	InputManager::Init();
 	// スカイドーム生成
 	SkyDome* skyDome = nullptr;
 	skyDome = gameObjectManager_->CreateInstance<SkyDome>("SkyDome", BaseObject::TagNone);
@@ -45,6 +45,7 @@ void GameScene::Init(){
 
 void GameScene::Update()
 {
+	InputManager::Update();
 	// デバッグ時のみ特定のキーでシーン遷移
 #ifdef _DEBUG
 	// デバッグ遷移

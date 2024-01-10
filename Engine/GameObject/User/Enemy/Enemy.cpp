@@ -1,15 +1,23 @@
 #include "Enemy.h"
+#include "../../../GlobalVariables/GlobalVariables.h"
 
 void Enemy::Init()
 {
 	audio_ = Audio::GetInstance();
 	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Box", "Box.obj");
 	AddColliderSphere("Enemy", &worldPos_, &transform_.scale_.x);
-	transform_.scale_ = { 0.2f,0.2f,0.2f };
-	worldPos_ = transform_.GetWorldPos();
+	transform_.scale_ = { 0.6f,0.6f,0.6f };
+	
 	
 	isParent_ = false;
 	soundHandleStick_ = audio_->LoadWave("stick.wav");
+
+	// 調整項目クラスに値を追加
+	GlobalVariables::GetInstance()->AddItem(name_, "Translate", worldPos_);
+	// 調整項目クラスから値読み込み
+	transform_.translate_ = GlobalVariables::GetInstance()->GetVector3Value(name_, "Translate");
+	worldPos_ = transform_.GetWorldPos();
+
 }
 
 void Enemy::Update()
@@ -31,17 +39,26 @@ void Enemy::DisplayImGui()
 {
 	transform_.DisplayImGui();
 	ImGui::DragFloat3("worldPos", &worldPos_.x);
+
+	if(ImGui::Button("Save")) {
+		GlobalVariables::GetInstance()->SetValue(name_, "Translate", worldPos_);
+		GlobalVariables::GetInstance()->SaveFile(name_);
+	}
 }
 
 void Enemy::Reset()
 {
-	transform_.scale_ = { 0.2f,0.2f,0.2f };
+	transform_.scale_ = { 0.6f,0.6f,0.6f };
 	worldPos_ = transform_.GetWorldPos();
 
 	isParent_ = false;
 	SetObjectTag(BaseObject::TagEnemy);
 	transform_.SetParent(nullptr);
-	transform_.translate_ = startTranslate_;
+	// 調整項目クラスに値を追加
+	GlobalVariables::GetInstance()->AddItem(name_, "Translate", worldPos_);
+	// 調整項目クラスから値読み込み
+	transform_.translate_ = GlobalVariables::GetInstance()->GetVector3Value(name_, "Translate");
+	//transform_.translate_ = startTranslate_;
 }
 
 void Enemy::OnCollisionEnter(Collider* collider)
