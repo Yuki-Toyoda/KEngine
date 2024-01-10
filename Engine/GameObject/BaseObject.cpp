@@ -17,7 +17,7 @@ void BaseObject::PreInitialize(std::string name, Tag tag)
 	collisionManager_ = CollisionManager::GetInstance(); // 衝突判定マネージャ
 
 	// 非表示
-	isActive_ = false;
+	isActive_ = true;
 
 	// ワールドトランスフォームの初期化
 	transform_.Init();
