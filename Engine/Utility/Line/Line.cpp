@@ -85,6 +85,7 @@ void Line::DisplayImGui()
 		ImGui::DragFloat2("Thickness", &thickness_.x, 0.05f, 0.05f);
 		ImGui::DragFloat("Length", &length_, 0.05f, 0.05f);
 		ImGui::DragFloat3("Rotate", &rotate_.x, 0.005f);
+		mesh_->material_.uvTransform_.DisplayImGui("UVTransform");
 		ImGui::TreePop();
 	}
 }

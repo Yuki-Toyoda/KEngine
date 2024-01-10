@@ -13,3 +13,5 @@
 #include "User/camera/InGameCamera.h"
 #include "User/Enemy/MidEnemy.h"
 #include "User/Enemy/HighEnemy.h"
+#include "User/camera/InGameCamera.h"
+#include "User/Player/PlayerAnimManager.h"

@@ -46,6 +46,12 @@ private:
  Vector3 velocity_;
  uint32_t soundHandleStick_;
  Vector3 hitvelocity_;
+	
+	// パーツごとのトランスフォーム
+	WorldTransform bodyTransform_; // 身体
+	WorldTransform wingTransform_L_; // 左羽
+	WorldTransform wingTransform_R_; // 右羽
+
 };
 
 

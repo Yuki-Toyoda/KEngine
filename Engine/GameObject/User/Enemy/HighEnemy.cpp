@@ -69,6 +69,7 @@ void HighEnemy::Reset()
 	HP_ = 4;
 	if (midEnemy_[0]) {
 		midEnemy_[0]->Reset();
+		midEnemy_[0]->Destroy();
 	}if (midEnemy_[1]) {
 		midEnemy_[1]->Reset();
 	}
@@ -106,8 +107,8 @@ void HighEnemy::OnCollisionEnter(Collider* collider)
 							midEnemy_[i]->Setveclocity(Math::Normalize(midEnemy_[i]->transform_.translate_ - transform_.translate_) * 0.3f);
 							midEnemy_[i]->SetWepon(wepon_);
 							midEnemy_[i]->SetStartTransform();
-							transform_.translate_ = { 1000.0f,0.0f,0.0f };
-						}
+						}	transform_.translate_ = { 1000.0f,0.0f,0.0f };
+						
 					}
 				}
 			}

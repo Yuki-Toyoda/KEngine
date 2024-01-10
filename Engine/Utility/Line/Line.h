@@ -56,13 +56,14 @@ private: // メンバ変数
 	WorldTransform transform_;
 	// 線の色
 	Vector4 color_;
-	// メッシュ
-	Mesh* mesh_;
 
 	// 線で使うテクスチャ
 	Texture* texture_;
 
 public: // パブリックなメンバ変数
+
+	// メッシュ
+	Mesh* mesh_;
 
 	// 線1つの名前
 	std::string name_;
