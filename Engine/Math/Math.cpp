@@ -768,6 +768,18 @@ Quaternion Math::Normalize(const Quaternion& q)
 	return result;
 }
 
+float Math::Dot(const Quaternion& q1, const Quaternion& q2)
+{
+	// 結果格納用
+	float result = 0.0f;
+
+	// 計算
+	result = (q1.x * q2.x) + (q1.y * q2.y) + (q1.z * q2.z) + (q1.w * q2.w);
+
+	// 結果を返す
+	return result;
+}
+
 Quaternion Math::Inverse(const Quaternion& q)
 {
 	// 結果格納用
@@ -841,5 +853,42 @@ Matrix4x4 Math::QuaternionToMatrix(const Quaternion& q)
 	result.m[2][2] = powf(q.w, 2) - powf(q.x, 2) - powf(q.y, 2) + powf(q.z, 2);
 
 	// 計算結果を返す
+	return result;
+}
+
+Quaternion Math::Slerp(float t, const Quaternion& start, const Quaternion& end)
+{
+	// 結果格納用
+	Quaternion result = Math::MakeIdentityQuaternion();
+
+	// クォータニオンの内積で求める
+	float dot = Math::Dot(start, end);
+
+	Quaternion s = start;
+	Quaternion e = end;
+	if (dot < 0) {
+		// 逆の回転を使う
+		s = Inverse(s);
+		// 内積も逆
+		dot = -dot;
+	}
+
+	// クォータニオンが成す角を求める
+	float theta = std::acos(dot);
+	// sin角も求める
+	float sinTheta = 1.0f / std::sin(theta);
+
+	// 0.0により近いか
+	if (dot <= -1.0f || 1.0f <= dot || sinTheta == 0.0f) {
+		result = s * (1.0f - t) + (e * t);
+	}
+	// 近いほうで補完する
+	else if (dot < 0.0f) {
+		result = (start * (std::sin(theta * (1.0f - t)) * sinTheta)) + (Math::Inverse(end) * (std::sin(theta * t) * sinTheta));
+	}
+	else {
+		result = (start * (std::sin(theta * (1.0f - t)) * sinTheta)) + (end * (std::sin(theta * t) * sinTheta));
+	}
+	// 結果を返す
 	return result;
 }
