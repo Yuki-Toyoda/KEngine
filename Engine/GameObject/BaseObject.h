@@ -204,7 +204,7 @@ protected: // プライベートなメンバ関数
 public: // パブリックなメンバ変数
 
 	// 表示状態切り替えトリガー
-	bool isActive_;
+	bool isActive_ = true;
 
 	// ワールドトランスフォーム
 	WorldTransform transform_;
