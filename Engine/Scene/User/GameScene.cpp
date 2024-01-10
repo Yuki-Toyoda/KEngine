@@ -48,6 +48,9 @@ void GameScene::Init(){
 	camera_->UseThisCamera();
 	camera_->fov_ = 0.85f;
 
+	// UIマネージャの生成
+	gameObjectManager_->CreateInstance<InGameUIManager>("UIManager", BaseObject::TagNone);
+
 }
 
 void GameScene::Update()

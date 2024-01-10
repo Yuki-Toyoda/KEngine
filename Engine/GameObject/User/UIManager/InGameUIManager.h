@@ -23,7 +23,6 @@ public: // メンバ関数
 	/// </summary>
 	void DisplayImGui() override;
 
-
 private: // メンバ変数
 
 };
