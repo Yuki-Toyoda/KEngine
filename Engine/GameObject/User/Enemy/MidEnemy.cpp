@@ -19,6 +19,10 @@ void MidEnemy::Init()
 	transform_.translate_ = GlobalVariables::GetInstance()->GetVector3Value(name_, "Translate");
 	worldPos_ = transform_.GetWorldPos();
 	isActive_ = true;
+	for (int i = 0; i < 2; i++) {
+		enemy_[i] = gameObjectManager_->CreateInstance<Enemy>("Enemy", BaseObject::TagEnemy);
+		enemy_[i]->transform_.translate_ = { 1000.0f,0.0f,0.0f };
+	}
 }
 
 void MidEnemy::Update()
@@ -98,7 +102,7 @@ void MidEnemy::OnCollisionEnter(Collider* collider)
 					isActive_ = false;
 				
 					for (int i = 0; i < 2; i++) {
-						enemy_[i] = gameObjectManager_->CreateInstance<Enemy>("Enemy", BaseObject::TagEnemy);
+						enemy_[i]->Reset();
 						if (i == 0) {
 							enemy_[i]->transform_.translate_ = { transform_.GetWorldPos().x + 5.0f, transform_.GetWorldPos().y + 5.0f,0.0f };
 						}

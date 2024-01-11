@@ -18,6 +18,10 @@ void HighEnemy::Init()
 	transform_.translate_ = GlobalVariables::GetInstance()->GetVector3Value(name_, "Translate");
 	worldPos_ = transform_.GetWorldPos();
 	isActive_ = true;
+	for (int i = 0; i < 2; i++) {
+		midEnemy_[i] = gameObjectManager_->CreateInstance<MidEnemy>("Enemy", BaseObject::TagEnemy);
+		midEnemy_[i]->transform_.translate_ = { 1000.0f,0.0f,0.0f };
+	}
 }
 
 void HighEnemy::Update()
@@ -97,7 +101,7 @@ void HighEnemy::OnCollisionEnter(Collider* collider)
 						isActive_ = false;
 					
 						for (int i = 0; i < 2; i++) {
-							midEnemy_[i] = gameObjectManager_->CreateInstance<MidEnemy>("Enemy", BaseObject::TagEnemy);
+							midEnemy_[i]->Reset();
 							if (i == 0) {
 								midEnemy_[i]->transform_.translate_ = { transform_.GetWorldPos().x + 5.0f, transform_.GetWorldPos().y + 5.0f,0.0f };
 							}
