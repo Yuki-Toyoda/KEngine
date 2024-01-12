@@ -26,18 +26,19 @@ void GameScene::Init(){
 		
 		enemy->SetWepon(wepon_);
 		enemy->SetStartTransform();
+		enemy->isActive_ = false;
 		enemies_.push_back(enemy);
 	}
 	
 	chain_ = gameObjectManager_->CreateInstance<Chain>("chain", BaseObject::TagChain);
 	chain_->SetPlayer(player_);
 	chain_->SetWepon(wepon_);
-	/*Obstacle* obstacle;
+	Obstacle* obstacle;
 	for (int i = 0; i < 5; i++) {
 		obstacle = gameObjectManager_->CreateInstance<Obstacle>("obstacle", BaseObject::TagObstacle);
 		obstacle->transform_.translate_.x = -8.0f;
 		obstacles_.push_back(obstacle);
-	}*/
+	}
 	MidEnemy* midenemy;
 	for (int i = 0; i < 3; i++) {
 		midenemy = gameObjectManager_->CreateInstance<MidEnemy>("midEnemy", BaseObject::TagEnemy);
@@ -107,10 +108,7 @@ void GameScene::AtackAfterInit()
 		enemy->Reset();
 		enemy->SetWepon(wepon_);
 	}
-	/*enemies_.remove_if([](Enemy* enemy) {
-		delete enemy;
-		return true;
-		});
+	
 	Enemy* enemy;
 	for (int i = 0; i < 15; i++) {
 		
@@ -118,5 +116,5 @@ void GameScene::AtackAfterInit()
 		enemy->transform_.translate_.x = i * 2.0f;
 		enemy->SetWepon(wepon_);
 		enemies_.push_back(enemy);
-	}*/
+	}
 }

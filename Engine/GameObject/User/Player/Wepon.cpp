@@ -49,6 +49,7 @@ void Wepon::Update()
 		}
 		
 		if (isChain_) {
+
 			Move();
 		}
 		else {

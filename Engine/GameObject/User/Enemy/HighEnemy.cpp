@@ -21,6 +21,7 @@ void HighEnemy::Init()
 	for (int i = 0; i < 2; i++) {
 		midEnemy_[i] = gameObjectManager_->CreateInstance<MidEnemy>("Enemy", BaseObject::TagEnemy);
 		midEnemy_[i]->transform_.translate_ = { 1000.0f,0.0f,0.0f };
+
 	}
 }
 
@@ -101,6 +102,7 @@ void HighEnemy::OnCollisionEnter(Collider* collider)
 						isActive_ = false;
 					
 						for (int i = 0; i < 2; i++) {
+							//分裂して1レベル下の敵を生成
 							midEnemy_[i]->Reset();
 							if (i == 0) {
 								midEnemy_[i]->transform_.translate_ = { transform_.GetWorldPos().x + 5.0f, transform_.GetWorldPos().y + 5.0f,0.0f };
