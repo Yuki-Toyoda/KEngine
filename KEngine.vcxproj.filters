@@ -2,30 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Engine\Audio\Audio.cpp">
-      <Filter>Engine\Audio</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Base\DirectXCommon.cpp">
-      <Filter>Engine\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Base\WinApp.cpp">
-      <Filter>Engine\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Debug\Debug.cpp">
-      <Filter>Engine\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GlobalVariables\GlobalVariables.cpp">
-      <Filter>Engine\GlobalVariables</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject\WorldTransform.cpp">
-      <Filter>App\GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Input\Input.cpp">
-      <Filter>Engine\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Math\Math.cpp">
-      <Filter>Engine\Math</Filter>
-    </ClCompile>
     <ClCompile Include="Externals\imgui\ImGuiManager.cpp">
       <Filter>Externals\ImGui</Filter>
     </ClCompile>
@@ -201,13 +177,37 @@
       <Filter>App\GameObject\Samples\Sphere</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Utility\Line\Line.cpp">
-      <Filter>App\Utility\Line</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Utility\Line\Line.cpp">
       <Filter>Utility\Line</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\User\TestObject.cpp">
       <Filter>App\GameObject\User\TestObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Audio\Audio.cpp">
+      <Filter>Engine\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Debug\Debug.cpp">
+      <Filter>Engine\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Base\DirectXCommon.cpp">
+      <Filter>Engine\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GlobalVariables\GlobalVariables.cpp">
+      <Filter>Engine\GlobalVariables</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Input\Input.cpp">
+      <Filter>Engine\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Utility\Line\Line.cpp">
+      <Filter>App\Utility\Line</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Math\Math.cpp">
+      <Filter>Engine\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Base\WinApp.cpp">
+      <Filter>Engine\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\WorldTransform.cpp">
+      <Filter>App\GameObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -443,13 +443,13 @@
       <Filter>App\GameObject\Samples\Sphere</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utility\Line\Line.h">
-      <Filter>App\Utility\Line</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Utility\Line\Line.h">
       <Filter>Utility\Line</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\User\TestObject.h">
       <Filter>App\GameObject\User\TestObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Utility\Line\Line.h">
+      <Filter>App\Utility\Line</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
