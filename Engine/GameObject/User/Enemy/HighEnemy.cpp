@@ -70,7 +70,7 @@ void HighEnemy::Reset()
 	GlobalVariables::GetInstance()->AddItem(name_, "Translate", worldPos_);
 	// 調整項目クラスから値読み込み
 	transform_.translate_ = GlobalVariables::GetInstance()->GetVector3Value(name_, "Translate");
-	//transform_.translate_ = startTranslate_;
+
 	HP_ = 4;
 	if (midEnemy_[0]) {
 		midEnemy_[0]->Reset();
@@ -89,16 +89,19 @@ void HighEnemy::OnCollisionEnter(Collider* collider)
 		if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagWeapon || collider->GetGameObject()->GetObjectTag() == BaseObject::TagChain) {
 			if (isCollision_ == false) {
 				if (wepon_->GetSize() == low) {
-					HP_ -= 1;
+					//武器のサイズが最小なら体力を1減らす
+					HP_ -= 1; 
 				}
 				else if (wepon_->GetSize() == mid) {
+					//武器のサイズが中なら体力を3減らす
 					HP_ -= 3;
 				}
+				
 					isCollision_ = true;
 
 					collisionCount_ = 0;
 					if (HP_ <= 0) {
-
+						//HPが0以下なら描画しない
 						isActive_ = false;
 					
 						for (int i = 0; i < 2; i++) {
@@ -110,6 +113,7 @@ void HighEnemy::OnCollisionEnter(Collider* collider)
 							else {
 								midEnemy_[i]->transform_.translate_ = { transform_.GetWorldPos().x - 5.0f, transform_.GetWorldPos().y - 5.0f,0.0f };
 							}
+							//敵を少しだけ飛ばすためのベクトルを取得
 							midEnemy_[i]->Setveclocity(Math::Normalize(midEnemy_[i]->transform_.translate_ - transform_.translate_) * 0.3f);
 							midEnemy_[i]->SetWepon(wepon_);
 							midEnemy_[i]->SetStartTransform();
