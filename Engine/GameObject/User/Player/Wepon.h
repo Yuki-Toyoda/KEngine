@@ -38,6 +38,8 @@ public:
 /// <param name="collider">衝突したコライダー</param>
 	void OnCollisionEnter(Collider* collider) override;
 	Size GetSize() { return size_; }
+
+	int GetParentCount() { return parentCount_; }
 private:
 	Audio* audio_;
 	// 追従対象のワールド座標
