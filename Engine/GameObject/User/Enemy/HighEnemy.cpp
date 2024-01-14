@@ -21,7 +21,7 @@ void HighEnemy::Init()
 	for (int i = 0; i < 2; i++) {
 		midEnemy_[i] = gameObjectManager_->CreateInstance<MidEnemy>("Enemy", BaseObject::TagEnemy);
 		midEnemy_[i]->transform_.translate_ = { 1000.0f,0.0f,0.0f };
-
+		midEnemy_[i]->isActive_ = false;
 	}
 }
 
@@ -74,9 +74,11 @@ void HighEnemy::Reset()
 	HP_ = 4;
 	if (midEnemy_[0]) {
 		midEnemy_[0]->Reset();
+		midEnemy_[0]->isActive_ = false;
 		
 	}if (midEnemy_[1]) {
 		midEnemy_[1]->Reset();
+		midEnemy_[0]->isActive_ = false;
 	}
 	isActive_ = true;
 }
@@ -107,6 +109,7 @@ void HighEnemy::OnCollisionEnter(Collider* collider)
 						for (int i = 0; i < 2; i++) {
 							//分裂して1レベル下の敵を生成
 							midEnemy_[i]->Reset();
+							midEnemy_[0]->isActive_ = true;
 							if (i == 0) {
 								midEnemy_[i]->transform_.translate_ = { transform_.GetWorldPos().x + 5.0f, transform_.GetWorldPos().y + 5.0f,0.0f };
 							}

@@ -22,6 +22,7 @@ void MidEnemy::Init()
 	for (int i = 0; i < 2; i++) {
 		enemy_[i] = gameObjectManager_->CreateInstance<Enemy>("Enemy", BaseObject::TagEnemy);
 		enemy_[i]->transform_.translate_ = { 1000.0f,0.0f,0.0f };
+		enemy_[i]->isActive_ = false;
 	}
 }
 
@@ -79,8 +80,10 @@ void MidEnemy::Reset()
 	HP_ = 2;
 	if (enemy_[0]) {
 		enemy_[0]->Reset();
+		enemy_[0]->isActive_ = false;
 	}if (enemy_[1]) {
 		enemy_[1]->Reset();
+		enemy_[0]->isActive_ = false;
 	}
 	isActive_ = true;
 }
@@ -103,6 +106,7 @@ void MidEnemy::OnCollisionEnter(Collider* collider)
 				
 					for (int i = 0; i < 2; i++) {
 						enemy_[i]->Reset();
+						enemy_[i]->isActive_ = true;
 						if (i == 0) {
 							enemy_[i]->transform_.translate_ = { transform_.GetWorldPos().x + 5.0f, transform_.GetWorldPos().y + 5.0f,0.0f };
 						}

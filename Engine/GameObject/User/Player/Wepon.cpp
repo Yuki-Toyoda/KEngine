@@ -252,8 +252,9 @@ void Wepon::Commbo()
 	}
 	else {
 		isCommbo_ = true;
-		commbCount_ = 0;
+		
 	}
+	commbCount_ = 0;
 }
 
 void Wepon::OnCollisionEnter(Collider* collider)
