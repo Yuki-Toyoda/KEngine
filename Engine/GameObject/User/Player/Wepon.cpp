@@ -58,6 +58,13 @@ void Wepon::Update()
 		if (InputManager::Atack()) {
 			isAtack_ = true;
 		}
+		if (isCommbo_) {
+			commbCount_++;
+			if (kMaxCommbCount_ <= commbCount_) {
+				isCommbo_ = false;
+				commbCount_ = 0;
+			}
+		}
 		break;
 	default:
 		break;
@@ -125,7 +132,9 @@ void Wepon::Move()
 			if (moveRotateForce_ <= kMoveRotateForce_) {
 				moveRotateForce_ += 0.01f;
 			}
-			
+			if (!isCommbo_ && moveRotateForce_ > kMoveRotateForce_) {
+				moveRotateForce_ -= 0.01f;
+			}
 			
 		}
 		else {
@@ -135,6 +144,9 @@ void Wepon::Move()
 			}
 			if (moveRotateForce_ >= -kMoveRotateForce_) {
 				moveRotateForce_ -= 0.01f;
+			}
+			if (!isCommbo_ && moveRotateForce_ < -kMoveRotateForce_) {
+				moveRotateForce_ += 0.01f;
 			}
 			
 		}
@@ -227,17 +239,34 @@ void Wepon::Atack()
 	transform_.translate_.y = std::sinf(theta_) * (distance_ + transform_.scale_.y);
 }
 
+void Wepon::Commbo()
+{
+
+	if (isCommbo_) {
+		if (rotateDirection_) {
+			moveRotateForce_ += AddMoveRotateForce_;
+		}
+		else {
+			moveRotateForce_ -= AddMoveRotateForce_;
+		}
+	}
+	else {
+		isCommbo_ = true;
+		commbCount_ = 0;
+	}
+}
+
 void Wepon::OnCollisionEnter(Collider* collider)
 {
 	collider;
 	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagEnemy) {
 		
-		if (lerpCount_ != 1.0f) {
+	/*	if (lerpCount_ != 1.0f) {
 			lerpCount_ = 1.0f;
 			goalDistance_ = distance_ + 1.0f /2.5f;
 			distance_ = Math::Linear(lerpCount_, distance_, goalDistance_);
 		}
 		lerpCount_ = 0.0f;
-		goalDistance_ = distance_ + 1.0f / 2.5f;
+		goalDistance_ = distance_ + 1.0f / 2.5f;*/
 	}
 }

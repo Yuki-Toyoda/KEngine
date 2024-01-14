@@ -103,24 +103,27 @@ void Enemy::OnCollisionEnter(Collider* collider)
 
 	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagWeapon) {
 		if (GetObjectTag() == BaseObject::TagEnemy) {
-			color_ = { 1.0f,0.0f,0.0f,1.0f };
-			
-			//ワールドポジションを計算
-			Vector3 world = transform_.GetWorldPos();
-			Vector3 weponWorld = wepon_->transform_.GetWorldPos();
-			hitvelocity_ = { 0.0f,0.0f,0.0f };
-			Vector3 pos = world - weponWorld;
-			Matrix4x4 rotateMat = Math::MakeRotateXYZMatrix(wepon_->transform_.rotate_ * -1.0f);
-			transform_.translate_ = Math::TransformNormal(pos, rotateMat);
-			isParent_ = false;
-			transform_.SetParent(&wepon_->transform_);
-			//ペアレントしてる数を加算
-			wepon_->AddParentCount();
-			wepon_->OnCollisionEnter(colliders_.front().get());
-			audio_->PlayWave(soundHandleStick_);
-			SetObjectTag(BaseObject::TagWeapon);
-			
-			return;
+			if (isActive_) {
+				color_ = { 1.0f,0.0f,0.0f,1.0f };
+
+				//ワールドポジションを計算
+				Vector3 world = transform_.GetWorldPos();
+				Vector3 weponWorld = wepon_->transform_.GetWorldPos();
+				hitvelocity_ = { 0.0f,0.0f,0.0f };
+				Vector3 pos = world - weponWorld;
+				Matrix4x4 rotateMat = Math::MakeRotateXYZMatrix(wepon_->transform_.rotate_ * -1.0f);
+				transform_.translate_ = Math::TransformNormal(pos, rotateMat);
+				isParent_ = false;
+				transform_.SetParent(&wepon_->transform_);
+				//ペアレントしてる数を加算
+				wepon_->AddParentCount();
+				wepon_->OnCollisionEnter(colliders_.front().get());
+				wepon_->Commbo();
+				audio_->PlayWave(soundHandleStick_);
+				SetObjectTag(BaseObject::TagWeapon);
+
+				return;
+			}
 		}
 	}
 	//鎖とぶつかった

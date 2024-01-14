@@ -70,9 +70,13 @@ private:
 	float kMoveRotateForce_=0.05f;
 	float moveRotateForce_ = 0.0f;
 	float kAtackRotateForce_=0.2f;
+	float AddMoveRotateForce_ = 0.005f;
 	uint32_t soundHandleslam_;
 	uint32_t soundHandleDamage_;
 	Size size_;
+	bool isCommbo_;
+	const int kMaxCommbCount_ = 120;
+	int commbCount_;
 private://メンバ関数
 
 	void Move();
@@ -88,5 +92,6 @@ public:
 	Behavior GetBehavior() { return behavior_; }
 	bool GetISBreak() { return isBreak_; }
 	bool GetIsAtackEnd() { return isAtackEnd_; }
+	void Commbo();
 };
 

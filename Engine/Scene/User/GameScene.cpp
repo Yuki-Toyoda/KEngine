@@ -33,12 +33,12 @@ void GameScene::Init(){
 	chain_ = gameObjectManager_->CreateInstance<Chain>("chain", BaseObject::TagChain);
 	chain_->SetPlayer(player_);
 	chain_->SetWepon(wepon_);
-	Obstacle* obstacle;
+	/*Obstacle* obstacle;
 	for (int i = 0; i < 5; i++) {
 		obstacle = gameObjectManager_->CreateInstance<Obstacle>("obstacle", BaseObject::TagObstacle);
 		obstacle->transform_.translate_.x = -8.0f;
 		obstacles_.push_back(obstacle);
-	}
+	}*/
 	MidEnemy* midenemy;
 	for (int i = 0; i < 3; i++) {
 		midenemy = gameObjectManager_->CreateInstance<MidEnemy>("midEnemy", BaseObject::TagEnemy);
@@ -62,7 +62,7 @@ void GameScene::Init(){
 	camera_ = gameObjectManager_->CreateInstance<InGameCamera>("Incamera", BaseObject::TagCamera);
 	camera_->UseThisCamera();
 	camera_->fov_ = 0.85f;
-	ground_ = gameObjectManager_->CreateInstance<Ground>("Ground", BaseObject::TagFloor);
+	//ground_ = gameObjectManager_->CreateInstance<Ground>("Ground", BaseObject::TagFloor);
 	// UIマネージャの生成
 	gameObjectManager_->CreateInstance<InGameUIManager>("UIManager", BaseObject::TagNone);
 
@@ -83,7 +83,7 @@ void GameScene::Update()
 		camera_->Shake();
 	}
 	if (wepon_->GetISBreak()||wepon_->GetIsAtackEnd()&&!camera_->GetIsShake()) {
-		ground_->Damage(wepon_);
+		//ground_->Damage(wepon_);
 		AtackAfterInit();
 	}
 }
