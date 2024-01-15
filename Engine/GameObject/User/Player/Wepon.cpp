@@ -1,11 +1,14 @@
 #include "Wepon.h"
 #include "../../GameObjectManager.h"
+#include "../../../GlobalVariables/GlobalVariables.h"
 void Wepon::Init()
 {
 	audio_ = Audio::GetInstance();
 	soundHandleslam_ = audio_->LoadWave("slam.wav");
 	soundHandleDamage_= audio_->LoadWave("damege.wav");
-	AddMesh(&transform_, color_, "./Resources/WeaponCube", "weaponCube.obj");
+	//AddMesh(&transform_, color_, "./Resources/WeaponCube", "weaponCube.obj");
+	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Box", "Box.obj");
+	color_ = { 0.0f, 0.0f, 1.0f, 1.0f };
 	AddColliderSphere("Wepon", &worldPos_, &transform_.scale_.x);
 	distance_ = 5.0f;
 	transform_.translate_.x +=distance_;
@@ -19,10 +22,20 @@ void Wepon::Init()
 	parentCount_ = 0;
 	goalDistance_ = distance_;
 	isBreak_ = false;
+	// 調整項目クラスに値を追加
+	GlobalVariables::GetInstance()->AddItem(name_, "AddRotateForce", AddMoveRotateForce_);
+	GlobalVariables::GetInstance()->AddItem(name_, "SubRotateForce", SubtractRotateForce_);
+	GlobalVariables::GetInstance()->AddItem(name_, "minRotateForce", kMoveRotateForce_);
+	AddMoveRotateForce_ = GlobalVariables::GetInstance()->GetFloatValue(name_, "AddRotateForce");
+	SubtractRotateForce_= GlobalVariables::GetInstance()->GetFloatValue(name_, "SubRotateForce");
+	kMoveRotateForce_ = GlobalVariables::GetInstance()->GetFloatValue(name_, "minRotateForce");
 }
 
 void Wepon::Update()
 {
+	AddMoveRotateForce_ = GlobalVariables::GetInstance()->GetFloatValue(name_, "AddRotateForce");
+	SubtractRotateForce_ = GlobalVariables::GetInstance()->GetFloatValue(name_, "SubRotateForce");
+	kMoveRotateForce_ = GlobalVariables::GetInstance()->GetFloatValue(name_, "minRotateForce");
 	if (Input::GetInstance()->PushKey(DIK_RETURN)) {
 		isBreak_ = true;
 	}
@@ -130,10 +143,10 @@ void Wepon::Move()
 				theta_ = 0.0f;
 			}
 			if (moveRotateForce_ <= kMoveRotateForce_) {
-				moveRotateForce_ += 0.01f;
+				moveRotateForce_ += SubtractRotateForce_;
 			}
 			if (!isCommbo_ && moveRotateForce_ > kMoveRotateForce_) {
-				moveRotateForce_ -= 0.01f;
+				moveRotateForce_ -= SubtractRotateForce_;
 			}
 			
 		}
@@ -143,10 +156,10 @@ void Wepon::Move()
 				theta_ = 0.0f;
 			}
 			if (moveRotateForce_ >= -kMoveRotateForce_) {
-				moveRotateForce_ -= 0.01f;
+				moveRotateForce_ -= SubtractRotateForce_;
 			}
 			if (!isCommbo_ && moveRotateForce_ < -kMoveRotateForce_) {
-				moveRotateForce_ += 0.01f;
+				moveRotateForce_ += SubtractRotateForce_;
 			}
 			
 		}

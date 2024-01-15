@@ -26,7 +26,7 @@ void GameScene::Init(){
 		
 		enemy->SetWepon(wepon_);
 		enemy->SetStartTransform();
-		enemy->isActive_ = false;
+		enemy->isActive_ = true;
 		enemies_.push_back(enemy);
 	}
 	
@@ -39,13 +39,13 @@ void GameScene::Init(){
 		obstacle->transform_.translate_.x = -8.0f;
 		obstacles_.push_back(obstacle);
 	}*/
-	MidEnemy* midenemy;
+	/*MidEnemy* midenemy;
 	for (int i = 0; i < 3; i++) {
 		midenemy = gameObjectManager_->CreateInstance<MidEnemy>("midEnemy", BaseObject::TagEnemy);
 	
 		midenemy->SetWepon(wepon_);
 		midEnemies_.push_back(midenemy);
-	}
+	}*/
 	/*obstacles_[0]->transform_.translate_ = { 10.0f,6.0f,0.0f };
 	obstacles_[1]->transform_.translate_ = { -10.0f,-6.0f,0.0f };
 	obstacles_[2]->transform_.translate_ = { 18.0f,-16.0f,0.0f };
@@ -62,7 +62,7 @@ void GameScene::Init(){
 	camera_ = gameObjectManager_->CreateInstance<InGameCamera>("Incamera", BaseObject::TagCamera);
 	camera_->UseThisCamera();
 	camera_->fov_ = 0.85f;
-	//ground_ = gameObjectManager_->CreateInstance<Ground>("Ground", BaseObject::TagFloor);
+	ground_ = gameObjectManager_->CreateInstance<Ground>("Ground", BaseObject::TagFloor);
 	// UIマネージャの生成
 	gameObjectManager_->CreateInstance<InGameUIManager>("UIManager", BaseObject::TagNone);
 
@@ -88,6 +88,10 @@ void GameScene::Update()
 	}
 }
 
+GameScene::~GameScene()
+{
+}
+
 void GameScene::AtackAfterInit()
 {
 	
@@ -99,23 +103,21 @@ void GameScene::AtackAfterInit()
 	chain_->SetWepon(wepon_);
 	for (Enemy* enemy : enemies_) {
 		enemy->Reset();
+
 		enemy->SetWepon(wepon_);
+	
+		
 	}
+
 	for (MidEnemy* enemy : midEnemies_) {
 		enemy->Reset();
 		enemy->SetWepon(wepon_);
 	}
+	
 	for (HighEnemy* enemy : highEnemies_) {
 		enemy->Reset();
 		enemy->SetWepon(wepon_);
 	}
 	
-	Enemy* enemy;
-	for (int i = 0; i < 15; i++) {
-		
-		enemy = gameObjectManager_->CreateInstance<Enemy>("Enemy", BaseObject::TagEnemy);
-		enemy->transform_.translate_.x = i * 2.0f;
-		enemy->SetWepon(wepon_);
-		enemies_.push_back(enemy);
-	}
+
 }

@@ -28,12 +28,18 @@ public:
 	void Setveclocity(Vector3 velocity) { hitvelocity_ = velocity; }
 	void SubtractVelocity();
 private:
+
 	/// <summary>
 	/// 衝突した瞬間にコールバックされる関数
 	/// </summary>
 	/// <param name="collider">衝突したコライダー</param>
 	void OnCollisionEnter(Collider* collider) override;
 	
+	/// <summary>
+	/// 衝突した瞬間にコールバックされる関数
+	/// </summary>
+	/// <param name="collider">衝突したコライダー</param>
+	void OnCollision(Collider* collider) override;
 
 private:
 	Audio* audio_;

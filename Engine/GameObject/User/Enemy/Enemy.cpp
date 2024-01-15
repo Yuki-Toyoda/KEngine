@@ -4,7 +4,7 @@
 void Enemy::Init()
 {
 	audio_ = Audio::GetInstance();
-	AddColliderSphere("Enemy", &worldPos_, &transform_.scale_.x);
+	
 	transform_.scale_ = { 0.6f,0.6f,0.6f };
 	
 	
@@ -29,29 +29,37 @@ void Enemy::Init()
 	wingTransform_R_.translate_ = { -0.35f, 0.0f, 0.75f };
 
 	// メッシュの追加
-	AddMesh(&bodyTransform_, color_, "./Resources/Enemy", "Body.obj");
+	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Box", "Box.obj");
+	color_ = { 1.f, 0.f, 0.f, 1.f };
+	/*AddMesh(&bodyTransform_, color_, "./Resources/Enemy", "Body.obj");
 	AddMesh(&wingTransform_L_, color_, "./Resources/Enemy", "Wing_L.obj");
-	AddMesh(&wingTransform_R_, color_, "./Resources/Enemy", "Wing_R.obj");
-
+	AddMesh(&wingTransform_R_, color_, "./Resources/Enemy", "Wing_R.obj");*/
+	AddColliderSphere("Enemy", &worldPos_, &transform_.scale_.x);
 }
 
 void Enemy::Update()
 {
-	worldPos_ = transform_.GetWorldPos();
-	//鎖とぶつかった場合
-	if (isParent_) {
-		Vector3 world = transform_.GetWorldPos();
-		Vector3 weponWorld = wepon_->transform_.GetWorldPos();
-		//当たった場所から武器の方向に飛ばす
-		velocity_ = Math::Normalize( weponWorld-world);
-		velocity_ = velocity_ * 0.8f;
-		transform_.translate_ += velocity_;
+	if (isActive_) {
+		colliders_.front()->SetIsActive(true);
+		worldPos_ = transform_.GetWorldPos();
+		//鎖とぶつかった場合
+		if (isParent_) {
+			Vector3 world = transform_.GetWorldPos();
+			Vector3 weponWorld = wepon_->transform_.GetWorldPos();
+			//当たった場所から武器の方向に飛ばす
+			velocity_ = Math::Normalize(weponWorld - world);
+			velocity_ = velocity_ * 0.8f;
+			transform_.translate_ += velocity_;
+		}
+		else {
+			SubtractVelocity();
+			transform_.translate_ += hitvelocity_;
+		}
 	}
 	else {
-		SubtractVelocity();
-		transform_.translate_ += hitvelocity_;
+		colliders_.front()->SetIsActive(false);
 	}
-	
+
 }
 
 void Enemy::DisplayImGui()
@@ -72,7 +80,7 @@ void Enemy::DisplayImGui()
 void Enemy::Reset()
 {
 	transform_.scale_ = { 0.6f,0.6f,0.6f };
-	worldPos_ = transform_.GetWorldPos();
+	
 	color_ = { 1.0f,1.0f,1.0f,1.0f };
 	isParent_ = false;
 	SetObjectTag(BaseObject::TagEnemy);
@@ -135,4 +143,9 @@ void Enemy::OnCollisionEnter(Collider* collider)
 
 		}
 	}
+}
+
+void Enemy::OnCollision(Collider* collider)
+{
+	collider->GetGameObject()->GetObjectName();
 }

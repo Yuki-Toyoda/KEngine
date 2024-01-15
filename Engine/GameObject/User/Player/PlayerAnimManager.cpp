@@ -34,13 +34,14 @@ void PlayerAnimManager::Init()
 	footTransform_R_.translate_ = { -0.35f, -0.75f, 0.0f };
 
 	// メッシュ追加
-	AddMesh(&bodyTransform_, color_, "./Resources/Player", "Body.obj");
+	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Box", "Box.obj");
+	/*AddMesh(&bodyTransform_, color_, "./Resources/Player", "Body.obj");
 	AddMesh(&wingTransform_L_, color_, "./Resources/Player", "Wing_L.obj");
 	AddMesh(&wingTransform_R_, color_, "./Resources/Player", "Wing_R.obj");
 	AddMesh(&armTransform_L_, color_, "./Resources/Player", "Arm_L.obj");
 	AddMesh(&armTransform_R_, color_, "./Resources/Player", "Arm_R.obj");
 	AddMesh(&footTransform_L_, color_, "./Resources/Player", "Foot_L.obj");
-	AddMesh(&footTransform_R_, color_, "./Resources/Player", "Foot_R.obj");
+	AddMesh(&footTransform_R_, color_, "./Resources/Player", "Foot_R.obj");*/
 }
 
 void PlayerAnimManager::Update()

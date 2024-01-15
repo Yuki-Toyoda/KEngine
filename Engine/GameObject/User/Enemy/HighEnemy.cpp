@@ -19,16 +19,18 @@ void HighEnemy::Init()
 	worldPos_ = transform_.GetWorldPos();
 	isActive_ = true;
 	for (int i = 0; i < 2; i++) {
-		midEnemy_[i] = gameObjectManager_->CreateInstance<MidEnemy>("Enemy", BaseObject::TagEnemy);
-		midEnemy_[i]->transform_.translate_ = { 1000.0f,0.0f,0.0f };
+		midEnemy_[i] = gameObjectManager_->CreateInstance<MidEnemy>("midEnemy", BaseObject::TagEnemy);
+		midEnemy_[i]->transform_.translate_ = { 000.0f,0.0f,0.0f };
 		midEnemy_[i]->isActive_ = false;
+		midEnemy_[i]->SetWepon(wepon_);
 	}
 }
 
 void HighEnemy::Update()
 {
 	//preIsCollision_ = isCollision_;
-	//if (isActive_) {
+	if (isActive_) {
+		colliders_.front()->SetIsActive(true);
 	worldPos_ = transform_.GetWorldPos();
 	//鎖とぶつかった場合
 	if (isParent_) {
@@ -43,7 +45,10 @@ void HighEnemy::Update()
 	if (collisionCount_ >= 15) {
 		isCollision_ = false;
 	}
-	//}
+	}
+	else {
+		colliders_.front()->SetIsActive(false);
+	}
 }
 
 void HighEnemy::DisplayImGui()
@@ -78,7 +83,8 @@ void HighEnemy::Reset()
 		
 	}if (midEnemy_[1]) {
 		midEnemy_[1]->Reset();
-		midEnemy_[0]->isActive_ = false;
+		midEnemy_[1]->isActive_ = false;
+		
 	}
 	isActive_ = true;
 }
@@ -87,7 +93,7 @@ void HighEnemy::OnCollisionEnter(Collider* collider)
 {
 	collider;
 	//武器とぶつかった
-	if (isActive_) {
+	//if (isActive_) {
 		if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagWeapon || collider->GetGameObject()->GetObjectTag() == BaseObject::TagChain) {
 			if (isCollision_ == false) {
 				if (wepon_->GetSize() == low) {
@@ -109,7 +115,7 @@ void HighEnemy::OnCollisionEnter(Collider* collider)
 						for (int i = 0; i < 2; i++) {
 							//分裂して1レベル下の敵を生成
 							midEnemy_[i]->Reset();
-							midEnemy_[0]->isActive_ = true;
+							midEnemy_[i]->isActive_ = true;
 							if (i == 0) {
 								midEnemy_[i]->transform_.translate_ = { transform_.GetWorldPos().x + 5.0f, transform_.GetWorldPos().y + 5.0f,0.0f };
 							}
@@ -160,7 +166,7 @@ void HighEnemy::OnCollisionEnter(Collider* collider)
 				}
 			}
 		}
-	}
+	//}
 
 
 }

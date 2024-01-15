@@ -16,7 +16,7 @@ public: // メンバ関数
 	/// 更新関数
 	/// </summary>
 	void Update() override;
-
+	~GameScene();
 private: // メンバ変数
 	void AtackAfterInit();
 

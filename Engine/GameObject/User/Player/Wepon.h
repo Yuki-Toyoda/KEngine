@@ -71,6 +71,7 @@ private:
 	float moveRotateForce_ = 0.0f;
 	float kAtackRotateForce_=0.2f;
 	float AddMoveRotateForce_ = 0.005f;
+	float SubtractRotateForce_=0.01f;
 	uint32_t soundHandleslam_;
 	uint32_t soundHandleDamage_;
 	Size size_;
