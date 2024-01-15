@@ -3,6 +3,7 @@
 #include "../Math/Math.h"
 #include "../Resource/Texture/Texture.h"
 #include "../Resource/Material/Material.h"
+#include "../Utility/Observer/Observer.h"
 #include <wrl.h>
 #include <d3d12.h>
 
@@ -96,8 +97,10 @@ public: // パブリックなメンバ変数
 
 	// 描画中心座標
 	WorldTransform* transform_;
+	// 描画の値変化検知用
+	KLib::Observer<WorldTransform> obTransform_;
 
-	// マテリアル
+	// マテリアルz
 	Material material_;
 	// 使用するテクスチャ
 	Texture* texture_ = nullptr;

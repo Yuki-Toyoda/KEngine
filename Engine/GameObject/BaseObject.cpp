@@ -12,7 +12,6 @@ BaseObject::~BaseObject()
 
 void BaseObject::PreInitialize(std::string name, Tag tag)
 {
-
 	// インスタンス取得
 	collisionManager_ = CollisionManager::GetInstance(); // 衝突判定マネージャ
 

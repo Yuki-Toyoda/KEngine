@@ -148,6 +148,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Utility\Animation\Animation.cpp" />
     <ClCompile Include="Engine\Utility\Animation\AnimationManager.cpp" />
     <ClCompile Include="Engine\Utility\Easing\Easing.cpp" />
+    <ClCompile Include="Engine\Utility\Observer\Observer.cpp" />
     <ClCompile Include="Engine\Utility\Timer\DeltaTimer.cpp" />
     <ClCompile Include="Externals\imgui\imgui.cpp" />
     <ClCompile Include="Externals\imgui\ImGuiManager.cpp" />
@@ -235,6 +236,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Utility\Easing\Easing.h" />
     <ClInclude Include="Engine\Utility\KLib.h" />
     <ClInclude Include="Engine\Utility\Lerp\Lerp.h" />
+    <ClInclude Include="Engine\Utility\Observer\Observer.h" />
     <ClInclude Include="Engine\Utility\Timer\DeltaTimer.h" />
     <ClInclude Include="Externals\imgui\imconfig.h" />
     <ClInclude Include="Externals\imgui\imgui.h" />

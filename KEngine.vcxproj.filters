@@ -65,9 +65,6 @@
     <ClCompile Include="Engine\Primitive\3d\Mesh.cpp">
       <Filter>Engine\Primitive\3d</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\GameObject\WorldTransform.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Resource\Texture\TextureManager.cpp">
       <Filter>Engine\Resource\Texture</Filter>
     </ClCompile>
@@ -131,27 +128,6 @@
     <ClCompile Include="Engine\GameObject\Samples\SampleSprite\SampleSprite.cpp">
       <Filter>App\GameObject\Samples\Sprite</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Audio\Audio.cpp">
-      <Filter>Audio</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Debug\Debug.cpp">
-      <Filter>Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Base\DirectXCommon.cpp">
-      <Filter>Base</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Base\WinApp.cpp">
-      <Filter>Base</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GlobalVariables\GlobalVariables.cpp">
-      <Filter>GlobalVariables</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Input\Input.cpp">
-      <Filter>Input</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Math\Math.cpp">
-      <Filter>Math</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Particle\IParticleEmitter.cpp">
       <Filter>Engine\Particle</Filter>
     </ClCompile>
@@ -176,11 +152,20 @@
     <ClCompile Include="Engine\GameObject\Samples\SampleSphere\SampleSphere.cpp">
       <Filter>App\GameObject\Samples\Sphere</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Utility\Line\Line.cpp">
-      <Filter>Utility\Line</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\GameObject\User\TestObject.cpp">
       <Filter>App\GameObject\User\TestObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Audio\Audio.cpp" />
+    <ClCompile Include="Engine\Base\DirectXCommon.cpp" />
+    <ClCompile Include="Engine\Base\WinApp.cpp" />
+    <ClCompile Include="Engine\Debug\Debug.cpp" />
+    <ClCompile Include="Engine\GameObject\WorldTransform.cpp" />
+    <ClCompile Include="Engine\GlobalVariables\GlobalVariables.cpp" />
+    <ClCompile Include="Engine\Input\Input.cpp" />
+    <ClCompile Include="Engine\Math\Math.cpp" />
+    <ClCompile Include="Engine\Utility\Line\Line.cpp" />
+    <ClCompile Include="Engine\Utility\Observer\Observer.cpp">
+      <Filter>App\Utility\Observer</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Audio\Audio.cpp">
       <Filter>Engine\Audio</Filter>
@@ -442,11 +427,12 @@
     <ClInclude Include="Engine\GameObject\Samples\SampleSphere\SampleSphere.h">
       <Filter>App\GameObject\Samples\Sphere</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Utility\Line\Line.h">
-      <Filter>Utility\Line</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\GameObject\User\TestObject.h">
       <Filter>App\GameObject\User\TestObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Utility\Line\Line.h" />
+    <ClInclude Include="Engine\Utility\Observer\Observer.h">
+      <Filter>App\Utility\Observer</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utility\Line\Line.h">
       <Filter>App\Utility\Line</Filter>
@@ -592,6 +578,9 @@
     </Filter>
     <Filter Include="Externals\ImGui">
       <UniqueIdentifier>{13a20c8e-a633-49aa-adb7-a30fe43c4191}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Utility\Observer">
+      <UniqueIdentifier>{1911f2d9-37bd-4660-ba92-80feba5155d1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

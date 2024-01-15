@@ -8,3 +8,4 @@
 #include "Timer/DeltaTimer.h"
 #include "Line/Line.h"
 #include "Animation/AnimationKey.h"
+#include "Observer/Observer.h"

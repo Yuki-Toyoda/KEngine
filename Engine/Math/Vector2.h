@@ -53,4 +53,9 @@ struct Vector2 final {
 		this->y /= v.y;
 		return *this;
 	}
+
+	// 演算子オーバーロード(==)
+	bool operator==(const Vector2 v) const {
+		return { x == v.x && y == v.y };
+	}
 };
