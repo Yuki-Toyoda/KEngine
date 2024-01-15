@@ -31,7 +31,7 @@ public: // パブリックなメンバ関数
 	/// <param name="resource">インデックスバッファリソース</param>
 	/// <param name="vs">使用する頂点シェーダ</param>
 	/// <param name="ps">使用するピクセルシェーダ</param>
-	void Init(ID3D12Device* device, DXC* dxc, ID3D12RootSignature* signature, std::vector<ID3D12Resource*> resource, std::wstring vs, std::wstring ps);	
+	void Init(ID3D12Device* device, DXC* dxc, ID3D12RootSignature* signature, ID3D12Resource* resource, std::wstring vs, std::wstring ps, int32_t blendType = 0);
 
 public: // 純粋仮想関数
 
@@ -59,9 +59,8 @@ public: // アクセッサ等
 	/// <summary>
 	/// パイプラインステートオブジェクトゲッター
 	/// </summary>
-	/// <param name="blendType">取得するブレンドモード</param>
 	/// <returns>指定したパイプライン</returns>
-	ID3D12PipelineState* GetPSOState(int blendType) { return pso_[blendType]->state_.Get(); }
+	ID3D12PipelineState* GetPSOState() { return pso_->state_.Get(); }
 
 protected: // 継承先メンバ関数
 
@@ -73,8 +72,9 @@ protected: // 継承先メンバ関数
 	/// <param name="signature">ルートシグネチャ</param>
 	/// <param name="vs">頂点シェーダーまでのパス</param>
 	/// <param name="ps">ピクセルシェーダーまでのパス</param>
+	/// <param name="blendType">設定するブレンドタイプ</param>
 	/// <param name="wire">ワイヤーフレーム表示</param>
-	virtual void CreatePSO(ID3D12Device* device, DXC* dxc, ID3D12RootSignature* signature, std::wstring vs, std::wstring ps, UINT wire = 0);
+	virtual void CreatePSO(ID3D12Device* device, DXC* dxc, ID3D12RootSignature* signature, std::wstring vs, std::wstring ps, int32_t blendType = 0, UINT wire = 0);
 
 	/// <summary>
 	/// リソースバリア設定関数
@@ -88,7 +88,7 @@ protected: // 継承先メンバ関数
 public: // パブリックなメンバ変数
 
 	// インデックスバッファ
-	std::vector<std::unique_ptr<IndexBuffer>> indexBuffers_;
+	std::unique_ptr<IndexBuffer> indexBuffer_;
 	// インデックス情報の最大数(今回は受け売りで設定)
 	const UINT kMaxIndex = 655360;
 
@@ -100,7 +100,7 @@ protected: // 継承先メンバ変数
 	DSV* dsv_ = nullptr; // 深度ステンシルビュー
 
 	// パイプラインステートオブジェクトの定義
-	std::vector<std::unique_ptr<PSO>> pso_;
+	std::unique_ptr<PSO> pso_;
 
 };
 

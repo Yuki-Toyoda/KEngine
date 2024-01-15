@@ -56,31 +56,29 @@ void CommandManager::DrawCall()
 		// 形状を設定する
 		cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		
-		for (int j = 0; j < 5; j++) {
-			// PSOを取得、コマンドリストにセット
-			cmdList->SetPipelineState(commands_[i]->GetPSOState(j));
+		// PSOを取得、コマンドリストにセット
+		cmdList->SetPipelineState(commands_[i]->GetPSOState());
 
-			// シグネチャのテーブル設定
-			// 0 : バッファのインデックス情報
-			// 1 : 光源情報
-			// 2 : 頂点データ
-			// 3 : viewProjection行列
-			// 4 : worldTransform
-			// 5 : マテリアル情報
-			// 6 : テクスチャ
-			cmdList->SetGraphicsRootDescriptorTable(0, commands_[i]->indexBuffers_[j]->view);
-			cmdList->SetGraphicsRootConstantBufferView(1, lightBuffer_->view);
-			cmdList->SetGraphicsRootDescriptorTable(2, vertexBuffer_->view);
-			cmdList->SetGraphicsRootDescriptorTable(3, viewProjectionBuffer_->view);
-			cmdList->SetGraphicsRootDescriptorTable(4, worldTransformBuffer_->view);
-			cmdList->SetGraphicsRootDescriptorTable(5, materialBuffer_->view);
-			cmdList->SetGraphicsRootDescriptorTable(6, textureBuffer_->view);
+		// シグネチャのテーブル設定
+		// 0 : バッファのインデックス情報
+		// 1 : 光源情報
+		// 2 : 頂点データ
+		// 3 : viewProjection行列
+		// 4 : worldTransform
+		// 5 : マテリアル情報
+		// 6 : テクスチャ
+		cmdList->SetGraphicsRootDescriptorTable(0, commands_[i]->indexBuffer_->view);
+		cmdList->SetGraphicsRootConstantBufferView(1, lightBuffer_->view);
+		cmdList->SetGraphicsRootDescriptorTable(2, vertexBuffer_->view);
+		cmdList->SetGraphicsRootDescriptorTable(3, viewProjectionBuffer_->view);
+		cmdList->SetGraphicsRootDescriptorTable(4, worldTransformBuffer_->view);
+		cmdList->SetGraphicsRootDescriptorTable(5, materialBuffer_->view);
+		cmdList->SetGraphicsRootDescriptorTable(6, textureBuffer_->view);
 
-			// インデックスバッファが１つも入っていなければ描画しない
-			if (commands_[i]->indexBuffers_[j]->usedCount > 0) {
-				// バッファ内の全3角形を描画
-				cmdList->DrawInstanced(3, commands_[i]->indexBuffers_[j]->usedCount / 3, 0, 0);
-			}
+		// インデックスバッファが１つも入っていなければ描画しない
+		if (commands_[i]->indexBuffer_->usedCount > 0) {
+			// バッファ内の全3角形を描画
+			cmdList->DrawInstanced(3, commands_[i]->indexBuffer_->usedCount / 3, 0, 0);
 		}
 
 		// メイン描画コマンドの場合処理を一旦抜ける
@@ -160,9 +158,7 @@ void CommandManager::Reset()
 
 	// 全ての描画コマンドのインデックス情報をクリア
 	for (int i = 0; i < commands_.size(); i++) {
-		for (int j = 0; j < 5; j++) {
-			commands_[i]->indexBuffers_[j]->usedCount = 0;
-		}
+		commands_[i]->indexBuffer_->usedCount = 0;
 	}
 
 	// 全てのバッファのヒープ使用数をリセットする
@@ -187,13 +183,17 @@ void CommandManager::SetHeaps(RTV* rtv, SRV* srv, DSV* dsv, std::wstring vs, std
 	for (int i = 0; i < commands_.size(); i++) {
 		commands_[i]->SetDescriptorHeap(rtv_, srv_, dsv_); // ヒープをセット
 		// バッファ配列の生成
-		std::vector<ID3D12Resource*> buffers;
-		for (int j = 0; j < 5; j++) {
-			// バッファをブレンドモードの数分生成
-			buffers.push_back(CreateBuffer(sizeof(IndexInfoStruct) * commands_[i]->kMaxIndex));
-		}
+		ID3D12Resource* buffer;
+		// バッファをブレンドモードの数分生成
+		buffer = CreateBuffer(sizeof(IndexInfoStruct) * commands_[i]->kMaxIndex);
 		// リソースの生成を行う
-		commands_[i]->Init(device_, dxc_.get(), rootSignature_.Get(), buffers, vs, ps); // 初期化
+		if (i == 1) {
+			// パーティクルのみAddで生成
+			commands_[i]->Init(device_, dxc_.get(), rootSignature_.Get(), buffer, vs, ps, BasePrimitive::kBlendAdd); // 初期化
+		}
+		else {
+			commands_[i]->Init(device_, dxc_.get(), rootSignature_.Get(), buffer, vs, ps); // 初期化
+		}
 	}
 
 	// ストラクチャーバッファを生成
@@ -211,7 +211,7 @@ Matrix4x4* const CommandManager::GetViewProjection() const {
 void CommandManager::SetDrawData(BasePrimitive* primitive)
 {
 	// いろいろ最大数を超えていないかチェック
-	assert(commands_[(int)primitive->primitiveType_]->indexBuffers_[primitive->blendMode_]->usedCount < commands_[(int)primitive->primitiveType_]->kMaxIndex); // インデックス情報
+	assert(commands_[(int)primitive->primitiveType_]->indexBuffer_->usedCount < commands_[(int)primitive->primitiveType_]->kMaxIndex); // インデックス情報
 	assert(vertexBuffer_->usedCount < kMaxVertex);							 // 頂点数
 	assert(worldTransformBuffer_->usedCount < kMaxWorldTransform);			 // ワールドトランスフォーム
 	assert(materialBuffer_->usedCount < kMaxMaterial);						 // マテリアル数
@@ -242,7 +242,7 @@ void CommandManager::SetDrawData(BasePrimitive* primitive)
 
 	// Indexの分だけIndexInfoを求める
 	for (int i = 0; i < primitive->GetIndexCount(); i++) {
-		commands_[(int)primitive->primitiveType_]->indexBuffers_[primitive->blendMode_]->indexData[commands_[(int)primitive->primitiveType_]->indexBuffers_[primitive->blendMode_]->usedCount++] = IndexInfoStruct{
+		commands_[(int)primitive->primitiveType_]->indexBuffer_->indexData[commands_[(int)primitive->primitiveType_]->indexBuffer_->usedCount++] = IndexInfoStruct{
 			startIndexNum + primitive->indexes_[i],
 			useCamera,
 			worldMatrix,

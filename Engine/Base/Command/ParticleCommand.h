@@ -29,5 +29,5 @@ private: // プライベートなメンバ関数
 	/// <param name="vs">使用する頂点シェーダまでのファイルパス</param>
 	/// <param name="ps">使用するピクセルシェーダまでのファイルパス</param>
 	/// <param name="wire">ワイヤーフレーム表示</param>
-	void CreatePSO(ID3D12Device* device, DXC* dxc, ID3D12RootSignature* signature, std::wstring vs, std::wstring ps, UINT wire = 0) override;
+	void CreatePSO(ID3D12Device* device, DXC* dxc, ID3D12RootSignature* signature, std::wstring vs, std::wstring ps, int32_t blendType = 0, UINT wire = 0) override;
 };

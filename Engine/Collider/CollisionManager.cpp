@@ -69,7 +69,9 @@ bool CollisionManager::CheckCollisionPair(Collider* colliderA, Collider* collide
 	// コライダーが所持しているゲームオブジェクトが同一の場合当たり判定を取らない
 	if (colliderA->GetGameObject() == colliderB->GetGameObject() ||
 		colliderA->GetGameObject()->GetIsDestroy() || colliderB->GetGameObject()->GetIsDestroy() ||
-		!colliderA->GetIsActive() || !colliderB->GetIsActive()) {
+		!colliderA->GetIsActive() || !colliderB->GetIsActive() || 
+		(colliderA->GetGameObject()->GetObjectTag() == colliderB->GetGameObject()->GetObjectTag() && 
+			(colliderA->GetGameObject()->GetObjectTag() == BaseObject::TagNone && colliderB->GetGameObject()->GetObjectTag() == BaseObject::TagNone))) {
 		return false;
 	}
 
