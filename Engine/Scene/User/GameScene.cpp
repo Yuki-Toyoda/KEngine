@@ -77,6 +77,10 @@ void GameScene::Update()
 		BaseScene* nextScene = new TitleScene();
 		SceneManager::GetInstance()->SetNextScene(nextScene);
 	}
+	if (input_->TriggerKey(DIK_LSHIFT)) {
+		BaseScene* nextScene = new EditorScene();
+		SceneManager::GetInstance()->SetNextScene(nextScene);
+	}
 #endif // _DEBUG
 	if (wepon_->GetIsAtackEnd()) {
 		camera_->Shake();
