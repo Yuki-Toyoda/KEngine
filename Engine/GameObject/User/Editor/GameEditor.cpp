@@ -18,7 +18,8 @@ void GameEditor::Init()
 
 void GameEditor::Update()
 {
-	ImGuiProgress();
+	// エディターのImGui表示
+	ImGuiUpdate();
 }
 
 void GameEditor::ParameterInitialize()
@@ -72,7 +73,7 @@ void GameEditor::ParameterInitialize()
 
 }
 
-void GameEditor::ImGuiProgress()
+void GameEditor::ImGuiUpdate()
 {
 	//GetMouseCursor();
 
@@ -163,17 +164,6 @@ void GameEditor::ImGuiProgress()
 		// 敵のタブ
 		if (ImGui::BeginTabItem("Enemy")) {
 			// タブの内容
-			ImGui::Text("\n");
-			ImGui::InputInt("EnemyMaxNumber", &kMaxEnemyCount_);
-			ImGui::Text("\n");
-
-			// 敵の追加
-			if (ImGui::Button("Add")) {
-				Enemy* enemy;
-				enemy = gameObjectManager_->CreateInstance<Enemy>("Enemy", BaseObject::TagEnemy);
-				enemies_.push_back(enemy);
-			}
-
 			// 座標の変更
 			ImGui::BeginChild(ImGui::GetID((void*)0), ImVec2(400, 300), ImGuiWindowFlags_NoTitleBar);
 
@@ -183,8 +173,17 @@ void GameEditor::ImGuiProgress()
 				ImGui::DragFloat3(fullTag.c_str(), &enemy->transform_.translate_.x, 0.1f, -paramAbs, paramAbs);
 				ImGui::Text("\n");
 			}
-
 			ImGui::EndChild();
+
+			// 表示の最大数
+			ImGui::InputInt("EnemyMaxNumber", &kMaxEnemyCount_);
+
+			// 敵の追加
+			if (ImGui::Button("Add")) {
+				Enemy* enemy;
+				enemy = gameObjectManager_->CreateInstance<Enemy>("Enemy", BaseObject::TagEnemy);
+				enemies_.push_back(enemy);
+			}
 
 			ImGui::EndTabItem();
 		}

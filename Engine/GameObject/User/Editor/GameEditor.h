@@ -37,7 +37,7 @@ public:
 	/// <summary>
 	/// エディターのImGui
 	/// </summary>
-	void ImGuiProgress();
+	void ImGuiUpdate();
 	/// <summary>
 	/// マウスの座標からワールド座標（使えない）
 	/// </summary>
