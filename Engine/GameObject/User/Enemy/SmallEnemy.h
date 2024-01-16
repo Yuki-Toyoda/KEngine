@@ -50,6 +50,7 @@ private: // メンバ関数
 	/// </summary>
 	/// <param name="collider">衝突したコライダー</param>
 	void OnCollisionEnter(Collider* collider) override;
+
 private:
 
 	// パーツごとのトランスフォーム
