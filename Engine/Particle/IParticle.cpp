@@ -63,10 +63,10 @@ void IParticle::PostUpdate()
 	float bottom = (1.0f - anchorPoint_.y) * scale_.y; // 下
 
 	// 頂点をずらす
-	plane_->vertices_[0].position = { right, top, 0.0f };  // 左下
-	plane_->vertices_[1].position = { left, top, 0.0f };     // 左上
-	plane_->vertices_[2].position = { left, bottom, 0.0f }; // 右下
-	plane_->vertices_[3].position = { right, bottom, 0.0f };    // 右上
+	plane_->vertices_.t[0].position = { right, top, 0.0f };  // 左下
+	plane_->vertices_.t[1].position = { left, top, 0.0f };     // 左上
+	plane_->vertices_.t[2].position = { left, bottom, 0.0f }; // 右下
+	plane_->vertices_.t[3].position = { right, bottom, 0.0f };    // 右上
 
 	// テクスチャの描画範囲設定
 	float tex_left = texBase_.x / plane_->texture_->GetTextureSize().x;
@@ -75,10 +75,10 @@ void IParticle::PostUpdate()
 	float tex_bottom = (texBase_.y + texSize_.y) / plane_->texture_->GetTextureSize().y;
 
 	// テクスチャの描画座標をずらす
-	plane_->vertices_[0].texCoord = { tex_left, tex_top };  // 左下
-	plane_->vertices_[1].texCoord = { tex_right, tex_top };     // 左上
-	plane_->vertices_[2].texCoord = { tex_right, tex_bottom }; // 右下
-	plane_->vertices_[3].texCoord = { tex_left, tex_bottom };    // 右上
+	plane_->vertices_.t[0].texCoord = { tex_left, tex_top };  // 左下
+	plane_->vertices_.t[1].texCoord = { tex_right, tex_top };     // 左上
+	plane_->vertices_.t[2].texCoord = { tex_right, tex_bottom }; // 右下
+	plane_->vertices_.t[3].texCoord = { tex_left, tex_bottom };    // 右上
 
 	// 回転設定
 	plane_->transform_->rotate_ = { 0.0f, 0.0f, rotate_ };

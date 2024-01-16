@@ -12,10 +12,20 @@ class CommandManager;
 
 // 頂点構造体
 struct Vertex {
-	Vector3 position;							// 座標
-	Vector2 texCoord;							// uv座標
-	Vector3 normal;								// 法線
+	Vector3 position = {0.0f, 0.0f, 0.0f};							// 座標
+	Vector2 texCoord = {100.0f, 100.0f};							// uv座標
+	Vector3 normal = {100.0f, 100.0f, 100.0f};								// 法線
 	Vector4 color = { 1.0f, 1.0f, 1.0f, 1.0f }; // 色
+
+	// 演算子オーバーロード(==)
+	bool operator==(const Vertex v) const {
+		return { 
+			this->position == v.position && 
+			this->texCoord == v.texCoord &&
+			this->normal == v.normal &&
+			this->color == v.color
+		};
+	}
 };
 
 /// <summary>
@@ -91,7 +101,7 @@ public: // パブリックなメンバ変数
 	std::string name_ = "primitive";
 
 	// 頂点
-	std::vector<Vertex> vertices_;
+	KLib::Observer<std::vector<Vertex>> vertices_;
 	// インデックス情報
 	std::vector<uint32_t> indexes_;
 
@@ -138,6 +148,19 @@ public: // パブリックなメンバ変数
 
 	// UIとして使用するか
 	bool isUI_ = false;
+
+	// 頂点インデックスバッファ上の始端位置
+	uint32_t startVertexIndexNum_ = 0;
+	// 頂点インデックスバッファ上の終端位置
+	uint32_t endVertexIndexNum_ = 0;
+
+	// インデックスバッファ上の始端位置
+	uint32_t startIndexNum_ = 0;
+	// インデックスバッファ上の終端位置
+	uint32_t endIndexNum_ = 0;
+
+	// ワールド座標インデックスバッファ上の始端位置
+	uint32_t worldTransformIndexNum_ = 0;
 };
 
 /// <summary>

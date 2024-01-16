@@ -161,7 +161,7 @@ void CommandManager::Reset()
 		commands_[i]->indexBuffer_->usedCount = 0;
 	}
 
-	// 全てのバッファのヒープ使用数をリセットする
+	//// 全てのバッファのヒープ使用数をリセットする
 	vertexBuffer_->usedCount = 0;		  // 頂点バッファ
 	worldTransformBuffer_->usedCount = 0; // ワールドトランスフォームバッファ
 	materialBuffer_->usedCount = 0;		  // マテリアルバッファ
@@ -178,7 +178,6 @@ void CommandManager::SetHeaps(RTV* rtv, SRV* srv, DSV* dsv, std::wstring vs, std
 	commands_.push_back(new MainCommand()); // メイン描画コマンドを追加
 	commands_.push_back(new ParticleCommand()); // パーティクル描画コマンドを追加
 	commands_.push_back(new SpriteCommand()); // パーティクル描画コマンドを追加
-	//commands_.push_back(new MainCommand()); // スプライト描画コマンドを追加
 	// 全ての描画コマンドの初期化
 	for (int i = 0; i < commands_.size(); i++) {
 		commands_[i]->SetDescriptorHeap(rtv_, srv_, dsv_); // ヒープをセット
@@ -210,51 +209,75 @@ Matrix4x4* const CommandManager::GetViewProjection() const {
 
 void CommandManager::SetDrawData(BasePrimitive* primitive, bool UpdateVertex, bool UpdateTransform)
 {
-	// ワールド座標を更新すれば
-	if (UpdateTransform) {
-		// いろいろ最大数を超えていないかチェック
-		assert(commands_[(int)primitive->primitiveType_]->indexBuffer_->usedCount < commands_[(int)primitive->primitiveType_]->kMaxIndex); // インデックス情報
-		assert(vertexBuffer_->usedCount < kMaxVertex);							 // 頂点数
-		assert(worldTransformBuffer_->usedCount < kMaxWorldTransform);			 // ワールドトランスフォーム
-		assert(materialBuffer_->usedCount < kMaxMaterial);						 // マテリアル数
+	//// ワールド座標が更新されていれば
+	//if (UpdateTransform) {
+	//	
+	//}
+	// いろいろ最大数を超えていないかチェック
+	assert(commands_[(int)primitive->primitiveType_]->indexBuffer_->usedCount < commands_[(int)primitive->primitiveType_]->kMaxIndex); // インデックス情報
+	assert(vertexBuffer_->usedCount < kMaxVertex);							 // 頂点数
+	assert(worldTransformBuffer_->usedCount < kMaxWorldTransform);			 // ワールドトランスフォーム
+	assert(materialBuffer_->usedCount < kMaxMaterial);						 // マテリアル数
 
+	// 頂点情報の更新が確認された場合
+	if (UpdateVertex) {
 		// 頂点バッファの最初のインデックス番号の取得
-		uint32_t startIndexNum = vertexBuffer_->usedCount;
+		primitive->startVertexIndexNum_ = vertexBuffer_->usedCount;
 
 		// 頂点データを登録
 		for (int i = 0; i < primitive->GetVertexCount(); i++) {
-			vertexBuffer_->vertex[vertexBuffer_->usedCount++] = primitive->vertices_[i]; // 頂点データをバッファに登録
+			vertexBuffer_->vertex[vertexBuffer_->usedCount++] = primitive->vertices_.t[i]; // 頂点データをバッファに登録
 			if (primitive->commonColor != nullptr)	// 共通の色があるときはcommonColorを適応
 				vertexBuffer_->vertex[vertexBuffer_->usedCount - 1].color = *primitive->commonColor; // 共通色に変更
 		}
 
-		uint32_t useCamera = (uint32_t)primitive->isUI_;
-
-		// ワールドトランスフォームをデータに登録
-		uint32_t worldMatrix = worldTransformBuffer_->usedCount;											   // バッファの末尾を取得
-		worldTransformBuffer_->mat[worldTransformBuffer_->usedCount++] = primitive->transform_->GetMatWorld(); // データを代入
-		// マテリアルをデータに登録
-		uint32_t material = materialBuffer_->usedCount;									// バッファの末尾を取得
-		materialBuffer_->material[materialBuffer_->usedCount++] = primitive->material_; // データを代入
-		// テクスチャのインデックスを貰う
-		uint32_t texture = defaultTexture_->GetIndex();
-		if (primitive->texture_ != nullptr) { // テクスチャがある場合
-			texture = primitive->texture_->GetIndex();
-		}
-
-		// Indexの分だけIndexInfoを求める
-		for (int i = 0; i < primitive->GetIndexCount(); i++) {
-			commands_[(int)primitive->primitiveType_]->indexBuffer_->indexData[commands_[(int)primitive->primitiveType_]->indexBuffer_->usedCount++] = IndexInfoStruct{
-				startIndexNum + primitive->indexes_[i],
-				useCamera,
-				worldMatrix,
-				material,
-				texture
-			};
-		}
+		primitive->endVertexIndexNum_ = vertexBuffer_->usedCount;
 	}
 
+	uint32_t useCamera = (uint32_t)primitive->isUI_;
+
+	// ワールドトランスフォームをデータに登録
+	uint32_t worldMatrix = worldTransformBuffer_->usedCount;											   // バッファの末尾を取得
+	worldTransformBuffer_->mat[worldTransformBuffer_->usedCount++] = primitive->transform_->GetMatWorld(); // データを代入
+	// マテリアルをデータに登録
+	uint32_t material = materialBuffer_->usedCount;									// バッファの末尾を取得
+	materialBuffer_->material[materialBuffer_->usedCount++] = primitive->material_; // データを代入
+	// テクスチャのインデックスを貰う
+	uint32_t texture = defaultTexture_->GetIndex();
+	if (primitive->texture_ != nullptr) { // テクスチャがある場合
+		texture = primitive->texture_->GetIndex();
+	}
+
+	// インデックスバッファ上の開始位置の取得
+	if (commands_[(int)primitive->primitiveType_]->indexBuffer_->usedCount != 0) {
+		primitive->startIndexNum_ = commands_[(int)primitive->primitiveType_]->indexBuffer_->usedCount + 1;
+	}
+	else {
+		primitive->startIndexNum_ = commands_[(int)primitive->primitiveType_]->indexBuffer_->usedCount;
+	}
+
+	// Indexの分だけIndexInfoを求める
+	for (int i = 0; i < primitive->GetIndexCount(); i++) {
+		commands_[(int)primitive->primitiveType_]->indexBuffer_->
+		indexData[commands_[(int)primitive->primitiveType_]->indexBuffer_->usedCount++] = IndexInfoStruct{
+			primitive->startVertexIndexNum_ + primitive->indexes_[i],
+			useCamera,
+			worldMatrix,
+			material,
+			texture
+		};
+	}
+
+	// インデックスバッファ上の終端位置の取得
+	primitive->endIndexNum_ = commands_[(int)primitive->primitiveType_]->indexBuffer_->usedCount;
+
+	UpdateTransform;
 	UpdateVertex;
+}
+
+void CommandManager::RemoveVertex(BasePrimitive* primitive)
+{
+	primitive;
 }
 
 int CommandManager::createTextureResource(const DirectX::ScratchImage& image)

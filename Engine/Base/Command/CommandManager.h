@@ -64,6 +64,12 @@ public: // アクセッサ等
 	void SetDrawData(BasePrimitive* primitive, bool UpdateVertex, bool UpdateTransform);
 
 	/// <summary>
+	/// 頂点情報削除関数
+	/// </summary>
+	/// <param name="primitive">削除する形状</param>
+	void RemoveVertex(BasePrimitive* primitive);
+
+	/// <summary>
 	/// コマンドキューのゲッター
 	/// </summary>
 	/// <returns>コマンドキュー</returns>

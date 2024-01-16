@@ -9,7 +9,7 @@
 void Mesh::LoadFile(const std::string& filePath, const std::string& fileName)
 {
 	// 頂点情報とインデックス情報をクリア
-	vertices_.clear(); // 頂点情報
+	vertices_.t.clear(); // 頂点情報
 	indexes_.clear();  // インデックス情報
 
 	// objを読み込む
@@ -92,7 +92,7 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 					// 実際に頂点を追加する前に追加する頂点が新しいデータかどうかチェック
 					int indexInfo = key[std::stoi(elements[0])][std::stoi(elements[1])][std::stoi(elements[2])]; // インデックス情報を取得
 					// 既存のパターンだった場合、既存のインデックス情報を取得、インデックスに追加
-					if (indexInfo > 0 && indexInfo < vertices_.size())
+					if (indexInfo > 0 && indexInfo < vertices_.t.size())
 						indexes_.push_back(static_cast<uint32_t> (indexInfo - 1)); // パターンが見つかった場合のインデックス
 					// 新しいパターンの場合は新しく頂点を追加、インデックスも追加
 					else {
@@ -107,12 +107,12 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 						newVertex.normal.x *= -1.0f;						// 法線の向きを反転
 
 						// 頂点を追加
-						vertices_.push_back(newVertex);
+						vertices_.t.push_back(newVertex);
 						// インデックスを登録
-						indexes_.push_back(static_cast<uint32_t> (vertices_.size() - 1));
+						indexes_.push_back(static_cast<uint32_t> (vertices_.t.size() - 1));
 
 						// 既存パターンであることを示すために現在のインデックス情報を既存インデックス情報マップに追加
-						key[std::stoi(elements[0])][std::stoi(elements[1])][std::stoi(elements[2])] = static_cast<int>(vertices_.size());
+						key[std::stoi(elements[0])][std::stoi(elements[1])][std::stoi(elements[2])] = static_cast<int>(vertices_.t.size());
 					}
 				}
 			}

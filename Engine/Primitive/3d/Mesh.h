@@ -35,7 +35,7 @@ public: // アクセッサ等
 	/// 頂点数ゲッター
 	/// </summary>
 	/// <returns>頂点数</returns>
-	int GetVertexCount() const override { return static_cast<int>(vertices_.size()); }
+	int GetVertexCount() const override { return static_cast<int>(vertices_.t.size()); }
 	/// <summary>
 	/// インデックス情報数ゲッター
 	/// </summary>

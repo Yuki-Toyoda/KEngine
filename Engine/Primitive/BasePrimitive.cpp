@@ -14,9 +14,9 @@ BasePrimitive::BasePrimitive(CommandManager* manager)
 void BasePrimitive::ResizeVertices()
 {
 	// 頂点配列を一度クリア
-	vertices_.clear();
+	vertices_.t.clear();
 	// 頂点配列サイズをリサイズ
-	vertices_.resize(GetVertexCount());
+	vertices_.t.resize(GetVertexCount());
 }
 
 void BasePrimitive::ResizeIndexes()
@@ -36,15 +36,11 @@ void BasePrimitive::ResizeIndexes()
 
 void BasePrimitive::Draw(CommandManager* manager)
 {
-	// 表示状態でなければ表示しない
-	if (!isActive_)
-		return;
-
 	// 値を入れ替える
 	obTransform_.t = *transform_;
 
 	// マネージャーに頂点情報を送る
-	manager->SetDrawData(this, true, obTransform_.GetChanged());
+	manager->SetDrawData(this, vertices_.GetChanged(), true);
 }
 
 void BasePrimitive::DisplayImGui()
@@ -56,9 +52,9 @@ void BasePrimitive::DisplayImGui()
 		if (ImGui::TreeNode("vertex")) {
 			// 頂点をリストで表示する
 			ImGui::BeginChild(ImGui::GetID((void*)0), ImVec2(0, 100), ImGuiWindowFlags_NoTitleBar);
-			for (UINT i = 0; i < vertices_.size(); i++) {
+			for (UINT i = 0; i < vertices_.t.size(); i++) {
 				std::string name = "vertex" + std::to_string(i);
-				ImGui::DragFloat3(name.c_str(), &vertices_[i].position.x, 0.05f);
+				ImGui::DragFloat3(name.c_str(), &vertices_.t[i].position.x, 0.05f);
 			}
 			ImGui::EndChild();
 			ImGui::TreePop();
