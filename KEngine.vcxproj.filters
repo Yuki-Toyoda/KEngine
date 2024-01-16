@@ -89,6 +89,9 @@
     </ClCompile>
     <ClCompile Include="Engine\GameObject\User\Player\PlayerAnimManager.cpp" />
     <ClCompile Include="Engine\GameObject\User\UIManager\InGameUIManager.cpp" />
+    <ClCompile Include="Engine\Scene\User\EditorScene.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Editor\GameEditor.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Editor\GameDataManager.cpp" />
     <ClCompile Include="Engine\GameObject\User\Ground\Ground.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\SmalEnemy.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\IEnemy.cpp" />
@@ -196,6 +199,9 @@
     </ClInclude>
     <ClInclude Include="Engine\GameObject\User\Player\PlayerAnimManager.h" />
     <ClInclude Include="Engine\GameObject\User\UIManager\InGameUIManager.h" />
+    <ClInclude Include="Engine\Scene\User\EditorScene.h" />
+    <ClInclude Include="Engine\GameObject\User\Editor\GameEditor.h" />
+    <ClInclude Include="Engine\GameObject\User\Editor\GameDataManager.h" />
     <ClInclude Include="Engine\GameObject\User\Ground\Ground.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\IEnemy.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\SmalEnemy.h" />

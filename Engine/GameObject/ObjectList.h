@@ -17,4 +17,7 @@
 #include "User/Enemy/HighEnemy.h"
 #include "User/camera/InGameCamera.h"
 #include "User/Player/PlayerAnimManager.h"
+#include "User/Editor/GameEditor.h"
+#include "User/Editor/GameDataManager.h"
+#include "User/Player/PlayerAnimManager.h"
 #include "User/Ground/Ground.h"
