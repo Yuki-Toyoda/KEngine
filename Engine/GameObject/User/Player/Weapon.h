@@ -3,16 +3,28 @@
 #include "../InputManager/InputManager.h"
 #include <optional>
 #include "../../../Audio/Audio.h"
+
+/// <summary>
+/// ビヘイビア
+/// </summary>
 enum class Behavior {
 	kRoot,
 	kAtack,
 };
+
+/// <summary>
+/// 
+/// </summary>
 enum Size {
 	low,
 	mid,
 	high,
 };
-class Wepon:public BaseObject
+
+/// <summary>
+/// 武器クラス
+/// </summary>
+class Weapon:public BaseObject
 {
 public:
 	
@@ -31,17 +43,24 @@ public:
 	/// </summary>
 	void DisplayImGui() override;
 
-	void Reset();
 	/// <summary>
-/// 衝突した瞬間にコールバックされる関数
-/// </summary>
-/// <param name="collider">衝突したコライダー</param>
+	/// リセット関数
+	/// </summary>
+	void Reset();
+
+	/// <summary>
+	/// 衝突した瞬間にコールバックされる関数
+	/// </summary>
+	/// <param name="collider">衝突したコライダー</param>
 	void OnCollisionEnter(Collider* collider) override;
 	Size GetSize() { return size_; }
 
 	int GetParentCount() { return parentCount_; }
 private:
+
+	// 音再生用
 	Audio* audio_;
+
 	// 追従対象のワールド座標
 	const WorldTransform* target_ = nullptr;
 	//追従対象からの距離
@@ -50,7 +69,7 @@ private:
 	float theta_;
 	//回転の向き　０なら右回り1なら左回り
 	bool rotateDirection_;
-	Vector3 worldPos_;
+
 	//回転しているか
 	bool isMove_;
 	//ペアレントしている数
@@ -77,6 +96,10 @@ private:
 	bool isCommbo_;
 	const int kMaxCommbCount_ = 120;
 	int commbCount_;
+
+	// 当たり判定用ワールド座標
+	Vector3 worldPos_;
+
 private://メンバ関数
 
 	void Move();

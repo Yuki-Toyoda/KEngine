@@ -24,7 +24,7 @@ public: // メンバ関数
 
 	
 public:
-	void SetWepon(Wepon* wepon) { wepon_ = wepon; }
+	void SetWepon(Weapon* wepon) { wepon_ = wepon; }
 	void SetPlayer(Player* player) { player_ = player; }
 
 private:
@@ -37,6 +37,6 @@ private:
 
 	std::unique_ptr<Line> line_;
 	Player* player_;
-	Wepon* wepon_;
+	Weapon* wepon_;
 	float length_;
 };

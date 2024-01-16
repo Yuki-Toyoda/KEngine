@@ -45,11 +45,6 @@ void TestObject::Update()
 
 void TestObject::DisplayImGui()
 {
-	//line_->DisplayParameterImGui();
-
-	// 基底クラスのImGuiを表示する
-	//BaseObject::DisplayParameterImGui();
-
 	// 表示状態の切り替え
 	ImGui::Checkbox("isActive", &isActive_);
 

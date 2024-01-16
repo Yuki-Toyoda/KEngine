@@ -1,44 +1,64 @@
 #include "InputManager.h"
 
-bool InputManager::MoveLeft()
+void InputManager::Init()
 {
-    if (Input::GetInstance()->PushKey(DIK_LEFT)) {
-        return true;
-    }
-    return false;
+    // 現在フレームの入力取得
+    Input::GetInstance()->GetJoystickState(0, joyState_);
+    // 取得した入力を代入
+    preJoyState_ = joyState_;
 }
 
-bool InputManager::MoveUp()
+void InputManager::Update()
 {
-    if (Input::GetInstance()->PushKey(DIK_UP)) {
-        return true;
-    }
-    return false;
+    // 前入力を取得
+    preJoyState_ = joyState_;
+    // 現在入力を取得
+    Input::GetInstance()->GetJoystickState(0, joyState_);
 }
 
-bool InputManager::MoveDown()
-{
-    if (Input::GetInstance()->PushKey(DIK_DOWN)) {
-        return true;
-    }
-    return false;
-}
-
-bool InputManager::MoveRight()
-{
-    if (Input::GetInstance()->PushKey(DIK_RIGHT)) {
-        return true;
-    }
-    return false;
-}
+//bool InputManager::MoveLeft()
+//{
+//    if (Input::GetInstance()->PushKey(DIK_LEFT)) {
+//        return true;
+//    }
+//    return false;
+//}
+//
+//bool InputManager::MoveUp()
+//{
+//    if (Input::GetInstance()->PushKey(DIK_UP)) {
+//        return true;
+//    }
+//    return false;
+//}
+//
+//bool InputManager::MoveDown()
+//{
+//    if (Input::GetInstance()->PushKey(DIK_DOWN)) {
+//        return true;
+//    }
+//    return false;
+//}
+//
+//bool InputManager::MoveRight()
+//{
+//    if (Input::GetInstance()->PushKey(DIK_RIGHT)) {
+//        return true;
+//    }
+//    return false;
+//}
 
 Vector3 InputManager::Move()
 {
+    // 移動方向ベクトル初期化
     Vector3 velocity = {0.0f,0.0f,0.0f};
    // XINPUT_STATE joyState;
     
+    // スティックの入力によって移動
     velocity = { (float)joyState_.Gamepad.sThumbLX / SHRT_MAX,
        (float)joyState_.Gamepad.sThumbLY / SHRT_MAX,0.0f };
+
+    // キー入力によって移動する
     if (Input::GetInstance()->PushKey(DIK_LEFT)) {
         velocity.x = -1.0f;
     }
@@ -52,15 +72,15 @@ Vector3 InputManager::Move()
         velocity.y = -1.0f;
     }
    
-   
-
-
+    // Z軸方向のベクトルを削除
     velocity.z = 0.0f;
+    // 移動ベクトルを削除する
     return velocity;
 }
 
 bool InputManager::RotateRight()
 {
+
     if (Input::GetInstance()->PushKey(DIK_D)) {
         return true;
     }
@@ -91,18 +111,6 @@ bool InputManager::Atack()
         return true;
     }
     return false;
-}
-
-void InputManager::Init()
-{
-    Input::GetInstance()->GetJoystickState(0, joyState_); // 現在フレームの入力取得
-    preJoyState_ = joyState_;
-}
-
-void InputManager::Update()
-{
-    preJoyState_ = joyState_;
-    Input::GetInstance()->GetJoystickState(0, joyState_);
 }
 
 

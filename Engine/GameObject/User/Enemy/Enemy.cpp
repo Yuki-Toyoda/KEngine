@@ -3,13 +3,18 @@
 
 void Enemy::Init()
 {
+	// インスタンス取得
 	audio_ = Audio::GetInstance();
+	// 
+	soundHandleStick_ = audio_->LoadWave("stick.wav");
+
+	// 球コライダー
 	AddColliderSphere("Enemy", &worldPos_, &transform_.scale_.x);
+	// 大きさ変更
 	transform_.scale_ = { 0.6f,0.6f,0.6f };
 	
-	
+	// 親子付け解除
 	isParent_ = false;
-	soundHandleStick_ = audio_->LoadWave("stick.wav");
 
 	// 調整項目クラスに値を追加
 	GlobalVariables::GetInstance()->AddItem(name_, "Translate", worldPos_);
@@ -85,22 +90,9 @@ void Enemy::Reset()
 	hitvelocity_ = { 0.0f,0.0f,0.0f };
 }
 
-void Enemy::SubtractVelocity()
-{
-	hitvelocity_ = hitvelocity_ * 0.8f;
-	if (std::abs(hitvelocity_.x) <= 0.01f) {
-		hitvelocity_.x = 0.0f;
-	}
-	if (std::abs(hitvelocity_.y) <= 0.01f) {
-		hitvelocity_.y = 0.0f;
-	}
-}
-
 void Enemy::OnCollisionEnter(Collider* collider)
 {
-	collider;
 	//武器とぶつかった
-
 	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagWeapon) {
 		if (GetObjectTag() == BaseObject::TagEnemy) {
 			if (isActive_) {

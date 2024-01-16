@@ -27,7 +27,7 @@ class MidEnemy:public BaseObject
 	public:
 		void SetStartTransform() { startTranslate_ = transform_.translate_; }
 		//追従対象
-		void SetWepon(Wepon* target) { wepon_ = target; }
+		void SetWepon(Weapon* target) { wepon_ = target; }
 		void Setveclocity(Vector3 velocity) { hitvelocity_ = velocity; }
 	private:
 		/// <summary>
@@ -41,7 +41,7 @@ class MidEnemy:public BaseObject
 	private:
 		Audio* audio_;
 		// 追従対象のワールド座標
-		Wepon* wepon_ = nullptr;
+		Weapon* wepon_ = nullptr;
 		//初期化時の座標
 		Vector3 startTranslate_;
 		Vector3 worldPos_;

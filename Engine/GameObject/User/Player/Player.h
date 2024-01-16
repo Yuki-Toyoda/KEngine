@@ -1,6 +1,10 @@
 #pragma once
 #include"../../BaseObject.h"
 #include "../InputManager/InputManager.h"
+
+/// <summary>
+/// プレイヤークラス
+/// </summary>
 class Player:public BaseObject
 {
 public: // メンバ関数
@@ -23,9 +27,12 @@ public: // メンバ関数
 
 private: // メンバ変数
 
-		Vector3 velocity_;
-		float moveSpeed_ = 0.1f;
-		Vector3 worldPos_;
+	// 移動方向ベクトル
+	Vector3 velocity_;
+	// 移動スピード
+	float moveSpeed_ = 0.1f;
+	// 当たり判定用ワールド座標
+	Vector3 worldPos_;
 
 };
 

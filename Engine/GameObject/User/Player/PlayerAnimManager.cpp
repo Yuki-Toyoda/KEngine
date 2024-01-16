@@ -34,6 +34,16 @@ void PlayerAnimManager::Init()
 	footTransform_R_.translate_ = { -0.35f, -0.75f, 0.0f };
 
 	// メッシュ追加
+#ifdef _DEBUG
+
+	// デバッグ時はキューブ(簡易モデル)で描画
+	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Box", "Box.obj");
+
+#endif // _DEBUG
+
+#ifndef _DEBUG
+
+	// 身体
 	AddMesh(&bodyTransform_, color_, "./Resources/Player", "Body.obj");
 	AddMesh(&wingTransform_L_, color_, "./Resources/Player", "Wing_L.obj");
 	AddMesh(&wingTransform_R_, color_, "./Resources/Player", "Wing_R.obj");
@@ -41,6 +51,9 @@ void PlayerAnimManager::Init()
 	AddMesh(&armTransform_R_, color_, "./Resources/Player", "Arm_R.obj");
 	AddMesh(&footTransform_L_, color_, "./Resources/Player", "Foot_L.obj");
 	AddMesh(&footTransform_R_, color_, "./Resources/Player", "Foot_R.obj");
+
+#endif // _RELEASE
+
 }
 
 void PlayerAnimManager::Update()

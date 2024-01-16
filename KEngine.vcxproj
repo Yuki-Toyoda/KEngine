@@ -120,13 +120,15 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\GameObject\User\Chain\Chain.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\Enemy.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\HighEnemy.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\IEnemy.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\MidEnemy.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\Obstacle\Obstacle.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\SmalEnemy.cpp" />
     <ClCompile Include="Engine\GameObject\User\Ground\Ground.cpp" />
     <ClCompile Include="Engine\GameObject\User\InputManager\InputManager.cpp" />
     <ClCompile Include="Engine\GameObject\User\Player\Player.cpp" />
     <ClCompile Include="Engine\GameObject\User\Player\PlayerAnimManager.cpp" />
-    <ClCompile Include="Engine\GameObject\User\Player\Wepon.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Player\Weapon.cpp" />
     <ClCompile Include="Engine\GameObject\User\Random\RandomEngine.cpp" />
     <ClCompile Include="Engine\GameObject\User\TestObject.cpp" />
     <ClCompile Include="Engine\GameObject\User\UIManager\InGameUIManager.cpp" />
@@ -216,11 +218,12 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\GameObject\User\Enemy\HighEnemy.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\MidEnemy.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\Obstacle\Obstacle.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\SmalEnemy.h" />
     <ClInclude Include="Engine\GameObject\User\Ground\Ground.h" />
     <ClInclude Include="Engine\GameObject\User\InputManager\InputManager.h" />
     <ClInclude Include="Engine\GameObject\User\Player\Player.h" />
     <ClInclude Include="Engine\GameObject\User\Player\PlayerAnimManager.h" />
-    <ClInclude Include="Engine\GameObject\User\Player\Wepon.h" />
+    <ClInclude Include="Engine\GameObject\User\Player\Weapon.h" />
     <ClInclude Include="Engine\GameObject\User\Random\RandomEngine.h" />
     <ClInclude Include="Engine\GameObject\User\TestObject.h" />
     <ClInclude Include="Engine\GameObject\User\UIManager\InGameUIManager.h" />
@@ -274,6 +277,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="Engine\GameObject\User\Enemy\IEnemy.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Object3D.hlsli">

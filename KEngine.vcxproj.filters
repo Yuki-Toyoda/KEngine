@@ -30,7 +30,7 @@
     <ClCompile Include="Engine\GameObject\User\Enemy\Enemy.cpp" />
     <ClCompile Include="Engine\GameObject\User\InputManager\InputManager.cpp" />
     <ClCompile Include="Engine\GameObject\User\Player\Player.cpp" />
-    <ClCompile Include="Engine\GameObject\User\Player\Wepon.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Player\Weapon.cpp" />
     <ClCompile Include="Engine\GameObject\User\TestObject.cpp" />
     <ClCompile Include="Engine\GameObject\WorldTransform.cpp" />
     <ClCompile Include="Engine\GlobalVariables\GlobalVariables.cpp" />
@@ -90,6 +90,8 @@
     <ClCompile Include="Engine\GameObject\User\Player\PlayerAnimManager.cpp" />
     <ClCompile Include="Engine\GameObject\User\UIManager\InGameUIManager.cpp" />
     <ClCompile Include="Engine\GameObject\User\Ground\Ground.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\SmalEnemy.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\IEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h" />
@@ -126,7 +128,7 @@
     <ClInclude Include="Engine\GameObject\User\Enemy\Enemy.h" />
     <ClInclude Include="Engine\GameObject\User\InputManager\InputManager.h" />
     <ClInclude Include="Engine\GameObject\User\Player\Player.h" />
-    <ClInclude Include="Engine\GameObject\User\Player\Wepon.h" />
+    <ClInclude Include="Engine\GameObject\User\Player\Weapon.h" />
     <ClInclude Include="Engine\GameObject\User\TestObject.h" />
     <ClInclude Include="Engine\GameObject\WorldTransform.h" />
     <ClInclude Include="Engine\GlobalVariables\GlobalVariables.h" />
@@ -195,6 +197,8 @@
     <ClInclude Include="Engine\GameObject\User\Player\PlayerAnimManager.h" />
     <ClInclude Include="Engine\GameObject\User\UIManager\InGameUIManager.h" />
     <ClInclude Include="Engine\GameObject\User\Ground\Ground.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\IEnemy.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\SmalEnemy.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">

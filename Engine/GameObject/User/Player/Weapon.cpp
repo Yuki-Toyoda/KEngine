@@ -1,6 +1,6 @@
-#include "Wepon.h"
+#include "Weapon.h"
 #include "../../GameObjectManager.h"
-void Wepon::Init()
+void Weapon::Init()
 {
 	audio_ = Audio::GetInstance();
 	soundHandleslam_ = audio_->LoadWave("slam.wav");
@@ -21,7 +21,7 @@ void Wepon::Init()
 	isBreak_ = false;
 }
 
-void Wepon::Update()
+void Weapon::Update()
 {
 	if (Input::GetInstance()->PushKey(DIK_RETURN)) {
 		isBreak_ = true;
@@ -87,7 +87,7 @@ void Wepon::Update()
 	}
 }
 
-void Wepon::DisplayImGui()
+void Weapon::DisplayImGui()
 {
 	transform_.DisplayImGui();
 	ImGui::DragFloat3("worldPos", &worldPos_.x);
@@ -97,7 +97,7 @@ void Wepon::DisplayImGui()
 	ImGui::InputInt("parentCount", &parentCount_);
 }
 
-void Wepon::Reset()
+void Weapon::Reset()
 {
 	distance_ = 5.0f;
 	transform_.translate_.x += distance_;
@@ -114,7 +114,7 @@ void Wepon::Reset()
 	isAtackEnd_ = false;
 }
 
-void Wepon::Move()
+void Weapon::Move()
 {
 	if (isMove_) {
 		if (InputManager::ChangeRotate()) {
@@ -189,7 +189,7 @@ void Wepon::Move()
 	
 }
 
-void Wepon::ChainDeleted()
+void Weapon::ChainDeleted()
 {
 	if (transform_.GetParent()) {
        transform_.translate_ = transform_.GetWorldPos();
@@ -201,7 +201,7 @@ void Wepon::ChainDeleted()
 	}
 }
 
-void Wepon::Atack()
+void Weapon::Atack()
 {
 	
 	goalDistance_ += 0.3f;
@@ -239,7 +239,7 @@ void Wepon::Atack()
 	transform_.translate_.y = std::sinf(theta_) * (distance_ + transform_.scale_.y);
 }
 
-void Wepon::Commbo()
+void Weapon::Commbo()
 {
 
 	if (isCommbo_) {
@@ -257,7 +257,7 @@ void Wepon::Commbo()
 	commbCount_ = 0;
 }
 
-void Wepon::OnCollisionEnter(Collider* collider)
+void Weapon::OnCollisionEnter(Collider* collider)
 {
 	collider;
 	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagEnemy) {

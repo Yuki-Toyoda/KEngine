@@ -20,7 +20,7 @@ void Ground::DisplayImGui()
 	ImGui::DragInt("HP", &HP_);
 }
 
-void Ground::Damage( Wepon* wepon)
+void Ground::Damage( Weapon* wepon)
 {
 	
 		HP_ -= wepon->GetParentCount();

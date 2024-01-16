@@ -19,7 +19,7 @@ public:
 	/// </summary>
 	void DisplayImGui() override;
 
-	void Damage( Wepon* wepon);
+	void Damage( Weapon* wepon);
 private:
 
 	int HP_;

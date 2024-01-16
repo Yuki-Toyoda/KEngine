@@ -10,10 +10,10 @@ void GameScene::Init(){
 
 	player_ = nullptr;
 	player_ = gameObjectManager_->CreateInstance<Player>("Player", BaseObject::TagPlayer);
-	wepon_ = nullptr;
-	wepon_ = gameObjectManager_->CreateInstance<Wepon>("wepon", BaseObject::TagWeapon);
-	wepon_->SetTarget(&player_->transform_);
-	wepon_->transform_.SetParent(&player_->transform_, 0b001);
+	weapon_ = nullptr;
+	weapon_ = gameObjectManager_->CreateInstance<Weapon>("wepon", BaseObject::TagWeapon);
+	weapon_->SetTarget(&player_->transform_);
+	weapon_->transform_.SetParent(&player_->transform_, 0b001);
 
 	// プレイヤーアニメーションマネージャの生成
 	PlayerAnimManager* am = gameObjectManager_->CreateInstance<PlayerAnimManager>("playerAnim", BaseObject::TagPlayer);
@@ -24,7 +24,7 @@ void GameScene::Init(){
 	for (int i = 0; i < 15; i++) {
 		enemy = gameObjectManager_->CreateInstance<Enemy>("Enemy", BaseObject::TagEnemy);
 		
-		enemy->SetWepon(wepon_);
+		enemy->SetWepon(weapon_);
 		enemy->SetStartTransform();
 		enemy->isActive_ = false;
 		enemies_.push_back(enemy);
@@ -32,7 +32,7 @@ void GameScene::Init(){
 	
 	chain_ = gameObjectManager_->CreateInstance<Chain>("chain", BaseObject::TagChain);
 	chain_->SetPlayer(player_);
-	chain_->SetWepon(wepon_);
+	chain_->SetWepon(weapon_);
 	/*Obstacle* obstacle;
 	for (int i = 0; i < 5; i++) {
 		obstacle = gameObjectManager_->CreateInstance<Obstacle>("obstacle", BaseObject::TagObstacle);
@@ -43,7 +43,7 @@ void GameScene::Init(){
 	for (int i = 0; i < 3; i++) {
 		midenemy = gameObjectManager_->CreateInstance<MidEnemy>("midEnemy", BaseObject::TagEnemy);
 	
-		midenemy->SetWepon(wepon_);
+		midenemy->SetWepon(weapon_);
 		midEnemies_.push_back(midenemy);
 	}
 	/*obstacles_[0]->transform_.translate_ = { 10.0f,6.0f,0.0f };
@@ -55,7 +55,7 @@ void GameScene::Init(){
 	for (int i = 0; i < 3; i++) {
 		highenemy = gameObjectManager_->CreateInstance<HighEnemy>("highEnemy", BaseObject::TagEnemy);
 		
-		highenemy->SetWepon(wepon_);
+		highenemy->SetWepon(weapon_);
 		highEnemies_.push_back(highenemy);
 	}
 	camera_ = nullptr;
@@ -79,11 +79,11 @@ void GameScene::Update()
 		SceneManager::GetInstance()->SetNextScene(nextScene);
 	}
 #endif // _DEBUG
-	if (wepon_->GetIsAtackEnd()) {
+	if (weapon_->GetIsAtackEnd()) {
 		camera_->Shake();
 	}
-	if (wepon_->GetISBreak()||wepon_->GetIsAtackEnd()&&!camera_->GetIsShake()) {
-		//ground_->Damage(wepon_);
+	if (weapon_->GetISBreak()||weapon_->GetIsAtackEnd()&&!camera_->GetIsShake()) {
+		//ground_->Damage(weapon_);
 		AtackAfterInit();
 	}
 }
@@ -91,23 +91,23 @@ void GameScene::Update()
 void GameScene::AtackAfterInit()
 {
 	
-	//wepon = gameObjectManager_->CreateInstance<Wepon>("wepon", BaseObject::TagWeapon);
-	wepon_->SetTarget(&player_->transform_);
-	wepon_->Reset();
-	wepon_->transform_.SetParent(&player_->transform_, 0b001);
+	//wepon = gameObjectManager_->CreateInstance<Weapon>("wepon", BaseObject::TagWeapon);
+	weapon_->SetTarget(&player_->transform_);
+	weapon_->Reset();
+	weapon_->transform_.SetParent(&player_->transform_, 0b001);
 	
-	chain_->SetWepon(wepon_);
+	chain_->SetWepon(weapon_);
 	for (Enemy* enemy : enemies_) {
 		enemy->Reset();
-		enemy->SetWepon(wepon_);
+		enemy->SetWepon(weapon_);
 	}
 	for (MidEnemy* enemy : midEnemies_) {
 		enemy->Reset();
-		enemy->SetWepon(wepon_);
+		enemy->SetWepon(weapon_);
 	}
 	for (HighEnemy* enemy : highEnemies_) {
 		enemy->Reset();
-		enemy->SetWepon(wepon_);
+		enemy->SetWepon(weapon_);
 	}
 	
 	Enemy* enemy;
@@ -115,7 +115,7 @@ void GameScene::AtackAfterInit()
 		
 		enemy = gameObjectManager_->CreateInstance<Enemy>("Enemy", BaseObject::TagEnemy);
 		enemy->transform_.translate_.x = i * 2.0f;
-		enemy->SetWepon(wepon_);
+		enemy->SetWepon(weapon_);
 		enemies_.push_back(enemy);
 	}
 }

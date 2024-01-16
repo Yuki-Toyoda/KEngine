@@ -22,7 +22,7 @@ private: // メンバ変数
 
 private:
 	Player*player_;
-	Wepon* wepon_;
+	Weapon* weapon_;
 	std::vector<Enemy*>enemies_;
 	std::vector<MidEnemy*>midEnemies_;
 	std::vector<Obstacle*> obstacles_;
