@@ -109,7 +109,7 @@ void GameDataManager::SaveData(const std::string& groupName)
 	// グループを検索
 	std::map<std::string, Group>::iterator itGroup = gameDatas_.find(groupName);
 	// オブジェクト内のグループ名作成
-	const std::string& fullPath = itGroup->first/* + std::to_string(groupNum)*/;
+	const std::string& fullPath = itGroup->first;
 
 	// 未登録チェック
 	assert(itGroup != gameDatas_.end());
@@ -119,7 +119,6 @@ void GameDataManager::SaveData(const std::string& groupName)
 
 	// jsonオブジェクト登録
 	root[fullPath] = json::object();
-	kLoadObjectNumber_ = 0;
 	kLoadObjectNumber_ = 0;
 
 	// 各項目について

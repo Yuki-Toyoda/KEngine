@@ -32,13 +32,17 @@ void GameEditor::ParameterInitialize()
 	// 敵の数だけ
 	for (int i = 0; i < kMaxEnemyCount_; i++) {
 		Enemy* enemy;
+		// オブジェクトマネージャーに追加
 		enemy = gameObjectManager_->CreateInstance<Enemy>("Enemy", BaseObject::TagEnemy);
+		// パスの設定
 		std::string sectionPath = dataManager_->kObjectNames[0] + std::to_string(i);
 		std::string keyPath = dataManager_->kEnemyItems[0];
+		// 座標設定
 		Vector3 newPos = {};
 		dataManager_->AddItem({ names.kGroup,sectionPath }, keyPath, newPos);
 		newPos = dataManager_->GetVector3Value({ names.kGroup,sectionPath }, keyPath);
 		enemy->transform_.translate_ = newPos;
+		// リスト追加
 		enemies_.push_back(enemy);
 	}
 #pragma endregion
@@ -51,13 +55,17 @@ void GameEditor::ParameterInitialize()
 	// 障害物の数だけ
 	for (int i = 0; i < kMaxObstacleCount_; i++) {
 		Obstacle* obstacle;
+		// オブジェクトマネージャーに追加
 		obstacle = gameObjectManager_->CreateInstance<Obstacle>("Obstacle", BaseObject::TagObstacle);
+		// パスの設定
 		std::string sectionPath = dataManager_->kObjectNames[1] + std::to_string(i);
 		std::string keyPath = dataManager_->kObstacleItems[0];
+		// 座標設定
 		Vector3 newPos = {};
 		dataManager_->AddItem({ names.kGroup,sectionPath }, keyPath, newPos);
 		newPos = dataManager_->GetVector3Value({ names.kGroup,sectionPath }, keyPath);
 		obstacle->transform_.translate_ = newPos;
+		// リスト追加
 		obstacles_.push_back(obstacle);
 	}
 #pragma endregion
@@ -66,14 +74,9 @@ void GameEditor::ParameterInitialize()
 
 void GameEditor::ImGuiProgress()
 {
-
-	//mousePosition_ = GetMouseCursor();
-	this->GetMouseCursor();
+	//GetMouseCursor();
 
 	ImGui::Begin("Editor");
-
-	//ImGui::DragFloat2("MouseV2", &mouseV2Position_.x);
-	//ImGui::DragFloat3("MouseV3", &mouseV3Position_.x);
 
 	if (ImGui::Button("Save")) {
 		// 名前
@@ -92,10 +95,7 @@ void GameEditor::ImGuiProgress()
 			// アイテムパス
 			std::string keyPath = dataManager_->kEnemyItems[0];
 			// 座標設定
-			//dataManager_->AddItem({ names.kGroup,sectionPath }, keyPath, enemy->transform_.GetWorldPos());
 			dataManager_->SetValue({ names.kGroup,sectionPath }, keyPath, enemy->transform_.GetWorldPos());
-			// セーブ
-			//dataManager_->SaveData(dataManager_->kLevelNames[editNowLevel_]);
 			// カウント
 			indexCount_++;
 		}
@@ -112,20 +112,20 @@ void GameEditor::ImGuiProgress()
 			// アイテムパス
 			std::string keyPath = dataManager_->kObstacleItems[0];
 			// 座標設定
-			//dataManager_->AddItem({ names.kGroup,sectionPath }, keyPath, obstacle->transform_.GetWorldPos());
 			dataManager_->SetValue({ names.kGroup,sectionPath }, keyPath, obstacle->transform_.GetWorldPos());
-			// セーブ
 			// カウント
 			indexCount_++;
 
 		}
 #pragma endregion
+		// セーブ
 		dataManager_->SaveData(dataManager_->kLevelNames[editNowLevel_]);
-
+		// メッセージボックス表示
 		std::string message = std::format("{}.json saved.", "StageData");
 		MessageBoxA(nullptr, message.c_str(), "Editors", 0);
 
 	}
+
 	if (ImGui::Button("Reload")) {
 		DataReaload();
 	}
@@ -155,14 +155,12 @@ void GameEditor::ImGuiProgress()
 			// リロード
 			DataReaload();
 		}
-
-		//ImGui::TreePop();
 	}
 
 	ImGui::Text("\n");
 
 	if (ImGui::BeginTabBar("EditObject")) {
-		// タブアイテム 0
+		// 敵のタブ
 		if (ImGui::BeginTabItem("Enemy")) {
 			// タブの内容
 			ImGui::Text("\n");
@@ -191,7 +189,7 @@ void GameEditor::ImGuiProgress()
 			ImGui::EndTabItem();
 		}
 
-		// タブアイテム 1
+		// 障害物のタブ
 		if (ImGui::BeginTabItem("Obstacle")) {
 			// タブの内容
 			ImGui::BeginChild(ImGui::GetID((void*)0), ImVec2(400, 300), ImGuiWindowFlags_NoTitleBar);
@@ -217,17 +215,15 @@ void GameEditor::ImGuiProgress()
 			ImGui::EndTabItem();
 		}
 
-		// タブアイテム 2
+		// 追加分のタブ
 		if (ImGui::BeginTabItem("Tab 2")) {
 			// タブの内容
 			ImGui::Text("This is tab 2!");
 			ImGui::EndTabItem();
 		}
-
 		// タブバーを終了
 		ImGui::EndTabBar();
 	}
-
 
 	ImGui::End();
 
@@ -286,6 +282,7 @@ void GameEditor::DataReaload()
 	camera_ = gameObjectManager_->CreateInstance<InGameCamera>("Incamera", BaseObject::TagCamera);
 	camera_->UseThisCamera();
 	camera_->fov_ = 0.85f;
+	// リストクリア
 	enemies_.clear();
 	obstacles_.clear();
 	// Jsonの情報による初期化
