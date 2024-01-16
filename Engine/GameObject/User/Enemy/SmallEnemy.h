@@ -7,7 +7,6 @@
 class SmallEnemy : public IEnemy
 {
 public: // メンバ関数
-public: // メンバ関数
 
 	/// <summary>
 	/// 初期化関数

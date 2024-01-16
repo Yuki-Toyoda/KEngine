@@ -88,6 +88,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\GameObject\User\Enemy\Manager\EnemyManager.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\State\Sample\EnemySampleState.cpp" />
     <ClCompile Include="Engine\Scene\User\EditorScene.cpp" />
     <ClCompile Include="Engine\Audio\Audio.cpp" />
     <ClCompile Include="Engine\Base\Command\BaseCommand.cpp" />
@@ -168,6 +170,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Utility\Line\Line.cpp" />
     <ClCompile Include="Engine\GameObject\User\Editor\GameEditor.cpp" />
     <ClCompile Include="Engine\GameObject\User\Editor\GameDataManager.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\State\IEnemyState.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\GameObject\Samples\SampleSphere\SampleSphere.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -175,6 +178,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\GameObject\User\Enemy\Manager\EnemyManager.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyStateList.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\State\Sample\EnemySampleState.h" />
     <ClInclude Include="Engine\Scene\User\EditorScene.h" />
     <ClInclude Include="Engine\Audio\Audio.h" />
     <ClInclude Include="Engine\Base\Command\BaseCommand.h" />
@@ -278,6 +284,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\GameObject\User\Editor\GameEditor.h" />
     <ClInclude Include="Engine\GameObject\User\Editor\GameDataManager.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\IEnemy.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\State\IEnemyState.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Object3D.hlsli">

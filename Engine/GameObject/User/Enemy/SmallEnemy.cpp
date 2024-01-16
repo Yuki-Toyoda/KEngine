@@ -1,4 +1,5 @@
 #include "SmallEnemy.h"
+#include "State/EnemyStateList.h"
 
 void SmallEnemy::Init()
 {
@@ -19,6 +20,9 @@ void SmallEnemy::Init()
 	AddMesh(&bodyTransform_, color_, "./Resources/Enemy", "Body.obj");
 	AddMesh(&wingTransform_L_, color_, "./Resources/Enemy", "Wing_L.obj");
 	AddMesh(&wingTransform_R_, color_, "./Resources/Enemy", "Wing_R.obj");
+
+	// 行動状態を変更
+	ChangeState(std::make_unique<EnemySampleState>());
 }
 
 void SmallEnemy::Update()

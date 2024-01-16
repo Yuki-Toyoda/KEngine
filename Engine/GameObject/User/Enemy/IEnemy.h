@@ -2,6 +2,9 @@
 #include "../../BaseObject.h"
 #include "../Player/Weapon.h"
 
+// クラスの前方宣言
+class IEnemyState;
+
 /// <summary>
 /// 敵の基底クラス
 /// </summary>
@@ -13,12 +16,15 @@ public: // メンバ関数
 	/// 共通初期化関数
 	/// </summary>
 	void PreInit();
-
 	/// <summary>
 	/// 初期化関数
 	/// </summary>
 	void Init() override = 0;
 
+	/// <summary>
+	/// 共通更新関数
+	/// </summary>
+	void PreUpdate();
 	/// <summary>
 	/// 更新関数
 	/// </summary>
@@ -33,6 +39,12 @@ public: // メンバ関数
 	/// リセット関数
 	/// </summary>
 	virtual void Reset() = 0;
+
+	/// <summary>
+	/// 引数で指定した行動状態に変更する関数
+	/// </summary>
+	/// <param name="newState">新しい行動状態</param>
+	void ChangeState(std::unique_ptr<IEnemyState> newState);
 
 	/// <summary>
 	/// パラメータのセーブ関数
@@ -85,5 +97,14 @@ protected: // 継承先メンバ変数
 	Vector3 velocity_;
 	Vector3 hitvelocity_;
 
+	// 行動状態クラス
+	std::unique_ptr<IEnemyState> state_;
+
 };
+
+/// <summary>
+/// IEnemyを継承したクラスを選択できるテンプレート
+/// </summary>
+template <class SelectEnemy>
+concept IsIEnemy = std::is_base_of<IEnemy, SelectEnemy>::value;
 
