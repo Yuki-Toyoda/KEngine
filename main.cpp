@@ -14,6 +14,7 @@
 #include "Engine/Collider/CollisionManager.h"
 #include "Engine/Input/Input.h"
 #include "Engine/Audio/Audio.h"
+#include "Engine/GameObject/User/Editor/GameDataManager.h"
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
@@ -41,6 +42,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// グローバル変数の読み込み
 	GlobalVariables::GetInstance()->LoadFiles();
+	// ステージデータ用の読み込み
+	GameDataManager::GetInstance()->LoadFiles();
 
 	// オーディオの初期化
 	audio = Audio::GetInstance();

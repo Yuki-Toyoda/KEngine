@@ -27,6 +27,7 @@ public:
 	void SetWepon( Wepon* target) { wepon_ = target; }
 	void Setveclocity(Vector3 velocity) { hitvelocity_ = velocity; }
 	void SubtractVelocity();
+	void SetPosition(const Vector3& position) { transform_.translate_ = position; }
 private:
 	/// <summary>
 	/// 衝突した瞬間にコールバックされる関数
