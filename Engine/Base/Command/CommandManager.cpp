@@ -210,9 +210,6 @@ Matrix4x4* const CommandManager::GetViewProjection() const {
 void CommandManager::SetDrawData(BasePrimitive* primitive, bool UpdateVertex, bool UpdateTransform)
 {
 	//// ワールド座標が更新されていれば
-	//if (UpdateTransform) {
-	//	
-	//}
 	// いろいろ最大数を超えていないかチェック
 	assert(commands_[(int)primitive->primitiveType_]->indexBuffer_->usedCount < commands_[(int)primitive->primitiveType_]->kMaxIndex); // インデックス情報
 	assert(vertexBuffer_->usedCount < kMaxVertex);							 // 頂点数
