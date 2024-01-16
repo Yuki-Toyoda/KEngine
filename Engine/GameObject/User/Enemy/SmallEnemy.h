@@ -4,7 +4,7 @@
 /// <summary>
 /// 小さい敵
 /// </summary>
-class SmalEnemy : public IEnemy
+class SmallEnemy : public IEnemy
 {
 public: // メンバ関数
 public: // メンバ関数

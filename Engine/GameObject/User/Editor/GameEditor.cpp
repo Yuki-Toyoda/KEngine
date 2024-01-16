@@ -32,9 +32,9 @@ void GameEditor::ParameterInitialize()
 	kMaxEnemyCount_ = dataManager_->GetIntValue({ dataManager_->kLevelNames[editNowLevel_], dataManager_->kObjectNames[0] }, dataManager_->kEnemyItems[4]);
 	// 敵の数だけ
 	for (int i = 0; i < kMaxEnemyCount_; i++) {
-		Enemy* enemy;
+		SmallEnemy* enemy;
 		// オブジェクトマネージャーに追加
-		enemy = gameObjectManager_->CreateInstance<Enemy>("Enemy", BaseObject::TagEnemy);
+		enemy = gameObjectManager_->CreateInstance<SmallEnemy>("Enemy", BaseObject::TagEnemy);
 		// パスの設定
 		std::string sectionPath = dataManager_->kObjectNames[0] + std::to_string(i);
 		std::string keyPath = dataManager_->kEnemyItems[0];
@@ -90,7 +90,7 @@ void GameEditor::ImGuiUpdate()
 		// 数初期化
 		indexCount_ = 0;
 		// 敵の保存処理
-		for (Enemy* enemy : enemies_) {
+		for (IEnemy* enemy : enemies_) {
 			// セクションパス
 			std::string sectionPath = dataManager_->kObjectNames[0] + std::to_string(indexCount_);
 			// アイテムパス
@@ -168,7 +168,7 @@ void GameEditor::ImGuiUpdate()
 			ImGui::BeginChild(ImGui::GetID((void*)0), ImVec2(400, 300), ImGuiWindowFlags_NoTitleBar);
 
 			float paramAbs = 30.0f;
-			for (Enemy* enemy : enemies_) {
+			for (IEnemy* enemy : enemies_) {
 				std::string fullTag = enemy->GetObjectName();
 				ImGui::DragFloat3(fullTag.c_str(), &enemy->transform_.translate_.x, 0.1f, -paramAbs, paramAbs);
 				ImGui::Text("\n");
@@ -180,8 +180,8 @@ void GameEditor::ImGuiUpdate()
 
 			// 敵の追加
 			if (ImGui::Button("Add")) {
-				Enemy* enemy;
-				enemy = gameObjectManager_->CreateInstance<Enemy>("Enemy", BaseObject::TagEnemy);
+				SmallEnemy* enemy;
+				enemy = gameObjectManager_->CreateInstance<SmallEnemy>("Enemy", BaseObject::TagEnemy);
 				enemies_.push_back(enemy);
 			}
 

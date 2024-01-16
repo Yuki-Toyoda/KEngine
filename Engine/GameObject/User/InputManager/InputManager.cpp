@@ -78,22 +78,22 @@ Vector3 InputManager::Move()
     return velocity;
 }
 
-bool InputManager::RotateRight()
-{
-
-    if (Input::GetInstance()->PushKey(DIK_D)) {
-        return true;
-    }
-    return false;
-}
-
-bool InputManager::RotateLeft()
-{
-    if (Input::GetInstance()->PushKey(DIK_A)) {
-        return true;
-    }
-    return false;
-}
+//bool InputManager::RotateRight()
+//{
+//
+//    if (Input::GetInstance()->PushKey(DIK_D)) {
+//        return true;
+//    }
+//    return false;
+//}
+//
+//bool InputManager::RotateLeft()
+//{
+//    if (Input::GetInstance()->PushKey(DIK_A)) {
+//        return true;
+//    }
+//    return false;
+//}
 
 bool InputManager::ChangeRotate()
 {

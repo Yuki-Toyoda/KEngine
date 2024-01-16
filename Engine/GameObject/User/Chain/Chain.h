@@ -2,7 +2,7 @@
 #include"../../BaseObject.h"
 #include "../../../Utility/Line/Line.h"
 #include "../Player/Player.h"
-#include "../Player/Wepon.h"
+#include "../Player/Weapon.h"
 class Chain :public BaseObject
 {
 public: // メンバ関数

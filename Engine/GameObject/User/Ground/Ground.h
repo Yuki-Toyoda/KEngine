@@ -1,6 +1,6 @@
 #pragma once
 #include "../../BaseObject.h"
-#include"../Player/Wepon.h"
+#include"../Player/Weapon.h"
 class Ground:public BaseObject
 {
 public:

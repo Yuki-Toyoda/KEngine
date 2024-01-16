@@ -2,6 +2,7 @@
 #include "GameDataManager.h"
 #include "../../GameObjectManager.h"
 #include "../../ObjectList.h"
+#include "../Enemy/IEnemy.h"
 #include "../../Core/Camera.h"
 #include <vector>
 
@@ -65,12 +66,8 @@ private:
 
 private: // 仮配置用のオブジェクト
 	// 敵
-	std::vector<Enemy*>enemies_;
-	std::vector<MidEnemy*>midEnemies_;
-	std::vector<HighEnemy*>highEnemies_;
+	std::vector<IEnemy*>enemies_;
 	// ブロック
 	std::vector<Obstacle*> obstacles_;
-
-
 };
 

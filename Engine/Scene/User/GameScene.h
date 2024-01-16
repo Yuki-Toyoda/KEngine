@@ -23,10 +23,7 @@ private: // メンバ変数
 private:
 	Player*player_;
 	Weapon* weapon_;
-	std::vector<Enemy*>enemies_;
-	std::vector<MidEnemy*>midEnemies_;
 	std::vector<Obstacle*> obstacles_;
-	std::vector<HighEnemy*>highEnemies_;
 	Chain* chain_;
 	Ground* ground_;
 	InGameCamera* camera_;

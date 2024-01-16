@@ -27,7 +27,6 @@
     <ClCompile Include="Engine\GameObject\GameObjectManager.cpp" />
     <ClCompile Include="Engine\GameObject\Samples\SampleSkyDome\SkyDome.cpp" />
     <ClCompile Include="Engine\GameObject\Samples\SampleSprite\SampleSprite.cpp" />
-    <ClCompile Include="Engine\GameObject\User\Enemy\Enemy.cpp" />
     <ClCompile Include="Engine\GameObject\User\InputManager\InputManager.cpp" />
     <ClCompile Include="Engine\GameObject\User\Player\Player.cpp" />
     <ClCompile Include="Engine\GameObject\User\Player\Weapon.cpp" />
@@ -76,8 +75,6 @@
     <ClCompile Include="Engine\GameObject\Samples\SampleSphere\SampleSphere.cpp">
       <Filter>GameObject\Samples\Sphere</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\GameObject\User\Enemy\MidEnemy.cpp" />
-    <ClCompile Include="Engine\GameObject\User\Enemy\HighEnemy.cpp" />
     <ClCompile Include="Engine\Utility\Line\Line.cpp">
       <Filter>Utility\Line</Filter>
     </ClCompile>
@@ -93,7 +90,7 @@
     <ClCompile Include="Engine\GameObject\User\Editor\GameEditor.cpp" />
     <ClCompile Include="Engine\GameObject\User\Editor\GameDataManager.cpp" />
     <ClCompile Include="Engine\GameObject\User\Ground\Ground.cpp" />
-    <ClCompile Include="Engine\GameObject\User\Enemy\SmalEnemy.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\SmallEnemy.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\IEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -128,7 +125,6 @@
     <ClInclude Include="Engine\GameObject\SampleList.h" />
     <ClInclude Include="Engine\GameObject\Samples\SampleSkyDome\SkyDome.h" />
     <ClInclude Include="Engine\GameObject\Samples\SampleSprite\SampleSprite.h" />
-    <ClInclude Include="Engine\GameObject\User\Enemy\Enemy.h" />
     <ClInclude Include="Engine\GameObject\User\InputManager\InputManager.h" />
     <ClInclude Include="Engine\GameObject\User\Player\Player.h" />
     <ClInclude Include="Engine\GameObject\User\Player\Weapon.h" />
@@ -186,8 +182,6 @@
     <ClInclude Include="Engine\GameObject\Samples\SampleSphere\SampleSphere.h">
       <Filter>GameObject\Samples\Sphere</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\GameObject\User\Enemy\MidEnemy.h" />
-    <ClInclude Include="Engine\GameObject\User\Enemy\HighEnemy.h" />
     <ClInclude Include="Engine\Utility\Line\Line.h">
       <Filter>Utility\Line</Filter>
     </ClInclude>
@@ -204,7 +198,7 @@
     <ClInclude Include="Engine\GameObject\User\Editor\GameDataManager.h" />
     <ClInclude Include="Engine\GameObject\User\Ground\Ground.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\IEnemy.h" />
-    <ClInclude Include="Engine\GameObject\User\Enemy\SmalEnemy.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\SmallEnemy.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">

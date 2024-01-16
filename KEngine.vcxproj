@@ -119,12 +119,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </ClCompile>
     <ClCompile Include="Engine\GameObject\User\camera\InGameCamera.cpp" />
     <ClCompile Include="Engine\GameObject\User\Chain\Chain.cpp" />
-    <ClCompile Include="Engine\GameObject\User\Enemy\Enemy.cpp" />
-    <ClCompile Include="Engine\GameObject\User\Enemy\HighEnemy.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\IEnemy.cpp" />
-    <ClCompile Include="Engine\GameObject\User\Enemy\MidEnemy.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\Obstacle\Obstacle.cpp" />
-    <ClCompile Include="Engine\GameObject\User\Enemy\SmalEnemy.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\SmallEnemy.cpp" />
     <ClCompile Include="Engine\GameObject\User\Ground\Ground.cpp" />
     <ClCompile Include="Engine\GameObject\User\InputManager\InputManager.cpp" />
     <ClCompile Include="Engine\GameObject\User\Player\Player.cpp" />
@@ -218,11 +215,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </ClInclude>
     <ClInclude Include="Engine\GameObject\User\camera\InGameCamera.h" />
     <ClInclude Include="Engine\GameObject\User\Chain\Chain.h" />
-    <ClInclude Include="Engine\GameObject\User\Enemy\Enemy.h" />
-    <ClInclude Include="Engine\GameObject\User\Enemy\HighEnemy.h" />
-    <ClInclude Include="Engine\GameObject\User\Enemy\MidEnemy.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\Obstacle\Obstacle.h" />
-    <ClInclude Include="Engine\GameObject\User\Enemy\SmalEnemy.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\SmallEnemy.h" />
     <ClInclude Include="Engine\GameObject\User\Ground\Ground.h" />
     <ClInclude Include="Engine\GameObject\User\InputManager\InputManager.h" />
     <ClInclude Include="Engine\GameObject\User\Player\Player.h" />
