@@ -97,8 +97,6 @@ public: // パブリックなメンバ変数
 
 	// 描画中心座標
 	WorldTransform* transform_;
-	// 描画の値変化検知用
-	KLib::Observer<WorldTransform> obTransform_;
 
 	// マテリアルz
 	Material material_;

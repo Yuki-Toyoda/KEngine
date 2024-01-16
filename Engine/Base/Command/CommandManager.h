@@ -59,9 +59,7 @@ public: // アクセッサ等
 	/// 描画データ登録関数
 	/// </summary>
 	/// <param name="primitive">頂点データ</param>
-	/// <param name="UpdateVertex">頂点を更新するか</param>
-	/// <param name="UpdateTransform">座標情報を更新するか</param>
-	void SetDrawData(BasePrimitive* primitive, bool UpdateVertex, bool UpdateTransform);
+	void SetDrawData(BasePrimitive* primitive);
 
 	/// <summary>
 	/// コマンドキューのゲッター

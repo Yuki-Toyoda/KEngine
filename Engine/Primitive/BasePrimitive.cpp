@@ -5,10 +5,6 @@ BasePrimitive::BasePrimitive(CommandManager* manager)
 {
 	// 基底クラスでは使用しない
 	manager;
-
-	// 
-	obTransform_ = KLib::Observer<WorldTransform>(
-		WorldTransform(Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f)));
 }
 
 void BasePrimitive::ResizeVertices()
@@ -40,11 +36,8 @@ void BasePrimitive::Draw(CommandManager* manager)
 	if (!isActive_)
 		return;
 
-	// 値を入れ替える
-	obTransform_.t = *transform_;
-
 	// マネージャーに頂点情報を送る
-	manager->SetDrawData(this, true, obTransform_.GetChanged());
+	manager->SetDrawData(this);
 }
 
 void BasePrimitive::DisplayImGui()
