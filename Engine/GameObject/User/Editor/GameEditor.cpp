@@ -27,7 +27,7 @@ void GameEditor::ParameterInitialize()
 	HierarchicalName names = { dataManager_->kLevelNames[editNowLevel_], dataManager_->kObjectNames[0] };
 #pragma region 敵の初期化
 	// 最大値設定
-	dataManager_->AddItem(names, dataManager_->kEnemyItems[4], kMaxEnemyCount_);
+	//dataManager_->AddItem(names, dataManager_->kEnemyItems[4], kMaxEnemyCount_);
 	kMaxEnemyCount_ = dataManager_->GetIntValue({ dataManager_->kLevelNames[editNowLevel_], dataManager_->kObjectNames[0] }, dataManager_->kEnemyItems[4]);
 	// 敵の数だけ
 	for (int i = 0; i < kMaxEnemyCount_; i++) {
@@ -46,7 +46,7 @@ void GameEditor::ParameterInitialize()
 #pragma region 障害物の初期化
 	names = { dataManager_->kLevelNames[editNowLevel_], dataManager_->kObjectNames[1] };
 	// 最大値設定
-	dataManager_->AddItem(names, dataManager_->kObstacleItems[2], kMaxObstacleCount_);
+	//dataManager_->AddItem(names, dataManager_->kObstacleItems[2], kMaxObstacleCount_);
 	kMaxObstacleCount_ = dataManager_->GetIntValue(names, dataManager_->kObstacleItems[2]);
 	// 障害物の数だけ
 	for (int i = 0; i < kMaxEnemyCount_; i++) {
@@ -92,10 +92,10 @@ void GameEditor::ImGuiProgress()
 			// アイテムパス
 			std::string keyPath = dataManager_->kEnemyItems[0];
 			// 座標設定
-			dataManager_->AddItem({ names.kGroup,sectionPath }, keyPath, enemy->transform_.GetWorldPos());
+			//dataManager_->AddItem({ names.kGroup,sectionPath }, keyPath, enemy->transform_.GetWorldPos());
 			dataManager_->SetValue({ names.kGroup,sectionPath }, keyPath, enemy->transform_.GetWorldPos());
 			// セーブ
-			dataManager_->SaveData(dataManager_->kLevelNames[editNowLevel_]);
+			//dataManager_->SaveData(dataManager_->kLevelNames[editNowLevel_]);
 			// カウント
 			indexCount_++;
 		}
@@ -111,15 +111,15 @@ void GameEditor::ImGuiProgress()
 			// アイテムパス
 			std::string keyPath = dataManager_->kObstacleItems[0];
 			// 座標設定
-			dataManager_->AddItem({ names.kGroup,sectionPath }, keyPath, obstacle->transform_.GetWorldPos());
+			//dataManager_->AddItem({ names.kGroup,sectionPath }, keyPath, obstacle->transform_.GetWorldPos());
 			dataManager_->SetValue({ names.kGroup,sectionPath }, keyPath, obstacle->transform_.GetWorldPos());
 			// セーブ
-			dataManager_->SaveData(dataManager_->kLevelNames[editNowLevel_]);
 			// カウント
 			indexCount_++;
 
 		}
 #pragma endregion
+		dataManager_->SaveData(dataManager_->kLevelNames[editNowLevel_]);
 
 		std::string message = std::format("{}.json saved.", "StageData");
 		MessageBoxA(nullptr, message.c_str(), "Editors", 0);
