@@ -21,41 +21,49 @@ public:
 	/// </summary>
 	void Update();
 
+private:
+	// データ用マネージャ
+	GameDataManager* dataManager_ = nullptr;
+	// オブジェクト用マネージャ
+	GameObjectManager* gameObjectManager_ = nullptr;
+	// ゲームシーンで使用するカメラ
+	InGameCamera* camera_;
+
+public:
 	/// <summary>
 	/// Jsonから情報取得の関数
 	/// </summary>
 	void ParameterInitialize();
-
 	/// <summary>
 	/// エディターのImGui
 	/// </summary>
 	void ImGuiProgress();
-
 	/// <summary>
 	/// マウスの座標からワールド座標（使えない）
 	/// </summary>
 	void GetMouseCursor();
-
 	/// <summary>
 	/// データのリロード
 	/// </summary>
 	void DataReaload();
 
 private:
-
-	GameDataManager* dataManager_ = nullptr;
-	GameObjectManager* gameObjectManager_ = nullptr;
-
+	// マウス座標用（使ってない）
 	Vector3 mouseV3Position_ = {};
 	Vector2 mouseV2Position_ = {};
 
+	// 障害物の最大数
+	int kMaxObstacleCount_ = 0;
+
+	// 敵の最大数
 	int kMaxEnemyCount_ = 0;
+	// for文の際の値
+	int indexCount_ = 0;
 
-	int editPhaseNum_ = 0;
-	int enemyCount_ = 0;
+	// 現在の難易度
+	int editNowLevel_ = 0;
 
-private:
-	// 仮配置用のオブジェクト
+private: // 仮配置用のオブジェクト
 	// 敵
 	std::vector<Enemy*>enemies_;
 	std::vector<MidEnemy*>midEnemies_;
@@ -63,8 +71,6 @@ private:
 	// ブロック
 	std::vector<Obstacle*> obstacles_;
 
-	// ゲームシーンで使用するカメラ
-	InGameCamera* camera_;
 
 };
 

@@ -45,8 +45,9 @@ public:
 
     /// <summary>
     /// 一つのグループを保存する関数
+    /// ※データを書き換える為情報はまとめて保存すること
     /// </summary>
-    /// <param name="groupName"></param>
+    /// <param name="groupName">kLevelNameから選択</param>
     void SaveData(const std::string& groupName/*, int32_t groupNum*/);
 
     /// <summary>
@@ -64,12 +65,20 @@ public:
         gameDatas_.clear();
     }
 
+private: // 配列の最大サイズ
+    static const int kEnemyMaxValue = 5;
+    static const int kObstacleMaxValue = 3;
+
+public: // 呼び出し時に使用する配列
     // ステージごとの名前
     std::array<std::string, 4> kLevelNames = { "Easy","Normal","Hard","Expert" };
     // 内部に保存しているオブジェクトの名前
-    std::array<std::string, 2> kObjectNames = { "Enemy","Block" };
+    std::array<std::string, 2> kObjectNames = { "Enemy","Obstacle" };
+
     // 保存するアイテム名
-    std::array<std::string, 5> kItemNames = { "Position","Type","Speed","RespownTime", "MaxCount"};
+    std::array<std::string, kEnemyMaxValue> kEnemyItems = { "Position","Type","Speed","RespownTime", "MaxCount"};
+    // 障害物用
+    std::array<std::string, kObstacleMaxValue> kObstacleItems = { "Position","Size", "MaxCount"};
 
 private:
     /// 項目

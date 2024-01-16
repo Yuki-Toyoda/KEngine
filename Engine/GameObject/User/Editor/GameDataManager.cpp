@@ -247,7 +247,7 @@ void GameDataManager::AddItem(const HierarchicalName& names, const std::string& 
 	}
 }
 
-void GameDataManager::AddItem(const HierarchicalName& names, const std::string& key, Vector2 value)
+void GameDataManager::AddItem(const HierarchicalName& names, const std::string& key, Vector2 value = {})
 {
 	// 項目が未登録なら
 	if (gameDatas_[names.kGroup][names.kSection].find(key) ==
@@ -256,7 +256,7 @@ void GameDataManager::AddItem(const HierarchicalName& names, const std::string& 
 	}
 }
 
-void GameDataManager::AddItem(const HierarchicalName& names, const std::string& key, Vector3 value)
+void GameDataManager::AddItem(const HierarchicalName& names, const std::string& key, Vector3 value = {})
 {
 	// 項目が未登録なら
 	if (gameDatas_[names.kGroup][names.kSection].find(key) ==

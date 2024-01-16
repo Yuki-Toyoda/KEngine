@@ -24,21 +24,44 @@ void GameEditor::Update()
 void GameEditor::ParameterInitialize()
 {
 	// 構造の名前取得
-	HierarchicalName names = { dataManager_->kLevelNames[0], dataManager_->kObjectNames[0] };
-	dataManager_->AddItem(names, dataManager_->kItemNames[4], kMaxEnemyCount_);
-
+	HierarchicalName names = { dataManager_->kLevelNames[editNowLevel_], dataManager_->kObjectNames[0] };
+#pragma region 敵の初期化
 	// 最大値設定
-	kMaxEnemyCount_ = dataManager_->GetIntValue({ dataManager_->kLevelNames[0], dataManager_->kObjectNames[0] }, dataManager_->kItemNames[4]);
-
+	dataManager_->AddItem(names, dataManager_->kEnemyItems[4], kMaxEnemyCount_);
+	kMaxEnemyCount_ = dataManager_->GetIntValue({ dataManager_->kLevelNames[editNowLevel_], dataManager_->kObjectNames[0] }, dataManager_->kEnemyItems[4]);
+	// 敵の数だけ
 	for (int i = 0; i < kMaxEnemyCount_; i++) {
 		Enemy* enemy;
 		enemy = gameObjectManager_->CreateInstance<Enemy>("Enemy", BaseObject::TagEnemy);
 		std::string sectionPath = dataManager_->kObjectNames[0] + std::to_string(i);
-		std::string keyPath = dataManager_->kItemNames[0];
-		Vector3 newPos = dataManager_->GetVector3Value({ names.kGroup,sectionPath }, keyPath);
-		enemy->SetPosition(newPos);
+		std::string keyPath = dataManager_->kEnemyItems[0];
+		Vector3 newPos = {};
+		dataManager_->AddItem({ names.kGroup,sectionPath }, keyPath, newPos);
+		newPos = dataManager_->GetVector3Value({ names.kGroup,sectionPath }, keyPath);
+		enemy->transform_.translate_ = newPos;
 		enemies_.push_back(enemy);
 	}
+#pragma endregion
+
+#pragma region 障害物の初期化
+	names = { dataManager_->kLevelNames[editNowLevel_], dataManager_->kObjectNames[1] };
+	// 最大値設定
+	dataManager_->AddItem(names, dataManager_->kObstacleItems[2], kMaxObstacleCount_);
+	kMaxObstacleCount_ = dataManager_->GetIntValue(names, dataManager_->kObstacleItems[2]);
+	// 障害物の数だけ
+	for (int i = 0; i < kMaxEnemyCount_; i++) {
+		Obstacle* obstacle;
+		obstacle = gameObjectManager_->CreateInstance<Obstacle>("Obstacle", BaseObject::TagObstacle);
+		std::string sectionPath = dataManager_->kObjectNames[1] + std::to_string(i);
+		std::string keyPath = dataManager_->kObstacleItems[0];
+		Vector3 newPos = {};
+		dataManager_->AddItem({ names.kGroup,sectionPath }, keyPath, newPos);
+		newPos = dataManager_->GetVector3Value({ names.kGroup,sectionPath }, keyPath);
+		obstacle->transform_.translate_ = newPos;
+		obstacles_.push_back(obstacle);
+	}
+#pragma endregion
+
 }
 
 void GameEditor::ImGuiProgress()
@@ -49,22 +72,91 @@ void GameEditor::ImGuiProgress()
 
 	ImGui::Begin("Editor");
 
-	ImGui::DragFloat2("MouseV2", &mouseV2Position_.x);
-	ImGui::DragFloat3("MouseV3", &mouseV3Position_.x);
+	//ImGui::DragFloat2("MouseV2", &mouseV2Position_.x);
+	//ImGui::DragFloat3("MouseV3", &mouseV3Position_.x);
 
-	if (ImGui::Button("Easy")) {
-		editPhaseNum_++;
-	}
-	if (ImGui::Button("Normal")) {
-		if (editPhaseNum_ > 0) {
-			editPhaseNum_--;
+	if (ImGui::Button("Save")) {
+		// 名前
+		HierarchicalName names = { dataManager_->kLevelNames[editNowLevel_],dataManager_->kObjectNames[0] };
+
+#pragma region 保存処理
+		// 最大数の設定
+		dataManager_->SetValue(names, dataManager_->kEnemyItems[4], kMaxEnemyCount_);
+		Vector3 testValue = {};
+		// 数初期化
+		indexCount_ = 0;
+		// 敵の保存処理
+		for (Enemy* enemy : enemies_) {
+			// セクションパス
+			std::string sectionPath = dataManager_->kObjectNames[0] + std::to_string(indexCount_);
+			// アイテムパス
+			std::string keyPath = dataManager_->kEnemyItems[0];
+			// 座標設定
+			dataManager_->AddItem({ names.kGroup,sectionPath }, keyPath, enemy->transform_.GetWorldPos());
+			dataManager_->SetValue({ names.kGroup,sectionPath }, keyPath, enemy->transform_.GetWorldPos());
+			// セーブ
+			dataManager_->SaveData(dataManager_->kLevelNames[editNowLevel_]);
+			// カウント
+			indexCount_++;
 		}
-	}
-	if (ImGui::Button("Hard")) {
+
+		indexCount_ = 0;
+		// 最大数の設定
+		dataManager_->SetValue(names, dataManager_->kEnemyItems[4], kMaxObstacleCount_);
+
+		// 障害物の保存処理
+		for (Obstacle* obstacle : obstacles_) {
+			// セクションパス
+			std::string sectionPath = dataManager_->kObjectNames[1] + std::to_string(indexCount_);
+			// アイテムパス
+			std::string keyPath = dataManager_->kObstacleItems[0];
+			// 座標設定
+			dataManager_->AddItem({ names.kGroup,sectionPath }, keyPath, obstacle->transform_.GetWorldPos());
+			dataManager_->SetValue({ names.kGroup,sectionPath }, keyPath, obstacle->transform_.GetWorldPos());
+			// セーブ
+			dataManager_->SaveData(dataManager_->kLevelNames[editNowLevel_]);
+			// カウント
+			indexCount_++;
+
+		}
+#pragma endregion
+
+		std::string message = std::format("{}.json saved.", "StageData");
+		MessageBoxA(nullptr, message.c_str(), "Editors", 0);
 
 	}
 	if (ImGui::Button("Reload")) {
 		DataReaload();
+	}
+
+	ImGui::Text("\n");
+
+	if (ImGui::CollapsingHeader("StageSelect")) {
+
+		if (ImGui::Button("Easy")) {
+			//editNowLevel_++;
+			//if (editNowLevel_ > 3) {
+			//	editNowLevel_ = 2;
+			//}
+			editNowLevel_ = 0;
+			dataManager_->SaveData(dataManager_->kLevelNames[editNowLevel_]);
+			DataReaload();
+		}
+		if (ImGui::Button("Normal")) {
+			//if (editNowLevel_ > 0) {
+			//	editNowLevel_--;
+			//}
+			editNowLevel_ = 1;
+			dataManager_->SaveData(dataManager_->kLevelNames[editNowLevel_]);
+			DataReaload();
+		}
+		if (ImGui::Button("Hard")) {
+			editNowLevel_ = 2;
+			dataManager_->SaveData(dataManager_->kLevelNames[editNowLevel_]);
+			DataReaload();
+		}
+
+		//ImGui::TreePop();
 	}
 
 	ImGui::Text("\n");
@@ -91,44 +183,32 @@ void GameEditor::ImGuiProgress()
 				enemy = gameObjectManager_->CreateInstance<Enemy>("Enemy", BaseObject::TagEnemy);
 				enemies_.push_back(enemy);
 			}
-			if (ImGui::Button("Delete")) {
-				enemies_.pop_back();
-			}
-			if (ImGui::Button("Save")) {
-				// 名前
-				HierarchicalName names = { dataManager_->kLevelNames[0],dataManager_->kObjectNames[0] };
-
-				// 最大数の設定
-				dataManager_->SetValue(names, dataManager_->kItemNames[4], kMaxEnemyCount_);
-				Vector3 testValue = {};
-				// 数初期化
-				enemyCount_ = 0;
-				// 敵の数分
-				for (Enemy* enemy : enemies_) {
-					// セクションパス
-					std::string sectionPath = dataManager_->kObjectNames[0] + std::to_string(enemyCount_);
-					// アイテムパス
-					std::string keyPath = dataManager_->kItemNames[0];
-
-					// 座標設定
-					dataManager_->SetValue({ names.kGroup,sectionPath }, keyPath, enemy->transform_.GetWorldPos());
-					dataManager_->SetValue({ names.kGroup,sectionPath }, "TestValue", testValue);
-					// セーブ
-					dataManager_->SaveData(dataManager_->kLevelNames[0]);
-					// カウント
-					enemyCount_++;
-				}
-				std::string message = std::format("{}.json saved.", "StageData");
-				MessageBoxA(nullptr, message.c_str(), "Editors", 0);
-
-			}
 			ImGui::EndTabItem();
 		}
 
 		// タブアイテム 1
-		if (ImGui::BeginTabItem("Block")) {
+		if (ImGui::BeginTabItem("Obstacle")) {
 			// タブの内容
-			ImGui::Text("This is tab 1!");
+			ImGui::BeginChild(ImGui::GetID((void*)0), ImVec2(400, 300), ImGuiWindowFlags_NoTitleBar);
+
+			float paramAbs = 30.0f;
+			for (Obstacle* obstacle : obstacles_) {
+				std::string fullTag = obstacle->GetObjectName();
+				ImGui::DragFloat3(fullTag.c_str(), &obstacle->transform_.translate_.x, 0.1f, -paramAbs, paramAbs);
+				ImGui::Text("\n");
+			}
+
+			ImGui::EndChild();
+
+			ImGui::InputInt("ObstacleMaxCount", &kMaxObstacleCount_);
+			// 敵の追加
+			if (ImGui::Button("Add")) {
+				Obstacle* obstacle;
+				obstacle = gameObjectManager_->CreateInstance<Obstacle>("obstacle", BaseObject::TagObstacle);
+				obstacles_.push_back(obstacle);
+			}
+
+
 			ImGui::EndTabItem();
 		}
 
@@ -202,6 +282,7 @@ void GameEditor::DataReaload()
 	camera_->UseThisCamera();
 	camera_->fov_ = 0.85f;
 	enemies_.clear();
+	obstacles_.clear();
 	// Jsonの情報による初期化
 	ParameterInitialize();
 }

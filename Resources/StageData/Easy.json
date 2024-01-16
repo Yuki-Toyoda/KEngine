@@ -1,7 +1,7 @@
 {
     "Easy": {
         "Enemy": {
-            "MaxCount": 4
+            "MaxCount": 2
         },
         "Enemy0": {
             "Position": [
@@ -180,6 +180,51 @@
             "TestValue": [
                 0.0,
                 0.0,
+                0.0
+            ]
+        },
+        "Obstacle": {
+            "MaxCount": 0
+        },
+        "Obstacle0": {
+            "Position": [
+                -12.300000190734863,
+                0.0,
+                0.0
+            ]
+        },
+        "Obstacle1": {
+            "Position": [
+                -4.300000190734863,
+                10.600000381469727,
+                0.0
+            ]
+        },
+        "Obstacle2": {
+            "Position": [
+                11.600000381469727,
+                0.0,
+                0.0
+            ]
+        },
+        "Obstacle3": {
+            "Position": [
+                0.0,
+                15.5,
+                0.0
+            ]
+        },
+        "Obstacle4": {
+            "Position": [
+                0.0,
+                -14.0,
+                0.0
+            ]
+        },
+        "Obstacle5": {
+            "Position": [
+                0.0,
+                -1.7999999523162842,
                 0.0
             ]
         }
