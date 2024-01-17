@@ -1,7 +1,6 @@
 #include "SmallEnemy.h"
-#include "State/EnemyStateList.h"
 
-void SmallEnemy::Init()
+void SmallEnemy::SuccessorInit()
 {
 	/// 各トランスフォームの初期化
 	// 身体
@@ -25,13 +24,15 @@ void SmallEnemy::Init()
 	ChangeState(std::make_unique<EnemySampleState>());
 }
 
-void SmallEnemy::Update()
+void SmallEnemy::SuccessorUpdate()
 {
 
 }
 
 void SmallEnemy::DisplayImGui()
 {
+	// 基底クラスのImGuiを表示
+	IEnemy::DisplayImGui();
 }
 
 void SmallEnemy::Reset()

@@ -1,13 +1,20 @@
 #pragma once
 #include <string>
-#include "../IEnemy.h"
 #include "../../../../Utility/KLib.h"
+
+// クラスの前方宣言
+class IEnemy;
 
 /// <summary>
 /// 敵の行動基底クラス
 /// </summary>
 class IEnemyState
 {
+public: // コンストラクタ等
+
+	// 仮想デストラクタ
+	virtual ~IEnemyState() = default;
+
 public: // メンバ関数
 
 	/// <summary>
@@ -32,17 +39,23 @@ public: // メンバ関数
 	virtual void DisplayImGui();
 
 	/// <summary>
+	/// パラメーターを調整項目クラスに追加する関数
+	/// </summary>
+	/// <param name="levelName">レベル名</param>
+	/// <param name="enemyName">敵名</param>
+	virtual void AddParameter(const std::string& levelName, const std::string& enemyName);
+	/// <summary>
 	/// パラメーター保存関数
 	/// </summary>
 	/// <param name="levelName">レベル名</param>
 	/// <param name="enemyName">敵名</param>
-	virtual void SaveParameter(const std::string& levelName, const std::string& enemyName);
+	virtual void SetParameter(const std::string& levelName, const std::string& enemyName);
 	/// <summary>
 	/// パラメーター読み込み関数
 	/// </summary>
 	/// <param name="levelName">レベル名</param>
 	/// <param name="enemyName">敵名</param>
-	virtual void LoadParameter(const std::string& levelName, const std::string& enemyName);
+	virtual void ApplyParameter(const std::string& levelName, const std::string& enemyName);
 
 public: // パブリックなメンバ変数
 	

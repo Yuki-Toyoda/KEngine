@@ -1,4 +1,5 @@
 #include "EnemySampleState.h"
+#include "../../IEnemy.h"
 
 void EnemySampleState::Init()
 {

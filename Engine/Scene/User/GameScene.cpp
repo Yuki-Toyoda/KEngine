@@ -19,6 +19,9 @@ void GameScene::Init(){
 	weapon_->SetTarget(&player_->transform_);
 	weapon_->transform_.SetParent(&player_->transform_, 0b001);
 
+	// 敵を生成
+	gameObjectManager_->CreateInstance<SmallEnemy>("Enemy", BaseObject::TagEnemy);
+
 	// プレイヤーアニメーションマネージャの生成
 	PlayerAnimManager* am = gameObjectManager_->CreateInstance<PlayerAnimManager>("playerAnim", BaseObject::TagPlayer);
 	// プレイヤーを渡す

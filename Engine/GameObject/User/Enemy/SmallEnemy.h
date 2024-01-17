@@ -9,14 +9,14 @@ class SmallEnemy : public IEnemy
 public: // メンバ関数
 
 	/// <summary>
-	/// 初期化関数
+	/// 固有初期化関数
 	/// </summary>
-	void Init() override;
+	void SuccessorInit() override;
 
 	/// <summary>
-	/// 更新関数
+	/// 固有更新関数
 	/// </summary>
-	void Update() override;
+	void SuccessorUpdate() override;
 
 	/// <summary>
 	/// ImGui表示関数
@@ -26,21 +26,21 @@ public: // メンバ関数
 	/// <summary>
 	/// リセット関数
 	/// </summary>
-	virtual void Reset();
+	void Reset() override;
 
 	/// <summary>
 	/// パラメータのセーブ関数
 	/// </summary>
 	/// <param name="levelName">レベル名</param>
 	/// <param name="enemyName">敵名</param>
-	virtual void SaveParameter(const std::string& levelName, const std::string& enemyName);
+	void SaveParameter(const std::string& levelName, const std::string& enemyName) override;
 
 	/// <summary>
 	/// パラメータのロード関数
 	/// </summary>
 	/// <param name="levelName">レベル名</param>
 	/// <param name="enemyName">敵名</param>
-	virtual void LoadParameter(const std::string& levelName, const std::string& enemyName);
+	void LoadParameter(const std::string& levelName, const std::string& enemyName) override;
 
 private: // メンバ関数
 

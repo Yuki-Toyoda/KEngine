@@ -1,9 +1,8 @@
 #pragma once
 #include "../../BaseObject.h"
 #include "../Player/Weapon.h"
-
-// クラスの前方宣言
-class IEnemyState;
+#include "State/EnemyStateList.h"
+#include "../Editor/GameDataManager.h"
 
 /// <summary>
 /// 敵の基底クラス
@@ -33,7 +32,7 @@ public: // メンバ関数
 	/// <summary>
 	/// ImGui表示関数
 	/// </summary>
-	void DisplayImGui() override {};
+	void DisplayImGui() override;
 
 	/// <summary>
 	/// リセット関数
@@ -45,20 +44,25 @@ public: // メンバ関数
 	/// </summary>
 	/// <param name="newState">新しい行動状態</param>
 	void ChangeState(std::unique_ptr<IEnemyState> newState);
-
+	
+	/// <summary>
+	/// パラメーターを調整項目クラスに追加する関数
+	/// </summary>
+	/// <param name="levelName">レベル名</param>
+	/// <param name="enemyName">敵名</param>
+	virtual void AddParameter(const std::string& levelName, const std::string& enemyName);
 	/// <summary>
 	/// パラメータのセーブ関数
 	/// </summary>
 	/// <param name="levelName">レベル名</param>
 	/// <param name="enemyName">敵名</param>
-	virtual void SaveParameter(const std::string& levelName, const std::string& enemyName) = 0;
-
+	virtual void SetParameter(const std::string& levelName, const std::string& enemyName);
 	/// <summary>
 	/// パラメータのロード関数
 	/// </summary>
 	/// <param name="levelName">レベル名</param>
 	/// <param name="enemyName">敵名</param>
-	virtual void LoadParameter(const std::string& levelName, const std::string& enemyName) = 0;
+	virtual void ApplyParameter(const std::string& levelName, const std::string& enemyName);
 
 	/// <summary>
 	/// 衝突した瞬間にコールバックされる関数
@@ -79,6 +83,11 @@ public: // アクセッサ等
 	/// </summary>
 	/// <param name="velocity">移動ベクトル</param>
 	void Setveclocity(Vector3 velocity) { hitvelocity_ = velocity; }
+
+public: // パブリックなメンバ変数
+
+	// 外部出力マネージャ
+	GameDataManager* gameDataManager_ = nullptr;
 
 protected: // 継承先メンバ変数
 
