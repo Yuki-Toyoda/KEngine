@@ -13,22 +13,22 @@ class IEnemy : public BaseObject
 public: // メンバ関数
 
 	/// <summary>
-	/// 共通初期化関数
-	/// </summary>
-	void PreInit();
-	/// <summary>
 	/// 初期化関数
 	/// </summary>
-	void Init() override = 0;
-
+	void Init() override;
 	/// <summary>
-	/// 共通更新関数
+	/// 固有初期化関数
 	/// </summary>
-	void PreUpdate();
+	virtual void SuccessorInit() = 0;
+
 	/// <summary>
 	/// 更新関数
 	/// </summary>
-	void Update() override = 0;
+	void Update() override;
+	/// <summary>
+	/// 固有更新関数
+	/// </summary>
+	virtual void SuccessorUpdate() = 0;
 
 	/// <summary>
 	/// ImGui表示関数

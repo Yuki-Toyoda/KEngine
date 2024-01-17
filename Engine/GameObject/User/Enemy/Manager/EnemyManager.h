@@ -1,6 +1,7 @@
 #pragma once
 #include <list>
 #include "../IEnemy.h"
+#include "../../../GameObjectManager.h"
 
 /// <summary>
 /// 敵のマネージャー
@@ -36,7 +37,23 @@ public: // メンバ関数
 	/// </summary>
 	void Update();
 
+	/// <summary>
+	/// 敵生成関数
+	/// </summary>
+	/// <typeparam name="SelectEnemy">生成する敵の型(IEnemy継承クラスのみ)</typeparam>
+	/// <param name="name">生成する敵名</param>
+	/// <param name="tag">敵のタグ</param>
+	/// <returns>生成された敵</returns>
+	template<IsIEnemy SelectEnemy>
+	inline IEnemy* CreataeEnemy(const std::string& name, BaseObject::Tag tag = BaseObject::TagEnemy) {
+		// インスタンス生成
+		SelectEnemy* newEnemy = objManager_->CreateInstance<SelectEnemy>(name, tag);
+	}
+
 private: // メンバ変数
+
+	// ゲームオブジェクトマネージャー
+	GameObjectManager* objManager_ = nullptr;
 
 	// 敵のリスト
 	std::list<IEnemy*> enemies_;
