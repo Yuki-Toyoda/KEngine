@@ -82,7 +82,7 @@ public: // 呼び出し時に使用する配列
 
 private:
     /// 項目
-    using Item = std::variant<int32_t, float, Vector2, Vector3>;
+    using Item = std::variant<int32_t, float, Vector2, Vector3,std::string>;
     using Section = std::map<std::string, Item>;
     using Group = std::map<std::string, Section>;
 
@@ -105,6 +105,7 @@ public:
     void SetValue(const HierarchicalName& names, const std::string& key, float value);
     void SetValue(const HierarchicalName& names, const std::string& key, Vector2 value);
     void SetValue(const HierarchicalName& names, const std::string& key, Vector3 value);
+    void SetValue(const HierarchicalName& names, const std::string& key, std::string value);
 #pragma endregion
 
 #pragma region 追加
@@ -112,6 +113,7 @@ public:
     void AddItem(const HierarchicalName& names, const std::string& key, float value);
     void AddItem(const HierarchicalName& names, const std::string& key, Vector2 value);
     void AddItem(const HierarchicalName& names, const std::string& key, Vector3 value);
+    void AddItem(const HierarchicalName& names, const std::string& key, std::string value);
 #pragma endregion
 
 #pragma region 取得
@@ -119,6 +121,7 @@ public:
     float GetFloatValue(const HierarchicalName& names, const std::string& key);
     Vector2 GetVector2Value(const HierarchicalName& names, const std::string& key);
     Vector3 GetVector3Value(const HierarchicalName& names, const std::string& key);
+    std::string GetStringValue(const HierarchicalName& names, const std::string& key);
 #pragma endregion
 
 };

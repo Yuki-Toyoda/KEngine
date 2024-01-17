@@ -97,6 +97,12 @@ void GameDataManager::LoadFile(const std::string& groupName)
 				Vector3 value = { itItem->at(0), itItem->at(1), itItem->at(2) };
 				SetValue(prevNames, itemName, value);
 			}
+			// std::string型
+			else if (itItem->is_number_float()) {
+				// std::string型の値を登録
+				std::string value = itItem->get<std::string>();
+				SetValue(prevNames, itemName, value);
+			}
 		}
 
 		// オブジェクトナンバー更新
@@ -156,6 +162,10 @@ void GameDataManager::SaveData(const std::string& groupName)
 				// float型のjson配列登録
 				Vector3 value = std::get<Vector3>(item);
 				root[fullPath][sectionName][itemName] = json::array({ value.x, value.y, value.z });
+			}
+			else if (std::holds_alternative<std::string>(item)) {
+				// string型のj登録
+				root[fullPath][sectionName][itemName] = std::get<std::string>(item);
 			}
 		}
 	}
@@ -225,6 +235,15 @@ void GameDataManager::SetValue(const HierarchicalName& names, const std::string&
 	// 設定した項目をstd::mapに追加
 	section[key] = newItem;
 }
+void GameDataManager::SetValue(const HierarchicalName& names, const std::string& key, std::string value)
+{
+	// グループの参照を取得
+	Section& section = gameDatas_[names.kGroup][names.kSection];
+	// 新しい項目のデータを設定
+	Item newItem = value;
+	// 設定した項目をstd::mapに追加
+	section[key] = newItem;
+}
 #pragma endregion
 
 #pragma region 追加
@@ -256,6 +275,14 @@ void GameDataManager::AddItem(const HierarchicalName& names, const std::string& 
 }
 
 void GameDataManager::AddItem(const HierarchicalName& names, const std::string& key, Vector3 value = {})
+{
+	// 項目が未登録なら
+	if (gameDatas_[names.kGroup][names.kSection].find(key) ==
+		gameDatas_[names.kGroup][names.kSection].end()) {
+		SetValue(names, key, value);
+	}
+}
+void GameDataManager::AddItem(const HierarchicalName& names, const std::string& key, std::string value)
 {
 	// 項目が未登録なら
 	if (gameDatas_[names.kGroup][names.kSection].find(key) ==
@@ -321,5 +348,19 @@ Vector3 GameDataManager::GetVector3Value(const HierarchicalName& names, const st
 	assert(section.find(key) != section.end());
 	// 指定グループから指定のキーの値を取得
 	return std::get<3>(section[key]);
+}
+std::string GameDataManager::GetStringValue(const HierarchicalName& names, const std::string& key)
+{
+	// 指定グループが存在するか
+	assert(gameDatas_.find(names.kGroup) != gameDatas_.end());
+	// セクション探し
+	assert(gameDatas_[names.kGroup].find(names.kSection) != gameDatas_[names.kGroup].end());
+	// セクションの参照を取得
+	Section& section = gameDatas_[names.kGroup][names.kSection];
+
+	// 指定グループに指定キーが存在するか
+	assert(section.find(key) != section.end());
+	// 指定グループから指定のキーの値を取得
+	return std::get<4>(section[key]);
 }
 #pragma endregion
