@@ -88,7 +88,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Engine\GameObject\User\Enemy\Manager\EnemyManager.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\State\Sample\EnemySampleState.cpp" />
     <ClCompile Include="Engine\Scene\User\EditorScene.cpp" />
     <ClCompile Include="Engine\Audio\Audio.cpp" />
@@ -178,7 +177,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Engine\GameObject\User\Enemy\Manager\EnemyManager.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\Factory\EnemyFactory.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyStateList.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\State\Sample\EnemySampleState.h" />
     <ClInclude Include="Engine\Scene\User\EditorScene.h" />

@@ -92,7 +92,6 @@
     <ClCompile Include="Engine\GameObject\User\Ground\Ground.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\SmallEnemy.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\IEnemy.cpp" />
-    <ClCompile Include="Engine\GameObject\User\Enemy\Manager\EnemyManager.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\State\IEnemyState.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\State\Sample\EnemySampleState.cpp" />
   </ItemGroup>
@@ -202,7 +201,7 @@
     <ClInclude Include="Engine\GameObject\User\Ground\Ground.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\IEnemy.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\SmallEnemy.h" />
-    <ClInclude Include="Engine\GameObject\User\Enemy\Manager\EnemyManager.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\Factory\EnemyFactory.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\State\IEnemyState.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\State\Sample\EnemySampleState.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyStateList.h" />

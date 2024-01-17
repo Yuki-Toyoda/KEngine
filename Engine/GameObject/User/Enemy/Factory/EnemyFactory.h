@@ -1,20 +1,19 @@
 #pragma once
-#include <list>
 #include "../IEnemy.h"
 #include "../../../GameObjectManager.h"
 
 /// <summary>
-/// 敵のマネージャー
+/// 敵の生成を行うファクトリークラス
 /// </summary>
-class EnemyManager
+class EnemyFactory
 {
 private: // コンストラクタ等
 
 	// コピーコンストラクタ、代入演算子無効
-	EnemyManager() = default;
-	~EnemyManager() = default;
-	EnemyManager(const EnemyManager& variable) = default;
-	EnemyManager& operator=(const EnemyManager& variable);
+	EnemyFactory() = default;
+	~EnemyFactory() = default;
+	EnemyFactory(const EnemyFactory& variable) = default;
+	EnemyFactory& operator=(const EnemyFactory& variable);
 
 public: // メンバ関数
 
@@ -22,20 +21,10 @@ public: // メンバ関数
 	/// シングルトンインスタンスの取得
 	/// </summary>
 	/// <returns>インスタンス</returns>
-	static EnemyManager* GetInstance() {
-		static EnemyManager instance;
+	static EnemyFactory* GetInstance() {
+		static EnemyFactory instance;
 		return &instance;
 	}
-
-	/// <summary>
-	/// 初期化関数
-	/// </summary>
-	void Init();
-
-	/// <summary>
-	/// 更新関数
-	/// </summary>
-	void Update();
 
 	/// <summary>
 	/// 敵生成関数
@@ -43,20 +32,29 @@ public: // メンバ関数
 	/// <typeparam name="SelectEnemy">生成する敵の型(IEnemy継承クラスのみ)</typeparam>
 	/// <param name="name">生成する敵名</param>
 	/// <param name="tag">敵のタグ</param>
+	/// <param name="translate">生成座標</param>
 	/// <returns>生成された敵</returns>
 	template<IsIEnemy SelectEnemy>
-	inline IEnemy* CreataeEnemy(const std::string& name, BaseObject::Tag tag = BaseObject::TagEnemy) {
-		// インスタンス生成
+	inline IEnemy* CreataeEnemy(const std::string& name, BaseObject::Tag tag = BaseObject::TagEnemy, const Vector3& translate) {
+		// オブジェクトマネージャが取得できていない場合
+		if (objManager_ == nullptr) {
+			// ゲームオブジェクトマネージャーの取得
+			objManager_ = GameObjectManager::GetInstance();
+		}
+		
+		// 新しい敵のインスタンスを生成
 		SelectEnemy* newEnemy = objManager_->CreateInstance<SelectEnemy>(name, tag);
+		// 生成座標に移動
+		newEnemy->transform_.translate_ = translate;
+
+		// 生成インスタンスを返す
+		return newEnemy;
 	}
 
 private: // メンバ変数
 
 	// ゲームオブジェクトマネージャー
 	GameObjectManager* objManager_ = nullptr;
-
-	// 敵のリスト
-	std::list<IEnemy*> enemies_;
 
 };
 
