@@ -33,14 +33,14 @@ public: // メンバ関数
 	/// </summary>
 	/// <param name="levelName">レベル名</param>
 	/// <param name="enemyName">敵名</param>
-	void SaveParameter(const std::string& levelName, const std::string& enemyName) override;
+	void SetParameter(const std::string& levelName, const std::string& enemyName) override;
 
 	/// <summary>
 	/// パラメータのロード関数
 	/// </summary>
 	/// <param name="levelName">レベル名</param>
 	/// <param name="enemyName">敵名</param>
-	void LoadParameter(const std::string& levelName, const std::string& enemyName) override;
+	void ApplyParameter(const std::string& levelName, const std::string& enemyName) override;
 
 private: // メンバ関数
 

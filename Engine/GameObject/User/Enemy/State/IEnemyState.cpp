@@ -14,7 +14,9 @@ void IEnemyState::DisplayImGui()
 
 void IEnemyState::AddParameter(const std::string& levelName, const std::string& enemyName)
 {
-	enemy_->gameDataManager_->AddItem({ levelName, enemyName }, "StateName", name_);
+	// 基底クラスでは記述なし、以下はエラー回避用記述
+	levelName;
+	enemyName;
 }
 
 void IEnemyState::SetParameter(const std::string& levelName, const std::string& enemyName)

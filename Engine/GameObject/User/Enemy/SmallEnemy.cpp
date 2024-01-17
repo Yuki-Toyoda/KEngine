@@ -39,13 +39,13 @@ void SmallEnemy::Reset()
 {
 }
 
-void SmallEnemy::SaveParameter(const std::string& levelName, const std::string& enemyName)
+void SmallEnemy::SetParameter(const std::string& levelName, const std::string& enemyName)
 {
 	levelName;
 	enemyName;
 }
 
-void SmallEnemy::LoadParameter(const std::string& levelName, const std::string& enemyName)
+void SmallEnemy::ApplyParameter(const std::string& levelName, const std::string& enemyName)
 {
 	levelName;
 	enemyName;
