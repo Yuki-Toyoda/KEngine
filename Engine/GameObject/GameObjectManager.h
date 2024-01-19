@@ -163,10 +163,15 @@ public: // アクセッサ等
 	}
 
 	/// <summary>
+	/// 使用中カメラのセッター
+	/// </summary>
+	/// <param name="camera">設定するカメラ</param>
+	void SetUseCamera(Camera* camera) { mainCamera_ = camera; }
+	/// <summary>
 	/// 現在使用中のカメラを取得する関数
 	/// </summary>
 	/// <returns>現在使用中のカメラ</returns>
-	Camera* GetUseCamera();
+	Camera* GetUseCamera() { return mainCamera_; }
 
 	/// <summary>
 	/// 指定したインデックスをBaseObject型で受け取る関数
@@ -179,6 +184,9 @@ private: // メンバ変数
 
 	// オブジェクトリスト
 	std::list<std::unique_ptr<BaseObject>> objects_;
+
+	// 使用中のカメラ
+	Camera* mainCamera_ = nullptr;
 
 #ifdef _DEBUG // ImGui用デバッグ変数
 

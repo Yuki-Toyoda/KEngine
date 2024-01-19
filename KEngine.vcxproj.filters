@@ -212,6 +212,9 @@
     <ClCompile Include="Engine\GameObject\WorldTransform.cpp">
       <Filter>App\GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Primitive\2d\BillboardPlane.cpp">
+      <Filter>Engine\Primitive\2d</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -456,6 +459,9 @@
     </ClInclude>
     <ClInclude Include="Engine\Utility\Line\Line.h">
       <Filter>App\Utility\Line</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Primitive\2d\BillboardPlane.h">
+      <Filter>Engine\Primitive\2d</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

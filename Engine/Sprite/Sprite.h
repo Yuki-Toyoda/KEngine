@@ -59,17 +59,6 @@ public: // アクセッサ等
 	/// <returns>表示状態</returns>
 	bool GetIsActive() { return plane_->isActive_; }
 
-	/// <summary>
-	/// ブレンドモードセッター
-	/// </summary>
-	/// <param name="mode">設定するブレンドモード</param>
-	void SetBlendMode(BasePrimitive::kBlendMode mode) { plane_->blendMode_ = mode; }
-	/// <summary>
-	/// ブレンドモードゲッター
-	/// </summary>
-	/// <returns>ブレンドモード</returns>
-	BasePrimitive::kBlendMode GetBlendMode() { return plane_->blendMode_; }
-
 public: // パブリックなメンバ変数
 
 	// 大きさ
@@ -100,9 +89,6 @@ private: // メンバ関数
 
 	// ワールドトランスフォーム
 	WorldTransform transform_;
-
-	// ImGuiブレンドモード選択用
-	int imGuiSelectBlendMode_ = 0;
 
 };
 

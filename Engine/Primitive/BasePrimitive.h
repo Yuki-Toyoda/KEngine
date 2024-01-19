@@ -107,14 +107,6 @@ public: // パブリックなメンバ変数
 	// ここに情報が入っている場合全頂点の色にこの色を適用する
 	Vector4* commonColor = nullptr;
 
-	// ブレンドモード
-	// kBlendNormal ... ノーマルaブレンド
-	// kBlendAdd ... 加算合成
-	// kBlendSubtract ... 減算合成
-	// kBlendMultiply ... 乗算合成
-	// kBlendScreen ... スクリーン合成
-	kBlendMode blendMode_ = kBlendNormal;
-
 	// モデルタイプ
 	// kModelNormal ... 通常の3Dモデル描画
 	// kModelParticle ... パーティクル描画
@@ -126,8 +118,6 @@ public: // パブリックなメンバ変数
 	// 破壊トリガー
 	bool isDestroy_ = false;
 
-	// ビルボード状態にするか
-	bool isBillboard_ = false;
 	// ビルボード用行列格納用
 	Matrix4x4 billboardMat_;
 
