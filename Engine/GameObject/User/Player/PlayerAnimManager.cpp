@@ -38,7 +38,7 @@ void PlayerAnimManager::Init()
 
 	// デバッグ時はキューブ(簡易モデル)で描画
 	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Box", "Box.obj");
-
+	color_ = { 1.0f,0.0f,0.0f,1.f };
 #endif // _DEBUG
 
 #ifndef _DEBUG

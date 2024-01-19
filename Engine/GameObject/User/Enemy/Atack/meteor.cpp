@@ -31,7 +31,7 @@ void Meteor::OnCollisionEnter(Collider* collider)
 		rubble = gameObjectmanager_->CreateInstance<Rubble>("rubble",BaseObject::TagRubble );
 		rubble->transform_ = transform_;
 		rubble->transform_.scale_ = { 0.5f,0.5f,0.5f };
-		rubble->transform_.translate_.y = 1.5f;
+		rubble->transform_.translate_.y = 2.0f;
 		Destroy();
 		return;
 	}
