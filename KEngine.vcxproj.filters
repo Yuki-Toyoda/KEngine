@@ -152,7 +152,7 @@
     <ClCompile Include="Engine\GameObject\Samples\SampleSphere\SampleSphere.cpp">
       <Filter>App\GameObject\Samples\Sphere</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\GameObject\User\TestObject.cpp">
+    <ClCompile Include="Engine\GameObject\User\TestObject\TestObject.cpp">
       <Filter>App\GameObject\User\TestObject</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Utility\Observer\Observer.cpp">
@@ -448,7 +448,7 @@
     <ClInclude Include="Engine\GameObject\Samples\SampleSphere\SampleSphere.h">
       <Filter>App\GameObject\Samples\Sphere</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\GameObject\User\TestObject.h">
+    <ClInclude Include="Engine\GameObject\User\TestObject\TestObject.h">
       <Filter>App\GameObject\User\TestObject</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utility\Observer\Observer.h">

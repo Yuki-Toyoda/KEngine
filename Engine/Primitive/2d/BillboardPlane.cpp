@@ -36,9 +36,6 @@ void BillboardPlane::UpdateBillboardMat()
 	viewMat.m[3][1] = 0.0f;
 	viewMat.m[3][2] = 0.0f;
 
-	// 一度登録ワールド行列を削除
-	transform_->DeleteWorldMat();
-
 	// ワールド行列の計算
 	Matrix4x4 worldMatrix = Math::MakeAffineMatrix(
 		transform_->scale_,

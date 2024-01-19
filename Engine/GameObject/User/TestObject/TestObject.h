@@ -1,7 +1,7 @@
 #pragma once
-#include "../BaseObject.h"
-#include "../../Utility/Animation/AnimationManager.h"
-#include "../../Utility/Line/Line.h"
+#include "../../BaseObject.h"
+#include "../../../Utility/Animation/AnimationManager.h"
+#include "../../../Utility/Line/Line.h"
 
 /// <summary>
 /// テストオブジェクト

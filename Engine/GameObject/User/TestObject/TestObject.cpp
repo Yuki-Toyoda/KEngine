@@ -1,7 +1,7 @@
 #include "TestObject.h"
-#include "../../Resource/Texture/TextureManager.h"
-#include "../../Particle/ParticleEmitterManager.h"
-#include "../../Utility/Animation/AnimationManager.h"
+#include "../../../Resource/Texture/TextureManager.h"
+#include "../../../Particle/ParticleEmitterManager.h"
+#include "../../../Utility/Animation/AnimationManager.h"
 
 void TestObject::Init()
 {
