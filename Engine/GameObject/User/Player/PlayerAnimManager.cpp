@@ -34,17 +34,13 @@ void PlayerAnimManager::Update()
 
 void PlayerAnimManager::DisplayImGui()
 {
+	// 座標の表示
+	transform_.DisplayImGui();
 	// 表示状態の切り替え
 	ImGui::Checkbox("isActive", &isActive_);
 
 	// 各種パーツの情報表示
 	bodyTransform_.DisplayImGuiWithTreeNode("body");
-	wingTransform_L_.DisplayImGuiWithTreeNode("wing_L");
-	wingTransform_R_.DisplayImGuiWithTreeNode("wing_R");
-	armTransform_L_.DisplayImGuiWithTreeNode("arm_L");
-	armTransform_R_.DisplayImGuiWithTreeNode("arm_R");
-	footTransform_L_.DisplayImGuiWithTreeNode("foot_L");
-	footTransform_R_.DisplayImGuiWithTreeNode("foot_R");
 }
 
 void PlayerAnimManager::SetPlayer(Player* player)

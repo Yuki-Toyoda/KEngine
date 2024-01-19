@@ -11,7 +11,7 @@ SceneManager* SceneManager::GetInstance()
 void SceneManager::Init()
 {
 	// シーン初期化
-	currentScene_ = new GameScene(); // タイトルシーン生成
+	currentScene_ = new TitleScene(); // タイトルシーン生成
 #ifdef _DEBUG // デバッグ時のみサンプルシーンを生成
 	// シーン初期化
 	//currentScene_ = new SampleScene(); // タイトルシーン生成
