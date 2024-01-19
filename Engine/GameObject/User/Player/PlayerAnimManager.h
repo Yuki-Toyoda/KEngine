@@ -40,12 +40,6 @@ private: // メンバ変数
 
 	// パーツごとのトランスフォーム
 	WorldTransform bodyTransform_; // 身体
-	WorldTransform wingTransform_L_; // 左羽
-	WorldTransform wingTransform_R_; // 右羽
-	WorldTransform armTransform_L_; // 左腕
-	WorldTransform armTransform_R_; // 右腕
-	WorldTransform footTransform_L_; // 左腕
-	WorldTransform footTransform_R_; // 右腕
 
 };
 
