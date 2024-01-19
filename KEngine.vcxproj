@@ -43,6 +43,14 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IntDir>$(SolutionDir)..\Generated\Obj\$(ProjectName)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)..\Generated\OutPuts\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IntDir>$(SolutionDir)..\Generated\Obj\$(ProjectName)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)..\Generated\OutPuts\$(Configuration)\</OutDir>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
@@ -88,6 +96,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Primitive\2d\BillboardPlane.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\Atack\meteor.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\Boss.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\State\Sample\EnemySampleState.cpp" />
@@ -122,6 +131,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="Engine\GameObject\User\TestObject\TestObject.cpp" />
     <ClCompile Include="Engine\GameObject\User\camera\InGameCamera.cpp" />
     <ClCompile Include="Engine\GameObject\User\Chain\Chain.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\IEnemy.cpp" />
@@ -161,6 +171,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Utility\Animation\Animation.cpp" />
     <ClCompile Include="Engine\Utility\Animation\AnimationManager.cpp" />
     <ClCompile Include="Engine\Utility\Easing\Easing.cpp" />
+    <ClCompile Include="Engine\Utility\Observer\Observer.cpp" />
     <ClCompile Include="Engine\Utility\Timer\DeltaTimer.cpp" />
     <ClCompile Include="Externals\imgui\imgui.cpp" />
     <ClCompile Include="Externals\imgui\ImGuiManager.cpp" />
@@ -181,6 +192,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Primitive\2d\BillboardPlane.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\Atack\meteor.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\Boss.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\Factory\EnemyFactory.h" />
@@ -226,6 +238,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="Engine\GameObject\User\TestObject\TestObject.h" />
     <ClInclude Include="Engine\GameObject\User\camera\InGameCamera.h" />
     <ClInclude Include="Engine\GameObject\User\Chain\Chain.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\Obstacle\Obstacle.h" />
@@ -273,6 +286,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Utility\Easing\Easing.h" />
     <ClInclude Include="Engine\Utility\KLib.h" />
     <ClInclude Include="Engine\Utility\Lerp\Lerp.h" />
+    <ClInclude Include="Engine\Utility\Observer\Observer.h" />
     <ClInclude Include="Engine\Utility\Timer\DeltaTimer.h" />
     <ClInclude Include="Externals\imgui\imconfig.h" />
     <ClInclude Include="Externals\imgui\imgui.h" />

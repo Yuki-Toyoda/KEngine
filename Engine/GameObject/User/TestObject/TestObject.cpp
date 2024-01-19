@@ -1,7 +1,7 @@
 #include "TestObject.h"
-#include "../../Resource/Texture/TextureManager.h"
-#include "../../Particle/ParticleEmitterManager.h"
-#include "../../Utility/Animation/AnimationManager.h"
+#include "../../../Resource/Texture/TextureManager.h"
+#include "../../../Particle/ParticleEmitterManager.h"
+#include "../../../Utility/Animation/AnimationManager.h"
 
 void TestObject::Init()
 {
@@ -68,12 +68,12 @@ void TestObject::OnCollisionEnter(Collider* collider)
 	collider;
 	color_ = { 1.0f, 0.0f, 0.0f, 1.0f };
 
-	//ParticleEmitterManager::GetInstance()->CreateEmitter<IParticleEmitter, IParticle>("test", 100, 5, transform_.translate_, 15.0f, 0.1f, TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png"));
+	ParticleEmitterManager::GetInstance()->CreateEmitter<IParticleEmitter, IParticle>("test", 100, 5, transform_.translate_, 15.0f, 0.1f, TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png"));
 }
 
 void TestObject::OnCollisionExit(Collider* collider)
 {
 	collider;
 	color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
-	//ParticleEmitterManager::GetInstance()->CreateEmitter<IParticleEmitter, IParticle>("test", 100, 5, transform_.translate_, 15.0f, 0.1f, TextureManager::Load("./Engine/Resource/Samples/Box", "uvChecker.png"));
+	ParticleEmitterManager::GetInstance()->CreateEmitter<IParticleEmitter, IParticle>("test", 100, 5, transform_.translate_, 15.0f, 0.1f, TextureManager::Load("./Engine/Resource/Samples/Box", "uvChecker.png"));
 }

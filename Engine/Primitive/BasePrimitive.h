@@ -3,6 +3,7 @@
 #include "../Math/Math.h"
 #include "../Resource/Texture/Texture.h"
 #include "../Resource/Material/Material.h"
+#include "../Utility/Observer/Observer.h"
 #include <wrl.h>
 #include <d3d12.h>
 
@@ -97,7 +98,7 @@ public: // パブリックなメンバ変数
 	// 描画中心座標
 	WorldTransform* transform_;
 
-	// マテリアル
+	// マテリアルz
 	Material material_;
 	// 使用するテクスチャ
 	Texture* texture_ = nullptr;
@@ -105,14 +106,6 @@ public: // パブリックなメンバ変数
 	// 全頂点カラー
 	// ここに情報が入っている場合全頂点の色にこの色を適用する
 	Vector4* commonColor = nullptr;
-
-	// ブレンドモード
-	// kBlendNormal ... ノーマルaブレンド
-	// kBlendAdd ... 加算合成
-	// kBlendSubtract ... 減算合成
-	// kBlendMultiply ... 乗算合成
-	// kBlendScreen ... スクリーン合成
-	kBlendMode blendMode_ = kBlendNormal;
 
 	// モデルタイプ
 	// kModelNormal ... 通常の3Dモデル描画
@@ -125,8 +118,6 @@ public: // パブリックなメンバ変数
 	// 破壊トリガー
 	bool isDestroy_ = false;
 
-	// ビルボード状態にするか
-	bool isBillboard_ = false;
 	// ビルボード用行列格納用
 	Matrix4x4 billboardMat_;
 

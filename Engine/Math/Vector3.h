@@ -1,4 +1,5 @@
 #pragma once
+
 /// <summary>
 /// 3次元ベクトル構造体
 /// </summary>
@@ -57,5 +58,10 @@ struct Vector3 final {
 		this->y /= v.y;
 		this->z /= v.z;
 		return *this;
+	}
+
+	// 演算子オーバーロード(==)
+	bool operator==(const Vector3 v) const {
+		return { x == v.x && y == v.y && z == v.z };
 	}
 };

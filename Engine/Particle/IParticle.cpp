@@ -1,4 +1,5 @@
 #include "IParticle.h"
+#include "../GameObject/GameObjectManager.h"
 
 IParticle::~IParticle()
 {
@@ -26,13 +27,12 @@ void IParticle::PreInit(float aliveTime, const Vector3& position, const Vector2&
 	color_ = color;
 	
 	// 平面生成
-	plane_ = PrimitiveManager::GetInstance()->CreateInstance<Plane>(); // 生成
-	plane_->transform_ = &transform_;								   // トランスフォーム設定
-	plane_->blendMode_ = BasePrimitive::kBlendAdd;					   // ブレンドモード設定
-	plane_->commonColor = &color_;									   // 色設定
-	plane_->isBillboard_ = true;									   // ビルボード設定
-	plane_->texture_ = texture;										   // テクスチャ設定
-	plane_->primitiveType_ = BasePrimitive::kModelParticle;			   // 描画タイプ設定
+	plane_ = PrimitiveManager::GetInstance()->CreateInstance<BillboardPlane>(); // 生成
+	plane_->transform_ = &transform_;											// トランスフォーム設定
+	plane_->commonColor = &color_;												// 色設定
+	plane_->texture_ = texture;													// テクスチャ設定
+	plane_->primitiveType_ = BasePrimitive::kModelParticle;						// 描画タイプ設定
+	plane_->SetMainCamera(GameObjectManager::GetInstance()->GetUseCamera());	// 使用中カメラをセット
 	texSize_ = plane_->texture_->GetTextureSize();
 
 	// 固有初期化を呼び出す
@@ -82,6 +82,9 @@ void IParticle::PostUpdate()
 
 	// 回転設定
 	plane_->transform_->rotate_ = { 0.0f, 0.0f, rotate_ };
+
+	// ビルボード行列更新
+	plane_->UpdateBillboardMat();
 
 	// タイマー更新
 	aliveTimer_.Update();

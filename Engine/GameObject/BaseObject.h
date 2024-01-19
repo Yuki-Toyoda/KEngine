@@ -7,6 +7,7 @@
 #include "../Primitive/PrimitiveManager.h"
 #include "../Sprite/SpriteManager.h"
 #include "../Collider/CollisionManager.h"
+#include "../Utility/KLib.h"
 
 /// 最小構成
 /*

@@ -2,6 +2,7 @@
 #include <string>
 #include "../../Externals/imgui/ImGui.h"
 #include "../math/Math.h"
+#include "../Utility/Observer/Observer.h"
 
 /// <summary>
 /// ワールド座標計算クラス
@@ -62,6 +63,8 @@ public: // パブリックメンバ関数
 	void DisplayImGuiWithTreeNode(const std::string& id);
 
 private: // メンバ変数
+
+	KLib::Observer<Vector3> test;
 
 	// 親子関係
 	const WorldTransform* parent_;
@@ -126,4 +129,6 @@ public: // 演算子オーバーロード
 	// 演算子オーバーロード(/)
 	WorldTransform operator/(const WorldTransform wt) const;
 
+	// 演算子オーバーロード(=)
+	bool operator==(const WorldTransform wt) const;
 };

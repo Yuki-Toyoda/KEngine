@@ -86,9 +86,6 @@ void Sprite::DisplayImGui()
 		ImGui::DragFloat2("texSize", &texSize_.x, 1.0f);
 		ImGui::ColorPicker4("Color", &color_.x);
 
-		ImGui::SliderInt("BlendMode", &imGuiSelectBlendMode_, 0, 4);
-		plane_->blendMode_ = (BasePrimitive::kBlendMode)imGuiSelectBlendMode_;
-
 		if (ImGui::TreeNode("UVTransform")) {
 			plane_->material_.uvTransform_.DisplayImGui("uvTransform");
 			ImGui::TreePop();

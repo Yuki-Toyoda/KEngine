@@ -203,3 +203,11 @@ WorldTransform WorldTransform::operator/(const WorldTransform wt) const
 	// 結果を返す
 	return result;
 }
+
+bool WorldTransform::operator==(const WorldTransform wt) const
+{
+	// 結果を返す
+	return { this->scale_ == wt.scale_ && this->rotate_ == wt.rotate_ && this->translate_ == wt.translate_ };
+}
+
+

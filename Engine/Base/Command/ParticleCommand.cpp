@@ -74,14 +74,11 @@ void ParticleCommand::PostDraw(ID3D12GraphicsCommandList* cmdList)
 	assert(SUCCEEDED(result)); // 確定確認
 }
 
-void ParticleCommand::CreatePSO(ID3D12Device* device, DXC* dxc, ID3D12RootSignature* signature, std::wstring vs, std::wstring ps, UINT wire)
+void ParticleCommand::CreatePSO(ID3D12Device* device, DXC* dxc, ID3D12RootSignature* signature, std::wstring vs, std::wstring ps, int32_t blendType, UINT wire)
 {
-	// ブレンドモードの数だけPSOを生成する
-	for (int i = 0; i < 5; i++) {
-		std::unique_ptr<PSO> newPSO = std::make_unique<PSO>();		  // インスタンスを生成
-		newPSO->Init(device, signature, dxc, vs, ps, i, false, wire); // 初期化
+	std::unique_ptr<PSO> newPSO = std::make_unique<PSO>();		  // インスタンスを生成
+	newPSO->Init(device, signature, dxc, vs, ps, blendType, false, wire); // 初期化
 
-		// PSO配列に追加
-		pso_.push_back(std::move(newPSO));
-	}
+	// PSO配列に追加
+	pso_ = (std::move(newPSO));
 }

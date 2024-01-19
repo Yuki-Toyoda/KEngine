@@ -23,3 +23,4 @@
 #include "User/Enemy/Boss.h"
 #include "User/Rubble/Rubble.h"
 #include "User/Enemy/Atack/meteor.h"
+#include "User/TestObject/TestObject.h"

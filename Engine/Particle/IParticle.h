@@ -2,7 +2,7 @@
 #include "../GameObject/WorldTransform.h"
 #include "../Resource/Texture/TextureManager.h"
 #include "../Primitive/PrimitiveManager.h"
-#include "../Primitive/2d/Plane.h"
+#include "../Primitive/2d/BillboardPlane.h"
 #include "../Utility/KLib.h"
 
 /// <summary>
@@ -63,7 +63,7 @@ public: // その他関数群
 protected: // メンバ変数
 
 	// 平面
-	Plane* plane_ = nullptr;
+	BillboardPlane* plane_ = nullptr;
 
 	// パーティクル座標
 	WorldTransform transform_;

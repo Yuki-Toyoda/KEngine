@@ -133,6 +133,9 @@ void Camera::UseThisCamera() {
 
 	// このカメラを使用する
 	isUseThisCamera_ = true;
+
+	// 使用中のカメラをゲームオブジェクトマネージャに登録する
+	GameObjectManager::GetInstance()->SetUseCamera(this);
 }
 
 void Camera::SetVPDataTarget()
