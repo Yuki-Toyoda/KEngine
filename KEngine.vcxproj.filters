@@ -155,17 +155,35 @@
     <ClCompile Include="Engine\GameObject\User\TestObject.cpp">
       <Filter>App\GameObject\User\TestObject</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Audio\Audio.cpp" />
-    <ClCompile Include="Engine\Base\DirectXCommon.cpp" />
-    <ClCompile Include="Engine\Base\WinApp.cpp" />
-    <ClCompile Include="Engine\Debug\Debug.cpp" />
-    <ClCompile Include="Engine\GameObject\WorldTransform.cpp" />
-    <ClCompile Include="Engine\GlobalVariables\GlobalVariables.cpp" />
-    <ClCompile Include="Engine\Input\Input.cpp" />
-    <ClCompile Include="Engine\Math\Math.cpp" />
-    <ClCompile Include="Engine\Utility\Line\Line.cpp" />
     <ClCompile Include="Engine\Utility\Observer\Observer.cpp">
       <Filter>App\Utility\Observer</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Audio\Audio.cpp">
+      <Filter>Engine\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Debug\Debug.cpp">
+      <Filter>Engine\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Base\DirectXCommon.cpp">
+      <Filter>Engine\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GlobalVariables\GlobalVariables.cpp">
+      <Filter>Engine\GlobalVariables</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Input\Input.cpp">
+      <Filter>Engine\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Utility\Line\Line.cpp">
+      <Filter>App\Utility\Line</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Math\Math.cpp">
+      <Filter>Engine\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Base\WinApp.cpp">
+      <Filter>Engine\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\WorldTransform.cpp">
+      <Filter>App\GameObject</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Audio\Audio.cpp">
       <Filter>Engine\Audio</Filter>
@@ -430,9 +448,11 @@
     <ClInclude Include="Engine\GameObject\User\TestObject.h">
       <Filter>App\GameObject\User\TestObject</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Utility\Line\Line.h" />
     <ClInclude Include="Engine\Utility\Observer\Observer.h">
       <Filter>App\Utility\Observer</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Utility\Line\Line.h">
+      <Filter>App\Utility\Line</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utility\Line\Line.h">
       <Filter>App\Utility\Line</Filter>
