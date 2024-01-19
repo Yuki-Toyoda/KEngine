@@ -1,7 +1,8 @@
 #pragma once
 #include <string>
 #include "../../../../Utility/KLib.h"
-
+#include "../Atack/meteor.h"
+#include "../../../GameObjectManager.h"
 // クラスの前方宣言
 class IEnemy;
 
@@ -57,6 +58,7 @@ public: // メンバ関数
 	/// <param name="enemyName">敵名</param>
 	virtual void ApplyParameter(const std::string& levelName, const std::string& enemyName);
 
+	bool IsEnd() { return isEnd_; }
 public: // パブリックなメンバ変数
 	
 	// 行動名
@@ -66,6 +68,7 @@ protected: // 継承先メンバ変数
 
 	// 敵の本体
 	IEnemy* enemy_ = nullptr;
-
+	bool isEnd_;
+	GameObjectManager* gameObjectmanager_=nullptr;
 };
 

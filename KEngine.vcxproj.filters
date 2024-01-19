@@ -94,6 +94,10 @@
     <ClCompile Include="Engine\GameObject\User\Enemy\IEnemy.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\State\IEnemyState.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\State\Sample\EnemySampleState.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\Boss.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\State\SingleAtackState.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\Atack\meteor.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Rubble\Rubble.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h" />
@@ -205,6 +209,10 @@
     <ClInclude Include="Engine\GameObject\User\Enemy\State\IEnemyState.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\State\Sample\EnemySampleState.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyStateList.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\Boss.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\State\SingleAtackState.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\Atack\meteor.h" />
+    <ClInclude Include="Engine\GameObject\User\Rubble\Rubble.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">

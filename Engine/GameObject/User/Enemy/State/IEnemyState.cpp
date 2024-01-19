@@ -5,6 +5,7 @@ void IEnemyState::PreInit(IEnemy* enemy)
 {
 	// 敵の実体を取得
 	enemy_ = enemy;
+	gameObjectmanager_ = GameObjectManager::GetInstance();
 }
 
 void IEnemyState::DisplayImGui()

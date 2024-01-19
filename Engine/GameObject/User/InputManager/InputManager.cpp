@@ -56,7 +56,7 @@ Vector3 InputManager::Move()
     
     // スティックの入力によって移動
     velocity = { (float)joyState_.Gamepad.sThumbLX / SHRT_MAX,
-       (float)joyState_.Gamepad.sThumbLY / SHRT_MAX,0.0f };
+       0.0f,(float)joyState_.Gamepad.sThumbLY / SHRT_MAX, };
 
     // キー入力によって移動する
     if (Input::GetInstance()->PushKey(DIK_LEFT)) {
@@ -66,14 +66,12 @@ Vector3 InputManager::Move()
         velocity.x = 1.0f;
     }
     if (Input::GetInstance()->PushKey(DIK_UP)) {
-        velocity.y = 1.0f;
+        velocity.z = 1.0f;
     }
     if (Input::GetInstance()->PushKey(DIK_DOWN)) {
-        velocity.y = -1.0f;
+        velocity.z = -1.0f;
     }
    
-    // Z軸方向のベクトルを削除
-    velocity.z = 0.0f;
     // 移動ベクトルを削除する
     return velocity;
 }

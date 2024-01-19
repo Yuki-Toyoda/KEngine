@@ -20,3 +20,6 @@
 #include "User/Ground/Ground.h"
 #include "User/Enemy/IEnemy.h"
 #include "User/Enemy/SmallEnemy.h"
+#include "User/Enemy/Boss.h"
+#include "User/Rubble/Rubble.h"
+#include "User/Enemy/Atack/meteor.h"

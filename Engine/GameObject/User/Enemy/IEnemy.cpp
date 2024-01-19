@@ -16,7 +16,7 @@ void IEnemy::Init()
 	SuccessorInit();
 
 	// ステートをセット
-	ChangeState(std::make_unique<EnemySampleState>());
+	//ChangeState(std::make_unique<EnemySampleState>());
 
 }
 

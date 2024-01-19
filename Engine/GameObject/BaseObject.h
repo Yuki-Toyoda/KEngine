@@ -55,6 +55,8 @@ public: // サブクラス
 		TagFloor,  // 床
 		TagChain,//鎖
 		TagObstacle,//障害物
+		TagRubble,//がれき
+		TagMeteor,//隕石
 	};
 
 public: // メンバ関数
