@@ -50,7 +50,7 @@ private: // メンバ関数
 
 private:
 	//体力
-	int hitPoint_;
+	float hitPoint_;
 
 
 };

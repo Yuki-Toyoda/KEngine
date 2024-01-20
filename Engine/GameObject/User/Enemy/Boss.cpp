@@ -6,15 +6,21 @@ void Boss::SuccessorInit()
 	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Box", "Box.obj");
 	color_ = { 0.6f,0.6f,0.0f,1.0f };
 	ChangeState(std::make_unique<SingleAtackState>());
+	hitPoint_ = 100.0f;
 }
 
 void Boss::SuccessorUpdate()
 {
+	//プレイヤーが攻撃していたらダメージをくらう
+	if (player_->GetIsAtack()) {
+		hitPoint_ -= player_->GetAtackPower();
+	}
 }
 
 void Boss::DisplayImGui()
 {
 	IEnemy::DisplayImGui();
+	ImGui::DragFloat("HitPoint", &hitPoint_);
 	if (ImGui::Button("changeStateAtack")) {
 		ChangeState(std::make_unique<SingleAtackState>());
 		return;

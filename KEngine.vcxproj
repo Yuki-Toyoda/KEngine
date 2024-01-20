@@ -97,6 +97,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Engine\GameObject\User\Enemy\State\MultiAtackState.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Player\State\AtackState.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Player\State\BlowAwayState.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Player\State\IPlayerState.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Player\State\RootState.cpp" />
     <ClCompile Include="Engine\Primitive\2d\BillboardPlane.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\Atack\meteor.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\Boss.cpp" />
@@ -193,6 +197,11 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\GameObject\User\Enemy\State\MultiAtackState.h" />
+    <ClInclude Include="Engine\GameObject\User\Player\State\AtackState.h" />
+    <ClInclude Include="Engine\GameObject\User\Player\State\BlowAwayState.h" />
+    <ClInclude Include="Engine\GameObject\User\Player\State\IPlayerState.h" />
+    <ClInclude Include="Engine\GameObject\User\Player\State\PlayerStateList.h" />
+    <ClInclude Include="Engine\GameObject\User\Player\State\RootState.h" />
     <ClInclude Include="Engine\Primitive\2d\BillboardPlane.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\Atack\meteor.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\Boss.h" />
