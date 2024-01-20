@@ -98,7 +98,7 @@ public: // パブリックなメンバ変数
 	// 描画中心座標
 	WorldTransform* transform_;
 
-	// マテリアルz
+	// マテリアル
 	Material material_;
 	// 使用するテクスチャ
 	Texture* texture_ = nullptr;
@@ -120,9 +120,6 @@ public: // パブリックなメンバ変数
 
 	// ビルボード用行列格納用
 	Matrix4x4 billboardMat_;
-
-	// 描画順
-	int32_t layerNo_ = 0;
 
 	// UIとして使用するか
 	bool isUI_ = false;

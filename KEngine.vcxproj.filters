@@ -302,6 +302,7 @@
     <ClCompile Include="Engine\GameObject\User\Enemy\Atack\meteor.cpp" />
     <ClCompile Include="Engine\GameObject\User\Rubble\Rubble.cpp" />
     <ClCompile Include="Engine\GameObject\User\TitleManager\TitleManager.cpp" />
+    <ClCompile Include="Engine\Scene\FadeManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -651,6 +652,7 @@
     <ClInclude Include="Engine\GameObject\User\Enemy\Atack\meteor.h" />
     <ClInclude Include="Engine\GameObject\User\Rubble\Rubble.h" />
     <ClInclude Include="Engine\GameObject\User\TitleManager\TitleManager.h" />
+    <ClInclude Include="Engine\Scene\FadeManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">

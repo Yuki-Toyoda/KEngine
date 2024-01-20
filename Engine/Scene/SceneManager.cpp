@@ -10,6 +10,10 @@ SceneManager* SceneManager::GetInstance()
 
 void SceneManager::Init()
 {
+	// フェード演出マネージャ初期化
+	fadeManager_ = FadeManager::GetInstance();
+	fadeManager_->Init();
+
 	// シーン初期化
 	currentScene_ = new TitleScene(); // タイトルシーン生成
 #ifdef _DEBUG // デバッグ時のみサンプルシーンを生成
@@ -49,4 +53,15 @@ void SceneManager::Update()
 
 	// 現在のシーンの更新
 	currentScene_->Update();
+
+	// フェード演出マネージャ更新
+	fadeManager_->Update();
+
+#ifdef _DEBUG // デバッグ時のみImGuiの表示
+
+	// ImGuiの表示関数
+	fadeManager_->DisplayImGui();
+
+#endif // _DEBUG
+
 }

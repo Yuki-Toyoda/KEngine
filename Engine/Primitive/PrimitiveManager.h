@@ -3,6 +3,7 @@
 #include <memory>
 #include "BasePrimitive.h"
 #include "3d/Mesh.h"
+#include "2d/Plane.h"
 
 // クラスの前方宣言
 class CommandManager;
@@ -65,6 +66,12 @@ public: // メンバ関数
 		return returnPrimitive;
 	}
 
+	/// <summary>
+	/// (ユーザー呼び出し禁止)フェード演出用形状生成関数
+	/// </summary>
+	/// <returns>フェード演出用形状</returns>
+	Plane* CreateFadePlaneInstance();
+
 private: // メンバ変数
 
 	// コマンドマネージャー
@@ -73,5 +80,7 @@ private: // メンバ変数
 	// 描画形状リスト
 	std::list<std::unique_ptr<BasePrimitive>> primitives_;
 
+	// フェードエフェクト用
+	std::unique_ptr<Plane> fadePlane_;
 };
 
