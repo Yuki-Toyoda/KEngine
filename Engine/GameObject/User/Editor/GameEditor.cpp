@@ -61,45 +61,45 @@ void GameEditor::ImGuiUpdate()
 
 	ImGui::Begin("Editor");
 
-	if (ImGui::Button("Save")) {
-		// 名前
-		HierarchicalName names = { dataManager_->kLevelNames[editNowLevel_],dataManager_->kObjectNames[0] };
-
-#pragma region 保存処理
-		// 最大数の設定
-		dataManager_->SetValue(names, dataManager_->kEnemyItems[4], kMaxEnemyCount_);
-		Vector3 testValue = {};
-		// 数初期化
-		indexCount_ = 0;
-		// 敵
-		for (IEnemy* enemy : enemies_) {
-			// 保存処理
-			SaveObject(enemy, 0);
-			// カウント
-			indexCount_++;
-		}
-
-		indexCount_ = 0;
-		// 最大数の設定
-		names.kSection = dataManager_->kObjectNames[1];
-		dataManager_->SetValue(names, dataManager_->kObstacleItems[2], kMaxObstacleCount_);
-
-		// 障害物
-		for (Obstacle* obstacle : obstacles_) {
-			// 保存処理
-			SaveObject(obstacle, 1);
-			// カウント
-			indexCount_++;
-
-		}
-#pragma endregion
-		// セーブ
-		dataManager_->SaveData(dataManager_->kLevelNames[editNowLevel_]);
-		// メッセージボックス表示
-		std::string message = std::format("{}.json saved.", "StageData");
-		MessageBoxA(nullptr, message.c_str(), "Editors", 0);
-
-	}
+//	if (ImGui::Button("Save")) {
+//		// 名前
+//		HierarchicalName names = { dataManager_->kLevelNames[editNowLevel_],dataManager_->kObjectNames[0] };
+//
+//#pragma region 保存処理
+//		// 最大数の設定
+//		dataManager_->SetValue(names, dataManager_->kEnemyItems[4], kMaxEnemyCount_);
+//		Vector3 testValue = {};
+//		// 数初期化
+//		indexCount_ = 0;
+//		// 敵
+//		for (IEnemy* enemy : enemies_) {
+//			// 保存処理
+//			SaveObject(enemy, 0);
+//			// カウント
+//			indexCount_++;
+//		}
+//
+//		indexCount_ = 0;
+//		// 最大数の設定
+//		names.kSection = dataManager_->kObjectNames[1];
+//		dataManager_->SetValue(names, dataManager_->kObstacleItems[2], kMaxObstacleCount_);
+//
+//		// 障害物
+//		for (Obstacle* obstacle : obstacles_) {
+//			// 保存処理
+//			SaveObject(obstacle, 1);
+//			// カウント
+//			indexCount_++;
+//
+//		}
+//#pragma endregion
+//		// セーブ
+//		dataManager_->SaveData(dataManager_->kLevelNames[editNowLevel_]);
+//		// メッセージボックス表示
+//		std::string message = std::format("{}.json saved.", "StageData");
+//		MessageBoxA(nullptr, message.c_str(), "Editors", 0);
+//
+//	}
 
 	if (ImGui::Button("Reload")) {
 		DataReaload();
@@ -172,9 +172,13 @@ void GameEditor::ImGuiUpdate()
 			static bool gravity = static_cast<bool>(isGravity_);
 			
 			if (ImGui::Checkbox("Gravity", &gravity)) {
+				if (!gravity && isGravity_) {
+					DataReaload();
+				}
+
 				isGravity_ = static_cast<int>(gravity);
 				dataManager_->SetValue({ "MeteorParam","A" }, "IsGravity", isGravity_);
-				dataManager_->SaveData("MeteorParam");
+				dataManager_->SaveData("MeteorParam");				
 			}
 
 
@@ -189,6 +193,10 @@ void GameEditor::ImGuiUpdate()
 			ImGui::EndChild();
 
 			ImGui::InputInt("MeteorMaxCount", &kMaxMeteor_);
+			const int nowMax = 20;
+			if (kMaxMeteor_ > nowMax) {
+				kMaxMeteor_ = nowMax;
+			}
 			// 敵の追加
 			if (ImGui::Button("Add")) {
 				Meteor* meteor;

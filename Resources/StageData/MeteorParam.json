@@ -2,7 +2,6 @@
     "MeteorParam": {
         "A": {
             "IsGravity": 0
-        },
-        "SingleAttack": null
+        }
     }
 }
