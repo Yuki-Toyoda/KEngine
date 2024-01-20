@@ -60,6 +60,8 @@ private:
 		std::string keyPath = dataManager_->kEnemyItems[0];
 		// 座標設定
 		dataManager_->AddItem({ groupPath,sectionPath }, keyPath, target->transform_.GetWorldPos());
+		Vector3 setPos = target->transform_.GetWorldPos();
+		setPos.y = 0;
 		dataManager_->SetValue({ groupPath,sectionPath }, keyPath, target->transform_.GetWorldPos());
 	}
 
