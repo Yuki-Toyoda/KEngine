@@ -7,12 +7,12 @@ void GameEditor::Init()
 	dataManager_ = GameDataManager::GetInstance();
 	gameObjectManager_ = GameObjectManager::GetInstance();
 
-	camera_ = nullptr;
-	camera_ = gameObjectManager_->CreateInstance<InGameCamera>("Incamera", BaseObject::TagCamera);
-	camera_->UseThisCamera();
-	camera_->fov_ = 0.85f;
+	CreateCamera();
 
 	ParameterInitialize();
+
+	dataManager_->CreateGroup({ "MeteorParam","SingleAttack" });
+	dataManager_->SaveData("MeteorParam");
 
 }
 
@@ -26,50 +26,32 @@ void GameEditor::ParameterInitialize()
 {
 	// 構造の名前取得
 	HierarchicalName names = { dataManager_->kLevelNames[editNowLevel_], dataManager_->kObjectNames[0] };
-#pragma region 敵の初期化
-	// 最大値設定
-	dataManager_->AddItem(names, dataManager_->kEnemyItems[4], kMaxEnemyCount_);
-	kMaxEnemyCount_ = dataManager_->GetIntValue({ dataManager_->kLevelNames[editNowLevel_], dataManager_->kObjectNames[0] }, dataManager_->kEnemyItems[4]);
-	// 敵の数だけ
-	for (int i = 0; i < kMaxEnemyCount_; i++) {
-		SmallEnemy* enemy;
-		// オブジェクトマネージャーに追加
-		enemy = gameObjectManager_->CreateInstance<SmallEnemy>("Enemy", BaseObject::TagEnemy);
-		// パスの設定
-		std::string sectionPath = dataManager_->kObjectNames[0] + std::to_string(i);
-		std::string keyPath = dataManager_->kEnemyItems[0];
-		// 座標設定
-		Vector3 newPos = {};
-		dataManager_->AddItem({ names.kGroup,sectionPath }, keyPath, newPos);
-		newPos = dataManager_->GetVector3Value({ names.kGroup,sectionPath }, keyPath);
-		enemy->transform_.translate_ = newPos;
-		// リスト追加
-		enemies_.push_back(enemy);
-	}
-#pragma endregion
 
-#pragma region 障害物の初期化
-	names = { dataManager_->kLevelNames[editNowLevel_], dataManager_->kObjectNames[1] };
-	// 最大値設定
-	dataManager_->AddItem(names, dataManager_->kObstacleItems[2], kMaxObstacleCount_);
-	kMaxObstacleCount_ = dataManager_->GetIntValue(names, dataManager_->kObstacleItems[2]);
-	// 障害物の数だけ
-	for (int i = 0; i < kMaxObstacleCount_; i++) {
-		Obstacle* obstacle;
-		// オブジェクトマネージャーに追加
-		obstacle = gameObjectManager_->CreateInstance<Obstacle>("Obstacle", BaseObject::TagObstacle);
-		// パスの設定
-		std::string sectionPath = dataManager_->kObjectNames[1] + std::to_string(i);
-		std::string keyPath = dataManager_->kObstacleItems[0];
-		// 座標設定
-		Vector3 newPos = {};
-		dataManager_->AddItem({ names.kGroup,sectionPath }, keyPath, newPos);
-		newPos = dataManager_->GetVector3Value({ names.kGroup,sectionPath }, keyPath);
-		obstacle->transform_.translate_ = newPos;
-		// リスト追加
-		obstacles_.push_back(obstacle);
+	names = { "Boss","A" };
+	dataManager_->AddItem(names, dataManager_->kObstacleItems[2], kMaxMeteor_);
+	dataManager_->AddItem({"MeteorParam","A"}, "IsGravity", isGravity_);
+	kMaxMeteor_ = dataManager_->GetIntValue(names, "MaxCount");
+	isGravity_ = dataManager_->GetIntValue({ "MeteorParam","A" }, "IsGravity");
+
+	for (int i = 0; i < kMaxMeteor_; i++) {
+		names.kSection = "Meteor";
+		Meteor* meteor;
+		meteor = gameObjectManager_->CreateInstance<Meteor>("Meteor", BaseObject::TagMeteor);
+
+		// パス生成
+		std::string section = names.kSection + std::to_string(i);
+		std::string key = "Position";
+
+		// ここから情報を受け取る部分
+		Vector3 newPosition = {};
+		// 要素がなかった場合の処理
+		dataManager_->AddItem({ names.kGroup,section }, key, newPosition);
+		newPosition = dataManager_->GetVector3Value({ names.kGroup,section }, key);
+		meteor->transform_.translate_ = newPosition;
+		// プッシュ
+		meteors_.push_back(meteor);
+
 	}
-#pragma endregion
 
 }
 
@@ -89,14 +71,10 @@ void GameEditor::ImGuiUpdate()
 		Vector3 testValue = {};
 		// 数初期化
 		indexCount_ = 0;
-		// 敵の保存処理
+		// 敵
 		for (IEnemy* enemy : enemies_) {
-			// セクションパス
-			std::string sectionPath = dataManager_->kObjectNames[0] + std::to_string(indexCount_);
-			// アイテムパス
-			std::string keyPath = dataManager_->kEnemyItems[0];
-			// 座標設定
-			dataManager_->SetValue({ names.kGroup,sectionPath }, keyPath, enemy->transform_.GetWorldPos());
+			// 保存処理
+			SaveObject(enemy, 0);
 			// カウント
 			indexCount_++;
 		}
@@ -106,14 +84,10 @@ void GameEditor::ImGuiUpdate()
 		names.kSection = dataManager_->kObjectNames[1];
 		dataManager_->SetValue(names, dataManager_->kObstacleItems[2], kMaxObstacleCount_);
 
-		// 障害物の保存処理
+		// 障害物
 		for (Obstacle* obstacle : obstacles_) {
-			// セクションパス
-			std::string sectionPath = dataManager_->kObjectNames[1] + std::to_string(indexCount_);
-			// アイテムパス
-			std::string keyPath = dataManager_->kObstacleItems[0];
-			// 座標設定
-			dataManager_->SetValue({ names.kGroup,sectionPath }, keyPath, obstacle->transform_.GetWorldPos());
+			// 保存処理
+			SaveObject(obstacle, 1);
 			// カウント
 			indexCount_++;
 
@@ -131,59 +105,98 @@ void GameEditor::ImGuiUpdate()
 		DataReaload();
 	}
 
-	ImGui::Text("\n");
+	if (ImGui::Button("BossSave")) {
+		// 名前
+		HierarchicalName names = { "Boss","A" };
 
-	if (ImGui::CollapsingHeader("StageSelect")) {
+		// 最大数の設定
+		dataManager_->SetValue(names, dataManager_->kEnemyItems[4], kMaxMeteor_);
+		Vector3 testValue = {};
+		// 数初期化
+		indexCount_ = 0;
+		for (Meteor* meteor : meteors_) {
+			SaveObject(meteor, 2);
+			ImGui::Text("\n");
+			indexCount_++;
+		}
 
-		if (ImGui::Button("Easy")) {
-			editNowLevel_ = 0;
-			// 保存処理
-			dataManager_->SaveData(dataManager_->kLevelNames[editNowLevel_]);
-			// リロード
-			DataReaload();
-		}
-		if (ImGui::Button("Normal")) {
-			editNowLevel_ = 1;
-			// 保存処理
-			dataManager_->SaveData(dataManager_->kLevelNames[editNowLevel_]);
-			// リロード
-			DataReaload();
-		}
-		if (ImGui::Button("Hard")) {
-			editNowLevel_ = 2;
-			// 保存処理
-			dataManager_->SaveData(dataManager_->kLevelNames[editNowLevel_]);
-			// リロード
-			DataReaload();
-		}
+		dataManager_->SaveData(names.kGroup);
 	}
 
 	ImGui::Text("\n");
 
+	//if (ImGui::CollapsingHeader("StageSelect")) {
+
+	//	ImGui::Bullet();
+	//	if (ImGui::SmallButton("Easy")) {
+	//		editNowLevel_ = 0;
+	//		// 保存処理
+	//		dataManager_->SaveData(dataManager_->kLevelNames[editNowLevel_]);
+	//		// リロード
+	//		DataReaload();
+	//	}
+
+	//	ImGui::Bullet();
+	//	if (ImGui::SmallButton("Normal")) {
+	//		editNowLevel_ = 1;
+	//		// 保存処理
+	//		dataManager_->SaveData(dataManager_->kLevelNames[editNowLevel_]);
+	//		// リロード
+	//		DataReaload();
+	//	}
+
+	//	ImGui::Bullet();
+	//	if (ImGui::SmallButton("Hard")) {
+	//		editNowLevel_ = 2;
+	//		// 保存処理
+	//		dataManager_->SaveData(dataManager_->kLevelNames[editNowLevel_]);
+	//		// リロード
+	//		DataReaload();
+	//	}
+
+	//	ImGui::Bullet();
+	//	if (ImGui::SmallButton("Boss")) {
+	//		// 保存処理
+	//		dataManager_->SaveData("Boss");
+	//		// リロード
+	//		DataReaload();
+	//	}
+	//}
+
+	//ImGui::Text("\n");
+
 	if (ImGui::BeginTabBar("EditObject")) {
-		// 敵のタブ
-		if (ImGui::BeginTabItem("Enemy")) {
+		// 追加分のタブ
+		if (ImGui::BeginTabItem("Meteor")) {
+
+			static bool gravity = static_cast<bool>(isGravity_);
+			
+			if (ImGui::Checkbox("Gravity", &gravity)) {
+				isGravity_ = static_cast<int>(gravity);
+				dataManager_->SetValue({ "MeteorParam","A" }, "IsGravity", isGravity_);
+				dataManager_->SaveData("MeteorParam");
+			}
+
+
 			// タブの内容
-			// 座標の変更
 			ImGui::BeginChild(ImGui::GetID((void*)0), ImVec2(400, 300), ImGuiWindowFlags_NoTitleBar);
 
-			float paramAbs = 30.0f;
-			for (IEnemy* enemy : enemies_) {
-				std::string fullTag = enemy->GetObjectName();
-				ImGui::DragFloat3(fullTag.c_str(), &enemy->transform_.translate_.x, 0.1f, -paramAbs, paramAbs);
+			for (Meteor* meteor : meteors_) {
+				std::string fullTag = meteor->GetObjectName();
+				ImGui::DragFloat3(fullTag.c_str(), &meteor->transform_.translate_.x, 0.1f, -30.0f, 30.0f);
 				ImGui::Text("\n");
 			}
 			ImGui::EndChild();
 
-			// 表示の最大数
-			ImGui::InputInt("EnemyMaxNumber", &kMaxEnemyCount_);
-
+			ImGui::InputInt("MeteorMaxCount", &kMaxMeteor_);
 			// 敵の追加
 			if (ImGui::Button("Add")) {
-				SmallEnemy* enemy;
-				enemy = gameObjectManager_->CreateInstance<SmallEnemy>("Enemy", BaseObject::TagEnemy);
-				enemies_.push_back(enemy);
+				Meteor* meteor;
+				meteor = gameObjectManager_->CreateInstance<Meteor>("Meteor", BaseObject::TagMeteor);
+				meteors_.push_back(meteor);
+				kMaxMeteor_++;
 			}
+
 
 			ImGui::EndTabItem();
 		}
@@ -214,60 +227,12 @@ void GameEditor::ImGuiUpdate()
 			ImGui::EndTabItem();
 		}
 
-		// 追加分のタブ
-		if (ImGui::BeginTabItem("Tab 2")) {
-			// タブの内容
-			ImGui::Text("This is tab 2!");
-			ImGui::EndTabItem();
-		}
 		// タブバーを終了
 		ImGui::EndTabBar();
 	}
 
 	ImGui::End();
 
-}
-
-void GameEditor::GetMouseCursor()
-{
-	POINT mousePos;
-	// マウスの座標取得
-	GetCursorPos(&mousePos);
-	// スクリーンサイズに合わせる
-	HWND hwnd = WinApp::GetInstance()->GetHwnd();
-	// マウスの座標をスクリーンに合わせる
-	ScreenToClient(hwnd, &mousePos);
-
-	Vector3 nowPoint_ = { (float)mousePos.x,(float)mousePos.y,0 };
-	mouseV2Position_ = { (float)mousePos.x,(float)mousePos.y };
-
-	// ビューポート行列
-	Matrix4x4 matViewport = Math::MakeViewportMatrix(0, 0, WinApp::kWindowWidth, WinApp::kwindowHeight, 0, 1);
-	// ビュープロジェクションビューポート合成行列
-	Matrix4x4 matVPV = camera_->GetViewProjectionMatrix() * matViewport;
-	
-	// 合成行列の逆行列
-	Matrix4x4 matInverseVPV = Math::Inverse(matVPV);
-
-	// スクリーン座標
-	Vector3 posNear = Vector3(nowPoint_.x, nowPoint_.y, 0);
-	Vector3 posFar = Vector3(nowPoint_.x, nowPoint_.y, 1);
-
-	// スクリーン座標系からワールド座標系へ
-	//posNear = Math::Transform(posNear, matInverseVPV);
-	//posFar = Math::Transform(posFar, matInverseVPV);
-
-	// マウスレイの方向
-	Vector3 mouseDirection = posFar - posNear;
-	mouseDirection = Math::Normalize(mouseDirection);
-	// カメラから照準オブジェクトの距離
-	float distance = 50.0f;
-	mouseDirection.x *= distance;
-	mouseDirection.y *= distance;
-	mouseDirection.z = 0;
-
-	mouseV3Position_ = mouseDirection;
-	//return mouseDirection;
 }
 
 void GameEditor::DataReaload()
@@ -278,12 +243,30 @@ void GameEditor::DataReaload()
 	// オブジェクト内容初期化
 	gameObjectManager_->Init();
 	// カメラ設定
-	camera_ = gameObjectManager_->CreateInstance<InGameCamera>("Incamera", BaseObject::TagCamera);
-	camera_->UseThisCamera();
-	camera_->fov_ = 0.85f;
+	CreateCamera();
 	// リストクリア
 	enemies_.clear();
 	obstacles_.clear();
+	meteors_.clear();
 	// Jsonの情報による初期化
 	ParameterInitialize();
+}
+
+void GameEditor::CreateCamera()
+{
+
+	//ground_ = gameObjectManager_->CreateInstance<Ground>("Ground", BaseObject::TagFloor);
+	//ground_->transform_.scale_ = { 55.81f,1.0f,32.5f };
+	
+	camera_ = nullptr;
+	camera_ = gameObjectManager_->CreateInstance<InGameCamera>("Incamera", BaseObject::TagCamera);
+	camera_->UseThisCamera();
+	camera_->fov_ = 0.85f;
+	//camera_->transform_.translate_ = { 0.0f,47.0f,-85.0f };
+	camera_->transform_.translate_ = { 0,100.0f,0 };
+	camera_->transform_.rotate_ = { 1.57f,0.0f,0.0f };
+
+	//Ground* ground;
+	//ground = gameObjectManager_->CreateInstance<Ground>("Ground", BaseObject::TagFloor);
+	//ground->transform_.scale_ = { 55.81f,1.0f,32.5f };
 }

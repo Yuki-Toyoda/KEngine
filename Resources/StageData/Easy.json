@@ -1,7 +1,7 @@
 {
     "Easy": {
         "Enemy": {
-            "MaxCount": 4
+            "MaxCount": 0
         },
         "Enemy0": {
             "Position": [
@@ -184,7 +184,7 @@
             ]
         },
         "Obstacle": {
-            "MaxCount": 2
+            "MaxCount": 0
         },
         "Obstacle0": {
             "Position": [

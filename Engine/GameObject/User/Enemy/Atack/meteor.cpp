@@ -1,4 +1,5 @@
 #include "meteor.h"
+#include "../../Editor/GameDataManager.h"
 
 void Meteor::Init()
 {
@@ -15,8 +16,10 @@ void Meteor::Init()
 
 void Meteor::Update()
 {
-
-	transform_.translate_ += velocity_*moveSpeed_;
+	int isGrav = GameDataManager::GetInstance()->GetIntValue({ "MeteorParam","A" }, "IsGravity");
+	if (isGrav) {
+		transform_.translate_ += velocity_ * moveSpeed_;
+	}
 }
 
 void Meteor::DisplayImGui()

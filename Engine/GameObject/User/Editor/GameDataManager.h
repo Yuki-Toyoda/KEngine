@@ -13,23 +13,23 @@
 
 struct HierarchicalName
 {
-	std::string kGroup;
-	std::string kSection;
+    std::string kGroup;
+    std::string kSection;
 };
 
 class GameDataManager
 {
 public:
-	static GameDataManager* GetInstance() {
-		static GameDataManager instance;
-		return &instance;
-	}
+    static GameDataManager* GetInstance() {
+        static GameDataManager instance;
+        return &instance;
+    }
 
 private:
-	GameDataManager() = default;
-	~GameDataManager() = default;
-	GameDataManager(const GameDataManager& variable) = default;
-	GameDataManager& operator=(const GameDataManager& variable);
+    GameDataManager() = default;
+    ~GameDataManager() = default;
+    GameDataManager(const GameDataManager& variable) = default;
+    GameDataManager& operator=(const GameDataManager& variable);
 
 public:
     /// <summary>
@@ -73,16 +73,16 @@ public: // 呼び出し時に使用する配列
     // ステージごとの名前
     std::array<std::string, 4> kLevelNames = { "Easy","Normal","Hard","Expert" };
     // 内部に保存しているオブジェクトの名前
-    std::array<std::string, 2> kObjectNames = { "Enemy","Obstacle" };
+    std::array<std::string, 3> kObjectNames = { "Enemy","Obstacle","Meteor" };
 
     // 保存するアイテム名
-    std::array<std::string, kEnemyMaxValue> kEnemyItems = { "Position","Type","Speed","RespownTime", "MaxCount"};
+    std::array<std::string, kEnemyMaxValue> kEnemyItems = { "Position","Type","Speed","RespownTime", "MaxCount" };
     // 障害物用
-    std::array<std::string, kObstacleMaxValue> kObstacleItems = { "Position","Size", "MaxCount"};
+    std::array<std::string, kObstacleMaxValue> kObstacleItems = { "Position","Size", "MaxCount" };
 
 private:
     /// 項目
-    using Item = std::variant<int32_t, float, Vector2, Vector3,std::string>;
+    using Item = std::variant<int32_t, float, Vector2, Vector3, std::string>;
     using Section = std::map<std::string, Item>;
     using Group = std::map<std::string, Section>;
 
