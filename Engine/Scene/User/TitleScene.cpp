@@ -5,7 +5,7 @@
 void TitleScene::Init()
 {
 	// カメラの生成
-	Camera* c =gameObjectManager_->CreateInstance<Camera>("MainCamera", BaseObject::TagCamera);
+	Camera* c = gameObjectManager_->CreateInstance<Camera>("MainCamera", BaseObject::TagCamera);
 	// このカメラを使用
 	c->UseThisCamera();
 	// 視野角変更
@@ -13,6 +13,9 @@ void TitleScene::Init()
 	// カメラ座標を動かす
 	c->transform_.translate_ = { 0.0f, 0.0f, -5.0f };
 	
+	// 天球生成
+	gameObjectManager_->CreateInstance<SkyDome>("SkyDome", BaseObject::TagNone);
+
 	// プレイヤーモデルの生成
 	PlayerAnimManager* pm = gameObjectManager_->CreateInstance<PlayerAnimManager>("PlayerModel", BaseObject::TagNone);
 	// 座標を動かす

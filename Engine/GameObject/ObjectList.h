@@ -4,6 +4,7 @@
 ==================================*/
 
 #include "Core/Camera.h"
+#include "Samples/SampleSkyDome/SkyDome.h"
 #include "User/Player/Player.h"
 #include "User/Player/Weapon.h"
 #include "User/Chain/Chain.h"
