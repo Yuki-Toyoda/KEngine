@@ -137,16 +137,24 @@ public: // メンバ変数
 template<typename T>
 inline void Animation::AddAnimationKeys(const std::string keyName, T* value)
 {
+	// キー名一致格納用
+	bool result = false;
+
 	// アニメーションキー配列を新しく追加する処理
 	for (auto& keys : animationKeys_) {
 		// 格納しているキー名と同一のキーがあった場合にはこのキーの追加は行わない
-		std::visit([keyName](auto& key) {
+		std::visit([keyName, &result](auto& key) {
 			// 同一キー名を発見した場合
 			if (key.keysName_ == keyName) {
 				// 追加を行わず処理を抜ける
-				return;
+				result = true;
 			}
 		}, keys);
+
+		// 同名キーを見つけた場合処理を抜ける
+		if (result) {
+			return;
+		}
 	}
 
 	// 同名キー配列が見つからなかった場合、キーの追加処理を行う
@@ -157,16 +165,24 @@ inline void Animation::AddAnimationKeys(const std::string keyName, T* value)
 template<typename T>
 inline void Animation::AddAnimationKeys(const std::string keyName)
 {
+	// キー名一致格納用
+	bool result = false;
+
 	// アニメーションキー配列を新しく追加する処理
 	for (auto& keys : animationKeys_) {
 		// 格納しているキー名と同一のキーがあった場合にはこのキーの追加は行わない
-		std::visit([keyName](auto& key) {
+		std::visit([keyName, &result](auto& key) {
 			// 同一キー名を発見した場合
 			if (key.keysName_ == keyName) {
 				// 追加を行わず処理を抜ける
-				return;
+				result = true;
 			}
-			}, keys);
+		}, keys);
+
+		// 同名キーを見つけた場合処理を抜ける
+		if (result) {
+			return;
+		}
 	}
 
 	// 同名キー配列が見つからなかった場合、キーの追加処理を行う

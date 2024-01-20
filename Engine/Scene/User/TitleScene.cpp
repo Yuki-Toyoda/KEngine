@@ -11,17 +11,26 @@ void TitleScene::Init()
 	// 視野角変更
 	c->fov_ = 0.6f;
 	// カメラ座標を動かす
-	c->transform_.translate_ = { 0.0f, 0.0f, -5.0f };
+	c->transform_.translate_ = { 0.0f, 1.0f, -4.5f };
 	
 	// 天球生成
 	gameObjectManager_->CreateInstance<SkyDome>("SkyDome", BaseObject::TagNone);
 
 	// プレイヤーモデルの生成
-	PlayerAnimManager* pm = gameObjectManager_->CreateInstance<PlayerAnimManager>("PlayerModel", BaseObject::TagNone);
+	PlayerAnimManager* pam = gameObjectManager_->CreateInstance<PlayerAnimManager>("PlayerModel", BaseObject::TagNone);
 	// 座標を動かす
-	pm->transform_.translate_ = { -1.35f, -0.35f, 0.0f };
+	pam->transform_.translate_ = { -1.35f, 1.0f, 0.0f };
 	// 回転させる
-	pm->transform_.rotate_ = { 0.0f, -0.3f, 0.0f };
+	pam->transform_.rotate_ = { 0.0f, -0.3f, 0.0f };
+
+	// タイトル画面マネージャの生成
+	TitleManager* titleManager = gameObjectManager_->CreateInstance<TitleManager>("TitleManager", BaseObject::TagNone);
+	// カメラをセット
+	titleManager->SetCamera(c);
+	// プレイヤーをセット
+	titleManager->SetPlayerAnimManager(pam);
+	// アニメーションを生成
+	titleManager->CreateAnimation();
 }
 
 void TitleScene::Update()

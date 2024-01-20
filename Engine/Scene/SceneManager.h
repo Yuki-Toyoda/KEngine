@@ -32,11 +32,6 @@ public: // メンバ関数
 	/// </summary>
 	void Update();
 
-	/// <summary>
-	/// 描画関数
-	/// </summary>
-	void Draw();
-
 public: // アクセッサ等
 
 	/// <summary>
