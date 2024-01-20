@@ -42,7 +42,12 @@ void Player::Update()
 void Player::DisplayImGui()
 {
 	transform_.DisplayImGui();
+	//減速率
 	ImGui::DragFloat("deceleration rate", &decelerationRate, 0.01f);
+	//拡大率
+	ImGui::DragFloat("scale rate", &scaleForce_, 0.01f);
+	//攻撃倍率
+	ImGui::DragFloat("atack rate", &atackForce_, 0.01f);
 }
 
 void Player::OnCollisionEnter(Collider* collider)
