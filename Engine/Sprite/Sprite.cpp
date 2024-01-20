@@ -43,6 +43,28 @@ void Sprite::Init(const std::string& name, const Vector2 position, const Vector2
 	plane_->transform_ = &transform_;
 }
 
+void Sprite::FadeInit(const Vector2 position, const Vector2& size, Texture* texture)
+{
+	// トランスフォーム初期化
+	transform_.Init();
+
+	// 形状生成
+	plane_ = PrimitiveManager::GetInstance()->CreateFadePlaneInstance();
+	// 形状
+	plane_->isUI_ = true;
+	// メンバ変数を元に設定
+	plane_->name_ = "Fade";	    // 名称設定
+	translate_ = position;			// 初期座標
+	scale_ = size;					// 大きさ
+	plane_->texture_ = texture; // テクスチャ
+	texSize_ = plane_->texture_->GetTextureSize();
+	plane_->commonColor = &color_;
+	plane_->primitiveType_ = BasePrimitive::kModelSprite;
+
+	// 形状にワールドトランスフォームを渡す
+	plane_->transform_ = &transform_;
+}
+
 void Sprite::Update()
 {
 	// 頂点座標を求める

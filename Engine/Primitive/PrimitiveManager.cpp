@@ -47,4 +47,21 @@ void PrimitiveManager::Draw()
 	for (std::unique_ptr<BasePrimitive>& primitive : primitives_) {
 		primitive->Draw(commandManager_);
 	}	
+	
+	// フェード演出用形状描画
+	fadePlane_->Draw(commandManager_);
+}
+
+Plane* PrimitiveManager::CreateFadePlaneInstance()
+{
+	// 形状のインスタンス
+	std::unique_ptr<Plane> newPrimitive = std::make_unique<Plane>(commandManager_);
+	newPrimitive->ResizeVertices();
+	newPrimitive->ResizeIndexes();
+
+	// 生成した形状をインスタンスにセット
+	fadePlane_ = std::move(newPrimitive);
+
+	// 生成した形状を返す
+	return fadePlane_.get();
 }

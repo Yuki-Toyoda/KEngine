@@ -10,8 +10,12 @@ SceneManager* SceneManager::GetInstance()
 
 void SceneManager::Init()
 {
+	// フェード演出マネージャ初期化
+	fadeManager_ = FadeManager::GetInstance();
+	fadeManager_->Init();
+
 	// シーン初期化
-	currentScene_ = new GameScene(); // タイトルシーン生成
+	currentScene_ = new TitleScene(); // タイトルシーン生成
 #ifdef _DEBUG // デバッグ時のみサンプルシーンを生成
 	// シーン初期化
 	//currentScene_ = new SampleScene(); // タイトルシーン生成
@@ -34,6 +38,7 @@ void SceneManager::Update()
 	// 現在のシーンから次のシーンへ遷移するよう指示されたら
 	if (nextScene_ != nullptr) {
 		GameObjectManager::GetInstance()->Init();
+		AnimationManager::GetInstance()->Init();
 		// 現在のシーンがあるなら
 		if (currentScene_) {
 			// 現在のシーンを削除
@@ -48,4 +53,15 @@ void SceneManager::Update()
 
 	// 現在のシーンの更新
 	currentScene_->Update();
+
+	// フェード演出マネージャ更新
+	fadeManager_->Update();
+
+#ifdef _DEBUG // デバッグ時のみImGuiの表示
+
+	// ImGuiの表示関数
+	fadeManager_->DisplayImGui();
+
+#endif // _DEBUG
+
 }

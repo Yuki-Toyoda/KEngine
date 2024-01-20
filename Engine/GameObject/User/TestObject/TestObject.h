@@ -8,6 +8,8 @@
 /// </summary>
 class TestObject : public BaseObject
 {
+public:
+
 	/// <summary>
 	/// 初期化関数
 	/// </summary>

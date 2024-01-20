@@ -23,6 +23,12 @@ public: // メンバ関数
 	/// </summary>
 	void DisplayImGui() override;
 
+	/// <summary>
+	/// テクスチャ変更関数
+	/// </summary>
+	/// <param name="tex">変更後のテクスチャ</param>
+	void ChageTexture(Texture* tex);
+
 private: // メンバ変数
 };
 

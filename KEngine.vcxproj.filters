@@ -301,6 +301,8 @@
     <ClCompile Include="Engine\GameObject\User\Enemy\State\SingleAtackState.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\Atack\meteor.cpp" />
     <ClCompile Include="Engine\GameObject\User\Rubble\Rubble.cpp" />
+    <ClCompile Include="Engine\GameObject\User\TitleManager\TitleManager.cpp" />
+    <ClCompile Include="Engine\Scene\FadeManager.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\State\MultiAtackState.cpp" />
     <ClCompile Include="Engine\GameObject\User\Player\State\RootState.cpp" />
     <ClCompile Include="Engine\GameObject\User\Player\State\IPlayerState.cpp" />
@@ -654,6 +656,8 @@
     <ClInclude Include="Engine\GameObject\User\Enemy\State\SingleAtackState.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\Atack\meteor.h" />
     <ClInclude Include="Engine\GameObject\User\Rubble\Rubble.h" />
+    <ClInclude Include="Engine\GameObject\User\TitleManager\TitleManager.h" />
+    <ClInclude Include="Engine\Scene\FadeManager.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\State\MultiAtackState.h" />
     <ClInclude Include="Engine\GameObject\User\Player\State\RootState.h" />
     <ClInclude Include="Engine\GameObject\User\Player\State\IPlayerState.h" />

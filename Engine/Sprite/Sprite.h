@@ -27,6 +27,14 @@ public: // メンバ関数
 	void Init(const std::string& name, const Vector2 position, const Vector2& size, Texture* texture);
 
 	/// <summary>
+	/// (ユーザー呼び出し禁止)フェード演出用スプライト初期化関数
+	/// </summary>
+	/// <param name="position">初期座標</param>
+	/// <param name="size">大きさ</param>
+	/// <param name="texture">テクスチャ</param>
+	void FadeInit(const Vector2 position, const Vector2& size, Texture* texture);
+
+	/// <summary>
 	/// (ユーザー呼び出し禁止) 更新関数
 	/// </summary>
 	void Update();

@@ -189,11 +189,13 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\GameObject\User\Editor\GameEditor.cpp" />
     <ClCompile Include="Engine\GameObject\User\Editor\GameDataManager.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\State\IEnemyState.cpp" />
+    <ClCompile Include="Engine\Scene\FadeManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\GameObject\Samples\SampleSphere\SampleSphere.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="Engine\GameObject\User\TitleManager\TitleManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\GameObject\User\Enemy\State\MultiAtackState.h" />
@@ -315,6 +317,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\GameObject\User\Editor\GameDataManager.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\IEnemy.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\State\IEnemyState.h" />
+    <ClInclude Include="Engine\GameObject\User\TitleManager\TitleManager.h" />
+    <ClInclude Include="Engine\Scene\FadeManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Object3D.hlsli">

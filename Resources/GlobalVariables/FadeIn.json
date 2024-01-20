@@ -1,0 +1,50 @@
+{
+    "FadeIn": {
+        "Alpha : KeyCount": 2,
+        "Alpha key : 0": 1.0,
+        "Alpha key : 0 : EasingParameter": 0,
+        "Alpha key : 0 : PlayFrame": 0,
+        "Alpha key : 1": 0.0,
+        "Alpha key : 1 : EasingParameter": 3,
+        "Alpha key : 1 : PlayFrame": 60,
+        "Color_B : KeyCount": 2,
+        "Color_B key : 0": 0.0,
+        "Color_B key : 0 : EasingParameter": 0,
+        "Color_B key : 0 : PlayFrame": 0,
+        "Color_B key : 1": 0.0,
+        "Color_B key : 1 : EasingParameter": 0,
+        "Color_B key : 1 : PlayFrame": 60,
+        "Color_G : KeyCount": 2,
+        "Color_G key : 0": 0.0,
+        "Color_G key : 0 : EasingParameter": 0,
+        "Color_G key : 0 : PlayFrame": 0,
+        "Color_G key : 1": 0.0,
+        "Color_G key : 1 : EasingParameter": 0,
+        "Color_G key : 1 : PlayFrame": 60,
+        "Color_R : KeyCount": 2,
+        "Color_R key : 0": 0.0,
+        "Color_R key : 0 : EasingParameter": 0,
+        "Color_R key : 0 : PlayFrame": 0,
+        "Color_R key : 1": 0.0,
+        "Color_R key : 1 : EasingParameter": 0,
+        "Color_R key : 1 : PlayFrame": 60,
+        "Rotate : KeyCount": 0,
+        "Rotate key : 0": 0.0,
+        "Rotate key : 0 : EasingParameter": 0,
+        "Rotate key : 0 : PlayFrame": 0,
+        "Scale : KeyCount": 0,
+        "Scale key : 0": [
+            0.0,
+            0.0
+        ],
+        "Scale key : 0 : EasingParameter": 0,
+        "Scale key : 0 : PlayFrame": 0,
+        "Translate : KeyCount": 0,
+        "Translate key : 0": [
+            0.0,
+            0.0
+        ],
+        "Translate key : 0 : EasingParameter": 0,
+        "Translate key : 0 : PlayFrame": 0
+    }
+}
