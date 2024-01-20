@@ -6,6 +6,14 @@ void GameScene::Init(){
 
 	// 入力マネージャの初期化
 	InputManager::Init();
+	
+	camera_ = nullptr;
+	camera_ = gameObjectManager_->CreateInstance<InGameCamera>("Incamera", BaseObject::TagCamera);
+	camera_->UseThisCamera();
+	camera_->fov_ = 0.85f;
+	camera_->transform_.translate_ = { 0.0f,47.0f,-85.0f };
+	camera_->transform_.rotate_ = { 0.55f,0.0f,0.0f };
+	
 	// スカイドーム生成
 	SkyDome* skyDome = nullptr;
 	skyDome = gameObjectManager_->CreateInstance<SkyDome>("SkyDome", BaseObject::TagNone);
@@ -29,12 +37,7 @@ void GameScene::Init(){
 	Boss* boss;
 	boss = gameObjectManager_->CreateInstance<Boss>("Boss", BaseObject::TagEnemy);
 	boss->SetPlayer(player_);
-	camera_ = nullptr;
-	camera_ = gameObjectManager_->CreateInstance<InGameCamera>("Incamera", BaseObject::TagCamera);
-	camera_->UseThisCamera();
-	camera_->fov_ = 0.85f;
-	camera_->transform_.translate_ = { 0.0f,47.0f,-85.0f };
-	camera_->transform_.rotate_ = { 0.55f,0.0f,0.0f };
+	
 	// UIマネージャの生成
 	gameObjectManager_->CreateInstance<InGameUIManager>("UIManager", BaseObject::TagNone);
 
