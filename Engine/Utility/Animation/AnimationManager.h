@@ -63,10 +63,20 @@ public: // メンバ関数
 	/// <returns>アニメーション本体</returns>
 	Animation* CreateAnimation(const std::string& name, const std::string& parameterName);
 
+	/// <summary>
+	/// (ユーザー呼び出し禁止)フェード用アニメーション作成関数
+	/// </summary>
+	/// <param name="parameterName">アニメーション再生時に読み込むパラメータ名</param>
+	/// <returns>フェード用アニメーション</returns>
+	Animation* CreateFadeAnimation(const std::string& parameterName);
+
 private: // メンバ変数
 
 	// アニメーション配列
 	std::list<std::unique_ptr<Animation>> animations_;
+
+	// フェード演出用アニメーション
+	std::unique_ptr<Animation> fadeAnimation_;
 
 	// パラメーター格納用
 	std::vector<Animation> parameters_;

@@ -2,6 +2,7 @@
 #include "../../../Resource/Texture/TextureManager.h"
 #include "../../Core/Camera.h"
 #include "../Player/PlayerAnimManager.h"
+#include "../../../Scene/FadeManager.h"
 
 void TitleManager::Init()
 {
@@ -10,6 +11,9 @@ void TitleManager::Init()
 	// コントローラー入力取得
 	input_->GetJoystickState(0, joyState_); // 現在フレームの入力取得
 	preJoyState_ = joyState_; // 前フレームの入力取得
+
+	// フェード演出マネージャ取得
+	fadeManager_ = FadeManager::GetInstance();
 
 	// 柵用ワールドトランスフォームの初期化
 	fenceTransform_.Init();
@@ -64,7 +68,7 @@ void TitleManager::Update()
 
 	// アニメーションが開始アニメーション
 	if (anim_->GetReadingParameterName() == "Title_Start") {
-		// 開始アニメーションが終了、またはAボタンを押したら
+		// アニメーションが終了、またはAボタンを押したら
 		if (anim_->isEnd_ || 
 			(joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A &&
 				!(preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A))) {
@@ -72,6 +76,49 @@ void TitleManager::Update()
 			anim_->isLoop_ = true;
 			// アニメーションを待機状態に変更
 			anim_->ChangeParameter("Title_Idle", true);
+		}
+	}
+	// アニメーションが待機状態の時
+	if (anim_->GetReadingParameterName() == "Title_Idle") {
+		// Aボタンを押したら
+		if ((joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A &&
+				!(preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A))) {
+			// ループを無効
+			anim_->isLoop_ = false;
+			// アニメーションをゲーム開始状態に変更
+			anim_->ChangeParameter("Title_GameStart", true);
+		}
+	}
+	// アニメーションがゲーム開始状態の時
+	if (anim_->GetReadingParameterName() == "Title_GameStart") {
+		if (anim_->GetAnimationProgress() >= 0.2f) {
+			// Aボタンを押したら
+			if ((joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A &&
+				!(preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A))) {
+				// フェード演出に一回も入っていなければフェードアウトさせる
+				if (!isFade_) {
+					// フェードアウトさせる
+					fadeManager_->ChangeParameter("FadeOut");
+					fadeManager_->Play();
+					// トリガーをtrue
+					isFade_ = true;
+				}
+			}
+		}
+		if (anim_->GetAnimationProgress() >= 0.6f) {
+			// フェード演出に一回も入っていなければフェードアウトさせる
+			if (!isFade_) {
+				// フェードアウトさせる
+				fadeManager_->ChangeParameter("FadeOut");
+				fadeManager_->Play();
+				// トリガーをtrue
+				isFade_ = true;
+			}
+		}
+
+		// フェードマネージャが演出中ではない、かつフェード演出トリガーがtrueなら
+		if (!fadeManager_->GetIsStaging() && isFade_) {
+			isSceneChange_ = true;
 		}
 	}
 }
@@ -147,6 +194,8 @@ void TitleManager::CreateAnimation()
 	anim_->AddAnimationKeys<Vector2>("Button_Translate", &sprites_[1]->translate_);
 	anim_->AddAnimationKeys<float>("Button_Alpha", &sprites_[1]->color_.w);
 
+	// パラメータ変更
+	anim_->ChangeParameter("Title_Start", true);
 	// アニメーション再生
 	anim_->Play();
 }

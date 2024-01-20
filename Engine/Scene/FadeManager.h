@@ -76,7 +76,13 @@ public: // アクセッサ等
 	/// フェード演出中かどうかのゲッター
 	/// </summary>
 	/// <returns></returns>
-	bool GetIsStaging() { anim_->GetIsPlay(); }
+	bool GetIsStaging() { return anim_->GetIsPlay(); }
+
+	/// <summary>
+	/// フェード演出の進捗ゲッター
+	/// </summary>
+	/// <returns>演出進捗(0 ~ 1)</returns>
+	float GetProgress() { return anim_->GetAnimationProgress(); }
 
 private: // メンバ変数
 

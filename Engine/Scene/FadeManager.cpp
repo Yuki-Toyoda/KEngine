@@ -30,7 +30,7 @@ void FadeManager::Init()
 	CreateParameter("FadeIn");
 
 	// アニメーション生成
-	anim_ = animManager_->CreateAnimation("FadeAnim", "FadeIn");
+	anim_ = animManager_->CreateFadeAnimation("FadeIn");
 	// キーの追加
 	anim_->AddAnimationKeys<Vector2>("Scale", &sprite_->scale_);
 	anim_->AddAnimationKeys<float>("Rotate", &sprite_->rotate_);

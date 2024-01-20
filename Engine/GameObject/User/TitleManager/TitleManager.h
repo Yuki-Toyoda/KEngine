@@ -4,6 +4,7 @@
 #include "../../../Utility/Animation/AnimationManager.h"
 
 // クラスの前方宣言
+class FadeManager;
 class Camera;
 class PlayerAnimManager;
 
@@ -54,6 +55,12 @@ public: // アクセッサ等
 	/// <param name="pam">マネージャ本体</param>
 	void SetPlayerAnimManager(PlayerAnimManager* pam) { pam_ = pam; }
 
+	/// <summary>
+	/// シーン遷移トリガーの状態ゲッター
+	/// </summary>
+	/// <returns>シーン遷移を行うか</returns>
+	bool GetIsSceneChange() { return isSceneChange_; }
+
 private: // メンバ変数
 
 	// 入力検知用
@@ -67,6 +74,9 @@ private: // メンバ変数
 	// アニメーション
 	Animation* anim_ = nullptr;
 
+	// フェード演出マネージャ
+	FadeManager* fadeManager_ = nullptr;
+
 	// 演出用カメラ
 	Camera* camera_ = nullptr;
 	// プレイヤーモデル
@@ -77,5 +87,10 @@ private: // メンバ変数
 
 	// スプライトの透明度
 	float spriteAlpha_ = 1.0f;
+
+	// フェード演出トリガー
+	bool isFade_ = false;
+	// シーン遷移トリガー
+	bool isSceneChange_ = false;
 };
 

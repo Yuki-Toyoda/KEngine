@@ -166,14 +166,28 @@
         ],
         "Camera_Translate key : 2 : EasingParameter": 3,
         "Camera_Translate key : 2 : PlayFrame": 120,
-        "Player_Rotate : KeyCount": 0,
+        "Player_Rotate : KeyCount": 2,
         "Player_Rotate key : 0": [
             0.0,
-            0.0,
+            -0.30000001192092896,
             0.0
         ],
         "Player_Rotate key : 0 : EasingParameter": 0,
         "Player_Rotate key : 0 : PlayFrame": 0,
+        "Player_Rotate key : 1": [
+            0.0,
+            -0.30000001192092896,
+            0.0
+        ],
+        "Player_Rotate key : 1 : EasingParameter": 0,
+        "Player_Rotate key : 1 : PlayFrame": 60,
+        "Player_Rotate key : 2": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Player_Rotate key : 2 : EasingParameter": 0,
+        "Player_Rotate key : 2 : PlayFrame": 0,
         "Player_Translate : KeyCount": 2,
         "Player_Translate key : 0": [
             -1.350000023841858,

@@ -24,21 +24,23 @@ void TitleScene::Init()
 	pam->transform_.rotate_ = { 0.0f, -0.3f, 0.0f };
 
 	// タイトル画面マネージャの生成
-	TitleManager* titleManager = gameObjectManager_->CreateInstance<TitleManager>("TitleManager", BaseObject::TagNone);
+	tm_ = gameObjectManager_->CreateInstance<TitleManager>("TitleManager", BaseObject::TagNone);
 	// カメラをセット
-	titleManager->SetCamera(c);
+	tm_->SetCamera(c);
 	// プレイヤーをセット
-	titleManager->SetPlayerAnimManager(pam);
+	tm_->SetPlayerAnimManager(pam);
 	// アニメーションを生成
-	titleManager->CreateAnimation();
+	tm_->CreateAnimation();
 }
 
 void TitleScene::Update()
 {
-	if (input_->TriggerKey(DIK_RSHIFT)) {
+	// デバッグ遷移
+	if (tm_->GetIsSceneChange()) {
 		BaseScene* nextScene = new GameScene();
 		SceneManager::GetInstance()->SetNextScene(nextScene);
 	}
+
 	// デバッグ時のみ特定のキーでシーン遷移
 #ifdef _DEBUG
 	// デバッグ遷移
