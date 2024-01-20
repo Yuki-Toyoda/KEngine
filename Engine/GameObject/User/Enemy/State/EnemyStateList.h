@@ -3,3 +3,4 @@
 #include "IEnemyState.h"
 #include "Sample/EnemySampleState.h"
 #include "SingleAtackState.h"
+#include "MultiAtackState.h"

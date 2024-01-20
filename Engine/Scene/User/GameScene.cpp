@@ -25,9 +25,10 @@ void GameScene::Init(){
 	Ground* ground;
 	ground = gameObjectManager_->CreateInstance<Ground>("Ground", BaseObject::TagFloor);
 	ground->transform_.scale_ = { 55.81f,1.0f,32.5f };
-	
+	player_->SetGround(ground);
 	Boss* boss;
 	boss = gameObjectManager_->CreateInstance<Boss>("Boss", BaseObject::TagEnemy);
+	boss->SetPlayer(player_);
 	camera_ = nullptr;
 	camera_ = gameObjectManager_->CreateInstance<InGameCamera>("Incamera", BaseObject::TagCamera);
 	camera_->UseThisCamera();

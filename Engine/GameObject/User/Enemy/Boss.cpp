@@ -14,8 +14,13 @@ void Boss::SuccessorUpdate()
 
 void Boss::DisplayImGui()
 {
+	IEnemy::DisplayImGui();
 	if (ImGui::Button("changeStateAtack")) {
 		ChangeState(std::make_unique<SingleAtackState>());
+		return;
+	}
+	if (ImGui::Button("changeStateMultiAtack")) {
+		ChangeState(std::make_unique<MultiAtackState>());
 		return;
 	}
 }

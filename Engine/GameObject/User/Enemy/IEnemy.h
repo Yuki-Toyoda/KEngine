@@ -3,7 +3,7 @@
 #include "../Player/Weapon.h"
 #include "State/EnemyStateList.h"
 #include "../Editor/GameDataManager.h"
-
+#include"../Player/Player.h"
 /// <summary>
 /// 敵の基底クラス
 /// </summary>
@@ -84,6 +84,8 @@ public: // アクセッサ等
 	/// <param name="velocity">移動ベクトル</param>
 	void Setveclocity(Vector3 velocity) { hitvelocity_ = velocity; }
 
+	void SetPlayer(Player* player) { player_ = player; }
+	Player* GetPlayer() { return player_; }
 public: // パブリックなメンバ変数
 
 	// 外部出力マネージャ
@@ -108,6 +110,8 @@ protected: // 継承先メンバ変数
 
 	// 行動状態クラス
 	std::unique_ptr<IEnemyState> state_;
+	
+	Player* player_;
 
 };
 

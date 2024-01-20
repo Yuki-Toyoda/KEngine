@@ -48,16 +48,16 @@ void InputManager::Update()
 //    return false;
 //}
 
-Vector3 InputManager::Move()
+Vector3 InputManager::Move(Vector3 velocity)
 {
     // 移動方向ベクトル初期化
-    Vector3 velocity = {0.0f,0.0f,0.0f};
+  //  Vector3 velocity = {0.0f,0.0f,0.0f};
    // XINPUT_STATE joyState;
     
     // スティックの入力によって移動
-    velocity = { (float)joyState_.Gamepad.sThumbLX / SHRT_MAX,
-       0.0f,(float)joyState_.Gamepad.sThumbLY / SHRT_MAX, };
-
+    velocity +=  Vector3( (float)joyState_.Gamepad.sThumbLX / SHRT_MAX,
+       0.0f,(float)joyState_.Gamepad.sThumbLY / SHRT_MAX );
+    
     // キー入力によって移動する
     if (Input::GetInstance()->PushKey(DIK_LEFT)) {
         velocity.x = -1.0f;
@@ -71,7 +71,17 @@ Vector3 InputManager::Move()
     if (Input::GetInstance()->PushKey(DIK_DOWN)) {
         velocity.z = -1.0f;
     }
-   
+    if (velocity.x >= 10.0f) {
+        velocity.x = 10.0f;
+   }
+    else if (velocity.x <=- 10.0f) {
+       velocity.x = -10.0f;
+   }if (velocity.z >= 10.0f) {
+       velocity.z = 10.0f;
+   }
+   else if (velocity.z <= -10.0f) {
+       velocity.z = -10.0f;
+   }
     // 移動ベクトルを削除する
     return velocity;
 }

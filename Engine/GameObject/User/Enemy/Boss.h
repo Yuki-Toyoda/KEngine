@@ -1,5 +1,6 @@
 #pragma once
 #include"IEnemy.h"
+
 class Boss:public IEnemy
 {
 public: // メンバ関数
@@ -38,6 +39,7 @@ public: // メンバ関数
 	/// <param name="enemyName">敵名</param>
 	void ApplyParameter(const std::string& levelName, const std::string& enemyName) override;
 
+	
 private: // メンバ関数
 
 	/// <summary>
@@ -49,5 +51,7 @@ private: // メンバ関数
 private:
 	//体力
 	int hitPoint_;
+
+
 };
 

@@ -18,7 +18,7 @@ void EnemySampleState::Init()
 void EnemySampleState::Update()
 {
 	// 敵を線形補間に酔って移動させる
-	enemy_->transform_.translate_ = KLib::Lerp(start_, end_, KLib::EaseInOutQuad(lerpTimer_.GetProgress()));
+	//enemy_->transform_.translate_ = KLib::Lerp(start_, end_, KLib::EaseInOutQuad(lerpTimer_.GetProgress()));
 
 	// 線形補間タイマー更新
 	lerpTimer_.Update();

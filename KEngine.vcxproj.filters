@@ -301,6 +301,7 @@
     <ClCompile Include="Engine\GameObject\User\Enemy\State\SingleAtackState.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\Atack\meteor.cpp" />
     <ClCompile Include="Engine\GameObject\User\Rubble\Rubble.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\State\MultiAtackState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -649,6 +650,7 @@
     <ClInclude Include="Engine\GameObject\User\Enemy\State\SingleAtackState.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\Atack\meteor.h" />
     <ClInclude Include="Engine\GameObject\User\Rubble\Rubble.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\State\MultiAtackState.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">

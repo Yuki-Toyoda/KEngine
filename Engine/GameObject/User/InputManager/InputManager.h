@@ -32,7 +32,7 @@ public:
 	/// 移動関数
 	/// </summary>
 	/// <returns>移動ベクトル</returns>
-	static Vector3 Move();
+	static Vector3 Move(Vector3 velocity);
 
 	/// <summary>
 	/// 回転方向変化関数
