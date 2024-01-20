@@ -91,7 +91,7 @@ void TitleManager::Update()
 	}
 	// アニメーションがゲーム開始状態の時
 	if (anim_->GetReadingParameterName() == "Title_GameStart") {
-		if (anim_->GetAnimationProgress() >= 0.2f) {
+		if (anim_->GetAnimationProgress() >= 0.1f) {
 			// Aボタンを押したら
 			if ((joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A &&
 				!(preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A))) {
@@ -105,7 +105,7 @@ void TitleManager::Update()
 				}
 			}
 		}
-		if (anim_->GetAnimationProgress() >= 0.6f) {
+		if (anim_->GetAnimationProgress() >= 0.75f) {
 			// フェード演出に一回も入っていなければフェードアウトさせる
 			if (!isFade_) {
 				// フェードアウトさせる
