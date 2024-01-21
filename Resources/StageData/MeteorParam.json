@@ -1,7 +1,17 @@
 {
     "MeteorParam": {
-        "A": {
-            "IsGravity": 0
+        "Info": {
+            "IsGravity": 1,
+            "MaxCount": 10,
+            "Scale": [
+                2.0,
+                1.0,
+                1.9900000095367432
+            ]
+        },
+        "Multi": {
+            "CoolTime": 0.5,
+            "MaxCount": 10
         }
     }
 }

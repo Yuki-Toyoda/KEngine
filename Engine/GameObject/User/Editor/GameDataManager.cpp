@@ -2,6 +2,8 @@
 
 using namespace nlohmann;
 
+int GameDataManager::LoadNumber;
+
 void GameDataManager::LoadFiles()
 {
 	std::string saveDirectryPath = kDirectoryPath;

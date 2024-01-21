@@ -25,6 +25,8 @@ public:
         return &instance;
     }
 
+    static int LoadNumber;
+
 private:
     GameDataManager() = default;
     ~GameDataManager() = default;
@@ -79,6 +81,8 @@ public: // 呼び出し時に使用する配列
     std::array<std::string, kEnemyMaxValue> kEnemyItems = { "Position","Type","Speed","RespownTime", "MaxCount" };
     // 障害物用
     std::array<std::string, kObstacleMaxValue> kObstacleItems = { "Position","Size", "MaxCount" };
+
+    std::string GetAttackGroupName() { return "MeteorParam"; }
 
 private:
     /// 項目
