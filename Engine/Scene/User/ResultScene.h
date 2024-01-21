@@ -1,5 +1,6 @@
 #pragma once
 #include "../BaseScene.h"
+#include "../SceneList.h"
 
 /// <summary>
 /// リザルトシーン
@@ -20,7 +21,8 @@ public: // メンバ関数
 
 private: // メンバ変数
 
-
+	// リザルトマネージャ
+	ResultManager* rm_ = nullptr;
 
 };
 

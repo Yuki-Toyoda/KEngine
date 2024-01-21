@@ -18,6 +18,7 @@ void InGameUIManager::Init()
 	// コントローラー入力取得
 	input_->GetJoystickState(0, joyState_); // 現在フレームの入力取得
 	preJoyState_ = joyState_; // 前フレームの入力取得
+
 }
 
 void InGameUIManager::Update()

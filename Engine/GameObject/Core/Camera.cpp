@@ -10,7 +10,7 @@ void Camera::Init()
 	input_ = Input::GetInstance();
 
 	// カメラ初期位置設定
-	transform_.translate_ = { 0.0f, 1.0f, -50.0f };
+	transform_.translate_ = { 0.0f, 1.0f, -10.0f };
 
 	// 視野角初期値の設定
 	fov_ = 0.45f;
