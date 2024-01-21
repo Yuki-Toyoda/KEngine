@@ -63,9 +63,3 @@ void GameScene::Update()
 #endif // _DEBUG
 	
 }
-
-void GameScene::AtackAfterInit()
-{
-	
-	
-}
