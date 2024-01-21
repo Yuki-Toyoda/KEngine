@@ -4,6 +4,7 @@
 ==================================*/
 
 #include "Core/Camera.h"
+#include "Samples/SampleSkyDome/SkyDome.h"
 #include "User/Player/Player.h"
 #include "User/Player/Weapon.h"
 #include "User/Chain/Chain.h"
@@ -23,3 +24,4 @@
 #include "User/Rubble/Rubble.h"
 #include "User/Enemy/Atack/meteor.h"
 #include "User/TestObject/TestObject.h"
+#include "User/TitleManager/TitleManager.h"

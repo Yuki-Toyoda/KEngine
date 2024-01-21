@@ -97,7 +97,6 @@ void Animation::Stop()
 
 bool Animation::GetIsPlay()
 {
-
 	// 値返還用
 	bool isPlay = false;
 

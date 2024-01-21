@@ -1,5 +1,6 @@
 #pragma once
 #include "BaseScene.h"
+#include "FadeManager.h"
 
 /// <summary>
 /// シーンマネージャー
@@ -32,11 +33,6 @@ public: // メンバ関数
 	/// </summary>
 	void Update();
 
-	/// <summary>
-	/// 描画関数
-	/// </summary>
-	void Draw();
-
 public: // アクセッサ等
 
 	/// <summary>
@@ -51,5 +47,8 @@ private: // メンバ変数
 	BaseScene* currentScene_ = nullptr;
 	// 次のシーン
 	BaseScene* nextScene_ = nullptr;
+
+	// フェード演出マネージャ
+	FadeManager* fadeManager_ = nullptr;
 };
 

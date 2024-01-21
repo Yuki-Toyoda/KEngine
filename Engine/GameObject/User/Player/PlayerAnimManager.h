@@ -1,5 +1,6 @@
 #pragma once
 #include "../../BaseObject.h"
+#include "../../../Utility/Animation/AnimationManager.h"
 
 // クラスの前方宣言
 class Player;
@@ -33,19 +34,31 @@ public: // メンバ関数
 	/// <param name="player">プレイヤーの実体</param>
 	void SetPlayer(Player* player);
 
-private: // メンバ変数
+	/// <summary>
+	/// パラメータ生成関数
+	/// </summary>
+	/// <param name="name">パラメータ名</param>
+	void CreateParameter(const std::string& name);
 
-	// プレイヤーの実体
-	Player* player_;
+	/// <summary>
+	/// アニメーション生成関数
+	/// </summary>
+	void CrateAnimation();
+
+public: // パブリックなメンバ変数
 
 	// パーツごとのトランスフォーム
 	WorldTransform bodyTransform_; // 身体
-	WorldTransform wingTransform_L_; // 左羽
-	WorldTransform wingTransform_R_; // 右羽
-	WorldTransform armTransform_L_; // 左腕
-	WorldTransform armTransform_R_; // 右腕
-	WorldTransform footTransform_L_; // 左腕
-	WorldTransform footTransform_R_; // 右腕
+
+private: // メンバ変数
+
+	// アニメーションマネージャ
+	AnimationManager* animManager_ = nullptr;
+	// アニメーション
+	Animation* anim_ = nullptr;
+
+	// プレイヤーの実体
+	Player* player_ = nullptr;
 
 };
 

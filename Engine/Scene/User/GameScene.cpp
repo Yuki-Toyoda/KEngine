@@ -41,6 +41,9 @@ void GameScene::Init(){
 	// UIマネージャの生成
 	gameObjectManager_->CreateInstance<InGameUIManager>("UIManager", BaseObject::TagNone);
 
+	// フェードイン
+	FadeManager::GetInstance()->ChangeParameter("FadeIn", true);
+	FadeManager::GetInstance()->Play();
 }
 
 void GameScene::Update()

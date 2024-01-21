@@ -130,3 +130,17 @@ Animation* AnimationManager::CreateAnimation(const std::string& name, const std:
 	// 生成したアニメーションを返す
 	return returnAnimation;
 }
+
+Animation* AnimationManager::CreateFadeAnimation(const std::string& parameterName)
+{
+	// 新しいアニメーションを生成
+	std::unique_ptr<Animation> newAnimation = std::make_unique<Animation>();
+	// 生成したアニメーションの初期化
+	newAnimation->Init("Fade", parameterName);
+
+	// インスタンスに格納
+	fadeAnimation_ = std::move(newAnimation);
+
+	// 生成したアニメーションを返す
+	return fadeAnimation_.get();
+}

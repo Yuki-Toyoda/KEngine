@@ -6,54 +6,31 @@ void PlayerAnimManager::Init()
 	// 各トランスフォームの初期化
 	bodyTransform_.Init();
 	bodyTransform_.SetParent(&transform_);
-	// 左はね
-	wingTransform_L_.Init();
-	wingTransform_L_.SetParent(&bodyTransform_);
-	wingTransform_L_.translate_ = { 0.15f, 0.0f, 0.95f };
-	// 右はね
-	wingTransform_R_.Init();
-	wingTransform_R_.SetParent(&bodyTransform_);
-	wingTransform_R_.translate_ = { -0.15f, 0.0f, 0.95f };
-	// 左腕
-	armTransform_L_.Init();
-	armTransform_L_.SetParent(&bodyTransform_);
-	armTransform_L_.translate_ = { 0.75f, 0.15f, 0.0f };
-	armTransform_L_.rotate_.z = (float)std::numbers::pi / 4.0f;
-	// 右腕
-	armTransform_R_.Init();
-	armTransform_R_.SetParent(&bodyTransform_);
-	armTransform_R_.translate_ = { -0.75f, 0.15f, 0.0f };
-	armTransform_R_.rotate_.z = -(float)std::numbers::pi / 4.0f;
-	// 左足
-	footTransform_L_.Init();
-	footTransform_L_.SetParent(&bodyTransform_);
-	footTransform_L_.translate_ = { 0.35f, -0.75f, 0.0f };
-	// 右足
-	footTransform_R_.Init();
-	footTransform_R_.SetParent(&bodyTransform_);
-	footTransform_R_.translate_ = { -0.35f, -0.75f, 0.0f };
 
 	// メッシュ追加
+	// デバッグ時のみ
 #ifdef _DEBUG
 
-	// デバッグ時はキューブ(簡易モデル)で描画
-	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Box", "Box.obj");
-	color_ = { 1.0f,0.0f,0.0f,1.f };
+	// デバッグ時でも一応プレイヤー描画
+	AddMesh(&bodyTransform_, color_, "./Resources/Player", "Player.obj");
+
+
 #endif // _DEBUG
 
+	// リリースビルドの時
 #ifndef _DEBUG
 
 	// 身体
-	AddMesh(&bodyTransform_, color_, "./Resources/Player", "Body.obj");
-	AddMesh(&wingTransform_L_, color_, "./Resources/Player", "Wing_L.obj");
-	AddMesh(&wingTransform_R_, color_, "./Resources/Player", "Wing_R.obj");
-	AddMesh(&armTransform_L_, color_, "./Resources/Player", "Arm_L.obj");
-	AddMesh(&armTransform_R_, color_, "./Resources/Player", "Arm_R.obj");
-	AddMesh(&footTransform_L_, color_, "./Resources/Player", "Foot_L.obj");
-	AddMesh(&footTransform_R_, color_, "./Resources/Player", "Foot_R.obj");
+	AddMesh(&bodyTransform_, color_, "./Resources/Player", "Player.obj");
 
 #endif // _RELEASE
 
+	// アニメーションマネージャ取得
+	animManager_ = AnimationManager::GetInstance();
+
+	/// パラメータ作成
+	// タイトル上の待機状態
+	CreateParameter("Player_TitleIdle");
 }
 
 void PlayerAnimManager::Update()
@@ -68,12 +45,19 @@ void PlayerAnimManager::DisplayImGui()
 
 	// 各種パーツの情報表示
 	bodyTransform_.DisplayImGuiWithTreeNode("body");
-	wingTransform_L_.DisplayImGuiWithTreeNode("wing_L");
-	wingTransform_R_.DisplayImGuiWithTreeNode("wing_R");
-	armTransform_L_.DisplayImGuiWithTreeNode("arm_L");
-	armTransform_R_.DisplayImGuiWithTreeNode("arm_R");
-	footTransform_L_.DisplayImGuiWithTreeNode("foot_L");
-	footTransform_R_.DisplayImGuiWithTreeNode("foot_R");
+
+	// アニメーションのImGui
+	if (anim_ != nullptr) {
+		anim_->DisplayImGui();
+		// アニメーションの読み込みパラメータ変更
+		if (ImGui::TreeNode("Player_ChangeReadParameter")) {
+			if (ImGui::Button("TitleIdle")) {
+				anim_->ChangeParameter("Player_TitleIdle", true);
+			}
+
+			ImGui::TreePop();
+		}
+	}
 }
 
 void PlayerAnimManager::SetPlayer(Player* player)
@@ -82,4 +66,28 @@ void PlayerAnimManager::SetPlayer(Player* player)
 	player_ = player;
 	// プレイヤーの座標に追従させる
 	transform_.SetParent(&player_->transform_);
+}
+
+void PlayerAnimManager::CreateParameter(const std::string& name)
+{
+	// パラメータ生成
+	animManager_->CreateAnimationParameter(name);
+	// キー生成
+	animManager_->AddSelectAnimationKeys<Vector3>(name, "Body_Scale");
+	animManager_->AddSelectAnimationKeys<Vector3>(name, "Body_Rotate");
+	animManager_->AddSelectAnimationKeys<Vector3>(name, "Body_Translate");
+}
+
+void PlayerAnimManager::CrateAnimation()
+{
+	// アニメーション生成
+	anim_ = animManager_->CreateAnimation("PlayerAnim", "Player_Idle");
+	anim_->AddAnimationKeys<Vector3>("Body_Scale", &bodyTransform_.scale_);
+	anim_->AddAnimationKeys<Vector3>("Body_Rotate", &bodyTransform_.rotate_);
+	anim_->AddAnimationKeys<Vector3>("Body_Translate", &bodyTransform_.translate_);
+
+	// アニメーションループtrue
+	anim_->isLoop_ = true;
+	// アニメーション再生
+	anim_->Play();
 }
