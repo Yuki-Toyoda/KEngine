@@ -27,7 +27,7 @@ void ResultScene::Init()
 	rm_->SetCamera(c);
 	rm_->SetSkyDome(skyDome);
 	rm_->SetPlayerAnimManager(pam);
-	rm_->PostInit(true);
+	rm_->PostInit(false);
 
 	// フェードイン
 	FadeManager::GetInstance()->ChangeParameter("FadeIn", true);
