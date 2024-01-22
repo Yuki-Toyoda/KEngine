@@ -58,6 +58,7 @@ public: // サブクラス
 		TagObstacle,//障害物
 		TagRubble,//がれき
 		TagMeteor,//隕石
+		TagPushUp,//
 	};
 
 public: // メンバ関数

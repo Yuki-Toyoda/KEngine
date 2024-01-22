@@ -22,7 +22,7 @@ void GameScene::Init(){
 	player_ = nullptr;
 	player_ = gameObjectManager_->CreateInstance<Player>("Player", BaseObject::TagPlayer);
 	player_->transform_.translate_.y = 2.0f;
-	
+	player_->transform_.translate_.x = 10.0f;
 	//// 敵を生成
 	//gameObjectManager_->CreateInstance<SmallEnemy>("Enemy", BaseObject::TagEnemy);
 

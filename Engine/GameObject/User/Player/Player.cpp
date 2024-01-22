@@ -64,6 +64,19 @@ void Player::OnCollisionEnter(Collider* collider)
 		if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagMeteor) {
 			Damage();
 		}
+		
+	}
+	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagEnemy && isAtack_) {
+		//吸収した数をリセットして座標とスケール調整
+		ResetAbsorptionCount();
+
+		transform_.translate_.y = 2.0f;
+		transform_.scale_ = { 1.0f,1.0f ,1.0f };
+		isAtack_ = false;
+		velocity_ = { 0.0f,0.0f,0.0f };
+		transform_.translate_ = prevPos_;
+		ChangeState(std::make_unique<BlowAwayState>());
+		return;
 	}
 }
 
@@ -89,15 +102,11 @@ void Player::SubtractVelocity()
 
 void Player::Atack()
 {
-	//攻撃フラグ切り替え
-	isAtack_ = true;
+	
 	//攻撃力を吸収した数*攻撃倍率に
 	atackPower_ =static_cast<float>( absorptionCount_) * atackForce_;
-	//吸収した数をリセットして座標とスケール調整
-	ResetAbsorptionCount();
-	
-	transform_.translate_.y =2.0f;
-	transform_.scale_ = { 1.0f,1.0f ,1.0f };
+	velocity_ = Math::Normalize(  Vector3(0.0f, transform_.translate_.y, 0.0f)- transform_.translate_)*2.0f;
+
 
 }
 

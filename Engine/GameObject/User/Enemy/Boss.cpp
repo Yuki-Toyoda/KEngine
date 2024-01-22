@@ -6,6 +6,7 @@ void Boss::SuccessorInit()
 	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Box", "Box.obj");
 	color_ = { 0.6f,0.6f,0.0f,1.0f };
 	ChangeState(std::make_unique<SingleAtackState>());
+	AddColliderOBB("Boss", &transform_.scale_, &transform_.scale_, &transform_.rotate_);
 	hitPoint_ = 100.0f;
 	gameObjectManager_ = GameObjectManager::GetInstance();
 	//下からの攻撃を生成
@@ -16,10 +17,8 @@ void Boss::SuccessorInit()
 
 void Boss::SuccessorUpdate()
 {
-	//プレイヤーが攻撃していたらダメージをくらう
-	if (player_->GetIsAtack()) {
-		hitPoint_ -= player_->GetAtackPower();
-	}
+	
+	
 }
 
 void Boss::DisplayImGui()
@@ -62,5 +61,8 @@ void Boss::ApplyParameter(const std::string& levelName, const std::string& enemy
 
 void Boss::OnCollisionEnter(Collider* collider)
 {
-	collider;
+	//プレイヤーが攻撃していたらダメージをくらう
+	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagPlayer && player_->GetIsAtack()) {
+		hitPoint_ -= player_->GetAtackPower();
+	}
 }
