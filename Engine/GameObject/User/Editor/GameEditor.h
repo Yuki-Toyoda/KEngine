@@ -125,6 +125,7 @@ private:
 
 
 	// 攻撃の種類ごとの名前（グループネームのベース)
+	const std::string kParamName = "MeteorParam";
 	const std::string kSingleAttackName = "SingleMeteor";
 	const std::string kMultiAttackName = "MultiMeteor";
 	const std::string kPushAttackName = "PushUpAttack";

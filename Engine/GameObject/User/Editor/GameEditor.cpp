@@ -27,10 +27,6 @@ void GameEditor::Update()
 	// エディターのImGui表示
 	EditorImGui();
 
-	int a = dataManager_->GetValue<int>({ "MeteorParam","Multi" }, "MaxCount");
-	ImGui::Begin("tes");
-	ImGui::Text("%d", a);
-	ImGui::End();
 }
 
 void GameEditor::ParameterInitialize()
@@ -124,7 +120,6 @@ void GameEditor::ParameterInitialize()
 	}
 
 #pragma endregion
-	dataManager_->SaveData("PushUpAttack");
 
 }
 
@@ -175,20 +170,7 @@ void GameEditor::EditorImGui()
 		DataReaload();
 	}
 
-	ImGui::Text("\n");
-
-	if (ImGui::CollapsingHeader("PatternControl")) {
-		if (ImGui::Button("NextPattern")) {
-			dataManager_->AddLoadNum();
-		}
-		
-		if (ImGui::Button("PrevPattern")) {
-			dataManager_->IncrementLoadNum();
-		}
-
-	}
-
-	ImGui::Text("\n");
+	ImGui::SeparatorText("Object");
 
 	if (ImGui::BeginTabBar("EditObject")) {
 		// 上から落ちてくるやつの方
@@ -220,12 +202,14 @@ void GameEditor::EditorImGui()
 
 				isGravity_ = static_cast<int>(gravity);
 				dataManager_->SetValue(GetNormalInfo(), "IsGravity", isGravity_);
-				dataManager_->SaveData("MeteorParam");
+				// パラメータのファイル保存
+				dataManager_->SaveData(kParamName);
 			}
 			// サイズ
 			ImGui::DragFloat3("Meteor_Scale", &size_.x, 0.01f, 1.0f, 20.0f);
+			// 出現するY座標
 			ImGui::DragFloat("Y_Distance", &respawnDistance_, 0.02f, 0, 100.0f);
-
+			// セパレート
 			ImGui::SeparatorText("Individual");
 			// 最大の数
 			ImGui::InputInt("MeteorMaxCount", &kMaxMeteor_);
@@ -245,10 +229,12 @@ void GameEditor::EditorImGui()
 				}
 				// インスタンス生成
 				Meteor* meteor;
-				meteor = gameObjectManager_->CreateInstance<Meteor>("Meteor", BaseObject::TagMeteor);
+				meteor = gameObjectManager_->CreateInstance<Meteor>("Meteor", BaseObject::TagNone);
 				std::string group = "SingleMeteor";
 				std::string section = "Meteor" + std::to_string(kMaxMeteor_);
-				meteor->transform_.translate_ = dataManager_->GetVector3Value({ group,section }, "Position");
+				Vector3 newPos{0,2.0f,0};
+				dataManager_->AddItem({ group,section }, "Position", newPos);
+				meteor->transform_.translate_ = dataManager_->GetValue<Vector3>({ group,section }, "Position");
 				meteors_.push_back(meteor);
 			}
 			// 最大を超えないように
@@ -259,12 +245,12 @@ void GameEditor::EditorImGui()
 			ImGui::Text("\n");
 
 			// タブの内容
-			ImGui::BeginChild(ImGui::GetID((void*)0), ImVec2(400, 300), ImGuiWindowFlags_NoTitleBar);
+			ImGui::BeginChild(ImGui::GetID((void*)0), ImVec2(350, 280), ImGuiWindowFlags_NoTitleBar);
 
 			for (Meteor* meteor : meteors_) {
 				// 名前のタグ
 				std::string fullTag = "Meteor" + std::to_string(indexCount_);
-				//meteor->transform_.scale_ = size_;
+				// 座標
 				ImGui::DragFloat3(fullTag.c_str(), &meteor->transform_.translate_.x, 0.1f, -kAbsValue, kAbsValue);
 				ImGui::Text("\n");
 				indexCount_++;
@@ -342,7 +328,7 @@ void GameEditor::EditorImGui()
 				std::string section = "PushUp" + std::to_string(kMaxPushUp_);
 				Vector3 newPos = {};
 				dataManager_->AddItem({ group,section }, "Position", newPos);
-				object->transform_.translate_ = dataManager_->GetVector3Value({ group,section }, "Position");
+				object->transform_.translate_ = dataManager_->GetValue<Vector3>({ group,section }, "Position");
 				pushUps_.push_back(object);
 			}
 			// 最大を超えないように
@@ -353,7 +339,7 @@ void GameEditor::EditorImGui()
 			ImGui::Text("\n");
 
 			// タブの内容
-			ImGui::BeginChild(ImGui::GetID((void*)0), ImVec2(400, 300), ImGuiWindowFlags_NoTitleBar);
+			ImGui::BeginChild(ImGui::GetID((void*)0), ImVec2(350, 280), ImGuiWindowFlags_NoTitleBar);
 
 			// 要素の座標操作
 			indexCount_ = 0;
@@ -449,7 +435,7 @@ void GameEditor::CreateCamera()
 	CameraUpdate();
 	// 地面
 	ground_ = gameObjectManager_->CreateInstance<Ground>("Ground", BaseObject::TagFloor);
-	ground_->transform_.translate_.y = -1.3f;
+	ground_->transform_.translate_.y = -1.5f;
 	ground_->transform_.scale_ = { 55.81f,1.0f,32.5f };
 }
 
