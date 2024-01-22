@@ -7,6 +7,11 @@ void Boss::SuccessorInit()
 	color_ = { 0.6f,0.6f,0.0f,1.0f };
 	ChangeState(std::make_unique<SingleAtackState>());
 	hitPoint_ = 100.0f;
+	gameObjectManager_ = GameObjectManager::GetInstance();
+	//下からの攻撃を生成
+	PushUp* pushUp;
+	pushUp = gameObjectManager_->CreateInstance<PushUp>("PushUp", BaseObject::TagNone);
+	pushUp_.push_back(pushUp);
 }
 
 void Boss::SuccessorUpdate()
@@ -23,10 +28,15 @@ void Boss::DisplayImGui()
 	ImGui::DragFloat("HitPoint", &hitPoint_);
 	if (ImGui::Button("changeStateAtack")) {
 		ChangeState(std::make_unique<SingleAtackState>());
+		
 		return;
 	}
 	if (ImGui::Button("changeStateMultiAtack")) {
 		ChangeState(std::make_unique<MultiAtackState>());
+		return;
+	}
+	if (ImGui::Button("changeStatepushUp")) {
+		ChangeState(std::make_unique<PushUpAtackState>());
 		return;
 	}
 }

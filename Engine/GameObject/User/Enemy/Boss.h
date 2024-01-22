@@ -1,6 +1,7 @@
 #pragma once
 #include"IEnemy.h"
 
+#include "../../GameObjectManager.h"
 class Boss:public IEnemy
 {
 public: // メンバ関数
@@ -51,7 +52,6 @@ private: // メンバ関数
 private:
 	//体力
 	float hitPoint_;
-
-
+	GameObjectManager* gameObjectManager_;
 };
 

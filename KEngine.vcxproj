@@ -96,6 +96,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\GameObject\User\Enemy\Atack\PushUp.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\Atack\Roller.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\State\PushUpAtackState.cpp" />
     <ClCompile Include="Engine\GameObject\User\ResultManager\ResultManager.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\State\MultiAtackState.cpp" />
     <ClCompile Include="Engine\GameObject\User\Player\State\AtackState.cpp" />
@@ -200,6 +203,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Scene\User\ResultScene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\GameObject\User\Enemy\Atack\PushUp.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\Atack\Roller.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\State\PushUpAtackState.h" />
     <ClInclude Include="Engine\GameObject\User\ResultManager\ResultManager.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\State\MultiAtackState.h" />
     <ClInclude Include="Engine\GameObject\User\Player\State\AtackState.h" />
