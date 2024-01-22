@@ -7,8 +7,6 @@ void RootState::Init()
 
 void RootState::Update()
 {
-	
-
 	//// 移動ベクトル初期化
 	//velocity_ = { 0.0f,0.0f,0.0f };
 

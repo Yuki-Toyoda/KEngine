@@ -7,3 +7,4 @@
 #include "User/TitleScene.h"
 #include "User/GameScene.h"
 #include "User/EditorScene.h"
+#include "User/ResultScene.h"

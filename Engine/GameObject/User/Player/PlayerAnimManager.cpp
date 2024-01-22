@@ -43,6 +43,7 @@ void PlayerAnimManager::DisplayImGui()
 	// 表示状態の切り替え
 	ImGui::Checkbox("isActive", &isActive_);
 
+	transform_.DisplayImGuiWithTreeNode("PamTranslate");
 	// 各種パーツの情報表示
 	bodyTransform_.DisplayImGuiWithTreeNode("body");
 

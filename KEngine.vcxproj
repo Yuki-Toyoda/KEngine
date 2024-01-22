@@ -96,6 +96,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\GameObject\User\ResultManager\ResultManager.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\State\MultiAtackState.cpp" />
     <ClCompile Include="Engine\GameObject\User\Player\State\AtackState.cpp" />
     <ClCompile Include="Engine\GameObject\User\Player\State\BlowAwayState.cpp" />
@@ -196,8 +197,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\User\TitleManager\TitleManager.cpp" />
+    <ClCompile Include="Engine\Scene\User\ResultScene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\GameObject\User\ResultManager\ResultManager.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\State\MultiAtackState.h" />
     <ClInclude Include="Engine\GameObject\User\Player\State\AtackState.h" />
     <ClInclude Include="Engine\GameObject\User\Player\State\BlowAwayState.h" />
@@ -319,6 +322,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\GameObject\User\Enemy\State\IEnemyState.h" />
     <ClInclude Include="Engine\GameObject\User\TitleManager\TitleManager.h" />
     <ClInclude Include="Engine\Scene\FadeManager.h" />
+    <ClInclude Include="Engine\Scene\User\ResultScene.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Object3D.hlsli">
