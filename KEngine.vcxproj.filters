@@ -101,6 +101,7 @@
     <ClCompile Include="Engine\GameObject\User\Enemy\Atack\Roller.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\Atack\PushUp.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\State\PushUpAtackState.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\State\RollerAtackState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\GameObject\User\Enemy\State\MultiAtackState.h" />
@@ -220,6 +221,7 @@
     <ClInclude Include="Engine\GameObject\User\Enemy\Atack\Roller.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\Atack\PushUp.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\State\PushUpAtackState.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\State\RollerAtackState.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Object3D.hlsli" />

@@ -39,6 +39,11 @@ void Boss::DisplayImGui()
 		ChangeState(std::make_unique<PushUpAtackState>());
 		return;
 	}
+
+	if (ImGui::Button("changeStateRoller")) {
+		ChangeState(std::make_unique<RollerAtackState>());
+		return;
+	}
 }
 
 void Boss::Reset()
