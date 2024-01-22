@@ -17,21 +17,33 @@ void Player::Update()
 		// 行動状態の更新を行う
 		state_->Update();
 	}
+
+	// 攻撃命中クールタイマーの更新処理
 	hitCollTimer_.Update();
+
+	// 前フレーム座標
 	prevPos_ = worldPos_;
+	// ワールド座標の更新
 	worldPos_ = transform_.translate_;
 	
-	transform_.translate_ = transform_.translate_ +velocity_;
+	// 座標に速度ベクトルを加算する
+	transform_.translate_ = transform_.translate_ + velocity_;
 	//地面より外に出たら中に戻して状態をRootに変更
 	if (transform_.translate_.x+transform_.scale_.x >= ground_->transform_.scale_.x|| transform_.translate_.x - transform_.scale_.x <= -ground_->transform_.scale_.x) {
+		// x軸方向の速度ベクトルを0に
 		velocity_.x =0.0f;
+		// 前フレーム座標に固定する
 		transform_.translate_.x = prevPos_.x;
+		// 強制的に待機状態ステートに変更
 		ChangeState(std::make_unique<RootState>());
 		return;
 	}
 	if (transform_.translate_.z + transform_.scale_.z >= ground_->transform_.scale_.z || transform_.translate_.z - transform_.scale_.z <= -ground_->transform_.scale_.z) {
+		// z軸方向の速度ベクトルを0に
 		velocity_.z =0.0f;
+		// 前フレーム座標に固定する
 		transform_.translate_.z = prevPos_.z;
+		// 強制的に待機状態ステートに変更
 		ChangeState(std::make_unique<RootState>());
 		return;
 	}
@@ -53,15 +65,24 @@ void Player::DisplayImGui()
 void Player::OnCollisionEnter(Collider* collider)
 {
 	if (state_->name_ == "Root") {
+		// 破片に衝突した場合
 		if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagRubble) {
 			//がれきにぶつかったらしてサイズを大きくする
 			absorptionCount_++;
+			// 加算するサイズを計算
 			float addSize = absorptionCount_ * scaleForce_;
+			// 加算サイズ分y座標を加算
 			transform_.translate_.y += addSize;
-			transform_.scale_ = { transform_.scale_.x + addSize,transform_.scale_.y + addSize,transform_.scale_.z + addSize };
+			// 大きさにサイズを加算
+			transform_.scale_ = { 
+				transform_.scale_.x + addSize,
+				transform_.scale_.y + addSize,
+				transform_.scale_.z + addSize };
 
 		}
+		// 降ってくる野菜に衝突した場合
 		if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagMeteor) {
+			// ダメージ処理を行う
 			Damage();
 		}
 	}
@@ -96,6 +117,7 @@ void Player::Atack()
 	//吸収した数をリセットして座標とスケール調整
 	ResetAbsorptionCount();
 	
+	// 攻撃を行った後y座標をリセット
 	transform_.translate_.y =2.0f;
 	transform_.scale_ = { 1.0f,1.0f ,1.0f };
 

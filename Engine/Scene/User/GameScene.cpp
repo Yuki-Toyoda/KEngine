@@ -7,6 +7,7 @@ void GameScene::Init(){
 	// 入力マネージャの初期化
 	InputManager::Init();
 	
+	// カメラの生成
 	camera_ = nullptr;
 	camera_ = gameObjectManager_->CreateInstance<InGameCamera>("Incamera", BaseObject::TagCamera);
 	camera_->UseThisCamera();
@@ -21,6 +22,7 @@ void GameScene::Init(){
 	// プレイヤー生成
 	player_ = nullptr;
 	player_ = gameObjectManager_->CreateInstance<Player>("Player", BaseObject::TagPlayer);
+	// プレイヤーのy座標
 	player_->transform_.translate_.y = 2.0f;
 	
 	//// 敵を生成
@@ -30,12 +32,18 @@ void GameScene::Init(){
 	PlayerAnimManager* am = gameObjectManager_->CreateInstance<PlayerAnimManager>("playerAnim", BaseObject::TagPlayer);
 	// プレイヤーを渡す
 	am->SetPlayer(player_);
+	
+	// 地面生成
 	Ground* ground;
 	ground = gameObjectManager_->CreateInstance<Ground>("Ground", BaseObject::TagFloor);
 	ground->transform_.scale_ = { 55.81f,1.0f,32.5f };
+	// プレイヤーに生成した地面をセット
 	player_->SetGround(ground);
+
+	// ボスの生成
 	Boss* boss;
 	boss = gameObjectManager_->CreateInstance<Boss>("Boss", BaseObject::TagEnemy);
+	// ボスにプレイヤーをセット
 	boss->SetPlayer(player_);
 	
 	// UIマネージャの生成

@@ -1,5 +1,9 @@
 #pragma once
 #include "IPlayerState.h"
+
+/// <summary>
+/// 待機時ステート
+/// </summary>
 class RootState:public IPlayerState
 {
 	/// <summary>
@@ -10,7 +14,6 @@ class RootState:public IPlayerState
 	/// <summary>
 	/// 更新関数
 	/// </summary>
-	/// <returns></returns>
 	void Update() override;
 
 	/// <summary>
@@ -19,7 +22,9 @@ class RootState:public IPlayerState
 	void DisplayImGui() override;
 
 public:
-	//攻撃可能になるための最低数
+
+	//攻撃可能になるための破片最低数
 	int kMinCount = 4;
+
 };
 

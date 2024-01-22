@@ -26,10 +26,22 @@ public: // メンバ関数
 	/// </summary>
 	void DisplayImGui() override;
 
-
+	/// <summary>
+	/// 衝突した瞬間にコールバックされる関数
+	/// </summary>
+	/// <param name="collider">衝突したコライダー</param>
 	void OnCollisionEnter(Collider* collider)override;
 
+	/// <summary>
+	/// 地面クラスセッター
+	/// </summary>
+	/// <param name="ground">地面</param>
 	void SetGround(Ground* ground) { ground_ = ground; }
+
+	/// <summary>
+	/// 速度セッター
+	/// </summary>
+	/// <param name="velo">速度</param>
 	void SetVelocity(Vector3 velo) { velocity_ = velo; }
 	//減速率
 	float decelerationRate = 0.6f;
@@ -40,21 +52,51 @@ public: // メンバ関数
 	/// <param name="newState">新しい行動状態</param>
 	void ChangeState(std::unique_ptr<IPlayerState> newState);
 
-	//攻撃
+	/// <summary>
+	/// 攻撃関数
+	/// </summary>
 	void Atack();
-	int GetAbsorptionCount() { return absorptionCount_; }
-	void ResetAbsorptionCount() { absorptionCount_ = 0; }
-	bool GetIsAtack() { return isAtack_; }
-	bool SetIsAtack(bool Flag) { return isAtack_ = Flag; }
-	float GetAtackPower() { return atackPower_; }
-private:
-	//ダメージをくらう処理
-	void Damage();
-	//移動じの減速
-	void SubtractVelocity();
-	
 
-	
+	/// <summary>
+	/// 破片の吸収数ゲッター
+	/// </summary>
+	/// <returns>破片の吸収数</returns>
+	int GetAbsorptionCount() { return absorptionCount_; }
+	/// <summary>
+	/// 破片吸収数リセット関数
+	/// </summary>
+	void ResetAbsorptionCount() { absorptionCount_ = 0; }
+
+	/// <summary>
+	/// 攻撃状態ゲッター
+	/// </summary>
+	/// <returns>攻撃しているか</returns>
+	bool GetIsAtack() { return isAtack_; }
+	/// <summary>
+	/// 攻撃状態セッター
+	/// </summary>
+	/// <param name="Flag">設定する攻撃状態</param>
+	/// <returns>設定した攻撃状態</returns>
+	bool SetIsAtack(bool Flag) { return isAtack_ = Flag; }
+
+	/// <summary>
+	/// 攻撃力ゲッター
+	/// </summary>
+	/// <returns>攻撃力</returns>
+	float GetAtackPower() { return atackPower_; }
+
+private: // プライベートなメンバ関数
+
+	/// <summary>
+	/// ダメージ処理関数
+	/// </summary>
+	void Damage();
+
+	/// <summary>
+	/// 移動時の減速処理関数
+	/// </summary>
+	void SubtractVelocity();
+
 private: // メンバ変数
 
 	// 移動方向ベクトル
@@ -62,21 +104,29 @@ private: // メンバ変数
 	// 移動スピード
 	float moveSpeed_ = 0.01f;
 	
+	// 一フレーム前のポジション
+	Vector3 prevPos_;
 	// 当たり判定用ワールド座標
 	Vector3 worldPos_;
+
 	//吸収した数
 	int absorptionCount_;
 	//吸収したときのScaleの変化量
 	float scaleForce_ = 0.1f;
+
+	// HP
 	int hitPoint_;
-	//ダメージをくらう時のクールタイム
+	// ダメージクールタイム用タイマー
 	KLib::DeltaTimer hitCollTimer_;
+	// ダメージをくらう時のクールタイム
 	float hitCoolTime_=2.0f;
-	Ground* ground_;
-	//一フレーム前のポジション
-	Vector3 prevPos_;
-	//攻撃力
+
+	// 地面クラス
+	Ground* ground_ = nullptr;
+
+	// 攻撃倍率
 	float atackForce_ = 1.0f;
+	// 攻撃力
 	float atackPower_;
 	//攻撃しているかどうか
 	bool isAtack_;
