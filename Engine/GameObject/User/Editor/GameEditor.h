@@ -46,6 +46,20 @@ private:
 
 	void SystemImGui();
 
+	/// <summary>
+	/// カメラの位置角度変更
+	/// </summary>
+	void CameraUpdate() {
+		if (cameraType_ == kUpSide) {
+			camera_->transform_.translate_ = { 0,100.0f,0 };
+			camera_->transform_.rotate_ = { 1.57f,0.0f,0.0f };
+		}
+		else if (cameraType_ == kGameSide) {
+			camera_->transform_.translate_ = { 0.0f,47.0f,-85.0f };
+			camera_->transform_.rotate_ = { 0.55f,0.0f,0.0f };
+		}
+	}
+
 public:
 	/// <summary>
 	/// Jsonから情報取得の関数
@@ -103,11 +117,11 @@ private:
 	std::string saveName_ = "";
 
 	enum CameraType {
-		kUpPoint,
-		kGamePoint,
+		kUpSide,
+		kGameSide,
 	};
 
-	int cameraType_ = kUpPoint;
+	int cameraType_ = kUpSide;
 
 	//std::array<Vector3, 2> cameraPoint = {};
 

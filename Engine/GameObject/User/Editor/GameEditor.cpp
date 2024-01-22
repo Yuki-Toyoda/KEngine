@@ -142,26 +142,6 @@ void GameEditor::EditorImGui()
 	ImGui::Text("\n");
 
 	if (ImGui::BeginTabBar("EditObject")) {
-		if (ImGui::BeginTabItem("Common")) {
-			ImGui::SeparatorText("Common");
-			// 落下
-			static bool gravity = static_cast<bool>(isGravity_);
-			if (ImGui::Checkbox("Gravity", &gravity)) {
-				if (!gravity && isGravity_) {
-					DataReaload();
-				}
-
-				isGravity_ = static_cast<int>(gravity);
-				dataManager_->SetValue(GetNormalInfo(), "IsGravity", isGravity_);
-				dataManager_->SaveData("MeteorParam");
-			}
-			// サイズ
-			ImGui::DragFloat3("Meteor_Scale", &size_.x, 0.01f, 1.0f, 20.0f);
-			ImGui::DragFloat("Y_Distance", &respawnDistance_, 0.02f, 0, 100.0f);
-
-			ImGui::EndTabItem();
-		}
-
 		// 上から落ちてくるやつの方
 		if (ImGui::BeginTabItem("SingleAttack")) {
 			ImGui::SeparatorText("System");
@@ -181,6 +161,21 @@ void GameEditor::EditorImGui()
 				std::string message = std::format("{}.json saved.", single);
 				MessageBoxA(nullptr, message.c_str(), "DataManager", 0);
 			}
+			ImGui::SeparatorText("Common");
+			// 落下
+			static bool gravity = static_cast<bool>(isGravity_);
+			if (ImGui::Checkbox("Gravity", &gravity)) {
+				if (!gravity && isGravity_) {
+					DataReaload();
+				}
+
+				isGravity_ = static_cast<int>(gravity);
+				dataManager_->SetValue(GetNormalInfo(), "IsGravity", isGravity_);
+				dataManager_->SaveData("MeteorParam");
+			}
+			// サイズ
+			ImGui::DragFloat3("Meteor_Scale", &size_.x, 0.01f, 1.0f, 20.0f);
+			ImGui::DragFloat("Y_Distance", &respawnDistance_, 0.02f, 0, 100.0f);
 
 			ImGui::SeparatorText("Individual");
 			// 最大の数
@@ -232,10 +227,7 @@ void GameEditor::EditorImGui()
 
 		// 追尾の方
 		if (ImGui::BeginTabItem("MultiAttack")) {
-			// 最大個数
-			ImGui::InputInt("MaxCount", &this->kMaxCount_);
-			// 間隔
-			ImGui::InputFloat("AttackInterval", &coolTime_);
+			ImGui::SeparatorText("System");
 			// 保存
 			if (ImGui::Button("Save")) {
 				HierarchicalName names = { "MeteorParam","Multi" };
@@ -247,6 +239,16 @@ void GameEditor::EditorImGui()
 				std::string message = std::format("{}.json saved.", names.kGroup);
 				MessageBoxA(nullptr, message.c_str(), "DataManager", 0);
 			}
+			ImGui::SeparatorText("Common");
+			// 最大個数
+			ImGui::InputInt("MaxCount", &this->kMaxCount_);
+			// 間隔
+			ImGui::InputFloat("AttackInterval", &coolTime_);
+			ImGui::EndTabItem();
+		}
+
+		// 下からのやつ
+		if (ImGui::BeginTabItem("Common")) {
 
 			ImGui::EndTabItem();
 		}
@@ -264,7 +266,6 @@ void GameEditor::SystemImGui()
 
 	ImGui::Begin("CommonSystem");
 	ImGui::SeparatorText("Object");
-
 	ImGui::DragFloat3("GroundPos", &ground_->transform_.translate_.x, 0.01f, -10.0f, 10.0f);
 	// 保存の名前
 	static char saveName[256];
@@ -276,6 +277,26 @@ void GameEditor::SystemImGui()
 		saveName_ = saveName;
 		dataManager_->AddSingleAttack(saveName_);
 		dataManager_->AddLoadNum();
+	}
+
+	ImGui::Text("\n");
+
+	if (ImGui::BeginTabBar("EditObject")) {
+
+		if (ImGui::BeginTabItem("Camera")) {
+			//ImGui::SameLine();
+			if (ImGui::RadioButton("UpSide", &cameraType_, kUpSide)) {
+				CameraUpdate();
+			}
+			ImGui::SameLine();
+			if (ImGui::RadioButton("GameCamera", &cameraType_, kGameSide)) {
+				CameraUpdate();
+			}
+
+			ImGui::EndTabItem();
+		}
+
+		ImGui::EndTabBar();
 	}
 
 	ImGui::End();
@@ -305,11 +326,9 @@ void GameEditor::CreateCamera()
 	camera_->UseThisCamera();
 	camera_->fov_ = 0.85f;
 	//camera_->transform_.translate_ = { 0.0f,47.0f,-85.0f };
-	if (cameraType_ == kUpPoint) {
-		camera_->transform_.translate_ = { 0,100.0f,0 };
-		camera_->transform_.rotate_ = { 1.57f,0.0f,0.0f };
-	}
-	else if()
+	cameraType_ = kUpSide;
+	// 角度・座標変更
+	CameraUpdate();
 	// 地面
 	ground_ = gameObjectManager_->CreateInstance<Ground>("Ground", BaseObject::TagFloor);
 	ground_->transform_.translate_.y = -1.5f;
