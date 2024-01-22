@@ -35,8 +35,16 @@ private:
 	InGameCamera* camera_;
 	// 地面
 	Ground* ground_;
-
+	// プレイヤー
 	Player* player_;
+
+	static int sLoadNumber_;
+	/// <summary>
+	/// エディターのImGui
+	/// </summary>
+	void EditorImGui();
+
+	void SystemImGui();
 
 public:
 	/// <summary>
@@ -44,22 +52,36 @@ public:
 	/// </summary>
 	void ParameterInitialize();
 	/// <summary>
-	/// エディターのImGui
-	/// </summary>
-	void ImGuiUpdate();
-	/// <summary>
 	/// データのリロード
 	/// </summary>
 	void DataReaload();
-
+	/// <summary>
+	/// カメラ作成
+	/// </summary>
 	void CreateCamera();
+	/// <summary>
+	/// 隕石の座標修正用
+	/// </summary>
+	void MeteorFix(){
+		for (Meteor* meteor : meteors_) {
+			meteor->transform_.scale_ = size_;
+			if (meteor->transform_.translate_.y < 2.0f) {
+				meteor->transform_.translate_.y = 2.0f;
+			}
+		}
+	}
 
 private:
-
+	/// <summary>
+	/// オブジェクト保存
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	/// <param name="target"></param>
+	/// <param name="index"></param>
 	template<typename T>
-	void SaveObject(T* target, int index) {
+	void SetObject(T* target,const std::string& groupName, int index) {
 		// 名前
-		std::string groupPath = "SingleMeteor";
+		std::string groupPath = groupName;
 		// セクションパス
 		std::string sectionPath = dataManager_->kObjectNames[index] + std::to_string(indexCount_);
 		// アイテムパス
@@ -71,36 +93,26 @@ private:
 		dataManager_->SetValue({ groupPath,sectionPath }, keyPath, target->transform_.GetWorldPos());
 	}
 
-	//void InitObstacle(int index) {
-	//	HierarchicalName names = { dataManager_->kLevelNames[editNowLevel_], dataManager_->kObjectNames[0] };
-	//	Obstacle* obstacle;
-	//	// オブジェクトマネージャーに追加
-	//	obstacle = gameObjectManager_->CreateInstance<Obstacle>("Obstacle", BaseObject::TagObstacle);
-	//	// パスの設定
-	//	std::string sectionPath = dataManager_->kObjectNames[1] + std::to_string(index);
-	//	std::string keyPath = dataManager_->kObstacleItems[0];
-	//	// 座標設定
-	//	Vector3 newPos = {};
-	//	dataManager_->AddItem({ names.kGroup,sectionPath }, keyPath, newPos);
-	//	newPos = dataManager_->GetVector3Value({ names.kGroup,sectionPath }, keyPath);
-	//	obstacle->transform_.translate_ = newPos;
-	//	// リスト追加
-	//	obstacles_.push_back(obstacle);
-	//}
+	/// <summary>
+	/// 保存関数
+	/// </summary>
+	void SaveInfoParameter();
 
 private:
-	void SaveInfoParameter() {
-		// 名前
-		HierarchicalName names = GetNormalInfo();
-		// 最大数の設定
-		dataManager_->SetValue(names, "MaxCount", kMaxMeteor_);
-		dataManager_->SetValue(names, "Scale", size_);
-		names = { "MeteorParam","Multi" };
-		dataManager_->SetValue(names, "CoolTime", coolTime_);
-		dataManager_->SetValue(names, "MaxCount", kMaxCount_);
-	}
+	// 保存の名前
+	std::string saveName_ = "";
+
+	enum CameraType {
+		kUpPoint,
+		kGamePoint,
+	};
+
+	int cameraType_ = kUpPoint;
+
+	//std::array<Vector3, 2> cameraPoint = {};
 
 private:
+	/// SingleAttack用
 	// 障害物の最大数
 	int kMaxObstacleCount_ = 0;
 	// 隕石の数
@@ -115,7 +127,10 @@ private:
 	int editNowLevel_ = 0;
 	// 落下かどうか
 	int isGravity_ = 0;
+	// スポーンY座標用
+	float respawnDistance_ = 30.0f;
 
+	/// MultiAttack用
 	//攻撃のクールタイム
 	float coolTime_ = 1.0f;
 	//何回攻撃するか

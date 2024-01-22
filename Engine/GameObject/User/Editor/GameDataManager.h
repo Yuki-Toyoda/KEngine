@@ -84,11 +84,30 @@ public: // 呼び出し時に使用する配列
 
     std::string GetAttackGroupName() { return "MeteorParam"; }
 
+    void AddSingleAttack(std::string& name) {
+        singleAttackList_.push_back(name);
+    }
+
+    void ClearList() {
+        singleAttackList_.clear();
+    }
+
+    void AddLoadNum() {
+        LoadNumber++;
+    }
+    void IncrementLoadNum() {
+        if (LoadNumber > 0) {
+            LoadNumber--;
+        }
+    }
+
 private:
     /// 項目
     using Item = std::variant<int32_t, float, Vector2, Vector3, std::string>;
     using Section = std::map<std::string, Item>;
     using Group = std::map<std::string, Section>;
+
+    std::list<std::string> singleAttackList_;
 
     // 現在の設定中の番号
     int kLoadObjectNumber_ = 0;
@@ -103,7 +122,7 @@ private:
     const float kFabsValue_f = 2000.0f;
     const int kFabsValue_i = 2000;
 
-public:
+public: // アクセッサ
 #pragma region 設定
     void SetValue(const HierarchicalName& names, const std::string& key, int32_t value);
     void SetValue(const HierarchicalName& names, const std::string& key, float value);

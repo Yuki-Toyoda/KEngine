@@ -2,7 +2,7 @@
 
 using namespace nlohmann;
 
-int GameDataManager::LoadNumber;
+int GameDataManager::LoadNumber = 0;
 
 void GameDataManager::LoadFiles()
 {
