@@ -22,6 +22,10 @@ void Player::Update()
 	worldPos_ = transform_.translate_;
 	
 	transform_.translate_ = transform_.translate_ +velocity_;
+	if (!(state_->name_ == "BlowAway")) {
+		//BlowAwayStateじゃなかったら向いている方向にRotateを合わせる
+		transform_.rotate_.y = -std::atan2(velocity_.x, -velocity_.z);
+	}
 	//地面より外に出たら中に戻して状態をRootに変更
 	if (transform_.translate_.x+transform_.scale_.x >= ground_->transform_.scale_.x|| transform_.translate_.x - transform_.scale_.x <= -ground_->transform_.scale_.x) {
 		velocity_.x =0.0f;
