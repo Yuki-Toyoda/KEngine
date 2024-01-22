@@ -31,11 +31,15 @@ void TitleScene::Init()
 	tm_->SetPlayerAnimManager(pam);
 	// アニメーションを生成
 	tm_->CreateAnimation();
+
+	// フェードイン
+	FadeManager::GetInstance()->ChangeParameter("FadeIn", true);
+	FadeManager::GetInstance()->Play();
 }
 
 void TitleScene::Update()
 {
-	// デバッグ遷移
+	// タイトルマネージャ
 	if (tm_->GetIsSceneChange()) {
 		BaseScene* nextScene = new GameScene();
 		SceneManager::GetInstance()->SetNextScene(nextScene);

@@ -17,9 +17,6 @@ public: // メンバ関数
 	/// </summary>
 	void Update() override;
 
-private: // メンバ変数
-	void AtackAfterInit();
-
 private:
 
 	Player*player_;

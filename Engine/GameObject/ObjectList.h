@@ -25,3 +25,4 @@
 #include "User/Enemy/Atack/meteor.h"
 #include "User/TestObject/TestObject.h"
 #include "User/TitleManager/TitleManager.h"
+#include "User/ResultManager/ResultManager.h"
