@@ -1,5 +1,9 @@
 #pragma once
 #include "IPlayerState.h"
+
+/// <summary>
+/// 攻撃行動
+/// </summary>
 class AtackState:public IPlayerState
 {
 	/// <summary>

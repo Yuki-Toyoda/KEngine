@@ -2,7 +2,7 @@
 #include "IPlayerState.h"
 
 /// <summary>
-/// 待機時ステート
+/// 待機時行動状態
 /// </summary>
 class RootState:public IPlayerState
 {
