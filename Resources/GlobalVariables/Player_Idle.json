@@ -1,0 +1,49 @@
+{
+    "Player_Idle": {
+        "Body_Rotate : KeyCount": 2,
+        "Body_Rotate key : 0": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Body_Rotate key : 0 : EasingParameter": 0,
+        "Body_Rotate key : 0 : PlayFrame": 0,
+        "Body_Rotate key : 1": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Body_Rotate key : 1 : EasingParameter": 0,
+        "Body_Rotate key : 1 : PlayFrame": 60,
+        "Body_Scale : KeyCount": 2,
+        "Body_Scale key : 0": [
+            1.0,
+            1.0,
+            1.0
+        ],
+        "Body_Scale key : 0 : EasingParameter": 0,
+        "Body_Scale key : 0 : PlayFrame": 0,
+        "Body_Scale key : 1": [
+            1.0,
+            1.0,
+            1.0
+        ],
+        "Body_Scale key : 1 : EasingParameter": 9,
+        "Body_Scale key : 1 : PlayFrame": 60,
+        "Body_Translate : KeyCount": 2,
+        "Body_Translate key : 0": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Body_Translate key : 0 : EasingParameter": 0,
+        "Body_Translate key : 0 : PlayFrame": 0,
+        "Body_Translate key : 1": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Body_Translate key : 1 : EasingParameter": 0,
+        "Body_Translate key : 1 : PlayFrame": 60
+    }
+}

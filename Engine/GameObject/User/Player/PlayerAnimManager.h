@@ -45,6 +45,14 @@ public: // メンバ関数
 	/// </summary>
 	void CrateAnimation();
 
+public: // アクセッサ等
+
+	/// <summary>
+	/// アニメーションのゲッター
+	/// </summary>
+	/// <returns>アニメーション</returns>
+	Animation* GetAnimation() { return anim_; }
+
 public: // パブリックなメンバ変数
 
 	// パーツごとのトランスフォーム

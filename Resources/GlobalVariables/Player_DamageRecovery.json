@@ -1,0 +1,77 @@
+{
+    "Player_DamageRecovery": {
+        "Body_Rotate : KeyCount": 2,
+        "Body_Rotate key : 0": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Body_Rotate key : 0 : EasingParameter": 0,
+        "Body_Rotate key : 0 : PlayFrame": 0,
+        "Body_Rotate key : 1": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Body_Rotate key : 1 : EasingParameter": 0,
+        "Body_Rotate key : 1 : PlayFrame": 45,
+        "Body_Scale : KeyCount": 4,
+        "Body_Scale key : 0": [
+            1.7999999523162842,
+            0.20000000298023224,
+            1.7999999523162842
+        ],
+        "Body_Scale key : 0 : EasingParameter": 0,
+        "Body_Scale key : 0 : PlayFrame": 0,
+        "Body_Scale key : 1": [
+            1.850000023841858,
+            0.15000000596046448,
+            1.850000023841858
+        ],
+        "Body_Scale key : 1 : EasingParameter": 7,
+        "Body_Scale key : 1 : PlayFrame": 5,
+        "Body_Scale key : 2": [
+            0.75,
+            1.4500000476837158,
+            0.75
+        ],
+        "Body_Scale key : 2 : EasingParameter": 8,
+        "Body_Scale key : 2 : PlayFrame": 25,
+        "Body_Scale key : 3": [
+            1.0,
+            1.0,
+            1.0
+        ],
+        "Body_Scale key : 3 : EasingParameter": 8,
+        "Body_Scale key : 3 : PlayFrame": 45,
+        "Body_Translate : KeyCount": 4,
+        "Body_Translate key : 0": [
+            0.0,
+            -0.800000011920929,
+            0.0
+        ],
+        "Body_Translate key : 0 : EasingParameter": 0,
+        "Body_Translate key : 0 : PlayFrame": 0,
+        "Body_Translate key : 1": [
+            0.0,
+            -0.8500000238418579,
+            0.0
+        ],
+        "Body_Translate key : 1 : EasingParameter": 7,
+        "Body_Translate key : 1 : PlayFrame": 5,
+        "Body_Translate key : 2": [
+            0.0,
+            1.4500000476837158,
+            0.0
+        ],
+        "Body_Translate key : 2 : EasingParameter": 8,
+        "Body_Translate key : 2 : PlayFrame": 20,
+        "Body_Translate key : 3": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Body_Translate key : 3 : EasingParameter": 8,
+        "Body_Translate key : 3 : PlayFrame": 45
+    }
+}

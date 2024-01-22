@@ -30,12 +30,26 @@ void PlayerAnimManager::Init()
 
 	/// パラメータ作成
 	// タイトル上の待機状態
-	CreateParameter("Player_TitleIdle");
+	CreateParameter("Player_Idle");
+
+	// ダメージアニメーション
+	CreateParameter("Player_Damage");
+	// ダメージ中アニメーション
+	CreateParameter("Player_Damaging");
+	// ダメージからの復帰アニメーション
+	CreateParameter("Player_DamageRecovery");
+
+	// スタンアニメーション
+	CreateParameter("Player_Stun");
+	// スタン中アニメーション
+	CreateParameter("Player_Stuning");
+	// スタン復帰アニメーション
+	CreateParameter("Player_StunRecovery");
 }
 
 void PlayerAnimManager::Update()
 {
-
+	
 }
 
 void PlayerAnimManager::DisplayImGui()
@@ -52,12 +66,31 @@ void PlayerAnimManager::DisplayImGui()
 		anim_->DisplayImGui();
 		// アニメーションの読み込みパラメータ変更
 		if (ImGui::TreeNode("Player_ChangeReadParameter")) {
-			if (ImGui::Button("TitleIdle")) {
-				anim_->ChangeParameter("Player_TitleIdle", true);
+			if (ImGui::Button("Idle")) {
+				anim_->ChangeParameter("Player_Idle", true);
+			}
+			if (ImGui::Button("Damage")) {
+				anim_->ChangeParameter("Player_Damage", true);
+			}
+			if (ImGui::Button("Damaging")) {
+				anim_->ChangeParameter("Player_Damaging", true);
+			}
+			if (ImGui::Button("DamageRecovery")) {
+				anim_->ChangeParameter("Player_DamageRecovery", true);
+			}
+			if (ImGui::Button("Stun")) {
+				anim_->ChangeParameter("Player_Stun", true);
+			}
+			if (ImGui::Button("Stuning")) {
+				anim_->ChangeParameter("Player_Stuning", true);
+			}
+			if (ImGui::Button("StunRecovery")) {
+				anim_->ChangeParameter("Player_StunRecovery", true);
 			}
 
 			ImGui::TreePop();
 		}
+
 	}
 }
 
