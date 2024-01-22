@@ -3,7 +3,7 @@
         "Info": {
             "Distance": 30.579999923706055,
             "IsGravity": 1,
-            "MaxCount": 5,
+            "MaxCount": 6,
             "Scale": [
                 2.0,
                 1.0,
@@ -13,6 +13,9 @@
         "Multi": {
             "CoolTime": 0.5,
             "MaxCount": 6
+        },
+        "PushUp": {
+            "MaxCount": 5
         }
     }
 }

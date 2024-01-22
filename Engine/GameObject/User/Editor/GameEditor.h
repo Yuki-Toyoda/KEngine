@@ -133,6 +133,8 @@ private:
 	int kMaxMeteor_ = 0;
 	// 敵の最大数
 	int kMaxEnemyCount_ = 0;
+	// 上がってくるオブジェクトの数
+	int kMaxPushUp_ = 0;
 	// for文の際の値
 	int indexCount_ = 0;
 	// 隕石の大きさ
@@ -153,5 +155,8 @@ private:
 private: // 仮配置用のオブジェクト
 	// 隕石
 	std::vector<Meteor*> meteors_;
+
+	std::vector<PushUp*> pushUps_;
+
 };
 

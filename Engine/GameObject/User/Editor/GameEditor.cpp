@@ -22,12 +22,10 @@ void GameEditor::Update()
 {
 	// 落下修正
 	MeteorFix();
-
-	// エディターのImGui表示
-	EditorImGui();
-
 	// エディター以外の基本部分のImGui
 	SystemImGui();
+	// エディターのImGui表示
+	EditorImGui();
 }
 
 void GameEditor::ParameterInitialize()
@@ -59,6 +57,12 @@ void GameEditor::ParameterInitialize()
 	coolTime_ = dataManager_->GetFloatValue(names, "CoolTime");
 	kMaxCount_ = dataManager_->GetIntValue(names, "MaxCount");
 
+	names.kSection = "PushUp";
+	// パラメータない用
+	dataManager_->AddItem(names, "MaxCount", kMaxPushUp_);
+
+	kMaxPushUp_ = dataManager_->GetIntValue(names, "MaxCount");
+
 #pragma endregion
 
 #pragma region 通常落下部分
@@ -85,7 +89,35 @@ void GameEditor::ParameterInitialize()
 		meteors_.push_back(meteor);
 
 	}
+
 #pragma endregion
+
+#pragma region 下からの攻撃
+
+	names = { "PushUpAttack","Info" };
+
+	for (int i = 0; i < kMaxPushUp_; i++) {
+		PushUp* object;
+		object = gameObjectManager_->CreateInstance<PushUp>("PushUp", BaseObject::TagNone);
+
+		// パス生成
+		std::string group = "PushUpAttack";
+		std::string section = "PushUp" + std::to_string(i);
+		std::string key = "Position";
+
+		// ここから情報を受け取る部分
+		Vector3 newPosition = {};
+		// 要素がなかった場合の処理
+		dataManager_->AddItem({ group,section }, key, newPosition);
+		newPosition = dataManager_->GetVector3Value({ group,section }, key);
+		object->transform_.translate_ = newPosition;
+		object->transform_.translate_.y = 0.8f;
+		// プッシュ
+		pushUps_.push_back(object);
+	}
+
+#pragma endregion
+	dataManager_->SaveData("PushUpAttack");
 
 }
 
@@ -112,7 +144,17 @@ void GameEditor::EditorImGui()
 			ImGui::Text("\n");
 			indexCount_++;
 		}
-
+		// 名前
+		std::string pushUp = "PushUpAttack";
+		// 数初期化
+		indexCount_ = 0;
+		for (PushUp* object : pushUps_) {
+			SetObject(object, pushUp, 3);
+			ImGui::Text("\n");
+			indexCount_++;
+		}
+		// 突き上げのファイル
+		dataManager_->SaveData(pushUp);
 		// 隕石のファイル
 		dataManager_->SaveData(single);
 		// 共通のパラメータファイル
@@ -248,7 +290,75 @@ void GameEditor::EditorImGui()
 		}
 
 		// 下からのやつ
-		if (ImGui::BeginTabItem("Common")) {
+		if (ImGui::BeginTabItem("PushUpAttack")) {
+			// 保存
+			ImGui::SeparatorText("System");
+			if (ImGui::Button("Save")) {
+				// 名前
+				std::string pushUp = "PushUpAttack";
+				// 数初期化
+				indexCount_ = 0;
+				for (PushUp* object : pushUps_) {
+					SetObject(object, pushUp, 3);
+					ImGui::Text("\n");
+					indexCount_++;
+				}
+				// 隕石のファイル
+				dataManager_->SaveData(pushUp);
+				// セーブが完了したことをメッセージボックスで出す
+				std::string message = std::format("{}.json saved.", pushUp);
+				MessageBoxA(nullptr, message.c_str(), "DataManager", 0);
+			}
+
+			// 要素
+			ImGui::SeparatorText("Individual");
+			// 最大の数
+			ImGui::InputInt("PushMaxCount", &kMaxPushUp_);
+			const int nowMax = 20;
+
+			// 敵の追加
+			if (ImGui::Button("Add")) {
+				// カウントアップ
+				kMaxPushUp_++;
+				// 最大を超えないように
+				if (kMaxPushUp_ > nowMax) {
+					kMaxPushUp_ = nowMax;
+					ImGui::EndTabItem();
+					ImGui::EndTabBar();
+					ImGui::End();
+					return;
+				}
+				// インスタンス生成
+				PushUp* object;
+				object = gameObjectManager_->CreateInstance<PushUp>("PushUp", BaseObject::TagNone);
+				std::string group = "PushUpAttack";
+				std::string section = "PushUp" + std::to_string(kMaxPushUp_);
+				Vector3 newPos = {};
+				dataManager_->AddItem({ group,section }, "Position", newPos);
+				object->transform_.translate_ = dataManager_->GetVector3Value({ group,section }, "Position");
+				pushUps_.push_back(object);
+			}
+			// 最大を超えないように
+			if (kMaxPushUp_ > nowMax) {
+				kMaxPushUp_ = nowMax;
+			}
+
+			ImGui::Text("\n");
+
+			// タブの内容
+			ImGui::BeginChild(ImGui::GetID((void*)0), ImVec2(400, 300), ImGuiWindowFlags_NoTitleBar);
+
+			// 要素の座標操作
+			indexCount_ = 0;
+			for (PushUp* object : pushUps_) {
+				// 名前のタグ
+				std::string fullTag = "PushUp" + std::to_string(indexCount_);
+				ImGui::DragFloat3(fullTag.c_str(), &object->transform_.translate_.x, 0.1f, -30.0f, 30.0f);
+				ImGui::Text("\n");
+				indexCount_++;
+			}
+
+			ImGui::EndChild();
 
 			ImGui::EndTabItem();
 		}
@@ -314,6 +424,7 @@ void GameEditor::DataReaload()
 	CreateCamera();
 	// リストクリア
 	meteors_.clear();
+	pushUps_.clear();
 	// Jsonの情報による初期化
 	ParameterInitialize();
 }
@@ -331,7 +442,7 @@ void GameEditor::CreateCamera()
 	CameraUpdate();
 	// 地面
 	ground_ = gameObjectManager_->CreateInstance<Ground>("Ground", BaseObject::TagFloor);
-	ground_->transform_.translate_.y = -1.5f;
+	ground_->transform_.translate_.y = -1.3f;
 	ground_->transform_.scale_ = { 55.81f,1.0f,32.5f };
 }
 

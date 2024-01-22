@@ -75,7 +75,7 @@ public: // 呼び出し時に使用する配列
     // ステージごとの名前
     std::array<std::string, 4> kLevelNames = { "Easy","Normal","Hard","Expert" };
     // 内部に保存しているオブジェクトの名前
-    std::array<std::string, 3> kObjectNames = { "Enemy","Obstacle","Meteor" };
+    std::array<std::string, 4> kObjectNames = { "Enemy","Obstacle","Meteor","PushUp"};
 
     // 保存するアイテム名
     std::array<std::string, kEnemyMaxValue> kEnemyItems = { "Position","Type","Speed","RespownTime", "MaxCount" };
