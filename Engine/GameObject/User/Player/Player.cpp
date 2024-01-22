@@ -29,23 +29,37 @@ void Player::Update()
 	// 座標に速度ベクトルを加算する
 	transform_.translate_ = transform_.translate_ + velocity_;
 	//地面より外に出たら中に戻して状態をRootに変更
-	if (transform_.translate_.x+transform_.scale_.x >= ground_->transform_.scale_.x|| transform_.translate_.x - transform_.scale_.x <= -ground_->transform_.scale_.x) {
+	if (transform_.translate_.x + transform_.scale_.x >= ground_->transform_.scale_.x) {
 		// x軸方向の速度ベクトルを0に
 		velocity_.x =0.0f;
 		// 前フレーム座標に固定する
-		transform_.translate_.x = prevPos_.x;
+		transform_.translate_.x = ground_->transform_.scale_.x - transform_.scale_.x;
 		// 強制的に待機状態ステートに変更
 		ChangeState(std::make_unique<RootState>());
-		return;
 	}
-	if (transform_.translate_.z + transform_.scale_.z >= ground_->transform_.scale_.z || transform_.translate_.z - transform_.scale_.z <= -ground_->transform_.scale_.z) {
+	else if (transform_.translate_.x - transform_.scale_.x <= -ground_->transform_.scale_.x) {
+		// x軸方向の速度ベクトルを0に
+		velocity_.x = 0.0f;
+		// 前フレーム座標に固定する
+		transform_.translate_.x = -ground_->transform_.scale_.x + transform_.scale_.x;
+		// 強制的に待機状態ステートに変更
+		ChangeState(std::make_unique<RootState>());
+	}
+
+	if (transform_.translate_.z + transform_.scale_.z >= ground_->transform_.scale_.z) {
 		// z軸方向の速度ベクトルを0に
 		velocity_.z =0.0f;
 		// 前フレーム座標に固定する
-		transform_.translate_.z = prevPos_.z;
+		transform_.translate_.z = ground_->transform_.scale_.z - transform_.scale_.z;
 		// 強制的に待機状態ステートに変更
 		ChangeState(std::make_unique<RootState>());
-		return;
+	}else if (transform_.translate_.z - transform_.scale_.z <= -ground_->transform_.scale_.z) {
+		// x軸方向の速度ベクトルを0に
+		velocity_.z = 0.0f;
+		// 前フレーム座標に固定する
+		transform_.translate_.z = -ground_->transform_.scale_.z + transform_.scale_.z;
+		// 強制的に待機状態ステートに変更
+		ChangeState(std::make_unique<RootState>());
 	}
 	//SubtractVelocity();
 	
