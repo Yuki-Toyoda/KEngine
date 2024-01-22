@@ -4,6 +4,10 @@
 #include "../../../Utility/Timer/DeltaTimer.h"
 #include "../Ground/Ground.h"
 #include "State/PlayerStateList.h"
+
+// クラスの前方宣言
+class PlayerAnimManager;
+
 /// <summary>
 /// プレイヤークラス
 /// </summary>
@@ -85,6 +89,12 @@ public: // メンバ関数
 	/// <returns>攻撃力</returns>
 	float GetAtackPower() { return atackPower_; }
 
+	/// <summary>
+	/// プレイヤーアニメーションマネージャ
+	/// </summary>
+	/// <param name="pam">プレイヤーアニメーションマネージャ</param>
+	void SetPlayerAnimManager(PlayerAnimManager* pam) { pam_ = pam; }
+
 private: // プライベートなメンバ関数
 
 	/// <summary>
@@ -120,6 +130,8 @@ private: // メンバ変数
 	KLib::DeltaTimer hitCollTimer_;
 	// ダメージをくらう時のクールタイム
 	float hitCoolTime_=2.0f;
+	// ダメージ後のスタン秒数
+	float damageStanTime_ = 1.0f;
 
 	// 地面クラス
 	Ground* ground_ = nullptr;
@@ -132,5 +144,8 @@ private: // メンバ変数
 	bool isAtack_;
 	// 行動状態クラス
 	std::unique_ptr<IPlayerState> state_;
+
+	// プレイヤーアニメーションマネージャ
+	PlayerAnimManager* pam_ = nullptr;
 };
 

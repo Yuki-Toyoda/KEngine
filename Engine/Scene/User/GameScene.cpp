@@ -32,7 +32,11 @@ void GameScene::Init(){
 	PlayerAnimManager* am = gameObjectManager_->CreateInstance<PlayerAnimManager>("playerAnim", BaseObject::TagPlayer);
 	// プレイヤーを渡す
 	am->SetPlayer(player_);
-	
+	// プレイヤーに自身を渡す
+	player_->SetPlayerAnimManager(am);
+	// アニメーションを生成
+	am->CrateAnimation();
+
 	// 地面生成
 	Ground* ground;
 	ground = gameObjectManager_->CreateInstance<Ground>("Ground", BaseObject::TagFloor);

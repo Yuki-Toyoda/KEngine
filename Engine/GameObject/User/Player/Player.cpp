@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "PlayerAnimManager.h"
 
 void Player::Init()
 {
@@ -74,6 +75,12 @@ void Player::DisplayImGui()
 	ImGui::DragFloat("scale rate", &scaleForce_, 0.01f);
 	//攻撃倍率
 	ImGui::DragFloat("atack rate", &atackForce_, 0.01f);
+
+	// 改行する
+	ImGui::NewLine();
+
+	// ダメージのスタン秒数
+	ImGui::DragFloat("StanTime", &damageStanTime_, 0.1f, 0.01f, 5.0f);
 }
 
 void Player::OnCollisionEnter(Collider* collider)
@@ -106,7 +113,13 @@ void Player::Damage()
 {
 	//クールタイムを過ぎていたら攻撃をくらう
 	if (hitCollTimer_.GetIsFinish()) {
+
+		// ダメージアニメーション再生
+		pam_->Damage(damageStanTime_);
+
+		// HPを減らす
 		hitPoint_--;
+		// ヒットクールタイマーリセット
 		hitCollTimer_.Start(hitCoolTime_);
 	}
 
@@ -134,7 +147,6 @@ void Player::Atack()
 	// 攻撃を行った後y座標をリセット
 	transform_.translate_.y =2.0f;
 	transform_.scale_ = { 1.0f,1.0f ,1.0f };
-
 }
 
 void Player::ChangeState(std::unique_ptr<IPlayerState> newState)
