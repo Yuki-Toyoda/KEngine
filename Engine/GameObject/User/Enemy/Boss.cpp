@@ -10,13 +10,15 @@ void Boss::SuccessorInit()
 	gameObjectManager_ = GameObjectManager::GetInstance();
 	GameDataManager* dataManager = GameDataManager::GetInstance();
 	//下からの攻撃を生成
-	int pushUpMax = dataManager->GetIntValue({ "MeteorParam","PushUp" }, "MaxCount");
+	int pushUpMax = dataManager->GetValue<int>({ "MeteorParam","PushUp" }, "MaxCount");
 
 	for (int i = 0; i < pushUpMax; i++) {
 		PushUp* pushUp;
 		pushUp = gameObjectManager_->CreateInstance<PushUp>("PushUp", BaseObject::TagNone);
+		// 名前
 		std::string name = "PushUp" + std::to_string(i);
-		Vector3 newPos = dataManager->GetVector3Value({ "PushUpAttack",name }, "Position");
+		// Y座標以外を設定
+		Vector3 newPos = dataManager->GetValue<Vector3>({ "PushUpAttack",name }, "Position");
 		pushUp->transform_.translate_.x = newPos.x;
 		pushUp->transform_.translate_.z = newPos.z;
 		pushUp_.push_back(pushUp);

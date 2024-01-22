@@ -16,7 +16,7 @@ void Meteor::Init()
 
 void Meteor::Update()
 {
-	int isGrav = GameDataManager::GetInstance()->GetIntValue({ "MeteorParam","Info" }, "IsGravity");
+	int isGrav = GameDataManager::GetInstance()->GetValue<int>({ "MeteorParam","Info" }, "IsGravity");
 	if (isGrav) {
 		transform_.translate_ += velocity_ * moveSpeed_;
 	}

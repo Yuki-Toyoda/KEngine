@@ -123,7 +123,14 @@ private:
 
 	int cameraType_ = kUpSide;
 
-	//std::array<Vector3, 2> cameraPoint = {};
+
+	// 攻撃の種類ごとの名前（グループネームのベース)
+	const std::string kSingleAttackName = "SingleMeteor";
+	const std::string kMultiAttackName = "MultiMeteor";
+	const std::string kPushAttackName = "PushUpAttack";
+	const std::string kRollerAttackName = "RollerAttack";
+
+	float kAbsValue = 50.0f;
 
 private:
 	/// SingleAttack用

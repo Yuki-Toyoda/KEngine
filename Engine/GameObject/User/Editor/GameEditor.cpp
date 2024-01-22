@@ -26,6 +26,11 @@ void GameEditor::Update()
 	SystemImGui();
 	// エディターのImGui表示
 	EditorImGui();
+
+	int a = dataManager_->GetValue<int>({ "MeteorParam","Multi" }, "MaxCount");
+	ImGui::Begin("tes");
+	ImGui::Text("%d", a);
+	ImGui::End();
 }
 
 void GameEditor::ParameterInitialize()
@@ -42,10 +47,10 @@ void GameEditor::ParameterInitialize()
 	dataManager_->AddItem(names, "Distance", respawnDistance_);
 
 	// Jsonから受け取る
-	kMaxMeteor_ = dataManager_->GetIntValue(names, "MaxCount");
-	isGravity_ = dataManager_->GetIntValue(names, "IsGravity");
-	size_ = dataManager_->GetVector3Value(names, "Scale");
-	respawnDistance_ = dataManager_->GetFloatValue(names, "Distance");
+	kMaxMeteor_ = dataManager_->GetValue<int>(names, "MaxCount");
+	isGravity_ = dataManager_->GetValue<int>(names, "IsGravity");
+	size_ = dataManager_->GetValue<Vector3>(names, "Scale");
+	respawnDistance_ = dataManager_->GetValue<float>(names, "Distance");
 
 	// 名前
 	names.kSection = "Multi";
@@ -54,14 +59,14 @@ void GameEditor::ParameterInitialize()
 	dataManager_->AddItem(names, "MaxCount", kMaxCount_);
 
 	// Jsonから受け取る
-	coolTime_ = dataManager_->GetFloatValue(names, "CoolTime");
-	kMaxCount_ = dataManager_->GetIntValue(names, "MaxCount");
+	coolTime_ = dataManager_->GetValue<float>(names, "CoolTime");
+	kMaxCount_ = dataManager_->GetValue<int>(names, "MaxCount");
 
 	names.kSection = "PushUp";
 	// パラメータない用
 	dataManager_->AddItem(names, "MaxCount", kMaxPushUp_);
 
-	kMaxPushUp_ = dataManager_->GetIntValue(names, "MaxCount");
+	kMaxPushUp_ = dataManager_->GetValue<int>(names, "MaxCount");
 
 #pragma endregion
 
@@ -82,7 +87,8 @@ void GameEditor::ParameterInitialize()
 		Vector3 newPosition = {};
 		// 要素がなかった場合の処理
 		dataManager_->AddItem({ group,section }, key, newPosition);
-		newPosition = dataManager_->GetVector3Value({ group,section }, key);
+		newPosition = dataManager_->GetValue<Vector3>({ group,section }, key);
+
 		meteor->transform_.translate_ = newPosition;
 		meteor->transform_.translate_.y = 0.8f;
 		// プッシュ
@@ -109,7 +115,8 @@ void GameEditor::ParameterInitialize()
 		Vector3 newPosition = {};
 		// 要素がなかった場合の処理
 		dataManager_->AddItem({ group,section }, key, newPosition);
-		newPosition = dataManager_->GetVector3Value({ group,section }, key);
+		newPosition = dataManager_->GetValue<Vector3>({ group,section }, key);
+
 		object->transform_.translate_ = newPosition;
 		object->transform_.translate_.y = 0.8f;
 		// プッシュ
@@ -258,7 +265,7 @@ void GameEditor::EditorImGui()
 				// 名前のタグ
 				std::string fullTag = "Meteor" + std::to_string(indexCount_);
 				//meteor->transform_.scale_ = size_;
-				ImGui::DragFloat3(fullTag.c_str(), &meteor->transform_.translate_.x, 0.1f, -30.0f, 30.0f);
+				ImGui::DragFloat3(fullTag.c_str(), &meteor->transform_.translate_.x, 0.1f, -kAbsValue, kAbsValue);
 				ImGui::Text("\n");
 				indexCount_++;
 			}
@@ -353,7 +360,7 @@ void GameEditor::EditorImGui()
 			for (PushUp* object : pushUps_) {
 				// 名前のタグ
 				std::string fullTag = "PushUp" + std::to_string(indexCount_);
-				ImGui::DragFloat3(fullTag.c_str(), &object->transform_.translate_.x, 0.1f, -30.0f, 30.0f);
+				ImGui::DragFloat3(fullTag.c_str(), &object->transform_.translate_.x, 0.1f, -kAbsValue, kAbsValue);
 				ImGui::Text("\n");
 				indexCount_++;
 			}

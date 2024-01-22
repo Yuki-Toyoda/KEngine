@@ -139,13 +139,23 @@ public: // アクセッサ
     void AddItem(const HierarchicalName& names, const std::string& key, std::string value);
 #pragma endregion
 
-#pragma region 取得
-    int GetIntValue(const HierarchicalName& names, const std::string& key);
-    float GetFloatValue(const HierarchicalName& names, const std::string& key);
-    Vector2 GetVector2Value(const HierarchicalName& names, const std::string& key);
-    Vector3 GetVector3Value(const HierarchicalName& names, const std::string& key);
-    std::string GetStringValue(const HierarchicalName& names, const std::string& key);
+#pragma region 取得まとめ
+    template<typename T>
+    T GetValue(const HierarchicalName& names, const std::string& key) {
+        // 指定グループが存在するか
+        assert(gameDatas_.find(names.kGroup) != gameDatas_.end());
+        // セクション探し
+        assert(gameDatas_[names.kGroup].find(names.kSection) != gameDatas_[names.kGroup].end());
+        // セクションの参照を取得
+        Section& section = gameDatas_[names.kGroup][names.kSection];
+
+        // 指定グループに指定キーが存在するか
+        assert(section.find(key) != section.end());
+        // 指定グループから指定のキーの値を取得
+        return std::get<T>(section[key]);
+    }
 #pragma endregion
+
 
 };
 
