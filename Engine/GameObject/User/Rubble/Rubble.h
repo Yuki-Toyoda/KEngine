@@ -29,6 +29,6 @@ private:
 	KLib::DeltaTimer lerpTimer_;
 
 	// 遷移にかかる秒数
-	float lerpTime_ = 3.0f;
+	float lerpTime_ = 5.0f;
 };
 

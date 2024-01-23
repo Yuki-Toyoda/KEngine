@@ -137,9 +137,9 @@ private: // メンバ変数
 	// 移動方向ベクトル
 	Vector3 velocity_;
 	// 移動加速度
-	float moveAcceleration_ = 0.01f;
+	float moveAcceleration_ = 0.010f;
 	// 移動加速度最大値
-	float kMaxMoveAcceleration_ = 0.25f;
+	float kMaxMoveAcceleration_ = 0.4f;
 
 	// 減衰速度
 	float decayAcceleration_ = 0.035f;
@@ -164,7 +164,7 @@ private: // メンバ変数
 	// ダメージをくらう時のクールタイム
 	float hitCoolTime_=2.0f;
 	// ダメージ後のスタン秒数
-	float damageStanTime_ = 1.0f;
+	float damageStanTime_ = 0.5f;
 	// ダメージを喰らっているか
 	bool isDamaged_ = false;
 

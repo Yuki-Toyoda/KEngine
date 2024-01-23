@@ -12,7 +12,7 @@ void GameScene::Init(){
 	camera_ = gameObjectManager_->CreateInstance<InGameCamera>("Incamera", BaseObject::TagCamera);
 	camera_->UseThisCamera();
 	camera_->fov_ = 0.85f;
-	camera_->transform_.translate_ = { 0.0f,47.0f,-85.0f };
+	camera_->transform_.translate_ = { 0.0f,47.0f,-90.0f };
 	camera_->transform_.rotate_ = { 0.55f,0.0f,0.0f };
 	
 	// スカイドーム生成
@@ -41,7 +41,7 @@ void GameScene::Init(){
 	// 地面生成
 	Ground* ground;
 	ground = gameObjectManager_->CreateInstance<Ground>("Ground", BaseObject::TagFloor);
-	ground->transform_.scale_ = { 55.81f,1.0f,32.5f };
+	ground->transform_.scale_ = { 55.0f,1.0f,55.0f };
 	// プレイヤーに生成した地面をセット
 	player_->SetGround(ground);
 
