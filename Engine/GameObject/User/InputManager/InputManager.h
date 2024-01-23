@@ -1,6 +1,6 @@
 #pragma once
 #include "../../../Input/Input.h"
-#include "../../../Math/Vector3.h"
+#include "../../../Math/Math.h"
 
 /// <summary>
 /// 入力マネージャ

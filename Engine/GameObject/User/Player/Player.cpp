@@ -27,7 +27,9 @@ void Player::Update()
 	// ワールド座標の更新
 	worldPos_ = transform_.translate_;
 	
+	// 移動ベクトルに応じて移動を行う
 	transform_.translate_ = transform_.translate_ +velocity_;
+	
 	//BlowAwayStateじゃない場合
 	if (!(state_->name_ == "BlowAway")) {
 		// 入力ベクトルが0以外の場合
@@ -79,9 +81,16 @@ void Player::Update()
 
 void Player::DisplayImGui()
 {
+	// トランスフォームの情報表示
 	transform_.DisplayImGui();
-	//減速率
-	ImGui::DragFloat("deceleration rate", &decelerationRate, 0.01f);
+	//移動加速度
+	ImGui::DragFloat("MoveAcceleration", &moveAcceleration_, 0.01f);
+	// 最大移動加速度
+	ImGui::DragFloat("MaxMoveAcceleration", &kMaxMoveAcceleration_, 0.01f);
+	
+	// 減衰速度
+	ImGui::DragFloat("DecayAcceleration", &decayAcceleration_, 0.01f);
+
 	//拡大率
 	ImGui::DragFloat("scale rate", &scaleForce_, 0.01f);
 	//攻撃倍率

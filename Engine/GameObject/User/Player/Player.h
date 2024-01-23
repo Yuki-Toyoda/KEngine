@@ -61,6 +61,8 @@ public: // メンバ関数
 	/// </summary>
 	void Atack();
 
+public: // アクセッサ等
+
 	/// <summary>
 	/// 破片の吸収数ゲッター
 	/// </summary>
@@ -95,6 +97,23 @@ public: // メンバ関数
 	/// <param name="pam">プレイヤーアニメーションマネージャ</param>
 	void SetPlayerAnimManager(PlayerAnimManager* pam) { pam_ = pam; }
 
+	/// <summary>
+	/// 加速度ゲッター
+	/// </summary>
+	/// <returns>加速度</returns>
+	float GetMoveAcceleration() { return moveAcceleration_; }
+	/// <summary>
+	/// 最大加速度ゲッター
+	/// </summary>
+	/// <returns>最大加速度</returns>
+	float GetMaxMoveAcceleration() { return kMaxMoveAcceleration_; }
+	
+	/// <summary>
+	/// 減衰加速度ゲッター
+	/// </summary>
+	/// <returns>減衰加速度</returns>
+	float GetDecayAcceleration() { return decayAcceleration_; }
+
 private: // プライベートなメンバ関数
 
 	/// <summary>
@@ -111,9 +130,16 @@ private: // メンバ変数
 
 	// 移動方向ベクトル
 	Vector3 velocity_;
-	// 移動スピード
-	float moveSpeed_ = 0.01f;
-	
+	// 移動加速度
+	float moveAcceleration_ = 0.01f;
+	// 移動加速度最大値
+	float kMaxMoveAcceleration_ = 0.2f;
+
+	// 減衰速度
+	float decayAcceleration_ = 0.01f;
+	// 減衰速度最大値
+	float kMaxDecayAcceleration_ = 0.2f;
+
 	// 一フレーム前のポジション
 	Vector3 prevPos_;
 	// 当たり判定用ワールド座標

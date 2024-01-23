@@ -21,6 +21,18 @@ class RootState:public IPlayerState
 	/// </summary>
 	void DisplayImGui() override;
 
+private: // プライベートなメンバ関数
+
+	/// <summary>
+	/// 移動の関する処理をまとめた関数
+	/// </summary>
+	void Move();
+
+	/// <summary>
+	/// 攻撃に関する処理をまとめた関数
+	/// </summary>
+	void Attack();
+
 public:
 
 	//攻撃可能になるための破片最低数

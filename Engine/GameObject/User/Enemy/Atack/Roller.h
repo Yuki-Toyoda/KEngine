@@ -25,7 +25,7 @@ private: // メンバ変数
 	// 移動方向ベクトル
 	Vector3 velocity_;
 	// 移動スピード
-	float moveSpeed_ = 0.3f;
+	float moveAcceleration_ = 0.3f;
 	// 当たり判定用ワールド座標
 	Vector3 worldPos_;
 };
