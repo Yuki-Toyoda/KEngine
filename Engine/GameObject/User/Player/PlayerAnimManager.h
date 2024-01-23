@@ -45,6 +45,27 @@ public: // メンバ関数
 	/// </summary>
 	void CrateAnimation();
 
+	/// <summary>
+	/// 読み込みパラメータ変更関数
+	/// </summary>
+	/// <param name="name">読み込みパラメータ名</param>
+	/// <param name="isChanged">実行時にそのパラメータへの強制的な遷移を行うか</param>
+	void ChangeParamameter(const std::string& name, const bool& isChanged = true);
+
+	/// <summary>
+	/// ダメージ関数
+	/// </summary>
+	/// <param name="stanTime">スタン秒数</param>
+	void Damage(const float& stanTime);
+
+public: // アクセッサ等
+
+	/// <summary>
+	/// アニメーションのゲッター
+	/// </summary>
+	/// <returns>アニメーション</returns>
+	Animation* GetAnimation() { return anim_; }
+
 public: // パブリックなメンバ変数
 
 	// パーツごとのトランスフォーム
@@ -59,6 +80,12 @@ private: // メンバ変数
 
 	// プレイヤーの実体
 	Player* player_ = nullptr;
+
+	// ダメージ後のスタン秒数タイマー
+	KLib::DeltaTimer stanTimer_;
+
+	// 
+	float imGuiAnimationTime_ = 1.0f;
 
 };
 

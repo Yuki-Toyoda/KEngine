@@ -1,12 +1,13 @@
 #pragma once
-#include "../../BaseObject.h"
+#include "../BaseScene.h"
 
 /// <summary>
-/// 地面クラス
+/// アニメーション開発シーン
 /// </summary>
-class Ground:public BaseObject
+class AnimDevScene : public BaseScene
 {
-public:
+public: // メンバ関数
+
 	/// <summary>
 	/// 初期化関数
 	/// </summary>
@@ -17,12 +18,9 @@ public:
 	/// </summary>
 	void Update() override;
 
-	/// <summary>
-	/// ImGui表示関数
-	/// </summary>
-	void DisplayImGui() override;
+private: // メンバ変数
 
-private:
+	PlayerAnimManager* pam_ = nullptr;
 
 };
 

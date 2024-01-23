@@ -20,10 +20,6 @@ public: // メンバ関数
 private:
 
 	Player*player_;
-	Weapon* weapon_;
-	std::vector<Obstacle*> obstacles_;
-	Chain* chain_;
-	Ground* ground_;
 	InGameCamera* camera_;
 
 };

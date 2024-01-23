@@ -37,7 +37,7 @@ void Roller::Update()
 			transform_.rotate_.x -= 0.1f;
 		}
 	}
-	transform_.translate_ += Math::Normalize( velocity_) * moveSpeed_;
+	transform_.translate_ += Math::Normalize( velocity_) * moveAcceleration_;
 	if (std::abs(transform_.translate_.x) >= 60.0f || std::abs(transform_.translate_.z) >= 35.0f) {
 		/*Destroy();
 		return;*/

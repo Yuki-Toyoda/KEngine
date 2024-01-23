@@ -7,6 +7,7 @@ void GameScene::Init(){
 	// 入力マネージャの初期化
 	InputManager::Init();
 	
+	// カメラの生成
 	camera_ = nullptr;
 	camera_ = gameObjectManager_->CreateInstance<InGameCamera>("Incamera", BaseObject::TagCamera);
 	camera_->UseThisCamera();
@@ -21,7 +22,9 @@ void GameScene::Init(){
 	// プレイヤー生成
 	player_ = nullptr;
 	player_ = gameObjectManager_->CreateInstance<Player>("Player", BaseObject::TagPlayer);
-	player_->transform_.translate_.y = 2.0f;
+	// プレイヤーのy座標
+	player_->transform_.scale_ = { 2.0f, 2.0f, 2.0f };
+	player_->transform_.translate_.y = 3.0f;
 	player_->transform_.translate_.x = 10.0f;
 	//// 敵を生成
 	//gameObjectManager_->CreateInstance<SmallEnemy>("Enemy", BaseObject::TagEnemy);
@@ -30,14 +33,32 @@ void GameScene::Init(){
 	PlayerAnimManager* am = gameObjectManager_->CreateInstance<PlayerAnimManager>("playerAnim", BaseObject::TagPlayer);
 	// プレイヤーを渡す
 	am->SetPlayer(player_);
+	// プレイヤーに自身を渡す
+	player_->SetPlayerAnimManager(am);
+	// アニメーションを生成
+	am->CrateAnimation();
+
+	// 地面生成
 	Ground* ground;
 	ground = gameObjectManager_->CreateInstance<Ground>("Ground", BaseObject::TagFloor);
 	ground->transform_.scale_ = { 55.81f,1.0f,32.5f };
+	// プレイヤーに生成した地面をセット
 	player_->SetGround(ground);
+
+	// ボスの生成
 	Boss* boss;
 	boss = gameObjectManager_->CreateInstance<Boss>("Boss", BaseObject::TagEnemy);
+	// ボスにプレイヤーをセット
 	boss->SetPlayer(player_);
 	
+	// 柵の生成
+	Fences* fm = gameObjectManager_->CreateInstance<Fences>("Fence", BaseObject::TagNone);
+	// 柵追加
+	fm->Add(Vector3(0.0f, 3.5f, ground->transform_.scale_.z), Vector3(0.0f, 0.0f, 0.0f), Vector2(ground->transform_.scale_.x, 2.5f));
+	fm->Add(Vector3(0.0f, 3.5f, -ground->transform_.scale_.z), Vector3(0.0f, 0.0f, 0.0f), Vector2(ground->transform_.scale_.x, 2.5f));
+	fm->Add(Vector3(ground->transform_.scale_.x, 3.5f, 0.0f), Vector3(0.0f, (float)(std::numbers::pi / 2.0f), 0.0f), Vector2(ground->transform_.scale_.z, 2.5f));
+	fm->Add(Vector3(-ground->transform_.scale_.x, 3.5f, 0.0f), Vector3(0.0f, (float)(std::numbers::pi / 2.0f), 0.0f), Vector2(ground->transform_.scale_.z, 2.5f));
+
 	// UIマネージャの生成
 	gameObjectManager_->CreateInstance<InGameUIManager>("UIManager", BaseObject::TagNone);
 

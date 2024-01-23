@@ -49,26 +49,26 @@ void GameEditor::ParameterInitialize()
 #pragma endregion
 
 #pragma region 障害物の初期化
-	names = { dataManager_->kLevelNames[editNowLevel_], dataManager_->kObjectNames[1] };
-	// 最大値設定
-	dataManager_->AddItem(names, dataManager_->kObstacleItems[2], kMaxObstacleCount_);
-	kMaxObstacleCount_ = dataManager_->GetIntValue(names, dataManager_->kObstacleItems[2]);
-	// 障害物の数だけ
-	for (int i = 0; i < kMaxObstacleCount_; i++) {
-		Obstacle* obstacle;
-		// オブジェクトマネージャーに追加
-		obstacle = gameObjectManager_->CreateInstance<Obstacle>("Obstacle", BaseObject::TagObstacle);
-		// パスの設定
-		std::string sectionPath = dataManager_->kObjectNames[1] + std::to_string(i);
-		std::string keyPath = dataManager_->kObstacleItems[0];
-		// 座標設定
-		Vector3 newPos = {};
-		dataManager_->AddItem({ names.kGroup,sectionPath }, keyPath, newPos);
-		newPos = dataManager_->GetVector3Value({ names.kGroup,sectionPath }, keyPath);
-		obstacle->transform_.translate_ = newPos;
-		// リスト追加
-		obstacles_.push_back(obstacle);
-	}
+	//names = { dataManager_->kLevelNames[editNowLevel_], dataManager_->kObjectNames[1] };
+	//// 最大値設定
+	//dataManager_->AddItem(names, dataManager_->kObstacleItems[2], kMaxObstacleCount_);
+	//kMaxObstacleCount_ = dataManager_->GetIntValue(names, dataManager_->kObstacleItems[2]);
+	//// 障害物の数だけ
+	//for (int i = 0; i < kMaxObstacleCount_; i++) {
+	//	Obstacle* obstacle;
+	//	// オブジェクトマネージャーに追加
+	//	obstacle = gameObjectManager_->CreateInstance<Obstacle>("Obstacle", BaseObject::TagObstacle);
+	//	// パスの設定
+	//	std::string sectionPath = dataManager_->kObjectNames[1] + std::to_string(i);
+	//	std::string keyPath = dataManager_->kObstacleItems[0];
+	//	// 座標設定
+	//	Vector3 newPos = {};
+	//	dataManager_->AddItem({ names.kGroup,sectionPath }, keyPath, newPos);
+	//	newPos = dataManager_->GetVector3Value({ names.kGroup,sectionPath }, keyPath);
+	//	obstacle->transform_.translate_ = newPos;
+	//	// リスト追加
+	//	obstacles_.push_back(obstacle);
+	//}
 #pragma endregion
 
 }
@@ -106,18 +106,18 @@ void GameEditor::ImGuiUpdate()
 		names.kSection = dataManager_->kObjectNames[1];
 		dataManager_->SetValue(names, dataManager_->kObstacleItems[2], kMaxObstacleCount_);
 
-		// 障害物の保存処理
-		for (Obstacle* obstacle : obstacles_) {
-			// セクションパス
-			std::string sectionPath = dataManager_->kObjectNames[1] + std::to_string(indexCount_);
-			// アイテムパス
-			std::string keyPath = dataManager_->kObstacleItems[0];
-			// 座標設定
-			dataManager_->SetValue({ names.kGroup,sectionPath }, keyPath, obstacle->transform_.GetWorldPos());
-			// カウント
-			indexCount_++;
+		//// 障害物の保存処理
+		//for (Obstacle* obstacle : obstacles_) {
+		//	// セクションパス
+		//	std::string sectionPath = dataManager_->kObjectNames[1] + std::to_string(indexCount_);
+		//	// アイテムパス
+		//	std::string keyPath = dataManager_->kObstacleItems[0];
+		//	// 座標設定
+		//	dataManager_->SetValue({ names.kGroup,sectionPath }, keyPath, obstacle->transform_.GetWorldPos());
+		//	// カウント
+		//	indexCount_++;
 
-		}
+		//}
 #pragma endregion
 		// セーブ
 		dataManager_->SaveData(dataManager_->kLevelNames[editNowLevel_]);
@@ -188,31 +188,31 @@ void GameEditor::ImGuiUpdate()
 			ImGui::EndTabItem();
 		}
 
-		// 障害物のタブ
-		if (ImGui::BeginTabItem("Obstacle")) {
-			// タブの内容
-			ImGui::BeginChild(ImGui::GetID((void*)0), ImVec2(400, 300), ImGuiWindowFlags_NoTitleBar);
+		//// 障害物のタブ
+		//if (ImGui::BeginTabItem("Obstacle")) {
+		//	// タブの内容
+		//	ImGui::BeginChild(ImGui::GetID((void*)0), ImVec2(400, 300), ImGuiWindowFlags_NoTitleBar);
 
-			float paramAbs = 30.0f;
-			for (Obstacle* obstacle : obstacles_) {
-				std::string fullTag = obstacle->GetObjectName();
-				ImGui::DragFloat3(fullTag.c_str(), &obstacle->transform_.translate_.x, 0.1f, -paramAbs, paramAbs);
-				ImGui::Text("\n");
-			}
+		//	float paramAbs = 30.0f;
+		//	for (Obstacle* obstacle : obstacles_) {
+		//		std::string fullTag = obstacle->GetObjectName();
+		//		ImGui::DragFloat3(fullTag.c_str(), &obstacle->transform_.translate_.x, 0.1f, -paramAbs, paramAbs);
+		//		ImGui::Text("\n");
+		//	}
 
-			ImGui::EndChild();
+		//	ImGui::EndChild();
 
-			ImGui::InputInt("ObstacleMaxCount", &kMaxObstacleCount_);
-			// 敵の追加
-			if (ImGui::Button("Add")) {
-				Obstacle* obstacle;
-				obstacle = gameObjectManager_->CreateInstance<Obstacle>("obstacle", BaseObject::TagObstacle);
-				obstacles_.push_back(obstacle);
-			}
+		//	ImGui::InputInt("ObstacleMaxCount", &kMaxObstacleCount_);
+		//	// 敵の追加
+		//	if (ImGui::Button("Add")) {
+		//		Obstacle* obstacle;
+		//		obstacle = gameObjectManager_->CreateInstance<Obstacle>("obstacle", BaseObject::TagObstacle);
+		//		obstacles_.push_back(obstacle);
+		//	}
 
 
-			ImGui::EndTabItem();
-		}
+		//	ImGui::EndTabItem();
+		//}
 
 		// 追加分のタブ
 		if (ImGui::BeginTabItem("Tab 2")) {
@@ -283,7 +283,7 @@ void GameEditor::DataReaload()
 	camera_->fov_ = 0.85f;
 	// リストクリア
 	enemies_.clear();
-	obstacles_.clear();
+	//obstacles_.clear();
 	// Jsonの情報による初期化
 	ParameterInitialize();
 }

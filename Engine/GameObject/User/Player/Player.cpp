@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "PlayerAnimManager.h"
 
 void Player::Init()
 {
@@ -14,30 +15,77 @@ void Player::Update()
 
 	// 行動状態クラスがあれば
 	if (state_.get()) {
-		// 行動状態の更新を行う
-		state_->Update();
+		if (!isDamaged_) {
+			// 行動状態の更新を行う
+			state_->Update();
+		}
 	}
+
+	// 攻撃命中クールタイマーの更新処理
 	hitCollTimer_.Update();
+
+	// 前フレーム座標
 	prevPos_ = worldPos_;
+	// ワールド座標の更新
 	worldPos_ = transform_.translate_;
 	
-	transform_.translate_ = transform_.translate_ +velocity_;
+	//BlowAwayStateじゃない場合
 	if (!(state_->name_ == "BlowAway")) {
-		//BlowAwayStateじゃなかったら向いている方向にRotateを合わせる
-		transform_.rotate_.y = -std::atan2(velocity_.x, -velocity_.z);
+		// 入力ベクトルが0以外の場合
+		if ((velocity_.x != 0.0f || velocity_.z != 0.0f) && !isDamaged_) {
+			// 向いている方向に角度を合わせる
+			transform_.rotate_.y = -std::atan2(velocity_.x, -velocity_.z);
+		}
 	}
+	
+	// ダメージを喰らっていない状態の場合
+	if (!isDamaged_) {
+		// 座標に速度ベクトルを加算する
+		transform_.translate_ = transform_.translate_ + velocity_;
+
+		// 回転速度を速度ベクトルの長さによって変化させる
+		float rotateSpeed = KLib::Lerp<float>(0.0f, 0.25f, Math::Length(velocity_));
+		transform_.rotate_.x -= rotateSpeed;
+	}
+	else {
+		// 速度ベクトルを0に
+		velocity_ = { 0.0f, 0.0f, 0.0f };
+		// 回転角のリセット
+		transform_.rotate_.x = 0.0f;
+	}
+
 	//地面より外に出たら中に戻して状態をRootに変更
-	if (transform_.translate_.x+transform_.scale_.x >= ground_->transform_.scale_.x|| transform_.translate_.x - transform_.scale_.x <= -ground_->transform_.scale_.x) {
+	if (transform_.translate_.x + transform_.scale_.x >= ground_->transform_.scale_.x) {
+		// x軸方向の速度ベクトルを0に
 		velocity_.x =0.0f;
-		transform_.translate_.x = prevPos_.x;
+		// 前フレーム座標に固定する
+		transform_.translate_.x = ground_->transform_.scale_.x - transform_.scale_.x;
+		// 強制的に待機状態ステートに変更
 		ChangeState(std::make_unique<RootState>());
-		return;
 	}
-	if (transform_.translate_.z + transform_.scale_.z >= ground_->transform_.scale_.z || transform_.translate_.z - transform_.scale_.z <= -ground_->transform_.scale_.z) {
-		velocity_.z =0.0f;
-		transform_.translate_.z = prevPos_.z;
+	else if (transform_.translate_.x - transform_.scale_.x <= -ground_->transform_.scale_.x) {
+		// x軸方向の速度ベクトルを0に
+		velocity_.x = 0.0f;
+		// 前フレーム座標に固定する
+		transform_.translate_.x = -ground_->transform_.scale_.x + transform_.scale_.x;
+		// 強制的に待機状態ステートに変更
 		ChangeState(std::make_unique<RootState>());
-		return;
+	}
+
+	if (transform_.translate_.z + transform_.scale_.z >= ground_->transform_.scale_.z) {
+		// z軸方向の速度ベクトルを0に
+		velocity_.z =0.0f;
+		// 前フレーム座標に固定する
+		transform_.translate_.z = ground_->transform_.scale_.z - transform_.scale_.z;
+		// 強制的に待機状態ステートに変更
+		ChangeState(std::make_unique<RootState>());
+	}else if (transform_.translate_.z - transform_.scale_.z <= -ground_->transform_.scale_.z) {
+		// x軸方向の速度ベクトルを0に
+		velocity_.z = 0.0f;
+		// 前フレーム座標に固定する
+		transform_.translate_.z = -ground_->transform_.scale_.z + transform_.scale_.z;
+		// 強制的に待機状態ステートに変更
+		ChangeState(std::make_unique<RootState>());
 	}
 	//SubtractVelocity();
 	
@@ -45,42 +93,70 @@ void Player::Update()
 
 void Player::DisplayImGui()
 {
+	// トランスフォームの情報表示
 	transform_.DisplayImGui();
-	//減速率
-	ImGui::DragFloat("deceleration rate", &decelerationRate, 0.01f);
+	//移動加速度
+	ImGui::DragFloat("MoveAcceleration", &moveAcceleration_, 0.01f);
+	// 最大移動加速度
+	ImGui::DragFloat("MaxMoveAcceleration", &kMaxMoveAcceleration_, 0.01f);
+	
+	// 減衰速度
+	ImGui::DragFloat("DecayAcceleration", &decayAcceleration_, 0.01f);
+	
+	// 速度ベクトル
+	ImGui::DragFloat3("Velocity", &velocity_.x, 0.01f);
+
 	//拡大率
 	ImGui::DragFloat("scale rate", &scaleForce_, 0.01f);
 	//攻撃倍率
 	ImGui::DragFloat("atack rate", &atackForce_, 0.01f);
+
+	// 改行する
+	ImGui::NewLine();
+
+	// ダメージのスタン秒数
+	ImGui::DragFloat("StanTime", &damageStanTime_, 0.1f, 0.01f, 5.0f);
 }
 
 void Player::OnCollisionEnter(Collider* collider)
 {
 	if (state_->name_ == "Root") {
+		// 破片に衝突した場合
 		if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagRubble) {
 			//がれきにぶつかったらしてサイズを大きくする
 			absorptionCount_++;
+			// 加算するサイズを計算
 			float addSize = absorptionCount_ * scaleForce_;
+			// 加算サイズ分y座標を加算
 			transform_.translate_.y += addSize;
-			transform_.scale_ = { transform_.scale_.x + addSize,transform_.scale_.y + addSize,transform_.scale_.z + addSize };
+			// 大きさにサイズを加算
+			transform_.scale_ = { 
+				transform_.scale_.x + addSize,
+				transform_.scale_.y + addSize,
+				transform_.scale_.z + addSize };
 
 		}
-	}
+		// 降ってくる野菜に衝突した場合
 		if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagMeteor) {
+			// ダメージ処理を行う
 			Damage();
 		}
 		
 	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagEnemy && isAtack_) {
 		//吸収した数をリセットして座標とスケール調整
 		ResetAbsorptionCount();
-        transform_.translate_ = prevPos_;
-		transform_.translate_.y = 2.0f;
-		transform_.scale_ = { 1.0f,1.0f ,1.0f };
-		
+
+		// y座標を補正
+		transform_.translate_.y = 3.0f;
+		// 大きさリセット
+		transform_.scale_ = { 2.0f , 2.0f , 2.0f };
+		// 攻撃状態でない
+		isAtack_ = false;
+		// 速度をリセット
 		velocity_ = { 0.0f,0.0f,0.0f };
-		
+
+		// 吹っ飛び状態に変更
 		ChangeState(std::make_unique<BlowAwayState>());
-		return;
 	}
 	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagPushUp) {
 		/*transform_.translate_ = prevPos_;
@@ -95,7 +171,18 @@ void Player::Damage()
 {
 	//クールタイムを過ぎていたら攻撃をくらう
 	if (hitCollTimer_.GetIsFinish()) {
+
+		// 速度を0に
+		velocity_ = { 0.0f, 0.0f, 0.0f };
+		// 回転角をリセット
+		transform_.rotate_.x = 0.0f;
+
+		// ダメージアニメーション再生
+		pam_->Damage(damageStanTime_);
+
+		// HPを減らす
 		hitPoint_--;
+		// ヒットクールタイマーリセット
 		hitCollTimer_.Start(hitCoolTime_);
 	}
 
@@ -119,6 +206,8 @@ void Player::Atack()
 	velocity_ = Math::Normalize(  Vector3(0.0f, transform_.translate_.y, 0.0f)- transform_.translate_)*2.0f;
 
 
+	//吸収した数をリセットして座標とスケール調整
+	ResetAbsorptionCount();
 }
 
 void Player::ChangeState(std::unique_ptr<IPlayerState> newState)

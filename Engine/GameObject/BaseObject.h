@@ -194,7 +194,7 @@ protected: // プライベートなメンバ関数
 	/// <param name="path">モデルまでのディレクトリパス</param>
 	/// <param name="fileName">ファイル名</param>
 	/// <param name="enableLighting">ライティングを有効にするか</param>
-	void AddMesh(WorldTransform* wt, Vector4& color, const std::string& path, const std::string& fileName, bool enableLighting = true);
+	Mesh* AddMesh(WorldTransform* wt, Vector4& color, const std::string& path, const std::string& fileName, bool enableLighting = true);
 
 	/// <summary>
 	/// スプライト追加関数

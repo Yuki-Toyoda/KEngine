@@ -124,7 +124,7 @@ void BaseObject::DisplayImGui()
 	}
 }
 
-void BaseObject::AddMesh(WorldTransform* wt, Vector4& color, const std::string& path, const std::string& fileName, bool enableLighting)
+Mesh* BaseObject::AddMesh(WorldTransform* wt, Vector4& color, const std::string& path, const std::string& fileName, bool enableLighting)
 {
 	// 形状マネージャのインスタンスが取得されていない場合ここで取得
 	if (primitiveManager_ == nullptr)
@@ -140,6 +140,9 @@ void BaseObject::AddMesh(WorldTransform* wt, Vector4& color, const std::string& 
 
 	// メッシュリストに生成メッシュを追加
 	meshes_.push_back(newMesh);
+
+	// 生成したメッシュを返還する
+	return newMesh;
 }
 
 void BaseObject::AddSprite(const std::string& name, const Vector2& position, const Vector2& size, Texture* texture)

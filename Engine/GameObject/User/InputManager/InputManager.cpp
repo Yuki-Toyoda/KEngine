@@ -71,18 +71,11 @@ Vector3 InputManager::Move(Vector3 velocity)
     if (Input::GetInstance()->PushKey(DIK_DOWN)) {
         velocity.z = -1.0f;
     }
-    if (velocity.x >= 10.0f) {
-        velocity.x = 10.0f;
-   }
-    else if (velocity.x <=- 10.0f) {
-       velocity.x = -10.0f;
-   }if (velocity.z >= 10.0f) {
-       velocity.z = 10.0f;
-   }
-   else if (velocity.z <= -10.0f) {
-       velocity.z = -10.0f;
-   }
-    // 移動ベクトルを削除する
+    
+    // 求めたベクトルを正規化する
+    velocity = Math::Normalize(velocity);
+
+    // 求めた移動ベクトルを返す
     return velocity;
 }
 

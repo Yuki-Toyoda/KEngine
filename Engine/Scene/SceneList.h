@@ -8,3 +8,4 @@
 #include "User/GameScene.h"
 #include "User/EditorScene.h"
 #include "User/ResultScene.h"
+#include "User/AnimDevScene.h"
