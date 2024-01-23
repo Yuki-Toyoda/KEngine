@@ -6,9 +6,6 @@ void IEnemy::Init()
 	audio_ = Audio::GetInstance();
 	gameDataManager_ = GameDataManager::GetInstance();
 
-	// 武器とのペアレントフラグfalse
-	isParent_ = false;
-
 	// ワールド座標を取得
 	worldPos_ = transform_.GetWorldPos();
 

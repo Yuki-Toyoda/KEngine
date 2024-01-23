@@ -1,9 +1,10 @@
 #pragma once
 #include "../../BaseObject.h"
-#include "../Player/Weapon.h"
+#include "../../../Audio/Audio.h"
 #include "State/EnemyStateList.h"
 #include "../Editor/GameDataManager.h"
 #include"../Player/Player.h"
+
 /// <summary>
 /// 敵の基底クラス
 /// </summary>
@@ -73,12 +74,6 @@ public: // メンバ関数
 public: // アクセッサ等
 
 	/// <summary>
-	/// 武器のセッター
-	/// </summary>
-	/// <param name="target"></param>
-	void SetWepon(Weapon* weapon) { weapon_ = weapon; }
-
-	/// <summary>
 	/// 移動ベクトルセッター
 	/// </summary>
 	/// <param name="velocity">移動ベクトル</param>
@@ -95,11 +90,6 @@ protected: // 継承先メンバ変数
 
 	// 音再生用クラス
 	Audio* audio_;
-
-	// 武器
-	Weapon* weapon_ = nullptr;
-	// 武器とペアレントをしているか
-	bool isParent_;
 
 	// 当たり判定用ワールド座標
 	Vector3 worldPos_;

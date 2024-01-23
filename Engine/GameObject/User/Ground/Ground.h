@@ -1,6 +1,5 @@
 #pragma once
 #include "../../BaseObject.h"
-#include"../Player/Weapon.h"
 
 /// <summary>
 /// 地面クラス

@@ -68,6 +68,6 @@ private: // 仮配置用のオブジェクト
 	// 敵
 	std::vector<IEnemy*>enemies_;
 	// ブロック
-	std::vector<Obstacle*> obstacles_;
+	//std::vector<Obstacle*> obstacles_;
 };
 
