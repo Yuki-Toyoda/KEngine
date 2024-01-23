@@ -23,6 +23,7 @@ void MultiAtackState::Update()
 	}
 	if (atackCount_ >= kMaxCount_) {
 		//stateを変更
+		enemy_->SetWaitTime(enemy_->GetWaitMulti());
 		enemy_->ChangeState(std::make_unique<WaitTimeState>());
 		return;
 	}

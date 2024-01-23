@@ -29,6 +29,10 @@ void Boss::DisplayImGui()
 	IEnemy::DisplayImGui();
 	ImGui::DragFloat("HitPoint", &hitPoint_);
 	ImGui::InputInt("PatternNumber", &patternNumber_);
+	ImGui::DragFloat("waitSingle", &waitForSingle_,0.1f);
+	ImGui::DragFloat("waitmulti", &waitForMulti_, 0.1f);
+	ImGui::DragFloat("waitRoller", &waitForRoller_, 0.1f);
+	ImGui::DragFloat("waitPushUp", &waitForPushUp_, 0.1f);
 	if (ImGui::Button("changeStateAtack")) {
 		ChangeState(std::make_unique<SingleAtackState>());
 		
@@ -74,6 +78,7 @@ void Boss::OnCollisionEnter(Collider* collider)
 
 void Boss::MakeStateList()
 {
+	//行動状態のリストを作成
 	stateList_.resize(1);
 	stateList_.at(0).push_back(std::make_unique<SingleAtackState>());
 	stateList_.at(0).push_back(std::make_unique<MultiAtackState>());

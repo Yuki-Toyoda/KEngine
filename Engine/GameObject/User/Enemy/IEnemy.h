@@ -94,6 +94,11 @@ public: // アクセッサ等
 	void SetWaitTime(float time) { waitTime_ = time; }
 	//攻撃待機時間のゲッター
 	float GetWaitTime() { return waitTime_; }
+	//待機時間のゲッター
+	float GetWaitSingle() { return waitForSingle_; }
+	float GetWaitRoller() { return waitForRoller_; }
+	float GetWaitMulti() { return waitForMulti_; }
+	float GetWaitPushUp() { return waitForPushUp_; }
 public: // パブリックなメンバ変数
 
 	// 外部出力マネージャ
@@ -131,6 +136,14 @@ protected: // 継承先メンバ変数
 	Player* player_;
 	//攻撃後の待機時間
 	float waitTime_=2.0f;
+	//singleAtack後の待機
+	float waitForSingle_;
+	//MultiAtack後の待機
+	float waitForMulti_;
+	//RollerAtack後の待機
+	float waitForRoller_;
+	//PushUpAtack後の待機
+	float waitForPushUp_;
 };
 
 /// <summary>

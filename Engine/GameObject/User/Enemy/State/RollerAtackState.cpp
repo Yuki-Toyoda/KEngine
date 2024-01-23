@@ -12,6 +12,7 @@ void RollerAtackState::Init()
 
 void RollerAtackState::Update()
 {
+	enemy_->SetWaitTime(enemy_->GetWaitRoller());
 	enemy_->ChangeState(std::make_unique<WaitTimeState>());
 	return;
 }

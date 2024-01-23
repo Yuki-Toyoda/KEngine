@@ -12,7 +12,7 @@ void SingleAtackState::Init()
 
 void SingleAtackState::Update()
 {
-	
+	enemy_->SetWaitTime(enemy_->GetWaitSingle());
 	enemy_->ChangeState(std::make_unique<WaitTimeState>());
 	return;
 }
