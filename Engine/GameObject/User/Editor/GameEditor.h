@@ -133,6 +133,8 @@ private:
 
 	float kAbsValue = 50.0f;
 
+	std::array<int, 4> stageNumber = {};
+
 private:
 	/// SingleAttack用
 	// 障害物の最大数

@@ -91,8 +91,29 @@ public: // 呼び出し時に使用する配列
             LoadNumber--;
         }
     }
+    /// <summary>
+    /// 上からの名前
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns></returns>
+    std::string GetSingleAttack(int index) { return "SingleMeteor" + std::to_string(index); }
+    /// <summary>
+    /// 追尾の名前
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns></returns>
+    std::string GetMultiAttack(int index) { return "MultiMeteor" + std::to_string(index); }
 
-    void CheckTest() { return; };
+    /// <summary>
+    /// 突き上げの名前
+    /// </summary>
+    std::string GetPushUpAttack(int index) { return "PushUpAttack" + std::to_string(index); }
+
+    /// <summary>
+    /// ローラーの名前
+    /// </summary>
+    /// <param name="key"></param>
+    std::string GetRollerAttack(int index) { return "RollerAttack" + std::to_string(index); }
 
 private:
     /// 項目
