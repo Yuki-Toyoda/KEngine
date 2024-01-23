@@ -47,6 +47,8 @@ public: // メンバ関数
 	bool GetIsAtack() { return isAtack_; }
 	bool SetIsAtack(bool Flag) { return isAtack_ = Flag; }
 	float GetAtackPower() { return atackPower_; }
+
+	Vector3 GetPushUpPos() { return pushUpPos_; }
 private:
 	//ダメージをくらう処理
 	void Damage();
@@ -82,5 +84,7 @@ private: // メンバ変数
 	bool isAtack_;
 	// 行動状態クラス
 	std::unique_ptr<IPlayerState> state_;
+	//当たったPushUpのポジション
+	Vector3 pushUpPos_;
 };
 

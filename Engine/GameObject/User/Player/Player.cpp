@@ -83,7 +83,10 @@ void Player::OnCollisionEnter(Collider* collider)
 		return;
 	}
 	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagPushUp) {
+		/*transform_.translate_ = prevPos_;
+		pushUpPos_ = collider->GetGameObject()->transform_.translate_;
 
+		ChangeState(std::make_unique<PushUpHitState>());*/
 
 	}
 }

@@ -137,13 +137,13 @@ protected: // 継承先メンバ変数
 	//攻撃後の待機時間
 	float waitTime_=2.0f;
 	//singleAtack後の待機
-	float waitForSingle_;
+	float waitForSingle_=2.0f;
 	//MultiAtack後の待機
-	float waitForMulti_;
+	float waitForMulti_=2.0f;
 	//RollerAtack後の待機
-	float waitForRoller_;
+	float waitForRoller_=2.0f;
 	//PushUpAtack後の待機
-	float waitForPushUp_;
+	float waitForPushUp_=2.0f;
 };
 
 /// <summary>

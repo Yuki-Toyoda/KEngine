@@ -22,7 +22,7 @@ void RootState::Update()
 	//移動ベクトルをプレイヤーに渡す
 	player_->SetVelocity(Math::Normalize( velocity_));
 	//攻撃ボタンを押して且つ攻撃できるときにStateをAtackに
-	if (InputManager::Atack()/*&&player_->GetAbsorptionCount()>=kMinCount*/) {
+	if (InputManager::Atack()&&player_->GetAbsorptionCount()>=kMinCount) {
 		player_->SetIsAtack(true);
 		player_->ChangeState(std::make_unique<AtackState>());
 		return;

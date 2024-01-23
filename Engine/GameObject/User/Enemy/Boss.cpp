@@ -15,6 +15,7 @@ void Boss::SuccessorInit()
 	PushUp* pushUp;
 	pushUp = gameObjectManager_->CreateInstance<PushUp>("PushUp", BaseObject::TagPushUp);
 	pushUp_.push_back(pushUp);
+	patternNumber_ = 1;
 }
 
 void Boss::SuccessorUpdate()

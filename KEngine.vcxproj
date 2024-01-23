@@ -101,6 +101,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\GameObject\User\Enemy\State\PushUpAtackState.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\State\RollerAtackState.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\State\WaitTimeState.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Player\State\PushUpHitState.cpp" />
     <ClCompile Include="Engine\GameObject\User\ResultManager\ResultManager.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\State\MultiAtackState.cpp" />
     <ClCompile Include="Engine\GameObject\User\Player\State\AtackState.cpp" />
@@ -210,6 +211,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\GameObject\User\Enemy\State\PushUpAtackState.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\State\RollerAtackState.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\State\WaitTimeState.h" />
+    <ClInclude Include="Engine\GameObject\User\Player\State\PushUpHitState.h" />
     <ClInclude Include="Engine\GameObject\User\ResultManager\ResultManager.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\State\MultiAtackState.h" />
     <ClInclude Include="Engine\GameObject\User\Player\State\AtackState.h" />

@@ -26,7 +26,9 @@ void Meteor::DisplayImGui()
 void Meteor::OnCollisionEnter(Collider* collider)
 {
 	//床と当たったらオブジェクトを破壊してがれきを生成
+	
 	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagFloor) {
+		
 		Rubble* rubble;
 		rubble = gameObjectmanager_->CreateInstance<Rubble>("rubble",BaseObject::TagRubble );
 		rubble->transform_ = transform_;

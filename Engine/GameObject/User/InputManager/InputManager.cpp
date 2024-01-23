@@ -55,7 +55,7 @@ Vector3 InputManager::Move(Vector3 velocity)
    // XINPUT_STATE joyState;
     
     // スティックの入力によって移動
-    velocity +=  Vector3( (float)joyState_.Gamepad.sThumbLX / SHRT_MAX,
+    velocity =  Vector3( (float)joyState_.Gamepad.sThumbLX / SHRT_MAX,
        0.0f,(float)joyState_.Gamepad.sThumbLY / SHRT_MAX );
     
     // キー入力によって移動する
