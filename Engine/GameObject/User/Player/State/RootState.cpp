@@ -13,7 +13,7 @@ void RootState::Update()
 	Move();
 
 	//攻撃ボタンを押して且つ攻撃できるときにStateをAtackに
-	if (InputManager::Atack()/*&&player_->GetAbsorptionCount()>=kMinCount*/) {
+	if (InputManager::Atack()&&player_->GetAbsorptionCount()>=kMinCount) {
 		Attack();
 	}
 }
