@@ -14,7 +14,7 @@ void Rubble::Update()
 {
 	lerpTimer_.Update();
 	//時間が切れるか表示フラグがない場合オブジェクトを破壊
-	if (/*lerpTimer_.GetIsFinish()||*/!isActive_) {
+	if (lerpTimer_.GetIsFinish()||!isActive_) {
 		Destroy();
 		return;
 	}
