@@ -101,10 +101,11 @@ private:
 		// アイテムパス
 		std::string keyPath = "Position";
 		// 座標設定
-		dataManager_->AddItem({ groupPath,sectionPath }, keyPath, target->transform_.GetWorldPos());
-		Vector3 setPos = target->transform_.GetWorldPos();
+		Vector3 setPos = {};
+		dataManager_->AddItem({ groupPath,sectionPath }, keyPath, target->transform_.translate_);
+		setPos = target->transform_.translate_; 
 		setPos.y = 0;
-		dataManager_->SetValue({ groupPath,sectionPath }, keyPath, target->transform_.GetWorldPos());
+		dataManager_->SetValue({ groupPath,sectionPath }, keyPath, target->transform_.translate_);
 	}
 
 	/// <summary>

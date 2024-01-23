@@ -603,8 +603,8 @@ void GameEditor::CreateCamera()
 	// 角度・座標変更
 	CameraUpdate();
 	// 地面
-	ground_ = gameObjectManager_->CreateInstance<Ground>("Ground", BaseObject::TagFloor);
-	ground_->transform_.translate_.y = -1.5f;
+	ground_ = gameObjectManager_->CreateInstance<Ground>("Ground", BaseObject::TagNone);
+	ground_->transform_.translate_.y = -2.5f;
 	ground_->transform_.scale_ = { 55.81f,1.0f,32.5f };
 }
 
