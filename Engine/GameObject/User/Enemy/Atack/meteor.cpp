@@ -10,7 +10,7 @@ void Meteor::Init()
 	color_ = { 0.0f,0.0f,0.0f,1.0f };
 	AddColliderSphere("meteor", &transform_.translate_, &transform_.scale_.x);
 	//速度
-	moveAcceleration_ = 0.2f;
+	moveSpeed_ = 0.2f;
 	
 }
 
