@@ -1,4 +1,5 @@
 #include "meteor.h"
+#include "../../Editor/GameDataManager.h"
 
 void Meteor::Init()
 {
@@ -15,8 +16,10 @@ void Meteor::Init()
 
 void Meteor::Update()
 {
-
-	transform_.translate_ += velocity_*moveAcceleration_;
+	int isGrav = GameDataManager::GetInstance()->GetValue<int>({ "AttackParam","Info" }, "IsGravity");
+	if (isGrav) {
+		transform_.translate_ += velocity_ * moveSpeed_;
+	}
 }
 
 void Meteor::DisplayImGui()
@@ -25,6 +28,8 @@ void Meteor::DisplayImGui()
 
 void Meteor::OnCollisionEnter(Collider* collider)
 {
+	//if()
+
 	//床と当たったらオブジェクトを破壊してがれきを生成
 	
 	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagFloor) {

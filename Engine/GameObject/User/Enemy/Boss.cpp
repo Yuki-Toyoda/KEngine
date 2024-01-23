@@ -9,13 +9,23 @@ void Boss::SuccessorInit()
 	AddColliderOBB("Boss", &transform_.scale_, &transform_.scale_, &transform_.rotate_);
 	hitPoint_ = 25.0f;
 	gameObjectManager_ = GameObjectManager::GetInstance();
+	GameDataManager* dataManager = GameDataManager::GetInstance();
 	MakeStateList();
 	
 	//下からの攻撃を生成
-	PushUp* pushUp;
-	pushUp = gameObjectManager_->CreateInstance<PushUp>("PushUp", BaseObject::TagPushUp);
-	pushUp_.push_back(pushUp);
-	patternNumber_ = 1;
+	int pushUpMax = dataManager->GetValue<int>({ "AttackParam","PushUp" }, "MaxCount");
+
+	for (int i = 0; i < pushUpMax; i++) {
+		PushUp* pushUp;
+		pushUp = gameObjectManager_->CreateInstance<PushUp>("PushUp", BaseObject::TagNone);
+		// 名前
+		std::string name = "PushUp" + std::to_string(i);
+		// Y座標以外を設定
+		Vector3 newPos = dataManager->GetValue<Vector3>({ "PushUpAttack",name }, "Position");
+		pushUp->transform_.translate_.x = newPos.x;
+		pushUp->transform_.translate_.z = newPos.z;
+		pushUp_.push_back(pushUp);
+	}
 }
 
 void Boss::SuccessorUpdate()

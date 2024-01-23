@@ -28,4 +28,8 @@ private: // メンバ変数
 	float moveAcceleration_ = 0.3f;
 	// 当たり判定用ワールド座標
 	Vector3 worldPos_;
+
+public: // アクセッサ
+	void SetVelocity(const Vector3& velocity) { velocity_ = velocity; }
+
 };

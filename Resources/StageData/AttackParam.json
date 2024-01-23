@@ -1,0 +1,24 @@
+{
+    "AttackParam": {
+        "Info": {
+            "Distance": 30.579999923706055,
+            "IsGravity": 1,
+            "MaxCount": 4,
+            "Scale": [
+                8.0,
+                1.0,
+                8.0
+            ]
+        },
+        "Multi": {
+            "CoolTime": 1.0,
+            "MaxCount": 6
+        },
+        "PushUp": {
+            "MaxCount": 5
+        },
+        "Roller": {
+            "MaxCount": 3
+        }
+    }
+}

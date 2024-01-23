@@ -13,23 +13,25 @@
 
 struct HierarchicalName
 {
-	std::string kGroup;
-	std::string kSection;
+    std::string kGroup;
+    std::string kSection;
 };
 
 class GameDataManager
 {
 public:
-	static GameDataManager* GetInstance() {
-		static GameDataManager instance;
-		return &instance;
-	}
+    static GameDataManager* GetInstance() {
+        static GameDataManager instance;
+        return &instance;
+    }
+
+    static int LoadNumber;
 
 private:
-	GameDataManager() = default;
-	~GameDataManager() = default;
-	GameDataManager(const GameDataManager& variable) = default;
-	GameDataManager& operator=(const GameDataManager& variable);
+    GameDataManager() = default;
+    ~GameDataManager() = default;
+    GameDataManager(const GameDataManager& variable) = default;
+    GameDataManager& operator=(const GameDataManager& variable);
 
 public:
     /// <summary>
@@ -70,21 +72,56 @@ private: // 配列の最大サイズ
     static const int kObstacleMaxValue = 3;
 
 public: // 呼び出し時に使用する配列
-    // ステージごとの名前
-    std::array<std::string, 4> kLevelNames = { "Easy","Normal","Hard","Expert" };
     // 内部に保存しているオブジェクトの名前
-    std::array<std::string, 2> kObjectNames = { "Enemy","Obstacle" };
+    std::array<std::string, 3> kObjectNames = { "Meteor","PushUp","Roller"};
 
-    // 保存するアイテム名
-    std::array<std::string, kEnemyMaxValue> kEnemyItems = { "Position","Type","Speed","RespownTime", "MaxCount"};
-    // 障害物用
-    std::array<std::string, kObstacleMaxValue> kObstacleItems = { "Position","Size", "MaxCount"};
+    void AddSingleAttack(std::string& name) {
+        singleAttackList_.push_back(name);
+    }
+
+    void ClearList() {
+        singleAttackList_.clear();
+    }
+
+    void AddLoadNum() {
+        LoadNumber++;
+    }
+    void IncrementLoadNum() {
+        if (LoadNumber > 0) {
+            LoadNumber--;
+        }
+    }
+    /// <summary>
+    /// 上からの名前
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns></returns>
+    std::string GetSingleAttack(int index) { return "SingleMeteor" + std::to_string(index); }
+    /// <summary>
+    /// 追尾の名前
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns></returns>
+    std::string GetMultiAttack(int index) { return "MultiMeteor" + std::to_string(index); }
+
+    /// <summary>
+    /// 突き上げの名前
+    /// </summary>
+    std::string GetPushUpAttack(int index) { return "PushUpAttack" + std::to_string(index); }
+
+    /// <summary>
+    /// ローラーの名前
+    /// </summary>
+    /// <param name="key"></param>
+    std::string GetRollerAttack(int index) { return "RollerAttack" + std::to_string(index); }
 
 private:
     /// 項目
-    using Item = std::variant<int32_t, float, Vector2, Vector3,std::string>;
+    using Item = std::variant<int32_t, float, Vector2, Vector3, std::string, std::list<std::string>>;
     using Section = std::map<std::string, Item>;
     using Group = std::map<std::string, Section>;
+
+    std::list<std::string> singleAttackList_;
 
     // 現在の設定中の番号
     int kLoadObjectNumber_ = 0;
@@ -99,29 +136,45 @@ private:
     const float kFabsValue_f = 2000.0f;
     const int kFabsValue_i = 2000;
 
-public:
+public: // アクセッサ
 #pragma region 設定
-    void SetValue(const HierarchicalName& names, const std::string& key, int32_t value);
-    void SetValue(const HierarchicalName& names, const std::string& key, float value);
-    void SetValue(const HierarchicalName& names, const std::string& key, Vector2 value);
-    void SetValue(const HierarchicalName& names, const std::string& key, Vector3 value);
-    void SetValue(const HierarchicalName& names, const std::string& key, std::string value);
+    template<typename T>
+    void SetValue(const HierarchicalName& names, const std::string& key, T value) {
+        // グループの参照を取得
+        Section& section = gameDatas_[names.kGroup][names.kSection];
+        // 新しい項目のデータを設定
+        Item newItem = value;
+        // 設定した項目をstd::mapに追加
+        section[key] = newItem;
+    }
 #pragma endregion
 
 #pragma region 追加
-    void AddItem(const HierarchicalName& names, const std::string& key, int32_t value);
-    void AddItem(const HierarchicalName& names, const std::string& key, float value);
-    void AddItem(const HierarchicalName& names, const std::string& key, Vector2 value);
-    void AddItem(const HierarchicalName& names, const std::string& key, Vector3 value);
-    void AddItem(const HierarchicalName& names, const std::string& key, std::string value);
+    template<typename T>
+    void AddItem(const HierarchicalName& names, const std::string& key, T value) {
+        // 項目が未登録なら
+        if (gameDatas_[names.kGroup][names.kSection].find(key) ==
+            gameDatas_[names.kGroup][names.kSection].end()) {
+            SetValue(names, key, value);
+        }
+    }
 #pragma endregion
 
 #pragma region 取得
-    int GetIntValue(const HierarchicalName& names, const std::string& key);
-    float GetFloatValue(const HierarchicalName& names, const std::string& key);
-    Vector2 GetVector2Value(const HierarchicalName& names, const std::string& key);
-    Vector3 GetVector3Value(const HierarchicalName& names, const std::string& key);
-    std::string GetStringValue(const HierarchicalName& names, const std::string& key);
+    template<typename T>
+    T GetValue(const HierarchicalName& names, const std::string& key) {
+        // 指定グループが存在するか
+        assert(gameDatas_.find(names.kGroup) != gameDatas_.end());
+        // セクション探し
+        assert(gameDatas_[names.kGroup].find(names.kSection) != gameDatas_[names.kGroup].end());
+        // セクションの参照を取得
+        Section& section = gameDatas_[names.kGroup][names.kSection];
+
+        // 指定グループに指定キーが存在するか
+        assert(section.find(key) != section.end());
+        // 指定グループから指定のキーの値を取得
+        return std::get<T>(section[key]);
+    }
 #pragma endregion
 
 };

@@ -1,0 +1,13 @@
+{
+    "Test": {
+        "A": null,
+        "List": {
+            "charList": [
+                "Multi",
+                "Single",
+                "Roller",
+                "PushUp"
+            ]
+        }
+    }
+}
