@@ -7,7 +7,7 @@ void Boss::SuccessorInit()
 	color_ = { 0.6f,0.6f,0.0f,1.0f };
 	ChangeState(std::make_unique<WaitTimeState>());
 	AddColliderOBB("Boss", &transform_.scale_, &transform_.scale_, &transform_.rotate_);
-	hitPoint_ = 100.0f;
+	hitPoint_ = 25.0f;
 	gameObjectManager_ = GameObjectManager::GetInstance();
 	MakeStateList();
 	
@@ -21,7 +21,10 @@ void Boss::SuccessorInit()
 void Boss::SuccessorUpdate()
 {
 
-
+	if (hitPoint_ <= 0.0f) {
+		isActive_ = false;
+		state_ = nullptr;
+	}
 
 }
 
