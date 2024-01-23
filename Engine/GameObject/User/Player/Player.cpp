@@ -118,8 +118,7 @@ void Player::DisplayImGui()
 	ImGui::DragFloat("StanTime", &damageStanTime_, 0.1f, 0.01f, 5.0f);
 }
 
-void Player::OnCollisionEnter(Collider* collider)
-{
+void Player::OnCollisionEnter(Collider* collider){
 	if (state_->name_ == "Root") {
 		// 破片に衝突した場合
 		if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagRubble) {
@@ -130,7 +129,7 @@ void Player::OnCollisionEnter(Collider* collider)
 			// 加算サイズ分y座標を加算
 			transform_.translate_.y += addSize;
 			// 大きさにサイズを加算
-			transform_.scale_ = { 
+			transform_.scale_ = {
 				transform_.scale_.x + addSize,
 				transform_.scale_.y + addSize,
 				transform_.scale_.z + addSize };
@@ -141,7 +140,7 @@ void Player::OnCollisionEnter(Collider* collider)
 			// ダメージ処理を行う
 			Damage();
 		}
-		
+	}
 	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagEnemy && isAtack_) {
 		//吸収した数をリセットして座標とスケール調整
 		ResetAbsorptionCount();

@@ -3,7 +3,7 @@
 void PushUpHitState::Init()
 {
 	name_ = "hitPushUp";
-	velocity_ =Math::Normalize(  player_->GetPushUpPos()-player_->transform_.translate_)*2.0f;
+	//velocity_ =Math::Normalize(  player_->GetPushUpPos()-player_->transform_.translate_)*2.0f;
 }
 
 void PushUpHitState::Update()
