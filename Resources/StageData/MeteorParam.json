@@ -11,7 +11,7 @@
             ]
         },
         "Multi": {
-            "CoolTime": 0.5,
+            "CoolTime": 1.0,
             "MaxCount": 6
         },
         "PushUp": {

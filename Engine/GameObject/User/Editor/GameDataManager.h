@@ -124,22 +124,29 @@ private:
 
 public: // アクセッサ
 #pragma region 設定
-    void SetValue(const HierarchicalName& names, const std::string& key, int32_t value);
-    void SetValue(const HierarchicalName& names, const std::string& key, float value);
-    void SetValue(const HierarchicalName& names, const std::string& key, Vector2 value);
-    void SetValue(const HierarchicalName& names, const std::string& key, Vector3 value);
-    void SetValue(const HierarchicalName& names, const std::string& key, std::string value);
+    template<typename T>
+    void SetValue(const HierarchicalName& names, const std::string& key, T value) {
+        // グループの参照を取得
+        Section& section = gameDatas_[names.kGroup][names.kSection];
+        // 新しい項目のデータを設定
+        Item newItem = value;
+        // 設定した項目をstd::mapに追加
+        section[key] = newItem;
+    }
 #pragma endregion
 
 #pragma region 追加
-    void AddItem(const HierarchicalName& names, const std::string& key, int32_t value);
-    void AddItem(const HierarchicalName& names, const std::string& key, float value);
-    void AddItem(const HierarchicalName& names, const std::string& key, Vector2 value);
-    void AddItem(const HierarchicalName& names, const std::string& key, Vector3 value);
-    void AddItem(const HierarchicalName& names, const std::string& key, std::string value);
+    template<typename T>
+    void AddItem(const HierarchicalName& names, const std::string& key, T value) {
+        // 項目が未登録なら
+        if (gameDatas_[names.kGroup][names.kSection].find(key) ==
+            gameDatas_[names.kGroup][names.kSection].end()) {
+            SetValue(names, key, value);
+        }
+    }
 #pragma endregion
 
-#pragma region 取得まとめ
+#pragma region 取得
     template<typename T>
     T GetValue(const HierarchicalName& names, const std::string& key) {
         // 指定グループが存在するか
@@ -155,7 +162,6 @@ public: // アクセッサ
         return std::get<T>(section[key]);
     }
 #pragma endregion
-
 
 };
 
