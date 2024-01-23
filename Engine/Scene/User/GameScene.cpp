@@ -50,6 +50,14 @@ void GameScene::Init(){
 	// ボスにプレイヤーをセット
 	boss->SetPlayer(player_);
 	
+	// 柵の生成
+	Fences* fm = gameObjectManager_->CreateInstance<Fences>("Fence", BaseObject::TagNone);
+	// 柵追加
+	fm->Add(Vector3(0.0f, 3.5f, ground->transform_.scale_.z), Vector3(0.0f, 0.0f, 0.0f), Vector2(ground->transform_.scale_.x, 2.5f));
+	fm->Add(Vector3(0.0f, 3.5f, -ground->transform_.scale_.z), Vector3(0.0f, 0.0f, 0.0f), Vector2(ground->transform_.scale_.x, 2.5f));
+	fm->Add(Vector3(ground->transform_.scale_.x, 3.5f, 0.0f), Vector3(0.0f, (float)(std::numbers::pi / 2.0f), 0.0f), Vector2(ground->transform_.scale_.z, 2.5f));
+	fm->Add(Vector3(-ground->transform_.scale_.x, 3.5f, 0.0f), Vector3(0.0f, (float)(std::numbers::pi / 2.0f), 0.0f), Vector2(ground->transform_.scale_.z, 2.5f));
+
 	// UIマネージャの生成
 	gameObjectManager_->CreateInstance<InGameUIManager>("UIManager", BaseObject::TagNone);
 

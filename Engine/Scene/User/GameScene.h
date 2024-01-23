@@ -20,7 +20,6 @@ public: // メンバ関数
 private:
 
 	Player*player_;
-	Ground* ground_;
 	InGameCamera* camera_;
 
 };

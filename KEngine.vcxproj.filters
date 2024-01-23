@@ -96,6 +96,7 @@
     <ClCompile Include="Engine\Scene\User\ResultScene.cpp" />
     <ClCompile Include="Engine\GameObject\User\ResultManager\ResultManager.cpp" />
     <ClCompile Include="Engine\Scene\User\AnimDevScene.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Fence\Fences.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\GameObject\User\Enemy\State\MultiAtackState.h" />
@@ -210,6 +211,7 @@
     <ClInclude Include="Engine\Scene\User\ResultScene.h" />
     <ClInclude Include="Engine\GameObject\User\ResultManager\ResultManager.h" />
     <ClInclude Include="Engine\Scene\User\AnimDevScene.h" />
+    <ClInclude Include="Engine\GameObject\User\Fence\Fences.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Object3D.hlsli" />
