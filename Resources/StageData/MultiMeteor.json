@@ -2,7 +2,7 @@
     "MultiMeteor": {
         "Parameter": {
             "CoolTime": 1.0,
-            "MaxCount": 5
+            "MaxCount": 4
         }
     }
 }

@@ -1,7 +1,7 @@
 {
     "RollerAttack": {
         "Parameter": {
-            "MaxCount": 4
+            "MaxCount": 3
         },
         "Roller0": {
             "Position": [

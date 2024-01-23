@@ -192,6 +192,8 @@ void GameEditor::EditorImGui()
 		// ローラー
 		SaveObject(rollers_, kRollerAttackName, 2);
 
+		dataManager_->SaveData(kMultiAttackName);
+
 		// セーブが完了したことをメッセージボックスで出す
 		std::string message = std::format("{} saved.", "Data");
 		MessageBoxA(nullptr, message.c_str(), "DataManager", 0);
@@ -570,7 +572,7 @@ void GameEditor::CreateCamera()
 void GameEditor::SaveInfoParameter()
 {
 	// 名前
-	HierarchicalName names = GetNormalInfo();
+	HierarchicalName names;
 	std::string max = "MaxCount";
 	// 基本情報
 	std::string param = kParamSectionName;

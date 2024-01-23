@@ -1,5 +1,8 @@
 {
     "SingleMeteor": {
+        "Info": {
+            "IsGravity": 0
+        },
         "Meteor0": {
             "Position": [
                 5.199999809265137,
