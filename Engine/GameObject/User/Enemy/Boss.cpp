@@ -73,6 +73,7 @@ void Boss::OnCollisionEnter(Collider* collider)
 	//プレイヤーが攻撃していたらダメージをくらう
 	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagPlayer && player_->GetIsAtack()) {
 		hitPoint_ -= player_->GetAtackPower();
+		player_->SetIsAtack(false);
 	}
 }
 
