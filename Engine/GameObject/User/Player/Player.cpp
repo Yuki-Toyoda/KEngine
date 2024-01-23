@@ -144,7 +144,7 @@ void Player::OnCollisionEnter(Collider* collider){
 	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagEnemy && isAtack_) {
 		//吸収した数をリセットして座標とスケール調整
 		ResetAbsorptionCount();
-		// 前フレーム座標
+		// 前フレーム座標に固定する
 		transform_.translate_ = prevPos_;
 		// y座標を補正
 		transform_.translate_.y = 3.0f;
