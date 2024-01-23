@@ -4,6 +4,7 @@
 #include "State/EnemyStateList.h"
 #include "../Editor/GameDataManager.h"
 #include"../Player/Player.h"
+#include"Atack/PushUp.h"
 
 /// <summary>
 /// 敵の基底クラス
@@ -85,6 +86,9 @@ public: // パブリックなメンバ変数
 
 	// 外部出力マネージャ
 	GameDataManager* gameDataManager_ = nullptr;
+   //下からの攻撃
+	std::vector<PushUp*> pushUp_;
+
 
 protected: // 継承先メンバ変数
 
