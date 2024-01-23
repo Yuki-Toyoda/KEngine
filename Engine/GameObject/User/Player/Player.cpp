@@ -28,12 +28,18 @@ void Player::Update()
 	worldPos_ = transform_.translate_;
 	
 	transform_.translate_ = transform_.translate_ +velocity_;
+	//BlowAwayStateじゃない場合
 	if (!(state_->name_ == "BlowAway")) {
-		//BlowAwayStateじゃなかったら向いている方向にRotateを合わせる
-		transform_.rotate_.y = -std::atan2(velocity_.x, -velocity_.z);
+		// 入力ベクトルが0以外の場合
+		if (velocity_.x != 0.0f || velocity_.z != 0.0f) {
+			// 向いている方向に角度を合わせる
+			transform_.rotate_.y = -std::atan2(velocity_.x, -velocity_.z);
+		}
 	}
+	
 	// 座標に速度ベクトルを加算する
 	transform_.translate_ = transform_.translate_ + velocity_;
+	
 	//地面より外に出たら中に戻して状態をRootに変更
 	if (transform_.translate_.x + transform_.scale_.x >= ground_->transform_.scale_.x) {
 		// x軸方向の速度ベクトルを0に
