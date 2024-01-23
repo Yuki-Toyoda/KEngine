@@ -59,6 +59,7 @@ public: // サブクラス
 		TagRubble,//がれき
 		TagMeteor,//隕石
 		TagPushUp,//
+		TagUribo,//うりぼー
 	};
 
 public: // メンバ関数

@@ -45,6 +45,11 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	static bool Atack();
+	/// <summary>
+	/// 回復関数
+	/// </summary>
+	/// <returns></returns>
+	static bool Heal();
 	
 private:
 

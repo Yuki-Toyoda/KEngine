@@ -28,7 +28,9 @@ void GameScene::Init(){
 	player_->transform_.translate_.x = 10.0f;
 	//// 敵を生成
 	//gameObjectManager_->CreateInstance<SmallEnemy>("Enemy", BaseObject::TagEnemy);
-
+	Uribo* uribo;
+	uribo = gameObjectManager_->CreateInstance<Uribo>("uribo", BaseObject::TagUribo);
+	player_->SetUribo(uribo);
 	// プレイヤーアニメーションマネージャの生成
 	PlayerAnimManager* am = gameObjectManager_->CreateInstance<PlayerAnimManager>("playerAnim", BaseObject::TagPlayer);
 	// プレイヤーを渡す
@@ -70,6 +72,10 @@ void GameScene::Init(){
 void GameScene::Update()
 {
 	InputManager::Update();
+	if (player_->GetgameOver()) {
+		BaseScene* nextScene = new ResultScene();
+		SceneManager::GetInstance()->SetNextScene(nextScene);
+	}
 	// デバッグ時のみ特定のキーでシーン遷移
 #ifdef _DEBUG
 	// デバッグ遷移
