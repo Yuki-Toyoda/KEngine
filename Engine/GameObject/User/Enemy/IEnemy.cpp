@@ -24,7 +24,7 @@ void IEnemy::Update()
 {
 	// 行動状態クラスがあれば
 	if (state_.get()) {
-		// 行動状態の更新を行う
+		
 		state_->Update();
 	}
 
@@ -52,6 +52,29 @@ void IEnemy::ChangeState(std::unique_ptr<IEnemyState> newState)
 
 	// 新しい行動状態を受け渡す
 	state_ = std::move(newState);
+}
+
+void IEnemy::ChangeState(std::string name)
+{
+	if (name == "MultiAtack") {
+		ChangeState(std::make_unique<MultiAtackState>());
+		return;
+	}
+
+	else if (name == "PushUp") {
+		ChangeState(std::make_unique<PushUpAtackState>());
+		return;
+	}
+	else if (name == "SingleAtack") {
+		ChangeState(std::make_unique<SingleAtackState>());
+		return;
+	}
+	else if (name == "Roller") {
+		ChangeState(std::make_unique<RollerAtackState>());
+	
+		return;
+	}
+
 }
 
 void IEnemy::AddParameter(const std::string& levelName, const std::string& enemyName)

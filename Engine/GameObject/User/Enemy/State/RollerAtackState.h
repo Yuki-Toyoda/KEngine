@@ -3,6 +3,8 @@
 #include "../Atack/Roller.h"
 class RollerAtackState:public IEnemyState
 {
+public:
+	RollerAtackState() { name_ = "Roller"; }
 	/// <summary>
 	/// 初期化関数
 	/// </summary>

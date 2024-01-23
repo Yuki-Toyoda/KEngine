@@ -12,7 +12,7 @@ void RollerAtackState::Init()
 
 void RollerAtackState::Update()
 {
-	enemy_->ChangeState(std::make_unique<EnemySampleState>());
+	enemy_->ChangeState(std::make_unique<WaitTimeState>());
 	return;
 }
 

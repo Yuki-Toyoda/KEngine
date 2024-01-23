@@ -11,7 +11,7 @@
 class IEnemy : public BaseObject
 {
 public: // メンバ関数
-
+	
 	/// <summary>
 	/// 初期化関数
 	/// </summary>
@@ -46,6 +46,9 @@ public: // メンバ関数
 	/// <param name="newState">新しい行動状態</param>
 	void ChangeState(std::unique_ptr<IEnemyState> newState);
 	
+	//State名から行動状態を変更する関数
+
+	void ChangeState(std::string name);
 	/// <summary>
 	/// パラメーターを調整項目クラスに追加する関数
 	/// </summary>
@@ -87,6 +90,10 @@ public: // アクセッサ等
 
 	void SetPlayer(Player* player) { player_ = player; }
 	Player* GetPlayer() { return player_; }
+	//攻撃待機時間のセッター
+	void SetWaitTime(float time) { waitTime_ = time; }
+	//攻撃待機時間のゲッター
+	float GetWaitTime() { return waitTime_; }
 public: // パブリックなメンバ変数
 
 	// 外部出力マネージャ
@@ -94,6 +101,12 @@ public: // パブリックなメンバ変数
    //下からの攻撃
 	std::vector<PushUp*> pushUp_;
 
+	//行動状態のパターン
+	std::vector<std::vector<std::unique_ptr<IEnemyState>>>stateList_;
+	//行動状態のパターンのナンバー
+	int patternNumber_ = 0;
+	//行動状態のパターン内のナンバー　　（stateList.at(patternNumer).at(stateNumber)）
+	int StateNumber_ = 0;
 
 protected: // 継承先メンバ変数
 
@@ -116,7 +129,8 @@ protected: // 継承先メンバ変数
 	std::unique_ptr<IEnemyState> state_;
 	
 	Player* player_;
-
+	//攻撃後の待機時間
+	float waitTime_=2.0f;
 };
 
 /// <summary>

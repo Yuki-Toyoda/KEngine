@@ -49,6 +49,9 @@ private: // メンバ関数
 	/// <param name="collider">衝突したコライダー</param>
 	void OnCollisionEnter(Collider* collider) override;
 
+
+	//StateListを作成する
+	void MakeStateList();
 private:
 	//体力
 	float hitPoint_;

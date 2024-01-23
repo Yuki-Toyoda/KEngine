@@ -56,7 +56,7 @@ void Player::DisplayImGui()
 
 void Player::OnCollisionEnter(Collider* collider)
 {
-	if (state_->name_ == "Root") {
+	
 		if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagRubble) {
 			//がれきにぶつかったらしてサイズを大きくする
 			absorptionCount_++;
@@ -69,7 +69,6 @@ void Player::OnCollisionEnter(Collider* collider)
 			Damage();
 		}
 		
-	}
 	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagEnemy && isAtack_) {
 		//吸収した数をリセットして座標とスケール調整
 		ResetAbsorptionCount();
@@ -81,6 +80,10 @@ void Player::OnCollisionEnter(Collider* collider)
 		transform_.translate_ = prevPos_;
 		ChangeState(std::make_unique<BlowAwayState>());
 		return;
+	}
+	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagPushUp) {
+
+
 	}
 }
 

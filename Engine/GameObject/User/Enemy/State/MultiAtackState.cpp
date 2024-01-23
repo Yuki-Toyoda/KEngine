@@ -1,8 +1,9 @@
 #include "MultiAtackState.h"
 #include "../IEnemy.h"
+
 void MultiAtackState::Init()
 {
-	name_ = "MultiAtack";
+	name_ = "MultiAtackState";
 	atackTimer_.Start(coolTime_);
 }
 
@@ -22,7 +23,7 @@ void MultiAtackState::Update()
 	}
 	if (atackCount_ >= kMaxCount_) {
 		//stateを変更
-		enemy_->ChangeState(std::make_unique<EnemySampleState>());
+		enemy_->ChangeState(std::make_unique<WaitTimeState>());
 		return;
 	}
 }
@@ -30,3 +31,4 @@ void MultiAtackState::Update()
 void MultiAtackState::DisplayImGui()
 {
 }
+

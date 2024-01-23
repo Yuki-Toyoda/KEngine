@@ -58,6 +58,7 @@ void PushUp::Reset()
 	isAtack_ = false;
 	isAtackEnd_ = false;
 	isRemain_ = false;
+	isActive_ = true;
 }
 
 void PushUp::PreparationAtack()
@@ -87,7 +88,7 @@ void PushUp::Atack()
 	}
 	timer_.Update();
 	transform_.translate_.y = KLib::Lerp<float>(rawPosition_, upPosition_, timer_.GetProgress());
-	//タイマーが終了してたら攻撃開始
+	//タイマーが終了してたら攻撃中二変更
 	if (timer_.GetIsFinish()) {
 		isAtack_ = false;
 		isRemain_ = true;
@@ -103,10 +104,14 @@ void PushUp::AtackRemain()
 	}
 	timer_.Update();
 
-	//タイマーが終了してたら攻撃開始
+	//タイマーが終了してたら破壊する
 	if (timer_.GetIsFinish()) {
 		isRemain_ = false;
 		isAtackEnd_ = true;
+		isActive_ = false;
+		
+
+
 	}
 }
 
@@ -129,4 +134,5 @@ void PushUp::SetActive()
 {
 	Reset();
 	isRotate_ = true;
+	
 }

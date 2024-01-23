@@ -12,7 +12,7 @@ class IEnemy;
 class IEnemyState
 {
 public: // コンストラクタ等
-
+	  IEnemyState()=default;
 	// 仮想デストラクタ
 	virtual ~IEnemyState() = default;
 
@@ -62,7 +62,7 @@ public: // メンバ関数
 public: // パブリックなメンバ変数
 	
 	// 行動名
-	std::string name_ = "Default";
+	  std::string name_ ;
 
 protected: // 継承先メンバ変数
 

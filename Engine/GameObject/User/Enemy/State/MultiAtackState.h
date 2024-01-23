@@ -3,6 +3,8 @@
 
 class MultiAtackState: public IEnemyState
 {
+public:
+	MultiAtackState() { name_ = "MultiAtack"; }
 	/// <summary>
 	/// 初期化関数
 	/// </summary>
@@ -28,6 +30,7 @@ private: // メンバ変数
 	int atackCount_=0;
 	//何回攻撃するか
 	int kMaxCount_=5;
-
+	
+	
 };
 

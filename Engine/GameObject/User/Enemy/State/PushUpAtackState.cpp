@@ -10,7 +10,7 @@ void PushUpAtackState::Update()
 	for ( PushUp* pushUp : enemy_->pushUp_) {
 		pushUp->SetActive();
 	}
-	enemy_->ChangeState(std::make_unique<EnemySampleState>());
+	enemy_->ChangeState(std::make_unique<WaitTimeState>());
 	return;
 }
 

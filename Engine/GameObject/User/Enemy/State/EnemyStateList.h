@@ -6,3 +6,4 @@
 #include "MultiAtackState.h"
 #include "PushUpAtackState.h"
 #include "RollerAtackState.h"
+#include "WaitTimeState.h"

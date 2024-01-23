@@ -1,9 +1,8 @@
 #pragma once
 #include "IEnemyState.h"
-class PushUpAtackState:public IEnemyState
+class WaitTimeState :public IEnemyState
 {
 public:
-	PushUpAtackState() { name_ = "PushUp"; }
 	/// <summary>
 	/// 初期化関数
 	/// </summary>
@@ -21,6 +20,5 @@ public:
 	void DisplayImGui() override;
 
 private: // メンバ変数
-
+	KLib::DeltaTimer waitTimer_;
 };
-

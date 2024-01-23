@@ -2,6 +2,8 @@
 #include "IEnemyState.h"
 class SingleAtackState:public IEnemyState
 {
+public:
+	SingleAtackState() { name_ = "SingleAtack"; }
 	/// <summary>
 	/// 初期化関数
 	/// </summary>
