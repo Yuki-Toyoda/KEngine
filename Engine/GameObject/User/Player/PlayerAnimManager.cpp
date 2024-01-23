@@ -82,6 +82,9 @@ void PlayerAnimManager::Update()
 				anim_->ChangeParameter("Player_Idle", true);
 				// ループ有効
 				anim_->isLoop_ = true;
+
+				// ダメージを喰らっている
+				player_->SetIsDamaged(false);
 			}
 		}
 	}
@@ -177,6 +180,9 @@ void PlayerAnimManager::ChangeParamameter(const std::string& name, const bool& i
 
 void PlayerAnimManager::Damage(const float& stanTime)
 {
+	// ダメージを喰らっている
+	player_->SetIsDamaged(true);
+
 	// スタンタイマー開始
 	stanTimer_.Start(stanTime);
 	// 読み込みパラメータ変更

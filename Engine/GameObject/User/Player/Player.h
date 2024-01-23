@@ -86,6 +86,12 @@ public: // アクセッサ等
 	bool SetIsAtack(bool Flag) { return isAtack_ = Flag; }
 
 	/// <summary>
+	/// ダメージフラグセッター
+	/// </summary>
+	/// <param name="isDamaged">ダメージフラグ状態</param>
+	void SetIsDamaged(const bool& isDamaged) { isDamaged_ = isDamaged; }
+
+	/// <summary>
 	/// 攻撃力ゲッター
 	/// </summary>
 	/// <returns>攻撃力</returns>
@@ -133,10 +139,10 @@ private: // メンバ変数
 	// 移動加速度
 	float moveAcceleration_ = 0.01f;
 	// 移動加速度最大値
-	float kMaxMoveAcceleration_ = 0.2f;
+	float kMaxMoveAcceleration_ = 0.25f;
 
 	// 減衰速度
-	float decayAcceleration_ = 0.01f;
+	float decayAcceleration_ = 0.035f;
 	// 減衰速度最大値
 	float kMaxDecayAcceleration_ = 0.2f;
 
@@ -158,6 +164,8 @@ private: // メンバ変数
 	float hitCoolTime_=2.0f;
 	// ダメージ後のスタン秒数
 	float damageStanTime_ = 1.0f;
+	// ダメージを喰らっているか
+	bool isDamaged_ = false;
 
 	// 地面クラス
 	Ground* ground_ = nullptr;
