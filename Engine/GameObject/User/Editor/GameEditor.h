@@ -23,7 +23,7 @@ public:
 	void Update();
 
 public: // アクセッサ
-	HierarchicalName GetNormalInfo() { return { "MeteorParam","Info" }; }
+	HierarchicalName GetNormalInfo() { return { "AttackParam","Info" }; }
 	HierarchicalName GetSingleInfo() { return { "SingleMeteor","Info" }; }
 
 private:
@@ -97,9 +97,9 @@ private:
 		// 名前
 		std::string groupPath = groupName;
 		// セクションパス
-		std::string sectionPath = dataManager_->kObjectNames[index] + std::to_string(indexCount_);
+		std::string sectionPath = dataManager_->kObjectNames[index] + std::to_string(counter_);
 		// アイテムパス
-		std::string keyPath = dataManager_->kEnemyItems[0];
+		std::string keyPath = "Position";
 		// 座標設定
 		dataManager_->AddItem({ groupPath,sectionPath }, keyPath, target->transform_.GetWorldPos());
 		Vector3 setPos = target->transform_.GetWorldPos();
@@ -125,7 +125,7 @@ private:
 
 
 	// 攻撃の種類ごとの名前（グループネームのベース)
-	const std::string kParamName = "MeteorParam";
+	const std::string kParamName = "AttackParam";
 	const std::string kSingleAttackName = "SingleMeteor";
 	const std::string kMultiAttackName = "MultiMeteor";
 	const std::string kPushAttackName = "PushUpAttack";
@@ -136,15 +136,17 @@ private:
 private:
 	/// SingleAttack用
 	// 障害物の最大数
-	int kMaxObstacleCount_ = 0;
+	int kObstacleCounter_ = 0;
 	// 隕石の数
-	int kMaxMeteor_ = 0;
+	int meteorCounter_ = 0;
 	// 敵の最大数
-	int kMaxEnemyCount_ = 0;
+	int enemyCounter_ = 0;
 	// 上がってくるオブジェクトの数
-	int kMaxPushUp_ = 0;
+	int pushUpCounter_ = 0;
+	// ローラの数
+	int rollerCounter_ = 0;
 	// for文の際の値
-	int indexCount_ = 0;
+	int counter_ = 0;
 	// 隕石の大きさ
 	Vector3 size_ = { 1,1,1 };
 	// 現在の難易度
@@ -166,5 +168,6 @@ private: // 仮配置用のオブジェクト
 
 	std::vector<PushUp*> pushUps_;
 
+	std::vector<Roller*> rollers_;
 };
 

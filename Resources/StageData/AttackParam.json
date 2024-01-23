@@ -1,9 +1,9 @@
 {
-    "MeteorParam": {
+    "AttackParam": {
         "Info": {
             "Distance": 30.579999923706055,
             "IsGravity": 1,
-            "MaxCount": 5,
+            "MaxCount": 3,
             "Scale": [
                 2.0,
                 1.0,
@@ -16,6 +16,9 @@
         },
         "PushUp": {
             "MaxCount": 5
+        },
+        "Roller": {
+            "MaxCount": 3
         }
     }
 }

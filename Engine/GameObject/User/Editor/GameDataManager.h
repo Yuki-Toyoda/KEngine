@@ -72,17 +72,8 @@ private: // 配列の最大サイズ
     static const int kObstacleMaxValue = 3;
 
 public: // 呼び出し時に使用する配列
-    // ステージごとの名前
-    std::array<std::string, 4> kLevelNames = { "Easy","Normal","Hard","Expert" };
     // 内部に保存しているオブジェクトの名前
-    std::array<std::string, 4> kObjectNames = { "Enemy","Obstacle","Meteor","PushUp"};
-
-    // 保存するアイテム名
-    std::array<std::string, kEnemyMaxValue> kEnemyItems = { "Position","Type","Speed","RespownTime", "MaxCount" };
-    // 障害物用
-    std::array<std::string, kObstacleMaxValue> kObstacleItems = { "Position","Size", "MaxCount" };
-
-    std::string GetAttackGroupName() { return "MeteorParam"; }
+    std::array<std::string, 3> kObjectNames = { "Meteor","PushUp","Roller"};
 
     void AddSingleAttack(std::string& name) {
         singleAttackList_.push_back(name);
@@ -101,9 +92,11 @@ public: // 呼び出し時に使用する配列
         }
     }
 
+    void CheckTest() { return; };
+
 private:
     /// 項目
-    using Item = std::variant<int32_t, float, Vector2, Vector3, std::string>;
+    using Item = std::variant<int32_t, float, Vector2, Vector3, std::string, std::list<std::string>>;
     using Section = std::map<std::string, Item>;
     using Group = std::map<std::string, Section>;
 

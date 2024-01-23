@@ -11,7 +11,7 @@ void Boss::SuccessorInit()
 	gameObjectManager_ = GameObjectManager::GetInstance();
 	GameDataManager* dataManager = GameDataManager::GetInstance();
 	//下からの攻撃を生成
-	int pushUpMax = dataManager->GetValue<int>({ "MeteorParam","PushUp" }, "MaxCount");
+	int pushUpMax = dataManager->GetValue<int>({ "AttackParam","PushUp" }, "MaxCount");
 
 	for (int i = 0; i < pushUpMax; i++) {
 		PushUp* pushUp;

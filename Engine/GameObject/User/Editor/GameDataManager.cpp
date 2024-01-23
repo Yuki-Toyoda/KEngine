@@ -74,6 +74,7 @@ void GameDataManager::LoadFile(const std::string& groupName)
 			const std::string& itemName = itItem.key();
 
 			HierarchicalName prevNames = { groupName ,sectionName };
+			
 
 			// int32_t型
 			if (itItem->is_number_integer()) {
@@ -87,23 +88,27 @@ void GameDataManager::LoadFile(const std::string& groupName)
 				double value = itItem->get<double>();
 				SetValue(prevNames, itemName, static_cast<float>(value));
 			}
-			// 要素数が2の配列であれば
-			else if (itItem->is_array() && itItem->size() == 2) {
-				// float型のjson配列登録
-				Vector2 value = { itItem->at(0), itItem->at(1) };
-				SetValue(prevNames, itemName, value);
-			}
-			// 要素数が3の配列であれば
-			else if (itItem->is_array() && itItem->size() == 3) {
-				// float型のjson配列登録
-				Vector3 value = { itItem->at(0), itItem->at(1), itItem->at(2) };
-				SetValue(prevNames, itemName, value);
-			}
 			// std::string型
 			else if (itItem->is_number_float()) {
 				// std::string型の値を登録
 				std::string value = itItem->get<std::string>();
 				SetValue(prevNames, itemName, value);
+			}
+			// 要素数が2の配列であれば
+			else if (itItem->is_array() && itItem->size() == 2 && itItem->at(0).is_number()) {
+				// float型のjson配列登録
+				Vector2 value = { itItem->at(0), itItem->at(1) };
+				SetValue(prevNames, itemName, value);
+			}
+			// 要素数が3の配列であれば
+			else if (itItem->is_array() && itItem->size() == 3 && itItem->at(0).is_number()) {
+				// float型のjson配列登録
+				Vector3 value = { itItem->at(0), itItem->at(1), itItem->at(2) };
+				SetValue(prevNames, itemName, value);
+			}
+			else if (itItem->is_array() && itItem->at(0).is_string()) {
+				const std::list<std::string>& valueList = itItem->get<std::list<std::string>>();
+				SetValue(prevNames, itemName, valueList);
 			}
 		}
 
@@ -168,6 +173,12 @@ void GameDataManager::SaveData(const std::string& groupName)
 			else if (std::holds_alternative<std::string>(item)) {
 				// string型のj登録
 				root[fullPath][sectionName][itemName] = std::get<std::string>(item);
+			}
+			else if (std::holds_alternative<std::list<std::string>>(item)) {
+				const std::list<std::string>& valueList = std::get<std::list<std::string>>(item);
+				std::list<std::string> jsonArray(valueList.begin(), valueList.end());
+
+				root[fullPath][sectionName][itemName] = jsonArray;
 			}
 		}
 	}

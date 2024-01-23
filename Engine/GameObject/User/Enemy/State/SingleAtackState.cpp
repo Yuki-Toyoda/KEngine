@@ -6,7 +6,7 @@ void SingleAtackState::Init()
 	//隕石を生成してstateを変更
 	GameDataManager* jsonData = GameDataManager::GetInstance();
 	// 参照の名前
-	HierarchicalName names = { "MeteorParam","Info" };
+	HierarchicalName names = { "AttackParam","Info" };
 	int maxValue = jsonData->GetValue<int>(names, "MaxCount");
 
 	for (int i = 0; i < maxValue; i++) {
@@ -14,7 +14,7 @@ void SingleAtackState::Init()
 		//隕石の座標
 		std::string paramName = "Meteor" + std::to_string(i);
 		meteor->transform_.translate_ = jsonData->GetValue<Vector3>({ "SingleMeteor",paramName }, "Position");
-		meteor->transform_.translate_.y = jsonData->GetValue<float>({ "MeteorParam","Info" }, "Distance");
+		meteor->transform_.translate_.y = jsonData->GetValue<float>({ "AttackParam","Info" }, "Distance");
 		meteor->transform_.scale_ = jsonData->GetValue<Vector3>(names, "Scale");
 	}
 }
