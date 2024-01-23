@@ -5,8 +5,8 @@ void MultiAtackState::Init()
 {
 	name_ = "MultiAtack";
 	GameDataManager* dataManager = GameDataManager::GetInstance();
-	coolTime_ = dataManager->GetValue<float>({ "AttackParam","Multi" }, "CoolTime");
-	kMaxCount_ = dataManager->GetValue<int>({ "AttackParam","Multi" }, "MaxCount");
+	coolTime_ = dataManager->GetValue<float>({ "MultiMeteor","Parameter" }, "CoolTime");
+	kMaxCount_ = dataManager->GetValue<int>({ "MultiMeteor","Parameter" }, "MaxCount");
 
 	atackTimer_.Start(coolTime_);
 }

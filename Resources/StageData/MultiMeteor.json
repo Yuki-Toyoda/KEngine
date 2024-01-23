@@ -1,5 +1,8 @@
 {
     "MultiMeteor": {
-        "Test": null
+        "Parameter": {
+            "CoolTime": 1.0,
+            "MaxCount": 5
+        }
     }
 }

@@ -11,7 +11,7 @@ void RollerAtackState::Init()
 
 	GameDataManager* dataManager = GameDataManager::GetInstance();
 
-	int maxCount = dataManager->GetValue<int>({ "AttackParam","Roller" }, "MaxCount");
+	int maxCount = dataManager->GetValue<int>({ "RollerAttack","Parameter" }, "MaxCount");
 	for (int i = 0; i < maxCount; i++) {
 		Roller* object = gameObjectmanager_->CreateInstance<Roller>("Roller", BaseObject::TagMeteor);
 

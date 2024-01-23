@@ -43,7 +43,9 @@ private:
 	/// エディターのImGui
 	/// </summary>
 	void EditorImGui();
-
+	/// <summary>
+	/// システム的な部分のImGui
+	/// </summary>
 	void SystemImGui();
 
 	/// <summary>
@@ -51,11 +53,11 @@ private:
 	/// </summary>
 	void CameraUpdate() {
 		if (cameraType_ == kUpSide) {
-			camera_->transform_.translate_ = { 0,100.0f,0 };
+			camera_->transform_.translate_ = { 0,150.0f,0 };
 			camera_->transform_.rotate_ = { 1.57f,0.0f,0.0f };
 		}
 		else if (cameraType_ == kGameSide) {
-			camera_->transform_.translate_ = { 0.0f,47.0f,-85.0f };
+			camera_->transform_.translate_ = { 0.0f,47.0f,-90.0f };
 			camera_->transform_.rotate_ = { 0.55f,0.0f,0.0f };
 		}
 	}
@@ -78,12 +80,73 @@ public:
 	/// </summary>
 	void MeteorFix(){
 		for (Meteor* meteor : meteors_) {
-			meteor->transform_.scale_ = size_;
+			meteor->transform_.scale_ = singleSize_;
 			if (meteor->transform_.translate_.y < 2.0f) {
 				meteor->transform_.translate_.y = 2.0f;
 			}
 		}
 	}
+
+private:
+	/// <summary>
+	/// オブジェクト保存関数
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	/// <param name="list"></param>
+	/// <param name="groupName"></param>
+	/// <param name="index"></param>
+	template<typename T>
+	void SaveObject(std::vector<T*> list, std::string groupName, int index) {
+		std::string group = groupName/* + std::to_string(stageNumber[index])*/;
+
+		counter_ = 0;
+		for (T* object : list) {
+			SetObject(object, group, index);
+			ImGui::Text("\n");
+			counter_++;
+		}
+		dataManager_->SaveData(group);
+	}
+
+	//void SaveSingle() {
+	//	//---通常メテオ---//
+	//	std::string single = kSingleAttackName;
+	//	// 数初期化
+	//	counter_ = 0;
+	//	for (Meteor* object : meteors_) {
+	//		SetObject(object, single, 0);
+	//		ImGui::Text("\n");
+	//		counter_++;
+	//	}
+	//	// 隕石のファイル
+	//	dataManager_->SaveData(single);
+	//}
+	//void SavePushUp() {
+	//	//---突き上げ---//
+	//	std::string pushUp = kPushAttackName;
+	//	// 数初期化
+	//	counter_ = 0;
+	//	for (PushUp* object : pushUps_) {
+	//		SetObject(object, pushUp, 1);
+	//		ImGui::Text("\n");
+	//		counter_++;
+	//	}
+	//	// 突き上げのファイル
+	//	dataManager_->SaveData(pushUp);
+	//}
+	//void SaveRoller() {
+	//	//---ローラー---//
+	//	std::string roller = kRollerAttackName;
+	//	// 数初期化
+	//	counter_ = 0;
+	//	for (Roller* object : rollers_) {
+	//		SetObject(object, roller, 2);
+	//		ImGui::Text("\n");
+	//		counter_++;
+	//	}
+	//	// ローラーのファイル
+	//	dataManager_->SaveData(kRollerAttackName);
+	//}
 
 private:
 	/// <summary>
@@ -131,6 +194,7 @@ private:
 	const std::string kMultiAttackName = "MultiMeteor";
 	const std::string kPushAttackName = "PushUpAttack";
 	const std::string kRollerAttackName = "RollerAttack";
+	const std::string kParamSectionName = "Parameter";
 
 	float kAbsValue = 50.0f;
 
@@ -151,7 +215,7 @@ private:
 	// for文の際の値
 	int counter_ = 0;
 	// 隕石の大きさ
-	Vector3 size_ = { 1,1,1 };
+	Vector3 singleSize_ = { 1,1,1 };
 	// 現在の難易度
 	int editNowLevel_ = 0;
 	// 落下かどうか

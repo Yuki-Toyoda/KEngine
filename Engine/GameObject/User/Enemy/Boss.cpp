@@ -13,7 +13,7 @@ void Boss::SuccessorInit()
 	MakeStateList();
 	
 	//下からの攻撃を生成
-	int pushUpMax = dataManager->GetValue<int>({ "AttackParam","PushUp" }, "MaxCount");
+	int pushUpMax = dataManager->GetValue<int>({ "PushUpAttack","Parameter" }, "MaxCount");
 
 	for (int i = 0; i < pushUpMax; i++) {
 		PushUp* pushUp;
