@@ -145,7 +145,8 @@ private: // メンバ変数
 	float decayAcceleration_ = 0.035f;
 	// 減衰速度最大値
 	float kMaxDecayAcceleration_ = 0.2f;
-
+	//最大サイズ
+	float maxSize = 10.0f;
 	// 一フレーム前のポジション
 	Vector3 prevPos_;
 	// 当たり判定用ワールド座標

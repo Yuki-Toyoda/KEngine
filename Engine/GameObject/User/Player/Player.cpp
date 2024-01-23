@@ -12,7 +12,9 @@ void Player::Init()
 
 void Player::Update()
 {
-
+	if (transform_.scale_.x >= maxSize) {
+		transform_.scale_ = { 5.0f,5.0f,5.0f };
+	}
 	// 行動状態クラスがあれば
 	if (state_.get()) {
 		if (!isDamaged_) {
