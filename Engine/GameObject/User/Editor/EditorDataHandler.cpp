@@ -8,6 +8,7 @@ void GameEditor::DataReaload()
 	// Jsonからの情報を再取得
 	GameDataManager::GetInstance()->ClearGroup();
 	GameDataManager::GetInstance()->LoadFiles();
+	gameManager_ = nullptr;
 	// オブジェクト内容初期化
 	gameObjectManager_->Init();
 	// カメラ設定
