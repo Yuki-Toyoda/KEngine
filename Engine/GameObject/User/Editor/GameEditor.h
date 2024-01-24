@@ -76,15 +76,20 @@ public:
 	/// </summary>
 	void CreateCamera();
 	/// <summary>
-	/// 隕石の座標修正用
+	/// 修正用関数
 	/// </summary>
-	void MeteorFix(){
+	void ObjectFix(){
 		for (Meteor* meteor : meteors_) {
 			meteor->transform_.scale_ = singleSize_;
 			if (meteor->transform_.translate_.y < 2.0f) {
 				meteor->transform_.translate_.y = 2.0f;
 			}
 		}
+
+		for (Roller* roller : rollers_) {
+			roller->transform_.scale_ = rollerSize_;
+		}
+
 	}
 
 private:
@@ -196,6 +201,9 @@ private:
 	int counter_ = 0;
 	// 隕石の大きさ
 	Vector3 singleSize_ = { 1,1,1 };
+	Vector3 multiSize_ = { 1,1,1 };
+	Vector3 pushUpSize_ = { 1,1,1 };
+	Vector3 rollerSize_ = { 8.0f,1,1.0f };
 	// 現在の難易度
 	int editNowLevel_ = 0;
 	// 落下かどうか

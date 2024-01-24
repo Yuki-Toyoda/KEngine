@@ -28,7 +28,7 @@ void GameEditor::Init()
 void GameEditor::Update()
 {
 	// 落下修正
-	MeteorFix();
+	ObjectFix();
 	// エディター以外の基本部分のImGui
 	SystemImGui();
 	// エディターのImGui表示
@@ -44,7 +44,7 @@ void GameEditor::ParameterInitialize()
 	if (gameManager_ == nullptr) {
 		gameManager_ = gameObjectManager_->CreateInstance<GameManager>("gameManager", BaseObject::TagNone);
 	}
-#pragma region 共通のパラメータ
+#pragma region パラメータ
 	// 名前
 	names.kSection = kParamSectionName;
 	names.kGroup = dataManager_->GetSingleAttack(stageNumber[kSingle]);
@@ -90,17 +90,22 @@ void GameEditor::ParameterInitialize()
 	// パラメータがない場合用の処理
 	dataManager_->AddItem(names, "CoolTime", coolTime_);
 	dataManager_->AddItem(names, MaxCountName, kMaxCount_);
+	dataManager_->AddItem(names, "Scale", multiSize_);
 
 	// Jsonから受け取る
 	coolTime_ = dataManager_->GetValue<float>(names, "CoolTime");
 	kMaxCount_ = dataManager_->GetValue<int>(names, MaxCountName);
+	multiSize_ = dataManager_->GetValue<Vector3>(names, "Scale");
 
 	//---突き上げ---//
 	names.kGroup = dataManager_->GetPushUpAttack(stageNumber[kPushUp]);;
 	// パラメータない用
 	dataManager_->AddItem(names, MaxCountName, pushUpCounter_);
+	dataManager_->AddItem(names, "Scale", pushUpSize_);
 
 	pushUpCounter_ = dataManager_->GetValue<int>(names, MaxCountName);
+	pushUpSize_ = dataManager_->GetValue<Vector3>(names, "Scale");
+
 #pragma region 下からの攻撃
 
 	for (int i = 0; i < pushUpCounter_; i++) {
@@ -132,8 +137,11 @@ void GameEditor::ParameterInitialize()
 	names.kGroup = dataManager_->GetRollerAttack(stageNumber[kRoller]);;
 	// パラメータない用
 	dataManager_->AddItem(names, MaxCountName, rollerCounter_);
+	dataManager_->AddItem(names, "Scale", rollerSize_);
 
 	rollerCounter_ = dataManager_->GetValue<int>(names, MaxCountName);
+	rollerSize_ = dataManager_->GetValue<Vector3>(names, "Scale");
+
 #pragma region ローラーの攻撃
 	for (int i = 0; i < rollerCounter_; i++) {
 		Roller* object;
@@ -292,6 +300,7 @@ void GameEditor::EditorImGui()
 				std::string fullTag = "Meteor" + std::to_string(counter_);
 				// 座標
 				ImGui::DragFloat3(fullTag.c_str(), &meteor->transform_.translate_.x, 0.1f, -kAbsValue, kAbsValue);
+				ImGui::DragFloat3("ScaleA", &meteor->transform_.scale_.x, 0.1f, -kAbsValue, kAbsValue);
 				ImGui::Text("\n");
 				counter_++;
 			}
@@ -309,6 +318,8 @@ void GameEditor::EditorImGui()
 			ImGui::InputInt("MaxCount", &this->kMaxCount_);
 			// 間隔
 			ImGui::InputFloat("AttackInterval", &coolTime_);
+			// サイズ
+			ImGui::DragFloat3("Multi_Scale", &multiSize_.x, 0.01f, 1.0f, 20.0f);
 			ImGui::EndTabItem();
 		}
 #pragma endregion
@@ -347,6 +358,10 @@ void GameEditor::EditorImGui()
 				stageNumber[kPushUp] = changeNum;
 				DataReaload();
 			}
+
+			ImGui::SeparatorText("Common");
+			// サイズ
+			ImGui::DragFloat3("PushUp_Scale", &pushUpSize_.x, 0.01f, 1.0f, 20.0f);
 			// 要素
 			ImGui::SeparatorText("Individual");
 			// 最大の数
@@ -443,6 +458,9 @@ void GameEditor::EditorImGui()
 				stageNumber[kRoller] = changeNum;
 				DataReaload();
 			}
+			ImGui::SeparatorText("Common");
+			// サイズ
+			ImGui::DragFloat3("Roller_Scale", &rollerSize_.x, 0.01f, 1.0f, 20.0f);
 			// 要素
 			ImGui::SeparatorText("Individual");
 			// 最大の数

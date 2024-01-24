@@ -81,6 +81,7 @@ void GameEditor::SaveRoller()
 	// ローラー
 	names.kGroup = dataManager_->GetRollerAttack(stageNumber[kRoller]);
 	dataManager_->SetValue(names, max, rollerCounter_);
+	dataManager_->SetValue(names, "Scale", rollerSize_);
 	counter_ = 0;
 	for (Roller* object : rollers_) {
 		// 名前
@@ -111,6 +112,7 @@ void GameEditor::SaveMulti()
 	names.kGroup = dataManager_->GetMultiAttack(stageNumber[kMulti]);
 	dataManager_->SetValue(names, max, kMaxCount_);
 	dataManager_->SetValue(names, "CoolTime", coolTime_);
+	dataManager_->SetValue(names, "Scale", multiSize_);
 	// ファイル保存
 	dataManager_->SaveData(names.kGroup);
 }

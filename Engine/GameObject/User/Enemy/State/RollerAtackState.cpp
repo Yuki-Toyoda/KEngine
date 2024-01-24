@@ -22,6 +22,7 @@ void RollerAtackState::Init()
 		object->transform_.translate_.z = newPos.z;
 		object->transform_.translate_.x = newPos.x;
 		object->SetVelocity(dataManager->GetValue<Vector3>({ group,section }, "Direct"));
+		object->transform_.scale_ = dataManager->GetValue<Vector3>({ group,"Parameter" }, "Scale");
 		object->SetgameManager(enemy_->gameManager_);
 	}
 
