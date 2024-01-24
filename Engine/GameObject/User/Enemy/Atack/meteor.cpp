@@ -22,7 +22,7 @@ void Meteor::Init()
 	AddMesh(&attackAreaTransform_, areaColor_, "./Engine/Resource/Samples/Box", "Box.obj");
 	//meshes_[0]->texture_ = TextureManager::Load("./Resources", "denger.png");
 	// 色の設定
-	areaColor_ = { 1.f, 0.f, 0.f, 0.9f };
+	areaColor_ = { 1.f, 0.f, 0.f, 0.8f };
 
 	// 箱表示
 	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Box", "Box.obj");
