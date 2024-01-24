@@ -17,6 +17,7 @@ void SingleAtackState::Init()
 		meteor->transform_.translate_ = jsonData->GetValue<Vector3>({ names.kGroup,paramName }, "Position");
 		meteor->transform_.translate_.y = jsonData->GetValue<float>(names, "Distance");
 		meteor->transform_.scale_ = jsonData->GetValue<Vector3>(names, "Scale");
+		meteor->SetgameManager(enemy_->gameManager_);
 	}
 }
 

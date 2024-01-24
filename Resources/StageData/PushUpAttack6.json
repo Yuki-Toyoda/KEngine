@@ -1,5 +1,29 @@
 {
     "PushUpAttack6": {
-        "A": null
+        "A": null,
+        "Parameter": {
+            "MaxCount": 3
+        },
+        "PushUp0": {
+            "Position": [
+                0.0,
+                0.800000011920929,
+                0.0
+            ]
+        },
+        "PushUp1": {
+            "Position": [
+                0.0,
+                0.800000011920929,
+                0.0
+            ]
+        },
+        "PushUp2": {
+            "Position": [
+                0.0,
+                0.800000011920929,
+                0.0
+            ]
+        }
     }
 }

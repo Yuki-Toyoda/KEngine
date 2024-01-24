@@ -1,7 +1,7 @@
 #pragma once
 #include "../../../BaseObject.h"
-#include "../../../GameObjectManager.h"
 #include "../../Rubble/Rubble.h"
+#include "../../GameManager/GameManager.h"
 class Meteor:public BaseObject
 {
 public: // メンバ関数
@@ -20,7 +20,7 @@ public: // メンバ関数
 	/// ImGui表示関数
 	/// </summary>
 	void DisplayImGui() override;
-
+	void SetgameManager(GameManager* gamemanager) { gameManager_ = gamemanager; }
 private:
 	void OnCollisionEnter(Collider* collider)override;
 private: // メンバ変数
@@ -31,6 +31,13 @@ private: // メンバ変数
 	float moveSpeed_ = 0.1f;
 	// 当たり判定用ワールド座標
 	Vector3 worldPos_;
-	GameObjectManager* gameObjectmanager_=nullptr;
+	
+	// 攻撃範囲開示用トランスフォーム
+	WorldTransform attackAreaTransform_;
+	// 攻撃範囲色
+	Vector4 areaColor_;
+
+	GameManager* gameManager_;
+	
 };
 

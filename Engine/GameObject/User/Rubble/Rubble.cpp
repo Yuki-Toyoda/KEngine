@@ -1,8 +1,9 @@
 #include "Rubble.h"
-
+#include "../GameManager/GameManager.h"
 void Rubble::Init()
 {
 
+	
 	lerpTimer_.Start(lerpTime_);
 	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Box", "Box.obj");
 	color_ = { 0.0f,0.0f,0.0f,1.0f };
@@ -12,6 +13,8 @@ void Rubble::Init()
 
 void Rubble::Update()
 {
+	transform_.scale_ = { gameManager_->rubbleSize_, gameManager_->rubbleSize_, gameManager_->rubbleSize_ };
+
 	lerpTimer_.Update();
 	//時間が切れるか表示フラグがない場合オブジェクトを破壊
 	if (lerpTimer_.GetIsFinish()||!isActive_) {

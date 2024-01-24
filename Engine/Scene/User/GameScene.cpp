@@ -6,7 +6,9 @@ void GameScene::Init(){
 
 	// 入力マネージャの初期化
 	InputManager::Init();
+	GameManager* gameManager = nullptr;
 	
+	gameManager = gameObjectManager_->CreateInstance<GameManager>("gameManager", BaseObject::TagNone);
 	// カメラの生成
 	camera_ = nullptr;
 	camera_ = gameObjectManager_->CreateInstance<InGameCamera>("Incamera", BaseObject::TagCamera);
@@ -28,7 +30,9 @@ void GameScene::Init(){
 	player_->transform_.translate_.x = 10.0f;
 	//// 敵を生成
 	//gameObjectManager_->CreateInstance<SmallEnemy>("Enemy", BaseObject::TagEnemy);
-
+	Uribo* uribo;
+	uribo = gameObjectManager_->CreateInstance<Uribo>("uribo", BaseObject::TagUribo);
+	player_->SetUribo(uribo);
 	// プレイヤーアニメーションマネージャの生成
 	PlayerAnimManager* am = gameObjectManager_->CreateInstance<PlayerAnimManager>("playerAnim", BaseObject::TagPlayer);
 	// プレイヤーを渡す
@@ -50,7 +54,8 @@ void GameScene::Init(){
 	boss = gameObjectManager_->CreateInstance<Boss>("Boss", BaseObject::TagEnemy);
 	// ボスにプレイヤーをセット
 	boss->SetPlayer(player_);
-	
+	//GameManagerをセット
+	boss->SetgameManager(gameManager);
 	// 柵の生成
 	Fences* fm = gameObjectManager_->CreateInstance<Fences>("Fence", BaseObject::TagNone);
 	// 柵追加
@@ -70,6 +75,10 @@ void GameScene::Init(){
 void GameScene::Update()
 {
 	InputManager::Update();
+	if (player_->GetgameOver()) {
+		BaseScene* nextScene = new ResultScene();
+		SceneManager::GetInstance()->SetNextScene(nextScene);
+	}
 	// デバッグ時のみ特定のキーでシーン遷移
 #ifdef _DEBUG
 	// デバッグ遷移

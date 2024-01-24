@@ -216,5 +216,8 @@ private: // 仮配置用のオブジェクト
 	std::vector<PushUp*> pushUps_;
 
 	std::vector<Roller*> rollers_;
+
+	GameManager* gameManager_ = nullptr;
+
 };
 

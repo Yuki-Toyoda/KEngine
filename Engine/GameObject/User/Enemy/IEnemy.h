@@ -94,6 +94,7 @@ public: // アクセッサ等
 	float GetWaitRoller() { return waitForRoller_; }
 	float GetWaitMulti() { return waitForMulti_; }
 	float GetWaitPushUp() { return waitForPushUp_; }
+	void SetgameManager(GameManager* gamemanager) { gameManager_ = gamemanager; }
 public: // パブリックなメンバ変数
 
 	// 外部出力マネージャ
@@ -107,6 +108,7 @@ public: // パブリックなメンバ変数
 	int patternNumber_ = 0;
 	//行動状態のパターン内のナンバー　　（stateList.at(patternNumer).at(stateNumber)）
 	int StateNumber_ = 0;
+	GameManager* gameManager_;
 
 protected: // 継承先メンバ変数
 

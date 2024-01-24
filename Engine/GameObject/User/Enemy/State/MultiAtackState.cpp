@@ -24,6 +24,7 @@ void MultiAtackState::Update()
 		//隕石の座標
 		meteor->transform_.translate_ = enemy_->GetPlayer()->transform_.translate_;
 		meteor->transform_.translate_.y = 30.0f;
+		meteor->SetgameManager(enemy_->gameManager_);
 	}
 	if (atackCount_ >= kMaxCount_) {
 		//stateを変更

@@ -4,14 +4,14 @@
 #include "../../../Utility/Timer/DeltaTimer.h"
 #include "../Ground/Ground.h"
 #include "State/PlayerStateList.h"
-
+#include "uribo/uribo.h"
 // クラスの前方宣言
 class PlayerAnimManager;
 
 /// <summary>
 /// プレイヤークラス
 /// </summary>
-class Player:public BaseObject
+class Player :public BaseObject
 {
 public: // メンバ関数
 
@@ -35,6 +35,8 @@ public: // メンバ関数
 	/// </summary>
 	/// <param name="collider">衝突したコライダー</param>
 	void OnCollisionEnter(Collider* collider)override;
+
+	void OnCollision(Collider* collider)override;
 
 	/// <summary>
 	/// 地面クラスセッター
@@ -113,13 +115,22 @@ public: // アクセッサ等
 	/// </summary>
 	/// <returns>最大加速度</returns>
 	float GetMaxMoveAcceleration() { return kMaxMoveAcceleration_; }
-	
+
 	/// <summary>
 	/// 減衰加速度ゲッター
 	/// </summary>
 	/// <returns>減衰加速度</returns>
 	float GetDecayAcceleration() { return decayAcceleration_; }
+	/// <summary>
+	/// うりぼーセッター
+	/// </summary>
+	/// <param name="uribo_">うりぼー</param>
+	void SetUribo(Uribo* uribo) { uribo_ = uribo; }
 
+	/// <summary>
+	/// ゲームオーバーフラグのげったー
+	bool GetgameOver(){return isGameOver_;}
+/// </summary>
 private: // プライベートなメンバ関数
 
 	/// <summary>
@@ -132,6 +143,12 @@ private: // プライベートなメンバ関数
 	/// </summary>
 	void SubtractVelocity();
 
+	/// <summary>
+/// うりぼーの回復関数
+/// </summary>
+	void Heal();
+
+	void SetGlobalVariables();
 private: // メンバ変数
 
 	// 移動方向ベクトル
@@ -182,5 +199,15 @@ private: // メンバ変数
 
 	// プレイヤーアニメーションマネージャ
 	PlayerAnimManager* pam_ = nullptr;
+	//うりぼー
+	Uribo* uribo_;
+	//一回の回復量
+	int healPower_=50;
+	//回復のくーっるタイム
+	float healCoolTime_=0.5f;
+	//回復用タイマー
+	KLib::DeltaTimer healTimer;
+
+	bool isGameOver_;
 };
 

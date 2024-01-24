@@ -24,3 +24,5 @@
 #include "User/TitleManager/TitleManager.h"
 #include "User/ResultManager/ResultManager.h"
 #include "User/Fence/Fences.h"
+#include "User/Player/uribo/uribo.h"
+#include "User/GameManager/GameManager.h"

@@ -41,7 +41,9 @@ void GameEditor::ParameterInitialize()
 	// 構造の名前取得
 	HierarchicalName names;
 	std::string MaxCountName = "MaxCount";
-
+	if (gameManager_ == nullptr) {
+		gameManager_ = gameObjectManager_->CreateInstance<GameManager>("gameManager", BaseObject::TagNone);
+	}
 #pragma region 共通のパラメータ
 	// 名前
 	names.kSection = kParamSectionName;
@@ -58,6 +60,7 @@ void GameEditor::ParameterInitialize()
 	singleSize_ = dataManager_->GetValue<Vector3>(names, "Scale");
 	respawnDistance_ = dataManager_->GetValue<float>(names, "Distance");
 #pragma region 通常落下部分
+
 	// 隕石ごとに
 	for (int i = 0; i < meteorCounter_; i++) {
 		Meteor* meteor;
@@ -76,6 +79,7 @@ void GameEditor::ParameterInitialize()
 
 		meteor->transform_.translate_ = newPosition;
 		meteor->transform_.translate_.y = 0.8f;
+		meteor->SetgameManager(gameManager_);
 		// プッシュ
 		meteors_.push_back(meteor);
 	}
@@ -148,6 +152,7 @@ void GameEditor::ParameterInitialize()
 
 		object->transform_.translate_ = newPos;
 		object->SetVelocity({});
+		object->SetgameManager(gameManager_);
 		// 
 		rollers_.push_back(object);
 	}
@@ -262,6 +267,7 @@ void GameEditor::EditorImGui()
 				Vector3 newPos{ 0,2.0f,0 };
 				dataManager_->AddItem({ group,section }, "Position", newPos);
 				meteor->transform_.translate_ = dataManager_->GetValue<Vector3>({ group,section }, "Position");
+				meteor->SetgameManager(gameManager_);
 				meteors_.push_back(meteor);
 			}
 			ImGui::SameLine();
@@ -463,6 +469,7 @@ void GameEditor::EditorImGui()
 				dataManager_->AddItem({ group,section }, "Position", newPos);
 				object->transform_.translate_ = dataManager_->GetValue<Vector3>({ group,section }, "Position");
 				object->SetVelocity({});
+				object->SetgameManager(gameManager_);
 				rollers_.push_back(object);
 			}
 			ImGui::SameLine();

@@ -8,7 +8,7 @@ void PushUp::Init()
 	AddColliderOBB("pushUp", &transform_.scale_, &transform_.rotate_, &transform_.translate_);
 	//座標は一旦適当
 	transform_.scale_.y = 4.0f;
-	//transform_.translate_.x = 10.0f;
+	
 	//通常時は少しだけ見えるように
 	defaultPosition_ = -transform_.scale_.y + 1.0f;
 	//最初はdefaultから

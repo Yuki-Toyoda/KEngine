@@ -21,6 +21,7 @@ void RollerAtackState::Init()
 		Vector3 newPos = dataManager->GetValue<Vector3>({ group,section }, "Position");
 		object->transform_.translate_.z = newPos.z;
 		object->transform_.translate_.x = newPos.x;
+		object->SetgameManager(enemy_->gameManager_);
 	}
 
 }
