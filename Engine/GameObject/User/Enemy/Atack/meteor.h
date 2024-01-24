@@ -36,7 +36,7 @@ private: // メンバ変数
 	WorldTransform attackAreaTransform_;
 	// 攻撃範囲色
 	Vector4 areaColor_;
-	GameObjectManager* gameObjectmanager_=nullptr;
+
 	GameManager* gameManager_;
 	
 };
