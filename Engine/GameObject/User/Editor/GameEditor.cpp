@@ -159,10 +159,12 @@ void GameEditor::ParameterInitialize()
 
 		Vector3 newPos = {};
 		dataManager_->AddItem({ group,section }, key, newPos);
+		dataManager_->AddItem({ group,section }, "Direct", newPos);
 		newPos = dataManager_->GetValue<Vector3>({ group,section }, key);
 
 		object->transform_.translate_ = newPos;
-		object->SetVelocity({});
+		Vector3 direct = dataManager_->GetValue<Vector3>({ group,section }, "Direct");
+		object->SetVelocity(direct);
 		object->SetgameManager(gameManager_);
 		// 
 		rollers_.push_back(object);
