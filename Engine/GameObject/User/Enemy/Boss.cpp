@@ -25,6 +25,9 @@ void Boss::SuccessorInit()
 		Vector3 newPos = dataManager->GetValue<Vector3>({ group,name }, "Position");
 		pushUp->transform_.translate_.x = newPos.x;
 		pushUp->transform_.translate_.z = newPos.z;
+		Vector3 scale = dataManager->GetValue<Vector3>({ group,"Parameter" }, "Scale");
+		pushUp->transform_.scale_.x = scale.x;
+		pushUp->transform_.scale_.z = scale.z;
 		pushUp_.push_back(pushUp);
 	}
 }

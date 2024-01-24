@@ -90,6 +90,10 @@ public:
 			roller->transform_.scale_ = rollerSize_;
 		}
 
+		for (PushUp* object : pushUps_) {
+			object->transform_.scale_ = pushUpSize_;
+		}
+
 	}
 
 private:

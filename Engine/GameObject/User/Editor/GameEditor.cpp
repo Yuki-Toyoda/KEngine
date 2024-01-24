@@ -127,6 +127,9 @@ void GameEditor::ParameterInitialize()
 
 		object->transform_.translate_ = newPosition;
 		object->transform_.translate_.y = 0.8f;
+		Vector3 scale = dataManager_->GetValue<Vector3>({ group,"Parameter" }, "Scale");
+		object->transform_.scale_.x = scale.x;
+		object->transform_.scale_.z = scale.z;
 		// プッシュ
 		pushUps_.push_back(object);
 	}
@@ -387,6 +390,7 @@ void GameEditor::EditorImGui()
 				Vector3 newPos = {};
 				dataManager_->AddItem({ group,section }, "Position", newPos);
 				object->transform_.translate_ = dataManager_->GetValue<Vector3>({ group,section }, "Position");
+				object->transform_.scale_ = dataManager_->GetValue<Vector3>({ group,"Parameter" }, "Scale");
 				pushUps_.push_back(object);
 			}
 			// 行結合
