@@ -68,6 +68,8 @@ void GameScene::Init(){
 	InGameUIManager* iUIm = gameObjectManager_->CreateInstance<InGameUIManager>("UIManager", BaseObject::TagNone);
 	// UIマネージャーにボスをセット
 	iUIm->SetBoss(boss);
+	// UIマネージャーにウリボーをセット
+	iUIm->SetUribo(uribo);
 
 	// フェードイン
 	FadeManager::GetInstance()->ChangeParameter("FadeIn", true);

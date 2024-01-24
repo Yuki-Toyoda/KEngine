@@ -4,6 +4,7 @@
 
 // クラスの前方宣言
 class Boss;
+class Uribo;
 
 /// <summary>
 /// インゲーム内でのUIマネージャ
@@ -35,6 +36,12 @@ public: // アクセッサ等
 	/// <param name="boss">ボスの実体</param>
 	void SetBoss(Boss* boss) { boss_ = boss; }
 
+	/// <summary>
+	/// ウリボーのセッター
+	/// </summary>
+	/// <param name="uribo">ウリボー</param>
+	void SetUribo(Uribo* uribo) { uribo_ = uribo; }
+
 private: // メンバ変数
 
 	// 入力検知用
@@ -45,6 +52,9 @@ private: // メンバ変数
 
 	// ボス本体
 	Boss* boss_ = nullptr;
+
+	// ウリボー本体
+	Uribo* uribo_ = nullptr;
 
 };
 

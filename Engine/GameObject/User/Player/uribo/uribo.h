@@ -16,6 +16,13 @@ public://アクセッサ
 /// 体力のげった
 	int GetHP() { return hitPoint_; }
 /// </summary>
+
+	/// <summary>
+	/// HP最大値のゲッター
+	/// </summary>
+	/// <returns>HP最大値</returns>
+	int GetDefaultHP() { return defaultHP_; }
+
 private:
 
 	void SetGlobalVariables();

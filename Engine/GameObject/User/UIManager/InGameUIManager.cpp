@@ -1,6 +1,7 @@
 #include "InGameUIManager.h"
 #include "../../../Resource/Texture/TextureManager.h"
 #include "../Enemy/Boss.h"
+#include "../Player/uribo/uribo.h"
 
 void InGameUIManager::Init()
 {
@@ -14,8 +15,8 @@ void InGameUIManager::Init()
 	AddSprite("BossIcon", { 80.0f, 40.0f }, { 48.0f, 48.0f }, TextureManager::Load("./Resources/UI/InGame", "bossIcon.png"));
 	AddSprite("PlayerHPFrameBG", { 0.0f, 620.0f }, { 384.0f, 96.0f }, TextureManager::Load("./Resources/UI/InGame", "playerHPFram.png"));
 	AddSprite("PlayerIcon", { 0.0f, 100.0f }, { 384.0f, 96.0f }, TextureManager::Load("./Resources/UI/InGame", "playerIconNormal.png"));
-	AddSprite("PlayerHPGageBG", { 100.0f, 680.0f }, { 270.0f, 48.0f }, TextureManager::Load("./Resources/UI/InGame", "BossHpFram.png"));
-	AddSprite("PlayerHPGage", { 100.0f, 100.0f }, { 270.0f, 48.0f }, TextureManager::Load("./Resources/UI/InGame", "BossHpGauge.png"));
+	AddSprite("PlayerHPGageBG", { 100.0f, 685.0f }, { 270.0f, 32.0f }, TextureManager::Load("./Resources/UI/InGame", "BossHpFram.png"));
+	AddSprite("PlayerHPGage", { 100.0f, 100.0f }, { 270.0f, 32.0f }, TextureManager::Load("./Resources/UI/InGame", "BossHpGauge.png"));
 
 	// スプライトの描画範囲設定
 	sprites_[0]->SetIsActive(false);
@@ -28,6 +29,9 @@ void InGameUIManager::Init()
 	sprites_[6]->anchorPoint_ = { 0.5f, 0.5f };
 	sprites_[9]->anchorPoint_.y = 0.5f;
 	sprites_[10]->anchorPoint_.y = 0.5f;
+
+	// 色の設定
+	sprites_[9]->color_ = {2.0f, 2.0f, 2.0f, 1.0f};
 
 	// 座標設定
 	//sprites_[9]->translate_ = sprites_[7]->translate_;
@@ -83,9 +87,15 @@ void InGameUIManager::Update()
 	sprites_[8]->translate_ = sprites_[7]->translate_;
 	sprites_[10]->translate_ = sprites_[9]->translate_;
 
-	// ボスのHP残量によってゲージを変動させる
+	// ボスが存在する場合
 	if (boss_ != nullptr) {
+		// ボスのHP残量によってゲージを変動させる
 		sprites_[5]->scale_.x = Math::Linear(boss_->GetHP(), 0.0f, 1120.0f, boss_->GetMaxHP());
+	}
+
+	// ウリボーが存在する場合
+	if (uribo_ != nullptr) {
+		sprites_[10]->scale_.x = Math::Linear((float)uribo_->GetHP(), 0.0f, 270.0f, (float)uribo_->GetDefaultHP());
 	}
 }
 
