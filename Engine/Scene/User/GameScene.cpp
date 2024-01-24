@@ -67,7 +67,7 @@ void GameScene::Init(){
 	// UIマネージャの生成
 	InGameUIManager* iUIm = gameObjectManager_->CreateInstance<InGameUIManager>("UIManager", BaseObject::TagNone);
 	// UIマネージャーにボスをセット
-	iUIm->SetBoss(boss);
+	iUIm->SetBoss(boss_);
 	// UIマネージャーにウリボーをセット
 	iUIm->SetUribo(uribo);
 
