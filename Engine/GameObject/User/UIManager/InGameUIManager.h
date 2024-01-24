@@ -2,6 +2,10 @@
 #include "../../BaseObject.h"
 #include "../../../Input/Input.h"
 
+// クラスの前方宣言
+class Boss;
+class Uribo;
+
 /// <summary>
 /// インゲーム内でのUIマネージャ
 /// </summary>
@@ -24,6 +28,20 @@ public: // メンバ関数
 	/// </summary>
 	void DisplayImGui() override;
 
+public: // アクセッサ等
+
+	/// <summary>
+	/// ボスのセッター
+	/// </summary>
+	/// <param name="boss">ボスの実体</param>
+	void SetBoss(Boss* boss) { boss_ = boss; }
+
+	/// <summary>
+	/// ウリボーのセッター
+	/// </summary>
+	/// <param name="uribo">ウリボー</param>
+	void SetUribo(Uribo* uribo) { uribo_ = uribo; }
+
 private: // メンバ変数
 
 	// 入力検知用
@@ -31,6 +49,12 @@ private: // メンバ変数
 	// コントローラー入力
 	XINPUT_STATE joyState_; // 現在フレーム用
 	XINPUT_STATE preJoyState_; // 前フレーム用
+
+	// ボス本体
+	Boss* boss_ = nullptr;
+
+	// ウリボー本体
+	Uribo* uribo_ = nullptr;
 
 };
 
