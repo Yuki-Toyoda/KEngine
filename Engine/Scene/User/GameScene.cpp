@@ -79,6 +79,10 @@ void GameScene::Update()
 		BaseScene* nextScene = new ResultScene();
 		SceneManager::GetInstance()->SetNextScene(nextScene);
 	}
+	if (!boss_->isActive_){
+		BaseScene * nextScene = new ResultScene();
+		SceneManager::GetInstance()->SetNextScene(nextScene);
+}
 	// デバッグ時のみ特定のキーでシーン遷移
 #ifdef _DEBUG
 	// デバッグ遷移
