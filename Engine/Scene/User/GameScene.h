@@ -19,6 +19,7 @@ public: // メンバ関数
 
 private:
 
+	// プレイヤー
 	Player*player_;
 	InGameCamera* camera_;
 	Boss* boss_;
