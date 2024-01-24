@@ -1,5 +1,6 @@
 #pragma once
 #include "../../../BaseObject.h"
+#include "../../GameManager/GameManager.h"
 class Roller :public BaseObject {
 public: // メンバ関数
 
@@ -28,8 +29,8 @@ private: // メンバ変数
 	float moveAcceleration_ = 0.3f;
 	// 当たり判定用ワールド座標
 	Vector3 worldPos_;
-
+	GameManager* gameManager_;
 public: // アクセッサ
 	void SetVelocity(const Vector3& velocity) { velocity_ = velocity; }
-
+	void SetgameManager(GameManager* gamemanager) { gameManager_ = gamemanager; }
 };

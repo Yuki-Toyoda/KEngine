@@ -10,12 +10,13 @@ void Roller::Init()
 	transform_.translate_.y = 2.0f;
 	color_ = { 1.0f,0.0f,0.0f,1.0f };
 	
+	
 }
 
 void Roller::Update()
 {
 	//移動の向きに合わせて回転
-	
+	moveAcceleration_ = gameManager_->RollerSpeed_;
 	transform_.rotate_.y = std::atan2(velocity_.x, velocity_.z);
 
 	if (velocity_.x > velocity_.x) {

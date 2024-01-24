@@ -2,6 +2,7 @@
 #include "../../../BaseObject.h"
 #include "../../../GameObjectManager.h"
 #include "../../Rubble/Rubble.h"
+#include "../../GameManager/GameManager.h"
 class Meteor:public BaseObject
 {
 public: // メンバ関数
@@ -20,7 +21,7 @@ public: // メンバ関数
 	/// ImGui表示関数
 	/// </summary>
 	void DisplayImGui() override;
-
+	void SetgameManager(GameManager* gamemanager) { gameManager_ = gamemanager; }
 private:
 	void OnCollisionEnter(Collider* collider)override;
 private: // メンバ変数
@@ -32,5 +33,7 @@ private: // メンバ変数
 	// 当たり判定用ワールド座標
 	Vector3 worldPos_;
 	GameObjectManager* gameObjectmanager_=nullptr;
+	GameManager* gameManager_;
+	
 };
 

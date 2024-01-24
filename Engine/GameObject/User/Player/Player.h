@@ -147,6 +147,8 @@ private: // プライベートなメンバ関数
 /// うりぼーの回復関数
 /// </summary>
 	void Heal();
+
+	void SetGlobalVariables();
 private: // メンバ変数
 
 	// 移動方向ベクトル

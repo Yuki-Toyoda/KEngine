@@ -17,6 +17,9 @@ public://アクセッサ
 	int GetHP() { return hitPoint_; }
 /// </summary>
 private:
+
+	void SetGlobalVariables();
+private:
 	//体力
 	int hitPoint_;
 	//開始時の体力

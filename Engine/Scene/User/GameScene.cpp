@@ -6,7 +6,9 @@ void GameScene::Init(){
 
 	// 入力マネージャの初期化
 	InputManager::Init();
+	GameManager* gameManager = nullptr;
 	
+	gameManager = gameObjectManager_->CreateInstance<GameManager>("gameManager", BaseObject::TagNone);
 	// カメラの生成
 	camera_ = nullptr;
 	camera_ = gameObjectManager_->CreateInstance<InGameCamera>("Incamera", BaseObject::TagCamera);
@@ -52,7 +54,8 @@ void GameScene::Init(){
 	boss = gameObjectManager_->CreateInstance<Boss>("Boss", BaseObject::TagEnemy);
 	// ボスにプレイヤーをセット
 	boss->SetPlayer(player_);
-	
+	//GameManagerをセット
+	boss->SetgameManager(gameManager);
 	// 柵の生成
 	Fences* fm = gameObjectManager_->CreateInstance<Fences>("Fence", BaseObject::TagNone);
 	// 柵追加
