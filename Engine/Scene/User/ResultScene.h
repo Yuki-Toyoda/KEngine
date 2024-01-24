@@ -19,10 +19,14 @@ public: // メンバ関数
 	/// </summary>
 	void Update() override;
 
+public: // 静的メンバ変数
+
+	// クリアフラグ
+	static bool isClear_;
+
 private: // メンバ変数
 
 	// リザルトマネージャ
 	ResultManager* rm_ = nullptr;
 
 };
-

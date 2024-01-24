@@ -2,6 +2,9 @@
 #include "../FadeManager.h"
 #include "../SceneManager.h"
 
+// 静的なメンバ変数の実体を宣言
+bool ResultScene::isClear_ = false;
+
 void ResultScene::Init()
 {
 	// カメラ生成
@@ -27,7 +30,7 @@ void ResultScene::Init()
 	rm_->SetCamera(c);
 	rm_->SetSkyDome(skyDome);
 	rm_->SetPlayerAnimManager(pam);
-	rm_->PostInit(false);
+	rm_->PostInit(isClear_);
 
 	// フェードイン
 	FadeManager::GetInstance()->ChangeParameter("FadeIn", true);

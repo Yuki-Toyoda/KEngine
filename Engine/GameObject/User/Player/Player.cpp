@@ -187,7 +187,8 @@ void Player::OnCollisionEnter(Collider* collider) {
 		}
 	}
 		// 降ってくる野菜に衝突した場合
-		if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagMeteor) {
+		if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagMeteor && 
+			state_->name_ != "BlowAway" && !isAtack_) {
 			// ダメージ処理を行う
 			Damage();
 		}

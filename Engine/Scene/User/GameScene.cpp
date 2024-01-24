@@ -76,10 +76,14 @@ void GameScene::Update()
 {
 	InputManager::Update();
 	if (player_->GetgameOver()) {
+		// クリアフラグをfalse
+		ResultScene::isClear_ = false;
 		BaseScene* nextScene = new ResultScene();
 		SceneManager::GetInstance()->SetNextScene(nextScene);
 	}
 	if (!boss_->isActive_){
+		// クリアフラグをtrue
+		ResultScene::isClear_ = true;
 		BaseScene * nextScene = new ResultScene();
 		SceneManager::GetInstance()->SetNextScene(nextScene);
 }
