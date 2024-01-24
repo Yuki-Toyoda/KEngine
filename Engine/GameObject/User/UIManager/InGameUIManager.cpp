@@ -1,5 +1,6 @@
 #include "InGameUIManager.h"
 #include "../../../Resource/Texture/TextureManager.h"
+#include "../Enemy/Boss.h"
 
 void InGameUIManager::Init()
 {
@@ -8,13 +9,13 @@ void InGameUIManager::Init()
 	AddSprite("Attack", { 1040.0f, 650.0f }, { 224.0f, 48.0f }, TextureManager::Load("./Resources/UI/InGame", "attack.png"));
 	AddSprite("MoveUI_BG", { 1075.0f, 570.0f }, { 192.0f, 64.0f }, TextureManager::Load("./Resources/UI/InGame", "moveBack.png"));
 	AddSprite("MoveUI_F", { 1075.0f, 570.0f }, { 192.0f, 64.0f }, TextureManager::Load("./Resources/UI/InGame", "moveFront.png"));
-	AddSprite("BossHP", { 80.0f, 0.0f }, { 96.0f, 64.0f }, TextureManager::Load("./Resources/UI/InGame", "BossHP.png"));
-	AddSprite("BossHPGageBG", { 80.0f, 80.0f }, { 1120.0f, 64.0f }, TextureManager::Load("./Resources/UI/InGame", "BossHpFram.png"));
-	AddSprite("BossHPGage", { 0.0f, 100.0f }, { 1120.0f, 64.0f }, TextureManager::Load("./Resources/UI/InGame", "BossHpGauge.png"));
+	AddSprite("BossHPGageBG", { 80.0f, 40.0f }, { 1120.0f, 32.0f }, TextureManager::Load("./Resources/UI/InGame", "BossHpFram.png"));
+	AddSprite("BossHPGage", { 0.0f, 40.0f }, { 1120.0f, 32.0f }, TextureManager::Load("./Resources/UI/InGame", "BossHpGauge.png"));
+	AddSprite("BossIcon", { 80.0f, 40.0f }, { 48.0f, 48.0f }, TextureManager::Load("./Resources/UI/InGame", "bossIcon.png"));
 	AddSprite("PlayerHPFrameBG", { 0.0f, 620.0f }, { 384.0f, 96.0f }, TextureManager::Load("./Resources/UI/InGame", "playerHPFram.png"));
 	AddSprite("PlayerIcon", { 0.0f, 100.0f }, { 384.0f, 96.0f }, TextureManager::Load("./Resources/UI/InGame", "playerIconNormal.png"));
-	AddSprite("PlayerHPGageBG", { 100.0f, 680.0f }, { 270.0f, 55.0f }, TextureManager::Load("./Resources/UI/InGame", "BossHpFram.png"));
-	AddSprite("PlayerHPGage", { 100.0f, 100.0f }, { 270.0f, 55.0f }, TextureManager::Load("./Resources/UI/InGame", "BossHpGauge.png"));
+	AddSprite("PlayerHPGageBG", { 100.0f, 680.0f }, { 270.0f, 48.0f }, TextureManager::Load("./Resources/UI/InGame", "BossHpFram.png"));
+	AddSprite("PlayerHPGage", { 100.0f, 100.0f }, { 270.0f, 48.0f }, TextureManager::Load("./Resources/UI/InGame", "BossHpGauge.png"));
 
 	// スプライトの描画範囲設定
 	sprites_[0]->SetIsActive(false);
@@ -22,8 +23,9 @@ void InGameUIManager::Init()
 	sprites_[1]->texSize_ = { 448.0f, 96.0f };
 
 	// アンカーポイント設定
+	sprites_[4]->anchorPoint_.y = 0.5f;
 	sprites_[5]->anchorPoint_.y = 0.5f;
-	sprites_[6]->anchorPoint_.y = 0.5f;
+	sprites_[6]->anchorPoint_ = { 0.5f, 0.5f };
 	sprites_[9]->anchorPoint_.y = 0.5f;
 	sprites_[10]->anchorPoint_.y = 0.5f;
 
@@ -76,10 +78,15 @@ void InGameUIManager::Update()
 	}
 
 	// ゲージ背景とゲージ部分の座標をそろえる
-	sprites_[6]->translate_ = sprites_[5]->translate_;
+	sprites_[5]->translate_ = sprites_[4]->translate_;
 	// プレイヤーも同様
 	sprites_[8]->translate_ = sprites_[7]->translate_;
 	sprites_[10]->translate_ = sprites_[9]->translate_;
+
+	// ボスのHP残量によってゲージを変動させる
+	if (boss_ != nullptr) {
+		sprites_[5]->scale_.x = Math::Linear(boss_->GetHP(), 0.0f, 1120.0f, boss_->GetMaxHP());
+	}
 }
 
 void InGameUIManager::DisplayImGui()
