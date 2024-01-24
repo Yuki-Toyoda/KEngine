@@ -7,7 +7,7 @@
         "pushUpAtackTime": 3.0,
         "pushUpRemain": 3.0,
         "rollerSpeed": 0.20000000298023224,
-        "rubbleRange": 10.0,
-        "rubblemoveTime": 10.600000381469727
+        "rubbleRange": 1.5,
+        "rubblemoveTime": 0.5
     }
 }

@@ -81,7 +81,7 @@ void Meteor::OnCollisionEnter(Collider* collider)
 			//Lerpのゴールとスタートを設定
 			pos.x = transform_.translate_.x + std::cosf(theta) * (distance + transform_.scale_.x);
 			pos.z = transform_.translate_.z + std::sinf(theta) * (distance + transform_.scale_.z);
-			pos.y = gameManager_->rubbleSize_ + 1.0f;
+			pos.y = gameManager_->rubbleSize_ + 3.0f;
 			rubble->SetStart(transform_.translate_);
 			rubble->SetGoal(pos);
 			rubble->lerpTime_ = gameManager_->rubbleAliveCount_;
