@@ -5,13 +5,30 @@ void InGameUIManager::Init()
 {
 	// スプライトの追加
 	AddSprite("PauseMenu", { 0.0f, 0.0f }, { 224.0f, 64.0f }, TextureManager::Load("./Resources/UI/InGame", "pauseBotton.png"));
-	AddSprite("Attack", { 1040.0f, 65.0f }, { 224.0f, 48.0f }, TextureManager::Load("./Resources/UI/InGame", "attack.png"));
-	AddSprite("MoveUI_BG", { 1075.0f, 0.0f }, { 192.0f, 64.0f }, TextureManager::Load("./Resources/UI/InGame", "moveBack.png"));
-	AddSprite("MoveUI_F", { 1075.0f, 0.0f }, { 192.0f, 64.0f }, TextureManager::Load("./Resources/UI/InGame", "moveFront.png"));
+	AddSprite("Attack", { 1040.0f, 650.0f }, { 224.0f, 48.0f }, TextureManager::Load("./Resources/UI/InGame", "attack.png"));
+	AddSprite("MoveUI_BG", { 1075.0f, 570.0f }, { 192.0f, 64.0f }, TextureManager::Load("./Resources/UI/InGame", "moveBack.png"));
+	AddSprite("MoveUI_F", { 1075.0f, 570.0f }, { 192.0f, 64.0f }, TextureManager::Load("./Resources/UI/InGame", "moveFront.png"));
+	AddSprite("BossHP", { 80.0f, 0.0f }, { 96.0f, 64.0f }, TextureManager::Load("./Resources/UI/InGame", "BossHP.png"));
+	AddSprite("BossHPGageBG", { 80.0f, 80.0f }, { 1120.0f, 64.0f }, TextureManager::Load("./Resources/UI/InGame", "BossHpFram.png"));
+	AddSprite("BossHPGage", { 0.0f, 100.0f }, { 1120.0f, 64.0f }, TextureManager::Load("./Resources/UI/InGame", "BossHpGauge.png"));
+	AddSprite("PlayerHPFrameBG", { 0.0f, 620.0f }, { 384.0f, 96.0f }, TextureManager::Load("./Resources/UI/InGame", "playerHPFram.png"));
+	AddSprite("PlayerIcon", { 0.0f, 100.0f }, { 384.0f, 96.0f }, TextureManager::Load("./Resources/UI/InGame", "playerIconNormal.png"));
+	AddSprite("PlayerHPGageBG", { 100.0f, 680.0f }, { 270.0f, 55.0f }, TextureManager::Load("./Resources/UI/InGame", "BossHpFram.png"));
+	AddSprite("PlayerHPGage", { 100.0f, 100.0f }, { 270.0f, 55.0f }, TextureManager::Load("./Resources/UI/InGame", "BossHpGauge.png"));
 
 	// スプライトの描画範囲設定
+	sprites_[0]->SetIsActive(false);
 	sprites_[0]->texSize_ = { 448.0f, 128.0f };
 	sprites_[1]->texSize_ = { 448.0f, 96.0f };
+
+	// アンカーポイント設定
+	sprites_[5]->anchorPoint_.y = 0.5f;
+	sprites_[6]->anchorPoint_.y = 0.5f;
+	sprites_[9]->anchorPoint_.y = 0.5f;
+	sprites_[10]->anchorPoint_.y = 0.5f;
+
+	// 座標設定
+	//sprites_[9]->translate_ = sprites_[7]->translate_;
 
 	// 入力取得
 	input_ = Input::GetInstance();
@@ -36,7 +53,7 @@ void InGameUIManager::Update()
 	move = Math::Normalize(move) * 10.0f;
 
 	// スティックの結果をUIの反映
-	sprites_[3]->translate_ = Vector2(1075.0f, 0.0f) + Vector2(move.x, move.z);
+	sprites_[3]->translate_ = Vector2(1075.0f, 570.0f) + Vector2(move.x, move.z);
 
 	// Aボタンを押すとUIを変化させる
 	if (joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_START) {
@@ -57,6 +74,12 @@ void InGameUIManager::Update()
 		// UIを変更する
 		sprites_[1]->texBase_ = Vector2(0.0f, 0.0f);
 	}
+
+	// ゲージ背景とゲージ部分の座標をそろえる
+	sprites_[6]->translate_ = sprites_[5]->translate_;
+	// プレイヤーも同様
+	sprites_[8]->translate_ = sprites_[7]->translate_;
+	sprites_[10]->translate_ = sprites_[9]->translate_;
 }
 
 void InGameUIManager::DisplayImGui()

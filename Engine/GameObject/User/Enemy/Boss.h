@@ -40,7 +40,20 @@ public: // メンバ関数
 	/// <param name="enemyName">敵名</param>
 	void ApplyParameter(const std::string& levelName, const std::string& enemyName) override;
 
+public: // アクセッサ等
+
+	/// <summary>
+	/// 現在HPのゲッター
+	/// </summary>
+	/// <returns>現在HP</returns>
+	float GetHP() { return hitPoint_; }
 	
+	/// <summary>
+	/// 最大HPゲッター
+	/// </summary>
+	/// <returns>最大HP</returns>
+	float GetMaxHP() { return kMaxHitPoint_; }
+
 private: // メンバ関数
 
 	/// <summary>
@@ -53,8 +66,12 @@ private: // メンバ関数
 	//StateListを作成する
 	void MakeStateList();
 private:
+
 	//体力
 	float hitPoint_;
+	// 最大体力
+	float kMaxHitPoint_;
+
+	// ゲームオブジェクトマネージャ
 	GameObjectManager* gameObjectManager_;
 };
-
