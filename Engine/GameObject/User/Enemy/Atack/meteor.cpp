@@ -16,10 +16,10 @@ void Meteor::Init()
 
 void Meteor::Update()
 {
-	//int isGrav = GameDataManager::GetInstance()->GetValue<int>({ "SingleMeteor","Info" }, "IsGravity");
-	//if (isGrav) {
+	int isGrav = GameDataManager::GetInstance()->GetValue<int>({ "SingleMeteor","Parameter" }, "IsGravity");
+	if (isGrav) {
 		transform_.translate_ += velocity_ * moveSpeed_;
-	//}
+	}
 }
 
 void Meteor::DisplayImGui()

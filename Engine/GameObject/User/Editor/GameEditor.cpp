@@ -17,7 +17,10 @@ void GameEditor::Init()
 	nameList.push_back("Single");
 	nameList.push_back("Roller");
 	nameList.push_back("PushUp");
-	dataManager_->SetValue({ "Test","List" }, "charList", nameList);
+	dataManager_->SetValue({ "Test","Parttern0" }, "List0", nameList);
+	nameList.pop_back();
+	nameList.pop_back();
+	dataManager_->SetValue({ "Test","Pattern1" }, "List0", nameList);
 	dataManager_->SaveData("Test");
 
 }
@@ -41,7 +44,8 @@ void GameEditor::ParameterInitialize()
 
 #pragma region 共通のパラメータ
 	// 名前
-	names = { kSingleAttackName,kParamSectionName };
+	names.kSection = kParamSectionName;
+	names.kGroup = dataManager_->GetSingleAttack(stageNumber[kSingle]);
 	// パラメータがない場合用の処理
 	dataManager_->AddItem(names, MaxCountName, meteorCounter_);
 	dataManager_->AddItem(names, "IsGravity", isGravity_);
@@ -53,39 +57,7 @@ void GameEditor::ParameterInitialize()
 	isGravity_ = dataManager_->GetValue<int>(names, "IsGravity");
 	singleSize_ = dataManager_->GetValue<Vector3>(names, "Scale");
 	respawnDistance_ = dataManager_->GetValue<float>(names, "Distance");
-
-	//---追尾---//
-	names.kGroup = kMultiAttackName;
-	//names.kSection = "Multi";
-	// パラメータがない場合用の処理
-	dataManager_->AddItem(names, "CoolTime", coolTime_);
-	dataManager_->AddItem(names, MaxCountName, kMaxCount_);
-
-	// Jsonから受け取る
-	coolTime_ = dataManager_->GetValue<float>(names, "CoolTime");
-	kMaxCount_ = dataManager_->GetValue<int>(names, MaxCountName);
-
-	//---突き上げ---//
-	names.kGroup = kPushAttackName;
-	//names.kSection = "PushUp";
-	// パラメータない用
-	dataManager_->AddItem(names, MaxCountName, pushUpCounter_);
-
-	pushUpCounter_ = dataManager_->GetValue<int>(names, MaxCountName);
-
-	//---ローラー---//
-	names.kGroup = kRollerAttackName;
-
-	// パラメータない用
-	dataManager_->AddItem(names, MaxCountName, rollerCounter_);
-
-	rollerCounter_ = dataManager_->GetValue<int>(names, MaxCountName);
-
-#pragma endregion
-
 #pragma region 通常落下部分
-	// 名前
-	names = GetSingleInfo();
 	// 隕石ごとに
 	for (int i = 0; i < meteorCounter_; i++) {
 		Meteor* meteor;
@@ -106,11 +78,25 @@ void GameEditor::ParameterInitialize()
 		meteor->transform_.translate_.y = 0.8f;
 		// プッシュ
 		meteors_.push_back(meteor);
-
 	}
-
 #pragma endregion
 
+	//---追尾---//
+	names.kGroup = dataManager_->GetMultiAttack(stageNumber[kMulti]);
+	// パラメータがない場合用の処理
+	dataManager_->AddItem(names, "CoolTime", coolTime_);
+	dataManager_->AddItem(names, MaxCountName, kMaxCount_);
+
+	// Jsonから受け取る
+	coolTime_ = dataManager_->GetValue<float>(names, "CoolTime");
+	kMaxCount_ = dataManager_->GetValue<int>(names, MaxCountName);
+
+	//---突き上げ---//
+	names.kGroup = dataManager_->GetPushUpAttack(stageNumber[kPushUp]);;
+	// パラメータない用
+	dataManager_->AddItem(names, MaxCountName, pushUpCounter_);
+
+	pushUpCounter_ = dataManager_->GetValue<int>(names, MaxCountName);
 #pragma region 下からの攻撃
 
 	for (int i = 0; i < pushUpCounter_; i++) {
@@ -118,7 +104,7 @@ void GameEditor::ParameterInitialize()
 		object = gameObjectManager_->CreateInstance<PushUp>("PushUp", BaseObject::TagNone);
 
 		// パス生成
-		std::string group = kPushAttackName; // ここを＋添え字で複数管理できるようにする
+		std::string group = names.kGroup;
 		// 一つひとつのオブジェクト
 		std::string section = "PushUp" + std::to_string(i);
 		// 値
@@ -138,14 +124,19 @@ void GameEditor::ParameterInitialize()
 
 #pragma endregion
 
-#pragma region ローラーの攻撃
+	//---ローラー---//
+	names.kGroup = dataManager_->GetRollerAttack(stageNumber[kRoller]);;
+	// パラメータない用
+	dataManager_->AddItem(names, MaxCountName, rollerCounter_);
 
+	rollerCounter_ = dataManager_->GetValue<int>(names, MaxCountName);
+#pragma region ローラーの攻撃
 	for (int i = 0; i < rollerCounter_; i++) {
 		Roller* object;
 		object = gameObjectManager_->CreateInstance<Roller>("Roller", BaseObject::TagMeteor);
 
 		// パス生成
-		std::string group = kRollerAttackName;
+		std::string group = names.kGroup;
 		// 
 		std::string section = "Roller" + std::to_string(i);
 		// 値
@@ -163,11 +154,8 @@ void GameEditor::ParameterInitialize()
 
 #pragma endregion
 
+#pragma endregion
 
-	dataManager_->SaveData(kMultiAttackName);
-	dataManager_->SaveData(kPushAttackName);
-	dataManager_->SaveData(kRollerAttackName);
-	dataManager_->SaveData(kSingleAttackName);
 }
 
 void GameEditor::EditorImGui()
@@ -181,18 +169,7 @@ void GameEditor::EditorImGui()
 		// 名前
 		HierarchicalName names;
 
-		SaveInfoParameter();
-
-		// メテオ
-		SaveObject(meteors_, kSingleAttackName, 0);
-		// 追尾
-
-		// 突き上げ
-		SaveObject(pushUps_, kPushAttackName, 1);
-		// ローラー
-		SaveObject(rollers_, kRollerAttackName, 2);
-
-		dataManager_->SaveData(kMultiAttackName);
+		SaveAll();
 
 		// セーブが完了したことをメッセージボックスで出す
 		std::string message = std::format("{} saved.", "Data");
@@ -202,6 +179,7 @@ void GameEditor::EditorImGui()
 	if (ImGui::Button("Reload")) {
 		DataReaload();
 	}
+	ImGui::Text("\n");
 
 	ImGui::SeparatorText("Object");
 
@@ -211,6 +189,38 @@ void GameEditor::EditorImGui()
 #pragma region 通常のまとめて落下
 		// 上から落ちてくるやつの方
 		if (ImGui::BeginTabItem("SingleAttack")) {
+			// パターンの切り替え
+			ImGui::SeparatorText("Pattern");
+			if (ImGui::Button("Next")) {
+				if (stageNumber[kSingle] < 10) {
+					SaveSingle();
+					stageNumber[kSingle]++;
+					DataReaload();
+				}
+			}
+
+			ImGui::SameLine();
+
+			if (ImGui::Button("Prev")) {
+				if (stageNumber[kSingle] > 0) {
+					SaveSingle();
+					stageNumber[kSingle]--;
+					DataReaload();
+				}
+			}
+
+			if (ImGui::Button("Save")) {
+				SaveSingle();
+			}
+
+			int changeNum = stageNumber[kSingle];
+			ImGui::InputInt("num", &changeNum, 0);
+			if (changeNum != stageNumber[kSingle] && changeNum < 10) {
+				SaveSingle();
+				stageNumber[kSingle] = changeNum;
+				DataReaload();
+			}
+
 			ImGui::SeparatorText("Common");
 			// 落下
 			static bool gravity = static_cast<bool>(isGravity_);
@@ -220,9 +230,8 @@ void GameEditor::EditorImGui()
 				}
 
 				isGravity_ = static_cast<int>(gravity);
-				dataManager_->SetValue(GetNormalInfo(), "IsGravity", isGravity_);
 				// パラメータのファイル保存
-				dataManager_->SaveData(kParamName);
+				SaveSingle();
 			}
 			// サイズ
 			ImGui::DragFloat3("Meteor_Scale", &singleSize_.x, 0.01f, 1.0f, 20.0f);
@@ -248,7 +257,7 @@ void GameEditor::EditorImGui()
 				// インスタンス生成
 				Meteor* meteor;
 				meteor = gameObjectManager_->CreateInstance<Meteor>("Meteor", BaseObject::TagNone);
-				std::string group = "SingleMeteor";
+				std::string group = dataManager_->GetSingleAttack(stageNumber[kSingle]);
 				std::string section = "Meteor" + std::to_string(meteorCounter_);
 				Vector3 newPos{ 0,2.0f,0 };
 				dataManager_->AddItem({ group,section }, "Position", newPos);
@@ -289,18 +298,6 @@ void GameEditor::EditorImGui()
 #pragma region 追尾攻撃
 		// 追尾の方
 		if (ImGui::BeginTabItem("MultiAttack")) {
-			//ImGui::SeparatorText("System");
-			//// 保存
-			//if (ImGui::Button("Save")) {
-			//	HierarchicalName names = { "AttackParam","Multi" };
-			//	// 値の設定
-			//	SaveInfoParameter();
-			//	// 書き込み
-			//	dataManager_->SaveData(names.kGroup);
-			//	// セーブが完了したことをメッセージボックスで出す
-			//	std::string message = std::format("{}.json saved.", names.kGroup);
-			//	MessageBoxA(nullptr, message.c_str(), "DataManager", 0);
-			//}
 			ImGui::SeparatorText("Common");
 			// 最大個数
 			ImGui::InputInt("MaxCount", &this->kMaxCount_);
@@ -313,6 +310,37 @@ void GameEditor::EditorImGui()
 #pragma region 突き上げ
 		// 下からのやつ
 		if (ImGui::BeginTabItem("PushUpAttack")) {
+			// パターンの切り替え
+			ImGui::SeparatorText("Pattern");
+			if (ImGui::Button("Next")) {
+				if (stageNumber[kPushUp] < 10) {
+					SavePushUp();
+					stageNumber[kPushUp]++;
+					DataReaload();
+				}
+			}
+
+			ImGui::SameLine();
+
+			if (ImGui::Button("Prev")) {
+				if (stageNumber[kPushUp] > 0) {
+					SavePushUp();
+					stageNumber[kPushUp]--;
+					DataReaload();
+				}
+			}
+
+			if (ImGui::Button("Save")) {
+				SavePushUp();
+			}
+
+			int changeNum = stageNumber[kPushUp];
+			ImGui::InputInt("num", &changeNum, 0);
+			if (changeNum != stageNumber[kPushUp] && changeNum < 10) {
+				SavePushUp();
+				stageNumber[kPushUp] = changeNum;
+				DataReaload();
+			}
 			// 要素
 			ImGui::SeparatorText("Individual");
 			// 最大の数
@@ -348,18 +376,6 @@ void GameEditor::EditorImGui()
 				if (pushUpCounter_ > 0) {
 					pushUpCounter_--;
 					pushUps_.pop_back();
-					////---突き上げ---//
-					//std::string pushUp = kPushAttackName;
-					//// 数初期化
-					//counter_ = 0;
-					//for (PushUp* object : pushUps_) {
-					//	SetObject(object, pushUp, 1);
-					//	ImGui::Text("\n");
-					//	counter_++;
-					//}
-					//dataManager_->SaveData(pushUp);
-					//dataManager_->SaveData(kParamName);
-					//DataReaload();
 				}
 				else {
 					pushUpCounter_ = 0;
@@ -390,6 +406,37 @@ void GameEditor::EditorImGui()
 #pragma region ローラー
 		
 		if (ImGui::BeginTabItem("RollerAttack")) {
+			// パターンの切り替え
+			ImGui::SeparatorText("Pattern");
+			if (ImGui::Button("Next")) {
+				if (stageNumber[kRoller] < 10) {
+					SaveRoller();
+					stageNumber[kRoller]++;
+					DataReaload();
+				}
+			}
+
+			ImGui::SameLine();
+
+			if (ImGui::Button("Prev")) {
+				if (stageNumber[kRoller] > 0) {
+					SaveRoller();
+					stageNumber[kRoller]--;
+					DataReaload();
+				}
+			}
+
+			if (ImGui::Button("Save")) {
+				SaveRoller();
+			}
+
+			int changeNum = stageNumber[kRoller];
+			ImGui::InputInt("num", &changeNum, 0);
+			if (changeNum != stageNumber[kRoller] && changeNum < 10) {
+				SaveRoller();
+				stageNumber[kRoller] = changeNum;
+				DataReaload();
+			}
 			// 要素
 			ImGui::SeparatorText("Individual");
 			// 最大の数
@@ -455,6 +502,18 @@ void GameEditor::EditorImGui()
 
 	ImGui::End();
 
+	for (int i = 0; i < 10; i++) {
+		std::string group = dataManager_->GetPushUpAttack(i);
+		dataManager_->CreateGroup({ group,"A" });
+		dataManager_->SaveData(group);
+		group = dataManager_->GetRollerAttack(i);
+		dataManager_->CreateGroup({ group,"A" });
+		dataManager_->SaveData(group);
+		group = dataManager_->GetPushUpAttack(i);
+		dataManager_->CreateGroup({ group,"A" });
+		dataManager_->SaveData(group);
+	}
+
 }
 
 void GameEditor::SystemImGui()
@@ -489,9 +548,15 @@ void GameEditor::SystemImGui()
 				CameraUpdate();
 			}
 
-			std::list<std::string> testList = dataManager_->GetValue<std::list<std::string>>({ "Test","List" }, "charList");
+			std::list<std::string> testList = dataManager_->GetValue<std::list<std::string>>({ "Test","Parttern0" }, "List0");
 
 			for (std::string st : testList) {
+				ImGui::Text(st.c_str());
+				ImGui::Text("\n");
+			}
+
+			std::list<std::string> list = dataManager_->GetValue<std::list<std::string>>({ "Test","Pattern1" }, "List0");
+			for (std::string st : list) {
 				ImGui::Text(st.c_str());
 				ImGui::Text("\n");
 			}
@@ -532,26 +597,6 @@ void GameEditor::SystemImGui()
 
 }
 
-void GameEditor::DataReaload()
-{
-	// Jsonからの情報を再取得
-	GameDataManager::GetInstance()->ClearGroup();
-	GameDataManager::GetInstance()->LoadFiles();
-	// オブジェクト内容初期化
-	gameObjectManager_->Init();
-	// カメラ設定
-	CreateCamera();
-	// リストクリア
-	// 隕石
-	meteors_.clear();
-	// 突き上げ
-	pushUps_.clear();
-	// ローラー
-	rollers_.clear();
-	// Jsonの情報による初期化
-	ParameterInitialize();
-}
-
 void GameEditor::CreateCamera()
 {
 	// カメラ初期化
@@ -567,32 +612,4 @@ void GameEditor::CreateCamera()
 	ground_ = gameObjectManager_->CreateInstance<Ground>("Ground", BaseObject::TagNone);
 	ground_->transform_.translate_.y = -2.5f;
 	ground_->transform_.scale_ = { 55.0f,1.0f,55.0f };
-}
-
-void GameEditor::SaveInfoParameter()
-{
-	// 名前
-	HierarchicalName names;
-	std::string max = "MaxCount";
-	// 基本情報
-	std::string param = kParamSectionName;
-	names = { kSingleAttackName,param };
-	// 最大数の設定
-	dataManager_->SetValue(names, max, meteorCounter_);
-	dataManager_->SetValue(names, "Scale", singleSize_);
-	dataManager_->SetValue(names, "Distance", respawnDistance_);
-
-	// ローラー
-	names = { kRollerAttackName,param };
-	dataManager_->SetValue(names, max, rollerCounter_);
-
-	// 突き上げ
-	names = { kPushAttackName,param };
-	dataManager_->SetValue(names, max, pushUpCounter_);
-
-	// 追尾
-	names = { kMultiAttackName,param };
-	dataManager_->SetValue(names, max, kMaxCount_);
-	dataManager_->SetValue(names, "CoolTime", coolTime_);
-
 }

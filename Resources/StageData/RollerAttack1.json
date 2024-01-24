@@ -1,0 +1,22 @@
+{
+    "RollerAttack1": {
+        "A": null,
+        "Parameter": {
+            "MaxCount": 0
+        },
+        "Roller0": {
+            "Position": [
+                0.0,
+                0.0,
+                0.0
+            ]
+        },
+        "Roller1": {
+            "Position": [
+                0.0,
+                0.0,
+                0.0
+            ]
+        }
+    }
+}

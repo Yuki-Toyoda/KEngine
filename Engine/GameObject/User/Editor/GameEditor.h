@@ -89,6 +89,10 @@ public:
 
 private:
 	/// <summary>
+	/// 保存関数
+	/// </summary>
+	void SaveAll();
+	/// <summary>
 	/// オブジェクト保存関数
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
@@ -107,48 +111,6 @@ private:
 		}
 		dataManager_->SaveData(group);
 	}
-
-	//void SaveSingle() {
-	//	//---通常メテオ---//
-	//	std::string single = kSingleAttackName;
-	//	// 数初期化
-	//	counter_ = 0;
-	//	for (Meteor* object : meteors_) {
-	//		SetObject(object, single, 0);
-	//		ImGui::Text("\n");
-	//		counter_++;
-	//	}
-	//	// 隕石のファイル
-	//	dataManager_->SaveData(single);
-	//}
-	//void SavePushUp() {
-	//	//---突き上げ---//
-	//	std::string pushUp = kPushAttackName;
-	//	// 数初期化
-	//	counter_ = 0;
-	//	for (PushUp* object : pushUps_) {
-	//		SetObject(object, pushUp, 1);
-	//		ImGui::Text("\n");
-	//		counter_++;
-	//	}
-	//	// 突き上げのファイル
-	//	dataManager_->SaveData(pushUp);
-	//}
-	//void SaveRoller() {
-	//	//---ローラー---//
-	//	std::string roller = kRollerAttackName;
-	//	// 数初期化
-	//	counter_ = 0;
-	//	for (Roller* object : rollers_) {
-	//		SetObject(object, roller, 2);
-	//		ImGui::Text("\n");
-	//		counter_++;
-	//	}
-	//	// ローラーのファイル
-	//	dataManager_->SaveData(kRollerAttackName);
-	//}
-
-private:
 	/// <summary>
 	/// オブジェクト保存
 	/// </summary>
@@ -156,7 +118,7 @@ private:
 	/// <param name="target"></param>
 	/// <param name="index"></param>
 	template<typename T>
-	void SetObject(T* target,const std::string& groupName, int index) {
+	void SetObject(T* target, const std::string& groupName, int index) {
 		// 名前
 		std::string groupPath = groupName;
 		// セクションパス
@@ -166,15 +128,26 @@ private:
 		// 座標設定
 		Vector3 setPos = {};
 		dataManager_->AddItem({ groupPath,sectionPath }, keyPath, target->transform_.translate_);
-		setPos = target->transform_.translate_; 
+		setPos = target->transform_.translate_;
 		setPos.y = 0;
 		dataManager_->SetValue({ groupPath,sectionPath }, keyPath, target->transform_.translate_);
 	}
-
 	/// <summary>
-	/// 保存関数
+	/// 上からのやつの保存
 	/// </summary>
-	void SaveInfoParameter();
+	void SaveSingle();
+	/// <summary>
+	/// 下からのやつの保存
+	/// </summary>
+	void SavePushUp();
+	/// <summary>
+	/// ローラの保存
+	/// </summary>
+	void SaveRoller();
+	/// <summary>
+	/// 追尾の保存
+	/// </summary>
+	void SaveMulti();
 
 private:
 	// 保存の名前
@@ -197,6 +170,13 @@ private:
 	const std::string kParamSectionName = "Parameter";
 
 	float kAbsValue = 50.0f;
+
+	enum AttackType {
+		kSingle,
+		kPushUp,
+		kRoller,
+		kMulti,
+	};
 
 	std::array<int, 4> stageNumber = {};
 
