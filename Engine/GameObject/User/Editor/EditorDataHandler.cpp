@@ -81,6 +81,19 @@ void GameEditor::SaveRoller()
 	// ローラー
 	names.kGroup = dataManager_->GetRollerAttack(stageNumber[kRoller]);
 	dataManager_->SetValue(names, max, rollerCounter_);
+	counter_ = 0;
+	for (Roller* object : rollers_) {
+		// 名前
+		std::string groupPath = names.kGroup;
+		// セクションパス
+		std::string sectionPath = dataManager_->kObjectNames[2] + std::to_string(counter_);
+		// アイテムパス
+		std::string keyPath = "Direct";
+		dataManager_->AddItem({ groupPath,sectionPath }, keyPath, object->GetVelocity());
+		dataManager_->SetValue({ groupPath,sectionPath }, keyPath, object->GetVelocity());
+		counter_++;
+	}
+
 	// ローラー
 	SaveObject(rollers_, names.kGroup, 2);
 

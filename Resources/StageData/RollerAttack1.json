@@ -2,20 +2,30 @@
     "RollerAttack1": {
         "A": null,
         "Parameter": {
-            "MaxCount": 0
+            "MaxCount": 2
         },
         "Roller0": {
-            "Position": [
+            "Direct": [
                 0.0,
+                0.0,
+                0.0
+            ],
+            "Position": [
+                -33.70000076293945,
                 0.0,
                 0.0
             ]
         },
         "Roller1": {
-            "Position": [
+            "Direct": [
                 0.0,
                 0.0,
                 0.0
+            ],
+            "Position": [
+                -15.0,
+                0.0,
+                30.5
             ]
         }
     }

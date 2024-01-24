@@ -493,6 +493,10 @@ void GameEditor::EditorImGui()
 				// 名前のタグ
 				std::string fullTag = "Roller" + std::to_string(counter_);
 				ImGui::DragFloat3(fullTag.c_str(), &object->transform_.translate_.x, 0.1f, -kAbsValue, kAbsValue);
+				Vector3 direct = object->GetVelocity();
+				fullTag = "Direct" + fullTag;
+				ImGui::DragFloat3(fullTag.c_str(), &direct.x, 0.01f, -1.0f, 1.0f);
+				object->SetVelocity(direct);
 				ImGui::Text("\n");
 				counter_++;
 			}
