@@ -23,6 +23,10 @@ public: // メンバ関数
 	void SetgameManager(GameManager* gamemanager) { gameManager_ = gamemanager; }
 	// 遷移にかかる秒数
 	float lerpTime_ = 5.0f;
+	float moveTime_ = 0.0f;
+public://アクセッサ
+	void  SetGoal(Vector3 pos) { goalPos_ = pos; }
+	void  SetStart(Vector3 pos) { startPos_ = pos; }
 private:
 	void OnCollisionEnter(Collider* collider)override;
 	
@@ -30,7 +34,10 @@ private:
 	// 線形補間用タイマー
 	KLib::DeltaTimer lerpTimer_;
 
-	
+	KLib::DeltaTimer aliveTimer_;
 	GameManager* gameManager_;
+
+	Vector3 startPos_;
+	Vector3 goalPos_;
 };
 

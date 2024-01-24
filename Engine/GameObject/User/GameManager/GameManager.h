@@ -23,6 +23,10 @@ public:
 	float pushUpRemainTime_=3.0f;
 	//ローラーの速さ
 	float RollerSpeed_=0.2f;
+	//	かけらの飛ぶ距離の最大
+	float rubbleRange = 10.0f;
+	//かけらの移動にかかる時間
+	float rubblMoveTime_ = 1.0f;
 private:
 	void SetGlobalVariable();
 	
