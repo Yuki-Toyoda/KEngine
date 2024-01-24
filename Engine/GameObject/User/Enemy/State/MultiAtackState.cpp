@@ -5,8 +5,9 @@ void MultiAtackState::Init()
 {
 	name_ = "MultiAtack";
 	GameDataManager* dataManager = GameDataManager::GetInstance();
-	coolTime_ = dataManager->GetValue<float>({ "MultiMeteor","Parameter" }, "CoolTime");
-	kMaxCount_ = dataManager->GetValue<int>({ "MultiMeteor","Parameter" }, "MaxCount");
+	std::string group = GameDataManager::GetInstance()->GetMultiAttack(0);
+	coolTime_ = dataManager->GetValue<float>({ group,"Parameter" }, "CoolTime");
+	kMaxCount_ = dataManager->GetValue<int>({ group,"Parameter" }, "MaxCount");
 
 	atackTimer_.Start(coolTime_);
 }
@@ -24,6 +25,8 @@ void MultiAtackState::Update()
 		//隕石の座標
 		meteor->transform_.translate_ = enemy_->GetPlayer()->transform_.translate_;
 		meteor->transform_.translate_.y = 30.0f;
+		std::string group = GameDataManager::GetInstance()->GetMultiAttack(0);
+		meteor->transform_.scale_ = GameDataManager::GetInstance()->GetValue<Vector3>({ group,"Parameter" }, "Scale");
 		meteor->SetgameManager(enemy_->gameManager_);
 	}
 	if (atackCount_ >= kMaxCount_) {

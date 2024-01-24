@@ -2,7 +2,12 @@
     "PushUpAttack0": {
         "A": null,
         "Parameter": {
-            "MaxCount": 3
+            "MaxCount": 2,
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
         },
         "PushUp0": {
             "Position": [
