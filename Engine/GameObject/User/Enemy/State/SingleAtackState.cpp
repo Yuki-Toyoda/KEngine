@@ -6,8 +6,8 @@ void SingleAtackState::Init()
 	//隕石を生成してstateを変更
 	GameDataManager* jsonData = GameDataManager::GetInstance();
 	// 参照の名前
-	HierarchicalName names = { "SingleMeteor","Parameter" };
-	//names.kGroup = GameDataManager::GetInstance()->GetSingleAttack(1);
+	HierarchicalName names = { "SingleMeteor","Parameter"};
+	names.kGroup = GameDataManager::GetInstance()->GetSingleAttack(0);
 	int maxValue = jsonData->GetValue<int>(names, "MaxCount");
 
 	for (int i = 0; i < maxValue; i++) {

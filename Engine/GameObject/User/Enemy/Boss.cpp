@@ -13,7 +13,8 @@ void Boss::SuccessorInit()
 	MakeStateList();
 	
 	//下からの攻撃を生成
-	int pushUpMax = dataManager->GetValue<int>({ "PushUpAttack","Parameter" }, "MaxCount");
+	std::string group = gameDataManager_->GetPushUpAttack(0);
+	int pushUpMax = dataManager->GetValue<int>({ group,"Parameter"}, "MaxCount");
 
 	for (int i = 0; i < pushUpMax; i++) {
 		PushUp* pushUp;
@@ -21,7 +22,7 @@ void Boss::SuccessorInit()
 		// 名前
 		std::string name = "PushUp" + std::to_string(i);
 		// Y座標以外を設定
-		Vector3 newPos = dataManager->GetValue<Vector3>({ "PushUpAttack",name }, "Position");
+		Vector3 newPos = dataManager->GetValue<Vector3>({ group,name }, "Position");
 		pushUp->transform_.translate_.x = newPos.x;
 		pushUp->transform_.translate_.z = newPos.z;
 		pushUp_.push_back(pushUp);
