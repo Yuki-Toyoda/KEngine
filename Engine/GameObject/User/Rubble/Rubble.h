@@ -27,7 +27,6 @@ private:
 private:
 	// 線形補間用タイマー
 	KLib::DeltaTimer lerpTimer_;
-
 	// 遷移にかかる秒数
 	float lerpTime_ = 5.0f;
 };

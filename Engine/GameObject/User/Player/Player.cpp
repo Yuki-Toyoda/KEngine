@@ -13,7 +13,7 @@ void Player::Init()
 
 void Player::Update()
 {
-	
+
 	if (transform_.scale_.x >= maxSize) {
 		transform_.scale_ = { 5.0f,5.0f,5.0f };
 	}
@@ -33,7 +33,7 @@ void Player::Update()
 	prevPos_ = worldPos_;
 	// ワールド座標の更新
 	worldPos_ = transform_.translate_;
-	
+
 	//BlowAwayStateじゃない場合
 	if (!(state_->name_ == "BlowAway")) {
 		// 入力ベクトルが0以外の場合
@@ -42,7 +42,7 @@ void Player::Update()
 			transform_.rotate_.y = -std::atan2(velocity_.x, -velocity_.z);
 		}
 	}
-	
+
 	// ダメージを喰らっていない状態の場合
 	if (!isDamaged_) {
 		// 座標に速度ベクトルを加算する
@@ -62,7 +62,7 @@ void Player::Update()
 	//地面より外に出たら中に戻して状態をRootに変更
 	if (transform_.translate_.x + transform_.scale_.x >= ground_->transform_.scale_.x) {
 		// x軸方向の速度ベクトルを0に
-		velocity_.x =0.0f;
+		velocity_.x = 0.0f;
 		// 前フレーム座標に固定する
 		transform_.translate_.x = ground_->transform_.scale_.x - transform_.scale_.x;
 		// 強制的に待機状態ステートに変更
@@ -79,12 +79,13 @@ void Player::Update()
 
 	if (transform_.translate_.z + transform_.scale_.z >= ground_->transform_.scale_.z) {
 		// z軸方向の速度ベクトルを0に
-		velocity_.z =0.0f;
+		velocity_.z = 0.0f;
 		// 前フレーム座標に固定する
 		transform_.translate_.z = ground_->transform_.scale_.z - transform_.scale_.z;
 		// 強制的に待機状態ステートに変更
 		ChangeState(std::make_unique<RootState>());
-	}else if (transform_.translate_.z - transform_.scale_.z <= -ground_->transform_.scale_.z) {
+	}
+	else if (transform_.translate_.z - transform_.scale_.z <= -ground_->transform_.scale_.z) {
 		// x軸方向の速度ベクトルを0に
 		velocity_.z = 0.0f;
 		// 前フレーム座標に固定する
@@ -106,10 +107,10 @@ void Player::DisplayImGui()
 	ImGui::DragFloat("MoveAcceleration", &moveAcceleration_, 0.01f);
 	// 最大移動加速度
 	ImGui::DragFloat("MaxMoveAcceleration", &kMaxMoveAcceleration_, 0.01f);
-	
+
 	// 減衰速度
 	ImGui::DragFloat("DecayAcceleration", &decayAcceleration_, 0.01f);
-	
+
 	// 速度ベクトル
 	ImGui::DragFloat3("Velocity", &velocity_.x, 0.01f);
 
@@ -126,29 +127,28 @@ void Player::DisplayImGui()
 	ImGui::DragFloat("StanTime", &damageStanTime_, 0.1f, 0.01f, 5.0f);
 }
 
-void Player::OnCollisionEnter(Collider* collider){
+void Player::OnCollisionEnter(Collider* collider) {
 	//if (state_->name_ == "Root") {
 	//	// 破片に衝突した場合
-		if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagRubble) {
-			//がれきにぶつかったらしてサイズを大きくする
-			absorptionCount_++;
-			// 加算するサイズを計算
-			float addSize = absorptionCount_ * scaleForce_;
-			// 加算サイズ分y座標を加算
-			transform_.translate_.y += addSize;
-			// 大きさにサイズを加算
-			transform_.scale_ = {
-				transform_.scale_.x + addSize,
-				transform_.scale_.y + addSize,
-				transform_.scale_.z + addSize };
+	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagRubble) {
+		//がれきにぶつかったらしてサイズを大きくする
+		absorptionCount_++;
+		// 加算するサイズを計算
+		float addSize = absorptionCount_ * scaleForce_;
+		// 加算サイズ分y座標を加算
+		transform_.translate_.y += addSize;
+		// 大きさにサイズを加算
+		transform_.scale_ = {
+			transform_.scale_.x + addSize,
+			transform_.scale_.y + addSize,
+			transform_.scale_.z + addSize };
 
-		}
-	//	// 降ってくる野菜に衝突した場合
-	//	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagMeteor) {
-	//		// ダメージ処理を行う
-	//		Damage();
-	//	}
-	//}
+	}
+	// 降ってくる野菜に衝突した場合
+	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagMeteor) {
+		// ダメージ処理を行う
+		Damage();
+	}
 	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagEnemy && isAtack_) {
 		//吸収した数をリセットして座標とスケール調整
 		ResetAbsorptionCount();
@@ -173,7 +173,7 @@ void Player::OnCollisionEnter(Collider* collider){
 		ChangeState(std::make_unique<PushUpHitState>());*/
 
 	}
-	
+
 }
 
 void Player::OnCollision(Collider* collider)
@@ -218,7 +218,7 @@ void Player::SubtractVelocity()
 void Player::Heal()
 {
 	//カウントが０じゃなくヒールボタンを押したとき
-	if (InputManager::Heal()&&absorptionCount_>0) {
+	if (InputManager::Heal() && absorptionCount_ > 0) {
 		if (healTimer.GetIsFinish()) {
 			//うりぼーの回復
 			uribo_->Heal(healPower_);
@@ -234,17 +234,17 @@ void Player::Heal()
 			//食べたカウントを減らす
 			absorptionCount_--;
 			healTimer.Start(healCoolTime_);
-				
+
 		}
 	}
 }
 
 void Player::Atack()
 {
-	
+
 	//攻撃力を吸収した数*攻撃倍率に
-	atackPower_ =static_cast<float>( absorptionCount_) * atackForce_;
-	velocity_ = Math::Normalize(  Vector3(0.0f, transform_.translate_.y, 0.0f)- transform_.translate_)*2.0f;
+	atackPower_ = static_cast<float>(absorptionCount_) * atackForce_;
+	velocity_ = Math::Normalize(Vector3(0.0f, transform_.translate_.y, 0.0f) - transform_.translate_) * 2.0f;
 
 
 	//吸収した数をリセットして座標とスケール調整
