@@ -21,5 +21,5 @@ private:
 
 	Player*player_;
 	InGameCamera* camera_;
-
+	Boss* boss_;
 };

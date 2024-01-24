@@ -50,12 +50,12 @@ void GameScene::Init(){
 	player_->SetGround(ground);
 
 	// ボスの生成
-	Boss* boss;
-	boss = gameObjectManager_->CreateInstance<Boss>("Boss", BaseObject::TagEnemy);
+	
+	boss_ = gameObjectManager_->CreateInstance<Boss>("Boss", BaseObject::TagEnemy);
 	// ボスにプレイヤーをセット
-	boss->SetPlayer(player_);
+	boss_->SetPlayer(player_);
 	//GameManagerをセット
-	boss->SetgameManager(gameManager);
+	boss_->SetgameManager(gameManager);
 	// 柵の生成
 	Fences* fm = gameObjectManager_->CreateInstance<Fences>("Fence", BaseObject::TagNone);
 	// 柵追加

@@ -202,7 +202,7 @@ void Player::OnCollisionEnter(Collider* collider) {
 		// 大きさリセット
 		transform_.scale_ = { 2.0f , 2.0f , 2.0f };
 		// 攻撃状態でない
-		isAtack_ = false;
+		//isAtack_ = false;
 		// 速度をリセット
 		velocity_ = { 0.0f,0.0f,0.0f };
 
@@ -315,7 +315,7 @@ void Player::Atack()
 
 
 	//吸収した数をリセットして座標とスケール調整
-	ResetAbsorptionCount();
+	//ResetAbsorptionCount();
 }
 
 void Player::ChangeState(std::unique_ptr<IPlayerState> newState)
