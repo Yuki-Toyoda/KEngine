@@ -1,6 +1,5 @@
 #pragma once
 #include "../../../BaseObject.h"
-#include "../../../GameObjectManager.h"
 #include "../../Rubble/Rubble.h"
 #include "../../GameManager/GameManager.h"
 class Meteor:public BaseObject
@@ -32,6 +31,11 @@ private: // メンバ変数
 	float moveSpeed_ = 0.1f;
 	// 当たり判定用ワールド座標
 	Vector3 worldPos_;
+	
+	// 攻撃範囲開示用トランスフォーム
+	WorldTransform attackAreaTransform_;
+	// 攻撃範囲色
+	Vector4 areaColor_;
 	GameObjectManager* gameObjectmanager_=nullptr;
 	GameManager* gameManager_;
 	
