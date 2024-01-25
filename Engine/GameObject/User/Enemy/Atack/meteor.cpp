@@ -29,8 +29,8 @@ void Meteor::Init()
 	// 色設定
 	color_ = { 0.0f,0.0f,0.0f,1.0f };
 
-	// コライダーを追加
-	AddColliderSphere("meteor", &transform_.translate_, &transform_.scale_.x);
+	// OBBのコライダーを追加
+	AddColliderAABB("meteor", &transform_.translate_, &transform_.scale_);
 	
 }
 
