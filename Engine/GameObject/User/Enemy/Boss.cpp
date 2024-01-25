@@ -32,18 +32,18 @@ void Boss::SuccessorInit()
 	int pushUpMax = dataManager->GetValue<int>({ "AttackParam","PushUp" }, "MaxCount");
 	pushUpMax;
 	// 全ての攻撃に対して
-	//for (int i = 0; i < pushUpMax; i++) {
-	//	// インスタンス生成
-	//	PushUp* pushUp;
-	//	pushUp = gameObjectManager_->CreateInstance<PushUp>("PushUp", BaseObject::TagNone);
-	//	// 名前
-	//	std::string name = "PushUp" + std::to_string(i);
-	//	// Y座標以外を設定
-	//	Vector3 newPos = dataManager->GetValue<Vector3>({ "PushUpAttack",name }, "Position");
-	//	pushUp->transform_.translate_.x = newPos.x;
-	//	pushUp->transform_.translate_.z = newPos.z;
-	//	pushUp_.push_back(pushUp);
-	//}
+	for (int i = 0; i < pushUpMax; i++) {
+		// インスタンス生成
+		PushUp* pushUp;
+		pushUp = gameObjectManager_->CreateInstance<PushUp>("PushUp", BaseObject::TagNone);
+		// 名前
+		std::string name = "PushUp" + std::to_string(i);
+		// Y座標以外を設定
+		Vector3 newPos = dataManager->GetValue<Vector3>({ "PushUpAttack",name }, "Position");
+		pushUp->transform_.translate_.x = newPos.x;
+		pushUp->transform_.translate_.z = newPos.z;
+		pushUp_.push_back(pushUp);
+	}
 	GlobalVariables* variables = GlobalVariables::GetInstance();
 	variables->CreateGroup(name_);
 	variables->AddItem(name_, "HitPoint", hitPoint_);
@@ -132,11 +132,11 @@ void Boss::MakeStateList()
 {
 	//行動状態のリストを作成
 	stateList_.resize(1);
-	stateList_.at(0).push_back(std::make_unique<SingleAtackState>());
-	stateList_.at(0).push_back(std::make_unique<MultiAtackState>());
-	stateList_.at(0).push_back(std::make_unique<RollerAtackState>());
-	stateList_.at(0).push_back(std::make_unique<SingleAtackState>());
-	stateList_.at(0).push_back(std::make_unique<MultiAtackState>());
+	stateList_.at(0).push_back(std::make_unique<WaitTimeState>());
+	/*stateList_.at(0).push_back(std::make_unique<PushUpAtackState>());
+	stateList_.at(0).push_back(std::make_unique<PushUpAtackState>());
+	stateList_.at(0).push_back(std::make_unique<PushUpAtackState>());
+	stateList_.at(0).push_back(std::make_unique<PushUpAtackState>());*/
 	stateList_.resize(2);
 	stateList_.at(1).push_back(std::make_unique<SingleAtackState>());
 	stateList_.at(1).push_back(std::make_unique<SingleAtackState>());
