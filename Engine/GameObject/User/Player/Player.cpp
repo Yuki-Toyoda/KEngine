@@ -193,23 +193,7 @@ void Player::OnCollisionEnter(Collider* collider) {
 			Damage();
 		}
 	
-	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagEnemy && isAtack_) {
-		//吸収した数をリセットして座標とスケール調整
-		ResetAbsorptionCount();
-		// 前フレーム座標に固定する
-		transform_.translate_ = prevPos_;
-		// y座標を補正
-		transform_.translate_.y = 3.0f;
-		// 大きさリセット
-		transform_.scale_ = { 2.0f , 2.0f , 2.0f };
-		// 攻撃状態でない
-		//isAtack_ = false;
-		// 速度をリセット
-		velocity_ = { 0.0f,0.0f,0.0f };
 
-		// 吹っ飛び状態に変更
-		ChangeState(std::make_unique<BlowAwayState>());
-	}
 	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagPushUp) {
 		/*transform_.translate_ = prevPos_;
 		pushUpPos_ = collider->GetGameObject()->transform_.translate_;
@@ -225,6 +209,23 @@ void Player::OnCollision(Collider* collider)
 	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagUribo) {
 		Heal();
 
+	}
+	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagEnemy &&state_->name_=="Atack") {
+		//吸収した数をリセットして座標とスケール調整
+		ResetAbsorptionCount();
+		// 前フレーム座標に固定する
+		transform_.translate_ = prevPos_;
+		// y座標を補正
+		transform_.translate_.y = 3.0f;
+		// 大きさリセット
+		transform_.scale_ = { 2.0f , 2.0f , 2.0f };
+		// 攻撃状態でない
+		//isAtack_ = false;
+		// 速度をリセット
+		velocity_ = { 0.0f,0.0f,0.0f };
+
+		// 吹っ飛び状態に変更
+		ChangeState(std::make_unique<BlowAwayState>());
 	}
 }
 
