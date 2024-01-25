@@ -1,6 +1,7 @@
 #include "GameScene.h"
 #include "../SceneManager.h"
 #include "../../GameObject/SampleList.h"
+#include "../../Particle/ParticleEmitterManager.h"
 
 void GameScene::Init(){
 
@@ -70,6 +71,9 @@ void GameScene::Init(){
 	// フェードイン
 	FadeManager::GetInstance()->ChangeParameter("FadeIn", true);
 	FadeManager::GetInstance()->Play();
+
+	//ParticleEmitterManager::GetInstance()->CreateEmitter<IParticleEmitter, IParticle>("ParticleTest", 100, 4, { 0.0f,0.0f,0.0f }, 100, 2, TextureManager::Load("uvChecker.png"));
+
 }
 
 void GameScene::Update()

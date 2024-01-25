@@ -23,6 +23,14 @@
                 "PushUp"
             ]
         },
+        "Pattern0": {
+            "I_List": [
+                1,
+                0,
+                0,
+                1
+            ]
+        },
         "Pattern1": {
             "List0": [
                 "Multi",

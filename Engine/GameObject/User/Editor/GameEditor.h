@@ -171,6 +171,7 @@ private:
 
 	int cameraType_ = kUpSide;
 
+	int type_ = 0;
 
 	// 攻撃の種類ごとの名前（グループネームのベース)
 	const std::string kParamName = "AttackParam";

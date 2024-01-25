@@ -117,7 +117,7 @@ public: // 呼び出し時に使用する配列
 
 private:
     /// 項目
-    using Item = std::variant<int32_t, float, Vector2, Vector3, std::string, std::list<std::string>>;
+    using Item = std::variant<int32_t, float, Vector2, Vector3, std::string, std::list<std::string>, std::list<int>>;
     using Section = std::map<std::string, Item>;
     using Group = std::map<std::string, Section>;
 

@@ -21,6 +21,7 @@ void GameEditor::Init()
 	nameList.pop_back();
 	nameList.pop_back();
 	dataManager_->SetValue({ "Test","Pattern1" }, "List0", nameList);
+
 	dataManager_->SaveData("Test");
 
 }
@@ -568,6 +569,11 @@ void GameEditor::SystemImGui()
 		dataManager_->AddSingleAttack(saveName_);
 		dataManager_->AddLoadNum();
 	}
+	std::list<int> intList = dataManager_->GetValue<std::list<int>>({ "Test","Pattern0" }, "I_List");
+
+	for (int i : intList) {
+		ImGui::Text("%d\n",i);
+	}
 
 	ImGui::Text("\n");
 
@@ -599,7 +605,7 @@ void GameEditor::SystemImGui()
 			ImGui::EndTabItem();
 		}
 		if (ImGui::BeginTabItem("Table")) {
-			// 操作するアイテム一覧
+			////操作するアイテム一覧
 			//static const char* itemNames[] = { "Single","Multi","PushUp","Roller" };
 
 
@@ -621,17 +627,35 @@ void GameEditor::SystemImGui()
 			//}
 
 			static char buffer[256];
+			const char* items[] = { "Single","Multi","PushUp","Roller" };
+			const char* tmpName = items[type_];
 			ImGui::InputText("NewName", buffer, IM_ARRAYSIZE(buffer));
-			
+			if (ImGui::BeginCombo("NameList",tmpName)) {
+				if (ImGui::Selectable("Single", type_ == 0)) {
+					type_ = 0;
+				}
+				if (ImGui::Selectable("Multi", type_ == 1)) {
+					type_ = 1;
+				}
+				if (ImGui::Selectable("PushUp", type_ == 2)) {
+					type_ = 2;
+				}
+				if (ImGui::Selectable("Roller", type_ == 3)) {
+					type_ = 3;
+				}
+
+				ImGui::EndCombo();
+			}
+
 			if (ImGui::Button("Add")) {
-				tableNames_.push_back(buffer);
+				tableNames_.push_back(tmpName);
 			}
 
 			for (auto it = tableNames_.begin(); it != tableNames_.end(); ++it) {
 				std::string itemName = *it;
 				ImGui::Selectable(itemName.c_str());
 
-				if (ImGui::IsItemActive() && !ImGui::IsItemHovered()) 
+				if (it->at(0) && ImGui::IsItemActive() && !ImGui::IsItemHovered())
 				{
 					auto next = std::next(it, (ImGui::GetMouseDragDelta(0).y < 0.f ? -1 : 1));
 					if (next != tableNames_.end()) {
