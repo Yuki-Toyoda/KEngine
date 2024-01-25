@@ -1,5 +1,5 @@
 #include "Boss.h"
-
+#include "../../../GlobalVariables/GlobalVariables.h"
 void Boss::SuccessorInit()
 {
 	// 大きさ設定
@@ -44,6 +44,14 @@ void Boss::SuccessorInit()
 	//	pushUp->transform_.translate_.z = newPos.z;
 	//	pushUp_.push_back(pushUp);
 	//}
+	GlobalVariables* variables = GlobalVariables::GetInstance();
+	variables->CreateGroup(name_);
+	variables->AddItem(name_, "HitPoint", hitPoint_);
+	variables->AddItem(name_,"waitSingle", waitForSingle_);
+	variables->AddItem(name_,"waitmulti", waitForMulti_);
+	variables->AddItem(name_,"waitRoller", waitForRoller_);
+	variables->AddItem(name_,"waitPushUp", waitForPushUp_);
+	ApplyGlobalVariables();
 }
 
 void Boss::SuccessorUpdate()
@@ -68,7 +76,15 @@ void Boss::DisplayImGui()
 	ImGui::DragFloat("waitmulti", &waitForMulti_, 0.1f);
 	ImGui::DragFloat("waitRoller", &waitForRoller_, 0.1f);
 	ImGui::DragFloat("waitPushUp", &waitForPushUp_, 0.1f);
-	if (ImGui::Button("changeStateAtack")) {
+	if (ImGui::Button("save")) {
+		GlobalVariables* variables = GlobalVariables::GetInstance();
+		variables->SetValue(name_, "HitPoint", hitPoint_);
+		variables->SetValue(name_, "waitSingle", waitForSingle_);
+		variables->SetValue(name_, "waitmulti", waitForMulti_);
+		variables->SetValue(name_, "waitRoller", waitForRoller_);
+		variables->SetValue(name_, "waitPushUp", waitForPushUp_);
+		variables->SaveFile(name_);
+	}if (ImGui::Button("changeStateAtack")) {
 		ChangeState(std::make_unique<SingleAtackState>());
 		
 		return;
@@ -128,3 +144,14 @@ void Boss::MakeStateList()
 	stateList_.at(1).push_back(std::make_unique<SingleAtackState>());
 	stateList_.at(1).push_back(std::make_unique<PushUpAtackState>());
 }
+
+void Boss::ApplyGlobalVariables()
+{
+	GlobalVariables* variables = GlobalVariables::GetInstance();
+
+	hitPoint_=variables->GetFloatValue(name_, "HitPoint");
+	waitForSingle_=variables->GetFloatValue(name_, "waitSingle");
+	waitForMulti_=variables->GetFloatValue(name_, "waitmulti");
+	waitForRoller_=variables->GetFloatValue(name_, "waitRoller");
+	waitForPushUp_=variables->GetFloatValue(name_, "waitPushUp");
+}			   

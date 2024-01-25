@@ -65,6 +65,8 @@ private: // メンバ関数
 
 	//StateListを作成する
 	void MakeStateList();
+	//GlobalVariablesを代入
+	void ApplyGlobalVariables();
 private:
 
 	//体力
