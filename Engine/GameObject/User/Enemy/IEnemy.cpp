@@ -36,7 +36,7 @@ void IEnemy::DisplayImGui()
 
 	// 行動状態のImGuiの表示
 	ImGui::NewLine(); // 改行
-	ImGui::Text("%s", state_->name_.c_str()); // 行動名表示
+	//ImGui::Text("%s", state_->name_.c_str()); // 行動名表示
 	state_->DisplayImGui(); // ImGui本体
 }
 

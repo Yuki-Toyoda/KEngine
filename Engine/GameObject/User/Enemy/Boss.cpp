@@ -62,7 +62,7 @@ void Boss::SuccessorUpdate()
 		// 非表示
 		isActive_ = false;
 		// 行動状態削除
-		state_ = nullptr;
+		//state_ = nullptr;
 	}
 
 }
