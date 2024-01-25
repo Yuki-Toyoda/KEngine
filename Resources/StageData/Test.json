@@ -2,6 +2,12 @@
     "Test": {
         "A": null,
         "List": {
+            "TestTable": [
+                "Single",
+                "Roller",
+                "Multi",
+                "PushUp"
+            ],
             "charList": [
                 "Multi",
                 "Single",

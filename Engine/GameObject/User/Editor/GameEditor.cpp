@@ -600,23 +600,61 @@ void GameEditor::SystemImGui()
 		}
 		if (ImGui::BeginTabItem("Table")) {
 			// 操作するアイテム一覧
-			static const char* itemNames[] = { "Single","Multi","PushUp","Roller" };
+			//static const char* itemNames[] = { "Single","Multi","PushUp","Roller" };
 
-			for (int i = 0; i < IM_ARRAYSIZE(itemNames); i++) {
-				// アイテムそれぞれを設定
-				const char* item = itemNames[i];
-				ImGui::Selectable(item);
 
-				// つかんでいる場合
-				if (ImGui::IsItemActive() && !ImGui::IsItemHovered()) {
-					int next = i + (ImGui::GetMouseDragDelta(0).y < 0.f ? -1 : 1);
-					if (next >= 0 && next < IM_ARRAYSIZE(itemNames)) {
-						itemNames[i] = itemNames[next];
-						itemNames[next] = item;
+			//for (int i = 0; i < IM_ARRAYSIZE(itemNames); i++) {
+			//	// アイテムそれぞれを設定
+			//	const char* item = itemNames[i];
+			//	ImGui::Selectable(item);
+
+			//	// つかんでいる場合
+			//	if (ImGui::IsItemActive() && !ImGui::IsItemHovered()) {
+			//		int next = i + (ImGui::GetMouseDragDelta(0).y < 0.f ? -1 : 1);
+			//		if (next >= 0 && next < IM_ARRAYSIZE(itemNames)) {
+			//			itemNames[i] = itemNames[next];
+			//			itemNames[next] = item;
+			//			ImGui::ResetMouseDragDelta();
+			//		}
+
+			//	}
+			//}
+
+			static char buffer[256];
+			ImGui::InputText("NewName", buffer, IM_ARRAYSIZE(buffer));
+			
+			if (ImGui::Button("Add")) {
+				tableNames_.push_back(buffer);
+			}
+
+			for (auto it = tableNames_.begin(); it != tableNames_.end(); ++it) {
+				std::string itemName = *it;
+				ImGui::Selectable(itemName.c_str());
+
+				if (ImGui::IsItemActive() && !ImGui::IsItemHovered()) 
+				{
+					auto next = std::next(it, (ImGui::GetMouseDragDelta(0).y < 0.f ? -1 : 1));
+					if (next != tableNames_.end()) {
+						std::swap(*it, *next);
 						ImGui::ResetMouseDragDelta();
 					}
-
 				}
+			}
+
+			ImGui::SeparatorText("System");
+			if (ImGui::Button("Save")) {
+				std::string grName = "Test";
+				std::string seName = "List";
+				std::string keyName = "TestTable";
+				dataManager_->AddItem({ grName,seName }, keyName, tableNames_);
+				dataManager_->SetValue({ grName,seName }, keyName, tableNames_);
+				dataManager_->SaveData(grName);
+
+			}
+
+			for (std::string item : tableNames_) {
+				ImGui::Text(item.c_str());
+				ImGui::Text("\n");
 			}
 
 			ImGui::EndTabItem();

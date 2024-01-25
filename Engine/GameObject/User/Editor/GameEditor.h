@@ -167,6 +167,8 @@ private:
 		kGameSide,
 	};
 
+	std::list<std::string> tableNames_ = { "Single","Multi","PushUp","Roller" };
+
 	int cameraType_ = kUpSide;
 
 
