@@ -15,6 +15,8 @@ public:
  	float rubbleSize_=1.0f;
 	//上からフルスピード
 	float meteorSpeed_=0.2f;
+	//かけらの当たり判定
+	Vector3 rubbleCollisionScale_;
 	//下からの開店時間
 	float pushUpRotateSpeed_=3.0f;
 	//下からの攻撃時間

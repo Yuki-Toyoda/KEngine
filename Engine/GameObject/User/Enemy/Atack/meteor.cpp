@@ -29,8 +29,8 @@ void Meteor::Init()
 	// 色設定
 	color_ = { 0.0f,0.0f,0.0f,1.0f };
 
-	// コライダーを追加
-	AddColliderSphere("meteor", &transform_.translate_, &transform_.scale_.x);
+	// OBBのコライダーを追加
+	AddColliderAABB("meteor", &transform_.translate_, &transform_.scale_);
 	
 }
 
@@ -83,6 +83,7 @@ void Meteor::OnCollisionEnter(Collider* collider)
 			rubble->SetGoal(pos);
 			rubble->lerpTime_ = gameManager_->rubbleAliveCount_;
 			rubble->moveTime_ = gameManager_->rubblMoveTime_;
+			rubble->SetCollisionScale(gameManager_->rubbleCollisionScale_);
 			rubble->SetgameManager(gameManager_);
 			//もしゴール位置が枠の外ならDestroy
 			if (std::abs(pos.x + gameManager_->rubbleSize_) >= 55.0f || std::abs(pos.z + gameManager_->rubbleSize_) >= 55.0f) {

@@ -6,7 +6,7 @@ void Rubble::Init()
 
 	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Box", "Box.obj");
 	color_ = { 1.0f,0.25f,0.0f,1.0f };
-	AddColliderSphere("Rubble", &transform_.translate_, &transform_.scale_.x);
+	AddColliderAABB("Rubble", &transform_.translate_, &CollisionScale_);
 	
 }
 

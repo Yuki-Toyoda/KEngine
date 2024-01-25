@@ -4,7 +4,7 @@ void Roller::Init()
 {
 	velocity_ = { 1.0f,0.0f,0.0f };
 	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Box", "Box.obj");
-	AddColliderOBB("Roller", &transform_.scale_, &transform_.rotate_, &transform_.translate_);
+	AddColliderAABB("Roller", &transform_.translate_, &transform_.scale_);
 	transform_.scale_ = { 8.0f,1.0f,1.0f };
 	transform_.rotate_.y = std::atan2(velocity_.x, velocity_.y);
 	transform_.translate_.y = 2.0f;

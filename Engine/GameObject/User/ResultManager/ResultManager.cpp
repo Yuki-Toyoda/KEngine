@@ -78,7 +78,8 @@ void ResultManager::Update()
 	}
 
 	// Aボタンを押すとその遷移を開始する
-	if (joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A) {
+	if ((joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A &&
+		!(preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A))) {
 		// UIを変更する
 		sprites_[0]->texBase_ = Vector2(288.0f, 0.0f);
 

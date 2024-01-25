@@ -24,9 +24,11 @@ public: // メンバ関数
 	// 遷移にかかる秒数
 	float lerpTime_ = 5.0f;
 	float moveTime_ = 0.0f;
+	
 public://アクセッサ
 	void  SetGoal(Vector3 pos) { goalPos_ = pos; }
 	void  SetStart(Vector3 pos) { startPos_ = pos; }
+	void SetCollisionScale(Vector3 scale) { CollisionScale_ = scale; }
 private:
 	void OnCollisionEnter(Collider* collider)override;
 	
@@ -36,8 +38,9 @@ private:
 
 	KLib::DeltaTimer aliveTimer_;
 	GameManager* gameManager_;
-
+	
 	Vector3 startPos_;
 	Vector3 goalPos_;
+	Vector3 CollisionScale_;
 };
 

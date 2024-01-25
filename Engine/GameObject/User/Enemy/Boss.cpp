@@ -132,11 +132,11 @@ void Boss::MakeStateList()
 {
 	//行動状態のリストを作成
 	stateList_.resize(1);
-	stateList_.at(0).push_back(std::make_unique<SingleAtackState>());
-	stateList_.at(0).push_back(std::make_unique<MultiAtackState>());
-	stateList_.at(0).push_back(std::make_unique<RollerAtackState>());
-	stateList_.at(0).push_back(std::make_unique<SingleAtackState>());
-	stateList_.at(0).push_back(std::make_unique<MultiAtackState>());
+	stateList_.at(0).push_back(std::make_unique<WaitTimeState>());
+	/*stateList_.at(0).push_back(std::make_unique<PushUpAtackState>());
+	stateList_.at(0).push_back(std::make_unique<PushUpAtackState>());
+	stateList_.at(0).push_back(std::make_unique<PushUpAtackState>());
+	stateList_.at(0).push_back(std::make_unique<PushUpAtackState>());*/
 	stateList_.resize(2);
 	stateList_.at(1).push_back(std::make_unique<SingleAtackState>());
 	stateList_.at(1).push_back(std::make_unique<SingleAtackState>());
