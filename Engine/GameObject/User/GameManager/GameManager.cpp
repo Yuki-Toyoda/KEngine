@@ -19,6 +19,8 @@ void GameManager::Init()
 	variables->AddItem(name_,"RubbleAlliveCount", rubbleAliveCount_);
 	variables->AddItem(name_,"RubbleSize", rubbleSize_);
 	variables->AddItem(name_, "rollerSpeed", RollerSpeed_);
+	variables->AddItem(name_, "rubbleRange", rubbleRange);
+	variables->AddItem(name_, "rubblemoveTime", rubblMoveTime_);
 	SetGlobalVariable();
 }
 
@@ -33,6 +35,9 @@ void GameManager::DisplayImGui()
 	ImGui::DragFloat("RollerSpeed", &RollerSpeed_, 0.1f);
 	ImGui::DragFloat("RubbleAlliveCount", &rubbleAliveCount_, 0.1f);
 	ImGui::DragFloat("RubbleSize", &rubbleSize_, 0.1f);
+	ImGui::DragFloat("RubbleRange", &rubbleRange, 0.1f);
+	ImGui::DragFloat("RubbleMoveTime", &rubblMoveTime_, 0.1f);
+
 	//上からフルスピード
 	ImGui::DragFloat("meteorSpeed", &meteorSpeed_, 0.1f);
 	//下からの開店時間
@@ -56,6 +61,8 @@ void GameManager::DisplayImGui()
 		variables->SetValue(name_, "RubbleAlliveCount", rubbleAliveCount_);
 		variables->SetValue(name_, "RubbleSize", rubbleSize_);
 		variables->SetValue(name_, "rollerSpeed", RollerSpeed_);
+		variables->SetValue(name_, "rubbleRange", rubbleRange);
+		variables->SetValue(name_, "rubblemoveTime", rubblMoveTime_);
 		variables->SaveFile(name_);
 		SetGlobalVariable();
 	}
@@ -77,4 +84,6 @@ void GameManager::SetGlobalVariable()
 	rubbleAliveCount_=variables->GetFloatValue(name_, "RubbleAlliveCount" );
 	rubbleSize_=variables->GetFloatValue(name_, "RubbleSize");
 	RollerSpeed_=variables->GetFloatValue(name_, "rollerSpeed");
+	rubbleRange=variables->GetFloatValue(name_, "rubbleRange");
+	rubblMoveTime_= variables->GetFloatValue(name_, "rubblemoveTime");
 }

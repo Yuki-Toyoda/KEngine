@@ -275,9 +275,9 @@ inline void AnimationKeys<T>::Play(const int32_t& keyIndex){
 	int difFrame = nextKey_.playFrame_ - prevKey_.playFrame_;
 
 	// 遷移時間タイマーを (1フレームの時間 * 差分フレーム) で開始
-	lerpTimer_.Start(std::clamp(ImGui::GetIO().DeltaTime, 0.f, 0.1f) * difFrame);
+	lerpTimer_.Start((1.0f / 60.0f) * difFrame);
 	// アニメーション時間タイマーを(1フレームの時間 * 最終フレーム) で開始
-	animTimer_.Start(std::clamp(ImGui::GetIO().DeltaTime, 0.f, 0.1f) * keys_.back().playFrame_);
+	animTimer_.Start((1.0f /60.0f) * keys_.back().playFrame_);
 
 	// 再生開始
 	isPlay_ = true;
@@ -317,7 +317,7 @@ inline void AnimationKeys<T>::NextKey()
 		int difFrame = nextKey_.playFrame_ - prevKey_.playFrame_;
 
 		// 遷移時間タイマーを (1フレームの時間 * 差分フレーム) で開始
-		lerpTimer_.Start(std::clamp(ImGui::GetIO().DeltaTime, 0.f, 0.1f) * difFrame);
+		lerpTimer_.Start((1.0f / 60.0f) * difFrame);
 	}
 }
 

@@ -6,6 +6,8 @@
         "meteorSpeed": 0.20000000298023224,
         "pushUpAtackTime": 3.0,
         "pushUpRemain": 3.0,
-        "rollerSpeed": 0.0
+        "rollerSpeed": 0.4000000059604645,
+        "rubbleRange": 10.0,
+        "rubblemoveTime": 1.0
     }
 }

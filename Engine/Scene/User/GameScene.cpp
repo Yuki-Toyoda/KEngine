@@ -51,12 +51,12 @@ void GameScene::Init(){
 	player_->SetGround(ground);
 
 	// ボスの生成
-	Boss* boss;
-	boss = gameObjectManager_->CreateInstance<Boss>("Boss", BaseObject::TagEnemy);
+	
+	boss_ = gameObjectManager_->CreateInstance<Boss>("Boss", BaseObject::TagEnemy);
 	// ボスにプレイヤーをセット
-	boss->SetPlayer(player_);
+	boss_->SetPlayer(player_);
 	//GameManagerをセット
-	boss->SetgameManager(gameManager);
+	boss_->SetgameManager(gameManager);
 	// 柵の生成
 	Fences* fm = gameObjectManager_->CreateInstance<Fences>("Fence", BaseObject::TagNone);
 	// 柵追加
@@ -66,7 +66,11 @@ void GameScene::Init(){
 	fm->Add(Vector3(-ground->transform_.scale_.x, 3.5f, 0.0f), Vector3(0.0f, (float)(std::numbers::pi / 2.0f), 0.0f), Vector2(ground->transform_.scale_.z, 2.5f));
 
 	// UIマネージャの生成
-	gameObjectManager_->CreateInstance<InGameUIManager>("UIManager", BaseObject::TagNone);
+	InGameUIManager* iUIm = gameObjectManager_->CreateInstance<InGameUIManager>("UIManager", BaseObject::TagNone);
+	// UIマネージャーにボスをセット
+	iUIm->SetBoss(boss_);
+	// UIマネージャーにウリボーをセット
+	iUIm->SetUribo(uribo);
 
 	// フェードイン
 	FadeManager::GetInstance()->ChangeParameter("FadeIn", true);
@@ -80,9 +84,17 @@ void GameScene::Update()
 {
 	InputManager::Update();
 	if (player_->GetgameOver()) {
+		// クリアフラグをfalse
+		ResultScene::isClear_ = false;
 		BaseScene* nextScene = new ResultScene();
 		SceneManager::GetInstance()->SetNextScene(nextScene);
 	}
+	if (!boss_->isActive_){
+		// クリアフラグをtrue
+		ResultScene::isClear_ = true;
+		BaseScene * nextScene = new ResultScene();
+		SceneManager::GetInstance()->SetNextScene(nextScene);
+}
 	// デバッグ時のみ特定のキーでシーン遷移
 #ifdef _DEBUG
 	// デバッグ遷移

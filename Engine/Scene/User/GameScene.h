@@ -19,7 +19,12 @@ public: // メンバ関数
 
 private:
 
+	// プレイヤー
 	Player*player_;
+
+	// カメラ
 	InGameCamera* camera_;
 
+	// ボス
+	Boss* boss_;
 };

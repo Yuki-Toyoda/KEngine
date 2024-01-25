@@ -1,0 +1,9 @@
+{
+    "Boss": {
+        "HitPoint": 10.0,
+        "waitPushUp": 2.0,
+        "waitRoller": 2.0,
+        "waitSingle": 2.0,
+        "waitmulti": 2.0
+    }
+}
