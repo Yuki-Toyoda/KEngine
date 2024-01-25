@@ -1,0 +1,13 @@
+{
+    "MultiMeteor0": {
+        "Parameter": {
+            "CoolTime": 1.0,
+            "MaxCount": 5,
+            "Scale": [
+                4.0,
+                1.0,
+                4.0
+            ]
+        }
+    }
+}

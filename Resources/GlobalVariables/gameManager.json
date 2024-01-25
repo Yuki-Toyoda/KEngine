@@ -1,13 +1,11 @@
 {
     "gameManager": {
         "PushUpRotateSpeed": 3.0,
-        "RubbleAlliveCount": 7.199999809265137,
-        "RubbleSize": 0.699999988079071,
+        "RubbleAlliveCount": 5.0,
+        "RubbleSize": 1.0,
         "meteorSpeed": 0.20000000298023224,
         "pushUpAtackTime": 3.0,
         "pushUpRemain": 3.0,
-        "rollerSpeed": 0.20000000298023224,
-        "rubbleRange": 5.0,
-        "rubblemoveTime": 0.5
+        "rollerSpeed": 0.0
     }
 }

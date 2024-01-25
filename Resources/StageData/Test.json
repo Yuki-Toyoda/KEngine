@@ -8,6 +8,20 @@
                 "Roller",
                 "PushUp"
             ]
+        },
+        "Parttern0": {
+            "List0": [
+                "Multi",
+                "Single",
+                "Roller",
+                "PushUp"
+            ]
+        },
+        "Pattern1": {
+            "List0": [
+                "Multi",
+                "Single"
+            ]
         }
     }
 }

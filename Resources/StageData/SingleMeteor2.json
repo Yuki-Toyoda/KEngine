@@ -1,0 +1,42 @@
+{
+    "SingleMeteor2": {
+        "Meteor0": {
+            "Position": [
+                0.0,
+                2.0,
+                0.0
+            ]
+        },
+        "Meteor1": {
+            "Position": [
+                0.0,
+                2.0,
+                0.0
+            ]
+        },
+        "Meteor2": {
+            "Position": [
+                0.0,
+                2.0,
+                0.0
+            ]
+        },
+        "Meteor3": {
+            "Position": [
+                0.0,
+                2.0,
+                0.0
+            ]
+        },
+        "Parameter": {
+            "Distance": 30.0,
+            "IsGravity": 0,
+            "MaxCount": 4,
+            "Scale": [
+                8.0,
+                1.0,
+                8.0
+            ]
+        }
+    }
+}

@@ -39,11 +39,8 @@ void Meteor::Update()
 	//速度
 	moveSpeed_ = gameManager_->meteorSpeed_;
 
-	int isGrav = GameDataManager::GetInstance()->GetValue<int>({ "AttackParam","Info" }, "IsGravity");
-	if (isGrav) {
-		transform_.translate_ += velocity_ * moveSpeed_;
-		attackAreaTransform_.translate_.y = -transform_.translate_.y + 0.25f;
-	}
+	transform_.translate_ += velocity_ * moveSpeed_;
+	attackAreaTransform_.translate_.y = -transform_.translate_.y + 0.25f;
 }
 
 void Meteor::DisplayImGui()

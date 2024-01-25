@@ -1,13 +1,13 @@
 {
     "AttackParam": {
         "Info": {
-            "Distance": 30.579999923706055,
+            "Distance": 30.0,
             "IsGravity": 1,
             "MaxCount": 4,
             "Scale": [
-                4.0,
+                8.0,
                 1.0,
-                4.0
+                8.0
             ]
         },
         "Multi": {
@@ -15,7 +15,7 @@
             "MaxCount": 6
         },
         "PushUp": {
-            "MaxCount": 5
+            "MaxCount": 2
         },
         "Roller": {
             "MaxCount": 3

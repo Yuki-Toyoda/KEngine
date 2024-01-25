@@ -31,6 +31,7 @@ private: // メンバ変数
 	Vector3 worldPos_;
 	GameManager* gameManager_;
 public: // アクセッサ
+	Vector3 GetVelocity() { return velocity_; }
 	void SetVelocity(const Vector3& velocity) { velocity_ = velocity; }
 	void SetgameManager(GameManager* gamemanager) { gameManager_ = gamemanager; }
 };

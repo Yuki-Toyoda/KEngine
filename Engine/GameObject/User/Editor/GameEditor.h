@@ -43,7 +43,9 @@ private:
 	/// エディターのImGui
 	/// </summary>
 	void EditorImGui();
-
+	/// <summary>
+	/// システム的な部分のImGui
+	/// </summary>
 	void SystemImGui();
 
 	/// <summary>
@@ -51,11 +53,11 @@ private:
 	/// </summary>
 	void CameraUpdate() {
 		if (cameraType_ == kUpSide) {
-			camera_->transform_.translate_ = { 0,100.0f,0 };
+			camera_->transform_.translate_ = { 0,150.0f,0 };
 			camera_->transform_.rotate_ = { 1.57f,0.0f,0.0f };
 		}
 		else if (cameraType_ == kGameSide) {
-			camera_->transform_.translate_ = { 0.0f,47.0f,-85.0f };
+			camera_->transform_.translate_ = { 0.0f,47.0f,-90.0f };
 			camera_->transform_.rotate_ = { 0.55f,0.0f,0.0f };
 		}
 	}
@@ -74,18 +76,50 @@ public:
 	/// </summary>
 	void CreateCamera();
 	/// <summary>
-	/// 隕石の座標修正用
+	/// 修正用関数
 	/// </summary>
-	void MeteorFix(){
+	void ObjectFix(){
 		for (Meteor* meteor : meteors_) {
-			meteor->transform_.scale_ = size_;
+			meteor->transform_.scale_ = singleSize_;
 			if (meteor->transform_.translate_.y < 2.0f) {
 				meteor->transform_.translate_.y = 2.0f;
 			}
 		}
+
+		for (Roller* roller : rollers_) {
+			roller->transform_.scale_ = rollerSize_;
+		}
+
+		for (PushUp* object : pushUps_) {
+			object->transform_.scale_ = pushUpSize_;
+		}
+
 	}
 
 private:
+	/// <summary>
+	/// 保存関数
+	/// </summary>
+	void SaveAll();
+	/// <summary>
+	/// オブジェクト保存関数
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	/// <param name="list"></param>
+	/// <param name="groupName"></param>
+	/// <param name="index"></param>
+	template<typename T>
+	void SaveObject(std::vector<T*> list, std::string groupName, int index) {
+		std::string group = groupName/* + std::to_string(stageNumber[index])*/;
+
+		counter_ = 0;
+		for (T* object : list) {
+			SetObject(object, group, index);
+			ImGui::Text("\n");
+			counter_++;
+		}
+		dataManager_->SaveData(group);
+	}
 	/// <summary>
 	/// オブジェクト保存
 	/// </summary>
@@ -93,7 +127,7 @@ private:
 	/// <param name="target"></param>
 	/// <param name="index"></param>
 	template<typename T>
-	void SetObject(T* target,const std::string& groupName, int index) {
+	void SetObject(T* target, const std::string& groupName, int index) {
 		// 名前
 		std::string groupPath = groupName;
 		// セクションパス
@@ -103,15 +137,26 @@ private:
 		// 座標設定
 		Vector3 setPos = {};
 		dataManager_->AddItem({ groupPath,sectionPath }, keyPath, target->transform_.translate_);
-		setPos = target->transform_.translate_; 
+		setPos = target->transform_.translate_;
 		setPos.y = 0;
 		dataManager_->SetValue({ groupPath,sectionPath }, keyPath, target->transform_.translate_);
 	}
-
 	/// <summary>
-	/// 保存関数
+	/// 上からのやつの保存
 	/// </summary>
-	void SaveInfoParameter();
+	void SaveSingle();
+	/// <summary>
+	/// 下からのやつの保存
+	/// </summary>
+	void SavePushUp();
+	/// <summary>
+	/// ローラの保存
+	/// </summary>
+	void SaveRoller();
+	/// <summary>
+	/// 追尾の保存
+	/// </summary>
+	void SaveMulti();
 
 private:
 	// 保存の名前
@@ -131,8 +176,16 @@ private:
 	const std::string kMultiAttackName = "MultiMeteor";
 	const std::string kPushAttackName = "PushUpAttack";
 	const std::string kRollerAttackName = "RollerAttack";
+	const std::string kParamSectionName = "Parameter";
 
 	float kAbsValue = 50.0f;
+
+	enum AttackType {
+		kSingle,
+		kPushUp,
+		kRoller,
+		kMulti,
+	};
 
 	std::array<int, 4> stageNumber = {};
 
@@ -151,7 +204,10 @@ private:
 	// for文の際の値
 	int counter_ = 0;
 	// 隕石の大きさ
-	Vector3 size_ = { 1,1,1 };
+	Vector3 singleSize_ = { 1,1,1 };
+	Vector3 multiSize_ = { 1,1,1 };
+	Vector3 pushUpSize_ = { 1,1,1 };
+	Vector3 rollerSize_ = { 8.0f,1,1.0f };
 	// 現在の難易度
 	int editNowLevel_ = 0;
 	// 落下かどうか
@@ -172,5 +228,8 @@ private: // 仮配置用のオブジェクト
 	std::vector<PushUp*> pushUps_;
 
 	std::vector<Roller*> rollers_;
+
+	GameManager* gameManager_ = nullptr;
+
 };
 

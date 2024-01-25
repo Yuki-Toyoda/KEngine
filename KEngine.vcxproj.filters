@@ -103,6 +103,7 @@
     <ClCompile Include="Engine\GameObject\User\Fence\Fences.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\State\WaitTimeState.cpp" />
     <ClCompile Include="Engine\GameObject\User\Player\State\PushUpHitState.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Editor\EditorDataHandler.cpp" />
     <ClCompile Include="Engine\GameObject\User\GameManager\GameManager.cpp" />
     <ClCompile Include="Engine\GameObject\User\Player\uribo\uribo.cpp" />
   </ItemGroup>

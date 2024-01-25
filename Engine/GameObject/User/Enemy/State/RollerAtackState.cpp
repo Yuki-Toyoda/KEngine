@@ -10,17 +10,19 @@ void RollerAtackState::Init()
 	//roller->transform_.translate_.x = -20.0f;
 
 	GameDataManager* dataManager = GameDataManager::GetInstance();
-
-	int maxCount = dataManager->GetValue<int>({ "AttackParam","Roller" }, "MaxCount");
+	std::string group = dataManager->GetRollerAttack(0);
+	int maxCount = dataManager->GetValue<int>({ group,"Parameter"}, "MaxCount");
 	for (int i = 0; i < maxCount; i++) {
 		Roller* object = gameObjectmanager_->CreateInstance<Roller>("Roller", BaseObject::TagMeteor);
 
-		std::string group = "RollerAttack";
+		//std::string group = "RollerAttack";
 		std::string section = "Roller" + std::to_string(i);
 
 		Vector3 newPos = dataManager->GetValue<Vector3>({ group,section }, "Position");
 		object->transform_.translate_.z = newPos.z;
 		object->transform_.translate_.x = newPos.x;
+		object->SetVelocity(dataManager->GetValue<Vector3>({ group,section }, "Direct"));
+		object->transform_.scale_ = dataManager->GetValue<Vector3>({ group,"Parameter" }, "Scale");
 		object->SetgameManager(enemy_->gameManager_);
 	}
 
