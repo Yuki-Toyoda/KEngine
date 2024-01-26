@@ -160,6 +160,7 @@ private:
 
 	void CreateDragUI(int num,std::list<std::string> lists) {
 		// タブの内容
+		num;
 		ImGui::BeginChild(ImGui::GetID((void*)0), ImVec2(200, 150), ImGuiWindowFlags_NoTitleBar);
 		// テーブルの一覧表示・ドラッグで順番変更
 		for (std::list<std::string>::iterator it = lists.begin(); it != lists.end(); ++it) {

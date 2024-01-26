@@ -59,8 +59,7 @@ void Boss::SuccessorUpdate()
 	if (hitPoint_ <= 0.0f) {
 		// 非表示
 		isActive_ = false;
-		// 行動状態削除
-		//state_ = nullptr;
+		
 	}
 
 }
@@ -128,19 +127,22 @@ void Boss::OnCollisionEnter(Collider* collider)
 
 void Boss::MakeStateList()
 {
-	//行動状態のリストを作成
-	stateList_.resize(1);
-	stateList_.at(0).push_back(std::make_unique<WaitTimeState>());
-	/*stateList_.at(0).push_back(std::make_unique<PushUpAtackState>());
-	stateList_.at(0).push_back(std::make_unique<PushUpAtackState>());
-	stateList_.at(0).push_back(std::make_unique<PushUpAtackState>());
-	stateList_.at(0).push_back(std::make_unique<PushUpAtackState>());*/
-	stateList_.resize(2);
-	stateList_.at(1).push_back(std::make_unique<SingleAtackState>());
-	stateList_.at(1).push_back(std::make_unique<SingleAtackState>());
-	stateList_.at(1).push_back(std::make_unique<RollerAtackState>());
-	stateList_.at(1).push_back(std::make_unique<SingleAtackState>());
-	stateList_.at(1).push_back(std::make_unique<PushUpAtackState>());
+	for (int i = 0; i < 1; i++) {
+		//行動状態のリストを作成
+		stateList_.state_.resize(i+1);
+		stateList_.state_.at(i).push_back(MakeState("SingleAtack"));
+		stateList_.state_.at(i).push_back(MakeState("SingleAtack"));
+		stateList_.state_.at(i).push_back(MakeState("SingleAtack"));
+		stateList_.state_.at(i).push_back(MakeState("SingleAtack"));
+		stateList_.state_.at(i).push_back(MakeState("SingleAtack"));
+		//行動状態のリストからどの種類を選ぶかの番号を設定
+		stateList_.stateNumber_.resize(i+1);
+		stateList_.stateNumber_.at(i).push_back(0);
+		stateList_.stateNumber_.at(i).push_back(1);
+		stateList_.stateNumber_.at(i).push_back(2);
+		stateList_.stateNumber_.at(i).push_back(3);
+		stateList_.stateNumber_.at(i).push_back(4);
+	}
 }
 
 void Boss::ApplyGlobalVariables()
@@ -152,4 +154,24 @@ void Boss::ApplyGlobalVariables()
 	waitForMulti_=variables->GetFloatValue(name_, "waitmulti");
 	waitForRoller_=variables->GetFloatValue(name_, "waitRoller");
 	waitForPushUp_=variables->GetFloatValue(name_, "waitPushUp");
-}			   
+}
+
+std::unique_ptr<IEnemyState> Boss::MakeState(std::string name)
+{
+	//文字列にあったStateを生成　文字列が一致しなければ強制的にMultiAtackに
+	if (name == "MultiAtack") {
+		return std::make_unique<MultiAtackState>();
+	}
+	else if (name == "SingleAtack") {
+		return std::make_unique<SingleAtackState>();
+	}
+	else if (name == "Roller") {
+		return std::make_unique<RollerAtackState>();
+	}
+	else if (name == "PushUp") {
+	 	return std::make_unique<PushUpAtackState>();
+	}
+	else {
+		return std::make_unique<MultiAtackState>();
+	}
+}
