@@ -18,6 +18,7 @@
 #include "User/Enemy/IEnemy.h"
 #include "User/Enemy/SmallEnemy.h"
 #include "User/Enemy/Boss.h"
+#include "User/Enemy/BossAnimManager.h"
 #include "User/Rubble/Rubble.h"
 #include "User/Enemy/Atack/meteor.h"
 #include "User/TestObject/TestObject.h"

@@ -62,10 +62,10 @@ void Camera::Update()
 			move.x = 1.0f;
 		}
 
-		if (input_->PushKey(DIK_SPACE)) {
+		if (input_->PushKey(DIK_Q)) {
 			move.y = 1.0f;
 		}
-		else if (input_->PushKey(DIK_LCONTROL)) {
+		else if (input_->PushKey(DIK_E)) {
 			move.y = -1.0f;
 		}
 
@@ -104,8 +104,8 @@ void Camera::DisplayImGui()
 		ImGui::Text("Debug Movement");
 		ImGui::Text("Move ... WASD");
 		ImGui::Text("Look ... ArrowKey");
-		ImGui::Text("Rise ... Space");
-		ImGui::Text("Descent ... LCTRL");
+		ImGui::Text("Rise ... Q");
+		ImGui::Text("Descent ... E");
 	}
 
 	// ワールド座標の表示

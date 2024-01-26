@@ -1,0 +1,246 @@
+{
+    "Boss_EndThrustUpAttack": {
+        "Arm_L_Rotate : KeyCount": 3,
+        "Arm_L_Rotate key : 0": [
+            1.5499999523162842,
+            1.0,
+            0.0
+        ],
+        "Arm_L_Rotate key : 0 : EasingParameter": 9,
+        "Arm_L_Rotate key : 0 : PlayFrame": 0,
+        "Arm_L_Rotate key : 1": [
+            3.140000104904175,
+            0.0,
+            0.5
+        ],
+        "Arm_L_Rotate key : 1 : EasingParameter": 9,
+        "Arm_L_Rotate key : 1 : PlayFrame": 60,
+        "Arm_L_Rotate key : 2": [
+            0.0,
+            0.0,
+            -0.800000011920929
+        ],
+        "Arm_L_Rotate key : 2 : EasingParameter": 9,
+        "Arm_L_Rotate key : 2 : PlayFrame": 120,
+        "Arm_L_Translate : KeyCount": 2,
+        "Arm_L_Translate key : 0": [
+            0.4000000059604645,
+            0.699999988079071,
+            0.0
+        ],
+        "Arm_L_Translate key : 0 : EasingParameter": 0,
+        "Arm_L_Translate key : 0 : PlayFrame": 0,
+        "Arm_L_Translate key : 1": [
+            0.4000000059604645,
+            0.699999988079071,
+            0.0
+        ],
+        "Arm_L_Translate key : 1 : EasingParameter": 0,
+        "Arm_L_Translate key : 1 : PlayFrame": 60,
+        "Arm_R_Rotate : KeyCount": 3,
+        "Arm_R_Rotate key : 0": [
+            1.5,
+            -1.0,
+            0.0
+        ],
+        "Arm_R_Rotate key : 0 : EasingParameter": 9,
+        "Arm_R_Rotate key : 0 : PlayFrame": 0,
+        "Arm_R_Rotate key : 1": [
+            3.140000104904175,
+            0.0,
+            -0.5
+        ],
+        "Arm_R_Rotate key : 1 : EasingParameter": 9,
+        "Arm_R_Rotate key : 1 : PlayFrame": 60,
+        "Arm_R_Rotate key : 2": [
+            0.0,
+            0.0,
+            0.800000011920929
+        ],
+        "Arm_R_Rotate key : 2 : EasingParameter": 9,
+        "Arm_R_Rotate key : 2 : PlayFrame": 120,
+        "Arm_R_Translate : KeyCount": 2,
+        "Arm_R_Translate key : 0": [
+            -0.4000000059604645,
+            0.699999988079071,
+            0.0
+        ],
+        "Arm_R_Translate key : 0 : EasingParameter": 0,
+        "Arm_R_Translate key : 0 : PlayFrame": 0,
+        "Arm_R_Translate key : 1": [
+            -0.4000000059604645,
+            0.699999988079071,
+            0.0
+        ],
+        "Arm_R_Translate key : 1 : EasingParameter": 0,
+        "Arm_R_Translate key : 1 : PlayFrame": 60,
+        "Arm_R_Translate key : 2": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Arm_R_Translate key : 2 : EasingParameter": 0,
+        "Arm_R_Translate key : 2 : PlayFrame": 1,
+        "Body_Rotate : KeyCount": 4,
+        "Body_Rotate key : 0": [
+            -1.149999976158142,
+            0.0,
+            0.0
+        ],
+        "Body_Rotate key : 0 : EasingParameter": 3,
+        "Body_Rotate key : 0 : PlayFrame": 0,
+        "Body_Rotate key : 1": [
+            0.15000000596046448,
+            0.0,
+            0.0
+        ],
+        "Body_Rotate key : 1 : EasingParameter": 7,
+        "Body_Rotate key : 1 : PlayFrame": 30,
+        "Body_Rotate key : 2": [
+            0.3499999940395355,
+            0.0,
+            0.0
+        ],
+        "Body_Rotate key : 2 : EasingParameter": 8,
+        "Body_Rotate key : 2 : PlayFrame": 60,
+        "Body_Rotate key : 3": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Body_Rotate key : 3 : EasingParameter": 9,
+        "Body_Rotate key : 3 : PlayFrame": 120,
+        "Body_Scale : KeyCount": 2,
+        "Body_Scale key : 0": [
+            1.0,
+            1.0,
+            1.0
+        ],
+        "Body_Scale key : 0 : EasingParameter": 0,
+        "Body_Scale key : 0 : PlayFrame": 0,
+        "Body_Scale key : 1": [
+            1.0,
+            1.0,
+            1.0
+        ],
+        "Body_Scale key : 1 : EasingParameter": 0,
+        "Body_Scale key : 1 : PlayFrame": 45,
+        "Body_Translate : KeyCount": 4,
+        "Body_Translate key : 0": [
+            0.0,
+            0.4000000059604645,
+            0.0
+        ],
+        "Body_Translate key : 0 : EasingParameter": 3,
+        "Body_Translate key : 0 : PlayFrame": 0,
+        "Body_Translate key : 1": [
+            0.0,
+            0.800000011920929,
+            0.0
+        ],
+        "Body_Translate key : 1 : EasingParameter": 7,
+        "Body_Translate key : 1 : PlayFrame": 30,
+        "Body_Translate key : 2": [
+            0.0,
+            0.8999999761581421,
+            0.0
+        ],
+        "Body_Translate key : 2 : EasingParameter": 8,
+        "Body_Translate key : 2 : PlayFrame": 60,
+        "Body_Translate key : 3": [
+            0.0,
+            0.4000000059604645,
+            0.0
+        ],
+        "Body_Translate key : 3 : EasingParameter": 9,
+        "Body_Translate key : 3 : PlayFrame": 120,
+        "Foot_L_Rotate : KeyCount": 3,
+        "Foot_L_Rotate key : 0": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Foot_L_Rotate key : 0 : EasingParameter": 0,
+        "Foot_L_Rotate key : 0 : PlayFrame": 0,
+        "Foot_L_Rotate key : 1": [
+            -0.30000001192092896,
+            -0.44999998807907104,
+            0.0
+        ],
+        "Foot_L_Rotate key : 1 : EasingParameter": 9,
+        "Foot_L_Rotate key : 1 : PlayFrame": 60,
+        "Foot_L_Rotate key : 2": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Foot_L_Rotate key : 2 : EasingParameter": 9,
+        "Foot_L_Rotate key : 2 : PlayFrame": 120,
+        "Foot_L_Translate : KeyCount": 3,
+        "Foot_L_Translate key : 0": [
+            0.2199999988079071,
+            0.2800000011920929,
+            -0.44999998807907104
+        ],
+        "Foot_L_Translate key : 0 : EasingParameter": 1,
+        "Foot_L_Translate key : 0 : PlayFrame": 0,
+        "Foot_L_Translate key : 1": [
+            0.2199999988079071,
+            0.7799999713897705,
+            0.0
+        ],
+        "Foot_L_Translate key : 1 : EasingParameter": 9,
+        "Foot_L_Translate key : 1 : PlayFrame": 60,
+        "Foot_L_Translate key : 2": [
+            0.2199999988079071,
+            0.2800000011920929,
+            0.0
+        ],
+        "Foot_L_Translate key : 2 : EasingParameter": 9,
+        "Foot_L_Translate key : 2 : PlayFrame": 120,
+        "Foot_R_Rotate : KeyCount": 3,
+        "Foot_R_Rotate key : 0": [
+            -1.75,
+            0.0,
+            0.0
+        ],
+        "Foot_R_Rotate key : 0 : EasingParameter": 9,
+        "Foot_R_Rotate key : 0 : PlayFrame": 0,
+        "Foot_R_Rotate key : 1": [
+            -0.30000001192092896,
+            0.44999998807907104,
+            0.0
+        ],
+        "Foot_R_Rotate key : 1 : EasingParameter": 9,
+        "Foot_R_Rotate key : 1 : PlayFrame": 60,
+        "Foot_R_Rotate key : 2": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Foot_R_Rotate key : 2 : EasingParameter": 9,
+        "Foot_R_Rotate key : 2 : PlayFrame": 120,
+        "Foot_R_Translate : KeyCount": 3,
+        "Foot_R_Translate key : 0": [
+            -0.2199999988079071,
+            0.2800000011920929,
+            0.15000000596046448
+        ],
+        "Foot_R_Translate key : 0 : EasingParameter": 8,
+        "Foot_R_Translate key : 0 : PlayFrame": 0,
+        "Foot_R_Translate key : 1": [
+            -0.2199999988079071,
+            0.7799999713897705,
+            0.0
+        ],
+        "Foot_R_Translate key : 1 : EasingParameter": 3,
+        "Foot_R_Translate key : 1 : PlayFrame": 60,
+        "Foot_R_Translate key : 2": [
+            -0.2199999988079071,
+            0.2800000011920929,
+            0.15000000596046448
+        ],
+        "Foot_R_Translate key : 2 : EasingParameter": 9,
+        "Foot_R_Translate key : 2 : PlayFrame": 120
+    }
+}
