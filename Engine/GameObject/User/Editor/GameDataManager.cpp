@@ -110,6 +110,10 @@ void GameDataManager::LoadFile(const std::string& groupName)
 				const std::list<std::string>& valueList = itItem->get<std::list<std::string>>();
 				SetValue(prevNames, itemName, valueList);
 			}
+			else if (itItem->is_array() && itItem->at(0).is_number_integer()) {
+				const std::list<int>& valueList = itItem->get<std::list<int>>();
+				SetValue(prevNames, itemName, valueList);
+			}
 		}
 
 		// オブジェクトナンバー更新
@@ -177,6 +181,12 @@ void GameDataManager::SaveData(const std::string& groupName)
 			else if (std::holds_alternative<std::list<std::string>>(item)) {
 				const std::list<std::string>& valueList = std::get<std::list<std::string>>(item);
 				std::list<std::string> jsonArray(valueList.begin(), valueList.end());
+
+				root[fullPath][sectionName][itemName] = jsonArray;
+			}
+			else if (std::holds_alternative<std::list<int>>(item)) {
+				const std::list<int>& valueList = std::get<std::list<int>>(item);
+				std::list<int> jsonArray(valueList.begin(), valueList.end());
 
 				root[fullPath][sectionName][itemName] = jsonArray;
 			}

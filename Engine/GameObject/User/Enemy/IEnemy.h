@@ -96,14 +96,19 @@ public: // アクセッサ等
 	float GetWaitPushUp() { return waitForPushUp_; }
 	void SetgameManager(GameManager* gamemanager) { gameManager_ = gamemanager; }
 public: // パブリックなメンバ変数
-
+	struct MyState
+	{
+		//行動状態のパターン　第一引数がパターンの行う順番で第二引数が行う行動
+		std::vector<std::vector<std::unique_ptr<IEnemyState>>>state_;
+		//行動状態の呼び出す番号　　第一引数がパターンの行う順番で第二引数が行う行動の設置場所
+		std::vector<std::vector<int>>stateNumber_;
+	};
 	// 外部出力マネージャ
 	GameDataManager* gameDataManager_ = nullptr;
    //下からの攻撃
 	std::vector<PushUp*> pushUp_;
 
-	//行動状態のパターン
-	std::vector<std::vector<std::unique_ptr<IEnemyState>>>stateList_;
+	MyState stateList_;
 	//行動状態のパターンのナンバー
 	int patternNumber_ = 0;
 	//行動状態のパターン内のナンバー　　（stateList.at(patternNumer).at(stateNumber)）

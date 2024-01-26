@@ -24,9 +24,11 @@ void MultiAtackState::Update()
 		Meteor* meteor = gameObjectmanager_->CreateInstance<Meteor>("meteor", BaseObject::TagMeteor);
 		//隕石の座標
 		meteor->transform_.translate_ = enemy_->GetPlayer()->transform_.translate_;
-		meteor->transform_.translate_.y = 30.0f;
-		std::string group = GameDataManager::GetInstance()->GetMultiAttack(0);
-		meteor->transform_.scale_ = GameDataManager::GetInstance()->GetValue<Vector3>({ group,"Parameter" }, "Scale");
+		GameDataManager* dataManager = GameDataManager::GetInstance();
+		std::string group = dataManager->GetMultiAttack(0);
+		std::string distance = dataManager->GetSingleAttack(0);
+		meteor->transform_.translate_.y = dataManager->GetValue<float>({ distance,"Parameter" }, "Distance");
+		meteor->transform_.scale_ = dataManager->GetValue<Vector3>({ group,"Parameter" }, "Scale");
 		meteor->SetgameManager(enemy_->gameManager_);
 	}
 	if (atackCount_ >= kMaxCount_) {

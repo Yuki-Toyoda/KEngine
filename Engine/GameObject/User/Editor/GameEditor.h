@@ -167,8 +167,11 @@ private:
 		kGameSide,
 	};
 
+	std::list<std::string> tableNames_ = { "Single","Multi","PushUp","Roller" };
+
 	int cameraType_ = kUpSide;
 
+	int type_ = 0;
 
 	// 攻撃の種類ごとの名前（グループネームのベース)
 	const std::string kParamName = "AttackParam";

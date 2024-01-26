@@ -22,6 +22,7 @@ void Player::Init()
 	variables->AddItem(name_, "StanTime", damageStanTime_);
 	variables->AddItem(name_, "healpower", healPower_);
 	variables->AddItem(name_, "MaxSize", maxSize);
+	variables->AddItem(name_, "PushUpHitForce", pushUpHitForce);
 	SetGlobalVariables();
 }
 
@@ -139,6 +140,8 @@ void Player::DisplayImGui()
 	ImGui::DragInt("heal Power", &healPower_);
 
 	ImGui::DragFloat("Max Size", &maxSize);
+
+	ImGui::DragFloat("PushUpHitForce", &pushUpHitForce);
 	// 改行する
 	ImGui::NewLine();
 
@@ -157,6 +160,7 @@ void Player::DisplayImGui()
 		variables->SetValue(name_, "StanTime", damageStanTime_);
 		variables->SetValue(name_, "healpower", healPower_);
 		variables->SetValue(name_, "MaxSize", maxSize);
+		variables->SetValue(name_, "PushUpHitForce", pushUpHitForce);
 		 variables->SaveFile(name_);
 		/*kMaxMoveAcceleration_ = variables->GetFloatValue(name_, "MaxMoveAcceleration");
 		decayAcceleration_ = variables->GetFloatValue(name_, "DecayAcceleration");
@@ -195,10 +199,10 @@ void Player::OnCollisionEnter(Collider* collider) {
 	
 
 	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagPushUp) {
-		/*transform_.translate_ = prevPos_;
+		transform_.translate_ = prevPos_;
 		pushUpPos_ = collider->GetGameObject()->transform_.translate_;
 
-		ChangeState(std::make_unique<PushUpHitState>());*/
+		ChangeState(std::make_unique<PushUpHitState>());
 
 	}
 
@@ -246,6 +250,7 @@ void Player::Damage()
 		hitPoint_--;
 		// ヒットクールタイマーリセット
 		hitCollTimer_.Start(hitCoolTime_);
+		ChangeState(std::make_unique<RootState>());
 	}
 
 }
@@ -306,6 +311,7 @@ void Player::SetGlobalVariables()
 	damageStanTime_ = variables->GetFloatValue(name_, "StanTime");
 	healPower_ = variables->GetIntValue(name_, "healpower");
    maxSize = variables->GetFloatValue(name_, "MaxSize");
+   pushUpHitForce = variables->GetFloatValue(name_, "PushUpHitForce" );
 }
 
 void Player::Atack()
