@@ -11,18 +11,11 @@ void GameEditor::Init()
 
 	ParameterInitialize();
 
-	dataManager_->CreateGroup({ "Test","A" });
-	std::list<std::string> nameList;
-	nameList.push_back("Multi");
-	nameList.push_back("Single");
-	nameList.push_back("Roller");
-	nameList.push_back("PushUp");
-	dataManager_->SetValue({ "Test","Parttern0" }, "List0", nameList);
-	nameList.pop_back();
-	nameList.pop_back();
-	dataManager_->SetValue({ "Test","Pattern1" }, "List0", nameList);
 
-	dataManager_->SaveData("Test");
+	dataManager_->CreateGroup({ "TableData","TableList0" });
+	dataManager_->CreateGroup({ "TableData","TableList1" });
+
+	dataManager_->SaveData("TableData");
 
 }
 
@@ -629,6 +622,24 @@ void GameEditor::SystemImGui()
 			static char buffer[256];
 			const char* items[] = { "Single","Multi","PushUp","Roller" };
 			const char* tmpName = items[type_];
+			if (ImGui::TreeNode("NumberControl")) {
+				ImGui::InputInt("NewNum", &tmpInt);
+				ImGui::SeparatorText("Add");
+				if (ImGui::Button("NumAdd")) {
+					tableNumbers_.push_back(tmpInt);
+				}
+				if (ImGui::Button("NumFrontAdd")) {
+					tableNumbers_.push_front(tmpInt);
+				}
+				ImGui::SeparatorText("Delete");
+				if (ImGui::Button("NumDelete")) {
+					tableNumbers_.pop_back();
+				}
+				if (ImGui::Button("NumFrontDelete")) {
+					tableNumbers_.pop_front();
+				}
+				ImGui::TreePop();
+			}
 			ImGui::InputText("NewName", buffer, IM_ARRAYSIZE(buffer));
 			if (ImGui::BeginCombo("NameList",tmpName)) {
 				if (ImGui::Selectable("Single", type_ == 0)) {
@@ -650,20 +661,65 @@ void GameEditor::SystemImGui()
 			if (ImGui::Button("Add")) {
 				tableNames_.push_back(tmpName);
 			}
-
-			for (auto it = tableNames_.begin(); it != tableNames_.end(); ++it) {
+			// タブの内容
+			ImGui::BeginChild(ImGui::GetID((void*)0), ImVec2(200, 150), ImGuiWindowFlags_NoTitleBar);
+			// テーブルの一覧表示・ドラッグで順番変更
+			for (std::list<std::string>::iterator it = tableNames_.begin(); it != tableNames_.end(); ++it) {
 				std::string itemName = *it;
 				ImGui::Selectable(itemName.c_str());
 
-				if (it->at(0) && ImGui::IsItemActive() && !ImGui::IsItemHovered())
-				{
-					auto next = std::next(it, (ImGui::GetMouseDragDelta(0).y < 0.f ? -1 : 1));
-					if (next != tableNames_.end()) {
+				if (it->at(0) && ImGui::IsItemActive() && !ImGui::IsItemHovered()) {
+					auto mouseDragDelta = ImGui::GetMouseDragDelta(0).y;
+
+					if (it != tableNames_.begin()) {
+						std::list<std::string>::iterator prev = std::prev(it);
+						if (mouseDragDelta < 0.f) {
+							std::swap(*it, *prev);
+							ImGui::ResetMouseDragDelta();
+						}
+					}
+
+					if (it != std::prev(tableNames_.end()) && mouseDragDelta > 0.f) {
+						std::list<std::string>::iterator next = std::next(it);
 						std::swap(*it, *next);
 						ImGui::ResetMouseDragDelta();
 					}
 				}
 			}
+			ImGui::EndChild();
+			ImGui::SameLine();
+
+			// タブの内容
+			ImGui::BeginChild(ImGui::GetID((void*)1), ImVec2(200, 150), ImGuiWindowFlags_NoTitleBar);
+
+			// テーブルの一覧表示・ドラッグで順番変更
+			int index = 0;
+			for (std::list<int>::iterator it = tableNumbers_.begin(); it != tableNumbers_.end(); ++it, ++index) {
+				int itemName = *it;
+				std::string name = std::to_string(itemName);
+				ImGui::Selectable(name.c_str(),ImGui::GetID(reinterpret_cast<void*>(static_cast<uintptr_t>(index))));
+
+				if (name.empty() && ImGui::IsItemActive() && !ImGui::IsItemHovered()) {
+					auto mouseDragDelta = ImGui::GetMouseDragDelta(0).y;
+
+					if (it != tableNumbers_.begin()) {
+						std::list<int>::iterator prev = std::prev(it);
+						if (mouseDragDelta < 0.f) {
+							std::swap(*it, *prev);
+							ImGui::ResetMouseDragDelta();
+						}
+					}
+
+					if (it != std::prev(tableNumbers_.end()) && mouseDragDelta > 0.f) {
+						std::list<int>::iterator next = std::next(it);
+						std::swap(*it, *next);
+						ImGui::ResetMouseDragDelta();
+					}
+				}
+			}
+
+			ImGui::EndChild();
+
 
 			ImGui::SeparatorText("System");
 			if (ImGui::Button("Save")) {
