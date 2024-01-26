@@ -158,6 +158,34 @@ private:
 	/// </summary>
 	void SaveMulti();
 
+	void CreateDragUI(int num,std::list<std::string> lists) {
+		// タブの内容
+		ImGui::BeginChild(ImGui::GetID((void*)0), ImVec2(200, 150), ImGuiWindowFlags_NoTitleBar);
+		// テーブルの一覧表示・ドラッグで順番変更
+		for (std::list<std::string>::iterator it = lists.begin(); it != lists.end(); ++it) {
+			std::string itemName = *it;
+			ImGui::Selectable(itemName.c_str());
+
+			if (it->at(0) && ImGui::IsItemActive() && !ImGui::IsItemHovered()) {
+				auto mouseDragDelta = ImGui::GetMouseDragDelta(0).y;
+
+				if (it != lists.begin()) {
+					std::list<std::string>::iterator prev = std::prev(it);
+					if (mouseDragDelta < 0.f) {
+						std::swap(*it, *prev);
+						ImGui::ResetMouseDragDelta();
+					}
+				}
+
+				if (it != std::prev(lists.end()) && mouseDragDelta > 0.f) {
+					std::list<std::string>::iterator next = std::next(it);
+					std::swap(*it, *next);
+					ImGui::ResetMouseDragDelta();
+				}
+			}
+		}
+	}
+
 private:
 	// 保存の名前
 	std::string saveName_ = "";
@@ -167,11 +195,17 @@ private:
 		kGameSide,
 	};
 
-	std::list<std::string> tableNames_ = { "Single","Multi","PushUp","Roller" };
+	std::list<std::string> tableNames_/* = { "Single","Multi","PushUp","Roller" }*/;
+
+	std::list<std::string> numberStrings_;
+	std::list<int> tableNumbers_/* = { 0,1,2 }*/;
 
 	int cameraType_ = kUpSide;
 
 	int type_ = 0;
+	int tmpInt = 0;
+
+	int tableNumber_ = 0;
 
 	// 攻撃の種類ごとの名前（グループネームのベース)
 	const std::string kParamName = "AttackParam";

@@ -24,13 +24,11 @@ void Boss::SuccessorInit()
 	// ゲームオブジェクトマネージャのインスタンスを取得
 	gameObjectManager_ = GameObjectManager::GetInstance();
 	// データマネージャーのインスタンス取得
-	GameDataManager* dataManager = GameDataManager::GetInstance();
+	//GameDataManager* dataManager = GameDataManager::GetInstance();
 	// 行動状態リストの生成
 	MakeStateList();
 	
 	//下からの攻撃を生成
-	int pushUpMax = dataManager->GetValue<int>({ "AttackParam","PushUp" }, "MaxCount");
-	pushUpMax;
 	// 全ての攻撃に対して
 	//for (int i = 0; i < pushUpMax; i++) {
 	//	// インスタンス生成
