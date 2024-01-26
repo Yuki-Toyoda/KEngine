@@ -23,7 +23,6 @@ public:
 	void Update();
 
 public: // アクセッサ
-	HierarchicalName GetNormalInfo() { return { "AttackParam","Info" }; }
 	HierarchicalName GetSingleInfo() { return { "SingleMeteor","Info" }; }
 
 private:
@@ -35,10 +34,7 @@ private:
 	InGameCamera* camera_;
 	// 地面
 	Ground* ground_;
-	// プレイヤー
-	Player* player_;
 
-	static int sLoadNumber_;
 	/// <summary>
 	/// エディターのImGui
 	/// </summary>
@@ -158,33 +154,27 @@ private:
 	/// </summary>
 	void SaveMulti();
 
-	void CreateDragUI(int num,std::list<std::string> lists) {
-		// タブの内容
-		num;
-		ImGui::BeginChild(ImGui::GetID((void*)0), ImVec2(200, 150), ImGuiWindowFlags_NoTitleBar);
-		// テーブルの一覧表示・ドラッグで順番変更
-		for (std::list<std::string>::iterator it = lists.begin(); it != lists.end(); ++it) {
-			std::string itemName = *it;
-			ImGui::Selectable(itemName.c_str());
+	/// <summary>
+	/// リストの変換(一文字専用
+	/// </summary>
+	/// <param name="lists"></param>
+	/// <returns></returns>
+	std::list<int> ConvertToIntList(std::list<std::string> lists) {
 
-			if (it->at(0) && ImGui::IsItemActive() && !ImGui::IsItemHovered()) {
-				auto mouseDragDelta = ImGui::GetMouseDragDelta(0).y;
+		std::list<int> list;
+		int returnNum = 0;
 
-				if (it != lists.begin()) {
-					std::list<std::string>::iterator prev = std::prev(it);
-					if (mouseDragDelta < 0.f) {
-						std::swap(*it, *prev);
-						ImGui::ResetMouseDragDelta();
-					}
-				}
+		for (std::string obj : lists) {
 
-				if (it != std::prev(lists.end()) && mouseDragDelta > 0.f) {
-					std::list<std::string>::iterator next = std::next(it);
-					std::swap(*it, *next);
-					ImGui::ResetMouseDragDelta();
+			for (char c : obj) {
+				if (std::isdigit(c)) {
+					returnNum = std::stoi(obj);
+					list.push_back(returnNum);
 				}
 			}
+
 		}
+		return list;
 	}
 
 private:
@@ -196,9 +186,9 @@ private:
 		kGameSide,
 	};
 
-	std::list<std::string> tableNames_/* = { "Single","Multi","PushUp","Roller" }*/;
+	std::list<std::string> tableNames_ = { "Single","Multi","PushUp","Roller" };
 
-	std::list<std::string> numberStrings_;
+	std::list<std::string> numberStrings_ = { "0","1","3","1" };
 	std::list<int> tableNumbers_/* = { 0,1,2 }*/;
 
 	int cameraType_ = kUpSide;
@@ -229,8 +219,6 @@ private:
 
 private:
 	/// SingleAttack用
-	// 障害物の最大数
-	int kObstacleCounter_ = 0;
 	// 隕石の数
 	int meteorCounter_ = 0;
 	// 敵の最大数
@@ -246,8 +234,6 @@ private:
 	Vector3 multiSize_ = { 1,1,1 };
 	Vector3 pushUpSize_ = { 1,1,1 };
 	Vector3 rollerSize_ = { 8.0f,1,1.0f };
-	// 現在の難易度
-	int editNowLevel_ = 0;
 	// 落下かどうか
 	int isGravity_ = 0;
 	// スポーンY座標用
