@@ -1,6 +1,19 @@
 {
     "TableData": {
-        "TableList0": null,
+        "TableList0": {
+            "ActionList": [
+                "Single",
+                "Multi",
+                "PushUp",
+                "Roller"
+            ],
+            "NumberList": [
+                "3",
+                "0",
+                "1",
+                "1"
+            ]
+        },
         "TableList1": null
     }
 }

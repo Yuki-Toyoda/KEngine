@@ -177,6 +177,17 @@ private:
 		return list;
 	}
 
+
+	void SaveTableData(int number) {
+		std::string groupName = "TableData";
+		std::string sectionName = "TableList" + std::to_string(number);
+
+		dataManager_->SetValue({ groupName,sectionName }, "ActionList", tableNames_);
+		dataManager_->SetValue({ groupName,sectionName }, "NumberList", numberStrings_);
+
+		dataManager_->SaveData(groupName);
+	}
+
 private:
 	// 保存の名前
 	std::string saveName_ = "";

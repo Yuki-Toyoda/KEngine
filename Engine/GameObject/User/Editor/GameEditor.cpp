@@ -581,24 +581,47 @@ void GameEditor::SystemImGui()
 
 	if (ImGui::BeginTabBar("EditObject")) {
 
-		if (ImGui::BeginTabItem("Camera")) {
-			//ImGui::SameLine();
-			std::list<std::string> testList = dataManager_->GetValue<std::list<std::string>>({ "Test","Parttern0" }, "List0");
+		//if (ImGui::BeginTabItem("Camera")) {
+		//	//ImGui::SameLine();
+		//	std::list<std::string> testList = dataManager_->GetValue<std::list<std::string>>({ "Test","Parttern0" }, "List0");
 
-			for (std::string st : testList) {
-				ImGui::Text(st.c_str());
-				ImGui::Text("\n");
-			}
+		//	for (std::string st : testList) {
+		//		ImGui::Text(st.c_str());
+		//		ImGui::Text("\n");
+		//	}
 
-			std::list<std::string> list = dataManager_->GetValue<std::list<std::string>>({ "Test","Pattern1" }, "List0");
-			for (std::string st : list) {
-				ImGui::Text(st.c_str());
-				ImGui::Text("\n");
-			}
+		//	std::list<std::string> list = dataManager_->GetValue<std::list<std::string>>({ "Test","Pattern1" }, "List0");
+		//	for (std::string st : list) {
+		//		ImGui::Text(st.c_str());
+		//		ImGui::Text("\n");
+		//	}
 
-			ImGui::EndTabItem();
-		}
+		//	ImGui::EndTabItem();
+		//}
 		if (ImGui::BeginTabItem("Table")) {
+
+			ImGui::SeparatorText("System");
+
+			// 開始
+			ImGui::Columns(2,"my",false);
+			// ボタンのサイズを設定
+			ImVec2 buttonSize(100, 20);
+			if (ImGui::Button("Next", buttonSize)) {
+				// ボタンがクリックされたときの処理
+
+			}
+			ImGui::NextColumn(); // 次の列に移動
+			if (ImGui::Button("Prev", buttonSize)) {
+				// ボタンがクリックされたときの処理
+
+			}
+			// 終了
+			ImGui::Columns(1);
+
+			if (ImGui::Button("Save"))
+			{
+				this->SaveTableData(0);
+			}
 
 			static char buffer[256];
 			const char* items[] = { "Single","Multi","PushUp","Roller" };
