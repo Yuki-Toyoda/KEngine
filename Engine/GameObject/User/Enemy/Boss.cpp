@@ -61,8 +61,7 @@ void Boss::SuccessorUpdate()
 	if (hitPoint_ <= 0.0f) {
 		// 非表示
 		isActive_ = false;
-		// 行動状態削除
-		//state_ = nullptr;
+		
 	}
 
 }
@@ -161,6 +160,7 @@ void Boss::ApplyGlobalVariables()
 
 std::unique_ptr<IEnemyState> Boss::MakeState(std::string name)
 {
+	//文字列にあったStateを生成　文字列が一致しなければ強制的にMultiAtackに
 	if (name == "MultiAtack") {
 		return std::make_unique<MultiAtackState>();
 	}
@@ -170,7 +170,7 @@ std::unique_ptr<IEnemyState> Boss::MakeState(std::string name)
 	else if (name == "Roller") {
 		return std::make_unique<RollerAtackState>();
 	}
-	else if (name == "pushUp") {
+	else if (name == "PushUp") {
 	 	return std::make_unique<PushUpAtackState>();
 	}
 	else {
