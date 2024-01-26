@@ -67,6 +67,8 @@ private: // メンバ関数
 	void MakeStateList();
 	//GlobalVariablesを代入
 	void ApplyGlobalVariables();
+	//行動状態を生成
+	std::unique_ptr<IEnemyState>MakeState(std::string name);
 private:
 
 	//体力

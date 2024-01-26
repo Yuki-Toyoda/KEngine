@@ -7,7 +7,7 @@ void SingleAtackState::Init()
 	GameDataManager* jsonData = GameDataManager::GetInstance();
 	// 参照の名前
 	HierarchicalName names = { "SingleMeteor","Parameter"};
-	names.kGroup = GameDataManager::GetInstance()->GetSingleAttack(0);
+	names.kGroup = GameDataManager::GetInstance()->GetSingleAttack(enemy_->stateList_.stateNumber_[enemy_->patternNumber_][enemy_->StateNumber_]);
 	int maxValue = jsonData->GetValue<int>(names, "MaxCount");
 
 	for (int i = 0; i < maxValue; i++) {
