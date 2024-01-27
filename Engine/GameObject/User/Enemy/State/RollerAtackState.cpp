@@ -10,7 +10,7 @@ void RollerAtackState::Init()
 	//roller->transform_.translate_.x = -20.0f;
 
 	GameDataManager* dataManager = GameDataManager::GetInstance();
-	std::string group = dataManager->GetRollerAttack(0);
+	std::string group = dataManager->GetRollerAttack(enemy_->stateList_.stateNumber_[enemy_->patternNumber_][enemy_->StateNumber_]);
 	int maxCount = dataManager->GetValue<int>({ group,"Parameter"}, "MaxCount");
 	for (int i = 0; i < maxCount; i++) {
 		Roller* object = gameObjectmanager_->CreateInstance<Roller>("Roller", BaseObject::TagMeteor);

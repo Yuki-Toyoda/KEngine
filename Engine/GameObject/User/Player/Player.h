@@ -130,6 +130,10 @@ public: // アクセッサ等
 	/// <summary>
 	/// ゲームオーバーフラグのげったー
 	bool GetgameOver(){return isGameOver_;}
+	//pushUpの位置のゲッター
+	Vector3 GetPushUpPos() { return pushUpPos_; }
+	//pushUpに当たったときの跳ね返る力のゲッター
+	float GetPushUpHitForce() { return pushUpHitForce; }
 /// </summary>
 private: // プライベートなメンバ関数
 
@@ -149,6 +153,7 @@ private: // プライベートなメンバ関数
 	void Heal();
 
 	void SetGlobalVariables();
+	
 private: // メンバ変数
 
 	// 移動方向ベクトル
@@ -209,5 +214,9 @@ private: // メンバ変数
 	KLib::DeltaTimer healTimer;
 
 	bool isGameOver_;
+	//当たったPushUpの位置
+	Vector3 pushUpPos_;
+	//PushUpに当たった時の吹っ飛ぶ力
+	float pushUpHitForce = 5.0f;
 };
 

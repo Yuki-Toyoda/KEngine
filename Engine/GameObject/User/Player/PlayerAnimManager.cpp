@@ -84,7 +84,9 @@ void PlayerAnimManager::Update()
 				anim_->isLoop_ = true;
 
 				// ダメージを喰らっている
-				player_->SetIsDamaged(false);
+				if (player_ != nullptr) {
+					player_->SetIsDamaged(false);
+				}
 			}
 		}
 	}
@@ -181,7 +183,9 @@ void PlayerAnimManager::ChangeParamameter(const std::string& name, const bool& i
 void PlayerAnimManager::Damage(const float& stanTime)
 {
 	// ダメージを喰らっている
-	player_->SetIsDamaged(true);
+	if (player_ != nullptr) {
+		player_->SetIsDamaged(true);
+	}
 
 	// スタンタイマー開始
 	stanTimer_.Start(stanTime);
