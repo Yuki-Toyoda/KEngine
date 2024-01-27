@@ -54,6 +54,7 @@ void Boss::SuccessorInit()
 	variables->AddItem(name_,"waitRoller", waitForRoller_);
 	variables->AddItem(name_,"waitPushUp", waitForPushUp_);
 	variables->AddItem(name_, "FallAttackReadyTime", fallAttackReadyTime_);
+	variables->AddItem(name_, "PushUpReadyTime", pushUpReadyTime_);
 	ApplyGlobalVariables();
 }
 
@@ -86,6 +87,7 @@ void Boss::DisplayImGui()
 	if (ImGui::TreeNode("ReadyTime")) {
 		// 落下攻撃待機時間
 		ImGui::DragFloat("FallAttackReadyTime", &fallAttackReadyTime_, 0.01f, 0.01f, 2.0f);
+		ImGui::DragFloat("PushUpReadyTime", &pushUpReadyTime_, 0.01f, 0.01f, 2.0f);
 
 		ImGui::TreePop();
 	}
@@ -98,6 +100,7 @@ void Boss::DisplayImGui()
 		variables->SetValue(name_, "waitRoller", waitForRoller_);
 		variables->SetValue(name_, "waitPushUp", waitForPushUp_);
 		variables->SetValue(name_, "FallAttackReadyTime", fallAttackReadyTime_);
+		variables->SetValue(name_, "PushUpReadyTime", pushUpReadyTime_);
 		variables->SaveFile(name_);
 	}if (ImGui::Button("changeStateAtack")) {
 		ChangeState(std::make_unique<SingleAtackState>());
@@ -186,6 +189,7 @@ void Boss::ApplyGlobalVariables()
 	waitForRoller_=variables->GetFloatValue(name_, "waitRoller");
 	waitForPushUp_=variables->GetFloatValue(name_, "waitPushUp");
 	fallAttackReadyTime_ = variables->GetFloatValue(name_, "FallAttackReadyTime");
+	pushUpReadyTime_ = variables->GetFloatValue(name_, "PushUpReadyTime");
 }
 
 std::unique_ptr<IEnemyState> Boss::MakeState(std::string name)

@@ -119,6 +119,40 @@ void BossAnimManager::Update()
 			anim_->ChangeParameter("Boss_Idle", true);
 		}
 	}
+
+	// 突き上げ攻撃開始のアニメーション再生中の場合
+	if (anim_->GetReadingParameterName() == "Boss_StartThrustUpAttack") {
+		// アニメーションが終了している場合
+		if (anim_->isEnd_) {
+			// アニメーションのループ設定を有効
+			anim_->isLoop_ = true;
+			// 再生パラメータを変更
+			anim_->ChangeParameter("Boss_ThrustUpAttacking", true);
+		}
+	}
+	// 突き上げ攻撃準備中のアニメーション再生中の場合
+	if (anim_->GetReadingParameterName() == "Boss_ThrustUpAttacking") {
+		// アニメーションタイマーが終了している場合
+		if (animTimer_.GetIsFinish()) {
+			// アニメーションのループ設定を無効
+			anim_->isLoop_ = false;
+			// 再生パラメータを変更
+			anim_->ChangeParameter("Boss_EndThrustUpAttack", true);
+		}
+
+		// アニメーションタイマー更新
+		animTimer_.Update();
+	}
+	// 突き上げ攻撃終了中のアニメーション再生中の場合
+	if (anim_->GetReadingParameterName() == "Boss_EndThrustUpAttack") {
+		// アニメーションが終了している場合
+		if (anim_->isEnd_) {
+			// アニメーションのループ設定を有効
+			anim_->isLoop_ = true;
+			// 再生パラメータを変更
+			anim_->ChangeParameter("Boss_Idle", true);
+		}
+	}
 }
 
 void BossAnimManager::DisplayImGui()
@@ -162,10 +196,16 @@ void BossAnimManager::DisplayImGui()
 		if (ImGui::Button("FallAttack")) {
 			PlayFallAttackAnim(fallAttackReadyTime_);
 		}
+
+		// ボタンを押すと突き上げ攻撃アニメーションを再生
+		if (ImGui::Button("PushUpAttack")) {
+			PlayPushUpAttackAnim(pushUpReadyTime_);
+		}
 	}
 
 	// 落下攻撃準備時間をImGuiで調整
 	ImGui::DragFloat("FallAttackReadyTime", &fallAttackReadyTime_, 0.01f, 0.1f, 3.0f);
+	ImGui::DragFloat("PushUpReadyTime", &pushUpReadyTime_, 0.01f, 0.1f, 3.0f);
 
 	transform_.DisplayImGuiWithTreeNode("Eam_Transform");
 	// 各種パーツの情報表示
@@ -252,4 +292,18 @@ void BossAnimManager::PlayFallAttackAnim(float readyTime)
 	fallAttackReadyTime_ = readyTime;
 	// 準備時間に基づいてタイマー開始
 	animTimer_.Start(fallAttackReadyTime_);
+}
+
+void BossAnimManager::PlayPushUpAttackAnim(float readyTime)
+{
+	// アニメーションのループ無効
+	anim_->isLoop_ = false;
+
+	// アニメーションの読み込みパラメータ変更
+	anim_->ChangeParameter("Boss_StartThrustUpAttack", true);
+
+	// 準備時間の取得
+	pushUpReadyTime_ = readyTime;
+	// 準備時間に基づいてタイマー開始
+	animTimer_.Start(pushUpReadyTime_);
 }

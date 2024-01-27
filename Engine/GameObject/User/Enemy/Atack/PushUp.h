@@ -67,6 +67,14 @@ public:
 	/// </summary>
 	void SetActive();
 
+public: // アクセッサ等
+
+	/// <summary>
+	/// 攻撃トリガーセッター
+	/// </summary>
+	/// <param name="isAttack">攻撃トリガー</param>
+	void SetIsAttack(const bool& isAttack) { isAttack_ = isAttack; }
+
 private: // メンバ変数
 
 	// モデル自体のトランスフォーム

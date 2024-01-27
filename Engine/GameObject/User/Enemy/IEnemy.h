@@ -104,6 +104,12 @@ public: // アクセッサ等
 	/// </summary>
 	/// <returns>落下攻撃準備時間</returns>
 	float GetFallAttackReadyTime() { return fallAttackReadyTime_; }
+	
+	/// <summary>
+	/// 突き上げ攻撃準備時間ゲッター
+	/// </summary>
+	/// <returns>突き上げ攻撃準備時間</returns>
+	float GetPushUpReadyTime() { return pushUpReadyTime_; }
 
 	/// <summary>
 	/// ボスのアニメーションマネージャーセッター
@@ -169,6 +175,8 @@ protected: // 継承先メンバ変数
 	/// ボスの攻撃時の待機アニメーション秒数
 	// ボスの落下攻撃時の待機時間
 	float fallAttackReadyTime_ = 0.25f;
+	// ボスの突き上げ攻撃時の待機時間
+	float pushUpReadyTime_ = 0.25f;
 };
 
 /// <summary>

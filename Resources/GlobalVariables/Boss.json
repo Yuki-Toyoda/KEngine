@@ -2,6 +2,7 @@
     "Boss": {
         "FallAttackReadyTime": 0.25,
         "HitPoint": 10.0,
+        "PushUpReadyTime": 0.25,
         "waitPushUp": 2.0,
         "waitRoller": 2.0,
         "waitSingle": 2.0,

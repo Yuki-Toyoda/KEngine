@@ -27,5 +27,8 @@ public:
 
 private: // メンバ変数
 
+	// 突き上げトリガー
+	bool isPushUp_ = false;
+
 };
 

@@ -88,6 +88,9 @@ void PushUp::Reset()
 	// 表示させる
 	isActive_ = true;
 
+	// 攻撃トリガーをリセット
+	isAttack_ = false;
+
 	// コライダーを無効化する
 	colliders_.front()->SetIsActive(false);
 }
@@ -96,8 +99,8 @@ void PushUp::PreAttack()
 {
 	// 攻撃準備のために地面の下へ
 	transform_.translate_.y = KLib::Lerp<float>(defaultPosition_, rawPosition_, KLib::EaseInQuad(timer_.GetProgress()));
-	//タイマーが終了してたら攻撃開始
-	if (timer_.GetIsFinish()) {
+	//タイマーが終了、かつ攻撃トリガーがtrueだったら攻撃開始
+	if (timer_.GetIsFinish() && isAttack_) {
 
 		// モデルを回転させる
 		modelTransform_.rotate_.x = (float)std::numbers::pi;
@@ -117,7 +120,7 @@ void PushUp::Atacking()
 {
 	// 線形補間で地面から突き出させる
 	transform_.translate_.y = KLib::Lerp<float>(rawPosition_, upPosition_, KLib::EaseOutBack(timer_.GetProgress()));
-	//タイマーが終了してたら攻撃中二変更
+	//タイマーが終了してたら攻撃中に変更
 	if (timer_.GetIsFinish()) {
 		// タイマーを開始させる
 		timer_.Start(remainTime_);

@@ -72,6 +72,12 @@ public: // アニメーション関数
 	/// <param name="readyTime">準備時間</param>
 	void PlayFallAttackAnim(float readyTime);
 
+	/// <summary>
+	/// 突き上げ攻撃アニメーション再生関数
+	/// </summary>
+	/// <param name="readyTime">準備時間</param>
+	void PlayPushUpAttackAnim(float readyTime);
+
 private: // メンバ変数
 
 	// アニメーションマネージャー
@@ -95,5 +101,8 @@ private: // メンバ変数
 
 	// 落下攻撃準備時間
 	float fallAttackReadyTime_ = 0.5f;
+
+	// 突き上げ攻撃待機時間
+	float pushUpReadyTime_ = 0.5f;
 };
 
