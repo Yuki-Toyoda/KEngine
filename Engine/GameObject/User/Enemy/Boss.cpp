@@ -140,16 +140,16 @@ void Boss::MakeStateList()
 		stateList_.state_.at(i).push_back(MakeState("PushUp"));
 		stateList_.state_.at(i).push_back(MakeState("SingleAtack"));
 		//行動状態のリストからどの種類を選ぶかの番号を設定
-		//stateList_.stateNumber_.resize(i+1);
-		//stateList_.stateNumber_.at(i).push_back(0);
-		//stateList_.stateNumber_.at(i).push_back(1);
-		//stateList_.stateNumber_.at(i).push_back(2);
-		//stateList_.stateNumber_.at(i).push_back(3);
-		//stateList_.stateNumber_.at(i).push_back(4);
+		stateList_.stateNumber_.resize(i+1);
+		stateList_.stateNumber_.at(i).push_back(0);
+		stateList_.stateNumber_.at(i).push_back(1);
+		stateList_.stateNumber_.at(i).push_back(2);
+		stateList_.stateNumber_.at(i).push_back(3);
+		stateList_.stateNumber_.at(i).push_back(4);
 	}
-	std::list<int> testList = { 0,1,1,1,2 };
-	std::vector<int> tmpVector(testList.begin(), testList.end());
-	stateList_.stateNumber_.push_back(tmpVector);
+	//std::list<int> testList = { 0,1,1,1,2 };
+	//std::vector<int> tmpVector(testList.begin(), testList.end());
+	//stateList_.stateNumber_.push_back(tmpVector);
 }
 
 void Boss::ApplyGlobalVariables()
