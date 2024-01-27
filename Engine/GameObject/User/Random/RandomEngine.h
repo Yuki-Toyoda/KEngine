@@ -13,6 +13,10 @@ public:
 		std::uniform_real_distribution<float> distribution(min, max);
 		return distribution(GetInstance()->GetRandomEngine());
 	};
+	/*static int GetRandom(int min, int max) {
+		std::uniform_real_distribution<int> distribution(min, max);
+		return distribution(GetInstance()->GetRandomEngine());
+	};*/
 private:
 	RandomEngine() {
 		std::random_device seedGenerator;
