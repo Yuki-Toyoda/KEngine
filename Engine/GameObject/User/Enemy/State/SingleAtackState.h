@@ -21,7 +21,12 @@ public:
 	void DisplayImGui() override;
 
 private: // メンバ変数
+	 
+	// 野菜配列
+	std::vector<Meteor*> meteors_;
 
-	
+	// 野菜の落下トリガー
+	bool isFall_ = false;
+
 };
 

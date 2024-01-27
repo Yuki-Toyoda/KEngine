@@ -1,7 +1,10 @@
 #pragma once
 #include"IEnemy.h"
-
 #include "../../GameObjectManager.h"
+
+/// <summary>
+/// ボスのクラス
+/// </summary>
 class Boss:public IEnemy
 {
 public: // メンバ関数
@@ -78,4 +81,5 @@ private:
 
 	// ゲームオブジェクトマネージャ
 	GameObjectManager* gameObjectManager_;
+
 };

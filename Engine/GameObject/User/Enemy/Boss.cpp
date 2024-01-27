@@ -1,5 +1,7 @@
 #include "Boss.h"
 #include "../../../GlobalVariables/GlobalVariables.h"
+#include "BossAnimManager.h"
+
 void Boss::SuccessorInit()
 {
 	// 大きさ設定
@@ -13,8 +15,8 @@ void Boss::SuccessorInit()
 	// 行動状態変更
 	ChangeState(std::make_unique<WaitTimeState>());
 
-	// OBBのコライダーを追加
-	AddColliderOBB("Boss", &transform_.scale_, &transform_.scale_, &transform_.rotate_);
+	// Sphereのコライダーを追加
+	AddColliderSphere("Boss", &transform_.translate_, &transform_.scale_.x);
 	
 	// 最大体力設定
 	kMaxHitPoint_ = 25.0f;
@@ -51,6 +53,7 @@ void Boss::SuccessorInit()
 	variables->AddItem(name_,"waitmulti", waitForMulti_);
 	variables->AddItem(name_,"waitRoller", waitForRoller_);
 	variables->AddItem(name_,"waitPushUp", waitForPushUp_);
+	variables->AddItem(name_, "FallAttackReadyTime", fallAttackReadyTime_);
 	ApplyGlobalVariables();
 }
 
@@ -68,13 +71,25 @@ void Boss::SuccessorUpdate()
 
 void Boss::DisplayImGui()
 {
+	// 基底クラスのImGuiを表示
 	IEnemy::DisplayImGui();
-	ImGui::DragFloat("HitPoint", &hitPoint_);
-	ImGui::InputInt("PatternNumber", &patternNumber_);
+	// 各種パラメータのImGuiを表示
+	ImGui::DragFloat("HitPoint", &hitPoint_); // HP
+	ImGui::InputInt("PatternNumber", &patternNumber_); // パターン番号
+	// 攻撃後待機時間の設定
 	ImGui::DragFloat("waitSingle", &waitForSingle_,0.1f);
-	ImGui::DragFloat("waitmulti", &waitForMulti_, 0.1f);
+	ImGui::DragFloat("waitmulti", &waitForMulti_, 0.1f); 
 	ImGui::DragFloat("waitRoller", &waitForRoller_, 0.1f);
 	ImGui::DragFloat("waitPushUp", &waitForPushUp_, 0.1f);
+
+	// アニメーション時の待機時間
+	if (ImGui::TreeNode("ReadyTime")) {
+		// 落下攻撃待機時間
+		ImGui::DragFloat("FallAttackReadyTime", &fallAttackReadyTime_, 0.01f, 0.01f, 2.0f);
+
+		ImGui::TreePop();
+	}
+
 	if (ImGui::Button("save")) {
 		GlobalVariables* variables = GlobalVariables::GetInstance();
 		variables->SetValue(name_, "HitPoint", hitPoint_);
@@ -82,6 +97,7 @@ void Boss::DisplayImGui()
 		variables->SetValue(name_, "waitmulti", waitForMulti_);
 		variables->SetValue(name_, "waitRoller", waitForRoller_);
 		variables->SetValue(name_, "waitPushUp", waitForPushUp_);
+		variables->SetValue(name_, "FallAttackReadyTime", fallAttackReadyTime_);
 		variables->SaveFile(name_);
 	}if (ImGui::Button("changeStateAtack")) {
 		ChangeState(std::make_unique<SingleAtackState>());
@@ -122,7 +138,15 @@ void Boss::OnCollisionEnter(Collider* collider)
 {
 	//プレイヤーが攻撃していたらダメージをくらう
 	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagPlayer && player_->GetIsAtack()) {
+		// アニメーションマネージャーセットされている場合
+		if (bam_ != nullptr) {
+			// ダメージアニメーション再生
+			bam_->PlayDamageAnim();
+		}
+		
+		// ボスのHPをプレイヤーの攻撃力に基づいて減少させる
 		hitPoint_ -= player_->GetAtackPower();
+		// プレイヤーを攻撃していない状態に
 		player_->SetIsAtack(false);
 	}
 }
@@ -156,10 +180,12 @@ void Boss::ApplyGlobalVariables()
 	GlobalVariables* variables = GlobalVariables::GetInstance();
 
 	hitPoint_=variables->GetFloatValue(name_, "HitPoint");
+	kMaxHitPoint_ = hitPoint_;
 	waitForSingle_=variables->GetFloatValue(name_, "waitSingle");
 	waitForMulti_=variables->GetFloatValue(name_, "waitmulti");
 	waitForRoller_=variables->GetFloatValue(name_, "waitRoller");
 	waitForPushUp_=variables->GetFloatValue(name_, "waitPushUp");
+	fallAttackReadyTime_ = variables->GetFloatValue(name_, "FallAttackReadyTime");
 }
 
 std::unique_ptr<IEnemyState> Boss::MakeState(std::string name)

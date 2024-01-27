@@ -64,6 +64,9 @@ void GameScene::Init(){
 	// アニメーション生成
 	bam->CreateAnimation();
 
+	// ボスにボスのアニメーションマネージャーをセット
+	boss_->SetBossAnimManager(bam);
+
 	// 柵の生成
 	Fences* fm = gameObjectManager_->CreateInstance<Fences>("Fence", BaseObject::TagNone);
 	// 柵追加

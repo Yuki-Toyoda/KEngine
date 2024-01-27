@@ -74,6 +74,50 @@ void BossAnimManager::Init()
 
 void BossAnimManager::Update()
 {
+	// ダメージアニメーション再生中の場合
+	if (anim_->GetReadingParameterName() == "Boss_Damage") {
+		// アニメーションが終了している場合
+		if (anim_->isEnd_) {
+			// アニメーションのループ設定を有効
+			anim_->isLoop_ = true;
+			// に再生パラメータを変更
+			anim_->ChangeParameter("Boss_Idle", true);
+		}
+	}
+
+	// 落下攻撃開始のアニメーション再生中の場合
+	if (anim_->GetReadingParameterName() == "Boss_StartFallAttack") {
+		// アニメーションが終了している場合
+		if (anim_->isEnd_) {
+			// アニメーションのループ設定を有効
+			anim_->isLoop_ = true;
+			// 再生パラメータを変更
+			anim_->ChangeParameter("Boss_FallAttacking", true);
+		}
+	}
+	// 落下攻撃準備中のアニメーション再生中の場合
+	if (anim_->GetReadingParameterName() == "Boss_FallAttacking") {
+		// アニメーションタイマーが終了している場合
+		if (animTimer_.GetIsFinish()) {
+			// アニメーションのループ設定を無効
+			anim_->isLoop_ = false;
+			// 再生パラメータを変更
+			anim_->ChangeParameter("Boss_EndFallAttack", true);
+		}
+
+		// アニメーションタイマー更新
+		animTimer_.Update();
+	}
+	// 落下攻撃終了中のアニメーション再生中の場合
+	if (anim_->GetReadingParameterName() == "Boss_EndFallAttack") {
+		// アニメーションが終了している場合
+		if (anim_->isEnd_) {
+			// アニメーションのループ設定を有効
+			anim_->isLoop_ = true;
+			// 再生パラメータを変更
+			anim_->ChangeParameter("Boss_Idle", true);
+		}
+	}
 }
 
 void BossAnimManager::DisplayImGui()
@@ -112,7 +156,15 @@ void BossAnimManager::DisplayImGui()
 			}
 			ImGui::TreePop();
 		}
+
+		// ボタンを押すと落下攻撃アニメーションを再生
+		if (ImGui::Button("FallAttack")) {
+			PlayFallAttackAnim(fallAttackReadyTime_);
+		}
 	}
+
+	// 落下攻撃準備時間をImGuiで調整
+	ImGui::DragFloat("FallAttackReadyTime", &fallAttackReadyTime_, 0.01f, 0.1f, 3.0f);
 
 	transform_.DisplayImGuiWithTreeNode("Eam_Transform");
 	// 各種パーツの情報表示
@@ -170,4 +222,33 @@ void BossAnimManager::SetBoss(Boss* boss)
 	boss_ = boss;
 	// ボスの座標に追従させる
 	transform_.SetParent(&boss_->transform_);
+}
+
+void BossAnimManager::ChangeParamameter(const std::string& name, const bool& isChanged)
+{
+	// パラメータ変更
+	anim_->ChangeParameter(name, isChanged);
+}
+
+void BossAnimManager::PlayDamageAnim()
+{
+	// アニメーションのループを無効
+	anim_->isLoop_ = false;
+
+	// アニメーションの読み込みパラメータ変更
+	anim_->ChangeParameter("Boss_Damage", true);
+}
+
+void BossAnimManager::PlayFallAttackAnim(float readyTime)
+{
+	// アニメーションのループ無効
+	anim_->isLoop_ = false;
+
+	// アニメーションの読み込みパラメータ変更
+	anim_->ChangeParameter("Boss_StartFallAttack", true);
+
+	// 準備時間の取得
+	fallAttackReadyTime_ = readyTime;
+	// 準備時間に基づいてタイマー開始
+	animTimer_.Start(fallAttackReadyTime_);
 }

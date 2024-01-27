@@ -46,6 +46,32 @@ public: // アクセッサ等
 	/// <param name="boss">ボスの実体</param>
 	void SetBoss(Boss* boss);
 
+	/// <summary>
+	/// 読み込みパラメータ変更関数
+	/// </summary>
+	/// <param name="name">読み込みパラメータ名</param>
+	/// <param name="isChanged">実行時にそのパラメータへの強制的な遷移を行うか</param>
+	void ChangeParamameter(const std::string& name, const bool& isChanged = true);
+
+	/// <summary>
+	/// アニメーションゲッター
+	/// </summary>
+	/// <returns>アニメーション本体</returns>
+	Animation* GetAnimation() { return anim_; }
+
+public: // アニメーション関数
+
+	/// <summary>
+	/// ダメージアニメーション関数
+	/// </summary>
+	void PlayDamageAnim();
+
+	/// <summary>
+	/// 落下攻撃アニメーション再生関数
+	/// </summary>
+	/// <param name="readyTime">準備時間</param>
+	void PlayFallAttackAnim(float readyTime);
+
 private: // メンバ変数
 
 	// アニメーションマネージャー
@@ -64,5 +90,10 @@ private: // メンバ変数
 	WorldTransform footTransform_L_; // 左腕
 	WorldTransform footTransform_R_; // 左腕
 
+	// アニメーションタイマー
+	KLib::DeltaTimer animTimer_;
+
+	// 落下攻撃準備時間
+	float fallAttackReadyTime_ = 0.5f;
 };
 
