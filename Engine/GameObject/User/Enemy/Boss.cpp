@@ -154,28 +154,19 @@ void Boss::OnCollisionEnter(Collider* collider)
 void Boss::MakeStateList()
 {
 	stateList_.state_.resize(1);
-	
-	stateList_.state_.at(0).push_back(MakeState("MultiAtack"));
-	stateList_.state_.at(0).push_back(MakeState("Roller"));
-	stateList_.state_.at(0).push_back(MakeState("Roller"));
-	stateList_.state_.at(0).push_back(MakeState("Roller"));
-	stateList_.state_.at(0).push_back(MakeState("Roller"));
-	stateList_.stateNumber_.resize( 1);
-	stateList_.stateNumber_.at(0).push_back(0);
-	stateList_.stateNumber_.at(0).push_back(0);
-	stateList_.stateNumber_.at(0).push_back(0);
-	stateList_.stateNumber_.at(0).push_back(0);
+	stateList_.state_.at(0).push_back(std::make_unique<WaitTimeState>());
+	stateList_.stateNumber_.resize(1);
 	stateList_.stateNumber_.at(0).push_back(0);
 	for (int i = 1; i < 2; i++) {
 		//行動状態のリストを作成
-		stateList_.state_.resize(i+1);
+		stateList_.state_.resize(i + 1);
 		stateList_.state_.at(i).push_back(MakeState("SingleAtack"));
-		stateList_.state_.at(i).push_back(MakeState("SingleAtack"));
-		stateList_.state_.at(i).push_back(MakeState("SingleAtack"));
-		stateList_.state_.at(i).push_back(MakeState("SingleAtack"));
+		stateList_.state_.at(i).push_back(MakeState("MultiAtack"));
+		stateList_.state_.at(i).push_back(MakeState("Roller"));
+		stateList_.state_.at(i).push_back(MakeState("PushUp"));
 		stateList_.state_.at(i).push_back(MakeState("SingleAtack"));
 		//行動状態のリストからどの種類を選ぶかの番号を設定
-		stateList_.stateNumber_.resize(i+1);
+		stateList_.stateNumber_.resize(i + 1);
 		stateList_.stateNumber_.at(i).push_back(0);
 		stateList_.stateNumber_.at(i).push_back(1);
 		stateList_.stateNumber_.at(i).push_back(2);

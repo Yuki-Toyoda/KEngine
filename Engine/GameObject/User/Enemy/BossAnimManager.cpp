@@ -65,6 +65,7 @@ void BossAnimManager::Init()
 	CreateParameter("Boss_FallAttacking");
 	CreateParameter("Boss_EndFallAttack");
 
+
 	// 突き上げ攻撃
 	CreateParameter("Boss_StartThrustUpAttack");
 	CreateParameter("Boss_ThrustUpAttacking");

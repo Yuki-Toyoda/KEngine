@@ -9,7 +9,7 @@ void AtackState::Init()
 void AtackState::Update()
 {
 	// プレイヤーの攻撃処理を行う
-	player_->Atack();
+	player_->Atacking();
 	
 }
 

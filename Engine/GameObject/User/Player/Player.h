@@ -61,7 +61,7 @@ public: // メンバ関数
 	/// <summary>
 	/// 攻撃関数
 	/// </summary>
-	void Atack();
+	void Atacking();
 
 public: // アクセッサ等
 

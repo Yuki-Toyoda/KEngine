@@ -44,7 +44,7 @@ public:
 	/// 攻撃関数
 	/// </summary>
 	/// <returns></returns>
-	static bool Atack();
+	static bool Atacking();
 	/// <summary>
 	/// 回復関数
 	/// </summary>
