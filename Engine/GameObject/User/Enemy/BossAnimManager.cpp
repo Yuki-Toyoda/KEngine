@@ -75,7 +75,6 @@ void BossAnimManager::Init()
 	CreateParameter("Boss_RollerAttacking");
 	CreateParameter("Boss_EndRollerAttack");
 
-
 }
 
 void BossAnimManager::Update()
@@ -216,6 +215,15 @@ void BossAnimManager::DisplayImGui()
 			}
 			if (ImGui::Button("EndThrustUpAttack")) {
 				anim_->ChangeParameter("Boss_EndThrustUpAttack", true);
+			}
+			if (ImGui::Button("StartRollerAttack")) {
+				anim_->ChangeParameter("Boss_StartRollerAttack", true);
+			}
+			if (ImGui::Button("RollerAttacking")) {
+				anim_->ChangeParameter("Boss_RollerAttacking", true);
+			}
+			if (ImGui::Button("EndRollerAttack")) {
+				anim_->ChangeParameter("Boss_EndRollerAttack", true);
 			}
 			ImGui::TreePop();
 		}
