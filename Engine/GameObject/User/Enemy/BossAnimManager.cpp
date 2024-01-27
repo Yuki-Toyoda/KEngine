@@ -65,11 +65,16 @@ void BossAnimManager::Init()
 	CreateParameter("Boss_FallAttacking");
 	CreateParameter("Boss_EndFallAttack");
 
-
 	// 突き上げ攻撃
 	CreateParameter("Boss_StartThrustUpAttack");
 	CreateParameter("Boss_ThrustUpAttacking");
 	CreateParameter("Boss_EndThrustUpAttack");
+
+	// ローラー攻撃右
+	CreateParameter("Boss_StartRollerAttack");
+	CreateParameter("Boss_RollerAttacking");
+	CreateParameter("Boss_EndRollerAttack");
+
 
 }
 
@@ -98,8 +103,19 @@ void BossAnimManager::Update()
 	}
 	// 落下攻撃準備中のアニメーション再生中の場合
 	if (anim_->GetReadingParameterName() == "Boss_FallAttacking") {
-		// アニメーションタイマーが終了している場合
-		if (animTimer_.GetIsFinish()) {
+		// 複数落下アニメーション再生中かつ、終了トリガーがtrueの場合
+		if (isMultiFalling_ && isMultiFallEnd_) {
+			// アニメーションのループ設定を有効
+			anim_->isLoop_ = true;
+			// 再生パラメータを変更
+			anim_->ChangeParameter("Boss_Idle", true);
+
+			// 複数落下アニメーション再生中ではない
+			isMultiFalling_ = false;
+		}
+		
+		// アニメーションタイマーが終了しているかつ、複数落下アニメーション再生中でない場合
+		if (animTimer_.GetIsFinish() && !isMultiFalling_) {
 			// アニメーションのループ設定を無効
 			anim_->isLoop_ = false;
 			// 再生パラメータを変更
@@ -113,10 +129,22 @@ void BossAnimManager::Update()
 	if (anim_->GetReadingParameterName() == "Boss_EndFallAttack") {
 		// アニメーションが終了している場合
 		if (anim_->isEnd_) {
-			// アニメーションのループ設定を有効
-			anim_->isLoop_ = true;
-			// 再生パラメータを変更
-			anim_->ChangeParameter("Boss_Idle", true);
+			// 複数落下アニメーション再生トリガーがtrueの場合
+			if (playMultiFallAttackAnim_) {
+				// アニメーションのループ設定を有効
+				anim_->isLoop_ = true;
+				// 再生パラメータを変更
+				anim_->ChangeParameter("Boss_FallAttacking", true);
+
+				// 再生トリガーはfalseに
+				playMultiFallAttackAnim_ = false;
+			}
+			else {
+				// アニメーションのループ設定を有効
+				anim_->isLoop_ = true;
+				// 再生パラメータを変更
+				anim_->ChangeParameter("Boss_Idle", true);
+			}
 		}
 	}
 
@@ -271,6 +299,15 @@ void BossAnimManager::ChangeParamameter(const std::string& name, const bool& isC
 	anim_->ChangeParameter(name, isChanged);
 }
 
+void BossAnimManager::SetPlayMultiFallAttackAnim(const bool isAttack)
+{
+	// 攻撃トリガーtrue
+	playMultiFallAttackAnim_ = isAttack;
+
+	// 落下攻撃アニメーション終了時のパラメータを読み込む
+	anim_->ChangeParameter("Boss_EndFallAttack", true);
+}
+
 void BossAnimManager::PlayDamageAnim()
 {
 	// アニメーションのループを無効
@@ -278,6 +315,14 @@ void BossAnimManager::PlayDamageAnim()
 
 	// アニメーションの読み込みパラメータ変更
 	anim_->ChangeParameter("Boss_Damage", true);
+
+	/// ダメージアニメーション再生時は各種トリガーのリセットを行う
+	// 複数落下アニメーション再生中トリガー
+	isMultiFalling_ = false;
+	// 複数落下時のアニメーション終了トリガー
+	isMultiFallEnd_ = true;
+	// 複数落下アニメーション中の攻撃アニメーショントリガー
+	playMultiFallAttackAnim_ = false;
 }
 
 void BossAnimManager::PlayFallAttackAnim(float readyTime)
@@ -306,4 +351,20 @@ void BossAnimManager::PlayPushUpAttackAnim(float readyTime)
 	pushUpReadyTime_ = readyTime;
 	// 準備時間に基づいてタイマー開始
 	animTimer_.Start(pushUpReadyTime_);
+}
+
+void BossAnimManager::PlayMultiFallAnim()
+{
+	// アニメーションのループ無効
+	anim_->isLoop_ = false;
+
+	// 複数落下アニメーション再生中
+	isMultiFalling_ = true;
+	// 終了トリガーfalse
+	isMultiFallEnd_ = false;
+	// 攻撃アニメーショントリガーfalse
+	playMultiFallAttackAnim_ = false;
+
+	// アニメーションの読み込みパラメータ変更
+	anim_->ChangeParameter("Boss_StartFallAttack", true);
 }

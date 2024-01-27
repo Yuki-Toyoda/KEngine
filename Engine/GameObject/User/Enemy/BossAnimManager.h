@@ -59,6 +59,18 @@ public: // アクセッサ等
 	/// <returns>アニメーション本体</returns>
 	Animation* GetAnimation() { return anim_; }
 
+	/// <summary>
+	/// 複数落下アニメーションの終了トリガー状態セッター
+	/// </summary>
+	/// <param name="isMultiFallEnd">複数落下アニメーションを終了させるか</param>
+	void SetIsMultiFallEnd(const bool& isMultiFallEnd) { isMultiFallEnd_ = isMultiFallEnd; }
+
+	/// <summary>
+	/// 複数落下アニメーション中の攻撃アニメーション再生トリガー状態セッター
+	/// </summary>
+	/// <param name="isAttack">攻撃するか</param>
+	void SetPlayMultiFallAttackAnim(const bool isAttack);
+
 public: // アニメーション関数
 
 	/// <summary>
@@ -77,6 +89,11 @@ public: // アニメーション関数
 	/// </summary>
 	/// <param name="readyTime">準備時間</param>
 	void PlayPushUpAttackAnim(float readyTime);
+
+	/// <summary>
+	/// 複数落下アニメーション再生関数
+	/// </summary>
+	void PlayMultiFallAnim();
 
 private: // メンバ変数
 
@@ -104,5 +121,13 @@ private: // メンバ変数
 
 	// 突き上げ攻撃待機時間
 	float pushUpReadyTime_ = 0.5f;
+
+	// 複数落下アニメーション再生中トリガー
+	bool isMultiFalling_ = false;
+	// 複数落下時のアニメーション終了トリガー
+	bool isMultiFallEnd_ = true;
+	// 複数落下アニメーション中の攻撃アニメーショントリガー
+	bool playMultiFallAttackAnim_ = false;
+
 };
 
