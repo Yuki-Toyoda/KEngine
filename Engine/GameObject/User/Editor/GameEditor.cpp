@@ -385,6 +385,7 @@ void GameEditor::EditorImGui()
 				std::string section = "PushUp" + std::to_string(pushUpCounter_);
 				Vector3 newPos = {};
 				dataManager_->AddItem({ group,section }, "Position", newPos);
+				dataManager_->AddItem({ group,"Parameter"}, "Scale", newPos);
 				object->transform_.translate_ = dataManager_->GetValue<Vector3>({ group,section }, "Position");
 				object->transform_.scale_ = dataManager_->GetValue<Vector3>({ group,"Parameter" }, "Scale");
 				pushUps_.push_back(object);

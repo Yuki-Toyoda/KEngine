@@ -106,6 +106,7 @@
     <ClCompile Include="Engine\GameObject\User\Editor\EditorDataHandler.cpp" />
     <ClCompile Include="Engine\GameObject\User\GameManager\GameManager.cpp" />
     <ClCompile Include="Engine\GameObject\User\Player\uribo\uribo.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\BossAnimManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\GameObject\User\Enemy\State\MultiAtackState.h" />
@@ -229,6 +230,7 @@
     <ClInclude Include="Engine\GameObject\User\Player\State\PushUpHitState.h" />
     <ClInclude Include="Engine\GameObject\User\GameManager\GameManager.h" />
     <ClInclude Include="Engine\GameObject\User\Player\uribo\uribo.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\BossAnimManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Object3D.hlsli" />

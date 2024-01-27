@@ -1,6 +1,6 @@
 {
     "uribo": {
-        "DefaultHp": 10000,
+        "DefaultHp": 5000,
         "collisionScale": [
             10.0,
             10.0,

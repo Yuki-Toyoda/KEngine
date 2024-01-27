@@ -197,7 +197,7 @@ private:
 		kGameSide,
 	};
 
-	std::list<std::string> tableNames_ = { "Single","Multi","PushUp","Roller" };
+	std::list<std::string> tableNames_/* = { "Single","Multi","PushUp","Roller" }*/;
 
 	std::list<std::string> numberStrings_ = { "0","1","3","1" };
 	std::list<int> tableNumbers_/* = { 0,1,2 }*/;

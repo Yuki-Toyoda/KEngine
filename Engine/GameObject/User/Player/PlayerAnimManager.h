@@ -4,7 +4,6 @@
 
 // クラスの前方宣言
 class Player;
-class Weapon;
 
 /// <summary>
 /// プレイヤーのアニメーションマネージャ

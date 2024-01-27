@@ -3,7 +3,7 @@
 
 void Ground::Init()
 {
-	// OBBのコライダーを追加
+	// AABBのコライダーを追加
 	AddColliderAABB("Ground", &transform_.translate_, &transform_.scale_);
 	// メッシュの追加
 	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Box", "Box.obj");
