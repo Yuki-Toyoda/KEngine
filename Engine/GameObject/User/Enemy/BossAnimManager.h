@@ -36,7 +36,7 @@ public: // メンバ関数
 	/// <summary>
 	/// アニメーション生成関数
 	/// </summary>
-	void CrateAnimation();
+	void CreateAnimation();
 
 public: // アクセッサ等
 
@@ -44,7 +44,7 @@ public: // アクセッサ等
 	/// ボスのセッター
 	/// </summary>
 	/// <param name="boss">ボスの実体</param>
-	void SetBoss(Boss* boss) { boss_ = boss; }
+	void SetBoss(Boss* boss);
 
 private: // メンバ変数
 

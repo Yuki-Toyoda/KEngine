@@ -3,10 +3,10 @@
 void Boss::SuccessorInit()
 {
 	// 大きさ設定
-	transform_.scale_.y = 14.0f;
+	transform_.scale_ = {10.0f, 10.0f, 10.0f };
 
 	// メッシュ追加
-	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Box", "Box.obj");
+	//AddMesh(&transform_, color_, "./Engine/Resource/Samples/Box", "Box.obj");
 	// 色の設定
 	color_ = { 0.6f,0.6f,0.0f,1.0f };
 

@@ -41,7 +41,7 @@ void GameScene::Init(){
 	// プレイヤーに自身を渡す
 	player_->SetPlayerAnimManager(am);
 	// アニメーションを生成
-	am->CrateAnimation();
+	am->CreateAnimation();
 
 	// 地面生成
 	Ground* ground;
@@ -58,7 +58,11 @@ void GameScene::Init(){
 	boss_->SetgameManager(gameManager);
 
 	// ボスのアニメーションマネージャーの生成
-	gameObjectManager_->CreateInstance<BossAnimManager>("bossAnim", BaseObject::TagEnemy);
+	BossAnimManager* bam = gameObjectManager_->CreateInstance<BossAnimManager>("bossAnim", BaseObject::TagEnemy);
+	// アニメーションマネージャーにボスをセット
+	bam->SetBoss(boss_);
+	// アニメーション生成
+	bam->CreateAnimation();
 
 	// 柵の生成
 	Fences* fm = gameObjectManager_->CreateInstance<Fences>("Fence", BaseObject::TagNone);

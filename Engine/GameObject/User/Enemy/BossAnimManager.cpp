@@ -1,4 +1,5 @@
 #include "BossAnimManager.h"
+#include "Boss.h"
 
 void BossAnimManager::Init()
 {
@@ -140,7 +141,7 @@ void BossAnimManager::CreateParameter(const std::string& name)
 	animManager_->AddSelectAnimationKeys<Vector3>(name, "Foot_R_Translate");
 }
 
-void BossAnimManager::CrateAnimation()
+void BossAnimManager::CreateAnimation()
 {
 	// アニメーション生成
 	anim_ = animManager_->CreateAnimation("Boss_Anim", "Boss_Idle");
@@ -161,4 +162,12 @@ void BossAnimManager::CrateAnimation()
 	anim_->isLoop_ = true;
 	// アニメーション再生
 	anim_->Play();
+}
+
+void BossAnimManager::SetBoss(Boss* boss)
+{
+	// ボスをセットする
+	boss_ = boss;
+	// ボスの座標に追従させる
+	transform_.SetParent(&boss_->transform_);
 }

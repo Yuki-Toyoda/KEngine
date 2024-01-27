@@ -22,7 +22,10 @@ public:
 	/// </summary>
 	void DisplayImGui() override;
 
-private:
+private: // メンバ変数
+
+	// 床のトランスフォーム
+	WorldTransform floorTransform_;
 
 };
 
