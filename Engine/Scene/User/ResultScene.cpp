@@ -33,7 +33,15 @@ void ResultScene::Init()
 	rm_->PostInit(isClear_);
 
 	// フェードイン
-	FadeManager::GetInstance()->ChangeParameter("FadeIn", true);
+	if (isClear_) {
+		// フェードイン(白)
+		FadeManager::GetInstance()->ChangeParameter("WhiteIn", true);
+	}
+	else {
+		// フェードイン
+		FadeManager::GetInstance()->ChangeParameter("FadeIn", true);
+	}
+	// フェード演出再生
 	FadeManager::GetInstance()->Play();
 }
 

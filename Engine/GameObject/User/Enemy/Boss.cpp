@@ -75,7 +75,7 @@ void Boss::SuccessorUpdate()
 			// フェード演出を一度も行っていない場合
 			if (!isFade_) {
 				// フェードアウト
-				FadeManager::GetInstance()->ChangeParameter("FadeOut", true);
+				FadeManager::GetInstance()->ChangeParameter("WhiteOut", true);
 				FadeManager::GetInstance()->Play();
 				// フェード演出を行ったらトリガー
 				isFade_ = true;

@@ -26,8 +26,12 @@ void FadeManager::Init()
 	/// パラメータ生成
 	// フェードアウト
 	CreateParameter("FadeOut");
+	// フェードアウト(白)
+	CreateParameter("WhiteOut");
 	// フェードイン
 	CreateParameter("FadeIn");
+	// フェードイン(白)
+	CreateParameter("WhiteIn");
 
 	// アニメーション生成
 	anim_ = animManager_->CreateFadeAnimation("FadeIn");
