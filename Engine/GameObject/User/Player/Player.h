@@ -134,6 +134,10 @@ public: // アクセッサ等
 	Vector3 GetPushUpPos() { return pushUpPos_; }
 	//pushUpに当たったときの跳ね返る力のゲッター
 	float GetPushUpHitForce() { return pushUpHitForce; }
+
+
+	int GetAbsorptionCount() { return absorptionCount_; }
+
 /// </summary>
 private: // プライベートなメンバ関数
 
