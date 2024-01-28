@@ -9,7 +9,7 @@
         },
         "Meteor1": {
             "Position": [
-                0.0,
+                -37.0,
                 2.0,
                 0.0
             ]
@@ -18,10 +18,24 @@
             "Position": [
                 0.0,
                 2.0,
-                0.0
+                -37.0
             ]
         },
         "Meteor3": {
+            "Position": [
+                37.0,
+                2.0,
+                -37.0
+            ]
+        },
+        "Meteor4": {
+            "Position": [
+                37.0,
+                2.0,
+                37.0
+            ]
+        },
+        "Meteor5": {
             "Position": [
                 0.0,
                 2.0,
@@ -29,13 +43,13 @@
             ]
         },
         "Parameter": {
-            "Distance": 30.0,
+            "Distance": 60.0,
             "IsGravity": 0,
-            "MaxCount": 1,
+            "MaxCount": 5,
             "Scale": [
-                4.0,
+                10.0,
                 1.0,
-                8.0
+                10.0
             ]
         }
     }

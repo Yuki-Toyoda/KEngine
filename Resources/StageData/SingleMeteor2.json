@@ -28,10 +28,24 @@
                 -34.099998474121094
             ]
         },
+        "Meteor4": {
+            "Position": [
+                0.0,
+                2.0,
+                0.0
+            ]
+        },
+        "Meteor5": {
+            "Position": [
+                0.0,
+                2.0,
+                0.0
+            ]
+        },
         "Parameter": {
-            "Distance": 30.0,
+            "Distance": 60.0,
             "IsGravity": 0,
-            "MaxCount": 4,
+            "MaxCount": 5,
             "Scale": [
                 10.0,
                 1.0,
