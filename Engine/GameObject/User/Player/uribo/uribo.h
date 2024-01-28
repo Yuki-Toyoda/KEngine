@@ -23,6 +23,12 @@ public://アクセッサ
 	/// <returns>HP最大値</returns>
 	int GetDefaultHP() { return defaultHP_; }
 
+	/// <summary>
+	/// ボスの死亡トリガー状態セッター
+	/// </summary>
+	/// <param name="isBossDead">ボスの死亡トリガー状態</param>
+	void SetIsBossDead(const bool& isBossDead) { isBossDead_ = isBossDead; }
+
 private:
 
 	void SetGlobalVariables();
@@ -34,5 +40,8 @@ private:
 	//毎フレーム減らす体力
 	int decrementHP = 1;
 	Vector3 collisionScaele_;
+
+	// ボスの死亡トリガー
+	bool isBossDead_ = false;
 };
 

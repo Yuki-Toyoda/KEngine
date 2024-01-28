@@ -20,9 +20,11 @@ void Uribo::Init()
 
 void Uribo::Update()
 {
-
-	hitPoint_ -= decrementHP;
-	color_ = { 0.0f,0.0f,1.0f,1.0f };
+	// ボスが死亡していない場合
+	if (!isBossDead_) {
+		hitPoint_ -= decrementHP;
+		color_ = { 0.0f,0.0f,1.0f,1.0f };
+	}
 }
 
 void Uribo::DisplayImGui()

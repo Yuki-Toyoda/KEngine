@@ -19,12 +19,6 @@ void IEnemy::Init()
 
 void IEnemy::Update()
 {
-	// 行動状態クラスがあれば
-	if (state_.get()) {
-		
-		state_->Update();
-	}
-
 	// 固有更新関数を呼び出す
 	SuccessorUpdate();
 }

@@ -95,6 +95,17 @@ public: // アニメーション関数
 	/// </summary>
 	void PlayMultiFallAnim();
 
+	/// <summary>
+	/// ローラー攻撃アニメーション再生関数
+	/// </summary>
+	/// <param name="readyTime">準備時間</param>
+	void PlayRollerAttackAnim(float readyTime);
+
+	/// <summary>
+	/// 死亡アニメーション再生関数
+	/// </summary>
+	void PlayDeadAnim();
+
 private: // メンバ変数
 
 	// アニメーションマネージャー
@@ -128,6 +139,9 @@ private: // メンバ変数
 	bool isMultiFallEnd_ = true;
 	// 複数落下アニメーション中の攻撃アニメーショントリガー
 	bool playMultiFallAttackAnim_ = false;
+
+	// ローラー攻撃待機時間
+	float rollerAttackReadyTime_ = 0.5f;
 
 };
 

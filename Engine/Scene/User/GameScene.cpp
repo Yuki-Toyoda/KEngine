@@ -31,9 +31,8 @@ void GameScene::Init(){
 	player_->transform_.translate_.x = 10.0f;
 	//// 敵を生成
 	//gameObjectManager_->CreateInstance<SmallEnemy>("Enemy", BaseObject::TagEnemy);
-	Uribo* uribo;
-	uribo = gameObjectManager_->CreateInstance<Uribo>("uribo", BaseObject::TagUribo);
-	player_->SetUribo(uribo);
+	uribo_ = gameObjectManager_->CreateInstance<Uribo>("uribo", BaseObject::TagUribo);
+	player_->SetUribo(uribo_);
 	// プレイヤーアニメーションマネージャの生成
 	PlayerAnimManager* am = gameObjectManager_->CreateInstance<PlayerAnimManager>("playerAnim", BaseObject::TagPlayer);
 	// プレイヤーを渡す
@@ -80,7 +79,7 @@ void GameScene::Init(){
 	// UIマネージャーにボスをセット
 	iUIm->SetBoss(boss_);
 	// UIマネージャーにウリボーをセット
-	iUIm->SetUribo(uribo);
+	iUIm->SetUribo(uribo_);
 
 	// フェードイン
 	FadeManager::GetInstance()->ChangeParameter("FadeIn", true);
@@ -92,6 +91,12 @@ void GameScene::Init(){
 
 void GameScene::Update()
 {
+	// ボスのHPが0以下の時
+	if (boss_->GetHP() <= 0) {
+		// ボスが死亡したことを伝える
+		uribo_->SetIsBossDead(true);
+	}
+
 	InputManager::Update();
 	if (player_->GetgameOver()) {
 		// クリアフラグをfalse
@@ -99,7 +104,7 @@ void GameScene::Update()
 		BaseScene* nextScene = new ResultScene();
 		SceneManager::GetInstance()->SetNextScene(nextScene);
 	}
-	if (!boss_->isActive_){
+	if (boss_->GetIsSceneChage()){
 		// クリアフラグをtrue
 		ResultScene::isClear_ = true;
 		BaseScene * nextScene = new ResultScene();

@@ -1,6 +1,7 @@
 #include "Boss.h"
 #include "../../../GlobalVariables/GlobalVariables.h"
 #include "BossAnimManager.h"
+#include "../../../Scene/FadeManager.h"
 
 void Boss::SuccessorInit()
 {
@@ -55,19 +56,38 @@ void Boss::SuccessorInit()
 	variables->AddItem(name_,"waitPushUp", waitForPushUp_);
 	variables->AddItem(name_, "FallAttackReadyTime", fallAttackReadyTime_);
 	variables->AddItem(name_, "PushUpReadyTime", pushUpReadyTime_);
+	variables->AddItem(name_, "RollerAttackReadyTime", rollerAttackReadyTime_);
 	ApplyGlobalVariables();
 }
 
 void Boss::SuccessorUpdate()
 {
-
-	// HPが0以下になったら
-	if (hitPoint_ <= 0.0f) {
-		// 非表示
-		isActive_ = false;
-		
+	// HPが0以下でない場合
+	if (hitPoint_ > 0.0f) {
+		// 行動状態クラスがあれば
+		if (state_.get()) {
+			// 現在ステートを更新
+			state_->Update();
+		}	
 	}
+	else {
+		if (bam_->GetAnimation()->isEnd_) {
+			// フェード演出を一度も行っていない場合
+			if (!isFade_) {
+				// フェードアウト
+				FadeManager::GetInstance()->ChangeParameter("FadeOut", true);
+				FadeManager::GetInstance()->Play();
+				// フェード演出を行ったらトリガー
+				isFade_ = true;
+			}
 
+			// フェード演出中でなく、かつフェード演出トリガーを行っていた場合
+			if (!FadeManager::GetInstance()->GetIsStaging() && isFade_) {
+				// シーン遷移トリガーtrue
+				isSceneChange_ = true;
+			}
+		}
+	}
 }
 
 void Boss::DisplayImGui()
@@ -88,6 +108,7 @@ void Boss::DisplayImGui()
 		// 落下攻撃待機時間
 		ImGui::DragFloat("FallAttackReadyTime", &fallAttackReadyTime_, 0.01f, 0.01f, 2.0f);
 		ImGui::DragFloat("PushUpReadyTime", &pushUpReadyTime_, 0.01f, 0.01f, 2.0f);
+		ImGui::DragFloat("RollerAttackReadyTime", &rollerAttackReadyTime_, 0.01f, 0.01f, 2.0f);
 
 		ImGui::TreePop();
 	}
@@ -101,6 +122,7 @@ void Boss::DisplayImGui()
 		variables->SetValue(name_, "waitPushUp", waitForPushUp_);
 		variables->SetValue(name_, "FallAttackReadyTime", fallAttackReadyTime_);
 		variables->SetValue(name_, "PushUpReadyTime", pushUpReadyTime_);
+		variables->SetValue(name_, "RollerAttackReadyTime", rollerAttackReadyTime_);
 		variables->SaveFile(name_);
 	}if (ImGui::Button("changeStateAtack")) {
 		ChangeState(std::make_unique<SingleAtackState>());
@@ -141,16 +163,29 @@ void Boss::OnCollisionEnter(Collider* collider)
 {
 	//プレイヤーが攻撃していたらダメージをくらう
 	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagPlayer && player_->GetIsAtack()) {
-		// アニメーションマネージャーセットされている場合
-		if (bam_ != nullptr) {
-			// ダメージアニメーション再生
-			bam_->PlayDamageAnim();
-		}
-		
 		// ボスのHPをプレイヤーの攻撃力に基づいて減少させる
 		hitPoint_ -= player_->GetAtackPower();
 		// プレイヤーを攻撃していない状態に
 		player_->SetIsAtack(false);
+		
+		// HPが0以下になっていたら
+		if (hitPoint_ <= 0) {
+			// 行動状態を強制的に変更
+			ChangeState(std::make_unique<WaitTimeState>());
+
+			// アニメーションマネージャーセットされている場合
+			if (bam_ != nullptr) {
+				// ダメージアニメーション再生
+				bam_->PlayDeadAnim();
+			}
+		}
+		else {
+			// アニメーションマネージャーセットされている場合
+			if (bam_ != nullptr) {
+				// ダメージアニメーション再生
+				bam_->PlayDamageAnim();
+			}
+		}
 	}
 }
 
@@ -190,6 +225,7 @@ void Boss::ApplyGlobalVariables()
 	waitForPushUp_=variables->GetFloatValue(name_, "waitPushUp");
 	fallAttackReadyTime_ = variables->GetFloatValue(name_, "FallAttackReadyTime");
 	pushUpReadyTime_ = variables->GetFloatValue(name_, "PushUpReadyTime");
+	rollerAttackReadyTime_ = variables->GetFloatValue(name_, "RollerAttackReadyTime");
 }
 
 std::unique_ptr<IEnemyState> Boss::MakeState(std::string name)
