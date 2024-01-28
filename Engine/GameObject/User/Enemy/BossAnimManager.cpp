@@ -385,6 +385,14 @@ void BossAnimManager::PlayFallAttackAnim(float readyTime)
 	fallAttackReadyTime_ = readyTime;
 	// 準備時間に基づいてタイマー開始
 	animTimer_.Start(fallAttackReadyTime_);
+
+	/// 再生時にかぶらないようにトリガーをリセット
+	// 複数落下アニメーション再生中トリガー
+	isMultiFalling_ = false;
+	// 複数落下時のアニメーション終了トリガー
+	isMultiFallEnd_ = true;
+	// 複数落下アニメーション中の攻撃アニメーショントリガー
+	playMultiFallAttackAnim_ = false;
 }
 
 void BossAnimManager::PlayPushUpAttackAnim(float readyTime)
@@ -438,4 +446,12 @@ void BossAnimManager::PlayDeadAnim()
 
 	// アニメーションの読み込みパラメータ変更
 	anim_->ChangeParameter("Boss_Dead", true);
+	
+	/// 再生時にかぶらないようにトリガーをリセット
+	// 複数落下アニメーション再生中トリガー
+	isMultiFalling_ = false;
+	// 複数落下時のアニメーション終了トリガー
+	isMultiFallEnd_ = true;
+	// 複数落下アニメーション中の攻撃アニメーショントリガー
+	playMultiFallAttackAnim_ = false;
 }
