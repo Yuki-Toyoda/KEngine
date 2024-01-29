@@ -177,7 +177,6 @@ private:
 		return list;
 	}
 
-
 	void SaveTableData(int number) {
 		std::string groupName = "TableData";
 		std::string sectionName = "TableList" + std::to_string(number);
@@ -188,6 +187,8 @@ private:
 		dataManager_->SaveData(groupName);
 	}
 
+	void ReleadTable();
+
 private:
 	// 保存の名前
 	std::string saveName_ = "";
@@ -197,17 +198,19 @@ private:
 		kGameSide,
 	};
 
-	std::list<std::string> tableNames_/* = { "Single","Multi","PushUp","Roller" }*/;
+	std::list<std::string> tableNames_;
 
-	std::list<std::string> numberStrings_ = { "0","1","3","1" };
-	std::list<int> tableNumbers_/* = { 0,1,2 }*/;
+	std::list<std::string> numberStrings_;
+	std::list<int> tableNumbers_;
 
 	int cameraType_ = kUpSide;
 
 	int type_ = 0;
 	int tmpInt = 0;
 
-	int tableNumber_ = 0;
+	//int tableNumber_ = 0;
+
+	int nowTableNumber_ = 0;
 
 	// 攻撃の種類ごとの名前（グループネームのベース)
 	const std::string kParamName = "AttackParam";

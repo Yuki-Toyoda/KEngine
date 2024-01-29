@@ -117,3 +117,14 @@ void GameEditor::SaveMulti()
 	// ファイル保存
 	dataManager_->SaveData(names.kGroup);
 }
+
+void GameEditor::ReleadTable() {
+	tableNames_.clear();
+	numberStrings_.clear();
+	std::string group = "TableData";
+	std::string section = "TableList" + std::to_string(nowTableNumber_);
+	dataManager_->AddItem<std::list<std::string>>({ group,section }, "ActionList", tableNames_);
+	dataManager_->AddItem<std::list<std::string>>({ group,section }, "NumberList", numberStrings_);
+	tableNames_ = dataManager_->GetValue<std::list<std::string>>({ group,section }, "ActionList");
+	numberStrings_ = dataManager_->GetValue<std::list<std::string>>({ group,section }, "NumberList");
+}

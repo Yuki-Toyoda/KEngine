@@ -168,6 +168,8 @@ void GameEditor::ParameterInitialize()
 
 #pragma endregion
 
+	// テーブルのデータ
+	ReleadTable();
 }
 
 void GameEditor::EditorImGui()
@@ -580,28 +582,13 @@ void GameEditor::SystemImGui()
 
 	ImGui::Text("\n");
 
-	if (ImGui::BeginTabBar("EditObject")) {
-
-		//if (ImGui::BeginTabItem("Camera")) {
-		//	//ImGui::SameLine();
-		//	std::list<std::string> testList = dataManager_->GetValue<std::list<std::string>>({ "Test","Parttern0" }, "List0");
-
-		//	for (std::string st : testList) {
-		//		ImGui::Text(st.c_str());
-		//		ImGui::Text("\n");
-		//	}
-
-		//	std::list<std::string> list = dataManager_->GetValue<std::list<std::string>>({ "Test","Pattern1" }, "List0");
-		//	for (std::string st : list) {
-		//		ImGui::Text(st.c_str());
-		//		ImGui::Text("\n");
-		//	}
-
-		//	ImGui::EndTabItem();
-		//}
+	if (ImGui::BeginTabBar("EditObject")) 
+	{
 		if (ImGui::BeginTabItem("Table")) {
 
 			ImGui::SeparatorText("System");
+
+			ImGui::InputInt("NowTableNumber", &nowTableNumber_, 0);
 
 			// 開始
 			ImGui::Columns(2,"my",false);
@@ -609,19 +596,27 @@ void GameEditor::SystemImGui()
 			ImVec2 buttonSize(100, 20);
 			if (ImGui::Button("Next", buttonSize)) {
 				// ボタンがクリックされたときの処理
-
+				if (nowTableNumber_ < 10) {
+					SaveTableData(nowTableNumber_);
+					nowTableNumber_++;
+					ReleadTable();
+				}
 			}
 			ImGui::NextColumn(); // 次の列に移動
 			if (ImGui::Button("Prev", buttonSize)) {
 				// ボタンがクリックされたときの処理
-
+				if (nowTableNumber_ > 0) {
+					SaveTableData(nowTableNumber_);
+					nowTableNumber_--;
+					ReleadTable();
+				}
 			}
 			// 終了
 			ImGui::Columns(1);
 
 			if (ImGui::Button("Save"))
 			{
-				this->SaveTableData(0);
+				this->SaveTableData(nowTableNumber_);
 			}
 
 			static char buffer[256];
@@ -629,23 +624,27 @@ void GameEditor::SystemImGui()
 			const char* tmpName = items[type_];
 			if (ImGui::TreeNode("NumberControl")) {
 				ImGui::InputInt("NewNum", &tmpInt);
+				std::string textInt = std::to_string(tmpInt);
 				ImGui::SeparatorText("Add");
-				if (ImGui::Button("NumAdd")) {
-					tableNumbers_.push_back(tmpInt);
+				if (ImGui::Button("NumAdd") && tableNumbers_.size() < tableNames_.size()) {
+					numberStrings_.push_back(textInt);
 				}
-				if (ImGui::Button("NumFrontAdd")) {
-					tableNumbers_.push_front(tmpInt);
+				if (ImGui::Button("NumFrontAdd") && tableNumbers_.size() < tableNames_.size()) {
+					numberStrings_.push_front(textInt);
 				}
 				ImGui::SeparatorText("Delete");
 				if (ImGui::Button("NumDelete")) {
-					tableNumbers_.pop_back();
+					numberStrings_.pop_back();
 				}
 				if (ImGui::Button("NumFrontDelete")) {
-					tableNumbers_.pop_front();
+					numberStrings_.pop_front();
 				}
 				ImGui::TreePop();
 			}
-			ImGui::InputText("NewName", buffer, IM_ARRAYSIZE(buffer));
+
+			ImGui::Text("\n");
+
+			//ImGui::InputText("NewName", buffer, IM_ARRAYSIZE(buffer));
 			if (ImGui::BeginCombo("NameList",tmpName)) {
 				if (ImGui::Selectable("Single", type_ == 0)) {
 					type_ = 0;
@@ -662,9 +661,17 @@ void GameEditor::SystemImGui()
 
 				ImGui::EndCombo();
 			}
-
+			int namesMaxValue = 10;
 			if (ImGui::Button("Add")) {
-				tableNames_.push_back(tmpName);
+				if (tableNames_.size() < namesMaxValue) {
+					tableNames_.push_back(tmpName);
+				}
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Delete")) {
+				if (tableNames_.size() > 0) {
+					tableNames_.pop_back();
+				}
 			}
 			// タブの内容
 			ImGui::BeginChild(ImGui::GetID((void*)0), ImVec2(200, 150), ImGuiWindowFlags_NoTitleBar);
