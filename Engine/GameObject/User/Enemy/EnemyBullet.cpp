@@ -17,6 +17,16 @@ void EnemyBullet::Update()
 {
 	// 弾を移動させる
 	transform_.translate_ = transform_.translate_ + velocity_;
+
+	// y座標が一定以下になったら削除
+	if (transform_.translate_.y <= -1.0f) {
+		Destroy();
+	}
+
+	// y座標が一定以上になったら削除
+	if (transform_.translate_.y >= 10.0f) {
+		Destroy();
+	}
 }
 
 void EnemyBullet::DisplayImGui()
