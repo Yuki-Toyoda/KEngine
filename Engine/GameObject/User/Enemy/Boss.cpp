@@ -100,6 +100,8 @@ void Boss::DisplayImGui()
 		
 		return;
 	}
+	ImGui::InputInt("Pattern", &patternNumber_);
+	ImGui::InputInt("State", &StateNumber_);
 }
 
 void Boss::Reset()
