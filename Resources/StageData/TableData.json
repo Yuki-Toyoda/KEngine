@@ -18,7 +18,9 @@
             "ActionList": [
                 "MultiAttack"
             ],
-            "NumberList": []
+            "NumberList": [
+                0
+            ]
         },
         "TableList2": {
             "ActionList": [
