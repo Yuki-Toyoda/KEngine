@@ -16,50 +16,70 @@
         },
         "TableList1": {
             "ActionList": [
+                "SingleAttack",
+                "SingleAttack",
                 "MultiAttack"
             ],
             "NumberList": [
+                1,
+                0,
                 0
             ]
         },
         "TableList2": {
             "ActionList": [
-                "SingleAttack",
+                "PushUp",
+                "Roller",
                 "SingleAttack"
             ],
             "NumberList": [
                 1,
-                1
+                1,
+                3
             ]
         },
         "TableList3": {
             "ActionList": [
-                "SingleAttack",
+                "PushUp",
+                "MultiAttack",
                 "SingleAttack"
             ],
             "NumberList": [
                 1,
-                1
+                1,
+                0
             ]
         },
         "TableList4": {
             "ActionList": [
-                "SingleAttack",
-                "SingleAttack"
+                "MultiAttack",
+                "Roller",
+                "MultiAttack"
             ],
             "NumberList": [
-                1,
-                1
+                0,
+                2,
+                0
             ]
         },
         "TableList5": {
             "ActionList": [
                 "SingleAttack",
-                "SingleAttack"
+                "Roller",
+                "Roller"
             ],
             "NumberList": [
                 2,
-                3
+                1,
+                0
+            ]
+        },
+        "TableList6": {
+            "ActionList": [],
+            "NumberList": [
+                2,
+                1,
+                0
             ]
         }
     }
