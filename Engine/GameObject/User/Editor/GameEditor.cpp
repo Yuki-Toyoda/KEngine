@@ -622,7 +622,8 @@ void GameEditor::SystemImGui()
 			static char buffer[256];
 			const char* items[] = { "Single","Multi","PushUp","Roller" };
 			const char* tmpName = items[type_];
-			if (ImGui::TreeNode("NumberControl")) {
+			//if (ImGui::TreeNode("NumberControl")) {
+			ImGui::SeparatorText("Number");
 				ImGui::InputInt("NewNum", &tmpInt);
 				std::string textInt = std::to_string(tmpInt);
 				ImGui::SeparatorText("Add");
@@ -639,8 +640,8 @@ void GameEditor::SystemImGui()
 				if (ImGui::Button("NumFrontDelete")) {
 					numberStrings_.pop_front();
 				}
-				ImGui::TreePop();
-			}
+				//ImGui::TreePop();
+			//}
 
 			ImGui::Text("\n");
 
@@ -730,23 +731,7 @@ void GameEditor::SystemImGui()
 			ImGui::EndChild();
 
 			tableNumbers_ = ConvertToIntList(numberStrings_);
-
-			for (int c : tableNumbers_) {
-				ImGui::Text("%d", c);
-			}
 #pragma endregion
-
-
-			ImGui::SeparatorText("System");
-			if (ImGui::Button("Save")) {
-				std::string grName = "Test";
-				std::string seName = "List";
-				std::string keyName = "TestTable";
-				dataManager_->AddItem({ grName,seName }, keyName, tableNames_);
-				dataManager_->SetValue({ grName,seName }, keyName, tableNames_);
-				dataManager_->SaveData(grName);
-
-			}
 
 			ImGui::EndTabItem();
 		}
