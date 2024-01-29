@@ -145,12 +145,15 @@ Mesh* BaseObject::AddMesh(WorldTransform* wt, Vector4& color, const std::string&
 	return newMesh;
 }
 
-void BaseObject::AddSprite(const std::string& name, const Vector2& position, const Vector2& size, Texture* texture)
+Sprite* BaseObject::AddSprite(const std::string& name, const Vector2& position, const Vector2& size, Texture* texture)
 {
 	// 新しいインスタンスの追加
 	Sprite* newSprite = SpriteManager::GetInstance()->Create(name, position, size, texture);
 	// リストに追加
 	sprites_.push_back(newSprite);
+	
+	// 生成したスプライトを返す
+	return newSprite;
 }
 
 void BaseObject::AddColliderSphere(const std::string& name, Vector3* center, float* radius, bool enable)

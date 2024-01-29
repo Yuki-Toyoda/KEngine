@@ -204,7 +204,7 @@ protected: // プライベートなメンバ関数
 	/// <param name="position">初期座標</param>
 	/// <param name="size">大きさ</param>
 	/// <param name="texture">テクスチャ</param>
-	void AddSprite(const std::string& name, const Vector2& position, const Vector2& size, Texture* texture);
+	Sprite* AddSprite(const std::string& name, const Vector2& position, const Vector2& size, Texture* texture);
 
 public: // パブリックなメンバ変数
 
