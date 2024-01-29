@@ -15,6 +15,10 @@ void InGameUIManager::Init()
 	playerVegetableIcon_ = AddSprite("PlayerVegetables", { 200.0f, 47.0f }, { 80.0f, 96.0f }, TextureManager::Load("./Resources/UI/InGame", "vegetableIcon.png"));
 	playerVegetableCount2_ = AddSprite("VegetableCount2", { 190.0f, 47.0f }, { 48.0f, 64.0f }, TextureManager::Load("./Resources/UI/InGame", "vegetableNumbert.png"));
 	playerVegetableCount1_ = AddSprite("VegetableCount1", { 138.0f, 47.0f }, { 48.0f, 64.0f }, TextureManager::Load("./Resources/UI/InGame", "vegetableNumbert.png"));
+	moveSpriteBG_ = AddSprite("MoveUI_BG", { 1075.0f, 520.0f }, { 192.0f, 64.0f }, TextureManager::Load("./Resources/UI/InGame", "moveBack.png"));
+	moveSprite_ = AddSprite("MoveUI", { 0.0f, 0.0f }, { 192.0f, 64.0f }, TextureManager::Load("./Resources/UI/InGame", "moveFront.png"));
+	AttackSprite_ = AddSprite("Attack", { 1040.0f, 590.0f }, { 224.0f, 48.0f }, TextureManager::Load("./Resources/UI/InGame", "attack.png"));
+	FeedSprite_ = AddSprite("Feed", { 1000.0f, 650.0f }, { 256.0f, 48.0f }, TextureManager::Load("./Resources/UI/InGame", "feed.png"));
 
 	// アンカーポイント設定
 	bossHPGageSprite_Icon_->anchorPoint_ = { 0.5f, 0.2f };
@@ -32,7 +36,6 @@ void InGameUIManager::Init()
 	playerVegetableCount2_->SetParent(playerHPFrame_->GetWorldTransform());
 	playerVegetableCount1_->SetParent(playerHPFrame_->GetWorldTransform());
 
-
 	// 野菜アイコンの角度を設定
 	playerVegetableIcon_->rotate_ = 0.65f;
 
@@ -46,6 +49,12 @@ void InGameUIManager::Init()
 	input_->GetJoystickState(0, joyState_); // 現在フレームの入力取得
 	preJoyState_ = joyState_; // 前フレームの入力取得
 
+	// スティックUIの背景に親子付けする
+	moveSprite_->SetParent(moveSpriteBG_->GetWorldTransform());
+
+	// スプライトの描画範囲設定
+	AttackSprite_->texSize_ = { 448.0f, 96.0f };
+	FeedSprite_->texSize_ = { 512.0f, 96.0f };
 }
 
 void InGameUIManager::Update()
@@ -54,46 +63,36 @@ void InGameUIManager::Update()
 	preJoyState_ = joyState_; // 前フレームの入力取得
 	input_->GetJoystickState(0, joyState_); // 現在フレームの入力取得
 	
-	//// スティックの方向を元に移動ベクトルを求める
-	//Vector3 move = {
-	//	(float)joyState_.Gamepad.sThumbLX, 0.0f,
-	//	(float)-joyState_.Gamepad.sThumbLY };
+	// スティックの方向を元に移動ベクトルを求める
+	Vector3 move = {
+		(float)joyState_.Gamepad.sThumbLX, 0.0f,
+		(float)-joyState_.Gamepad.sThumbLY };
 
-	//// 正規化
-	//move = Math::Normalize(move) * 10.0f;
+	// 正規化
+	move = Math::Normalize(move) * 10.0f;
 
-	//// スティックの結果をUIの反映
-	//sprites_[3]->translate_ = Vector2(1075.0f, 520.0f) + Vector2(move.x, move.z);
+	// スティックの結果をUIの反映
+	moveSprite_->translate_ = Vector2(move.x, move.z);
 
-	//// Aボタンを押すとUIを変化させる
-	//if (joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_START) {
-	//	// UIを変更する
-	//	sprites_[0]->texBase_ = Vector2(448.0f, 0.0f);
-	//}
-	//else {
-	//	// UIを変更する
-	//	sprites_[0]->texBase_ = Vector2(0.0f, 0.0f);
-	//}
+	// Aボタンを押すとUIを変化させる
+	if (joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A) {
+		// UIを変更する
+		AttackSprite_->texBase_ = Vector2(448.0f, 0.0f);
+	}
+	else {
+		// UIを変更する
+		AttackSprite_->texBase_ = Vector2(0.0f, 0.0f);
+	}
 
-	//// Xボタンを押すとUIを変化させる
-	//if (joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_X) {
-	//	// UIを変更する
-	//	sprites_[11]->texBase_ = Vector2(512.0f, 0.0f);
-	//}
-	//else {
-	//	// UIを変更する
-	//	sprites_[11]->texBase_ = Vector2(0.0f, 0.0f);
-	//}
-
-	//// Aボタンを押すとUIを変化させる
-	//if (joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A) {
-	//	// UIを変更する
-	//	sprites_[1]->texBase_ = Vector2(448.0f, 0.0f);
-	//}
-	//else {
-	//	// UIを変更する
-	//	sprites_[1]->texBase_ = Vector2(0.0f, 0.0f);
-	//}
+	// Xボタンを押すとUIを変化させる
+	if (joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_X) {
+		// UIを変更する
+		FeedSprite_->texBase_ = Vector2(512.0f, 0.0f);
+	}
+	else {
+		// UIを変更する
+		FeedSprite_->texBase_ = Vector2(0.0f, 0.0f);
+	}
 	
 	// プレイヤーが存在する場合
 	if (player_ != nullptr) {

@@ -77,5 +77,11 @@ private: // メンバ変数
 	Sprite* playerVegetableIcon_ = nullptr; // プレイヤーの野菜アイコン
 	Sprite* playerVegetableCount1_ = nullptr; // 1桁目
 	Sprite* playerVegetableCount2_ = nullptr; // 2桁目
+
+	/// チュートリアル実装まで残すスプライト
+	Sprite* moveSpriteBG_ = nullptr; // スティックスプライト背景
+	Sprite* moveSprite_ = nullptr; // スティックスプライト背景
+	Sprite* AttackSprite_ = nullptr; // 攻撃方法スプライト
+	Sprite* FeedSprite_ = nullptr; // 攻撃方法スプライト
 };
 
