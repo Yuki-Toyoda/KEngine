@@ -8,10 +8,10 @@
                 "Single"
             ],
             "NumberList": [
-                "1",
-                "2",
-                "3",
-                "4"
+                1,
+                2,
+                3,
+                4
             ]
         },
         "TableList1": {
@@ -20,8 +20,8 @@
                 "Single"
             ],
             "NumberList": [
-                "1",
-                "1"
+                1,
+                1
             ]
         },
         "TableList2": {
@@ -30,8 +30,8 @@
                 "Single"
             ],
             "NumberList": [
-                "1",
-                "1"
+                1,
+                1
             ]
         },
         "TableList3": {
@@ -40,8 +40,8 @@
                 "Single"
             ],
             "NumberList": [
-                "1",
-                "1"
+                1,
+                1
             ]
         },
         "TableList4": {
@@ -50,8 +50,8 @@
                 "Single"
             ],
             "NumberList": [
-                "1",
-                "1"
+                1,
+                1
             ]
         },
         "TableList5": {
@@ -60,8 +60,8 @@
                 "Single"
             ],
             "NumberList": [
-                "1",
-                "1"
+                2,
+                3
             ]
         }
     }

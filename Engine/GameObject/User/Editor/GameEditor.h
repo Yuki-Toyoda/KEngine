@@ -177,12 +177,21 @@ private:
 		return list;
 	}
 
+	std::list<std::string> ConvertToStringList(std::list<int> lists) {
+		std::list<std::string> stringList;
+		for (int number : lists) {
+			std::string sNumber = std::to_string(number);
+			stringList.push_back(sNumber);
+		}
+		return stringList;
+	}
+
 	void SaveTableData(int number) {
 		std::string groupName = "TableData";
 		std::string sectionName = "TableList" + std::to_string(number);
 
 		dataManager_->SetValue({ groupName,sectionName }, "ActionList", tableNames_);
-		dataManager_->SetValue({ groupName,sectionName }, "NumberList", numberStrings_);
+		dataManager_->SetValue({ groupName,sectionName }, "NumberList", tableNumbers_);
 
 		dataManager_->SaveData(groupName);
 	}

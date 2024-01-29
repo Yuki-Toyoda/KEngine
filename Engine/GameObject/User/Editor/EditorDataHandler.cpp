@@ -124,7 +124,8 @@ void GameEditor::ReleadTable() {
 	std::string group = "TableData";
 	std::string section = "TableList" + std::to_string(nowTableNumber_);
 	dataManager_->AddItem<std::list<std::string>>({ group,section }, "ActionList", tableNames_);
-	dataManager_->AddItem<std::list<std::string>>({ group,section }, "NumberList", numberStrings_);
+	dataManager_->AddItem<std::list<int>>({ group,section }, "NumberList", tableNumbers_);
 	tableNames_ = dataManager_->GetValue<std::list<std::string>>({ group,section }, "ActionList");
-	numberStrings_ = dataManager_->GetValue<std::list<std::string>>({ group,section }, "NumberList");
+	tableNumbers_ = dataManager_->GetValue<std::list<int>>({ group,section }, "NumberList");
+	numberStrings_ = this->ConvertToStringList(tableNumbers_);
 }
