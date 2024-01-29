@@ -3,6 +3,7 @@
 void PushUpAtackState::Init()
 {
 	name_ = "PushUp";
+	enemy_->StateNumber_++;
 }
 
 void PushUpAtackState::Update()

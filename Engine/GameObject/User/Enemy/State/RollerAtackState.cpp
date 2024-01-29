@@ -3,6 +3,7 @@
 void RollerAtackState::Init()
 {
 	name_ = "Roller";
+	
 	////隕石を生成してstateを変更
 	//Roller* roller = gameObjectmanager_->CreateInstance<Roller>("roller", BaseObject::TagMeteor);
 	////隕石の座標
@@ -10,6 +11,7 @@ void RollerAtackState::Init()
 	//roller->transform_.translate_.x = -20.0f;
 
 	GameDataManager* dataManager = GameDataManager::GetInstance();
+
 	std::string group = dataManager->GetRollerAttack(enemy_->stateList_.stateNumber_[enemy_->patternNumber_][enemy_->StateNumber_]);
 	int maxCount = dataManager->GetValue<int>({ group,"Parameter"}, "MaxCount");
 	for (int i = 0; i < maxCount; i++) {
@@ -25,7 +27,7 @@ void RollerAtackState::Init()
 		object->transform_.scale_ = dataManager->GetValue<Vector3>({ group,"Parameter" }, "Scale");
 		object->SetgameManager(enemy_->gameManager_);
 	}
-
+	enemy_->StateNumber_++;
 }
 
 void RollerAtackState::Update()

@@ -2,10 +2,10 @@
     "TableData": {
         "TableList0": {
             "ActionList": [
-                "Multi",
+                "MultiAttack",
                 "PushUp",
                 "Roller",
-                "Single"
+                "SingleAttack"
             ],
             "NumberList": [
                 1,
@@ -16,8 +16,8 @@
         },
         "TableList1": {
             "ActionList": [
-                "Single",
-                "Single"
+                "SingleAttack",
+                "SingleAttack"
             ],
             "NumberList": [
                 1,
@@ -26,8 +26,8 @@
         },
         "TableList2": {
             "ActionList": [
-                "Single",
-                "Single"
+                "SingleAttack",
+                "SingleAttack"
             ],
             "NumberList": [
                 1,
@@ -36,8 +36,8 @@
         },
         "TableList3": {
             "ActionList": [
-                "Single",
-                "Single"
+                "SingleAttack",
+                "SingleAttack"
             ],
             "NumberList": [
                 1,
@@ -46,8 +46,8 @@
         },
         "TableList4": {
             "ActionList": [
-                "Single",
-                "Single"
+                "SingleAttack",
+                "SingleAttack"
             ],
             "NumberList": [
                 1,
@@ -56,8 +56,8 @@
         },
         "TableList5": {
             "ActionList": [
-                "Single",
-                "Single"
+                "SingleAttack",
+                "SingleAttack"
             ],
             "NumberList": [
                 2,

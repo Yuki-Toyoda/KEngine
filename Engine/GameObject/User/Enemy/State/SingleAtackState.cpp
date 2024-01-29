@@ -19,6 +19,8 @@ void SingleAtackState::Init()
 		meteor->transform_.scale_ = jsonData->GetValue<Vector3>(names, "Scale");
 		meteor->SetgameManager(enemy_->gameManager_);
 	}
+	enemy_->StateNumber_++;
+
 }
 
 void SingleAtackState::Update()

@@ -10,6 +10,8 @@ void MultiAtackState::Init()
 	kMaxCount_ = dataManager->GetValue<int>({ group,"Parameter" }, "MaxCount");
 
 	atackTimer_.Start(coolTime_);
+	enemy_->StateNumber_++;
+
 }
 
 void MultiAtackState::Update()

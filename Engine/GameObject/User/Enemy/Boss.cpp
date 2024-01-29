@@ -131,25 +131,50 @@ void Boss::MakeStateList()
 	stateList_.state_.at(0).push_back(std::make_unique<WaitTimeState>());
 	stateList_.stateNumber_.resize( 1);
 	stateList_.stateNumber_.at(0).push_back(0);*/
-	for (int i = 0; i < 1; i++) {
-		//行動状態のリストを作成
-		stateList_.state_.resize(i+1);
-		stateList_.state_.at(i).push_back(MakeState("SingleAtack"));
-		stateList_.state_.at(i).push_back(MakeState("MultiAtack"));
-		stateList_.state_.at(i).push_back(MakeState("Roller"));
-		stateList_.state_.at(i).push_back(MakeState("PushUp"));
-		stateList_.state_.at(i).push_back(MakeState("SingleAtack"));
-		//行動状態のリストからどの種類を選ぶかの番号を設定
-		stateList_.stateNumber_.resize(i+1);
-		stateList_.stateNumber_.at(i).push_back(0);
-		stateList_.stateNumber_.at(i).push_back(1);
-		stateList_.stateNumber_.at(i).push_back(2);
-		stateList_.stateNumber_.at(i).push_back(3);
-		stateList_.stateNumber_.at(i).push_back(4);
-	}
+	//for (int i = 0; i < 1; i++) {
+	//	//行動状態のリストを作成
+	//	stateList_.state_.resize(i+1);
+	//	stateList_.state_.at(i).push_back(MakeState("SingleAtack"));
+	//	stateList_.state_.at(i).push_back(MakeState("MultiAtack"));
+	//	stateList_.state_.at(i).push_back(MakeState("Roller"));
+	//	stateList_.state_.at(i).push_back(MakeState("PushUp"));
+	//	stateList_.state_.at(i).push_back(MakeState("SingleAtack"));
+	//	//行動状態のリストからどの種類を選ぶかの番号を設定
+	//	stateList_.stateNumber_.resize(i+1);
+	//	stateList_.stateNumber_.at(i).push_back(0);
+	//	stateList_.stateNumber_.at(i).push_back(1);
+	//	stateList_.stateNumber_.at(i).push_back(2);
+	//	stateList_.stateNumber_.at(i).push_back(3);
+	//	stateList_.stateNumber_.at(i).push_back(4);
+	//}
 	//std::list<int> testList = { 0,1,1,1,2 };
 	//std::vector<int> tmpVector(testList.begin(), testList.end());
 	//stateList_.stateNumber_.push_back(tmpVector);
+
+	for (int i = 0; i < 5; i++) {
+		// 番号
+		std::string section = "TableList" + std::to_string(i);
+		// アクション内容
+		std::list<std::string> actList = gameDataManager_->GetValue<std::list<std::string>>({ "TableData",section }, "ActionList");
+		stateList_.state_.resize(i + 1);
+		for (std::string nameValue : actList) {
+			stateList_.state_.at(i).push_back(MakeState(nameValue));
+		}
+		// パターン番号
+		std::list<int> numList = gameDataManager_->GetValue<std::list<int>>({ "TableData",section }, "NumberList");
+		stateList_.stateNumber_.resize(i + 1);
+		
+		for (int numValue : numList) {
+			stateList_.stateNumber_.at(i).push_back(numValue);
+		}
+		
+		//std::vector<int> numVector(numList.begin(), numList.end());
+		//stateList_.stateNumber_.push_back(numVector);
+
+		//std::vector<std::string> actVector(actList.begin(), actList.end());
+		//stateList_.state_.at(i).
+	}
+
 }
 
 void Boss::ApplyGlobalVariables()
@@ -166,10 +191,10 @@ void Boss::ApplyGlobalVariables()
 std::unique_ptr<IEnemyState> Boss::MakeState(std::string name)
 {
 	//文字列にあったStateを生成　文字列が一致しなければ強制的にMultiAtackに
-	if (name == "MultiAtack") {
+	if (name == "MultiAttack") {
 		return std::make_unique<MultiAtackState>();
 	}
-	else if (name == "SingleAtack") {
+	else if (name == "SingleAttack") {
 		return std::make_unique<SingleAtackState>();
 	}
 	else if (name == "Roller") {

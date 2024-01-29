@@ -620,7 +620,7 @@ void GameEditor::SystemImGui()
 			}
 
 			static char buffer[256];
-			const char* items[] = { "Single","Multi","PushUp","Roller" };
+			const char* items[] = { "SingleAttack","MultiAttack","PushUp","Roller" };
 			const char* tmpName = items[type_];
 			//if (ImGui::TreeNode("NumberControl")) {
 			ImGui::SeparatorText("Number");
