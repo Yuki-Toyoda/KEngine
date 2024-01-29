@@ -1,7 +1,7 @@
 {
     "RollerAttack2": {
         "Parameter": {
-            "MaxCount": 2,
+            "MaxCount": 0,
             "Scale": [
                 9.0,
                 1.0,

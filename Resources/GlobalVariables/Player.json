@@ -6,9 +6,9 @@
         "MoveAcceleration": 0.007000000216066837,
         "PushUpHitForce": 5.0,
         "StanTime": 0.5,
-        "Velocity": 0.011720525100827217,
+        "Velocity": 0.0,
         "atack rate": 0.8299999833106995,
-        "healpower": 150,
+        "healpower": 160,
         "scale rate": 0.007000000216066837
     }
 }
