@@ -3,6 +3,9 @@
 #include "../../../Utility/Animation/AnimationManager.h"
 #include "State/EnemyStateList.h"
 
+// クラスの前方宣言
+class Player;
+
 /// <summary>
 /// 敵クラス
 /// </summary>
@@ -66,6 +69,12 @@ public: // メンバ関数
 	/// <returns>打ち返し回数</returns>
 	int32_t GetRallyCount() { return rallyCount_; }
 
+	/// <summary>
+	/// ゲーム開始フラグセッター
+	/// </summary>
+	/// <param name="isStart">ゲームを開始しているか</param>
+	void SetIsGameStart(bool isStart) { isGameStart_ = isStart; }
+
 public: // パブリックなメンバ変数
 
 	// 左腕のトランスフォーム
@@ -76,6 +85,9 @@ public: // パブリックなメンバ変数
 
 	// 死亡トリガー
 	bool isDead_ = false;
+
+	// プレイヤー
+	Player* player_ = nullptr;
 
 private: // メンバ変数
 
@@ -88,6 +100,9 @@ private: // メンバ変数
 	KLib::DeltaTimer stateChangeTimer_;
 	// 行動変更クールタイム定数値
 	const float kStateChangeCoolTime_ = 1.5f;
+
+	// ゲームスタートフラグ
+	bool isGameStart_ = false;
 
 	// HP
 	int32_t hp_ = 25;

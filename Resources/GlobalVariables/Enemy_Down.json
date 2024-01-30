@@ -1,5 +1,9 @@
 {
     "Enemy_Down": {
+        "Alpha : KeyCount": 0,
+        "Alpha key : 0": 0.0,
+        "Alpha key : 0 : EasingParameter": 0,
+        "Alpha key : 0 : PlayFrame": 0,
         "Arm_L_Rotate : KeyCount": 3,
         "Arm_L_Rotate key : 0": [
             0.0,
@@ -207,6 +211,14 @@
             0.0
         ],
         "Head_Translate key : 0 : EasingParameter": 0,
-        "Head_Translate key : 0 : PlayFrame": 0
+        "Head_Translate key : 0 : PlayFrame": 0,
+        "Translate : KeyCount": 0,
+        "Translate key : 0": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Translate key : 0 : EasingParameter": 0,
+        "Translate key : 0 : PlayFrame": 0
     }
 }

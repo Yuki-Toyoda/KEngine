@@ -28,6 +28,8 @@ void GameScene::Init(){
 	enemy_ = gameObjectManager_->CreateInstance<Enemy>("Enemy", BaseObject::TagEnemy);
 	enemy_->transform_.translate_ = { 0.0f, 1.5f, 10.0f };
 	enemy_->SetPlayerPos(&player_->transform_);
+	player_->enemy_ = this->enemy_;
+	enemy_->player_ = this->player_;
 
 	// ロックオンクラス生成
 	LockOn* lockOn = nullptr;
@@ -41,7 +43,7 @@ void GameScene::Update()
 {
 	// デバッグ遷移
 	if (enemy_->isDead_ || player_->isDead_) {
-		BaseScene* nextScene = new TitleScene();
+		BaseScene* nextScene = new GameScene();
 		SceneManager::GetInstance()->SetNextScene(nextScene);
 	}
 

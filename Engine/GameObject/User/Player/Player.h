@@ -5,8 +5,10 @@
 #include "../../../Utility/Animation/AnimationManager.h"
 
 // クラスの前方宣言
+class Camera;
 class FollowCamera;
 class LockOn;
+class Enemy;
 
 /// <summary>
 /// プレイヤー
@@ -55,6 +57,12 @@ private: // プライベートなメンバ関数
 	/// <param name="name">作成するパラメータ</param>
 	void CreateParameter(const std::string& name);
 
+	/// <summary>
+	/// タイトル演出パラメータを作成する
+	/// </summary>
+	/// <param name="name">作成するパラメータ名</param>
+	void CreateTitleCameraParameter(const std::string& name);
+
 public: // パブリックなメンバ変数
 
 	// 入力検知用
@@ -96,6 +104,9 @@ public: // パブリックなメンバ変数
 	// 死亡トリガー
 	bool isDead_ = false;
 
+	// 敵
+	Enemy* enemy_ = nullptr;
+
 private: // メンバ変数
 
 	// 身体のトランスフォーム
@@ -122,5 +133,16 @@ private: // メンバ変数
 
 	// アニメーションマネージャ
 	AnimationManager* animManager_;
+
+	// タイトル演出用カメラ
+	Camera* titleCamera_ = nullptr;
+
+	// フェード演出トリガー
+	bool isFade_ = false;
+	// ゲームスタートフラグ
+	bool isGameStart_ = false;
+
+	// タイトルアニメーション
+	Animation* titleAnim_ = nullptr;
 
 };

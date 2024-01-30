@@ -3,6 +3,9 @@
 #include "../FollowCamera/FollowCamera.h"
 #include "../Enemy/Enemy.h"
 #include "../../../Resource/Texture/TextureManager.h"
+#include "../../GameObjectManager.h"
+#include "../../Core/Camera.h"
+#include "../Enemy/Enemy.h"
 
 void Player::Init()
 {
@@ -63,10 +66,29 @@ void Player::Init()
 	playerAnim_->AddAnimationKeys<Vector3>("Arm_L_Rotate", &armTransform_L_.rotate_);
 	playerAnim_->AddAnimationKeys<Vector3>("Arm_L_Translate", &armTransform_L_.translate_);
 
+	/// タイトル演出用パラメータを生成
+	CreateTitleCameraParameter("Title_Idle");
+	CreateTitleCameraParameter("Title_Start");
+
+	// タイトル演出用カメラを生成
+	titleCamera_ = GameObjectManager::GetInstance()->CreateInstance<Camera>("TitleCamera", BaseObject::TagCamera);
+	titleCamera_->transform_.translate_ = { -1.5f, 0.92f, -3.5f };
+	titleCamera_->transform_.rotate_ = { -0.15f, 0.325f, 0.0f };
+
+	// アニメーション生成
+	titleAnim_ = AnimationManager::GetInstance()->CreateAnimation("TitleAnim", "Title_Idle");
+	titleAnim_->AddAnimationKeys<Vector3>("Camera_Rotate", &titleCamera_->transform_.rotate_);
+	titleAnim_->AddAnimationKeys<Vector3>("Camera_Translate", &titleCamera_->transform_.translate_);
+
 	// ループ状態にする
 	playerAnim_->isLoop_ = true;
 	// この状態で再生
 	playerAnim_->Play();
+
+	// ループ状態にする
+	titleAnim_->isLoop_ = true;
+	// この状態で再生
+	titleAnim_->Play();
 
 	// メッシュの追加を行う
 	AddMesh(&bodyTransform_, color_, "./Resources/Player", "Body.obj");
@@ -97,10 +119,17 @@ void Player::Init()
 		hertUITranslate_[i] = { (hertUISize_->x) + (hertUISize_->x * i) , 32.0f };
 		AddSprite("Hert", hertUITranslate_[i], hertUISize_[i], TextureManager::Load("./Resources", "Hert.png"));
 		sprites_[i]->color_ = { 1.0f, 0.0f, 0.15f, 1.0f };
+		sprites_[i]->SetIsActive(false);
 	}
 
-
+	// UIの追加
 	AddSprite("UI", {0.0f, 0.0f}, {1280.0f ,720.0f}, TextureManager::Load("./Resources", "UI.png"));
+	sprites_[6]->SetIsActive(false);
+
+	// フェード演出用
+	AddSprite("Fade", {0.0f, 0.0f}, {1280.0f ,720.0f}, TextureManager::Load("white2x2.png"));
+	// フェードスプライトの色設定
+	sprites_[7]->color_ = { 0.0f, 0.0f, 0.0f, 1.0f };
 }
 
 void Player::Update()
@@ -109,7 +138,55 @@ void Player::Update()
 	preJoyState_ = joyState_; // 前フレームの入力取得
 	input_->GetJoystickState(0, joyState_); // 現在フレームの入力取得
 
-	if (canMove_) {
+	// フェードインされているかつゲームスタートをしていない場合
+	if (!isGameStart_) {
+
+		if (!isFade_) {
+			// タイトルカメラを使用する
+			titleCamera_->UseThisCamera();
+		}
+		else {
+			// タイトルアニメーション終了時
+			if (titleAnim_->isEnd_) {
+				// メインカメラを使用
+				followCamera_->UseThisCamera();
+
+				// UIの表示
+				for (int i = 0; i < 6; i++) {
+					sprites_[i]->SetIsActive(true);
+				}
+				sprites_[6]->SetIsActive(true);
+
+				// ゲームスタート
+				isGameStart_ = true;
+				// 敵にも開始したことを伝える
+				enemy_->SetIsGameStart(true);
+			}
+		}
+
+		if (sprites_[7]->color_.w <= 0.0f) {
+			if (!isFade_) {
+				// Aボタンを押すと
+				if (joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A &&
+					!(preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A)) {
+
+					// 開始演出を開始
+					isFade_ = true;
+
+					// タイトルアニメーション再生
+					titleAnim_->ChangeParameter("Title_Start", true);
+					// ループ無効
+					titleAnim_->isLoop_ = false;
+				}
+			}
+		}
+		else {
+			// フェード演出用スプライトの色を徐々に変更
+			sprites_[7]->color_.w -= 0.01f;
+		}
+	}
+
+	if (canMove_ && isGameStart_) {
 		// 現在の行動状態の更新を行う
 		state_->Update();
 
@@ -198,6 +275,9 @@ void Player::DisplayImGui()
 		ImGui::TreePop();
 	}
 
+	// タイトルアニメーションのImGuiを表示
+	titleAnim_->DisplayImGui();
+
 	// 行動状態のImGuiを表示
 	state_->DisplayImGui();
 
@@ -260,4 +340,12 @@ void Player::CreateParameter(const std::string& name)
 	animManager_->AddSelectAnimationKeys<Vector3>(name, "Arm_L_Scale");
 	animManager_->AddSelectAnimationKeys<Vector3>(name, "Arm_L_Rotate");
 	animManager_->AddSelectAnimationKeys<Vector3>(name, "Arm_L_Translate");
+}
+
+void Player::CreateTitleCameraParameter(const std::string& name)
+{
+	// パラメータの生成
+	animManager_->CreateAnimationParameter(name);
+	animManager_->AddSelectAnimationKeys<Vector3>(name, "Camera_Rotate");
+	animManager_->AddSelectAnimationKeys<Vector3>(name, "Camera_Translate");
 }

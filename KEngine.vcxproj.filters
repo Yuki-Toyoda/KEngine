@@ -265,6 +265,7 @@
     </ClCompile>
     <ClCompile Include="Engine\Particle\user\LerpParticle.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\State\EnemyDead.cpp" />
+    <ClCompile Include="Engine\GameObject\User\TitleSceneManager\TitleManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -575,6 +576,7 @@
     </ClInclude>
     <ClInclude Include="Engine\Particle\user\LerpParticle.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyDead.h" />
+    <ClInclude Include="Engine\GameObject\User\TitleSceneManager\TitleManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">

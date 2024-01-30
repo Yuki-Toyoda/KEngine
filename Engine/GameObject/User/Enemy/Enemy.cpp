@@ -3,6 +3,7 @@
 #include "../Player/Player.h"
 #include "../../GameObjectManager.h"
 #include "../../../Particle/ParticleEmitterManager.h"
+#include "../Player/Player.h"
 
 void Enemy::Init()
 {
@@ -119,28 +120,32 @@ void Enemy::Update()
 	}
 
 	// 現在行動を更新
-	state_->Update();
+	if (isGameStart_) {
+		state_->Update();
+	}
 
 	// 死亡していなければ
 	if (hp_ > 0) {
-		// ヒットクールタイムタイマー更新
-		hitCoolTimeTimer_.Update();
-		// 行動変更クールタイムタイマー更新
-		if (state_->GetStateName() == "Root"
-			&& GameObjectManager::GetInstance()->GetGameObject<EnemyBullet>("EnemyBullet") == nullptr
-			&& GameObjectManager::GetInstance()->GetGameObject<Player>("Player")->GetStateName() != "Damage") {
-			stateChangeTimer_.Update();
-		}
-
-		// 行動変更クールタイムタイマー更新
-		if (enemyAnim_->GetReadingParameterName() == "Enemy_Rally") {
-			if (enemyAnim_->isLoop_) {
-				enemyAnim_->isLoop_ = false;
+		if (isGameStart_) {
+			// ヒットクールタイムタイマー更新
+			hitCoolTimeTimer_.Update();
+			// 行動変更クールタイムタイマー更新
+			if (state_->GetStateName() == "Root"
+				&& GameObjectManager::GetInstance()->GetGameObject<EnemyBullet>("EnemyBullet") == nullptr
+				&& GameObjectManager::GetInstance()->GetGameObject<Player>("Player")->GetStateName() != "Damage") {
+				stateChangeTimer_.Update();
 			}
 
-			if (enemyAnim_->isEnd_) {
-				// 行動変更
-				ChangeState(std::make_unique<EnemyRoot>());
+			// 行動変更クールタイムタイマー更新
+			if (enemyAnim_->GetReadingParameterName() == "Enemy_Rally") {
+				if (enemyAnim_->isLoop_) {
+					enemyAnim_->isLoop_ = false;
+				}
+
+				if (enemyAnim_->isEnd_) {
+					// 行動変更
+					ChangeState(std::make_unique<EnemyRoot>());
+				}
 			}
 		}
 	}
