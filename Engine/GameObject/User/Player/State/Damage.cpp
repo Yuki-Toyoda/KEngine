@@ -61,7 +61,7 @@ void Damage::Update()
 				}
 				
 				// フェード演出スプライトを暗転させる
-				player_->sprites_[7]->color_.w = KLib::Lerp<float>(0.0f, 1.0f, KLib::EaseOutQuad(timer_.GetProgress()));
+				player_->sprites_[8]->color_.w = KLib::Lerp<float>(0.0f, 1.0f, KLib::EaseOutQuad(timer_.GetProgress()));
 
 				timer_.Update();
 			}

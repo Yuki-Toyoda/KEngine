@@ -126,10 +126,15 @@ void Player::Init()
 	AddSprite("UI", {0.0f, 0.0f}, {1280.0f ,720.0f}, TextureManager::Load("./Resources", "UI.png"));
 	sprites_[6]->SetIsActive(false);
 
+	// タイトル画面ボタン用
+	AddSprite("Button", {640.0f, 450.0f}, {512.0f ,128.0f}, TextureManager::Load("Start_CR.png"));
+	// フェードスプライトの色設定
+	sprites_[7]->anchorPoint_ = { .5f, .5f };
+	
 	// フェード演出用
 	AddSprite("Fade", {0.0f, 0.0f}, {1280.0f ,720.0f}, TextureManager::Load("white2x2.png"));
 	// フェードスプライトの色設定
-	sprites_[7]->color_ = { 0.0f, 0.0f, 0.0f, 1.0f };
+	sprites_[8]->color_ = { 0.0f, 0.0f, 0.0f, 1.0f };
 }
 
 void Player::Update()
@@ -164,7 +169,7 @@ void Player::Update()
 			}
 		}
 
-		if (sprites_[7]->color_.w <= 0.0f) {
+		if (sprites_[8]->color_.w <= 0.0f) {
 			if (!isFade_) {
 				// Aボタンを押すと
 				if (joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A &&
@@ -172,6 +177,9 @@ void Player::Update()
 
 					// 開始演出を開始
 					isFade_ = true;
+
+					// ボタンUI非表示
+					sprites_[7]->SetIsActive(false);
 
 					// タイトルアニメーション再生
 					titleAnim_->ChangeParameter("Title_Start", true);
@@ -182,7 +190,7 @@ void Player::Update()
 		}
 		else {
 			// フェード演出用スプライトの色を徐々に変更
-			sprites_[7]->color_.w -= 0.01f;
+			sprites_[8]->color_.w -= 0.01f;
 		}
 	}
 

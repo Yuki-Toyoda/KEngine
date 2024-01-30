@@ -33,12 +33,12 @@ void EnemyDead::Update()
 {
 	// アニメーションが終了していたら
 	if (enemy_->enemyAnim_->isEnd_) {
-		if (enemy_->player_->sprites_[7]->color_.w >= 1.0f) {
+		if (enemy_->player_->sprites_[8]->color_.w >= 1.0f) {
 			// 死亡している
 			enemy_->isDead_ = true;
 		}
 		else {
-			enemy_->player_->sprites_[7]->color_.w += 0.01f;
+			enemy_->player_->sprites_[8]->color_.w += 0.01f;
 		}
 	}
 }
