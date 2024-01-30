@@ -244,8 +244,6 @@ void Player::OnCollision(Collider* collider)
 		Heal();
 	}
 	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagEnemy &&state_->name_=="Atack") {
-		//吸収した数をリセットして座標とスケール調整
-		ResetAbsorptionCount();
 		// 前フレーム座標に固定する
 		transform_.translate_ = prevPos_;
 		// y座標を補正
@@ -256,9 +254,6 @@ void Player::OnCollision(Collider* collider)
 		//isAtack_ = false;
 		// 速度をリセット
 		velocity_ = { 0.0f,0.0f,0.0f };
-
-		// 吹っ飛び状態に変更
-		ChangeState(std::make_unique<BlowAwayState>());
 
 		// 与えたSEを再生する
 		audio_->PlayWave(attackSE_);

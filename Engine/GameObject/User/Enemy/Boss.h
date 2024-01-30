@@ -71,6 +71,11 @@ private: // メンバ関数
 	/// <param name="collider">衝突したコライダー</param>
 	void OnCollisionEnter(Collider* collider) override;
 
+	/// <summary>
+	/// 衝突中コールバック関数
+	/// </summary>
+	/// <param name="collider">衝突したコライダー</param>
+	void OnCollision(Collider* collider)override;
 
 	//StateListを作成する
 	void MakeStateList();
