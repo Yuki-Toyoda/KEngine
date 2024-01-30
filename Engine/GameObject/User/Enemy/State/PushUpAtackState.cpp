@@ -4,33 +4,33 @@
 
 void PushUpAtackState::Init()
 {
-	// �X�e�[�g���ݒ�
+	// ステート名設定
 	name_ = "PushUp";
 	enemy_->StateNumber_++;
-}
 
 	for (PushUp* pushUp : enemy_->pushUp_) {
 		pushUp->SetActive();
 	}
 
-	// �˂��グ�U���A�j���[�V�����J�n
+	// 突き上げ攻撃アニメーションを再生する
 	enemy_->GetBossAnimManager()->PlayPushUpAttackAnim(enemy_->GetPushUpReadyTime());
 
 }
 
 void PushUpAtackState::Update()
 {
-	// �����U���I���A�j���[�V�����A�܂��̓_���[�W�A�j���[�V�������̏ꍇ
+	// ボスの攻撃モーションの終了時、またはダメージモーション終了時に
 	if (enemy_->GetBossAnimManager()->GetAnimation()->GetReadingParameterName() == "Boss_EndThrustUpAttack" ||
 		enemy_->GetBossAnimManager()->GetAnimation()->GetReadingParameterName() == "Boss_Damage") {
 	
-		// �A�j���[�V�����i������芄���𒴂��Ă�����
+		// アニメーション進捗が一定値以上になったら突き上げ攻撃を有効にする
 		if (enemy_->GetBossAnimManager()->GetAnimation()->GetAnimationProgress() > 0.15f) {
-			// �S�Ă̓˂��グ�U����U����Ԃɂ���
+			// 突き上げ攻撃を行う
 			for (PushUp* pushUp : enemy_->pushUp_) {
 				pushUp->SetIsAttack(true);
 			}
 
+			// ステート変更
 			enemy_->SetWaitTime(enemy_->GetWaitPushUp());
 			enemy_->ChangeState(std::make_unique<WaitTimeState>());
 			return;
