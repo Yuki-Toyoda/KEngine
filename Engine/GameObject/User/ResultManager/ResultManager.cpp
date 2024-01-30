@@ -27,6 +27,14 @@ void ResultManager::Init()
 
 void ResultManager::Update()
 {
+	// 再生されていなければ再生する
+	if (!audio_->IsPlaying(bgmVoiceHadle_) || bgmVoiceHadle_ == -1) {
+		bgmVoiceHadle_ = audio_->PlayWave(bgmHandle_, false, 1.0f);
+	}
+
+	// BGM音量を設定
+	//audio_->SetVolume(bgmHandle_, FadeManager::GetInstance()->GetVolume());
+
 	// 入力取得
 	preJoyState_ = joyState_; // 前フレームの入力取得
 	input_->GetJoystickState(0, joyState_); // 現在フレームの入力取得
@@ -94,6 +102,9 @@ void ResultManager::Update()
 	// フェードマネージャが演出中ではない、かつフェード演出トリガーがtrueなら
 	if (!fadeManager_->GetIsStaging() && isFade_) {
 		isSceneChange_ = true;
+
+		// BGMを止める
+		audio_->StopWave(bgmVoiceHadle_);
 	}
 }
 
@@ -142,6 +153,9 @@ void ResultManager::PostInit(bool isClear)
 	// クリアしたかによって処理を変える
 	if (isCleared_) {
 
+		// BGMロード
+		bgmHandle_ = audio_->LoadWave("./Resources/Audio/BGM/clear.wav");
+
 		/// 各種トランスフォームの初期化
 		// 野菜の山用
 		vegetablesTransform_.Init();
@@ -171,6 +185,9 @@ void ResultManager::PostInit(bool isClear)
 
 	}
 	else {
+
+		// BGMロード
+		bgmHandle_ = audio_->LoadWave("./Resources/Audio/BGM/gameOver.wav");
 
 		/// スプライト追加
 		// 失敗テキスト

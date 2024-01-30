@@ -43,6 +43,7 @@ void FadeManager::Init()
 	anim_->AddAnimationKeys<float>("Color_G", &sprite_->color_.y);
 	anim_->AddAnimationKeys<float>("Color_B", &sprite_->color_.z);
 	anim_->AddAnimationKeys<float>("Alpha", &sprite_->color_.w);
+	anim_->AddAnimationKeys<float>("Volume", &volume_);
 }
 
 void FadeManager::Update()
@@ -97,6 +98,7 @@ void FadeManager::CreateParameter(const std::string& name)
 	animManager_->AddSelectAnimationKeys<float>(name, "Color_G");
 	animManager_->AddSelectAnimationKeys<float>(name, "Color_B");
 	animManager_->AddSelectAnimationKeys<float>(name, "Alpha");
+	animManager_->AddSelectAnimationKeys<float>(name, "Volume");
 }
 
 void FadeManager::CompulsionFadeOut()

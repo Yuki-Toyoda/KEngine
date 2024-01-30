@@ -67,6 +67,10 @@ private: // メンバ変数
 	// 音再生クラス
 	Audio* audio_ = nullptr;
 
+	// BGM
+	int32_t bgmHandle_ = 0u;
+	int bgmVoiceHadle_ = -1;
+
 	// 決定音
 	int32_t decisionSE_ = 0u;
 

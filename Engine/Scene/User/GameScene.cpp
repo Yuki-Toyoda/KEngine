@@ -9,6 +9,12 @@ void GameScene::Init(){
 	InputManager::Init();
 	GameManager* gameManager = nullptr;
 	
+	// 音再生クラスのインスタンス取得
+	audio_ = Audio::GetInstance();
+
+	// BGMロード
+	bgmHandle_ = audio_->LoadWave("./Resources/Audio/BGM/inGame.wav");
+
 	gameManager = gameObjectManager_->CreateInstance<GameManager>("gameManager", BaseObject::TagNone);
 	// カメラの生成
 	camera_ = nullptr;
@@ -93,6 +99,15 @@ void GameScene::Init(){
 
 void GameScene::Update()
 {
+	// 再生されていなければ再生する
+	if (!audio_->IsPlaying(bgmVoiceHadle_) || bgmVoiceHadle_ == -1) {
+		bgmVoiceHadle_ = audio_->PlayWave(bgmHandle_, false, 1.0f);
+	}
+
+	// BGM音量を設定
+	//audio_->SetVolume(bgmHandle_, FadeManager::GetInstance()->GetVolume());
+
+
 	// ボスのHPが0以下の時
 	if (boss_->GetHP() <= 0) {
 		// ボスが死亡したことを伝える
@@ -105,13 +120,19 @@ void GameScene::Update()
 		ResultScene::isClear_ = false;
 		BaseScene* nextScene = new ResultScene();
 		SceneManager::GetInstance()->SetNextScene(nextScene);
+
+		// BGMを止める
+		audio_->StopWave(bgmVoiceHadle_);
 	}
 	if (boss_->GetIsSceneChage()){
 		// クリアフラグをtrue
 		ResultScene::isClear_ = true;
 		BaseScene * nextScene = new ResultScene();
 		SceneManager::GetInstance()->SetNextScene(nextScene);
-}
+
+		// BGMを止める
+		audio_->StopWave(bgmVoiceHadle_);
+	}
 	// デバッグ時のみ特定のキーでシーン遷移
 #ifdef _DEBUG
 	// デバッグ遷移

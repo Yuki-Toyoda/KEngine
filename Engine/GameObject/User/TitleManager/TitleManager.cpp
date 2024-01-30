@@ -9,6 +9,9 @@ void TitleManager::Init()
 	// 音再生クラスのインスタンス取得
 	audio_ = Audio::GetInstance();
 
+	// BGMロード
+	bgmHandle_ = audio_->LoadWave("./Resources/Audio/BGM/title.wav");
+
 	/// 効果音ロード
 	// 決定音
 	decisionSE_ = audio_->LoadWave("./Resources/Audio/SE/decision.wav");
@@ -69,6 +72,14 @@ void TitleManager::Init()
 
 void TitleManager::Update()
 {
+	// 再生されていなければ再生する
+	if (!audio_->IsPlaying(bgmVoiceHadle_) || bgmVoiceHadle_ == -1) {
+		bgmVoiceHadle_ = audio_->PlayWave(bgmHandle_, false, 1.0f);
+	}
+
+	// BGM音量を設定
+	//audio_->SetVolume(bgmHandle_, FadeManager::GetInstance()->GetVolume());
+
 	// 入力取得
 	preJoyState_ = joyState_; // 前フレームの入力取得
 	input_->GetJoystickState(0, joyState_); // 現在フレームの入力取得
@@ -130,6 +141,10 @@ void TitleManager::Update()
 		// フェードマネージャが演出中ではない、かつフェード演出トリガーがtrueなら
 		if (!fadeManager_->GetIsStaging() && isFade_) {
 			isSceneChange_ = true;
+
+			// bgm停止
+			audio_->StopWave(bgmVoiceHadle_);
+			
 		}
 	}
 }

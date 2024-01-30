@@ -84,10 +84,19 @@ public: // アクセッサ等
 	/// <returns>演出進捗(0 ~ 1)</returns>
 	float GetProgress() { return anim_->GetAnimationProgress(); }
 
+	/// <summary>
+	/// 音量ゲッター
+	/// </summary>
+	/// <returns>音量</returns>
+	float GetVolume() { return volume_; }
+
 private: // メンバ変数
 
 	// フェード演出用スプライト
 	std::unique_ptr<Sprite> sprite_ = nullptr;
+
+	// 音量
+	float volume_ = 1.0f;
 
 	// アニメーションマネージャ
 	AnimationManager* animManager_ = nullptr;
