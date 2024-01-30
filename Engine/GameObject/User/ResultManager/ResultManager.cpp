@@ -4,9 +4,17 @@
 #include "../../../Resource/Texture/TextureManager.h"
 #include "../../../Scene/FadeManager.h"
 #include "../../Samples/SampleSkyDome/SkyDome.h"
+#include "../../../Audio/Audio.h"
 
 void ResultManager::Init()
 {
+	// 音再生クラスのインスタンス取得
+	audio_ = Audio::GetInstance();
+
+	/// 音ロード
+	// 決定音
+	decisionSE_ = audio_->LoadWave("./Resources/Audio/SE/decision.wav");
+
 	// 入力取得
 	input_ = Input::GetInstance();
 	// コントローラー入力取得
@@ -64,12 +72,15 @@ void ResultManager::Update()
 		!(preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A))) {
 		// UIを変更する
 		sprites_[0]->texBase_ = Vector2(304.0f, 0.0f);
-
+		
 		// フェード演出を一回も行っていない場合
 		if (!isFade_) {
 			// フェードアウトさせる
 			fadeManager_->ChangeParameter("FadeOut");
 			fadeManager_->Play();
+
+			// 決定音再生
+			audio_->PlayWave(decisionSE_);
 
 			// フェードトリガーtrue
 			isFade_ = true;

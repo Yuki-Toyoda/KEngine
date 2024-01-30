@@ -6,6 +6,13 @@
 
 void TitleManager::Init()
 {
+	// 音再生クラスのインスタンス取得
+	audio_ = Audio::GetInstance();
+
+	/// 効果音ロード
+	// 決定音
+	decisionSE_ = audio_->LoadWave("./Resources/Audio/SE/decision.wav");
+
 	// 入力取得
 	input_ = Input::GetInstance();
 	// コントローラー入力取得
@@ -85,6 +92,10 @@ void TitleManager::Update()
 				!(preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A))) {
 			// ループを無効
 			anim_->isLoop_ = false;
+
+			// 決定音再生
+			audio_->PlayWave(decisionSE_);
+
 			// アニメーションをゲーム開始状態に変更
 			anim_->ChangeParameter("Title_GameStart", true);
 		}
