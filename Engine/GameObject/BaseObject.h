@@ -8,6 +8,7 @@
 #include "../Sprite/SpriteManager.h"
 #include "../Collider/CollisionManager.h"
 #include "../Utility/KLib.h"
+#include "../Primitive/2d/BillboardPlane.h"
 
 /// 最小構成
 /*
@@ -196,6 +197,15 @@ protected: // プライベートなメンバ関数
 	/// <param name="fileName">ファイル名</param>
 	/// <param name="enableLighting">ライティングを有効にするか</param>
 	Mesh* AddMesh(WorldTransform* wt, Vector4& color, const std::string& path, const std::string& fileName, bool enableLighting = true);
+
+	/// <summary>
+	/// ビルボード平面追加関数
+	/// </summary>
+	/// <param name="wt">ワールドトランスフォーム実体</param>
+	/// <param name="color">オブジェクト色</param>
+	/// <param name="texture">テクスチャ名</param>
+	/// <returns>生成したビルボード平面</returns>
+	BillboardPlane* AddBillboardPlane(WorldTransform* wt, Vector4& color, Texture* texture);
 
 	/// <summary>
 	/// スプライト追加関数

@@ -1,6 +1,9 @@
 {
     "Boss": {
-        "HitPoint": 1300.0,
+        "FallAttackReadyTime": 0.25,
+        "HitPoint": 100.0,
+        "PushUpReadyTime": 0.25,
+        "RollerAttackReadyTime": 0.25,
         "waitPushUp": 3.0,
         "waitRoller": 3.0,
         "waitSingle": 3.0,

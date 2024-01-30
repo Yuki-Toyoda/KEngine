@@ -62,7 +62,7 @@ public: // アクセッサ等
 	/// 天球セッター
 	/// </summary>
 	/// <param name="skyDome">天球</param>
-	void SetSkyDome(SkyDome* skyDome) { skyDome_ = skyDome; }
+	void SetSkyDome(SkyDome* skyDome);
 
 	/// <summary>
 	/// シーン遷移トリガー
