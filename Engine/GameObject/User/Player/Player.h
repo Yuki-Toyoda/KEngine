@@ -5,6 +5,7 @@
 #include "../Ground/Ground.h"
 #include "State/PlayerStateList.h"
 #include "uribo/uribo.h"
+
 // クラスの前方宣言
 class PlayerAnimManager;
 
@@ -156,6 +157,17 @@ private: // プライベートなメンバ関数
 	void SetGlobalVariables();
 	
 private: // メンバ変数
+
+	// 音再生用クラス
+	Audio* audio_ = nullptr;
+
+	/// 効果音
+	// 攻撃
+	int32_t attackSE_ = 0u;
+	// 食べる
+	int32_t eatSE_ = 0u;
+	// 餌を与える
+	int32_t feedSE_ = 0u;
 
 	// 移動方向ベクトル
 	Vector3 velocity_;

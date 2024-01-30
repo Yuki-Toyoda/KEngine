@@ -3,15 +3,34 @@
 #include"../../../GlobalVariables/GlobalVariables.h"
 void Player::Init()
 {
+	// 音再生クラスのインスタンス取得
+	audio_ = Audio::GetInstance();
+
+	/// 効果音のロード
+	// 攻撃
+	attackSE_ = audio_->LoadWave("./Resources/Audio/SE/attack.wav");
+	// 食べる
+	eatSE_ = audio_->LoadWave("./Resources/Audio/SE/eat.wav");
+	// 餌を与える
+	feedSE_ = audio_->LoadWave("./Resources/Audio/SE/feed.wav");
+
 	// 移動ベクトル初期化
 	velocity_ = { 0.0f,0.0f,0.0f };
 	// 球のコライダーを追加
 	AddColliderSphere("Enemy", &worldPos_, &transform_.scale_.x);
+	
+	// 行動状態を待機状態に変更
 	ChangeState(std::make_unique<RootState>());
+
+	// ゲームオーバーフラグ
 	isGameOver_ = false;
+
+	// 調整項目クラスのインスタンス取得
 	GlobalVariables* variables = GlobalVariables::GetInstance();
+	// 調整項目クラスのグループ生成
 	variables->CreateGroup(name_);
 	
+	/// 調整項目クラスに値を追加する
 	variables->AddItem(name_, "MoveAcceleration", moveAcceleration_);
 	variables->AddItem(name_, "MaxMoveAcceleration", kMaxMoveAcceleration_);
 	variables->AddItem(name_, "DecayAcceleration", decayAcceleration_);
@@ -29,13 +48,15 @@ void Player::Init()
 
 void Player::Update()
 {
-
+	// 現在のスケールが最大スケールを超えている場合は
 	if (transform_.scale_.x >= maxSize) {
+		// スケールを最大スケールで固定する
 		transform_.scale_ = { maxSize,maxSize,maxSize };
-	/*	transform_.translate_.y = maxSize+1.0f;*/
 	}
+
 	// 行動状態クラスがあれば
 	if (state_.get()) {
+		// ダメージを喰らっている状態でなければ
 		if (!isDamaged_) {
 			// 行動状態の更新を行う
 			state_->Update();
@@ -44,8 +65,10 @@ void Player::Update()
 
 	// 攻撃命中クールタイマーの更新処理
 	hitCollTimer_.Update();
+
 	//回復用タイマーの更新
 	healTimer.Update();
+
 	// 前フレーム座標
 	prevPos_ = worldPos_;
 	// ワールド座標の更新
@@ -67,6 +90,7 @@ void Player::Update()
 
 		// 回転速度を速度ベクトルの長さによって変化させる
 		float rotateSpeed = KLib::Lerp<float>(0.0f, 0.25f, Math::Length(velocity_));
+		// 回転させる
 		transform_.rotate_.x -= rotateSpeed;
 	}
 	else {
@@ -111,7 +135,10 @@ void Player::Update()
 		ChangeState(std::make_unique<RootState>());
 	}
 	//SubtractVelocity();
+
+	// 現在HPの取得
 	if (uribo_->GetHP() <= 0) {
+		// ゲームオーバーフラグtrue
 		isGameOver_ = true;
 	}
 }
@@ -190,6 +217,9 @@ void Player::OnCollisionEnter(Collider* collider) {
 				transform_.scale_.z + addSize };
 
 		}
+
+		// 食べたSEを再生する
+		audio_->PlayWave(eatSE_);
 	}
 		// 降ってくる野菜に衝突した場合
 		if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagMeteor && 
@@ -213,7 +243,6 @@ void Player::OnCollision(Collider* collider)
 {
 	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagUribo) {
 		Heal();
-
 	}
 	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagEnemy &&state_->name_=="Atack") {
 		//吸収した数をリセットして座標とスケール調整
@@ -231,6 +260,9 @@ void Player::OnCollision(Collider* collider)
 
 		// 吹っ飛び状態に変更
 		ChangeState(std::make_unique<BlowAwayState>());
+
+		// 与えたSEを再生する
+		audio_->PlayWave(attackSE_);
 	}
 }
 
@@ -295,6 +327,9 @@ void Player::Heal()
 			//食べたカウントを減らす
 			absorptionCount_--;
 			healTimer.Start(healCoolTime_);
+
+			// 与えたSEを再生する
+			audio_->PlayWave(feedSE_);
 		}
 	}
 }

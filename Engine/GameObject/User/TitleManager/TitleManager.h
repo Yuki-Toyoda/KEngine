@@ -2,6 +2,7 @@
 #include "../../BaseObject.h"
 #include "../../../Input/Input.h"
 #include "../../../Utility/Animation/AnimationManager.h"
+#include "../../../Audio/Audio.h"
 
 // クラスの前方宣言
 class FadeManager;
@@ -62,6 +63,12 @@ public: // アクセッサ等
 	bool GetIsSceneChange() { return isSceneChange_; }
 
 private: // メンバ変数
+
+	// 音再生クラス
+	Audio* audio_ = nullptr;
+
+	// 決定音
+	int32_t decisionSE_ = 0u;
 
 	// 入力検知用
 	Input* input_ = nullptr;

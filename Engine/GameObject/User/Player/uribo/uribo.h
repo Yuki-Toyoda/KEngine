@@ -1,5 +1,7 @@
 #pragma once
 #include "../../../BaseObject.h"
+#include "../../../../Audio/Audio.h"
+
 class Uribo :public BaseObject
 {
 public:
@@ -33,6 +35,9 @@ private:
 
 	void SetGlobalVariables();
 private:
+
+	// 音再生クラス
+	
 
 	// ゲージ背景トランスフォーム
 	WorldTransform gageBGTransform_;
