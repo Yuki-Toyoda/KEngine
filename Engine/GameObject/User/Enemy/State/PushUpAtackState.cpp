@@ -6,11 +6,35 @@ void PushUpAtackState::Init()
 {
 	// ステート名設定
 	name_ = "PushUp";
-	enemy_->StateNumber_++;
+	// ステージデータ
+	GameDataManager* dataManager = GameDataManager::GetInstance();
+	
+	// リスト初期化
+	enemy_->pushUp_.clear();
+
+	// グループ名作成
+	std::string group = dataManager->GetPushUpAttack(enemy_->stateList_.stateNumber_[enemy_->patternNumber_][enemy_->StateNumber_]);
+
+	int pushUpMax = dataManager->GetValue<int>({ group,"Parameter" }, "MaxCount");
+	for (int i = 0; i < pushUpMax; i++) {
+		// インスタンス生成
+		PushUp* pushUp;
+		pushUp = GameObjectManager::GetInstance()->CreateInstance<PushUp>("PushUp", BaseObject::TagNone);
+		// 名前
+		std::string name = "PushUp" + std::to_string(i);
+		// Y座標以外を設定
+		Vector3 newPos = dataManager->GetValue<Vector3>({ group,name }, "Position");
+		pushUp->transform_.translate_.x = newPos.x;
+		pushUp->transform_.translate_.z = newPos.z;
+		enemy_->pushUp_.push_back(pushUp);
+	}
+
 
 	for (PushUp* pushUp : enemy_->pushUp_) {
 		pushUp->SetActive();
 	}
+
+	enemy_->StateNumber_++;
 
 	// 突き上げ攻撃アニメーションを再生する
 	enemy_->GetBossAnimManager()->PlayPushUpAttackAnim(enemy_->GetPushUpReadyTime());

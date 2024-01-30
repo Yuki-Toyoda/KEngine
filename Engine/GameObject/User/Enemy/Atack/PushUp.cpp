@@ -149,8 +149,8 @@ void PushUp::AtackEnd()
 	
 	//タイマーが終了してたら攻撃終了
 	if (timer_.GetIsFinish()) {
-		// リセットする
-		Reset();
+		// 終了トリガー
+		Destroy();
 	}
 }
 
