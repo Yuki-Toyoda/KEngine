@@ -160,7 +160,7 @@ void PlayerAnimManager::CreateParameter(const std::string& name)
 	animManager_->AddSelectAnimationKeys<Vector3>(name, "Body_Translate");
 }
 
-void PlayerAnimManager::CrateAnimation()
+void PlayerAnimManager::CreateAnimation()
 {
 	// アニメーション生成
 	anim_ = animManager_->CreateAnimation("PlayerAnim", "Player_Idle");

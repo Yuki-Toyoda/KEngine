@@ -31,9 +31,8 @@ void GameScene::Init(){
 	player_->transform_.translate_.x = 10.0f;
 	//// 敵を生成
 	//gameObjectManager_->CreateInstance<SmallEnemy>("Enemy", BaseObject::TagEnemy);
-	Uribo* uribo;
-	uribo = gameObjectManager_->CreateInstance<Uribo>("uribo", BaseObject::TagUribo);
-	player_->SetUribo(uribo);
+	uribo_ = gameObjectManager_->CreateInstance<Uribo>("uribo", BaseObject::TagUribo);
+	player_->SetUribo(uribo_);
 	// プレイヤーアニメーションマネージャの生成
 	PlayerAnimManager* am = gameObjectManager_->CreateInstance<PlayerAnimManager>("playerAnim", BaseObject::TagPlayer);
 	// プレイヤーを渡す
@@ -41,7 +40,7 @@ void GameScene::Init(){
 	// プレイヤーに自身を渡す
 	player_->SetPlayerAnimManager(am);
 	// アニメーションを生成
-	am->CrateAnimation();
+	am->CreateAnimation();
 
 	// 地面生成
 	Ground* ground;
@@ -58,7 +57,14 @@ void GameScene::Init(){
 	boss_->SetgameManager(gameManager);
 
 	// ボスのアニメーションマネージャーの生成
-	gameObjectManager_->CreateInstance<BossAnimManager>("bossAnim", BaseObject::TagEnemy);
+	BossAnimManager* bam = gameObjectManager_->CreateInstance<BossAnimManager>("bossAnim", BaseObject::TagEnemy);
+	// アニメーションマネージャーにボスをセット
+	bam->SetBoss(boss_);
+	// アニメーション生成
+	bam->CreateAnimation();
+
+	// ボスにボスのアニメーションマネージャーをセット
+	boss_->SetBossAnimManager(bam);
 
 	// 柵の生成
 	Fences* fm = gameObjectManager_->CreateInstance<Fences>("Fence", BaseObject::TagNone);
@@ -70,10 +76,12 @@ void GameScene::Init(){
 
 	// UIマネージャの生成
 	InGameUIManager* iUIm = gameObjectManager_->CreateInstance<InGameUIManager>("UIManager", BaseObject::TagNone);
+	// UIマネージャーにプレイヤーをセット
+	iUIm->SetPlayer(player_);
 	// UIマネージャーにボスをセット
 	iUIm->SetBoss(boss_);
 	// UIマネージャーにウリボーをセット
-	iUIm->SetUribo(uribo);
+	iUIm->SetUribo(uribo_);
 
 	// フェードイン
 	FadeManager::GetInstance()->ChangeParameter("FadeIn", true);
@@ -85,6 +93,12 @@ void GameScene::Init(){
 
 void GameScene::Update()
 {
+	// ボスのHPが0以下の時
+	if (boss_->GetHP() <= 0) {
+		// ボスが死亡したことを伝える
+		uribo_->SetIsBossDead(true);
+	}
+
 	InputManager::Update();
 	if (player_->GetgameOver()) {
 		// クリアフラグをfalse
@@ -92,7 +106,7 @@ void GameScene::Update()
 		BaseScene* nextScene = new ResultScene();
 		SceneManager::GetInstance()->SetNextScene(nextScene);
 	}
-	if (!boss_->isActive_){
+	if (boss_->GetIsSceneChage()){
 		// クリアフラグをtrue
 		ResultScene::isClear_ = true;
 		BaseScene * nextScene = new ResultScene();

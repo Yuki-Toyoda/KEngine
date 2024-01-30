@@ -61,7 +61,7 @@ public: // メンバ関数
 	/// <summary>
 	/// 攻撃関数
 	/// </summary>
-	void Atack();
+	void Atacking();
 
 public: // アクセッサ等
 
@@ -134,6 +134,7 @@ public: // アクセッサ等
 	Vector3 GetPushUpPos() { return pushUpPos_; }
 	//pushUpに当たったときの跳ね返る力のゲッター
 	float GetPushUpHitForce() { return pushUpHitForce; }
+
 /// </summary>
 private: // プライベートなメンバ関数
 

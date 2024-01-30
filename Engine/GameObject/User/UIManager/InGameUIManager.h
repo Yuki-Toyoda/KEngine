@@ -5,12 +5,15 @@
 // クラスの前方宣言
 class Boss;
 class Uribo;
+class Player;
 
 /// <summary>
 /// インゲーム内でのUIマネージャ
 /// </summary>
 class InGameUIManager : public BaseObject
 {
+private: // サブクラス
+
 public: // メンバ関数
 
 	/// <summary>
@@ -42,6 +45,12 @@ public: // アクセッサ等
 	/// <param name="uribo">ウリボー</param>
 	void SetUribo(Uribo* uribo) { uribo_ = uribo; }
 
+	/// <summary>
+	/// プレイヤーのセッター
+	/// </summary>
+	/// <param name="player"></param>
+	void SetPlayer(Player* player) { player_ = player; }
+
 private: // メンバ変数
 
 	// 入力検知用
@@ -56,5 +65,23 @@ private: // メンバ変数
 	// ウリボー本体
 	Uribo* uribo_ = nullptr;
 
+	// プレイヤー本体
+	Player* player_ = nullptr;
+
+	/// スプライト格納用変数群
+	Sprite* bossHPGageSprite_BG_ = nullptr; // ボスのHPゲージ背景
+	Sprite* bossHPGageSprite_F_ = nullptr; // ボスのゲージ本体
+	Sprite* bossHPGageSprite_Icon_ = nullptr; // ボスのアイコン
+	Sprite* playerHPFrame_ = nullptr; // プレイヤーのHPフレーム
+	Sprite* playerIcon_ = nullptr; // プレイヤーのHPフレーム
+	Sprite* playerVegetableIcon_ = nullptr; // プレイヤーの野菜アイコン
+	Sprite* playerVegetableCount1_ = nullptr; // 1桁目
+	Sprite* playerVegetableCount2_ = nullptr; // 2桁目
+
+	/// チュートリアル実装まで残すスプライト
+	Sprite* moveSpriteBG_ = nullptr; // スティックスプライト背景
+	Sprite* moveSprite_ = nullptr; // スティックスプライト背景
+	Sprite* AttackSprite_ = nullptr; // 攻撃方法スプライト
+	Sprite* FeedSprite_ = nullptr; // 攻撃方法スプライト
 };
 

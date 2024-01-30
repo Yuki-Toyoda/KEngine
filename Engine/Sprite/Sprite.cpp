@@ -116,3 +116,9 @@ void Sprite::DisplayImGui()
 		ImGui::TreePop();
 	}
 }
+
+void Sprite::SetParent(WorldTransform* parent, uint8_t parentType)
+{
+	// 親子関係をセット
+	transform_.SetParent(parent, parentType);
+}

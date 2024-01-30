@@ -20,9 +20,29 @@ public: // メンバ関数
 	/// ImGui表示関数
 	/// </summary>
 	void DisplayImGui() override;
+
+	/// <summary>
+	/// ゲームマネージャーセッター
+	/// </summary>
+	/// <param name="gamemanager"></param>
 	void SetgameManager(GameManager* gamemanager) { gameManager_ = gamemanager; }
-private:
+
+public: // アクセッサ等
+
+	/// <summary>
+	/// 落下トリガーセッター
+	/// </summary>
+	/// <param name="isFall">落下トリガー状態</param>
+	void SetIsFall(const bool& isFall) { isFall_ = isFall; }
+
+private: // プライベートなメンバ関数
+
+	/// <summary>
+	/// 衝突時のみコールバックされる関数
+	/// </summary>
+	/// <param name="collider">当たったコライダー</param>
 	void OnCollisionEnter(Collider* collider)override;
+
 private: // メンバ変数
 
 	// 移動方向ベクトル
@@ -37,7 +57,11 @@ private: // メンバ変数
 	// 攻撃範囲色
 	Vector4 areaColor_;
 
+	// ゲームマネージャー
 	GameManager* gameManager_;
 	
+	// 落下トリガー
+	bool isFall_ = false;
+
 };
 

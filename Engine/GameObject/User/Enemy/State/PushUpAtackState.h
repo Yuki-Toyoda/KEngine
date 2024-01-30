@@ -3,7 +3,12 @@
 class PushUpAtackState:public IEnemyState
 {
 public:
+
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
 	PushUpAtackState() { name_ = "PushUp"; }
+
 	/// <summary>
 	/// 初期化関数
 	/// </summary>
@@ -21,6 +26,9 @@ public:
 	void DisplayImGui() override;
 
 private: // メンバ変数
+
+	// 突き上げトリガー
+	bool isPushUp_ = false;
 
 };
 

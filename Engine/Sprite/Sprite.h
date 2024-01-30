@@ -67,6 +67,19 @@ public: // アクセッサ等
 	/// <returns>表示状態</returns>
 	bool GetIsActive() { return plane_->isActive_; }
 
+	/// <summary>
+	/// ワールドトランスフォームのゲッター
+	/// </summary>
+	/// <returns>ワールドトランスフォーム</returns>
+	WorldTransform* GetWorldTransform() { return &transform_; }
+
+	/// <summary>
+	/// 親子関係のセッター
+	/// </summary>
+	/// <param name="parent">セットするワールド座標</param>
+	/// <param name="parentType">親子関係フラグ</param>
+	void SetParent(WorldTransform* parent, uint8_t parentType = 0b111);
+
 public: // パブリックなメンバ変数
 
 	// 大きさ

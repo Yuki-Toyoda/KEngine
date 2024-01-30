@@ -8,8 +8,7 @@ void IEnemyState::PreInit(IEnemy* enemy)
 	gameObjectmanager_ = GameObjectManager::GetInstance();
 }
 
-void IEnemyState::DisplayImGui()
-{
+void IEnemyState::DisplayImGui(){
 	// 基底クラスでは記述なし
 }
 

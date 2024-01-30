@@ -33,7 +33,15 @@ void ResultScene::Init()
 	rm_->PostInit(isClear_);
 
 	// フェードイン
-	FadeManager::GetInstance()->ChangeParameter("FadeIn", true);
+	if (isClear_) {
+		// フェードイン(白)
+		FadeManager::GetInstance()->ChangeParameter("WhiteIn", true);
+	}
+	else {
+		// フェードイン
+		FadeManager::GetInstance()->ChangeParameter("FadeIn", true);
+	}
+	// フェード演出再生
 	FadeManager::GetInstance()->Play();
 }
 
@@ -43,12 +51,25 @@ void ResultScene::Update()
 	// リザルトマネージャの状態で遷移
 	if (rm_->GetIsSceneChange()) {
 		if (rm_->GetIsRetry()) {
-			BaseScene* nextScene = new GameScene();
-			SceneManager::GetInstance()->SetNextScene(nextScene);
+			if (isClear_) {
+				BaseScene* nextScene = new GameScene();
+				SceneManager::GetInstance()->SetNextScene(nextScene);
+			}
+			else {
+				BaseScene* nextScene = new TitleScene();
+				SceneManager::GetInstance()->SetNextScene(nextScene);
+			}
+			
 		}
 		else {
-			BaseScene* nextScene = new TitleScene();
-			SceneManager::GetInstance()->SetNextScene(nextScene);
+			if (isClear_) {
+				BaseScene* nextScene = new TitleScene();
+				SceneManager::GetInstance()->SetNextScene(nextScene);
+			}
+			else {
+				BaseScene* nextScene = new GameScene();
+				SceneManager::GetInstance()->SetNextScene(nextScene);
+			}
 		}
 	}
 

@@ -6,6 +6,9 @@
 #include"../Player/Player.h"
 #include"Atack/PushUp.h"
 
+// クラスの前方宣言
+class BossAnimManager;
+
 /// <summary>
 /// 敵の基底クラス
 /// </summary>
@@ -95,6 +98,33 @@ public: // アクセッサ等
 	float GetWaitMulti() { return waitForMulti_; }
 	float GetWaitPushUp() { return waitForPushUp_; }
 	void SetgameManager(GameManager* gamemanager) { gameManager_ = gamemanager; }
+
+	/// <summary>
+	/// 落下攻撃準備時間ゲッター
+	/// </summary>
+	/// <returns>落下攻撃準備時間</returns>
+	float GetFallAttackReadyTime() { return fallAttackReadyTime_; }
+	
+	/// <summary>
+	/// 突き上げ攻撃準備時間ゲッター
+	/// </summary>
+	/// <returns>突き上げ攻撃準備時間</returns>
+	float GetPushUpReadyTime() { return pushUpReadyTime_; }
+
+	
+	float GetRollerAttackReadyTime() { return rollerAttackReadyTime_; }
+
+	/// <summary>
+	/// ボスのアニメーションマネージャーセッター
+	/// </summary>
+	/// <param name="bam">ボスのアニメーションマネージャー本体</param>
+	void SetBossAnimManager(BossAnimManager* bam) { bam_ = bam; }
+	/// <summary>
+	/// ボスのアニメーションマネージャーゲッター
+	/// </summary>
+	/// <returns>ボスのアニメーションマネージャー</returns>
+	BossAnimManager* GetBossAnimManager() { return bam_; }
+
 public: // パブリックなメンバ変数
 	struct MyState
 	{
@@ -141,6 +171,17 @@ protected: // 継承先メンバ変数
 	float waitForRoller_=2.0f;
 	//PushUpAtack後の待機
 	float waitForPushUp_=2.0f;
+
+	// ボスのアニメーションマネージャー
+	BossAnimManager* bam_ = nullptr;
+
+	/// ボスの攻撃時の待機アニメーション秒数
+	// ボスの落下攻撃時の待機時間
+	float fallAttackReadyTime_ = 0.25f;
+	// ボスの突き上げ攻撃時の待機時間
+	float pushUpReadyTime_ = 0.25f;
+	// ボスのローラー攻撃時の待機時間
+	float rollerAttackReadyTime_ = 0.25f;
 };
 
 /// <summary>

@@ -7,14 +7,14 @@ void GameManager::Init()
 {
 	GlobalVariables* variables = GlobalVariables::GetInstance();
 	variables->CreateGroup(name_);
-	//上からフルスピード
+	//上から降ってくるスピード
 	variables->AddItem(name_,"meteorSpeed", meteorSpeed_);
-	//下からの開店時間
-	variables->AddItem(name_, "PushUpRotateSpeed", pushUpRotateSpeed_);
-	//下からの攻撃時間
+	//下からの攻撃準備時間
+	variables->AddItem(name_, "PushUpPreAttackTime", pushUpPreAttackTime_);
+	//下からの攻撃にかかる時間
 	variables->AddItem(name_, "pushUpAtackTime", pushUpAtackTime_);
-
-	variables->AddItem(name_, "pushUpRemain", pushUpRemainTime_);
+	// 下からの攻撃持続時間
+	variables->AddItem(name_, "pushUpPostAttackTime", pushUpPostAttackTime_);
 
 	variables->AddItem(name_,"RubbleAlliveCount", rubbleAliveCount_);
 	variables->AddItem(name_,"RubbleSize", rubbleSize_);
@@ -42,11 +42,11 @@ void GameManager::DisplayImGui()
 	//上からフルスピード
 	ImGui::DragFloat("meteorSpeed", &meteorSpeed_, 0.1f);
 	//下からの開店時間
-	ImGui::DragFloat("PushUpRotateTime", &pushUpRotateSpeed_, 0.1f);
+	ImGui::DragFloat("PushUpPreAttackTime", &pushUpPreAttackTime_, 0.1f, 0.1f);
 	//下からの攻撃時間
-	ImGui::DragFloat("pushUpAtackTime", &pushUpAtackTime_);
+	ImGui::DragFloat("pushUpAtackTime", &pushUpAtackTime_, 0.1f, 0.1f);
 
-	ImGui::DragFloat("pushUpRemainTime", &pushUpRemainTime_);
+	ImGui::DragFloat("pushUpPostAttackTime", &pushUpPostAttackTime_, 0.1f, 0.1f);
 
 	if (ImGui::Button("save")) {
 		GlobalVariables* variables = GlobalVariables::GetInstance();
@@ -54,11 +54,11 @@ void GameManager::DisplayImGui()
 		//上からフルスピード
 		variables->SetValue(name_, "meteorSpeed", meteorSpeed_);
 		//下からの開店時間
-		variables->SetValue(name_, "PushUpRotateSpeed", pushUpRotateSpeed_);
+		variables->SetValue(name_, "PushUpPreAttackTime", pushUpPreAttackTime_);
 		//下からの攻撃時間
 		variables->SetValue(name_, "pushUpAtackTime", pushUpAtackTime_);
 
-		variables->SetValue(name_, "pushUpRemain", pushUpRemainTime_);
+		variables->SetValue(name_, "pushUpPostAttackTime", pushUpPostAttackTime_);
 
 		variables->SetValue(name_, "RubbleAlliveCount", rubbleAliveCount_);
 		variables->SetValue(name_, "RubbleSize", rubbleSize_);
@@ -78,11 +78,11 @@ void GameManager::SetGlobalVariable()
 	//上からフルスピード
 	meteorSpeed_=variables->GetFloatValue(name_, "meteorSpeed");
 	//下からの開店時間
-	pushUpRotateSpeed_= variables->GetFloatValue(name_, "PushUpRotateSpeed");
+	pushUpPreAttackTime_= variables->GetFloatValue(name_, "PushUpPreAttackTime");
 	//下からの攻撃時間
 	pushUpAtackTime_ = variables->GetFloatValue(name_, "pushUpAtackTime");
 
-	pushUpRemainTime_=variables->GetFloatValue(name_, "pushUpRemain");
+	pushUpPostAttackTime_=variables->GetFloatValue(name_, "pushUpPostAttackTime");
 
 	rubbleAliveCount_=variables->GetFloatValue(name_, "RubbleAlliveCount" );
 	rubbleSize_=variables->GetFloatValue(name_, "RubbleSize");

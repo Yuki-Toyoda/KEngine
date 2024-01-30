@@ -21,6 +21,7 @@ void Rubble::Update()
 	lerpTimer_.Update();
 	aliveTimer_.Update();
 	transform_.translate_ = KLib::Lerp<Vector3>(startPos_, goalPos_, KLib::EaseOutQuad(lerpTimer_.GetProgress()));
+	color_.w = KLib::Lerp<float>(1.0f, 0.0f, aliveTimer_.GetProgress());
 	//時間が切れるか表示フラグがない場合オブジェクトを破壊
 	if (aliveTimer_.GetIsFinish()||!isActive_) {
 		Destroy();

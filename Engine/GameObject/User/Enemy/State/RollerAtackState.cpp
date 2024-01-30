@@ -1,14 +1,10 @@
 #include "RollerAtackState.h"
 #include "../IEnemy.h"
+#include "../BossAnimManager.h"
+
 void RollerAtackState::Init()
 {
 	name_ = "Roller";
-	
-	////隕石を生成してstateを変更
-	//Roller* roller = gameObjectmanager_->CreateInstance<Roller>("roller", BaseObject::TagMeteor);
-	////隕石の座標
-	//roller->transform_.translate_.z = -10.0f;
-	//roller->transform_.translate_.x = -20.0f;
 
 	GameDataManager* dataManager = GameDataManager::GetInstance();
 
@@ -26,15 +22,35 @@ void RollerAtackState::Init()
 		object->SetVelocity(dataManager->GetValue<Vector3>({ group,section }, "Direct"));
 		object->transform_.scale_ = dataManager->GetValue<Vector3>({ group,"Parameter" }, "Scale");
 		object->SetgameManager(enemy_->gameManager_);
+
+		// 一時格納のため配列に保存
+		rollers_.push_back(object);
 	}
 	enemy_->StateNumber_++;
+	
+	// 落下攻撃アニメーション開始
+	enemy_->GetBossAnimManager()->PlayRollerAttackAnim(enemy_->GetRollerAttackReadyTime());
+
 }
 
 void RollerAtackState::Update()
 {
-	enemy_->SetWaitTime(enemy_->GetWaitRoller());
-	enemy_->ChangeState(std::make_unique<WaitTimeState>());
-	return;
+	// 落下攻撃終了アニメーションの進捗が一定値以上、またはダメージアニメーション中の場合
+	if ((enemy_->GetBossAnimManager()->GetAnimation()->GetReadingParameterName() == "Boss_EndRollerAttack" && 
+		enemy_->GetBossAnimManager()->GetAnimation()->GetAnimationProgress() >= 0.25f) ||
+		enemy_->GetBossAnimManager()->GetAnimation()->GetReadingParameterName() == "Boss_Damage") {
+
+		// 全てのローラーを同タイミングで動作させる
+		for (Roller* r : rollers_) {
+			r->SetIsMove(true);
+		}
+
+		// ステート変更
+		enemy_->SetWaitTime(enemy_->GetWaitRoller());
+		enemy_->ChangeState(std::make_unique<WaitTimeState>());
+		// これ以降の処理を行わない
+		return;
+	}
 }
 
 void RollerAtackState::DisplayImGui()

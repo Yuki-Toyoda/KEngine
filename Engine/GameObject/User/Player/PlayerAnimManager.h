@@ -42,7 +42,7 @@ public: // メンバ関数
 	/// <summary>
 	/// アニメーション生成関数
 	/// </summary>
-	void CrateAnimation();
+	void CreateAnimation();
 
 	/// <summary>
 	/// 読み込みパラメータ変更関数

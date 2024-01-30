@@ -2,15 +2,21 @@
 
 void AnimDevScene::Init()
 {
+	// インゲームカメラの生成
+	InGameCamera* cam = gameObjectManager_->CreateInstance<InGameCamera>("InGameCamera", BaseObject::TagCamera);
+	cam->fov_ = 0.85f;
+	cam->transform_.translate_ = { 0.0f,47.0f,-90.0f };
+	cam->transform_.rotate_ = { 0.55f,0.0f,0.0f };
+
 	// プレイヤーアニメーションマネージャの生成
 	PlayerAnimManager* pam = gameObjectManager_->CreateInstance<PlayerAnimManager>("playerAnim", BaseObject::TagPlayer);
 	pam->transform_.translate_.x = 3.0f;
-	pam->CrateAnimation();
+	pam->CreateAnimation();
 
 	// プレイヤーアニメーションマネージャの生成
 	BossAnimManager* eam_ = gameObjectManager_->CreateInstance<BossAnimManager>("bossAnim", BaseObject::TagEnemy);
 	// アニメーション生成
-	eam_->CrateAnimation();
+	eam_->CreateAnimation();
 
 	// 地面生成
 	Ground* ground = gameObjectManager_->CreateInstance<Ground>("Ground", BaseObject::TagFloor);

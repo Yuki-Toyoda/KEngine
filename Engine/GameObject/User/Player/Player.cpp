@@ -314,7 +314,7 @@ void Player::SetGlobalVariables()
    pushUpHitForce = variables->GetFloatValue(name_, "PushUpHitForce" );
 }
 
-void Player::Atack()
+void Player::Atacking()
 {
 
 	//攻撃力を吸収した数*攻撃倍率に

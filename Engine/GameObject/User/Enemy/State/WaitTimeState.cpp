@@ -1,6 +1,6 @@
 #include "WaitTimeState.h"
 #include "../IEnemy.h"
-
+#include "../../Random/RandomEngine.h"
 void WaitTimeState::Init()
 {
 	name_ = "Wait";

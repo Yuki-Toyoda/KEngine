@@ -23,6 +23,11 @@ public:
 
 private: // メンバ変数
 
+	// ローラー配列
+	std::vector<Roller*> rollers_;
 	
+	// 転がり開始
+	bool isRotateStart_ = false;
+
 };
 

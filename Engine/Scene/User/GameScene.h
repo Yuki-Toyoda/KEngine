@@ -20,11 +20,14 @@ public: // メンバ関数
 private:
 
 	// プレイヤー
-	Player*player_;
+	Player*player_ = nullptr;
 
 	// カメラ
-	InGameCamera* camera_;
+	InGameCamera* camera_ = nullptr;
 
 	// ボス
-	Boss* boss_;
+	Boss* boss_ = nullptr;
+
+	// ウリボー
+	Uribo* uribo_ = nullptr;
 };

@@ -1,7 +1,10 @@
 #pragma once
 #include"IEnemy.h"
-
 #include "../../GameObjectManager.h"
+
+/// <summary>
+/// ボスのクラス
+/// </summary>
 class Boss:public IEnemy
 {
 public: // メンバ関数
@@ -54,6 +57,12 @@ public: // アクセッサ等
 	/// <returns>最大HP</returns>
 	float GetMaxHP() { return kMaxHitPoint_; }
 
+	/// <summary>
+	/// シーン遷移トリガー状態ゲッター
+	/// </summary>
+	/// <returns>シーン遷移トリガー状態</returns>
+	bool GetIsSceneChage() { return isSceneChange_; }
+
 private: // メンバ関数
 
 	/// <summary>
@@ -78,4 +87,10 @@ private:
 
 	// ゲームオブジェクトマネージャ
 	GameObjectManager* gameObjectManager_;
+
+	// 画面フェードトリガー
+	bool isFade_ = false;
+	// シーン遷移トリガー
+	bool isSceneChange_ = false;
+
 };

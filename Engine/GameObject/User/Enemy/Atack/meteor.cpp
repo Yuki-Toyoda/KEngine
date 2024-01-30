@@ -3,6 +3,7 @@
 #include "../../../GameObjectManager.h"
 #include "../../../../Resource/Texture/TextureManager.h"
 #include "../../Random/RandomEngine.h"
+
 void Meteor::Init()
 {
 	// 攻撃範囲用トランスフォームの初期化
@@ -36,10 +37,16 @@ void Meteor::Init()
 
 void Meteor::Update()
 {
-	//速度
-	moveSpeed_ = gameManager_->meteorSpeed_;
+	// 落下トリガーがtrueの場合
+	if (isFall_) {
+		//速度をゲームマネージャーから取得
+		moveSpeed_ = gameManager_->meteorSpeed_;
 
-	transform_.translate_ += velocity_ * moveSpeed_;
+		// 座標を移動させる
+		transform_.translate_ += velocity_ * moveSpeed_;
+	}
+
+	// 攻撃範囲の座標を座標に同期させながら動かす
 	attackAreaTransform_.translate_.y = -transform_.translate_.y + 0.25f;
 }
 
