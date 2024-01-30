@@ -4,27 +4,29 @@
 
 void PushUpAtackState::Init()
 {
-	// ステート名設定
+	// �X�e�[�g���ݒ�
 	name_ = "PushUp";
+	enemy_->StateNumber_++;
+}
 
 	for (PushUp* pushUp : enemy_->pushUp_) {
 		pushUp->SetActive();
 	}
 
-	// 突き上げ攻撃アニメーション開始
+	// �˂��グ�U���A�j���[�V�����J�n
 	enemy_->GetBossAnimManager()->PlayPushUpAttackAnim(enemy_->GetPushUpReadyTime());
 
 }
 
 void PushUpAtackState::Update()
 {
-	// 落下攻撃終了アニメーション、またはダメージアニメーション中の場合
+	// �����U���I���A�j���[�V�����A�܂��̓_���[�W�A�j���[�V�������̏ꍇ
 	if (enemy_->GetBossAnimManager()->GetAnimation()->GetReadingParameterName() == "Boss_EndThrustUpAttack" ||
 		enemy_->GetBossAnimManager()->GetAnimation()->GetReadingParameterName() == "Boss_Damage") {
 	
-		// アニメーション進捗が一定割合を超えていたら
+		// �A�j���[�V�����i������芄���𒴂��Ă�����
 		if (enemy_->GetBossAnimManager()->GetAnimation()->GetAnimationProgress() > 0.15f) {
-			// 全ての突き上げ攻撃を攻撃状態にする
+			// �S�Ă̓˂��グ�U����U����Ԃɂ���
 			for (PushUp* pushUp : enemy_->pushUp_) {
 				pushUp->SetIsAttack(true);
 			}

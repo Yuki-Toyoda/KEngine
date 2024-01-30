@@ -24,6 +24,8 @@ void SingleAtackState::Init()
 		// 野菜配列に追加
 		meteors_.push_back(meteor);
 	}
+	enemy_->StateNumber_++;
+
 
 	// 落下攻撃アニメーション開始
 	enemy_->GetBossAnimManager()->PlayFallAttackAnim(enemy_->GetFallAttackReadyTime());

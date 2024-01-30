@@ -1,0 +1,66 @@
+{
+    "TableData": {
+        "TableList0": {
+            "ActionList": [
+                "MultiAttack",
+                "SingleAttack",
+                "PushUp",
+                "MultiAttack"
+            ],
+            "NumberList": [
+                0,
+                0,
+                0,
+                0
+            ]
+        },
+        "TableList1": {
+            "ActionList": [
+                "MultiAttack"
+            ],
+            "NumberList": [
+                0
+            ]
+        },
+        "TableList2": {
+            "ActionList": [
+                "SingleAttack",
+                "SingleAttack"
+            ],
+            "NumberList": [
+                1,
+                1
+            ]
+        },
+        "TableList3": {
+            "ActionList": [
+                "SingleAttack",
+                "SingleAttack"
+            ],
+            "NumberList": [
+                1,
+                1
+            ]
+        },
+        "TableList4": {
+            "ActionList": [
+                "SingleAttack",
+                "SingleAttack"
+            ],
+            "NumberList": [
+                1,
+                1
+            ]
+        },
+        "TableList5": {
+            "ActionList": [
+                "SingleAttack",
+                "SingleAttack"
+            ],
+            "NumberList": [
+                2,
+                3
+            ]
+        }
+    }
+}

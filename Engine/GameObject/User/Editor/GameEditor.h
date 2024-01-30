@@ -23,7 +23,6 @@ public:
 	void Update();
 
 public: // アクセッサ
-	HierarchicalName GetNormalInfo() { return { "AttackParam","Info" }; }
 	HierarchicalName GetSingleInfo() { return { "SingleMeteor","Info" }; }
 
 private:
@@ -35,10 +34,7 @@ private:
 	InGameCamera* camera_;
 	// 地面
 	Ground* ground_;
-	// プレイヤー
-	Player* player_;
 
-	static int sLoadNumber_;
 	/// <summary>
 	/// エディターのImGui
 	/// </summary>
@@ -158,6 +154,50 @@ private:
 	/// </summary>
 	void SaveMulti();
 
+	/// <summary>
+	/// リストの変換(一文字専用
+	/// </summary>
+	/// <param name="lists"></param>
+	/// <returns></returns>
+	std::list<int> ConvertToIntList(std::list<std::string> lists) {
+
+		std::list<int> list;
+		int returnNum = 0;
+
+		for (std::string obj : lists) {
+
+			for (char c : obj) {
+				if (std::isdigit(c)) {
+					returnNum = std::stoi(obj);
+					list.push_back(returnNum);
+				}
+			}
+
+		}
+		return list;
+	}
+
+	std::list<std::string> ConvertToStringList(std::list<int> lists) {
+		std::list<std::string> stringList;
+		for (int number : lists) {
+			std::string sNumber = std::to_string(number);
+			stringList.push_back(sNumber);
+		}
+		return stringList;
+	}
+
+	void SaveTableData(int number) {
+		std::string groupName = "TableData";
+		std::string sectionName = "TableList" + std::to_string(number);
+
+		dataManager_->SetValue({ groupName,sectionName }, "ActionList", tableNames_);
+		dataManager_->SetValue({ groupName,sectionName }, "NumberList", tableNumbers_);
+
+		dataManager_->SaveData(groupName);
+	}
+
+	void ReleadTable();
+
 private:
 	// 保存の名前
 	std::string saveName_ = "";
@@ -167,11 +207,19 @@ private:
 		kGameSide,
 	};
 
-	std::list<std::string> tableNames_ = { "Single","Multi","PushUp","Roller" };
+	std::list<std::string> tableNames_;
+
+	std::list<std::string> numberStrings_;
+	std::list<int> tableNumbers_;
 
 	int cameraType_ = kUpSide;
 
 	int type_ = 0;
+	int tmpInt = 0;
+
+	//int tableNumber_ = 0;
+
+	int nowTableNumber_ = 0;
 
 	// 攻撃の種類ごとの名前（グループネームのベース)
 	const std::string kParamName = "AttackParam";
@@ -194,8 +242,6 @@ private:
 
 private:
 	/// SingleAttack用
-	// 障害物の最大数
-	int kObstacleCounter_ = 0;
 	// 隕石の数
 	int meteorCounter_ = 0;
 	// 敵の最大数
@@ -211,8 +257,6 @@ private:
 	Vector3 multiSize_ = { 1,1,1 };
 	Vector3 pushUpSize_ = { 1,1,1 };
 	Vector3 rollerSize_ = { 8.0f,1,1.0f };
-	// 現在の難易度
-	int editNowLevel_ = 0;
 	// 落下かどうか
 	int isGravity_ = 0;
 	// スポーンY座標用

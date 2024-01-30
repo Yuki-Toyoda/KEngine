@@ -22,6 +22,8 @@ void MultiAtackState::Init()
 	// 複数落下攻撃アニメーション開始
 	enemy_->GetBossAnimManager()->PlayMultiFallAnim();
 
+	enemy_->StateNumber_++;
+
 }
 
 void MultiAtackState::Update()

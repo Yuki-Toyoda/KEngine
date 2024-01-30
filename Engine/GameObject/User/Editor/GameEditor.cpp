@@ -11,18 +11,11 @@ void GameEditor::Init()
 
 	ParameterInitialize();
 
-	dataManager_->CreateGroup({ "Test","A" });
-	std::list<std::string> nameList;
-	nameList.push_back("Multi");
-	nameList.push_back("Single");
-	nameList.push_back("Roller");
-	nameList.push_back("PushUp");
-	dataManager_->SetValue({ "Test","Parttern0" }, "List0", nameList);
-	nameList.pop_back();
-	nameList.pop_back();
-	dataManager_->SetValue({ "Test","Pattern1" }, "List0", nameList);
 
-	dataManager_->SaveData("Test");
+	dataManager_->CreateGroup({ "TableData","TableList0" });
+	dataManager_->CreateGroup({ "TableData","TableList1" });
+
+	dataManager_->SaveData("TableData");
 
 }
 
@@ -175,6 +168,8 @@ void GameEditor::ParameterInitialize()
 
 #pragma endregion
 
+	// テーブルのデータ
+	ReleadTable();
 }
 
 void GameEditor::EditorImGui()
@@ -392,6 +387,7 @@ void GameEditor::EditorImGui()
 				std::string section = "PushUp" + std::to_string(pushUpCounter_);
 				Vector3 newPos = {};
 				dataManager_->AddItem({ group,section }, "Position", newPos);
+				dataManager_->AddItem({ group,"Parameter"}, "Scale", newPos);
 				object->transform_.translate_ = dataManager_->GetValue<Vector3>({ group,section }, "Position");
 				object->transform_.scale_ = dataManager_->GetValue<Vector3>({ group,"Parameter" }, "Scale");
 				pushUps_.push_back(object);
@@ -538,17 +534,17 @@ void GameEditor::EditorImGui()
 
 	ImGui::End();
 
-	for (int i = 0; i < 10; i++) {
-		std::string group = dataManager_->GetPushUpAttack(i);
-		dataManager_->CreateGroup({ group,"A" });
-		dataManager_->SaveData(group);
-		group = dataManager_->GetRollerAttack(i);
-		dataManager_->CreateGroup({ group,"A" });
-		dataManager_->SaveData(group);
-		group = dataManager_->GetPushUpAttack(i);
-		dataManager_->CreateGroup({ group,"A" });
-		dataManager_->SaveData(group);
-	}
+	//for (int i = 0; i < 10; i++) {
+	//	std::string group = dataManager_->GetPushUpAttack(i);
+	//	dataManager_->CreateGroup({ group,"A" });
+	//	dataManager_->SaveData(group);
+	//	group = dataManager_->GetRollerAttack(i);
+	//	dataManager_->CreateGroup({ group,"A" });
+	//	dataManager_->SaveData(group);
+	//	group = dataManager_->GetPushUpAttack(i);
+	//	dataManager_->CreateGroup({ group,"A" });
+	//	dataManager_->SaveData(group);
+	//}
 
 }
 
@@ -556,80 +552,100 @@ void GameEditor::SystemImGui()
 {
 
 	ImGui::Begin("CommonSystem");
-	ImGui::SeparatorText("Object");
+	ImGui::SeparatorText("Ground");
 	ImGui::DragFloat3("GroundPos", &ground_->transform_.translate_.x, 0.01f, -10.0f, 10.0f);
-	// 保存の名前
-	static char saveName[256];
-	ImGui::InputText("SaveName", saveName, IM_ARRAYSIZE(saveName));
-	ImGui::Text(saveName_.c_str());
-	int num = GameDataManager::LoadNumber;
-	ImGui::Text("%d", num);
-	if (ImGui::Button("NameSave")) {
-		saveName_ = saveName;
-		dataManager_->AddSingleAttack(saveName_);
-		dataManager_->AddLoadNum();
+	ImGui::SeparatorText("Camera");
+	if (ImGui::RadioButton("UpSide", &cameraType_, kUpSide)) {
+		CameraUpdate();
 	}
-	std::list<int> intList = dataManager_->GetValue<std::list<int>>({ "Test","Pattern0" }, "I_List");
+	ImGui::SameLine();
+	if (ImGui::RadioButton("GameCamera", &cameraType_, kGameSide)) {
+		CameraUpdate();
+	}
 
-	for (int i : intList) {
-		ImGui::Text("%d\n",i);
-	}
+	//// 保存の名前
+	//static char saveName[256];
+	//ImGui::InputText("SaveName", saveName, IM_ARRAYSIZE(saveName));
+	//ImGui::Text(saveName_.c_str());
+	//int num = GameDataManager::LoadNumber;
+	//ImGui::Text("%d", num);
+	//if (ImGui::Button("NameSave")) {
+	//	saveName_ = saveName;
+	//	dataManager_->AddSingleAttack(saveName_);
+	//	dataManager_->AddLoadNum();
+	//}
+	//std::list<int> intList = dataManager_->GetValue<std::list<int>>({ "Test","Pattern0" }, "I_List");
+
+	//for (int i : intList) {
+	//	ImGui::Text("%d\n",i);
+	//}
 
 	ImGui::Text("\n");
 
-	if (ImGui::BeginTabBar("EditObject")) {
-
-		if (ImGui::BeginTabItem("Camera")) {
-			//ImGui::SameLine();
-			if (ImGui::RadioButton("UpSide", &cameraType_, kUpSide)) {
-				CameraUpdate();
-			}
-			ImGui::SameLine();
-			if (ImGui::RadioButton("GameCamera", &cameraType_, kGameSide)) {
-				CameraUpdate();
-			}
-
-			std::list<std::string> testList = dataManager_->GetValue<std::list<std::string>>({ "Test","Parttern0" }, "List0");
-
-			for (std::string st : testList) {
-				ImGui::Text(st.c_str());
-				ImGui::Text("\n");
-			}
-
-			std::list<std::string> list = dataManager_->GetValue<std::list<std::string>>({ "Test","Pattern1" }, "List0");
-			for (std::string st : list) {
-				ImGui::Text(st.c_str());
-				ImGui::Text("\n");
-			}
-
-			ImGui::EndTabItem();
-		}
+	if (ImGui::BeginTabBar("EditObject")) 
+	{
 		if (ImGui::BeginTabItem("Table")) {
-			////操作するアイテム一覧
-			//static const char* itemNames[] = { "Single","Multi","PushUp","Roller" };
 
+			ImGui::SeparatorText("System");
 
-			//for (int i = 0; i < IM_ARRAYSIZE(itemNames); i++) {
-			//	// アイテムそれぞれを設定
-			//	const char* item = itemNames[i];
-			//	ImGui::Selectable(item);
+			ImGui::InputInt("NowTableNumber", &nowTableNumber_, 0);
 
-			//	// つかんでいる場合
-			//	if (ImGui::IsItemActive() && !ImGui::IsItemHovered()) {
-			//		int next = i + (ImGui::GetMouseDragDelta(0).y < 0.f ? -1 : 1);
-			//		if (next >= 0 && next < IM_ARRAYSIZE(itemNames)) {
-			//			itemNames[i] = itemNames[next];
-			//			itemNames[next] = item;
-			//			ImGui::ResetMouseDragDelta();
-			//		}
+			// 開始
+			ImGui::Columns(2,"my",false);
+			// ボタンのサイズを設定
+			ImVec2 buttonSize(100, 20);
+			if (ImGui::Button("Next", buttonSize)) {
+				// ボタンがクリックされたときの処理
+				if (nowTableNumber_ < 10) {
+					SaveTableData(nowTableNumber_);
+					nowTableNumber_++;
+					ReleadTable();
+				}
+			}
+			ImGui::NextColumn(); // 次の列に移動
+			if (ImGui::Button("Prev", buttonSize)) {
+				// ボタンがクリックされたときの処理
+				if (nowTableNumber_ > 0) {
+					SaveTableData(nowTableNumber_);
+					nowTableNumber_--;
+					ReleadTable();
+				}
+			}
+			// 終了
+			ImGui::Columns(1);
 
-			//	}
-			//}
+			if (ImGui::Button("Save"))
+			{
+				this->SaveTableData(nowTableNumber_);
+			}
 
 			static char buffer[256];
-			const char* items[] = { "Single","Multi","PushUp","Roller" };
+			const char* items[] = { "SingleAttack","MultiAttack","PushUp","Roller" };
 			const char* tmpName = items[type_];
-			ImGui::InputText("NewName", buffer, IM_ARRAYSIZE(buffer));
+			//if (ImGui::TreeNode("NumberControl")) {
+			ImGui::SeparatorText("Number");
+				ImGui::InputInt("NewNum", &tmpInt);
+				std::string textInt = std::to_string(tmpInt);
+				ImGui::SeparatorText("Add");
+				if (ImGui::Button("NumAdd") && tableNumbers_.size() < tableNames_.size()) {
+					numberStrings_.push_back(textInt);
+				}
+				if (ImGui::Button("NumFrontAdd") && tableNumbers_.size() < tableNames_.size()) {
+					numberStrings_.push_front(textInt);
+				}
+				ImGui::SeparatorText("Delete");
+				if (ImGui::Button("NumDelete")) {
+					numberStrings_.pop_back();
+				}
+				if (ImGui::Button("NumFrontDelete")) {
+					numberStrings_.pop_front();
+				}
+				//ImGui::TreePop();
+			//}
+
+			ImGui::Text("\n");
+
+			//ImGui::InputText("NewName", buffer, IM_ARRAYSIZE(buffer));
 			if (ImGui::BeginCombo("NameList",tmpName)) {
 				if (ImGui::Selectable("Single", type_ == 0)) {
 					type_ = 0;
@@ -646,40 +662,76 @@ void GameEditor::SystemImGui()
 
 				ImGui::EndCombo();
 			}
-
+			int namesMaxValue = 10;
 			if (ImGui::Button("Add")) {
-				tableNames_.push_back(tmpName);
+				if (tableNames_.size() < namesMaxValue) {
+					tableNames_.push_back(tmpName);
+				}
 			}
-
-			for (auto it = tableNames_.begin(); it != tableNames_.end(); ++it) {
+			ImGui::SameLine();
+			if (ImGui::Button("Delete")) {
+				if (tableNames_.size() > 0) {
+					tableNames_.pop_back();
+				}
+			}
+			// タブの内容
+			ImGui::BeginChild(ImGui::GetID((void*)0), ImVec2(200, 150), ImGuiWindowFlags_NoTitleBar);
+			// テーブルの一覧表示・ドラッグで順番変更
+			for (std::list<std::string>::iterator it = tableNames_.begin(); it != tableNames_.end(); ++it) {
 				std::string itemName = *it;
 				ImGui::Selectable(itemName.c_str());
 
-				if (it->at(0) && ImGui::IsItemActive() && !ImGui::IsItemHovered())
-				{
-					auto next = std::next(it, (ImGui::GetMouseDragDelta(0).y < 0.f ? -1 : 1));
-					if (next != tableNames_.end()) {
+				if (it->at(0) && ImGui::IsItemActive() && !ImGui::IsItemHovered()) {
+					auto mouseDragDelta = ImGui::GetMouseDragDelta(0).y;
+
+					if (it != tableNames_.begin()) {
+						std::list<std::string>::iterator prev = std::prev(it);
+						if (mouseDragDelta < 0.f) {
+							std::swap(*it, *prev);
+							ImGui::ResetMouseDragDelta();
+						}
+					}
+
+					if (it != std::prev(tableNames_.end()) && mouseDragDelta > 0.f) {
+						std::list<std::string>::iterator next = std::next(it);
 						std::swap(*it, *next);
 						ImGui::ResetMouseDragDelta();
 					}
 				}
 			}
+			ImGui::EndChild();
+			
+			ImGui::SameLine();
+#pragma region intリスト部分
+			// タブの内容
+			ImGui::BeginChild(ImGui::GetID((void*)1), ImVec2(200, 150), ImGuiWindowFlags_NoTitleBar);
+			// テーブルの一覧表示・ドラッグで順番変更
+			for (std::list<std::string>::iterator it = numberStrings_.begin(); it != numberStrings_.end(); ++it) {
+				std::string itemName = *it;
+				ImGui::Selectable(itemName.c_str());
 
-			ImGui::SeparatorText("System");
-			if (ImGui::Button("Save")) {
-				std::string grName = "Test";
-				std::string seName = "List";
-				std::string keyName = "TestTable";
-				dataManager_->AddItem({ grName,seName }, keyName, tableNames_);
-				dataManager_->SetValue({ grName,seName }, keyName, tableNames_);
-				dataManager_->SaveData(grName);
+				if (it->at(0) && ImGui::IsItemActive() && !ImGui::IsItemHovered()) {
+					auto mouseDragDelta = ImGui::GetMouseDragDelta(0).y;
 
+					if (it != numberStrings_.begin()) {
+						std::list<std::string>::iterator prev = std::prev(it);
+						if (mouseDragDelta < 0.f) {
+							std::swap(*it, *prev);
+							ImGui::ResetMouseDragDelta();
+						}
+					}
+
+					if (it != std::prev(numberStrings_.end()) && mouseDragDelta > 0.f) {
+						std::list<std::string>::iterator next = std::next(it);
+						std::swap(*it, *next);
+						ImGui::ResetMouseDragDelta();
+					}
+				}
 			}
+			ImGui::EndChild();
 
-			for (std::string item : tableNames_) {
-				ImGui::Text(item.c_str());
-				ImGui::Text("\n");
-			}
+			tableNumbers_ = ConvertToIntList(numberStrings_);
+#pragma endregion
 
 			ImGui::EndTabItem();
 		}

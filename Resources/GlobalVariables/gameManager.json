@@ -1,18 +1,16 @@
 {
     "gameManager": {
-        "PushUpPreAttackTime": 1.0,
-        "PushUpRotateSpeed": 3.0,
-        "RubbleAlliveCount": 5.0,
+        "PushUpRotateSpeed": 2.5,
+        "RubbleAlliveCount": 7.0,
         "RubbleSize": 1.0,
-        "meteorSpeed": 0.20000000298023224,
-        "pushUpAtackTime": 0.5,
-        "pushUpPostAttackTime": 4.0,
-        "pushUpRemain": 3.0,
+        "meteorSpeed": 0.5,
+        "pushUpAtackTime": 2.5,
+        "pushUpRemain": 2.5,
         "rollerSpeed": 0.4000000059604645,
         "rubbleCollisionScale": [
-            3.0,
+            6.0,
             0.0,
-            3.0
+            6.0
         ],
         "rubbleRange": 10.0,
         "rubblemoveTime": 1.0

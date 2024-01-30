@@ -64,6 +64,7 @@ void GameEditor::SavePushUp()
 	// ここを拡張
 	names.kGroup = dataManager_->GetPushUpAttack(stageNumber[kPushUp]);
 	dataManager_->SetValue(names, max, pushUpCounter_);
+	dataManager_->SetValue(names, "Scale", pushUpSize_);
 
 	// 突き上げ
 	SaveObject(pushUps_, names.kGroup, 1);
@@ -115,4 +116,16 @@ void GameEditor::SaveMulti()
 	dataManager_->SetValue(names, "Scale", multiSize_);
 	// ファイル保存
 	dataManager_->SaveData(names.kGroup);
+}
+
+void GameEditor::ReleadTable() {
+	tableNames_.clear();
+	numberStrings_.clear();
+	std::string group = "TableData";
+	std::string section = "TableList" + std::to_string(nowTableNumber_);
+	dataManager_->AddItem<std::list<std::string>>({ group,section }, "ActionList", tableNames_);
+	dataManager_->AddItem<std::list<int>>({ group,section }, "NumberList", tableNumbers_);
+	tableNames_ = dataManager_->GetValue<std::list<std::string>>({ group,section }, "ActionList");
+	tableNumbers_ = dataManager_->GetValue<std::list<int>>({ group,section }, "NumberList");
+	numberStrings_ = this->ConvertToStringList(tableNumbers_);
 }

@@ -7,6 +7,7 @@ void RollerAtackState::Init()
 	name_ = "Roller";
 
 	GameDataManager* dataManager = GameDataManager::GetInstance();
+
 	std::string group = dataManager->GetRollerAttack(enemy_->stateList_.stateNumber_[enemy_->patternNumber_][enemy_->StateNumber_]);
 	int maxCount = dataManager->GetValue<int>({ group,"Parameter"}, "MaxCount");
 	for (int i = 0; i < maxCount; i++) {
@@ -25,6 +26,7 @@ void RollerAtackState::Init()
 		// 一時格納のため配列に保存
 		rollers_.push_back(object);
 	}
+	enemy_->StateNumber_++;
 	
 	// 落下攻撃アニメーション開始
 	enemy_->GetBossAnimManager()->PlayRollerAttackAnim(enemy_->GetRollerAttackReadyTime());

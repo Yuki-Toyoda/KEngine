@@ -1,7 +1,7 @@
 {
     "MultiMeteor0": {
         "Parameter": {
-            "CoolTime": 1.0,
+            "CoolTime": 1.5,
             "MaxCount": 5,
             "Scale": [
                 4.0,

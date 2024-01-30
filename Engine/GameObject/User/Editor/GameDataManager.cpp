@@ -95,13 +95,13 @@ void GameDataManager::LoadFile(const std::string& groupName)
 				SetValue(prevNames, itemName, value);
 			}
 			// 要素数が2の配列であれば
-			else if (itItem->is_array() && itItem->size() == 2 && itItem->at(0).is_number()) {
+			else if (itItem->is_array() && itItem->size() == 2 && itItem->at(0).is_number_float()) {
 				// float型のjson配列登録
 				Vector2 value = { itItem->at(0), itItem->at(1) };
 				SetValue(prevNames, itemName, value);
 			}
 			// 要素数が3の配列であれば
-			else if (itItem->is_array() && itItem->size() == 3 && itItem->at(0).is_number()) {
+			else if (itItem->is_array() && itItem->size() == 3 && itItem->at(0).is_number_float()) {
 				// float型のjson配列登録
 				Vector3 value = { itItem->at(0), itItem->at(1), itItem->at(2) };
 				SetValue(prevNames, itemName, value);
