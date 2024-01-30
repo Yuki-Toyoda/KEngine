@@ -1,12 +1,13 @@
 {
     "Player": {
         "DecayAcceleration": 0.05000000074505806,
+        "DecelerationRate": 0.6000000238418579,
         "MaxMoveAcceleration": 0.4000000059604645,
         "MaxSize": 5.0,
         "MoveAcceleration": 0.007000000216066837,
         "PushUpHitForce": 5.0,
         "StanTime": 0.5,
-        "Velocity": 0.0,
+        "Velocity": -1.5946623079798883e-06,
         "atack rate": 0.8299999833106995,
         "healpower": 160,
         "scale rate": 0.007000000216066837

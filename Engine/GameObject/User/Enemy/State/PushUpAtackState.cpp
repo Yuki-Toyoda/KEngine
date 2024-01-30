@@ -19,7 +19,7 @@ void PushUpAtackState::Init()
 	for (int i = 0; i < pushUpMax; i++) {
 		// インスタンス生成
 		PushUp* pushUp;
-		pushUp = GameObjectManager::GetInstance()->CreateInstance<PushUp>("PushUp", BaseObject::TagNone);
+		pushUp = GameObjectManager::GetInstance()->CreateInstance<PushUp>("PushUp", BaseObject::TagPushUp);
 		// 名前
 		std::string name = "PushUp" + std::to_string(i);
 		// Y座標以外を設定

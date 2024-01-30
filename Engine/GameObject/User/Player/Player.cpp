@@ -23,6 +23,7 @@ void Player::Init()
 	variables->AddItem(name_, "healpower", healPower_);
 	variables->AddItem(name_, "MaxSize", maxSize);
 	variables->AddItem(name_, "PushUpHitForce", pushUpHitForce);
+	variables->AddItem(name_, "DecelerationRate", decelerationRate);
 	SetGlobalVariables();
 }
 
@@ -123,25 +124,24 @@ void Player::DisplayImGui()
 	ImGui::DragFloat("MoveAcceleration", &moveAcceleration_, 0.01f);
 	// 最大移動加速度
 	ImGui::DragFloat("MaxMoveAcceleration", &kMaxMoveAcceleration_, 0.01f);
-
 	// 減衰速度
 	ImGui::DragFloat("DecayAcceleration", &decayAcceleration_, 0.01f);
-
 	// 速度ベクトル
 	ImGui::DragFloat3("Velocity", &velocity_.x, 0.01f);
-
-	//拡大率
+	// 拡大率
 	ImGui::DragFloat("scale rate", &scaleForce_, 0.01f);
-	//攻撃倍率
+	// 攻撃倍率
 	ImGui::DragFloat("atack rate", &atackForce_, 0.01f);
-
+	// 吸収数
 	ImGui::DragInt("Absorption Count", &absorptionCount_);
-    
+    // 回復力
 	ImGui::DragInt("heal Power", &healPower_);
-
+	// 最大値
 	ImGui::DragFloat("Max Size", &maxSize);
-
+	// 突き上げの力（？）
 	ImGui::DragFloat("PushUpHitForce", &pushUpHitForce);
+	// 減速率
+	ImGui::DragFloat("DecelerationRate", &decelerationRate);
 	// 改行する
 	ImGui::NewLine();
 
@@ -161,6 +161,7 @@ void Player::DisplayImGui()
 		variables->SetValue(name_, "healpower", healPower_);
 		variables->SetValue(name_, "MaxSize", maxSize);
 		variables->SetValue(name_, "PushUpHitForce", pushUpHitForce);
+		variables->SetValue(name_, "DecelerationRate", decelerationRate);
 		 variables->SaveFile(name_);
 		/*kMaxMoveAcceleration_ = variables->GetFloatValue(name_, "MaxMoveAcceleration");
 		decayAcceleration_ = variables->GetFloatValue(name_, "DecayAcceleration");
@@ -248,6 +249,7 @@ void Player::Damage()
 
 		// HPを減らす
 		hitPoint_--;
+
 		// ヒットクールタイマーリセット
 		hitCollTimer_.Start(hitCoolTime_);
 		ChangeState(std::make_unique<RootState>());
@@ -302,16 +304,26 @@ void Player::SetGlobalVariables()
 	GlobalVariables* variables = GlobalVariables::GetInstance();
 	variables->CreateGroup(name_);
 
+	// 移動時の加速度
 	moveAcceleration_= variables->GetFloatValue(name_, "MoveAcceleration");
+	// 
 	kMaxMoveAcceleration_ = variables->GetFloatValue(name_, "MaxMoveAcceleration" );
+	// 
 	decayAcceleration_ = variables->GetFloatValue(name_, "DecayAcceleration" );
+	// スケールの値
 	scaleForce_ = variables->GetFloatValue(name_, "scale rate");
+	// 攻撃の力
 	atackForce_ = variables->GetFloatValue(name_, "atack rate");
-	moveAcceleration_ = variables->GetFloatValue(name_, "MoveAcceleration");
+	// ダメージ受けた際の硬直時間
 	damageStanTime_ = variables->GetFloatValue(name_, "StanTime");
+	// 回復力
 	healPower_ = variables->GetIntValue(name_, "healpower");
-   maxSize = variables->GetFloatValue(name_, "MaxSize");
-   pushUpHitForce = variables->GetFloatValue(name_, "PushUpHitForce" );
+	// 最大サイズ
+    maxSize = variables->GetFloatValue(name_, "MaxSize");
+	// 突き上げ衝突時のパワー
+    pushUpHitForce = variables->GetFloatValue(name_, "PushUpHitForce" );
+	// 減速率
+	decelerationRate = variables->GetFloatValue(name_, "DecelerationRate");
 }
 
 void Player::Atacking()

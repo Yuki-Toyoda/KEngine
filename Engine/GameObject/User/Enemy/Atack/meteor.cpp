@@ -21,14 +21,14 @@ void Meteor::Init()
 	/// メッシュの追加
 	// 攻撃範囲表示
 	AddMesh(&attackAreaTransform_, areaColor_, "./Engine/Resource/Samples/Box", "Box.obj");
-	//meshes_[0]->texture_ = TextureManager::Load("./Resources", "denger.png");
 	// 色の設定
 	areaColor_ = { 1.f, 0.f, 0.f, 0.8f };
 
 	// 箱表示
 	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Box", "Box.obj");
+	meshes_[1]->texture_ = TextureManager::Load("./Resources", "Block.png");
 	// 色設定
-	color_ = { 0.0f,0.0f,0.0f,1.0f };
+	color_ = { 1.0f,1.0f,1.0f,1.0f };
 
 	// OBBのコライダーを追加
 	AddColliderAABB("meteor", &transform_.translate_, &transform_.scale_);
@@ -52,11 +52,17 @@ void Meteor::Update()
 
 void Meteor::DisplayImGui()
 {
+	transform_.DisplayImGui();
+	meshes_[1]->material_.uvTransform_.DisplayImGuiWithTreeNode("UVTransform");
 }
 
 void Meteor::OnCollisionEnter(Collider* collider)
 {
-	//if()
+	// プレイヤーと当たった際のコールバック
+	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagPlayer) {
+		Destroy();
+		return;
+	}
 
 	//床と当たったらオブジェクトを破壊してがれきを生成
 	
