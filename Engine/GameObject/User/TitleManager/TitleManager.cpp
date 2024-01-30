@@ -39,11 +39,11 @@ void TitleManager::Init()
 	
 	/// スプライトの追加
 	// タイトル画面
-	AddSprite("Title", { 0.0f, 0.0f }, { 768.0f, 192.0f }, TextureManager::Load("./Resources/UI/Title", "Title.png"));
+	AddSprite("Title", { 0.0f, 0.0f }, { 720.0f, 360.0f }, TextureManager::Load("./Resources/UI/Title", "Title.png"));
 	// アンカーポイント設定
 	sprites_[0]->anchorPoint_ = { 0.5f, 0.5f };
 	// ボタン
-	AddSprite("Buttom", { 0.0f, 0.0f }, { 512.0f, 128.0f }, TextureManager::Load("./Resources/UI/Title", "PushA_CR.png"));
+	AddSprite("Buttom", { 0.0f, 0.0f }, { 544.0f, 96.0f }, TextureManager::Load("./Resources/UI/Title", "PushA_CR.png"));
 	// アンカーポイント設定
 	sprites_[1]->anchorPoint_ = { 0.5f, 0.5f };
 

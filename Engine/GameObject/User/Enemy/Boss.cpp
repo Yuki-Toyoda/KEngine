@@ -71,7 +71,7 @@ void Boss::SuccessorUpdate()
 		}	
 	}
 	else {
-		if (bam_->GetAnimation()->isEnd_) {
+		if (bam_->GetAnimation()->GetReadingParameterName() == "Boss_Dead" && bam_->GetAnimation()->isEnd_) {
 			// フェード演出を一度も行っていない場合
 			if (!isFade_) {
 				// フェードアウト

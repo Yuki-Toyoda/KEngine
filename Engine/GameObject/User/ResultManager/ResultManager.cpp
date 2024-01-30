@@ -38,41 +38,22 @@ void ResultManager::Update()
 		// 左右方向への入力があった場合
 		if ((stickVec.x >= 0.5f && preStickVec.x <= 0.5f) || (stickVec.x <= -0.5f && preStickVec.x >= -0.5f)) {
 			if (!isRetry_) {
-
 				// リトライする
 				isRetry_ = true;
 
-				// クリアフラグによって処理を変える
-				if (isCleared_) {
-					// タイトルへ戻るテキスト
-					sprites_[2]->texBase_ = { 512.0f, 0.0f };
-					// リトライテキスト
-					sprites_[3]->texBase_ = { 0.0f, 0.0f };
-				}
-				else {
-					// リトライテキスト
-					sprites_[6]->texBase_ = { 0.0f, 0.0f };
-					// タイトルへ戻るテキスト
-					sprites_[7]->texBase_ = { 512.0f, 0.0f };
-				}
+				// タイトルへ戻るテキスト
+				sprites_[2]->texBase_ = { 432.0f, 0.0f };
+				// リトライテキスト
+				sprites_[3]->texBase_ = { 0.0f, 0.0f };
 			}
 			else {
 				// リトライする
 				isRetry_ = false;
 
-				// クリアフラグによって処理を変える
-				if (isCleared_) {
-					// タイトルへ戻るテキスト
-					sprites_[2]->texBase_ = { 0.0f, 0.0f };
-					// リトライテキスト
-					sprites_[3]->texBase_ = { 448.0f, 0.0f };
-				}
-				else {
-					// リトライテキスト
-					sprites_[6]->texBase_ = { 448.0f, 0.0f };
-					// タイトルへ戻るテキスト
-					sprites_[7]->texBase_ = { 0.0f, 0.0f };
-				}
+				// タイトルへ戻るテキスト
+				sprites_[2]->texBase_ = { 0.0f, 0.0f };
+				// リトライテキスト
+				sprites_[3]->texBase_ = { 432.0f, 0.0f };
 			}
 		}
 	}
@@ -81,7 +62,7 @@ void ResultManager::Update()
 	if ((joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A &&
 		!(preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A))) {
 		// UIを変更する
-		sprites_[0]->texBase_ = Vector2(288.0f, 0.0f);
+		sprites_[0]->texBase_ = Vector2(304.0f, 0.0f);
 
 		// フェード演出を一回も行っていない場合
 		if (!isFade_) {
@@ -143,8 +124,8 @@ void ResultManager::PostInit(bool isClear)
 
 	/// スプライト追加
 	// 決定テキスト
-	AddSprite("decision", { 1030.0f, 625.0f }, { 230.0f, 76.0f }, TextureManager::Load("./Resources/UI/Result", "decision.png"));
-	sprites_[0]->texSize_ = { 288.0f, 96.0f };
+	AddSprite("decision", { 950.0f, 625.0f }, { 304.0f, 80.0f }, TextureManager::Load("./Resources/UI/Result", "decision.png"));
+	sprites_[0]->texSize_ = { 304.0f, 80.0f };
 
 	// クリアしたかによって処理を変える
 	if (isCleared_) {
@@ -161,17 +142,17 @@ void ResultManager::PostInit(bool isClear)
 
 		/// スプライト追加
 		// クリアテキスト
-		AddSprite("Clear", { 640.0f, 125.0f }, { 512.0f, 96.0f }, TextureManager::Load("./Resources/UI/Result", "clear.png"));
+		AddSprite("Clear", { 640.0f, 125.0f }, { 566.0f, 144.0f }, TextureManager::Load("./Resources/UI/Result", "clear.png"));
 		sprites_[1]->anchorPoint_ = { 0.5f, 0.5f };
 		// タイトルへ戻るテキスト
-		AddSprite("GoTitle", { 350.0f, 500.0f }, { 512.0f, 96.0f }, TextureManager::Load("./Resources/UI/Result", "clearGoTitle.png"));
+		AddSprite("GoTitle", { 350.0f, 500.0f }, { 432.0f, 96.0f }, TextureManager::Load("./Resources/UI/Result", "clearGoTitle.png"));
 		sprites_[2]->anchorPoint_ = { 0.5f, 0.5f };
-		sprites_[2]->texSize_ = { 512.0f, 96.0f };
+		sprites_[2]->texSize_ = { 432.0f, 96.0f };
 		// リトライテキスト
-		AddSprite("Retry", { 930.0f, 500.0f }, { 448.0f, 96.0f }, TextureManager::Load("./Resources/UI/Result", "clearRetry.png"));
+		AddSprite("Retry", { 930.0f, 500.0f }, { 432.0f, 96.0f }, TextureManager::Load("./Resources/UI/Result", "clearRetry.png"));
 		sprites_[3]->anchorPoint_ = { 0.5f, 0.5f };
-		sprites_[3]->texBase_ = { 448.0f, 0.0f };
-		sprites_[3]->texSize_ = { 448.0f, 96.0f };
+		sprites_[3]->texBase_ = { 432.0f, 0.0f };
+		sprites_[3]->texSize_ = { 432.0f, 96.0f };
 
 		// リトライする
 		isRetry_ = false;
@@ -181,25 +162,17 @@ void ResultManager::PostInit(bool isClear)
 
 		/// スプライト追加
 		// 失敗テキスト
-		AddSprite("za", { 384.0f, 125.0f }, { 128.0f, 96.0f }, TextureManager::Load("./Resources/UI/Result", "za.png"));
-		AddSprite("nn1", { 512.0f, 125.0f }, { 128.0f, 96.0f }, TextureManager::Load("./Resources/UI/Result", "nn.png"));
-		AddSprite("ne", { 640.0f, 125.0f }, { 128.0f, 96.0f }, TextureManager::Load("./Resources/UI/Result", "ne.png"));
-		AddSprite("nn2", { 768.0f, 125.0f }, { 128.0f, 96.0f }, TextureManager::Load("./Resources/UI/Result", "nn.png"));
-		AddSprite("...", { 896.0f, 125.0f }, { 128.0f, 96.0f }, TextureManager::Load("./Resources/UI/Result", "....png"));
+		AddSprite("Faild", { 640.0f, 125.0f }, { 661.0f, 159.0f }, TextureManager::Load("./Resources/UI/Result", "gameOver.png"));
 		sprites_[1]->anchorPoint_ = { 0.5f, 0.5f };
-		sprites_[2]->anchorPoint_ = { 0.5f, 0.5f };
-		sprites_[3]->anchorPoint_ = { 0.5f, 0.5f };
-		sprites_[4]->anchorPoint_ = { 0.5f, 0.5f };
-		sprites_[5]->anchorPoint_ = { 0.5f, 0.5f };
 		// リトライテキスト
-		AddSprite("Retry", { 350.0f, 500.0f }, { 448.0f, 96.0f }, TextureManager::Load("./Resources/UI/Result", "loseRetry.png"));
-		sprites_[6]->anchorPoint_ = { 0.5f, 0.5f };
-		sprites_[6]->texSize_ = { 448.0f, 96.0f };
+		AddSprite("Retry", { 350.0f, 500.0f }, { 432.0f, 96.0f }, TextureManager::Load("./Resources/UI/Result", "loseRetry.png"));
+		sprites_[2]->anchorPoint_ = { 0.5f, 0.5f };
+		sprites_[2]->texSize_ = { 432.0f, 96.0f };
 		// タイトルへ戻るテキスト
-		AddSprite("GoTitle", { 930.0f, 500.0f }, { 512.0f, 96.0f }, TextureManager::Load("./Resources/UI/Result", "loseGoTitle.png"));
-		sprites_[7]->anchorPoint_ = { 0.5f, 0.5f };
-		sprites_[7]->texBase_ = { 512.0f, 0.0f };
-		sprites_[7]->texSize_ = { 512.0f, 96.0f };
+		AddSprite("GoTitle", { 930.0f, 500.0f }, { 432.0f, 96.0f }, TextureManager::Load("./Resources/UI/Result", "loseGoTitle.png"));
+		sprites_[3]->anchorPoint_ = { 0.5f, 0.5f };
+		sprites_[3]->texBase_ = { 432.0f, 0.0f };
+		sprites_[3]->texSize_ = { 432.0f, 96.0f };
 
 		// リトライする
 		isRetry_ = true;
