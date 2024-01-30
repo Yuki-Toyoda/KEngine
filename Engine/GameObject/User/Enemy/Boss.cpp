@@ -152,6 +152,48 @@ void Boss::OnCollisionEnter(Collider* collider)
 		// プレイヤーを攻撃していない状態に
 		player_->SetIsAtack(false);
 		
+		//吸収した数をリセットして座標とスケール調整
+		player_->ResetAbsorptionCount();
+
+		// 吹っ飛び状態に変更
+		player_->ChangeState(std::make_unique<BlowAwayState>());
+
+		// HPが0以下になっていたら
+		if (hitPoint_ <= 0) {
+			// 行動状態を強制的に変更
+			ChangeState(std::make_unique<WaitTimeState>());
+
+			// アニメーションマネージャーセットされている場合
+			if (bam_ != nullptr) {
+				// ダメージアニメーション再生
+				bam_->PlayDeadAnim();
+			}
+		}
+		else {
+			// アニメーションマネージャーセットされている場合
+			if (bam_ != nullptr) {
+				// ダメージアニメーション再生
+				bam_->PlayDamageAnim();
+			}
+		}
+	}
+}
+
+void Boss::OnCollision(Collider* collider)
+{
+	//プレイヤーが攻撃していたらダメージをくらう
+	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagPlayer && player_->GetIsAtack()) {
+		// ボスのHPをプレイヤーの攻撃力に基づいて減少させる
+		hitPoint_ -= player_->GetAtackPower();
+		// プレイヤーを攻撃していない状態に
+		player_->SetIsAtack(false);
+
+		//吸収した数をリセットして座標とスケール調整
+		player_->ResetAbsorptionCount();
+
+		// 吹っ飛び状態に変更
+		player_->ChangeState(std::make_unique<BlowAwayState>());
+
 		// HPが0以下になっていたら
 		if (hitPoint_ <= 0) {
 			// 行動状態を強制的に変更
