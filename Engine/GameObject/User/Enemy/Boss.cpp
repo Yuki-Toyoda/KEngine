@@ -1,5 +1,7 @@
 #include "Boss.h"
 #include "../../../GlobalVariables/GlobalVariables.h"
+#include "../../../Particle/ParticleEmitterManager.h"
+
 void Boss::SuccessorInit()
 {
 	// 大きさ設定
@@ -124,6 +126,8 @@ void Boss::OnCollisionEnter(Collider* collider)
 	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagPlayer && player_->GetIsAtack()) {
 		hitPoint_ -= player_->GetAtackPower();
 		player_->SetIsAtack(false);
+		ParticleEmitterManager::GetInstance()->CreateEmitter<IParticleEmitter, IParticle>("ParticleTest", 100, 25, { 0.0f,5.0f,0.0f }, 1, 2, TextureManager::Load("uvChecker.png"));
+
 	}
 }
 
