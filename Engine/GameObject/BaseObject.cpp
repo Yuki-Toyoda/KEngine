@@ -145,6 +145,22 @@ Mesh* BaseObject::AddMesh(WorldTransform* wt, Vector4& color, const std::string&
 	return newMesh;
 }
 
+BillboardPlane* BaseObject::AddBillboardPlane(WorldTransform* wt, Vector4& color, Texture* texture)
+{
+	// ビルボード平面のインスタンスを生成
+	BillboardPlane* newPlane = primitiveManager_->CreateInstance<BillboardPlane>(); // インスタンス生成
+	newPlane->transform_ = wt;								   // ワールドトランスフォームを与える
+	newPlane->commonColor = &color;							   // 色を設定
+	newPlane->material_.enableLighting_ = false;	   // ライティングの有効設定
+	newPlane->texture_ = texture;
+
+	// メッシュリストに生成メッシュを追加
+	meshes_.push_back(newPlane);
+
+	// 生成した平面を返還する
+	return newPlane;
+}
+
 Sprite* BaseObject::AddSprite(const std::string& name, const Vector2& position, const Vector2& size, Texture* texture)
 {
 	// 新しいインスタンスの追加

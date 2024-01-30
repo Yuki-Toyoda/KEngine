@@ -3,6 +3,7 @@
 #include "../../User/Player/PlayerAnimManager.h"
 #include "../../../Resource/Texture/TextureManager.h"
 #include "../../../Scene/FadeManager.h"
+#include "../../Samples/SampleSkyDome/SkyDome.h"
 
 void ResultManager::Init()
 {
@@ -177,6 +178,15 @@ void ResultManager::PostInit(bool isClear)
 		// リトライする
 		isRetry_ = true;
 	}
+}
+
+void ResultManager::SetSkyDome(SkyDome* skyDome)
+{
+	// 天球を代入
+	skyDome_ = skyDome;
+
+	// UIの都合上回転して見やすく
+	skyDome_->transform_.rotate_.y = 2.26f;
 }
 
 void ResultManager::CreateClearAnimation()

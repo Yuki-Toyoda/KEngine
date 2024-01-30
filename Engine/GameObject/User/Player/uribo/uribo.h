@@ -33,15 +33,33 @@ private:
 
 	void SetGlobalVariables();
 private:
+
+	// ゲージ背景トランスフォーム
+	WorldTransform gageBGTransform_;
+	WorldTransform gageTransform_;
+
+	// 
+	BillboardPlane* gageBGPlane_ = nullptr;
+	BillboardPlane* gagePlane_ = nullptr;
+
+	Vector4 bgColor_ = { 0.0f, 0.0f, 0.0f, 1.0f };
+	Vector4 gageColor_ = { 1.0f, 0.1f, 0.0f, 1.0f };
+
+	// 大きさ
+	Vector2 scale_ = { 10.0f, 1.0f };
+	// 中心点
+	Vector2 anchorPoint_ = { 0.5f, 0.5f };
+
 	//体力
 	int hitPoint_;
 	//開始時の体力
-	int defaultHP_=10000;
+	int defaultHP_= 6000;
 	//毎フレーム減らす体力
 	int decrementHP = 1;
 	Vector3 collisionScaele_;
 
 	// ボスの死亡トリガー
 	bool isBossDead_ = false;
+
 };
 
