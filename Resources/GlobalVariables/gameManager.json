@@ -1,10 +1,12 @@
 {
     "gameManager": {
+        "PushUpPreAttackTime": 1.0,
         "PushUpRotateSpeed": 2.5,
         "RubbleAlliveCount": 7.0,
         "RubbleSize": 1.0,
-        "meteorSpeed": 0.5,
+        "meteorSpeed": 1.100000023841858,
         "pushUpAtackTime": 2.5,
+        "pushUpPostAttackTime": 4.0,
         "pushUpRemain": 2.5,
         "rollerSpeed": 0.4000000059604645,
         "rubbleCollisionScale": [
