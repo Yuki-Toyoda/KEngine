@@ -1,5 +1,5 @@
 #include "PushUp.h"
-
+#include "../../Editor/GameDataManager.h"
 
 void PushUp::Init()
 {
@@ -21,8 +21,8 @@ void PushUp::Init()
 	AddColliderAABB("pushUp", &transform_.translate_, &transform_.scale_);
 	
 	// スケールを調整する
-	transform_.scale_.y = 4.0f;
-	
+	//transform_.scale_.y = /*4.0f*/20.0f;
+
 	//通常時は少しだけ見えるように
 	defaultPosition_ = -transform_.scale_.y + 2.5f;
 	//最初はdefaultから
@@ -164,4 +164,24 @@ void PushUp::SetActive()
 
 	// タイマーを開始
 	timer_.Start(preAttackTime_);
+}
+
+void PushUp::SetScale(float scaleValue)
+{
+	// スケールの設定
+	// Yのみ2倍の値
+	float scale_Y = scaleValue * 2;
+
+	transform_.scale_ = { scaleValue,scale_Y,scaleValue };
+	// 上だけ出すための修正座標
+	defaultPosition_ = (-scale_Y + 2.5f);
+
+	//最初はdefaultから
+	transform_.translate_.y = defaultPosition_;
+
+	//下にある時は見えないように
+	rawPosition_ = transform_.translate_.y - transform_.scale_.y - 1.0f;
+	//上にある時は全て見えるように
+	upPosition_ = transform_.translate_.y + (transform_.scale_.y * 1.15f);
+
 }

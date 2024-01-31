@@ -96,9 +96,13 @@ void GameEditor::ParameterInitialize()
 	// パラメータない用
 	dataManager_->AddItem(names, MaxCountName, pushUpCounter_);
 	dataManager_->AddItem(names, "Scale", pushUpSize_);
+	dataManager_->AddItem(names, "ScaleValue", pushUpScaleValue_);
+	dataManager_->AddItem(names, "RemainTime", pushRemainTime);
 
 	pushUpCounter_ = dataManager_->GetValue<int>(names, MaxCountName);
 	pushUpSize_ = dataManager_->GetValue<Vector3>(names, "Scale");
+	pushUpScaleValue_ = dataManager_->GetValue<float>(names, "ScaleValue");
+	pushRemainTime = dataManager_->GetValue<float>(names, "RemainTime");
 
 #pragma region 下からの攻撃
 
@@ -127,6 +131,7 @@ void GameEditor::ParameterInitialize()
 		// プッシュ
 		pushUps_.push_back(object);
 	}
+
 
 #pragma endregion
 
@@ -353,7 +358,7 @@ void GameEditor::EditorImGui()
 			}
 
 			int changeNum = stageNumber[kPushUp];
-			ImGui::InputInt("num", &changeNum, 0);
+			ImGui::InputInt("Number", &changeNum, 0);
 			if (changeNum != stageNumber[kPushUp] && changeNum < 10) {
 				SavePushUp();
 				stageNumber[kPushUp] = changeNum;
@@ -362,7 +367,10 @@ void GameEditor::EditorImGui()
 
 			ImGui::SeparatorText("Common");
 			// サイズ
-			ImGui::DragFloat3("PushUp_Scale", &pushUpSize_.x, 0.01f, 1.0f, 20.0f);
+			ImGui::DragFloat("Scale", &pushUpScaleValue_, 0.01f);
+			// 突き上げ後の残る時間
+			ImGui::DragFloat("RemainTime", &pushRemainTime, 0.01f);
+
 			// 要素
 			ImGui::SeparatorText("Individual");
 			// 最大の数

@@ -16,6 +16,9 @@ void PushUpAtackState::Init()
 	std::string group = dataManager->GetPushUpAttack(enemy_->stateList_.stateNumber_[enemy_->patternNumber_][enemy_->StateNumber_]);
 
 	int pushUpMax = dataManager->GetValue<int>({ group,"Parameter" }, "MaxCount");
+	float scaleValue = dataManager->GetValue<float>({ group,"Parameter" }, "ScaleValue");
+	float remainTime = dataManager->GetValue<float>({ group,"Parameter" }, "RemainTime");
+
 	for (int i = 0; i < pushUpMax; i++) {
 		// インスタンス生成
 		PushUp* pushUp;
@@ -24,8 +27,14 @@ void PushUpAtackState::Init()
 		std::string name = "PushUp" + std::to_string(i);
 		// Y座標以外を設定
 		Vector3 newPos = dataManager->GetValue<Vector3>({ group,name }, "Position");
+		// X,Z座標のみ
 		pushUp->transform_.translate_.x = newPos.x;
 		pushUp->transform_.translate_.z = newPos.z;
+		// スケール
+		pushUp->SetScale(scaleValue);
+		// 攻撃が消えるまでの時間
+		pushUp->SetRemain(remainTime);
+
 		enemy_->pushUp_.push_back(pushUp);
 	}
 

@@ -75,6 +75,10 @@ public: // アクセッサ等
 	/// <param name="isAttack">攻撃トリガー</param>
 	void SetIsAttack(const bool& isAttack) { isAttack_ = isAttack; }
 
+	void SetScale(float scaleValue);
+
+	void SetRemain(float remainTime) { remainTime_ = remainTime; }
+
 private: // メンバ変数
 
 	// モデル自体のトランスフォーム
