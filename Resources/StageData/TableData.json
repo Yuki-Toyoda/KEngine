@@ -28,8 +28,8 @@
         },
         "TableList2": {
             "ActionList": [
+                "MultiAttack",
                 "PushUp",
-                "Roller",
                 "SingleAttack"
             ],
             "NumberList": [
@@ -53,8 +53,8 @@
         "TableList4": {
             "ActionList": [
                 "MultiAttack",
-                "Roller",
-                "MultiAttack"
+                "SingleAttack",
+                "Roller"
             ],
             "NumberList": [
                 0,

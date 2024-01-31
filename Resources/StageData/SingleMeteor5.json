@@ -2,44 +2,44 @@
     "SingleMeteor5": {
         "Meteor0": {
             "Position": [
-                0.0,
+                32.0,
                 2.0,
-                0.0
+                32.0
             ]
         },
         "Meteor1": {
             "Position": [
                 0.0,
                 2.0,
-                0.0
+                32.0
             ]
         },
         "Meteor2": {
             "Position": [
-                0.0,
+                -32.0,
                 2.0,
-                0.0
+                32.0
             ]
         },
         "Meteor3": {
             "Position": [
-                0.0,
+                32.0,
                 2.0,
-                0.0
+                -32.0
             ]
         },
         "Meteor4": {
             "Position": [
                 0.0,
                 2.0,
-                0.0
+                -32.0
             ]
         },
         "Meteor5": {
             "Position": [
-                0.0,
+                -32.0,
                 2.0,
-                0.0
+                -32.0
             ]
         },
         "Meteor6": {
@@ -52,11 +52,11 @@
         "Parameter": {
             "Distance": 30.0,
             "IsGravity": 0,
-            "MaxCount": 7,
+            "MaxCount": 6,
             "Scale": [
-                4.0,
+                15.0,
                 1.0,
-                4.0
+                15.0
             ]
         }
     }

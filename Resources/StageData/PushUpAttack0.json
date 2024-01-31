@@ -2,26 +2,26 @@
     "PushUpAttack0": {
         "Parameter": {
             "MaxCount": 2,
-            "RemainTime": 4.0,
+            "RemainTime": 32.0,
             "Scale": [
                 1.0,
                 1.0,
                 1.0
             ],
-            "ScaleValue": 5.0
+            "ScaleValue": 7.0
         },
         "PushUp0": {
             "Position": [
-                -25.0,
+                -32.0,
                 0.800000011920929,
-                0.0
+                -16.0
             ]
         },
         "PushUp1": {
             "Position": [
-                25.0,
+                16.0,
                 0.800000011920929,
-                0.0
+                32.0
             ]
         },
         "PushUp2": {
