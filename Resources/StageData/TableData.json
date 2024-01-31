@@ -16,13 +16,13 @@
         },
         "TableList1": {
             "ActionList": [
+                "PushUp",
                 "SingleAttack",
-                "SingleAttack",
-                "MultiAttack"
+                "SingleAttack"
             ],
             "NumberList": [
+                2,
                 1,
-                0,
                 0
             ]
         },

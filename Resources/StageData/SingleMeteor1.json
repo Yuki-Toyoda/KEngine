@@ -37,7 +37,7 @@
         },
         "Meteor5": {
             "Position": [
-                -8.399999618530273,
+                0.0,
                 2.0,
                 0.0
             ]
@@ -59,7 +59,7 @@
         "Parameter": {
             "Distance": 60.0,
             "IsGravity": 0,
-            "MaxCount": 5,
+            "MaxCount": 6,
             "Scale": [
                 10.0,
                 1.0,
