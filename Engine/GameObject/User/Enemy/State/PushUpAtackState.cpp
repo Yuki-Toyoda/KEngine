@@ -38,7 +38,7 @@ void PushUpAtackState::Init()
 
 	// 突き上げ攻撃アニメーションを再生する
 	enemy_->GetBossAnimManager()->PlayPushUpAttackAnim(enemy_->GetPushUpReadyTime());
-
+	enemy_->StateNumber_++;
 }
 
 void PushUpAtackState::Update()

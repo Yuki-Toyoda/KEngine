@@ -19,6 +19,13 @@ public: // メンバ関数
 
 private:
 
+	// 音再生クラス
+	Audio* audio_ = nullptr;
+
+	// BGM
+	int32_t bgmHandle_ = 0u;
+	int bgmVoiceHadle_ = -1;
+
 	// プレイヤー
 	Player*player_ = nullptr;
 

@@ -45,6 +45,13 @@
             0.0
         ],
         "Translate key : 0 : EasingParameter": 0,
-        "Translate key : 0 : PlayFrame": 0
+        "Translate key : 0 : PlayFrame": 0,
+        "Volume : KeyCount": 2,
+        "Volume key : 0": 1.0,
+        "Volume key : 0 : EasingParameter": 0,
+        "Volume key : 0 : PlayFrame": 0,
+        "Volume key : 1": 0.0,
+        "Volume key : 1 : EasingParameter": 0,
+        "Volume key : 1 : PlayFrame": 60
     }
 }
