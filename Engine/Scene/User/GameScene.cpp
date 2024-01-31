@@ -139,10 +139,16 @@ void GameScene::Update()
 	if (input_->TriggerKey(DIK_RSHIFT)) {
 		BaseScene* nextScene = new ResultScene();
 		SceneManager::GetInstance()->SetNextScene(nextScene);
+
+		// BGMを止める
+		audio_->StopWave(bgmVoiceHadle_);
 	}
 	if (input_->TriggerKey(DIK_LSHIFT)) {
 		BaseScene* nextScene = new EditorScene();
 		SceneManager::GetInstance()->SetNextScene(nextScene);
+
+		// BGMを止める
+		audio_->StopWave(bgmVoiceHadle_);
 	}
 #endif // _DEBUG
 	

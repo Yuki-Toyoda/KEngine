@@ -231,6 +231,7 @@
     <ClInclude Include="Engine\GameObject\User\GameManager\GameManager.h" />
     <ClInclude Include="Engine\GameObject\User\Player\uribo\uribo.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\BossAnimManager.h" />
+    <ClInclude Include="Engine\Particle\ParticleList.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Object3D.hlsli" />

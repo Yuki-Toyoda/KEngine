@@ -2,6 +2,9 @@
 #include"IEnemy.h"
 #include "../../GameObjectManager.h"
 
+// クラスの前方宣言
+class ParticleEmitterManager;
+
 /// <summary>
 /// ボスのクラス
 /// </summary>
@@ -84,6 +87,9 @@ private: // メンバ関数
 	//行動状態を生成
 	std::unique_ptr<IEnemyState>MakeState(std::string name);
 private:
+
+	// パーティクルエミッタマネージャ
+	ParticleEmitterManager* pem_ = nullptr;
 
 	//体力
 	float hitPoint_;
