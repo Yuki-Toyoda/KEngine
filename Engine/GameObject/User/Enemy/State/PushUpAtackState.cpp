@@ -6,7 +6,7 @@ void PushUpAtackState::Init()
 {
 	// ステート名設定
 	name_ = "PushUp";
-	enemy_->StateNumber_++;
+	
 
 	for (PushUp* pushUp : enemy_->pushUp_) {
 		pushUp->SetActive();
@@ -14,7 +14,7 @@ void PushUpAtackState::Init()
 
 	// 突き上げ攻撃アニメーションを再生する
 	enemy_->GetBossAnimManager()->PlayPushUpAttackAnim(enemy_->GetPushUpReadyTime());
-
+	enemy_->StateNumber_++;
 }
 
 void PushUpAtackState::Update()
