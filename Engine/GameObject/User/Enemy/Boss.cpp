@@ -182,7 +182,7 @@ void Boss::OnCollisionEnter(Collider* collider)
 		// パーティクル再生
 		Vector3 generatePos = transform_.translate_;
 		generatePos.y = 7.0f;
-		pem_->CreateEmitter<IParticleEmitter, IParticle>("Boss_Hit", 25, 25, generatePos, 1.0f, 10.0f, TextureManager::Load("uvChecker.png"));
+		pem_->CreateEmitter<HitParticleEmiiter, HitParticle>("Boss_Hit", 25, 25, generatePos, 1.0f, 10.0f, TextureManager::Load("uvChecker.png"));
 
 		// HPが0以下になっていたら
 		if (hitPoint_ <= 0) {

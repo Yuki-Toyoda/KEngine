@@ -200,6 +200,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\GameObject\User\Enemy\State\IEnemyState.cpp" />
     <ClCompile Include="Engine\Scene\FadeManager.cpp" />
     <ClCompile Include="Engine\GameObject\User\Fence\Fences.cpp" />
+    <ClCompile Include="Engine\Particle\User\HitParticleEmiiter.cpp" />
+    <ClCompile Include="Engine\Particle\User\HitParticle.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\GameObject\Samples\SampleSphere\SampleSphere.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -341,6 +343,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Scene\FadeManager.h" />
     <ClInclude Include="Engine\Scene\User\ResultScene.h" />
     <ClInclude Include="Engine\GameObject\User\Fence\Fences.h" />
+    <ClInclude Include="Engine\Particle\User\HitParticleEmiiter.h" />
+    <ClInclude Include="Engine\Particle\User\HitParticle.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Object3D.hlsli">

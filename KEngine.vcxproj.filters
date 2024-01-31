@@ -107,6 +107,8 @@
     <ClCompile Include="Engine\GameObject\User\GameManager\GameManager.cpp" />
     <ClCompile Include="Engine\GameObject\User\Player\uribo\uribo.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\BossAnimManager.cpp" />
+    <ClCompile Include="Engine\Particle\User\HitParticleEmiiter.cpp" />
+    <ClCompile Include="Engine\Particle\User\HitParticle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\GameObject\User\Enemy\State\MultiAtackState.h" />
@@ -232,6 +234,8 @@
     <ClInclude Include="Engine\GameObject\User\Player\uribo\uribo.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\BossAnimManager.h" />
     <ClInclude Include="Engine\Particle\ParticleList.h" />
+    <ClInclude Include="Engine\Particle\User\HitParticleEmiiter.h" />
+    <ClInclude Include="Engine\Particle\User\HitParticle.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Object3D.hlsli" />
