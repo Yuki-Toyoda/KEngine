@@ -65,4 +65,9 @@ private: // メンバ関数
 	Vector3 translate_;
 	//シェイクしているか
 	bool isShake_;
+
+private:
+
+	void SaveData();
+
 };

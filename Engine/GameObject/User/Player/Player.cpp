@@ -38,6 +38,7 @@ void Player::Init()
 	variables->AddItem(name_, "Velocity", velocity_.x);
 	variables->AddItem(name_, "scale rate", scaleForce_);
 	variables->AddItem(name_, "atack rate", atackForce_);
+	variables->AddItem(name_, "hitCoolTime", hitCoolTime_);
 	variables->AddItem(name_, "MoveAcceleration", moveAcceleration_);
 	variables->AddItem(name_, "StanTime", damageStanTime_);
 	variables->AddItem(name_, "healpower", healPower_);
@@ -171,6 +172,8 @@ void Player::DisplayImGui()
 	ImGui::DragFloat("scale rate", &scaleForce_, 0.01f);
 	// 攻撃倍率
 	ImGui::DragFloat("atack rate", &atackForce_, 0.01f);
+	// 無敵時間
+	ImGui::DragFloat("hitCoolTime", &hitCoolTime_, 0.01f);
 	// 吸収数
 	ImGui::DragInt("Absorption Count", &absorptionCount_);
     // 回復力
@@ -199,6 +202,8 @@ void Player::DisplayImGui()
 		variables->SetValue(name_, "Velocity", velocity_.x);
 		variables->SetValue(name_, "scale rate", scaleForce_);
 		variables->SetValue(name_, "atack rate", atackForce_);
+		variables->SetValue(name_, "hitCoolTime", hitCoolTime_);
+
 		variables->SetValue(name_, "MoveAcceleration", moveAcceleration_);
 		variables->SetValue(name_, "StanTime", damageStanTime_);
 		variables->SetValue(name_, "healpower", healPower_);
@@ -242,58 +247,36 @@ void Player::OnCollisionEnter(Collider* collider) {
 		// 降ってくる野菜に衝突した場合
 		if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagMeteor && 
 			state_->name_ != "BlowAway" && !isAtack_) {
-			//食べた野菜の数を減らす
-			absorptionCount_ -= subtractionAbsorptionCount_;
-			if (absorptionCount_ < 0) {
-				absorptionCount_ = 0;
-			}
 			// ダメージ処理を行う
 			Damage();
-			// 大きさリセット
-			transform_.scale_ = { 2.0f , 2.0f , 2.0f };
-			transform_.translate_.y = 3.0f;
-			for (int i = 0; i < absorptionCount_; i++) {
-				if (transform_.scale_.x > maxSize) {
-					break;
-				}
-				// 加算するサイズを計算
-				float addSize = i * scaleForce_;
-				// 加算サイズ分y座標を加算
-				transform_.translate_.y += addSize;
-				// 大きさにサイズを加算
-				transform_.scale_ = {
-					transform_.scale_.x + addSize,
-					transform_.scale_.y + addSize,
-					transform_.scale_.z + addSize };
-			}
 		}
 	
 
 	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagPushUp) {
 		transform_.translate_ = prevPos_;
 		pushUpPos_ = collider->GetGameObject()->transform_.translate_;
-		//食べた野菜の数を減らす
-		absorptionCount_ -= subtractionAbsorptionCount_;
-		if (absorptionCount_ < 0) {
-			absorptionCount_ = 0;
-		}
-		// 大きさリセット
-		transform_.scale_ = { 2.0f , 2.0f , 2.0f };
-		transform_.translate_.y = 3.0f;
-		for (int i = 0; i < absorptionCount_; i++) {
-			if (transform_.scale_.x > maxSize) {
-				break;
-			}
-			// 加算するサイズを計算
-			float addSize = i * scaleForce_;
-			// 加算サイズ分y座標を加算
-			transform_.translate_.y += addSize;
-			// 大きさにサイズを加算
-			transform_.scale_ = {
-				transform_.scale_.x + addSize,
-				transform_.scale_.y + addSize,
-				transform_.scale_.z + addSize };
-		}
+		////食べた野菜の数を減らす
+		//absorptionCount_ -= subtractionAbsorptionCount_;
+		//if (absorptionCount_ < 0) {
+		//	absorptionCount_ = 0;
+		//}
+		//// 大きさリセット
+		//transform_.scale_ = { 2.0f , 2.0f , 2.0f };
+		//transform_.translate_.y = 3.0f;
+		//for (int i = 0; i < absorptionCount_; i++) {
+		//	if (transform_.scale_.x > maxSize) {
+		//		break;
+		//	}
+		//	// 加算するサイズを計算
+		//	float addSize = i * scaleForce_;
+		//	// 加算サイズ分y座標を加算
+		//	transform_.translate_.y += addSize;
+		//	// 大きさにサイズを加算
+		//	transform_.scale_ = {
+		//		transform_.scale_.x + addSize,
+		//		transform_.scale_.y + addSize,
+		//		transform_.scale_.z + addSize };
+		//}
 		ChangeState(std::make_unique<PushUpHitState>());
 
 	}
@@ -338,7 +321,30 @@ void Player::Damage()
 		pam_->Damage(damageStanTime_);
 
 		// HPを減らす
-		hitPoint_--;
+		//hitPoint_--;
+		//食べた野菜の数を減らす
+		absorptionCount_ -= subtractionAbsorptionCount_;
+		if (absorptionCount_ < 0) {
+			absorptionCount_ = 0;
+		}
+		// 大きさリセット
+		transform_.scale_ = { 2.0f , 2.0f , 2.0f };
+		transform_.translate_.y = 3.0f;
+		for (int i = 0; i < absorptionCount_; i++) {
+			if (transform_.scale_.x > maxSize) {
+				break;
+			}
+			// 加算するサイズを計算
+			float addSize = i * scaleForce_;
+			// 加算サイズ分y座標を加算
+			transform_.translate_.y += addSize;
+			// 大きさにサイズを加算
+			transform_.scale_ = {
+				transform_.scale_.x + addSize,
+				transform_.scale_.y + addSize,
+				transform_.scale_.z + addSize };
+		}
+
 
 		// ヒットクールタイマーリセット
 		hitCollTimer_.Start(hitCoolTime_);
@@ -407,6 +413,8 @@ void Player::SetGlobalVariables()
 	scaleForce_ = variables->GetFloatValue(name_, "scale rate");
 	// 攻撃の力
 	atackForce_ = variables->GetFloatValue(name_, "atack rate");
+	// 無敵時間
+	hitCoolTime_ = variables->GetFloatValue(name_, "hitCoolTime");
 	// ダメージ受けた際の硬直時間
 	damageStanTime_ = variables->GetFloatValue(name_, "StanTime");
 	// 回復力

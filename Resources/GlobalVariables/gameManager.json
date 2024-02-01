@@ -8,7 +8,7 @@
         "pushUpAtackTime": 2.5,
         "pushUpPostAttackTime": 4.0,
         "pushUpRemain": 2.5,
-        "rollerSpeed": 0.0,
+        "rollerSpeed": 0.4000000059604645,
         "rubbleCollisionScale": [
             6.0,
             0.0,
