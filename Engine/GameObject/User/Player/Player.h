@@ -63,7 +63,14 @@ public: // メンバ関数
 	/// 攻撃関数
 	/// </summary>
 	void Atacking();
-
+/// <summary>
+/// 攻撃カウントを増やす
+/// </summary>
+	void AddAtackCount();
+/// <summary>
+/// 攻撃カウントをリセット
+/// </summary>
+	void ResetAtackCount();
 public: // アクセッサ等
 
 	/// <summary>
@@ -135,8 +142,14 @@ public: // アクセッサ等
 	Vector3 GetPushUpPos() { return pushUpPos_; }
 	//pushUpに当たったときの跳ね返る力のゲッター
 	float GetPushUpHitForce() { return pushUpHitForce; }
-
+/// <summary>
+/// atackCountのゲッター
 /// </summary>
+	int GetAtackCount() { return atackPushCount_; }
+	/// <summary>
+/// kMaxatackCountのゲッター
+/// </summary>
+	int GetmaxAtackCount() { return kMaxAtackPushCount_; }
 private: // プライベートなメンバ関数
 
 	/// <summary>
@@ -231,5 +244,12 @@ private: // メンバ変数
 	Vector3 pushUpPos_;
 	//PushUpに当たった時の吹っ飛ぶ力
 	float pushUpHitForce = 5.0f;
+	//atackボタンを押している時間
+	int atackPushCount_;
+	//atackPushCountの最大値
+	int kMaxAtackPushCount_;
+	//ダメージをくらったときに減らす食べ物の数
+	int subtractionAbsorptionCount_;
+
 };
 

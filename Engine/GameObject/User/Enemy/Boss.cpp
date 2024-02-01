@@ -155,8 +155,7 @@ void Boss::OnCollisionEnter(Collider* collider)
 		//吸収した数をリセットして座標とスケール調整
 		player_->ResetAbsorptionCount();
 
-		// 吹っ飛び状態に変更
-		player_->ChangeState(std::make_unique<BlowAwayState>());
+		
 
 		// HPが0以下になっていたら
 		if (hitPoint_ <= 0) {
@@ -191,9 +190,7 @@ void Boss::OnCollision(Collider* collider)
 		//吸収した数をリセットして座標とスケール調整
 		player_->ResetAbsorptionCount();
 
-		// 吹っ飛び状態に変更
-		player_->ChangeState(std::make_unique<BlowAwayState>());
-
+		
 		// HPが0以下になっていたら
 		if (hitPoint_ <= 0) {
 			// 行動状態を強制的に変更
