@@ -10,7 +10,7 @@
         "Velocity": 0.0,
         "atack rate": 0.8299999833106995,
         "healpower": 600,
-        "maxAtackCount": 10,
+        "maxAtackCount": 90,
         "scale rate": 0.007000000216066837,
         "subtractionAbsorptionCount_": 4
     }
