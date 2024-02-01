@@ -8,11 +8,11 @@
         "PushUpHitForce": 5.0,
         "StanTime": 0.5,
         "Velocity": 0.0,
-        "atack rate": 0.8299999833106995,
+        "atack rate": 1.399999976158142,
         "healpower": 600,
         "hitCoolTime": 2.0,
         "maxAtackCount": 90,
         "scale rate": 0.007000000216066837,
-        "subtractionAbsorptionCount_": 4
+        "subtractionAbsorptionCount_": 1
     }
 }
