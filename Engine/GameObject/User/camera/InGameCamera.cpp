@@ -4,6 +4,8 @@
 #include "../../../Base/DirectXCommon.h"
 #include "../../GameObjectManager.h"
 #include "../Random/RandomEngine.h"
+#include"../../../GlobalVariables/GlobalVariables.h"
+
 void InGameCamera::Init()
 {
 	//// 入力取得
@@ -24,6 +26,21 @@ void InGameCamera::Init()
 	//// ビュープロジェクション行列の書き込み先を指定
 	////SetVPDataTarget();
 	Camera::Init();
+
+	// 調整項目クラスのインスタンス取得
+	GlobalVariables* variables = GlobalVariables::GetInstance();
+	// 調整項目クラスのグループ生成
+	variables->CreateGroup(name_);
+
+	// 追加
+	variables->AddItem(name_, "Position", transform_.translate_);
+	variables->AddItem(name_, "Rotate", transform_.rotate_);
+	variables->AddItem(name_, "Fov", fov_);
+
+	// 取得
+	transform_.translate_ = variables->GetVector3Value(name_, "Position");
+	transform_.rotate_ = variables->GetVector3Value(name_, "Rotate");
+	fov_ = variables->GetFloatValue(name_, "Fov");
 }
 
 void InGameCamera::Update()
@@ -69,6 +86,10 @@ void InGameCamera::DisplayImGui()
 	// 視野角の調整
 	ImGui::SliderFloat("FOV", &fov_, 0.45f, 1.2f);
 
+	if (ImGui::Button("Save")) {
+		SaveData();
+	}
+
 	// ボタンを押すとこのカメラを使用する
 	if (!isUseThisCamera_) {
 		if (ImGui::Button("UseThisCamera"))
@@ -87,6 +108,21 @@ void InGameCamera::Shake()
 		isShake_ = true;
 		shakeCount_ = 0;
 	}
+}
+
+void InGameCamera::SaveData()
+{
+	// 調整項目クラスのインスタンス取得
+	GlobalVariables* variables = GlobalVariables::GetInstance();
+		
+	// 値の設定
+	variables->SetValue(name_, "Position", transform_.translate_);
+	variables->SetValue(name_, "Rotate", transform_.rotate_);
+	variables->SetValue(name_, "Fov", fov_);
+
+	// ファイル保存
+	variables->SaveFile(name_);
+
 }
 
 

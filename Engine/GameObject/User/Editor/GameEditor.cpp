@@ -7,6 +7,7 @@ void GameEditor::Init()
 	dataManager_ = GameDataManager::GetInstance();
 	gameObjectManager_ = GameObjectManager::GetInstance();
 
+	
 	CreateCamera();
 
 	ParameterInitialize();
@@ -758,15 +759,20 @@ void GameEditor::CreateCamera()
 {
 	// カメラ初期化
 	camera_ = nullptr;
+	
+
 	camera_ = gameObjectManager_->CreateInstance<InGameCamera>("Incamera", BaseObject::TagCamera);
 	camera_->UseThisCamera();
-	camera_->fov_ = 0.85f;
+	//camera_->fov_ = 0.85f;
 	//camera_->transform_.translate_ = { 0.0f,47.0f,-85.0f };
-	cameraType_ = kUpSide;
+	// カメラの座標保存
+	GameCameraPos = GlobalVariables::GetInstance()->GetVector3Value(camera_->GetObjectName(), "Position");
+	GameCameraRotate = GlobalVariables::GetInstance()->GetVector3Value(camera_->GetObjectName(), "Rotate");
+	cameraType_ = kGameSide;
 	// 角度・座標変更
-	CameraUpdate();
+	//CameraUpdate();
 	// 地面
 	ground_ = gameObjectManager_->CreateInstance<Ground>("Ground", BaseObject::TagNone);
-	ground_->transform_.translate_.y = -2.5f;
+	ground_->transform_.translate_.y = -0.7f;
 	ground_->transform_.scale_ = { 55.0f,1.0f,55.0f };
 }

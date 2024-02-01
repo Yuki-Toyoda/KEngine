@@ -53,8 +53,8 @@ private:
 			camera_->transform_.rotate_ = { 1.57f,0.0f,0.0f };
 		}
 		else if (cameraType_ == kGameSide) {
-			camera_->transform_.translate_ = { 0.0f,47.0f,-90.0f };
-			camera_->transform_.rotate_ = { 0.55f,0.0f,0.0f };
+			camera_->transform_.translate_ = GlobalVariables::GetInstance()->GetVector3Value(camera_->GetObjectName(), "Position");
+			camera_->transform_.rotate_ = GlobalVariables::GetInstance()->GetVector3Value(camera_->GetObjectName(), "Rotate");
 		}
 	}
 
@@ -209,6 +209,9 @@ private:
 		kUpSide,
 		kGameSide,
 	};
+
+	Vector3 GameCameraPos = {};
+	Vector3 GameCameraRotate = {};
 
 	std::list<std::string> tableNames_;
 
