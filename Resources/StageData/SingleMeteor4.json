@@ -50,7 +50,7 @@
             ]
         },
         "Parameter": {
-            "Distance": 30.0,
+            "Distance": 60.0,
             "IsGravity": 0,
             "MaxCount": 3,
             "Scale": [

@@ -2,13 +2,13 @@
     "PushUpAttack3": {
         "Parameter": {
             "MaxCount": 3,
-            "RemainTime": 4.0,
+            "RemainTime": 16.0,
             "Scale": [
                 5.0,
                 1.0,
                 5.0
             ],
-            "ScaleValue": 7.0
+            "ScaleValue": 5.0
         },
         "PushUp0": {
             "Position": [
