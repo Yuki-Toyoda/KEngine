@@ -111,6 +111,8 @@
     <ClCompile Include="Engine\Particle\User\HitParticle.cpp" />
     <ClCompile Include="Engine\Particle\User\ChargeParticle.cpp" />
     <ClCompile Include="Engine\Particle\User\ChargeParticleEmitter.cpp" />
+    <ClCompile Include="Engine\Particle\User\ChargeFinishParticle.cpp" />
+    <ClCompile Include="Engine\Particle\User\ChargeFinishParticleEmitter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\GameObject\User\Enemy\State\MultiAtackState.h" />
@@ -240,6 +242,8 @@
     <ClInclude Include="Engine\Particle\User\HitParticle.h" />
     <ClInclude Include="Engine\Particle\User\ChargeParticle.h" />
     <ClInclude Include="Engine\Particle\User\ChargeParticleEmitter.h" />
+    <ClInclude Include="Engine\Particle\User\ChargeFinishParticle.h" />
+    <ClInclude Include="Engine\Particle\User\ChargeFinishParticleEmitter.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Object3D.hlsli" />

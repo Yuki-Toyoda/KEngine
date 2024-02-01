@@ -96,6 +96,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Particle\User\ChargeFinishParticleEmitter.cpp" />
+    <ClCompile Include="Engine\Particle\User\ChargeFinishParticle.cpp" />
     <ClCompile Include="Engine\Particle\User\ChargeParticleEmitter.cpp" />
     <ClCompile Include="Engine\Particle\User\ChargeParticle.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\BossAnimManager.cpp" />
@@ -213,6 +215,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Scene\User\ResultScene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Particle\User\ChargeFinishParticleEmitter.h" />
+    <ClInclude Include="Engine\Particle\User\ChargeFinishParticle.h" />
     <ClInclude Include="Engine\Particle\User\ChargeParticleEmitter.h" />
     <ClInclude Include="Engine\Particle\User\ChargeParticle.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\BossAnimManager.h" />

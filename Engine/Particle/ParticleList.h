@@ -6,3 +6,5 @@
 #include "User/HitParticleEmiiter.h"
 #include "User/ChargeParticle.h"
 #include "User/ChargeParticleEmitter.h"
+#include "User/ChargeFinishParticle.h"
+#include "User/ChargeFinishParticleEmitter.h"
