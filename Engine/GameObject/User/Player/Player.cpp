@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "PlayerAnimManager.h"
-#include"../../../GlobalVariables/GlobalVariables.h"
+#include "../../../GlobalVariables/GlobalVariables.h"
+
 void Player::Init()
 {
 	// 音再生クラスのインスタンス取得
@@ -45,6 +46,16 @@ void Player::Init()
 	variables->AddItem(name_, "DecelerationRate", decelerationRate);
 	variables->AddItem(name_, "subtractionAbsorptionCount_", subtractionAbsorptionCount_);
 	SetGlobalVariables();
+
+	// パーティクルエミッタマネージャのインスタンス取得
+	pem_ = ParticleEmitterManager::GetInstance();
+
+	// チャージパーティクル生成
+	chargeParticleEmitter_ = pem_->CreateEmitter<ChargeParticleEmitter, ChargeParticle>("Boss_Hit", 25, 1, {0.0f, 0.0f, 0.0f}, 10.0f, 0.1f, TextureManager::Load("uvChecker.png"));
+	chargeParticleEmitter_->transform_.SetParent(&transform_);
+	chargeParticleEmitter_->SetIsLoop(true);
+	chargeParticleEmitter_->SetIsPlay(false);
+
 }
 
 void Player::Update()

@@ -5,6 +5,7 @@
 #include "../Ground/Ground.h"
 #include "State/PlayerStateList.h"
 #include "uribo/uribo.h"
+#include "../../../Particle/ParticleEmitterManager.h"
 
 // クラスの前方宣言
 class PlayerAnimManager;
@@ -169,6 +170,14 @@ private: // プライベートなメンバ関数
 
 	void SetGlobalVariables();
 	
+public: // パブリックなメンバ変数
+
+	// パーティクルエミッタマネージャ
+	ParticleEmitterManager* pem_ = nullptr;
+
+	// チャージパーティクル
+	IParticleEmitter* chargeParticleEmitter_ = nullptr;
+
 private: // メンバ変数
 
 	// 音再生用クラス

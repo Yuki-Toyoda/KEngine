@@ -51,30 +51,33 @@ void IParticleEmitter::Update()
 
 void IParticleEmitter::PostUpdate()
 {
-	// 各種タイマーの更新
-	aliveTimer_.Update();
-	// パーティクルの生成個数が最大数を上回ってなければタイマーを更新する
-	if (maxCount_ > particles_.size()) {
-		frequencyTimer_.Update();
-	}
-
-	// エミッタの生存時間タイマーが終了していたら
-	if (aliveTimer_.GetIsFinish() && !isLoop_) {
-		// 粒子配列のサイズが0以下なら
-		if (particles_.size() <= 0) {
-			// エミッタは終了している
-			isEnd_ = true;
+	// 再生中の場合
+	if (isPlay_) {
+		// 各種タイマーの更新
+		aliveTimer_.Update();
+		// パーティクルの生成個数が最大数を上回ってなければタイマーを更新する
+		if (maxCount_ > particles_.size()) {
+			frequencyTimer_.Update();
 		}
-	}
 
-	// 生成間隔タイマーが終了した、かつエミッタの生存時間が終了していないまたはループ状態であるとき
-	if ((frequencyTimer_.GetIsFinish() && !aliveTimer_.GetIsFinish()) || 
-		(frequencyTimer_.GetIsFinish() && isLoop_)) {
-		// 新しい粒子を生成
-		GenerateParticle();
+		// エミッタの生存時間タイマーが終了していたら
+		if (aliveTimer_.GetIsFinish() && !isLoop_) {
+			// 粒子配列のサイズが0以下なら
+			if (particles_.size() <= 0) {
+				// エミッタは終了している
+				isEnd_ = true;
+			}
+		}
 
-		// 生成間隔リセット
-		frequencyTimer_.Start(frequency_);
+		// 生成間隔タイマーが終了した、かつエミッタの生存時間が終了していないまたはループ状態であるとき
+		if ((frequencyTimer_.GetIsFinish() && !aliveTimer_.GetIsFinish()) ||
+			(frequencyTimer_.GetIsFinish() && isLoop_)) {
+			// 新しい粒子を生成
+			GenerateParticle();
+
+			// 生成間隔リセット
+			frequencyTimer_.Start(frequency_);
+		}
 	}
 }
 

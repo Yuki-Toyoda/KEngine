@@ -61,6 +61,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	AnimationManager* animationNanager = AnimationManager::GetInstance();
 	animationNanager->Init();
 
+	// パーティクルマネージャの初期化
+	ParticleEmitterManager* particleEmitterManager = ParticleEmitterManager::GetInstance();
+	particleEmitterManager->Init();
+
 	// オブジェクトマネージャーの初期化
 	GameObjectManager* gameObjectManager = GameObjectManager::GetInstance();
 	gameObjectManager->Init();
@@ -75,10 +79,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// シーンマネージャーの初期化
 	SceneManager* sceneManager = SceneManager::GetInstance();
 	sceneManager->Init();
-
-	// パーティクルマネージャの初期化
-	ParticleEmitterManager* particleEmitterManager = ParticleEmitterManager::GetInstance();
-	particleEmitterManager->Init();
 
 	// 入力の初期化
 	input = Input::GetInstance();

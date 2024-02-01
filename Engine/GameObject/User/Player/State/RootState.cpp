@@ -9,7 +9,10 @@ void RootState::Init()
 
 void RootState::Update()
 {
-	if (player_->GetAtackCount() > player_->GetmaxAtackCount()&&InputManager::Atacking()) {
+	// チャージ秒数が既定秒数以上のとき、かつボタンを話したとき
+	if (player_->GetAtackCount() > player_->GetmaxAtackCount() && InputManager::Atacking()) {
+		// チャージパーティクルをとめる
+		player_->chargeParticleEmitter_->SetIsPlay(false);
 		//攻撃ボタンを押しているカウントが一定以上でボタンを離したときに攻撃開始
 		player_->ChangeState(std::make_unique<AtackState>());
 		return;
@@ -17,6 +20,9 @@ void RootState::Update()
 
 	//攻撃ボタンを押して且つ攻撃できるときにStateをAtackに
 	if (InputManager::AtackCharge()&&player_->GetAbsorptionCount()>=kMinCount) {
+		// チャージパーティクルを再生
+		player_->chargeParticleEmitter_->SetIsPlay(true);
+		
 		//攻撃ボタンを押いるカウントを加算
 		player_->AddAtackCount();
 		velocity_ = { 0.0f,0.0f,0.0f };
@@ -25,6 +31,9 @@ void RootState::Update()
 		
 	}
 	else {
+		// チャージパーティクルをとめる
+		player_->chargeParticleEmitter_->SetIsPlay(false);
+
 		//攻撃ボタンを押しているカウントを0に
 		player_->ResetAtackCount();
 		// 移動処理

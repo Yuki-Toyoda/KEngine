@@ -78,6 +78,12 @@ public: // アクセッサ等
 	/// <param name="isLoop">ループ状態</param>
 	void SetIsLoop(const bool& isLoop) { isLoop_ = isLoop; }
 
+	/// <summary>
+	/// 再生トリガーセッター
+	/// </summary>
+	/// <param name="isPlay">再生トリガー</param>
+	void SetIsPlay(const bool& isPlay) { isPlay_ = isPlay; }
+
 protected: // 継承先メンバ関数
 
 	/// <summary>
@@ -92,6 +98,11 @@ public: // その他関数群
 	/// </summary>
 	virtual void DisplayImGui();
 
+public: // パブリックなメンバ変数
+
+	// 発生座標
+	WorldTransform transform_;
+
 protected: // メンバ変数
 
 	// パーティクル達
@@ -105,8 +116,6 @@ protected: // メンバ変数
 
 	// 一度に生成する粒子数
 	int32_t generateParticleCount_;
-	// 発生座標
-	WorldTransform transform_;
 
 	// エミッタの生存時間タイマー
 	KLib::DeltaTimer aliveTimer_;
@@ -115,6 +124,9 @@ protected: // メンバ変数
 
 	// ループトリガー
 	bool isLoop_ = false;
+
+	// 再生トリガー
+	bool isPlay_ = true;
 
 	// 生成する粒子のテクスチャ
 	Texture* texture_;

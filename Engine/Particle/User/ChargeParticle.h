@@ -25,5 +25,8 @@ private: // メンバ変数
 	// 線形補間終端座標
 	Vector3 endPos_ = { 0.0f, 0.0f, 0.0f };
 
+	// 線形補間始端スケール
+	Vector3 startScale_ = { 1.0f, 1.0f, 1.0f };
+
 };
 

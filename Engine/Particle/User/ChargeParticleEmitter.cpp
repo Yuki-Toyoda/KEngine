@@ -14,12 +14,12 @@ void ChargeParticleEmitter::GenerateParticle()
 		}
 
 		// 生成粒子の大きさ設定
-		Vector2 generateScale = { 2.0f, 2.0f };
+		Vector2 generateScale = { 3.0f, 3.0f };
 		// 生成粒子の方向ベクトルをランダムに設定
 		Vector3 generateVelocity
-			= { Math::RandomF(-1.0f, 1.0f, 3), Math::RandomF(-1.0f, 1.0f, 3), Math::RandomF(-1.0f, 1.0f, 3) };
+			= { Math::RandomF(-1.0f, 1.0f, 3), Math::RandomF(0.35f, 0.75f, 3), Math::RandomF(-1.0f, 1.0f, 3) };
 		// 方向ベクトルにランダムな速度を掛ける
-		generateVelocity = generateVelocity * Math::RandomF(30.0f, 50.0f, 1);
+		generateVelocity = generateVelocity * Math::RandomF(3.0f, 5.0f, 1);
 
 		// 生成粒子の色
 		Vector4 generateColor = { Math::RandomF(0.35f, 1.0f, 2), Math::RandomF(0.35f, 1.0f, 2), Math::RandomF(0.35f, 1.0f, 2), 1.0f };
@@ -27,7 +27,7 @@ void ChargeParticleEmitter::GenerateParticle()
 		// 新しい粒子を生成
 		std::unique_ptr<IParticle>newParticle = type_();
 		// 共通初期化
-		newParticle->PreInit(1.0f, transform_.translate_, generateScale, generateVelocity, texture_, generateColor);
+		newParticle->PreInit(1.f, transform_.GetWorldPos(), generateScale, generateVelocity, texture_, generateColor);
 		// 固有初期化
 		newParticle->Init();
 
