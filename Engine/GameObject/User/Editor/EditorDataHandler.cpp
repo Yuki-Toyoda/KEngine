@@ -64,8 +64,10 @@ void GameEditor::SavePushUp()
 	// ここを拡張
 	names.kGroup = dataManager_->GetPushUpAttack(stageNumber[kPushUp]);
 	dataManager_->SetValue(names, max, pushUpCounter_);
-	dataManager_->SetValue(names, "Scale", pushUpSize_);
-
+	// 共通スケール
+	dataManager_->SetValue(names, "ScaleValue", pushUpScaleValue_);
+	// 残る時間
+	dataManager_->SetValue(names, "RemainTime", pushRemainTime);
 	// 突き上げ
 	SaveObject(pushUps_, names.kGroup, 1);
 

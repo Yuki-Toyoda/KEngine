@@ -1,6 +1,7 @@
 {
     "Player": {
         "DecayAcceleration": 0.05000000074505806,
+        "DecelerationRate": 0.6000000238418579,
         "MaxMoveAcceleration": 0.4000000059604645,
         "MaxSize": 5.0,
         "MoveAcceleration": 0.007000000216066837,
@@ -9,6 +10,8 @@
         "Velocity": 0.0,
         "atack rate": 0.8299999833106995,
         "healpower": 600,
-        "scale rate": 0.007000000216066837
+        "maxAtackCount": 10,
+        "scale rate": 0.007000000216066837,
+        "subtractionAbsorptionCount_": 4
     }
 }

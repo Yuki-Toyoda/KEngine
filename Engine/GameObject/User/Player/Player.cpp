@@ -24,7 +24,7 @@ void Player::Init()
 
 	// ゲームオーバーフラグ
 	isGameOver_ = false;
-
+	atackPushCount_ = 0;
 	// 調整項目クラスのインスタンス取得
 	GlobalVariables* variables = GlobalVariables::GetInstance();
 	// 調整項目クラスのグループ生成
@@ -42,6 +42,8 @@ void Player::Init()
 	variables->AddItem(name_, "healpower", healPower_);
 	variables->AddItem(name_, "MaxSize", maxSize);
 	variables->AddItem(name_, "PushUpHitForce", pushUpHitForce);
+	variables->AddItem(name_, "DecelerationRate", decelerationRate);
+	variables->AddItem(name_, "subtractionAbsorptionCount_", subtractionAbsorptionCount_);
 	SetGlobalVariables();
 }
 
@@ -150,25 +152,28 @@ void Player::DisplayImGui()
 	ImGui::DragFloat("MoveAcceleration", &moveAcceleration_, 0.01f);
 	// 最大移動加速度
 	ImGui::DragFloat("MaxMoveAcceleration", &kMaxMoveAcceleration_, 0.01f);
-
 	// 減衰速度
 	ImGui::DragFloat("DecayAcceleration", &decayAcceleration_, 0.01f);
-
 	// 速度ベクトル
 	ImGui::DragFloat3("Velocity", &velocity_.x, 0.01f);
-
-	//拡大率
+	// 拡大率
 	ImGui::DragFloat("scale rate", &scaleForce_, 0.01f);
-	//攻撃倍率
+	// 攻撃倍率
 	ImGui::DragFloat("atack rate", &atackForce_, 0.01f);
-
+	// 吸収数
 	ImGui::DragInt("Absorption Count", &absorptionCount_);
-    
+    // 回復力
 	ImGui::DragInt("heal Power", &healPower_);
-
+	// 最大値
 	ImGui::DragFloat("Max Size", &maxSize);
-
+	// 突き上げの力（？）
 	ImGui::DragFloat("PushUpHitForce", &pushUpHitForce);
+	// 減速率
+	ImGui::DragFloat("DecelerationRate", &decelerationRate);
+	ImGui::DragInt("maxAtackCount", &kMaxAtackPushCount_);
+
+	ImGui::DragInt( "subtractionAbsorptionCount_", &subtractionAbsorptionCount_);
+	ImGui::DragInt("AtackCount", &atackPushCount_);
 	// 改行する
 	ImGui::NewLine();
 
@@ -188,6 +193,9 @@ void Player::DisplayImGui()
 		variables->SetValue(name_, "healpower", healPower_);
 		variables->SetValue(name_, "MaxSize", maxSize);
 		variables->SetValue(name_, "PushUpHitForce", pushUpHitForce);
+		variables->SetValue(name_, "DecelerationRate", decelerationRate);
+		variables->SetValue(name_, "maxAtackCount", kMaxAtackPushCount_);
+		variables->SetValue(name_, "subtractionAbsorptionCount_", subtractionAbsorptionCount_);
 		 variables->SaveFile(name_);
 		/*kMaxMoveAcceleration_ = variables->GetFloatValue(name_, "MaxMoveAcceleration");
 		decayAcceleration_ = variables->GetFloatValue(name_, "DecayAcceleration");
@@ -223,15 +231,58 @@ void Player::OnCollisionEnter(Collider* collider) {
 		// 降ってくる野菜に衝突した場合
 		if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagMeteor && 
 			state_->name_ != "BlowAway" && !isAtack_) {
+			//食べた野菜の数を減らす
+			absorptionCount_ -= subtractionAbsorptionCount_;
+			if (absorptionCount_ < 0) {
+				absorptionCount_ = 0;
+			}
 			// ダメージ処理を行う
 			Damage();
+			// 大きさリセット
+			transform_.scale_ = { 2.0f , 2.0f , 2.0f };
+			transform_.translate_.y = 3.0f;
+			for (int i = 0; i < absorptionCount_; i++) {
+				if (transform_.scale_.x > maxSize) {
+					break;
+				}
+				// 加算するサイズを計算
+				float addSize = i * scaleForce_;
+				// 加算サイズ分y座標を加算
+				transform_.translate_.y += addSize;
+				// 大きさにサイズを加算
+				transform_.scale_ = {
+					transform_.scale_.x + addSize,
+					transform_.scale_.y + addSize,
+					transform_.scale_.z + addSize };
+			}
 		}
 	
 
 	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagPushUp) {
 		transform_.translate_ = prevPos_;
 		pushUpPos_ = collider->GetGameObject()->transform_.translate_;
-
+		//食べた野菜の数を減らす
+		absorptionCount_ -= subtractionAbsorptionCount_;
+		if (absorptionCount_ < 0) {
+			absorptionCount_ = 0;
+		}
+		// 大きさリセット
+		transform_.scale_ = { 2.0f , 2.0f , 2.0f };
+		transform_.translate_.y = 3.0f;
+		for (int i = 0; i < absorptionCount_; i++) {
+			if (transform_.scale_.x > maxSize) {
+				break;
+			}
+			// 加算するサイズを計算
+			float addSize = i * scaleForce_;
+			// 加算サイズ分y座標を加算
+			transform_.translate_.y += addSize;
+			// 大きさにサイズを加算
+			transform_.scale_ = {
+				transform_.scale_.x + addSize,
+				transform_.scale_.y + addSize,
+				transform_.scale_.z + addSize };
+		}
 		ChangeState(std::make_unique<PushUpHitState>());
 
 	}
@@ -254,9 +305,11 @@ void Player::OnCollision(Collider* collider)
 		//isAtack_ = false;
 		// 速度をリセット
 		velocity_ = { 0.0f,0.0f,0.0f };
-
+		
 		// 与えたSEを再生する
 		audio_->PlayWave(attackSE_);
+		ChangeState(std::make_unique<BlowAwayState>());
+		return;
 	}
 }
 
@@ -275,6 +328,7 @@ void Player::Damage()
 
 		// HPを減らす
 		hitPoint_--;
+
 		// ヒットクールタイマーリセット
 		hitCollTimer_.Start(hitCoolTime_);
 		ChangeState(std::make_unique<RootState>());
@@ -332,16 +386,30 @@ void Player::SetGlobalVariables()
 	GlobalVariables* variables = GlobalVariables::GetInstance();
 	variables->CreateGroup(name_);
 
+	// 移動時の加速度
 	moveAcceleration_= variables->GetFloatValue(name_, "MoveAcceleration");
+	// 
 	kMaxMoveAcceleration_ = variables->GetFloatValue(name_, "MaxMoveAcceleration" );
+	// 
 	decayAcceleration_ = variables->GetFloatValue(name_, "DecayAcceleration" );
+	// スケールの値
 	scaleForce_ = variables->GetFloatValue(name_, "scale rate");
+	// 攻撃の力
 	atackForce_ = variables->GetFloatValue(name_, "atack rate");
-	moveAcceleration_ = variables->GetFloatValue(name_, "MoveAcceleration");
+	// ダメージ受けた際の硬直時間
 	damageStanTime_ = variables->GetFloatValue(name_, "StanTime");
+	// 回復力
 	healPower_ = variables->GetIntValue(name_, "healpower");
-   maxSize = variables->GetFloatValue(name_, "MaxSize");
-   pushUpHitForce = variables->GetFloatValue(name_, "PushUpHitForce" );
+	// 最大サイズ
+    maxSize = variables->GetFloatValue(name_, "MaxSize");
+	// 突き上げ衝突時のパワー
+    pushUpHitForce = variables->GetFloatValue(name_, "PushUpHitForce" );
+	// 減速率
+	decelerationRate = variables->GetFloatValue(name_, "DecelerationRate");
+	//アタックカウントの最大値
+	kMaxAtackPushCount_= variables->GetIntValue(name_, "maxAtackCount");
+	//減らす野菜の数
+	subtractionAbsorptionCount_= variables->GetIntValue(name_, "subtractionAbsorptionCount_" );
 }
 
 void Player::Atacking()
@@ -351,9 +419,18 @@ void Player::Atacking()
 	atackPower_ = static_cast<float>(absorptionCount_) * atackForce_;
 	velocity_ = Math::Normalize(Vector3(0.0f, transform_.translate_.y, 0.0f) - transform_.translate_) * 2.0f;
 
+	isAtack_ = true;
+	
+}
 
-	//吸収した数をリセットして座標とスケール調整
-	//ResetAbsorptionCount();
+void Player::AddAtackCount()
+{
+	atackPushCount_++;
+}
+
+void Player::ResetAtackCount()
+{
+	atackPushCount_ = 0;
 }
 
 void Player::ChangeState(std::unique_ptr<IPlayerState> newState)

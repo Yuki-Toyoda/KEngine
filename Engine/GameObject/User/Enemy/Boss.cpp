@@ -31,25 +31,9 @@ void Boss::SuccessorInit()
 
 	// ゲームオブジェクトマネージャのインスタンスを取得
 	gameObjectManager_ = GameObjectManager::GetInstance();
-	// データマネージャーのインスタンス取得
-	//GameDataManager* dataManager = GameDataManager::GetInstance();
 	// 行動状態リストの生成
 	MakeStateList();
-	
-	//下からの攻撃を生成
-	// 全ての攻撃に対して
-	//for (int i = 0; i < pushUpMax; i++) {
-	//	// インスタンス生成
-	//	PushUp* pushUp;
-	//	pushUp = gameObjectManager_->CreateInstance<PushUp>("PushUp", BaseObject::TagNone);
-	//	// 名前
-	//	std::string name = "PushUp" + std::to_string(i);
-	//	// Y座標以外を設定
-	//	Vector3 newPos = dataManager->GetValue<Vector3>({ "PushUpAttack",name }, "Position");
-	//	pushUp->transform_.translate_.x = newPos.x;
-	//	pushUp->transform_.translate_.z = newPos.z;
-	//	pushUp_.push_back(pushUp);
-	//}
+
 	GlobalVariables* variables = GlobalVariables::GetInstance();
 	variables->CreateGroup(name_);
 	variables->AddItem(name_, "HitPoint", hitPoint_);
@@ -71,7 +55,7 @@ void Boss::SuccessorUpdate()
 		if (state_.get()) {
 			// 現在ステートを更新
 			state_->Update();
-		}	
+		}
 	}
 	else {
 		if (bam_->GetAnimation()->GetReadingParameterName() == "Boss_Dead" && bam_->GetAnimation()->isEnd_) {
@@ -176,8 +160,7 @@ void Boss::OnCollisionEnter(Collider* collider)
 		//吸収した数をリセットして座標とスケール調整
 		player_->ResetAbsorptionCount();
 
-		// 吹っ飛び状態に変更
-		player_->ChangeState(std::make_unique<BlowAwayState>());
+		
 
 		// パーティクル再生
 		Vector3 generatePos = transform_.translate_;
@@ -217,9 +200,7 @@ void Boss::OnCollision(Collider* collider)
 		//吸収した数をリセットして座標とスケール調整
 		player_->ResetAbsorptionCount();
 
-		// 吹っ飛び状態に変更
-		player_->ChangeState(std::make_unique<BlowAwayState>());
-
+		
 		// HPが0以下になっていたら
 		if (hitPoint_ <= 0) {
 			// 行動状態を強制的に変更
@@ -238,6 +219,7 @@ void Boss::OnCollision(Collider* collider)
 				bam_->PlayDamageAnim();
 			}
 		}
+
 	}
 }
 

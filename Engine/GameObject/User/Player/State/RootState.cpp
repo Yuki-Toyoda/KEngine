@@ -9,13 +9,29 @@ void RootState::Init()
 
 void RootState::Update()
 {
-	// 移動処理
-	Move();
+	if (player_->GetAtackCount() > player_->GetmaxAtackCount()&&InputManager::Atacking()) {
+		//攻撃ボタンを押しているカウントが一定以上でボタンを離したときに攻撃開始
+		player_->ChangeState(std::make_unique<AtackState>());
+		return;
+	}
 
 	//攻撃ボタンを押して且つ攻撃できるときにStateをAtackに
-	if (InputManager::Atacking()&&player_->GetAbsorptionCount()>=kMinCount) {
-		Attack();
+	if (InputManager::AtackCharge()&&player_->GetAbsorptionCount()>=kMinCount) {
+		//攻撃ボタンを押いるカウントを加算
+		player_->AddAtackCount();
+		velocity_ = { 0.0f,0.0f,0.0f };
+		//移動ベクトルをプレイヤーに渡す
+		player_->SetVelocity(velocity_);
+		
 	}
+	else {
+		//攻撃ボタンを押しているカウントを0に
+		player_->ResetAtackCount();
+		// 移動処理
+		Move();
+		
+	}
+	
 }
 
 void RootState::DisplayImGui()
@@ -26,7 +42,7 @@ void RootState::Move()
 {
 	//// 移動ベクトル初期化
 	//velocity_ = { 0.0f,0.0f,0.0f };
-
+	
 	// 入力マネージャから移動方向ベクトルを取得
 	Vector3 move = Vector3(0.0f, 0.0f, 0.0f);
 	move = InputManager::Move(move);

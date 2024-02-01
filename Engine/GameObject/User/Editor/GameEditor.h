@@ -87,7 +87,10 @@ public:
 		}
 
 		for (PushUp* object : pushUps_) {
-			object->transform_.scale_ = pushUpSize_;
+			//object->transform_.scale_ = pushUpSize_;
+
+			object->transform_.scale_ = { pushUpScaleValue_,pushUpScaleValue_ ,pushUpScaleValue_ };
+
 		}
 
 	}
@@ -261,6 +264,10 @@ private:
 	int isGravity_ = 0;
 	// スポーンY座標用
 	float respawnDistance_ = 30.0f;
+
+	// 突き上げのスケール（共通）
+	float pushUpScaleValue_ = 3.0f;
+	float pushRemainTime = 4.0f;
 
 	/// MultiAttack用
 	//攻撃のクールタイム

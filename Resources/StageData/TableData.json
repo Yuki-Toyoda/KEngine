@@ -16,50 +16,62 @@
         },
         "TableList1": {
             "ActionList": [
-                "MultiAttack"
-            ],
-            "NumberList": [
-                0
-            ]
-        },
-        "TableList2": {
-            "ActionList": [
-                "SingleAttack",
-                "SingleAttack"
-            ],
-            "NumberList": [
-                1,
-                1
-            ]
-        },
-        "TableList3": {
-            "ActionList": [
-                "SingleAttack",
-                "SingleAttack"
-            ],
-            "NumberList": [
-                1,
-                1
-            ]
-        },
-        "TableList4": {
-            "ActionList": [
-                "SingleAttack",
-                "SingleAttack"
-            ],
-            "NumberList": [
-                1,
-                1
-            ]
-        },
-        "TableList5": {
-            "ActionList": [
+                "PushUp",
                 "SingleAttack",
                 "SingleAttack"
             ],
             "NumberList": [
                 2,
+                1,
+                0
+            ]
+        },
+        "TableList2": {
+            "ActionList": [
+                "MultiAttack",
+                "PushUp",
+                "SingleAttack"
+            ],
+            "NumberList": [
+                1,
+                1,
                 3
+            ]
+        },
+        "TableList3": {
+            "ActionList": [
+                "PushUp",
+                "MultiAttack",
+                "SingleAttack"
+            ],
+            "NumberList": [
+                1,
+                1,
+                0
+            ]
+        },
+        "TableList4": {
+            "ActionList": [
+                "MultiAttack",
+                "SingleAttack",
+                "Roller"
+            ],
+            "NumberList": [
+                0,
+                2,
+                0
+            ]
+        },
+        "TableList5": {
+            "ActionList": [
+                "SingleAttack",
+                "Roller",
+                "Roller"
+            ],
+            "NumberList": [
+                2,
+                1,
+                0
             ]
         }
     }

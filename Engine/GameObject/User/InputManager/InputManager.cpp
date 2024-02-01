@@ -107,8 +107,16 @@ bool InputManager::ChangeRotate()
 
 bool InputManager::Atacking()
 {
-    if (joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A &&
-        !(preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A)) {
+    if (!(joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A) &&
+        (preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A)) {
+        return true;
+    }
+    return false;
+}
+
+bool InputManager::AtackCharge()
+{
+    if ((joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A) ) {
         return true;
     }
     return false;
