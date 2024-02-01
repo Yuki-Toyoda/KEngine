@@ -14,9 +14,12 @@ private:
 	// 開始座標
 	Vector3 velocity_ = {};
 	Vector3 moveDirect_ = {};
+
+	Vector3 maxVelocity_ = {};
 	// 
 	KLib::DeltaTimer dashTimer_;
 
+	int endCount_ = 0;
 
 };
 
