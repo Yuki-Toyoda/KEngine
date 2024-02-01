@@ -40,6 +40,8 @@ void Player::Init()
 	variables->AddItem(name_, "atack rate", atackForce_);
 	variables->AddItem(name_, "hitCoolTime", hitCoolTime_);
 	variables->AddItem(name_, "correctFrame", correctEndFrame_);
+	variables->AddItem(name_, "correctValue", correctOffsetValue_);
+
 	variables->AddItem(name_, "MoveAcceleration", moveAcceleration_);
 	variables->AddItem(name_, "StanTime", damageStanTime_);
 	variables->AddItem(name_, "healpower", healPower_);
@@ -128,14 +130,12 @@ void Player::Update()
 		transform_.rotate_.x = 0.0f;
 	}
 
-	float correctValue = 0.5f;
-
 	//地面より外に出たら中に戻して状態をRootに変更
 	// 右壁
 	if (transform_.translate_.x + transform_.scale_.x >= ground_->transform_.scale_.x) {
 		// 補間座標
 		correctionPos_ = {
-			ground_->transform_.scale_.x - transform_.scale_.x - correctValue,
+			ground_->transform_.scale_.x - transform_.scale_.x - correctOffsetValue_,
 			transform_.translate_.y,
 			transform_.translate_.z
 		};
@@ -147,7 +147,7 @@ void Player::Update()
 	else if (transform_.translate_.x - transform_.scale_.x <= -ground_->transform_.scale_.x) {
 		// 補間座標
 		correctionPos_ = {
-			-ground_->transform_.scale_.x + transform_.scale_.x + correctValue,
+			-ground_->transform_.scale_.x + transform_.scale_.x + correctOffsetValue_,
 			transform_.translate_.y,
 			transform_.translate_.z
 		};
@@ -161,7 +161,7 @@ void Player::Update()
 		correctionPos_ = {
 			transform_.translate_.x,
 			transform_.translate_.y,
-			ground_->transform_.scale_.z - transform_.scale_.z - correctValue
+			ground_->transform_.scale_.z - transform_.scale_.z - correctOffsetValue_
 		};
 		// 強制的に待機状態ステートに変更
 		ChangeState(std::make_unique<WallCollisionState>());
@@ -172,7 +172,7 @@ void Player::Update()
 		correctionPos_ = {
 			transform_.translate_.x,
 			transform_.translate_.y,
-			-ground_->transform_.scale_.z + transform_.scale_.z + correctValue
+			-ground_->transform_.scale_.z + transform_.scale_.z + correctOffsetValue_
 		};
 		// 強制的に待機状態ステートに変更
 		ChangeState(std::make_unique<WallCollisionState>());
@@ -205,6 +205,8 @@ void Player::DisplayImGui()
 	ImGui::DragFloat("hitCoolTime", &hitCoolTime_, 0.01f);
 	// 修正フレーム
 	ImGui::DragFloat("correctFrame", &correctEndFrame_, 0.01f);
+	// 修正量
+	ImGui::DragFloat("correctValue", &correctOffsetValue_, 0.01f);
 	// 吸収数
 	ImGui::DragInt("Absorption Count", &absorptionCount_);
     // 回復力
@@ -235,6 +237,7 @@ void Player::DisplayImGui()
 		variables->SetValue(name_, "atack rate", atackForce_);
 		variables->SetValue(name_, "hitCoolTime", hitCoolTime_);
 		variables->SetValue(name_, "correctFrame", correctEndFrame_);
+		variables->SetValue(name_, "correctValue", correctOffsetValue_);
 
 		variables->SetValue(name_, "MoveAcceleration", moveAcceleration_);
 		variables->SetValue(name_, "StanTime", damageStanTime_);
@@ -449,6 +452,8 @@ void Player::SetGlobalVariables()
 	hitCoolTime_ = variables->GetFloatValue(name_, "hitCoolTime");
 	// 修正補間フレーム数
 	correctEndFrame_ = variables->GetFloatValue(name_, "correctFrame");
+	// 修正量
+	correctOffsetValue_ = variables->GetFloatValue(name_, "correctValue");
 	// ダメージ受けた際の硬直時間
 	damageStanTime_ = variables->GetFloatValue(name_, "StanTime");
 	// 回復力

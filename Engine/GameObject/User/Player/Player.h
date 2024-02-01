@@ -228,6 +228,8 @@ private: // メンバ変数
 	Vector3 correctionPos_ = {};
 	// 修正フレーム
 	float correctEndFrame_ = 10.0f;
+	// 修正量
+	float correctOffsetValue_ = 0.5f;
 
 	//吸収した数
 	int absorptionCount_;
