@@ -107,6 +107,7 @@
     <ClCompile Include="Engine\GameObject\User\GameManager\GameManager.cpp" />
     <ClCompile Include="Engine\GameObject\User\Player\uribo\uribo.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\BossAnimManager.cpp" />
+    <ClCompile Include="Engine\Scene\User\TutrialScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\GameObject\User\Enemy\State\MultiAtackState.h" />
@@ -231,6 +232,7 @@
     <ClInclude Include="Engine\GameObject\User\GameManager\GameManager.h" />
     <ClInclude Include="Engine\GameObject\User\Player\uribo\uribo.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\BossAnimManager.h" />
+    <ClInclude Include="Engine\Scene\User\TutrialScene.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Object3D.hlsli" />
