@@ -20,6 +20,20 @@ void RootState::Update()
 		player_->ChangeState(std::make_unique<AtackState>());
 		return;
 	}
+	// チャージ秒数が足りない場合（ダッシュステートに移動
+	else if(player_->GetAtackCount() <= player_->GetmaxAtackCount() && InputManager::Atacking()
+		&& player_->GetAbsorptionCount() >= kMinCount)
+	{
+		// チャージパーティクルをとめる
+		player_->chargeParticleEmitter_->SetIsPlay(false);
+		// チャージ終了パーティクルをとめる
+		player_->chargeFinishParticleEmitter_->SetIsPlay(false);
+
+		// ダッシュステートへ変更
+		player_->ChangeState(std::make_unique<DashState>());
+		return;
+
+	}
 
 	//攻撃ボタンを押して且つ攻撃できるときにStateをAtackに
 	if (InputManager::AtackCharge()&&player_->GetAbsorptionCount()>=kMinCount) {

@@ -165,6 +165,8 @@ public: // アクセッサ等
 	/// <returns></returns>
 	Vector3 GetCorrectPosition() { return correctionPos_; }
 
+	Vector3 GetMoveDirect() { return moveVector_; }
+
 private: // プライベートなメンバ関数
 
 	/// <summary>
@@ -230,6 +232,9 @@ private: // メンバ変数
 	float correctEndFrame_ = 10.0f;
 	// 修正量
 	float correctOffsetValue_ = 0.5f;
+
+	// 移動ベクトル
+	Vector3 moveVector_ = {};
 
 	//吸収した数
 	int absorptionCount_;
