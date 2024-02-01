@@ -260,28 +260,28 @@ void Player::OnCollisionEnter(Collider* collider) {
 	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagPushUp) {
 		transform_.translate_ = prevPos_;
 		pushUpPos_ = collider->GetGameObject()->transform_.translate_;
-		//食べた野菜の数を減らす
-		absorptionCount_ -= subtractionAbsorptionCount_;
-		if (absorptionCount_ < 0) {
-			absorptionCount_ = 0;
-		}
-		// 大きさリセット
-		transform_.scale_ = { 2.0f , 2.0f , 2.0f };
-		transform_.translate_.y = 3.0f;
-		for (int i = 0; i < absorptionCount_; i++) {
-			if (transform_.scale_.x > maxSize) {
-				break;
-			}
-			// 加算するサイズを計算
-			float addSize = i * scaleForce_;
-			// 加算サイズ分y座標を加算
-			transform_.translate_.y += addSize;
-			// 大きさにサイズを加算
-			transform_.scale_ = {
-				transform_.scale_.x + addSize,
-				transform_.scale_.y + addSize,
-				transform_.scale_.z + addSize };
-		}
+		////食べた野菜の数を減らす
+		//absorptionCount_ -= subtractionAbsorptionCount_;
+		//if (absorptionCount_ < 0) {
+		//	absorptionCount_ = 0;
+		//}
+		//// 大きさリセット
+		//transform_.scale_ = { 2.0f , 2.0f , 2.0f };
+		//transform_.translate_.y = 3.0f;
+		//for (int i = 0; i < absorptionCount_; i++) {
+		//	if (transform_.scale_.x > maxSize) {
+		//		break;
+		//	}
+		//	// 加算するサイズを計算
+		//	float addSize = i * scaleForce_;
+		//	// 加算サイズ分y座標を加算
+		//	transform_.translate_.y += addSize;
+		//	// 大きさにサイズを加算
+		//	transform_.scale_ = {
+		//		transform_.scale_.x + addSize,
+		//		transform_.scale_.y + addSize,
+		//		transform_.scale_.z + addSize };
+		//}
 		ChangeState(std::make_unique<PushUpHitState>());
 
 	}

@@ -61,7 +61,8 @@ void InGameCamera::Update()
 		// ビュープロジェクション行列の計算
 		Matrix4x4 cameraMatrix = transform_.GetMatWorld(); // ワールド行列の生成
 		viewMatrix_ = Math::Inverse(cameraMatrix); // ビュー表列の生成
-		Matrix4x4 projectionMatrix = Math::MakePerspectiveFovMatrix(fov_, float(WinApp::kWindowWidth) / float(WinApp::kwindowHeight), 0.1f, 150.0f); // プロジェクション行列の生成
+		float far_z = 200.0f;
+		Matrix4x4 projectionMatrix = Math::MakePerspectiveFovMatrix(fov_, float(WinApp::kWindowWidth) / float(WinApp::kwindowHeight), 0.1f, far_z); // プロジェクション行列の生成
 		viewProjectionMatrix_ = viewMatrix_ * projectionMatrix; // 実際に計算
 
 		// アドレスに
