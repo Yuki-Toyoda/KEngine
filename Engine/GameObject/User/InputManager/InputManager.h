@@ -45,6 +45,12 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	static bool Atacking();
+
+	/// <summary>
+	/// 攻撃チャージ関数
+	/// </summary>
+	/// <returns></returns>
+	static bool AtackCharge();
 	/// <summary>
 	/// 回復関数
 	/// </summary>

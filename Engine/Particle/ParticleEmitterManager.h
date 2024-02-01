@@ -1,5 +1,6 @@
 #pragma once
 #include "IParticleEmitter.h"
+#include "ParticleList.h"
 
 /// <summary>
 /// パーティクルエミッタ全てを管理するマネージャ
@@ -48,7 +49,7 @@ public: // メンバ関数
 	/// <param name="frequency">粒子の生成間隔</param>
 	/// <param name="texture">粒子のテクスチャ</param>
 	template<IsIParticleEmitter SelectEmitter, IsIParticle SelectParticle>
-	inline void CreateEmitter(const std::string& name, int32_t maxCount, int32_t maxGenerateCount, const Vector3& translate, float aliveTime, float frequency, Texture* texture);
+	inline IParticleEmitter* CreateEmitter(const std::string& name, int32_t maxCount, int32_t maxGenerateCount, const Vector3& translate, float aliveTime, float frequency, Texture* texture);
 
 public: // その他関数群
 
@@ -65,7 +66,7 @@ private: // メンバ変数
 };
 
 template<IsIParticleEmitter SelectEmitter, IsIParticle SelectParticle>
-inline void ParticleEmitterManager::CreateEmitter(const std::string& name, int32_t maxCount, int32_t maxGenerateCount, const Vector3& translate, float aliveTime, float frequency, Texture* texture)
+inline IParticleEmitter* ParticleEmitterManager::CreateEmitter(const std::string& name, int32_t maxCount, int32_t maxGenerateCount, const Vector3& translate, float aliveTime, float frequency, Texture* texture)
 {
 	// 新しいエミッタを生成
 	std::unique_ptr<SelectEmitter> newEmitter = std::make_unique<SelectEmitter>();
@@ -73,6 +74,13 @@ inline void ParticleEmitterManager::CreateEmitter(const std::string& name, int32
 	newEmitter->SetParticleType<SelectParticle>();
 	// 生成したエミッタを初期化
 	newEmitter->PreInit(name, maxCount, maxGenerateCount, translate, aliveTime, frequency, texture);
+	
+	// 返還用インスタンスの生成
+	IParticleEmitter* returnEmitter = newEmitter.get();
+
 	// 生成したエミッタをリストに追加する
 	emitters_.push_back(std::move(newEmitter));
+
+	// インスタンスを返還
+	return returnEmitter;
 }

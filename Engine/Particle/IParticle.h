@@ -38,7 +38,7 @@ public: // メンバ関数
 	/// <summary>
 	/// 更新関数
 	/// </summary>
-	void Update();
+	virtual void Update();
 
 	/// <summary>
 	/// 更新後処理関数

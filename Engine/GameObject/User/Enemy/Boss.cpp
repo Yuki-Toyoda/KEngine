@@ -2,9 +2,14 @@
 #include "../../../GlobalVariables/GlobalVariables.h"
 #include "BossAnimManager.h"
 #include "../../../Scene/FadeManager.h"
+#include "../../../Particle/ParticleEmitterManager.h"
+#include "../../../Particle/ParticleList.h"
 
 void Boss::SuccessorInit()
 {
+	// パーティクルエミッタマネージャのインスタンス取得
+	pem_ = ParticleEmitterManager::GetInstance();
+
 	// 大きさ設定
 	transform_.scale_ = {10.0f, 10.0f, 10.0f };
 
@@ -156,6 +161,11 @@ void Boss::OnCollisionEnter(Collider* collider)
 		player_->ResetAbsorptionCount();
 
 		
+
+		// パーティクル再生
+		Vector3 generatePos = transform_.translate_;
+		generatePos.y = 7.0f;
+		pem_->CreateEmitter<HitParticleEmiiter, HitParticle>("Boss_Hit", 25, 25, generatePos, 1.0f, 10.0f, TextureManager::Load("uvChecker.png"));
 
 		// HPが0以下になっていたら
 		if (hitPoint_ <= 0) {

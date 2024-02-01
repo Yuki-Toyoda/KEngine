@@ -10,11 +10,11 @@ void InGameUIManager::Init()
 	bossHPGageSprite_BG_ = AddSprite("BossHPGageBG", { 80.0f, 40.0f }, { 1120.0f, 32.0f }, TextureManager::Load("./Resources/UI/InGame", "BossHpFram.png"));
 	bossHPGageSprite_F_ = AddSprite("BossHPGage", { 0.0f, 0.0f }, { 1120.0f, 32.0f }, TextureManager::Load("./Resources/UI/InGame", "BossHpGauge.png"));
 	bossHPGageSprite_Icon_ = AddSprite("BossIcon", { 0.0f, 0.0f }, { 48.0f, 48.0f }, TextureManager::Load("./Resources/UI/InGame", "bossIcon.png"));
-	playerHPFrame_ = AddSprite("PlayerHPFrame", { 10.0f, 620.0f }, { 256.0f, 96.0f }, TextureManager::Load("./Resources/UI/InGame", "playerHPFram.png"));
-	playerIcon_ = AddSprite("PlayerIcon", { 0.0f, 0.0f }, { 384.0f, 96.0f }, TextureManager::Load("./Resources/UI/InGame", "playerIconNormal.png"));
+	playerHPFrame_ = AddSprite("PlayerHPFrame", { 5.0f, 583.0f }, { 256.0f, 140.0f }, TextureManager::Load("./Resources/UI/InGame", "playerHPFram.png"));
+	//playerIcon_ = AddSprite("PlayerIcon", { 0.0f, 0.0f }, { 384.0f, 96.0f }, TextureManager::Load("./Resources/UI/InGame", "playerIconNormal.png"));
 	playerVegetableIcon_ = AddSprite("PlayerVegetables", { 200.0f, 47.0f }, { 80.0f, 96.0f }, TextureManager::Load("./Resources/UI/InGame", "vegetableIcon.png"));
-	playerVegetableCount2_ = AddSprite("VegetableCount2", { 190.0f, 47.0f }, { 48.0f, 64.0f }, TextureManager::Load("./Resources/UI/InGame", "vegetableNumbert.png"));
-	playerVegetableCount1_ = AddSprite("VegetableCount1", { 138.0f, 47.0f }, { 48.0f, 64.0f }, TextureManager::Load("./Resources/UI/InGame", "vegetableNumbert.png"));
+	playerVegetableCount2_ = AddSprite("VegetableCount2", { 196.0f, 62.0f }, { 40.0f, 52.0f }, TextureManager::Load("./Resources/UI/InGame", "vegetableNumbert.png"));
+	playerVegetableCount1_ = AddSprite("VegetableCount1", { 156.0f, 62.0f }, { 40.0f, 52.0f }, TextureManager::Load("./Resources/UI/InGame", "vegetableNumbert.png"));
 	moveSpriteBG_ = AddSprite("MoveUI_BG", { 1075.0f, 520.0f }, { 192.0f, 64.0f }, TextureManager::Load("./Resources/UI/InGame", "moveBack.png"));
 	moveSprite_ = AddSprite("MoveUI", { 0.0f, 0.0f }, { 192.0f, 64.0f }, TextureManager::Load("./Resources/UI/InGame", "moveFront.png"));
 	AttackSprite_ = AddSprite("Attack", { 1040.0f, 590.0f }, { 224.0f, 48.0f }, TextureManager::Load("./Resources/UI/InGame", "attack.png"));
@@ -31,7 +31,7 @@ void InGameUIManager::Init()
 	bossHPGageSprite_Icon_->SetParent(bossHPGageSprite_BG_->GetWorldTransform());
 
 	// プレイヤーのHP背景に親子付けする
-	playerIcon_->SetParent(playerHPFrame_->GetWorldTransform());
+	//playerIcon_->SetParent(playerHPFrame_->GetWorldTransform());
 	playerVegetableIcon_->SetParent(playerHPFrame_->GetWorldTransform());
 	playerVegetableCount2_->SetParent(playerHPFrame_->GetWorldTransform());
 	playerVegetableCount1_->SetParent(playerHPFrame_->GetWorldTransform());

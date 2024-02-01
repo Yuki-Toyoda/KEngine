@@ -5,6 +5,7 @@
 #include "../Ground/Ground.h"
 #include "State/PlayerStateList.h"
 #include "uribo/uribo.h"
+#include "../../../Particle/ParticleEmitterManager.h"
 
 // クラスの前方宣言
 class PlayerAnimManager;
@@ -100,6 +101,11 @@ public: // アクセッサ等
 	/// </summary>
 	/// <param name="isDamaged">ダメージフラグ状態</param>
 	void SetIsDamaged(const bool& isDamaged) { isDamaged_ = isDamaged; }
+	/// <summary>
+	/// ダメージフラグゲッター
+	/// </summary>
+	/// <returns>ダメージフラグ</returns>
+	bool GetIsDamaged() { return isDamaged_; }
 
 	/// <summary>
 	/// 攻撃力ゲッター
@@ -138,18 +144,22 @@ public: // アクセッサ等
 	/// <summary>
 	/// ゲームオーバーフラグのげったー
 	bool GetgameOver(){return isGameOver_;}
+	
 	//pushUpの位置のゲッター
 	Vector3 GetPushUpPos() { return pushUpPos_; }
+	
 	//pushUpに当たったときの跳ね返る力のゲッター
 	float GetPushUpHitForce() { return pushUpHitForce; }
-/// <summary>
-/// atackCountのゲッター
-/// </summary>
+	
+	/// <summary>
+	/// atackCountのゲッター
+	/// </summary>
 	int GetAtackCount() { return atackPushCount_; }
 	/// <summary>
-/// kMaxatackCountのゲッター
-/// </summary>
+	/// kMaxatackCountのゲッター
+	/// </summary>
 	int GetmaxAtackCount() { return kMaxAtackPushCount_; }
+
 private: // プライベートなメンバ関数
 
 	/// <summary>
@@ -169,6 +179,16 @@ private: // プライベートなメンバ関数
 
 	void SetGlobalVariables();
 	
+public: // パブリックなメンバ変数
+
+	// パーティクルエミッタマネージャ
+	ParticleEmitterManager* pem_ = nullptr;
+
+	// チャージパーティクル
+	IParticleEmitter* chargeParticleEmitter_ = nullptr;
+	// チャージ終了時のパーティクル
+	IParticleEmitter* chargeFinishParticleEmitter_ = nullptr;
+
 private: // メンバ変数
 
 	// 音再生用クラス

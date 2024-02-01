@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "PlayerAnimManager.h"
-#include"../../../GlobalVariables/GlobalVariables.h"
+#include "../../../GlobalVariables/GlobalVariables.h"
+
 void Player::Init()
 {
 	// 音再生クラスのインスタンス取得
@@ -46,6 +47,22 @@ void Player::Init()
 	variables->AddItem(name_, "DecelerationRate", decelerationRate);
 	variables->AddItem(name_, "subtractionAbsorptionCount_", subtractionAbsorptionCount_);
 	SetGlobalVariables();
+
+	// パーティクルエミッタマネージャのインスタンス取得
+	pem_ = ParticleEmitterManager::GetInstance();
+
+	// チャージパーティクル生成
+	chargeParticleEmitter_ = pem_->CreateEmitter<ChargeParticleEmitter, ChargeParticle>("Charge", 25, 1, {0.0f, 0.0f, 0.0f}, 10.0f, 0.1f, TextureManager::Load("uvChecker.png"));
+	chargeParticleEmitter_->transform_.SetParent(&transform_);
+	chargeParticleEmitter_->SetIsLoop(true);
+	chargeParticleEmitter_->SetIsPlay(false);
+	
+	// チャージ終了時パーティクル生成
+	chargeFinishParticleEmitter_ = pem_->CreateEmitter<ChargeFinishParticleEmitter, ChargeFinishParticle>("ChargeFinish", 8, 8, {0.0f, 0.0f, 0.0f}, 10.0f, 0.25f, TextureManager::Load("uvChecker.png"));
+	chargeFinishParticleEmitter_->transform_.SetParent(&transform_);
+	chargeFinishParticleEmitter_->SetIsLoop(true);
+	chargeFinishParticleEmitter_->SetIsPlay(false);
+
 }
 
 void Player::Update()
@@ -63,7 +80,15 @@ void Player::Update()
 			// 行動状態の更新を行う
 			state_->Update();
 		}
+		else {
+			// チャージパーティクル停止
+			chargeParticleEmitter_->SetIsPlay(false);
+			// チャージ終了時のパーティクル停止
+			chargeFinishParticleEmitter_->SetIsPlay(false);
+		}
 	}
+
+
 
 	// 攻撃命中クールタイマーの更新処理
 	hitCollTimer_.Update();
@@ -176,6 +201,7 @@ void Player::DisplayImGui()
 	ImGui::DragInt("maxAtackCount", &kMaxAtackPushCount_);
 
 	ImGui::DragInt( "subtractionAbsorptionCount_", &subtractionAbsorptionCount_);
+	ImGui::DragInt("AtackCount", &atackPushCount_);
 	// 改行する
 	ImGui::NewLine();
 

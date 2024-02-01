@@ -96,6 +96,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Particle\User\ChargeFinishParticleEmitter.cpp" />
+    <ClCompile Include="Engine\Particle\User\ChargeFinishParticle.cpp" />
+    <ClCompile Include="Engine\Particle\User\ChargeParticleEmitter.cpp" />
+    <ClCompile Include="Engine\Particle\User\ChargeParticle.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\BossAnimManager.cpp" />
     <ClCompile Include="Engine\GameObject\User\Editor\EditorDataHandler.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\Atack\PushUp.cpp" />
@@ -200,6 +204,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\GameObject\User\Enemy\State\IEnemyState.cpp" />
     <ClCompile Include="Engine\Scene\FadeManager.cpp" />
     <ClCompile Include="Engine\GameObject\User\Fence\Fences.cpp" />
+    <ClCompile Include="Engine\Particle\User\HitParticleEmiiter.cpp" />
+    <ClCompile Include="Engine\Particle\User\HitParticle.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\GameObject\Samples\SampleSphere\SampleSphere.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -209,6 +215,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Scene\User\ResultScene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Particle\User\ChargeFinishParticleEmitter.h" />
+    <ClInclude Include="Engine\Particle\User\ChargeFinishParticle.h" />
+    <ClInclude Include="Engine\Particle\User\ChargeParticleEmitter.h" />
+    <ClInclude Include="Engine\Particle\User\ChargeParticle.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\BossAnimManager.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\Atack\PushUp.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\Atack\Roller.h" />
@@ -218,6 +228,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\GameObject\User\GameManager\GameManager.h" />
     <ClInclude Include="Engine\GameObject\User\Player\State\PushUpHitState.h" />
     <ClInclude Include="Engine\GameObject\User\Player\uribo\uribo.h" />
+    <ClInclude Include="Engine\Particle\ParticleList.h" />
     <ClInclude Include="Engine\Scene\User\AnimDevScene.h" />
     <ClInclude Include="Engine\GameObject\User\ResultManager\ResultManager.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\State\MultiAtackState.h" />
@@ -340,6 +351,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Scene\FadeManager.h" />
     <ClInclude Include="Engine\Scene\User\ResultScene.h" />
     <ClInclude Include="Engine\GameObject\User\Fence\Fences.h" />
+    <ClInclude Include="Engine\Particle\User\HitParticleEmiiter.h" />
+    <ClInclude Include="Engine\Particle\User\HitParticle.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Object3D.hlsli">

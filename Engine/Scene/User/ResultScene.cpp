@@ -8,7 +8,7 @@ bool ResultScene::isClear_ = false;
 void ResultScene::Init()
 {
 	// カメラ生成
-	Camera* c = gameObjectManager_->CreateInstance<InGameCamera>("Incamera", BaseObject::TagCamera);
+	Camera* c = gameObjectManager_->CreateInstance<Camera>("Incamera", BaseObject::TagCamera);
 	// このカメラを使用
 	c->UseThisCamera();
 	// FOV設定
