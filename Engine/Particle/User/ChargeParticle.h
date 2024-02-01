@@ -2,9 +2,9 @@
 #include "../IParticle.h"
 
 /// <summary>
-/// 命中パーティクル粒子
+/// 攻撃チャージ中パーティクル
 /// </summary>
-class HitParticle : public IParticle
+class ChargeParticle : public IParticle
 {
 public: // メンバ関数
 
@@ -20,8 +20,10 @@ public: // メンバ関数
 
 private: // メンバ変数
 
-	// 開始時ベクトル格納用
-	Vector3 startVelocity_ = { 0.0f, 0.0f, 0.0f };
+	// 線形補間始端座標
+	Vector3 startPos_ = { 0.0f, 0.0f, 0.0f };
+	// 線形補間終端座標
+	Vector3 endPos_ = { 0.0f, 0.0f, 0.0f };
 
 };
 

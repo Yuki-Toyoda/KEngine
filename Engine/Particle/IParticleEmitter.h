@@ -66,6 +66,17 @@ public: // アクセッサ等
 	/// </summary>
 	/// <returns>エミッタの終了状態</returns>
 	bool GetIsEnd() { return isEnd_; }
+	/// <summary>
+	/// エミッタの終了状態セッター
+	/// </summary>
+	/// <param name="isEnd">エミッタを終了させるか</param>
+	void SetIsEnd(const bool& isEnd) { isEnd_ = isEnd; }
+
+	/// <summary>
+	/// ループトリガーセッター
+	/// </summary>
+	/// <param name="isLoop">ループ状態</param>
+	void SetIsLoop(const bool& isLoop) { isLoop_ = isLoop; }
 
 protected: // 継承先メンバ関数
 
@@ -101,6 +112,9 @@ protected: // メンバ変数
 	KLib::DeltaTimer aliveTimer_;
 	// エミッタの終了トリガー
 	bool isEnd_ = false;
+
+	// ループトリガー
+	bool isLoop_ = false;
 
 	// 生成する粒子のテクスチャ
 	Texture* texture_;

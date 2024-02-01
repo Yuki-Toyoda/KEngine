@@ -94,3 +94,11 @@ void IParticle::PostUpdate()
 		isEnd_ = true;
 	}
 }
+
+void IParticle::SetLerpPos(const Vector3& start, const Vector3& end)
+{
+	// 始端座標設定
+	startPos_ = start;
+	// 終端座標設定
+	endPos_ = end;
+}

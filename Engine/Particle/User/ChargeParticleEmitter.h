@@ -2,9 +2,9 @@
 #include "../IParticleEmitter.h"
 
 /// <summary>
-/// 攻撃命中時パーティクル生成
+/// 攻撃チャージ中パーティクル生成
 /// </summary>
-class HitParticleEmiiter : public IParticleEmitter
+class ChargeParticleEmitter : public IParticleEmitter
 {
 public: // メンバ関数
 
@@ -17,10 +17,6 @@ public: // メンバ関数
 	/// 粒子生成関数
 	/// </summary>
 	void GenerateParticle() override;
-	
-private: // メンバ変数
-
-
 
 };
 

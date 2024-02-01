@@ -59,7 +59,7 @@ void IParticleEmitter::PostUpdate()
 	}
 
 	// エミッタの生存時間タイマーが終了していたら
-	if (aliveTimer_.GetIsFinish()) {
+	if (aliveTimer_.GetIsFinish() && !isLoop_) {
 		// 粒子配列のサイズが0以下なら
 		if (particles_.size() <= 0) {
 			// エミッタは終了している
@@ -67,8 +67,9 @@ void IParticleEmitter::PostUpdate()
 		}
 	}
 
-	// 生成間隔タイマーが終了していたら
-	if (frequencyTimer_.GetIsFinish() && !aliveTimer_.GetIsFinish()) {
+	// 生成間隔タイマーが終了した、かつエミッタの生存時間が終了していないまたはループ状態であるとき
+	if ((frequencyTimer_.GetIsFinish() && !aliveTimer_.GetIsFinish()) || 
+		(frequencyTimer_.GetIsFinish() && isLoop_)) {
 		// 新しい粒子を生成
 		GenerateParticle();
 

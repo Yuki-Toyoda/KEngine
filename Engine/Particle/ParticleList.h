@@ -4,3 +4,5 @@
 #include "IParticleEmitter.h"
 #include "User/HitParticle.h"
 #include "User/HitParticleEmiiter.h"
+#include "User/ChargeParticle.h"
+#include "User/ChargeParticleEmitter.h"
