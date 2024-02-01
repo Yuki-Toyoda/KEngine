@@ -27,3 +27,4 @@
 #include "User/Fence/Fences.h"
 #include "User/Player/uribo/uribo.h"
 #include "User/GameManager/GameManager.h"
+#include "User/TutrialManager/TutrialManager.h"

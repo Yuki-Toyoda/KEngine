@@ -106,6 +106,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\GameObject\User\GameManager\GameManager.cpp" />
     <ClCompile Include="Engine\GameObject\User\Player\State\PushUpHitState.cpp" />
     <ClCompile Include="Engine\GameObject\User\Player\uribo\uribo.cpp" />
+    <ClCompile Include="Engine\GameObject\User\TutrialManager\TutrialManager.cpp" />
     <ClCompile Include="Engine\Scene\User\AnimDevScene.cpp" />
     <ClCompile Include="Engine\GameObject\User\ResultManager\ResultManager.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\State\MultiAtackState.cpp" />
@@ -219,6 +220,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\GameObject\User\GameManager\GameManager.h" />
     <ClInclude Include="Engine\GameObject\User\Player\State\PushUpHitState.h" />
     <ClInclude Include="Engine\GameObject\User\Player\uribo\uribo.h" />
+    <ClInclude Include="Engine\GameObject\User\TutrialManager\TutrialManager.h" />
     <ClInclude Include="Engine\Scene\User\AnimDevScene.h" />
     <ClInclude Include="Engine\GameObject\User\ResultManager\ResultManager.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\State\MultiAtackState.h" />
