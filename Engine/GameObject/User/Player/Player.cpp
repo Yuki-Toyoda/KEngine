@@ -173,6 +173,7 @@ void Player::DisplayImGui()
 	ImGui::DragInt("maxAtackCount", &kMaxAtackPushCount_);
 
 	ImGui::DragInt( "subtractionAbsorptionCount_", &subtractionAbsorptionCount_);
+	ImGui::DragInt("AtackCount", &atackPushCount_);
 	// 改行する
 	ImGui::NewLine();
 

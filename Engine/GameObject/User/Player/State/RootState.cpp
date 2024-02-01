@@ -9,18 +9,18 @@ void RootState::Init()
 
 void RootState::Update()
 {
-	
+	if (player_->GetAtackCount() > player_->GetmaxAtackCount()&&InputManager::Atacking()) {
+		player_->ChangeState(std::make_unique<AtackState>());
+		return;
+	}
 
 	//攻撃ボタンを押して且つ攻撃できるときにStateをAtackに
-	if (InputManager::Atacking()&&player_->GetAbsorptionCount()>=kMinCount) {
+	if (InputManager::AtackCharge()&&player_->GetAbsorptionCount()>=kMinCount) {
 		player_->AddAtackCount();
 		velocity_ = { 0.0f,0.0f,0.0f };
 		//移動ベクトルをプレイヤーに渡す
 		player_->SetVelocity(velocity_);
-		if (player_->GetAtackCount() > player_->GetmaxAtackCount()) {
-			player_->ChangeState(std::make_unique<AtackState>());
-			return;
-		}
+		
 	}
 	else {
 		player_->ResetAtackCount();
