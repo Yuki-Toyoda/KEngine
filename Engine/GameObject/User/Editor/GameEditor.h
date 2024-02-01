@@ -53,8 +53,8 @@ private:
 			camera_->transform_.rotate_ = { 1.57f,0.0f,0.0f };
 		}
 		else if (cameraType_ == kGameSide) {
-			camera_->transform_.translate_ = GlobalVariables::GetInstance()->GetVector3Value(camera_->GetObjectName(), "Position");
-			camera_->transform_.rotate_ = GlobalVariables::GetInstance()->GetVector3Value(camera_->GetObjectName(), "Rotate");
+			camera_->transform_.translate_ = GameCameraPos;
+			camera_->transform_.rotate_ = GameCameraRotate;
 		}
 	}
 
