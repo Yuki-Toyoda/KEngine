@@ -46,7 +46,15 @@ void BossAnimManager::Init()
 #ifndef _DEBUG
 
 	// 身体
-	AddMesh(&bodyTransform_, color_, "./Resources/Player", "Player.obj");
+	AddMesh(&bodyTransform_, color_, "./Resources/Boss", "Body.obj");
+	// 左腕
+	AddMesh(&armTransform_L_, color_, "./Resources/Boss", "Arm_L.obj");
+	// 右腕
+	AddMesh(&armTransform_R_, color_, "./Resources/Boss", "Arm_R.obj");
+	// 左足
+	AddMesh(&footTransform_L_, color_, "./Resources/Boss", "Foot_L.obj");
+	// 右足
+	AddMesh(&footTransform_R_, color_, "./Resources/Boss", "Foot_R.obj");
 
 #endif // _RELEASE
 
