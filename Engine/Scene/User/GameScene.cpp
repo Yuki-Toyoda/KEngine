@@ -35,6 +35,12 @@ void GameScene::Init(){
 	player_->transform_.scale_ = { 2.0f, 2.0f, 2.0f };
 	player_->transform_.translate_.y = 3.0f;
 	player_->transform_.translate_.x = 10.0f;
+
+	// プレイヤーをカメラにセットする
+	camera_->SetPlayer(player_);
+	// プレイヤーにカメラをセットする
+	player_->SetCamera(camera_);
+
 	//// 敵を生成
 	//gameObjectManager_->CreateInstance<SmallEnemy>("Enemy", BaseObject::TagEnemy);
 	uribo_ = gameObjectManager_->CreateInstance<Uribo>("uribo", BaseObject::TagUribo);

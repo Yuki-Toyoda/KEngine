@@ -1,6 +1,13 @@
 #pragma once
 #include"../../Core/Camera.h"
 #include "../../../Input/Input.h"
+
+// クラスの前方宣言
+class Player;
+
+/// <summary>
+/// インゲーム中のカメラ
+/// </summary>
 class InGameCamera: public Camera
 {
 public: // メンバ関数
@@ -20,41 +27,40 @@ public: // メンバ関数
 	/// </summary>
 	void DisplayImGui() override;
 
+	/// <summary>
+	/// カメラシェイク関数
+	/// </summary>
 	void Shake();
+
+
+
+public: // アクセッサ等
+
+	/// <summary>
+	/// カメラシェイク状態ゲッター
+	/// </summary>
+	/// <returns>カメラシェイク状態</returns>
 	bool GetIsShake() { return isShake_; }
-//public: // アクセッサ等
-//
-//	/// <summary>
-//	/// カメラの使用トリガーセッター
-//	/// </summary>
-//	/// <param name="isUsed">使用するか</param>
-//	void SetIsUseThisCamera(bool isUsed) { isUseThisCamera_ = isUsed; }
-//	/// <summary>
-//	/// カメラの使用トリガーゲッター
-//	/// </summary>
-//	/// <returns>カメラが使用中か</returns>
-//	bool GetIsUsedCamera() { return isUseThisCamera_; }
-//
-//	/// <summary>
-//	/// ビュー行列ゲッター
-//	/// </summary>
-//	/// <returns>ビュー行列</returns>
-//	Matrix4x4 GetViewMatrix() { return viewMatrix_; }
-//
-//	/// <summary>
-//	/// ビュープロジェクション行列ゲッター
-//	/// </summary>
-//	/// <returns>ビュープロジェクション行列</returns>
-//	Matrix4x4 GetViewProjectionMatrix() { return viewProjectionMatrix_; };
-//
-//public: // その他関数
-//
-//	/// <summary>
-//	///	このカメラを使用する際に呼び出す関数
-//	/// </summary>
-//	void UseThisCamera();
-//
+
+	/// <summary>
+	/// プレイヤーセッター
+	/// </summary>
+	/// <param name="player">セットするプレイヤー本体</param>
+	void SetPlayer(Player* player) { player_ = player; }
+
 private: // メンバ関数
+
+	// プレイヤー
+	Player* player_ = nullptr;
+
+	// 残像座標
+	Vector3 interTarget_ = {};
+	// カメラのオフセット
+	Vector3 offset_ = { 0.0f, -15.0f, -100.0f };
+	
+	// 目標角度Y軸
+	float targetAngleY_ = 0.0f;
+
 	//シェイクする時間
 	int shakeCount_;
 	int maxShakeCount_=30;
@@ -68,6 +74,9 @@ private: // メンバ関数
 
 private:
 
+	/// <summary>
+	/// データをセーブする関数
+	/// </summary>
 	void SaveData();
 
 };

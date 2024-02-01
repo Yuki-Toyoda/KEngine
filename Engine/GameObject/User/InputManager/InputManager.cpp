@@ -130,6 +130,31 @@ bool InputManager::Heal()
     return false;
 }
 
+Vector3 InputManager::GetRStickInput()
+{
+    // スティックの入力を取得
+    Vector3 stickVec = Vector3((float)joyState_.Gamepad.sThumbRX / SHRT_MAX,
+        0.0f, (float)joyState_.Gamepad.sThumbRY / SHRT_MAX);
+
+    // 取得した入力を正規化する
+    stickVec = Math::Normalize(stickVec);
+
+    // 取得した入力を返す
+    return stickVec;
+}
+
+float InputManager::GetRTInput()
+{
+    // 右トリガーの入力を返す
+    return joyState_.Gamepad.bRightTrigger;
+}
+
+float InputManager::GetLTInput()
+{
+    // 右トリガーの入力を返す
+    return joyState_.Gamepad.bLeftTrigger;
+}
+
 
 XINPUT_STATE InputManager::joyState_;
 XINPUT_STATE InputManager::preJoyState_;

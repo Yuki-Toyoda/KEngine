@@ -12,7 +12,7 @@ void InGameUIManager::Init()
 	bossHPGageSprite_Icon_ = AddSprite("BossIcon", { 0.0f, 0.0f }, { 48.0f, 48.0f }, TextureManager::Load("./Resources/UI/InGame", "bossIcon.png"));
 	playerHPFrame_ = AddSprite("PlayerHPFrame", { 5.0f, 583.0f }, { 256.0f, 140.0f }, TextureManager::Load("./Resources/UI/InGame", "playerHPFram.png"));
 	//playerIcon_ = AddSprite("PlayerIcon", { 0.0f, 0.0f }, { 384.0f, 96.0f }, TextureManager::Load("./Resources/UI/InGame", "playerIconNormal.png"));
-	playerVegetableIcon_ = AddSprite("PlayerVegetables", { 200.0f, 47.0f }, { 80.0f, 96.0f }, TextureManager::Load("./Resources/UI/InGame", "vegetableIcon.png"));
+	//playerVegetableIcon_ = AddSprite("PlayerVegetables", { 200.0f, 47.0f }, { 80.0f, 96.0f }, TextureManager::Load("./Resources/UI/InGame", "vegetableIcon.png"));
 	playerVegetableCount2_ = AddSprite("VegetableCount2", { 196.0f, 62.0f }, { 40.0f, 52.0f }, TextureManager::Load("./Resources/UI/InGame", "vegetableNumbert.png"));
 	playerVegetableCount1_ = AddSprite("VegetableCount1", { 156.0f, 62.0f }, { 40.0f, 52.0f }, TextureManager::Load("./Resources/UI/InGame", "vegetableNumbert.png"));
 	moveSpriteBG_ = AddSprite("MoveUI_BG", { 1075.0f, 520.0f }, { 192.0f, 64.0f }, TextureManager::Load("./Resources/UI/InGame", "moveBack.png"));
@@ -22,7 +22,7 @@ void InGameUIManager::Init()
 
 	// アンカーポイント設定
 	bossHPGageSprite_Icon_->anchorPoint_ = { 0.5f, 0.2f };
-	playerVegetableIcon_->anchorPoint_ = { 0.5f, 0.5f };
+	//playerVegetableIcon_->anchorPoint_ = { 0.5f, 0.5f };
 	playerVegetableCount2_->anchorPoint_ = { 0.5f, 0.5f };
 	playerVegetableCount1_->anchorPoint_ = { 0.5f, 0.5f };
 
@@ -32,12 +32,12 @@ void InGameUIManager::Init()
 
 	// プレイヤーのHP背景に親子付けする
 	//playerIcon_->SetParent(playerHPFrame_->GetWorldTransform());
-	playerVegetableIcon_->SetParent(playerHPFrame_->GetWorldTransform());
+	//playerVegetableIcon_->SetParent(playerHPFrame_->GetWorldTransform());
 	playerVegetableCount2_->SetParent(playerHPFrame_->GetWorldTransform());
 	playerVegetableCount1_->SetParent(playerHPFrame_->GetWorldTransform());
 
 	// 野菜アイコンの角度を設定
-	playerVegetableIcon_->rotate_ = 0.65f;
+	//playerVegetableIcon_->rotate_ = 0.65f;
 
 	// 野菜カウント数スプライトのリセット
 	playerVegetableCount2_->texSize_ = Vector2(48.0f, 64.0f);

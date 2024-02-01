@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "PlayerAnimManager.h"
 #include "../../../GlobalVariables/GlobalVariables.h"
+#include "../../Core/Camera.h"
 
 void Player::Init()
 {

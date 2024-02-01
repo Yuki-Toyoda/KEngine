@@ -9,6 +9,7 @@
 
 // クラスの前方宣言
 class PlayerAnimManager;
+class Camera;
 
 /// <summary>
 /// プレイヤークラス
@@ -73,6 +74,23 @@ public: // メンバ関数
 /// </summary>
 	void ResetAtackCount();
 public: // アクセッサ等
+
+	/// <summary>
+	/// カメラのゲッター
+	/// </summary>
+	/// <returns>カメラ</returns>
+	Camera* GetCamera() { return camera_; }
+	/// <summary>
+	/// カメラのセッター
+	/// </summary>
+	/// <param name="camera"カメラ></param>
+	void SetCamera(Camera* camera) { camera_ = camera; }
+
+	/// <summary>
+	/// 移動ベクトルゲッター
+	/// </summary>
+	/// <returns>移動ベクトル</returns>
+	Vector3 GetVelocity() { return velocity_; }
 
 	/// <summary>
 	/// 破片の吸収数ゲッター
@@ -201,6 +219,9 @@ private: // メンバ変数
 	int32_t eatSE_ = 0u;
 	// 餌を与える
 	int32_t feedSE_ = 0u;
+
+	// カメラ
+	Camera* camera_ = nullptr;
 
 	// 移動方向ベクトル
 	Vector3 velocity_;

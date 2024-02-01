@@ -1,5 +1,6 @@
 #include "RootState.h"
 #include "../Player.h"
+#include "../../../Core/Camera.h"
 
 void RootState::Init()
 {
@@ -69,6 +70,12 @@ void RootState::Move()
 	// 入力マネージャから移動方向ベクトルを取得
 	Vector3 move = Vector3(0.0f, 0.0f, 0.0f);
 	move = InputManager::Move(move);
+
+	// カメラの角度から回転行列を生成
+	Matrix4x4 rotateMat = Math::MakeRotateYMatrix(player_->GetCamera()->transform_.rotate_.y);
+	
+	// 求めた回転行列を元に移動ベクトルを回転させる
+	move = Math::Transform(move, rotateMat);
 
 	if (move.x != 0.0f || move.y != 0.0f || move.z != 0.0f) {
 		// プレイヤーの移動ベクトルと加速度を乗算

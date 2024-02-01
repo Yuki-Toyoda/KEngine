@@ -160,8 +160,6 @@ void Boss::OnCollisionEnter(Collider* collider)
 		//吸収した数をリセットして座標とスケール調整
 		player_->ResetAbsorptionCount();
 
-		
-
 		// パーティクル再生
 		Vector3 generatePos = transform_.translate_;
 		generatePos.y = 7.0f;

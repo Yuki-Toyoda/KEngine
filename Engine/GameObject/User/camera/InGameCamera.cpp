@@ -5,26 +5,11 @@
 #include "../../GameObjectManager.h"
 #include "../Random/RandomEngine.h"
 #include"../../../GlobalVariables/GlobalVariables.h"
+#include "../../User/Player/Player.h"
 
 void InGameCamera::Init()
 {
-	//// 入力取得
-	//input_ = Input::GetInstance();
-
-	//// カメラ初期位置設定
-	//transform_.translate_ = { 0.0f, 1.0f, -100.0f };
-
-	//// 視野角初期値の設定
-	//fov_ = 0.45f;
-
-	//// カメラ使用トリガーはFalse
-	//isUseThisCamera_ = false;
-
-	//// 行列に単位行列を書き込んでおく
-	//viewMatrix_ = Math::MakeIdentity4x4();
-
-	//// ビュープロジェクション行列の書き込み先を指定
-	////SetVPDataTarget();
+	// 基底クラスの初期化を呼び出す
 	Camera::Init();
 
 	// 調整項目クラスのインスタンス取得
@@ -38,8 +23,8 @@ void InGameCamera::Init()
 	variables->AddItem(name_, "Fov", fov_);
 
 	// 取得
-	transform_.translate_ = variables->GetVector3Value(name_, "Position");
-	transform_.rotate_ = variables->GetVector3Value(name_, "Rotate");
+	//transform_.translate_ = variables->GetVector3Value(name_, "Position");
+	transform_.rotate_.x = 0.825f;
 	fov_ = variables->GetFloatValue(name_, "Fov");
 }
 
@@ -50,13 +35,60 @@ void InGameCamera::Update()
 		translate_ = transform_.translate_;
 	}
 	else {
-			transform_.translate_.x =translate_.x + RandomEngine::GetInstance()->GetRandom(-shakeForce_ / 2.0f, shakeForce_ / 2.0f);
-			transform_.translate_.y = translate_.y + RandomEngine::GetInstance()->GetRandom(-shakeForce_ / 2.0f, shakeForce_ / 2.0f);
-			shakeForce_ *= 0.8f;
-			if (shakeForce_ <= 0.1f) {
-				isShake_ = false;
-			}
+		transform_.translate_.x =translate_.x + RandomEngine::GetInstance()->GetRandom(-shakeForce_ / 2.0f, shakeForce_ / 2.0f);
+		transform_.translate_.y = translate_.y + RandomEngine::GetInstance()->GetRandom(-shakeForce_ / 2.0f, shakeForce_ / 2.0f);
+		shakeForce_ *= 0.8f;
+		if (shakeForce_ <= 0.1f) {
+			isShake_ = false;
+		}
 	}
+
+	// オフセットを取得
+	Vector3 offset = offset_;
+
+	/// プレイヤーの座標によってカメラのオフセットを移動させる
+	// x軸
+	if (player_->transform_.translate_.x > 0.0f) {
+		offset.x = Math::Linear(player_->transform_.translate_.x, 0.0f, 5.0f, 53.0f);
+	}
+	else if (player_->transform_.translate_.x < 0.0f) {
+		offset.x = Math::Linear(player_->transform_.translate_.x, 0.0f, -5.0f, -53.0f);
+	}
+	// z軸
+	if (player_->transform_.translate_.z > 0.0f) {
+		offset.z = Math::Linear(player_->transform_.translate_.z, offset_.z, offset_.z + 5.0f, 53.0f);
+	}
+	else if (player_->transform_.translate_.z < 0.0f) {
+		offset.z = Math::Linear(player_->transform_.translate_.z, offset_.z, offset_.z -5.0f, -53.0f);
+	}
+
+
+	// 回転角から行列を生成
+	Matrix4x4 rotateMat = Math::MakeRotateXYZMatrix(transform_.rotate_);
+	// オフセットをカメラの回転に合わせて回転させる
+	offset = Math::Transform(offset, rotateMat);
+
+	// 右スティックの右方向の入力があった場合
+	if (InputManager::GetRTInput() >= 155.0f) {
+		// 目標角度を設定
+		targetAngleY_ = -(float)std::numbers::pi / 2.0f;
+	}// 右スティックの左方向の入力があった場合
+	else if (InputManager::GetLTInput() >= 155.0f) {
+		// 目標角度を設定
+		targetAngleY_ = (float)std::numbers::pi / 2.0f;
+	}
+	else {
+		// 目標角度をリセット
+		targetAngleY_ = 0.0f;
+	}
+
+	// 目標角度に徐々に補間する
+	transform_.rotate_.y = Math::LerpShortAngle(transform_.rotate_.y, targetAngleY_, 0.1f);
+	
+
+	// オフセットをもとにカメラ座標を計算する
+	transform_.translate_ = Vector3(0.0f, 2.0f, 0.0f) + offset;
+
 	if (isUseThisCamera_) {
 		// ビュープロジェクション行列の計算
 		Matrix4x4 cameraMatrix = transform_.GetMatWorld(); // ワールド行列の生成
@@ -73,19 +105,13 @@ void InGameCamera::Update()
 
 void InGameCamera::DisplayImGui()
 {
-	// デバッグカメラだった場合はキー入力でカメラを移動させる
-	if (name_ == "DebugCamera") {
-		ImGui::Text("Debug Movement");
-		ImGui::Text("Move ... WASD");
-		ImGui::Text("Look ... ArrowKey");
-		ImGui::Text("Rise ... Space");
-		ImGui::Text("Descent ... LCTRL");
-	}
-
 	// ワールド座標の表示
 	transform_.DisplayImGui();
 	// 視野角の調整
 	ImGui::SliderFloat("FOV", &fov_, 0.45f, 1.2f);
+
+	// オフセットのImGuiを表示
+	ImGui::DragFloat3("Offset", &offset_.x);
 
 	if (ImGui::Button("Save")) {
 		SaveData();

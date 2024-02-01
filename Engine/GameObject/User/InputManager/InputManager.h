@@ -57,6 +57,25 @@ public:
 	/// <returns></returns>
 	static bool Heal();
 	
+	/// <summary>
+	/// 右スティックの入力取得関数
+	/// </summary>
+	/// <returns>右スティックの入力</returns>
+	static Vector3 GetRStickInput();
+
+	/// <summary>
+	/// 右トリガーの入力取得関数
+	/// </summary>
+	/// <returns>右トリガー入力</returns>
+	static float GetRTInput();
+
+	/// <summary>
+	/// 左トリガーの入力取得関数
+	/// </summary>
+	/// <returns>左トリガー入力</returns>
+	static float GetLTInput();
+
+
 private:
 
 	// 入力
