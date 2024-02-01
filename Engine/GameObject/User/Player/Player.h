@@ -159,6 +159,11 @@ public: // アクセッサ等
 	/// kMaxatackCountのゲッター
 	/// </summary>
 	int GetmaxAtackCount() { return kMaxAtackPushCount_; }
+	/// <summary>
+	/// 修正座標の取得
+	/// </summary>
+	/// <returns></returns>
+	Vector3 GetCorrectPosition() { return correctionPos_; }
 
 private: // プライベートなメンバ関数
 
@@ -219,6 +224,10 @@ private: // メンバ変数
 	Vector3 prevPos_;
 	// 当たり判定用ワールド座標
 	Vector3 worldPos_;
+	// 修正座標
+	Vector3 correctionPos_ = {};
+	// 修正フレーム
+	float correctEndFrame_ = 10.0f;
 
 	//吸収した数
 	int absorptionCount_;
