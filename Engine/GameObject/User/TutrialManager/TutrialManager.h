@@ -1,5 +1,14 @@
 #pragma once
 #include "../../BaseObject.h"
+#include "../../../Utility/Timer/DeltaTimer.h"
+enum TutrialStep {
+	tutrial1,
+	tutrial2,
+	tutrial3, 
+	tutrial4,
+	tutrial5,
+	end,
+};
 class TutrialManager:public BaseObject
 {
 	/// <summary>
@@ -16,5 +25,7 @@ class TutrialManager:public BaseObject
 	/// </summary>
 	void DisplayImGui() override;
 private:
+     int step;
+	 KLib::DeltaTimer timer_;
 };
 

@@ -44,8 +44,7 @@ void Boss::SuccessorInit()
 
 void Boss::SuccessorUpdate()
 {
-	// HPが0以下でない場合
-	if (hitPoint_ > 0.0f) {
+	if (isTutrial_) {
 		// 行動状態クラスがあれば
 		if (state_.get()) {
 			// 現在ステートを更新
@@ -53,20 +52,30 @@ void Boss::SuccessorUpdate()
 		}
 	}
 	else {
-		if (bam_->GetAnimation()->GetReadingParameterName() == "Boss_Dead" && bam_->GetAnimation()->isEnd_) {
-			// フェード演出を一度も行っていない場合
-			if (!isFade_) {
-				// フェードアウト
-				FadeManager::GetInstance()->ChangeParameter("WhiteOut", true);
-				FadeManager::GetInstance()->Play();
-				// フェード演出を行ったらトリガー
-				isFade_ = true;
+		// HPが0以下でない場合
+		if (hitPoint_ > 0.0f) {
+			// 行動状態クラスがあれば
+			if (state_.get()) {
+				// 現在ステートを更新
+				state_->Update();
 			}
+		}
+		else {
+			if (bam_->GetAnimation()->GetReadingParameterName() == "Boss_Dead" && bam_->GetAnimation()->isEnd_) {
+				// フェード演出を一度も行っていない場合
+				if (!isFade_) {
+					// フェードアウト
+					FadeManager::GetInstance()->ChangeParameter("WhiteOut", true);
+					FadeManager::GetInstance()->Play();
+					// フェード演出を行ったらトリガー
+					isFade_ = true;
+				}
 
-			// フェード演出中でなく、かつフェード演出トリガーを行っていた場合
-			if (!FadeManager::GetInstance()->GetIsStaging() && isFade_) {
-				// シーン遷移トリガーtrue
-				isSceneChange_ = true;
+				// フェード演出中でなく、かつフェード演出トリガーを行っていた場合
+				if (!FadeManager::GetInstance()->GetIsStaging() && isFade_) {
+					// シーン遷移トリガーtrue
+					isSceneChange_ = true;
+				}
 			}
 		}
 	}

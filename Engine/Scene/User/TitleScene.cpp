@@ -41,7 +41,7 @@ void TitleScene::Update()
 {
 	// タイトルマネージャ
 	if (tm_->GetIsSceneChange()) {
-		BaseScene* nextScene = new GameScene();
+		BaseScene* nextScene = new TutrialScene();
 		SceneManager::GetInstance()->SetNextScene(nextScene);
 	}
 

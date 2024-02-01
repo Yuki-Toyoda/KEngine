@@ -109,6 +109,8 @@
     <ClCompile Include="Engine\GameObject\User\Enemy\BossAnimManager.cpp" />
     <ClCompile Include="Engine\Scene\User\TutrialScene.cpp" />
     <ClCompile Include="Engine\GameObject\User\TutrialManager\TutrialManager.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\TutrialBoss\TutrialBoss.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\TutrialBoss\TutrialState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\GameObject\User\Enemy\State\MultiAtackState.h" />
@@ -235,6 +237,8 @@
     <ClInclude Include="Engine\GameObject\User\Enemy\BossAnimManager.h" />
     <ClInclude Include="Engine\Scene\User\TutrialScene.h" />
     <ClInclude Include="Engine\GameObject\User\TutrialManager\TutrialManager.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\TutrialBoss\TutrialBoss.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\TutrialBoss\TutrialState.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Object3D.hlsli" />

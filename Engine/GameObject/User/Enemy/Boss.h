@@ -97,5 +97,5 @@ private:
 	bool isFade_ = false;
 	// シーン遷移トリガー
 	bool isSceneChange_ = false;
-
+	bool isTutrial_=true;
 };

@@ -34,7 +34,13 @@ void TutrialScene::Init()
 	player_->transform_.translate_.y = 3.0f;
 	player_->transform_.translate_.x = 10.0f;
 	//// 敵を生成
-	//gameObjectManager_->CreateInstance<SmallEnemy>("Enemy", BaseObject::TagEnemy);
+	// ボスの生成
+	boss_ = gameObjectManager_->CreateInstance<Boss>("Boss", BaseObject::TagEnemy);
+	// ボスにプレイヤーをセット
+	boss_->SetPlayer(player_);
+	//GameManagerをセット
+	boss_->SetgameManager(gameManager);
+	
 	uribo_ = gameObjectManager_->CreateInstance<Uribo>("uribo", BaseObject::TagUribo);
 	player_->SetUribo(uribo_);
 	// プレイヤーアニメーションマネージャの生成
@@ -55,7 +61,7 @@ void TutrialScene::Init()
 
 	TutrialManager* tm = gameObjectManager_->CreateInstance<TutrialManager>("tutrialManager", BaseObject::TagNone);
 
-
+	tm;
 	// ボスのアニメーションマネージャーの生成
 	BossAnimManager* bam = gameObjectManager_->CreateInstance<BossAnimManager>("bossAnim", BaseObject::TagEnemy);
 	// アニメーションマネージャーにボスをセット
@@ -86,9 +92,10 @@ void TutrialScene::Init()
 	// フェードイン
 	FadeManager::GetInstance()->ChangeParameter("FadeIn", true);
 	FadeManager::GetInstance()->Play();
-
+	boss_->ChangeState(std::make_unique<TutrialState>());
 }
 
 void TutrialScene::Update()
 {
+	InputManager::Update();
 }

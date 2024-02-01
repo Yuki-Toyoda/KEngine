@@ -103,6 +103,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\GameObject\User\Enemy\State\PushUpAtackState.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\State\RollerAtackState.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\State\WaitTimeState.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\TutrialBoss\TutrialBoss.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\TutrialBoss\TutrialState.cpp" />
     <ClCompile Include="Engine\GameObject\User\GameManager\GameManager.cpp" />
     <ClCompile Include="Engine\GameObject\User\Player\State\PushUpHitState.cpp" />
     <ClCompile Include="Engine\GameObject\User\Player\uribo\uribo.cpp" />
@@ -217,6 +219,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\GameObject\User\Enemy\State\PushUpAtackState.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\State\RollerAtackState.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\State\WaitTimeState.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\TutrialBoss\TutrialBoss.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\TutrialBoss\TutrialState.h" />
     <ClInclude Include="Engine\GameObject\User\GameManager\GameManager.h" />
     <ClInclude Include="Engine\GameObject\User\Player\State\PushUpHitState.h" />
     <ClInclude Include="Engine\GameObject\User\Player\uribo\uribo.h" />
