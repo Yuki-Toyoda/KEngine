@@ -36,7 +36,7 @@ private: // プライベートなメンバ関数
 public:
 
 	//攻撃可能になるための破片最低数
-	int kMinCount = 4;
+	int kMinCount = 1;
 
 };
 
