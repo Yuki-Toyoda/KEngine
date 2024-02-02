@@ -46,14 +46,14 @@ private:
 	Vector3 goalPos_;
 	Vector3 CollisionScale_;
 
-	bool isGenerateParticle_ = false;
-
 private: // パーティクル
 	// エミッタマネージャー
 	ParticleEmitterManager* emitterManager_ = nullptr;
 
-	// 
+	// 消えるときのパーティクル
 	IParticleEmitter* fadeParticleEmitter_ = nullptr;
+	// フラグで出現開始を取得
+	bool isGenerateParticle_ = false;
 
 };
 

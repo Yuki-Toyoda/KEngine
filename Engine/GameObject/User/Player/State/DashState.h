@@ -33,7 +33,7 @@ private:
 	// 加速タイム
 	float axelTimer_;
 	// パワー
-	float dashPower_ = 5.5f;
+	float dashPower_;
 
 };
 
