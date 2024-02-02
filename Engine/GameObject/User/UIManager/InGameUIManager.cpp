@@ -17,6 +17,7 @@ void InGameUIManager::Init()
 	uriboGage_BG_ = AddSprite("UriboGage_BG", { 80.0f, 650.0f }, { 280.0f, 12.0f }, TextureManager::Load("./Resources/UI/InGame", "urimaruHpFram.png"));
 	uriboGage_F_ = AddSprite("UriboGage_F", { 80.0f, 650.0f }, { 280.0f, 12.0f }, TextureManager::Load("./Resources/UI/InGame", "urimaruHpGauge.png"));
 	uriboIcon_ = AddSprite("UriboIcon", { 80.0f, 650.0f }, { 24.0f, 24.0f }, TextureManager::Load("./Resources/UI/InGame", "UrimaruIconNormal.png"));
+	uriboAlert_ = AddSprite("UriboAlert", { 80.0f, 650.0f }, { 96.0f, 96.0f }, TextureManager::Load("./Resources/UI/InGame", "urimaruAlert.png"));
 
 	moveSpriteBG_ = AddSprite("MoveUI_BG", { 1075.0f, 520.0f }, { 192.0f, 64.0f }, TextureManager::Load("./Resources/UI/InGame", "moveBack.png"));
 	moveSprite_ = AddSprite("MoveUI", { 0.0f, 0.0f }, { 192.0f, 64.0f }, TextureManager::Load("./Resources/UI/InGame", "moveFront.png"));
@@ -28,6 +29,7 @@ void InGameUIManager::Init()
 	playerVegetableCount2_->anchorPoint_ = { 0.5f, 0.5f };
 	playerVegetableCount1_->anchorPoint_ = { 0.5f, 0.5f };
 	uriboIcon_->anchorPoint_ = { 0.5f, 0.5f };
+	uriboAlert_->anchorPoint_ = { 1.0f, 1.0f };
 
 	// ボスのHPゲージ背景に親子付けする
 	bossHPGageSprite_F_->SetParent(bossHPGageSprite_BG_->GetWorldTransform());
@@ -40,6 +42,9 @@ void InGameUIManager::Init()
 	// 野菜カウント数スプライトのリセット
 	playerVegetableCount2_->texSize_ = Vector2(48.0f, 64.0f);
 	playerVegetableCount1_->texSize_ = Vector2(48.0f, 64.0f);
+
+	// ウリボのアラートアイコンの表示領域を設定
+	uriboAlert_->texSize_ = { 96.0f, 96.0f };
 
 	// ウリボゲージ背景親子付けする
 	//uriboGage_F_->SetParent(uriboGage_BG_->GetWorldTransform());
@@ -56,6 +61,9 @@ void InGameUIManager::Init()
 	// スプライトの描画範囲設定
 	AttackSprite_->texSize_ = { 448.0f, 96.0f };
 	FeedSprite_->texSize_ = { 512.0f, 96.0f };
+
+	// アラートアイコンの切り替えタイマー
+	switchAlertIconTimer_.Start(switchAlertIconTime_);
 }
 
 void InGameUIManager::Update()
@@ -147,9 +155,40 @@ void InGameUIManager::Update()
 		uriboGage_BG_->translate_ = { positionUriboWorld.x - (uriboGage_BG_->scale_.x / 2.0f), (positionUriboWorld.y - 50.0f)};
 		uriboGage_F_->translate_ = { positionUriboWorld.x - (uriboGage_BG_->scale_.x / 2.0f), (positionUriboWorld.y - 50.0f)};
 		uriboIcon_->translate_ = { positionUriboWorld.x - (uriboGage_BG_->scale_.x / 2.0f), (positionUriboWorld.y - 50.0f) };
+		uriboAlert_->translate_ = { positionUriboWorld.x - (uriboGage_BG_->scale_.x / 8.0f), positionUriboWorld.y - (uriboGage_BG_->scale_.y * 2.0f) };
+
+		// ウリボのHP割合を取得
+		float uriboHPRatio = (float)uribo_->GetHP() / (float)uribo_->GetDefaultHP();
+
+		// ウリボのHPが3 / 1 以下になったときにアラートアイコンを表示
+		if (uriboHPRatio <= 0.33f) {
+			uriboAlert_->SetIsActive(true);
+		}
+		else {
+			uriboAlert_->SetIsActive(false);
+		}
 
 		// ウリボのHPの残量によってゲージを変える
 		uriboGage_F_->scale_.x = Math::Linear((float)uribo_->GetHP(), 0.0f, 280.0f, (float)uribo_->GetDefaultHP());
+
+		// ウリボのアラートアイコンが表示されている場合
+		if (uriboAlert_->GetIsActive()) {
+			// 切り替えタイマー終了時
+			if (switchAlertIconTimer_.GetIsFinish()) {
+				if (uriboAlert_->texBase_.x >= 96.0f) {
+					uriboAlert_->texBase_.x = 0.0f;
+				}
+				else {
+					uriboAlert_->texBase_.x = 96.0f;
+				}
+
+				// アラートアイコン切り替えタイマーのリスタート
+				switchAlertIconTimer_.Start(switchAlertIconTime_);
+			}
+
+			// アラートアイコン切り替えタイマーの更新
+			switchAlertIconTimer_.Update();
+		}
 	}
 }
 

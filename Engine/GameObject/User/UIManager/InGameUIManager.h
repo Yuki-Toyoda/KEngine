@@ -90,11 +90,17 @@ private: // メンバ変数
 	Sprite* uriboGage_BG_ = nullptr; // ウリボのゲージ背景
 	Sprite* uriboGage_F_ = nullptr; // ウリボのゲージ
 	Sprite* uriboIcon_ = nullptr; // ウリボのゲージアイコン
+	Sprite* uriboAlert_ = nullptr; // ウリボのアラートアイコン
 
 	/// チュートリアル実装まで残すスプライト
 	Sprite* moveSpriteBG_ = nullptr; // スティックスプライト背景
 	Sprite* moveSprite_ = nullptr; // スティックスプライト背景
 	Sprite* AttackSprite_ = nullptr; // 攻撃方法スプライト
 	Sprite* FeedSprite_ = nullptr; // 攻撃方法スプライト
+
+	// アラートアイコンの切り替え秒数
+	float switchAlertIconTime_ = 1.0f;
+	// ウリボのアラートアイコン表示切り替えタイマー
+	KLib::DeltaTimer switchAlertIconTimer_;
 };
 
