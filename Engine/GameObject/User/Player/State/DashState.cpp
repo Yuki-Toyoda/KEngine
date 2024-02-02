@@ -10,11 +10,12 @@ void DashState::Init()
 	// 進ませる方向ベクトル
 	moveDirect_ = Math::Normalize(player_->GetMoveDirect());
 	// 終了フレーム
-	endFrame_ = 5.0f;
+	axelTimer_ = 0.2f;
+	brakeTimer_ = 0.3f;
 	// 加速と減速の段階を管理する
-	endCount_ = 0;
+	moveStep_ = kAccleratorStep;
 	// 開始
-	dashTimer_.Start(1.0f / endFrame_);
+	dashTimer_.Start(axelTimer_);
 }
 
 void DashState::Update()
@@ -24,24 +25,24 @@ void DashState::Update()
 
 
 	// 加速の終了するタイミング
-	if (dashTimer_.GetIsFinish() && endCount_ == 0) {
+	if (dashTimer_.GetIsFinish() && moveStep_ == 0) {
 
-		dashTimer_.Start(1.0f / endFrame_);
+		dashTimer_.Start(brakeTimer_);
 		// 最大速度設定
 		maxVelocity_ = velocity_;
 		// 状態を変更
-		endCount_++;
+		moveStep_ = kDecelerationStep;
 	}
 	// 加速処理
-	if(dashTimer_.GetIsActive() && endCount_ == 0) {
+	if(dashTimer_.GetIsActive() && moveStep_ == kAccleratorStep) {
 		velocity_ += (moveDirect_ * player_->GetMoveAcceleration()) * dashPower_;
 	}
 	// 減速の終了タイミング（ステートが戻る
-	else if (dashTimer_.GetIsActive() && endCount_ == 1) {
+	else if (dashTimer_.GetIsActive() && moveStep_ == kDecelerationStep) {
 		velocity_ = KLib::Lerp<Vector3>(maxVelocity_, { 0,0,0 }, dashTimer_.GetProgress());
 	}
 	// 減速処理
-	if (dashTimer_.GetIsFinish() && endCount_ == 1) {
+	if (dashTimer_.GetIsFinish() && moveStep_ == kDecelerationStep) {
 		player_->ChangeState(std::make_unique<RootState>());
 		return;
 	}

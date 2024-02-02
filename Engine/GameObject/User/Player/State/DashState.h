@@ -11,6 +11,12 @@ public:
 	void DisplayImGui() override;
 
 private:
+	enum MoveStep {
+		kAccleratorStep,
+		kDecelerationStep,
+	};
+
+private:
 	// 開始座標
 	Vector3 velocity_ = {};
 	Vector3 moveDirect_ = {};
@@ -19,9 +25,14 @@ private:
 	// 
 	KLib::DeltaTimer dashTimer_;
 
-	int endCount_ = 0;
+	// 挙動の状態
+	int moveStep_ = kAccleratorStep;
 
-	float endFrame_ = 5.0f;
+	// 減速タイム
+	float brakeTimer_;
+	// 加速タイム
+	float axelTimer_;
+	// パワー
 	float dashPower_ = 5.5f;
 
 };
