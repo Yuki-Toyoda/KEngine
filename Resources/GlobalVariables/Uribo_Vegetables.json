@@ -1,0 +1,70 @@
+{
+    "Uribo_Vegetables": {
+        "Body_Rotate : KeyCount": 3,
+        "Body_Rotate key : 0": [
+            1.0,
+            0.0,
+            0.0
+        ],
+        "Body_Rotate key : 0 : EasingParameter": 3,
+        "Body_Rotate key : 0 : PlayFrame": 0,
+        "Body_Rotate key : 1": [
+            1.0,
+            0.0,
+            0.0
+        ],
+        "Body_Rotate key : 1 : EasingParameter": 3,
+        "Body_Rotate key : 1 : PlayFrame": 20,
+        "Body_Rotate key : 2": [
+            1.0,
+            0.0,
+            0.0
+        ],
+        "Body_Rotate key : 2 : EasingParameter": 3,
+        "Body_Rotate key : 2 : PlayFrame": 40,
+        "Body_Scale : KeyCount": 3,
+        "Body_Scale key : 0": [
+            1.100000023841858,
+            0.800000011920929,
+            1.0
+        ],
+        "Body_Scale key : 0 : EasingParameter": 3,
+        "Body_Scale key : 0 : PlayFrame": 0,
+        "Body_Scale key : 1": [
+            0.8999999761581421,
+            1.100000023841858,
+            1.0
+        ],
+        "Body_Scale key : 1 : EasingParameter": 8,
+        "Body_Scale key : 1 : PlayFrame": 20,
+        "Body_Scale key : 2": [
+            1.100000023841858,
+            0.800000011920929,
+            1.0
+        ],
+        "Body_Scale key : 2 : EasingParameter": 7,
+        "Body_Scale key : 2 : PlayFrame": 40,
+        "Body_Translate : KeyCount": 3,
+        "Body_Translate key : 0": [
+            0.15000000596046448,
+            0.0,
+            0.0
+        ],
+        "Body_Translate key : 0 : EasingParameter": 3,
+        "Body_Translate key : 0 : PlayFrame": 0,
+        "Body_Translate key : 1": [
+            -0.15000000596046448,
+            1.1799999475479126,
+            1.5
+        ],
+        "Body_Translate key : 1 : EasingParameter": 8,
+        "Body_Translate key : 1 : PlayFrame": 20,
+        "Body_Translate key : 2": [
+            0.15000000596046448,
+            0.0,
+            0.0
+        ],
+        "Body_Translate key : 2 : EasingParameter": 3,
+        "Body_Translate key : 2 : PlayFrame": 40
+    }
+}

@@ -1,0 +1,70 @@
+{
+    "Uribo_Idle": {
+        "Body_Rotate : KeyCount": 3,
+        "Body_Rotate key : 0": [
+            1.0,
+            0.0,
+            -0.3499999940395355
+        ],
+        "Body_Rotate key : 0 : EasingParameter": 3,
+        "Body_Rotate key : 0 : PlayFrame": 0,
+        "Body_Rotate key : 1": [
+            1.0,
+            0.0,
+            0.3499999940395355
+        ],
+        "Body_Rotate key : 1 : EasingParameter": 3,
+        "Body_Rotate key : 1 : PlayFrame": 60,
+        "Body_Rotate key : 2": [
+            1.0,
+            0.0,
+            -0.3499999940395355
+        ],
+        "Body_Rotate key : 2 : EasingParameter": 3,
+        "Body_Rotate key : 2 : PlayFrame": 120,
+        "Body_Scale : KeyCount": 3,
+        "Body_Scale key : 0": [
+            1.0,
+            1.0,
+            1.0
+        ],
+        "Body_Scale key : 0 : EasingParameter": 3,
+        "Body_Scale key : 0 : PlayFrame": 0,
+        "Body_Scale key : 1": [
+            1.0,
+            1.0,
+            1.0
+        ],
+        "Body_Scale key : 1 : EasingParameter": 3,
+        "Body_Scale key : 1 : PlayFrame": 60,
+        "Body_Scale key : 2": [
+            1.0,
+            1.0,
+            1.0
+        ],
+        "Body_Scale key : 2 : EasingParameter": 3,
+        "Body_Scale key : 2 : PlayFrame": 120,
+        "Body_Translate : KeyCount": 3,
+        "Body_Translate key : 0": [
+            0.15000000596046448,
+            0.0,
+            0.0
+        ],
+        "Body_Translate key : 0 : EasingParameter": 3,
+        "Body_Translate key : 0 : PlayFrame": 0,
+        "Body_Translate key : 1": [
+            -0.15000000596046448,
+            0.0,
+            0.0
+        ],
+        "Body_Translate key : 1 : EasingParameter": 3,
+        "Body_Translate key : 1 : PlayFrame": 60,
+        "Body_Translate key : 2": [
+            0.15000000596046448,
+            0.0,
+            0.0
+        ],
+        "Body_Translate key : 2 : EasingParameter": 3,
+        "Body_Translate key : 2 : PlayFrame": 120
+    }
+}

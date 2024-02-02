@@ -206,6 +206,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\GameObject\User\Fence\Fences.cpp" />
     <ClCompile Include="Engine\Particle\User\HitParticleEmiiter.cpp" />
     <ClCompile Include="Engine\Particle\User\HitParticle.cpp" />
+    <ClCompile Include="Engine\GameObject\User\FeedVegetable\FeedVegetable.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\GameObject\Samples\SampleSphere\SampleSphere.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -355,6 +356,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Particle\User\HitParticleEmiiter.h" />
     <ClInclude Include="Engine\Particle\User\HitParticle.h" />
     <ClInclude Include="Engine\GameObject\User\Player\State\WallCollisionState.h" />
+    <ClInclude Include="Engine\GameObject\User\FeedVegetable\FeedVegetable.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Object3D.hlsli">

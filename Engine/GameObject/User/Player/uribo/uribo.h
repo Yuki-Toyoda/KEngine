@@ -42,12 +42,24 @@ private: // プライベートなメンバ関数
 	/// </summary>
 	void SetGlobalVariables();
 
+	/// <summary>
+	/// パラメータ生成関数
+	/// </summary>
+	/// <param name="name">生成するパラメータ名</param>
+	void CreateParameter(const std::string& name);
+
 public: // パブリックなメンバ変数
 
 	// 身体のトランスフォーム
 	WorldTransform bodyTransform_;
 
 private: // メンバ変数
+
+	// アニメーションマネージャー
+	AnimationManager* animManager_ = nullptr;
+
+	// アニメーション
+	Animation* anim_ = nullptr;
 
 	// 餌を与えられるエリアのトランスフォーム
 	WorldTransform feedAreaTransform_;
@@ -69,7 +81,7 @@ private: // メンバ変数
 	// ボスの死亡トリガー
 	bool isBossDead_ = false;
 
-	// 餌を与えられる状態トリガー
+	// 餌を与えられる状態のトリガー
 	bool canFeed_ = false;
 
 };

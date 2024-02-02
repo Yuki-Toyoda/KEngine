@@ -142,7 +142,7 @@ void InGameUIManager::Update()
 	// ウリボーが存在する場合
 	if (uribo_ != nullptr) {
 		// ウリボのワールド座標の取得
-		Vector3 positionUriboWorld = uribo_->transform_.GetWorldPos();
+		Vector3 positionUriboWorld = uribo_->bodyTransform_.GetWorldPos();
 		// ビューポート行列の生成
 		Matrix4x4 matViewPort = Math::MakeViewportMatrix(0, 0, 1280.0f, 720.0f, 0, 1);
 		// ビュープロジェクション行列の計算

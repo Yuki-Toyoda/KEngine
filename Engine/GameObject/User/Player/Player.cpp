@@ -2,6 +2,8 @@
 #include "PlayerAnimManager.h"
 #include "../../../GlobalVariables/GlobalVariables.h"
 #include "../../Core/Camera.h"
+#include "../../GameObjectManager.h"
+#include "../FeedVegetable/FeedVegetable.h"
 
 void Player::Init()
 {
@@ -401,8 +403,8 @@ void Player::SubtractVelocity()
 
 void Player::Heal()
 {
-	//カウントが０じゃなくヒールボタンを押したとき
-	if (InputManager::Heal() && absorptionCount_ > 0) {
+	//カウントが０じゃなくかつ、HPが最大値以下の時、ヒールボタンを押したとき
+	if (InputManager::Heal() && absorptionCount_ > 0 && uribo_->GetHP() < uribo_->GetDefaultHP()) {
 		if (healTimer.GetIsFinish()) {
 			//うりぼーの回復
 			uribo_->Heal(healPower_);
@@ -427,6 +429,11 @@ void Player::Heal()
 			//食べたカウントを減らす
 			absorptionCount_--;
 			healTimer.Start(healCoolTime_);
+
+			// 野菜を投げる演出用
+		 	FeedVegetable* fvg = GameObjectManager::GetInstance()->CreateInstance<FeedVegetable>("FeedVege", BaseObject::TagNone);
+			// 初期化後処理を呼び出す
+			fvg->PostInit(pam_->bodyTransform_.GetWorldPos(), uribo_->transform_.GetWorldPos());
 
 			// 与えたSEを再生する
 			audio_->PlayWave(feedSE_);

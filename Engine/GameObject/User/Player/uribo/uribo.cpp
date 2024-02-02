@@ -38,6 +38,28 @@ void Uribo::Init()
 	feedAreaTransform_.scale_ = {collisionScale_.x / 2.0f, collisionScale_.z / 2.0f, 1.0f };
 	feedAreaTransform_.translate_.y = -(transform_.scale_.y / 2.0f) + 0.1f;
 
+	// アニメーションマネージャーのインスタンス取得
+	animManager_ = AnimationManager::GetInstance();
+
+	/// パラメータ生成
+	// 待機状態
+	CreateParameter("Uribo_Idle");
+	// HP低下時の待機状態
+	CreateParameter("Uribo_LowIdle");
+	// 野菜取得待機状態
+	CreateParameter("Uribo_Vegetables");
+
+	/// アニメーションの生成
+	anim_ = animManager_->CreateAnimation("UriboAnim", "Uribo_Idle");
+	anim_->AddAnimationKeys<Vector3>("Body_Scale", &bodyTransform_.scale_);
+	anim_->AddAnimationKeys<Vector3>("Body_Rotate", &bodyTransform_.rotate_);
+	anim_->AddAnimationKeys<Vector3>("Body_Translate", &bodyTransform_.translate_);
+
+	// ループ有効
+	anim_->isLoop_ = true;
+	// アニメーション再生
+	anim_->Play();
+
 }
 
 void Uribo::Update()
@@ -47,14 +69,61 @@ void Uribo::Update()
 		hitPoint_ -= decrementHP;
 	}
 
+	// テクスチャが同一でない場合テクスチャを変更
 	if (feedAreaMesh_->texture_ != TextureManager::Load("FeedAreaTex_Disable.png")) {
 		feedAreaMesh_->texture_ = TextureManager::Load("FeedAreaTex_Disable.png");
 	}
+
+	// ウリボのHP割合を取得
+	float uriboHPRatio = (float)hitPoint_ / (float)defaultHP_;
+	// HP割合が3 / 1 以下になったとき
+	if (uriboHPRatio <= 0.33f && !canFeed_) {
+		// アニメーションの読み込みパラメータ名が同一でない場合
+		if (anim_->GetReadingParameterName() != "Uribo_LowIdle") {
+			// アニメーション状態を変更する
+			anim_->ChangeParameter("Uribo_LowIdle", true);
+		}
+	}
+	else if(!canFeed_){
+		// アニメーションの読み込みパラメータ名が同一でない場合
+		if (anim_->GetReadingParameterName() != "Uribo_Idle") {
+			// アニメーション状態を変更する
+			anim_->ChangeParameter("Uribo_Idle", false);
+		}
+	}
+
+	// 餌を与えられる状態の場合アニメーションを強制変更
+	if (canFeed_) {
+		// アニメーションの読み込みパラメータ名が同一でない場合
+		if (anim_->GetReadingParameterName() != "Uribo_Vegetables") {
+			// アニメーション状態を変更する
+			anim_->ChangeParameter("Uribo_Vegetables", true);
+		}
+	}
+
+	// 餌を与えられる状態トリガーリセット
+	canFeed_ = false;
 }
 
 void Uribo::DisplayImGui()
 {
 	transform_.DisplayImGui();
+
+	anim_->DisplayImGui();
+	// アニメーションの読み込みパラメータ変更
+	if (ImGui::TreeNode("Uribo_ChangeReadParameter")) {
+		if (ImGui::Button("Idle")) {
+			anim_->ChangeParameter("Uribo_Idle", true);
+		}
+		if (ImGui::Button("LowIdle")) {
+			anim_->ChangeParameter("Uribo_LowIdle", true);
+		}
+		if (ImGui::Button("Vegetables")) {
+			anim_->ChangeParameter("Uribo_Vegetables", true);
+		}
+
+		ImGui::TreePop();
+	}
 
 	feedAreaTransform_.DisplayImGuiWithTreeNode("FeedArea");
 	ImGui::ColorPicker4("areaColor", &areaColor_.x);
@@ -78,12 +147,21 @@ void Uribo::OnCollision(Collider* collider)
 	// エリア内にプレイヤーがいたらテクスチャを変更する
 	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagPlayer) {
 		feedAreaMesh_->texture_ = TextureManager::Load("FeedAreaTex_Enable.png");
+
+		// 餌を与えられる状態であることを示す
+		canFeed_ = true;
 	}
 }
 
 void Uribo::Heal(int healPower)
 {
+	// 回復させる
 	hitPoint_ += healPower;
+
+	// HPが最大値以上になったときは最大値で打ち止め
+	if (hitPoint_ > defaultHP_) {
+		hitPoint_ = defaultHP_;
+	}
 }
 
 void Uribo::SetGlobalVariables()
@@ -94,4 +172,13 @@ void Uribo::SetGlobalVariables()
 	transform_.scale_=variables->GetVector3Value(name_, "scale");
 	transform_.translate_=variables->GetVector3Value(name_, "translate");
 	decrementHP=variables->GetIntValue(name_, "decrementHP");
+}
+
+void Uribo::CreateParameter(const std::string& name)
+{
+	// パラメータ名生成
+	animManager_->CreateAnimationParameter(name);
+	animManager_->AddSelectAnimationKeys<Vector3>(name, "Body_Scale");
+	animManager_->AddSelectAnimationKeys<Vector3>(name, "Body_Rotate");
+	animManager_->AddSelectAnimationKeys<Vector3>(name, "Body_Translate");
 }
