@@ -160,7 +160,9 @@ public: // アクセッサ等
 	void SetUribo(Uribo* uribo) { uribo_ = uribo; }
 
 	/// <summary>
-	/// ゲームオーバーフラグのげったー
+	/// ゲームオーバーフラグのゲッター
+	/// </summary>
+	/// <returns>ゲームオーバーフラグ</returns>
 	bool GetgameOver(){return isGameOver_;}
 	
 	//pushUpの位置のゲッター

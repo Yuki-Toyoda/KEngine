@@ -6,18 +6,21 @@ void Rubble::Init()
 	// 0 ~ 2 までのランダムな値を生成
 	int generateValue = Math::Random(0, 2);
 
+	// 生成した値を元にモデルを生成
 	switch (generateValue)
 	{
 	case 0:
+		// 人参のモデル生成
 		AddMesh(&transform_, color_, "./Resources/FallingCarrot", "fallingCarrot.obj");
 		break;
 	case 1:
+		// トマトのモデル生成
 		AddMesh(&transform_, color_, "./Resources/Tomato", "tomato.obj");
 		break;
 	case 2:
+		// ピーマンのモデル生成
 		AddMesh(&transform_, color_, "./Resources/GreenPepper", "greenPepper.obj");
 		break;
-
 	}
 
 	color_ = { 1.0f,0.25f,0.0f,1.0f };

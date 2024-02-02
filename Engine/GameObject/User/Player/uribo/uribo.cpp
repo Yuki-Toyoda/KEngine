@@ -1,5 +1,6 @@
 #include "uribo.h"
 #include "../../../../Resource/Texture/TextureManager.h"
+#include "../../../../Scene/FadeManager.h"
 
 void Uribo::Init()
 {
@@ -48,6 +49,8 @@ void Uribo::Init()
 	CreateParameter("Uribo_LowIdle");
 	// 野菜取得待機状態
 	CreateParameter("Uribo_Vegetables");
+	// 死亡アニメーション
+	CreateParameter("Uribo_Dead");
 
 	/// アニメーションの生成
 	anim_ = animManager_->CreateAnimation("UriboAnim", "Uribo_Idle");
@@ -64,45 +67,77 @@ void Uribo::Init()
 
 void Uribo::Update()
 {
-	// ボスが死亡していない場合
-	if (!isBossDead_) {
-		hitPoint_ -= decrementHP;
-	}
-
-	// テクスチャが同一でない場合テクスチャを変更
-	if (feedAreaMesh_->texture_ != TextureManager::Load("FeedAreaTex_Disable.png")) {
-		feedAreaMesh_->texture_ = TextureManager::Load("FeedAreaTex_Disable.png");
-	}
-
-	// ウリボのHP割合を取得
-	float uriboHPRatio = (float)hitPoint_ / (float)defaultHP_;
-	// HP割合が3 / 1 以下になったとき
-	if (uriboHPRatio <= 0.33f && !canFeed_) {
+	// HPが0以下になったら死亡アニメーション再生
+	if (hitPoint_ <= 0) {
 		// アニメーションの読み込みパラメータ名が同一でない場合
-		if (anim_->GetReadingParameterName() != "Uribo_LowIdle") {
+		if (anim_->GetReadingParameterName() != "Uribo_Dead") {
+			// アニメーションのループを切る
+			anim_->isLoop_ = false;
 			// アニメーション状態を変更する
-			anim_->ChangeParameter("Uribo_LowIdle", true);
+			anim_->ChangeParameter("Uribo_Dead", true);
+		}
+		else {
+			// アニメーション終了時
+			if (anim_->isEnd_) {
+				// 死亡トリガーTrue
+				isDead_ = true;
+			}
+
+			// アニメーション進捗が一定値を超えたらフェードアウト開始
+			if (anim_->GetAnimationProgress() >= 0.8f) {
+				if (!isFade_) {
+					// フェードアウト
+					FadeManager::GetInstance()->ChangeParameter("FadeOut", true);
+					FadeManager::GetInstance()->Play();
+
+					// フェード演出を行っていたらtrue
+					isFade_ = true;
+				}
+			}
 		}
 	}
-	else if(!canFeed_){
-		// アニメーションの読み込みパラメータ名が同一でない場合
-		if (anim_->GetReadingParameterName() != "Uribo_Idle") {
-			// アニメーション状態を変更する
-			anim_->ChangeParameter("Uribo_Idle", false);
-		}
-	}
+	else {
 
-	// 餌を与えられる状態の場合アニメーションを強制変更
-	if (canFeed_) {
-		// アニメーションの読み込みパラメータ名が同一でない場合
-		if (anim_->GetReadingParameterName() != "Uribo_Vegetables") {
-			// アニメーション状態を変更する
-			anim_->ChangeParameter("Uribo_Vegetables", true);
+		// ボスが死亡していない場合
+		if (!isBossDead_) {
+			hitPoint_ -= decrementHP;
 		}
-	}
 
-	// 餌を与えられる状態トリガーリセット
-	canFeed_ = false;
+		// テクスチャが同一でない場合テクスチャを変更
+		if (feedAreaMesh_->texture_ != TextureManager::Load("FeedAreaTex_Disable.png")) {
+			feedAreaMesh_->texture_ = TextureManager::Load("FeedAreaTex_Disable.png");
+		}
+
+		// ウリボのHP割合を取得
+		float uriboHPRatio = (float)hitPoint_ / (float)defaultHP_;
+		// HP割合が3 / 1 以下になったとき
+		if (uriboHPRatio <= 0.33f && !canFeed_) {
+			// アニメーションの読み込みパラメータ名が同一でない場合
+			if (anim_->GetReadingParameterName() != "Uribo_LowIdle") {
+				// アニメーション状態を変更する
+				anim_->ChangeParameter("Uribo_LowIdle", true);
+			}
+		}
+		else if (!canFeed_) {
+			// アニメーションの読み込みパラメータ名が同一でない場合
+			if (anim_->GetReadingParameterName() != "Uribo_Idle") {
+				// アニメーション状態を変更する
+				anim_->ChangeParameter("Uribo_Idle", false);
+			}
+		}
+
+		// 餌を与えられる状態の場合アニメーションを強制変更
+		if (canFeed_) {
+			// アニメーションの読み込みパラメータ名が同一でない場合
+			if (anim_->GetReadingParameterName() != "Uribo_Vegetables") {
+				// アニメーション状態を変更する
+				anim_->ChangeParameter("Uribo_Vegetables", true);
+			}
+		}
+
+		// 餌を与えられる状態トリガーリセット
+		canFeed_ = false;
+	}
 }
 
 void Uribo::DisplayImGui()
@@ -120,6 +155,9 @@ void Uribo::DisplayImGui()
 		}
 		if (ImGui::Button("Vegetables")) {
 			anim_->ChangeParameter("Uribo_Vegetables", true);
+		}
+		if (ImGui::Button("Dead")) {
+			anim_->ChangeParameter("Uribo_Dead", true);
 		}
 
 		ImGui::TreePop();

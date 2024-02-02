@@ -35,6 +35,12 @@ public://アクセッサ
 	/// <param name="isBossDead">true or false</param>
 	void SetIsBossDead(const bool& isBossDead) { isBossDead_ = isBossDead; }
 
+	/// <summary>
+	/// ウリボの死亡状態ゲッター
+	/// </summary>
+	/// <returns>ウリボの死亡状態</returns>
+	bool GetIsDead() { return isDead_; }
+
 private: // プライベートなメンバ関数
 
 	/// <summary>
@@ -83,6 +89,11 @@ private: // メンバ変数
 
 	// 餌を与えられる状態のトリガー
 	bool canFeed_ = false;
+
+	// フェード演出トリガー
+	bool isFade_ = false;
+	// 死亡状態トリガー
+	bool isDead_ = false;
 
 };
 

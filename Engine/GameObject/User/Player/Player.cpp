@@ -182,7 +182,7 @@ void Player::Update()
 	}
 
 	// 現在HPの取得
-	if (uribo_->GetHP() <= 0) {
+	if (uribo_->GetIsDead()) {
 		// ゲームオーバーフラグtrue
 		isGameOver_ = true;
 	}
