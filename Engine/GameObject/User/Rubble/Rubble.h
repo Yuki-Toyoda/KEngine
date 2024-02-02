@@ -31,6 +31,7 @@ public://アクセッサ
 	void  SetGoal(Vector3 pos) { goalPos_ = pos; }
 	void  SetStart(Vector3 pos) { startPos_ = pos; }
 	void SetCollisionScale(Vector3 scale) { CollisionScale_ = scale; }
+	void SetUpParticle();
 private:
 	void OnCollisionEnter(Collider* collider)override;
 	
@@ -44,6 +45,8 @@ private:
 	Vector3 startPos_;
 	Vector3 goalPos_;
 	Vector3 CollisionScale_;
+
+	bool isGenerateParticle_ = false;
 
 private: // パーティクル
 	// エミッタマネージャー
