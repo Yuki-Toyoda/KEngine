@@ -2,6 +2,8 @@
 #include "../../BaseObject.h"
 #include "../../../Utility/KLib.h"
 #include "../../User/GameManager/GameManager.h"
+#include "../../../Particle/ParticleEmitterManager.h"
+
 class Rubble:public BaseObject
 {
 public: // メンバ関数
@@ -42,5 +44,13 @@ private:
 	Vector3 startPos_;
 	Vector3 goalPos_;
 	Vector3 CollisionScale_;
+
+private: // パーティクル
+	// エミッタマネージャー
+	ParticleEmitterManager* emitterManager_ = nullptr;
+
+	// 
+	IParticleEmitter* fadeParticleEmitter_ = nullptr;
+
 };
 

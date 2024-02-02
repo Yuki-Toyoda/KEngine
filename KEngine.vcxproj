@@ -215,6 +215,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\GameObject\User\TitleManager\TitleManager.cpp" />
     <ClCompile Include="Engine\Scene\User\ResultScene.cpp" />
     <ClCompile Include="Engine\GameObject\User\Player\State\WallCollisionState.cpp" />
+    <ClCompile Include="Engine\Particle\User\RubbleFadeParticle.cpp" />
+    <ClCompile Include="Engine\Particle\User\RubbleFadeParticleEmitter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\GameObject\User\Player\State\DashState.h" />
@@ -357,6 +359,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Particle\User\HitParticleEmiiter.h" />
     <ClInclude Include="Engine\Particle\User\HitParticle.h" />
     <ClInclude Include="Engine\GameObject\User\Player\State\WallCollisionState.h" />
+    <ClInclude Include="Engine\Particle\User\RubbleFadeParticle.h" />
+    <ClInclude Include="Engine\Particle\User\RubbleFadeParticleEmitter.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Object3D.hlsli">

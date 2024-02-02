@@ -115,6 +115,8 @@
     <ClCompile Include="Engine\Particle\User\ChargeFinishParticleEmitter.cpp" />
     <ClCompile Include="Engine\GameObject\User\Player\State\WallCollisionState.cpp" />
     <ClCompile Include="Engine\GameObject\User\Player\State\DashState.cpp" />
+    <ClCompile Include="Engine\Particle\User\RubbleFadeParticle.cpp" />
+    <ClCompile Include="Engine\Particle\User\RubbleFadeParticleEmitter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\GameObject\User\Enemy\State\MultiAtackState.h" />
@@ -248,6 +250,8 @@
     <ClInclude Include="Engine\Particle\User\ChargeFinishParticleEmitter.h" />
     <ClInclude Include="Engine\GameObject\User\Player\State\WallCollisionState.h" />
     <ClInclude Include="Engine\GameObject\User\Player\State\DashState.h" />
+    <ClInclude Include="Engine\Particle\User\RubbleFadeParticle.h" />
+    <ClInclude Include="Engine\Particle\User\RubbleFadeParticleEmitter.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Object3D.hlsli" />
