@@ -3,6 +3,7 @@
 #include "../Player/Player.h"
 #include "../Enemy/Boss.h"
 #include "../Player/uribo/uribo.h"
+#include "../../Core/Camera.h"
 
 void InGameUIManager::Init()
 {
@@ -11,10 +12,12 @@ void InGameUIManager::Init()
 	bossHPGageSprite_F_ = AddSprite("BossHPGage", { 0.0f, 0.0f }, { 1120.0f, 32.0f }, TextureManager::Load("./Resources/UI/InGame", "BossHpGauge.png"));
 	bossHPGageSprite_Icon_ = AddSprite("BossIcon", { 0.0f, 0.0f }, { 48.0f, 48.0f }, TextureManager::Load("./Resources/UI/InGame", "bossIcon.png"));
 	playerHPFrame_ = AddSprite("PlayerHPFrame", { 5.0f, 583.0f }, { 256.0f, 140.0f }, TextureManager::Load("./Resources/UI/InGame", "playerHPFram.png"));
-	//playerIcon_ = AddSprite("PlayerIcon", { 0.0f, 0.0f }, { 384.0f, 96.0f }, TextureManager::Load("./Resources/UI/InGame", "playerIconNormal.png"));
-	//playerVegetableIcon_ = AddSprite("PlayerVegetables", { 200.0f, 47.0f }, { 80.0f, 96.0f }, TextureManager::Load("./Resources/UI/InGame", "vegetableIcon.png"));
 	playerVegetableCount2_ = AddSprite("VegetableCount2", { 196.0f, 62.0f }, { 40.0f, 52.0f }, TextureManager::Load("./Resources/UI/InGame", "vegetableNumbert.png"));
 	playerVegetableCount1_ = AddSprite("VegetableCount1", { 156.0f, 62.0f }, { 40.0f, 52.0f }, TextureManager::Load("./Resources/UI/InGame", "vegetableNumbert.png"));
+	uriboGage_BG_ = AddSprite("UriboGage_BG", { 80.0f, 650.0f }, { 280.0f, 12.0f }, TextureManager::Load("./Resources/UI/InGame", "urimaruHpFram.png"));
+	uriboGage_F_ = AddSprite("UriboGage_F", { 80.0f, 650.0f }, { 280.0f, 12.0f }, TextureManager::Load("./Resources/UI/InGame", "urimaruHpGauge.png"));
+	uriboIcon_ = AddSprite("UriboIcon", { 80.0f, 650.0f }, { 24.0f, 24.0f }, TextureManager::Load("./Resources/UI/InGame", "UrimaruIconNormal.png"));
+
 	moveSpriteBG_ = AddSprite("MoveUI_BG", { 1075.0f, 520.0f }, { 192.0f, 64.0f }, TextureManager::Load("./Resources/UI/InGame", "moveBack.png"));
 	moveSprite_ = AddSprite("MoveUI", { 0.0f, 0.0f }, { 192.0f, 64.0f }, TextureManager::Load("./Resources/UI/InGame", "moveFront.png"));
 	AttackSprite_ = AddSprite("Attack", { 1040.0f, 590.0f }, { 224.0f, 48.0f }, TextureManager::Load("./Resources/UI/InGame", "attack.png"));
@@ -22,26 +25,24 @@ void InGameUIManager::Init()
 
 	// アンカーポイント設定
 	bossHPGageSprite_Icon_->anchorPoint_ = { 0.5f, 0.2f };
-	//playerVegetableIcon_->anchorPoint_ = { 0.5f, 0.5f };
 	playerVegetableCount2_->anchorPoint_ = { 0.5f, 0.5f };
 	playerVegetableCount1_->anchorPoint_ = { 0.5f, 0.5f };
+	uriboIcon_->anchorPoint_ = { 0.5f, 0.5f };
 
 	// ボスのHPゲージ背景に親子付けする
 	bossHPGageSprite_F_->SetParent(bossHPGageSprite_BG_->GetWorldTransform());
 	bossHPGageSprite_Icon_->SetParent(bossHPGageSprite_BG_->GetWorldTransform());
 
 	// プレイヤーのHP背景に親子付けする
-	//playerIcon_->SetParent(playerHPFrame_->GetWorldTransform());
-	//playerVegetableIcon_->SetParent(playerHPFrame_->GetWorldTransform());
 	playerVegetableCount2_->SetParent(playerHPFrame_->GetWorldTransform());
 	playerVegetableCount1_->SetParent(playerHPFrame_->GetWorldTransform());
-
-	// 野菜アイコンの角度を設定
-	//playerVegetableIcon_->rotate_ = 0.65f;
 
 	// 野菜カウント数スプライトのリセット
 	playerVegetableCount2_->texSize_ = Vector2(48.0f, 64.0f);
 	playerVegetableCount1_->texSize_ = Vector2(48.0f, 64.0f);
+
+	// ウリボゲージ背景親子付けする
+	//uriboGage_F_->SetParent(uriboGage_BG_->GetWorldTransform());
 
 	// 入力取得
 	input_ = Input::GetInstance();
@@ -132,7 +133,23 @@ void InGameUIManager::Update()
 
 	// ウリボーが存在する場合
 	if (uribo_ != nullptr) {
+		// ウリボのワールド座標の取得
+		Vector3 positionUriboWorld = uribo_->transform_.GetWorldPos();
+		// ビューポート行列の生成
+		Matrix4x4 matViewPort = Math::MakeViewportMatrix(0, 0, 1280.0f, 720.0f, 0, 1);
+		// ビュープロジェクション行列の計算
+		Matrix4x4 matViewProjectionMat = camera_->GetViewProjectionMatrix() * matViewPort;
+
+		// ワールド座標をスクリーン座標に返還
+		positionUriboWorld = Math::Transform(positionUriboWorld, matViewProjectionMat);
 		
+		// ウリボのゲージを計算した座標を元に移動させる
+		uriboGage_BG_->translate_ = { positionUriboWorld.x - (uriboGage_BG_->scale_.x / 2.0f), (positionUriboWorld.y - 50.0f)};
+		uriboGage_F_->translate_ = { positionUriboWorld.x - (uriboGage_BG_->scale_.x / 2.0f), (positionUriboWorld.y - 50.0f)};
+		uriboIcon_->translate_ = { positionUriboWorld.x - (uriboGage_BG_->scale_.x / 2.0f), (positionUriboWorld.y - 50.0f) };
+
+		// ウリボのHPの残量によってゲージを変える
+		uriboGage_F_->scale_.x = Math::Linear((float)uribo_->GetHP(), 0.0f, 280.0f, (float)uribo_->GetDefaultHP());
 	}
 }
 

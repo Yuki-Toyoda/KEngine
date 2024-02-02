@@ -6,6 +6,7 @@
 class Boss;
 class Uribo;
 class Player;
+class Camera;
 
 /// <summary>
 /// インゲーム内でのUIマネージャ
@@ -48,8 +49,14 @@ public: // アクセッサ等
 	/// <summary>
 	/// プレイヤーのセッター
 	/// </summary>
-	/// <param name="player"></param>
+	/// <param name="player">プレイヤー</param>
 	void SetPlayer(Player* player) { player_ = player; }
+
+	/// <summary>
+	/// カメラセッター
+	/// </summary>
+	/// <param name="camera">カメラ</param>
+	void SetCamera(Camera* camera) { camera_ = camera; }
 
 private: // メンバ変数
 
@@ -68,6 +75,9 @@ private: // メンバ変数
 	// プレイヤー本体
 	Player* player_ = nullptr;
 
+	// カメラ
+	Camera* camera_ = nullptr;
+
 	/// スプライト格納用変数群
 	Sprite* bossHPGageSprite_BG_ = nullptr; // ボスのHPゲージ背景
 	Sprite* bossHPGageSprite_F_ = nullptr; // ボスのゲージ本体
@@ -77,6 +87,9 @@ private: // メンバ変数
 	Sprite* playerVegetableIcon_ = nullptr; // プレイヤーの野菜アイコン
 	Sprite* playerVegetableCount1_ = nullptr; // 1桁目
 	Sprite* playerVegetableCount2_ = nullptr; // 2桁目
+	Sprite* uriboGage_BG_ = nullptr; // ウリボのゲージ背景
+	Sprite* uriboGage_F_ = nullptr; // ウリボのゲージ
+	Sprite* uriboIcon_ = nullptr; // ウリボのゲージアイコン
 
 	/// チュートリアル実装まで残すスプライト
 	Sprite* moveSpriteBG_ = nullptr; // スティックスプライト背景

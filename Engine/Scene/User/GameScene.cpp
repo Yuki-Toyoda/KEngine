@@ -94,6 +94,8 @@ void GameScene::Init(){
 	iUIm->SetBoss(boss_);
 	// UIマネージャーにウリボーをセット
 	iUIm->SetUribo(uribo_);
+	// UIマネージャーにカメラをセット
+	iUIm->SetCamera(camera_);
 
 	// フェードイン
 	FadeManager::GetInstance()->ChangeParameter("FadeIn", true);

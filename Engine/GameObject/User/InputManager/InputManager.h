@@ -76,7 +76,7 @@ public:
 	static float GetLTInput();
 
 
-private:
+private: // メンバ変数
 
 	// 入力
 	static XINPUT_STATE joyState_;
