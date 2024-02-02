@@ -138,6 +138,7 @@ void InGameUIManager::Update()
 	if (isTutrial_) {
 		bossHPGageSprite_BG_->SetIsActive(false);
 		bossHPGageSprite_F_->SetIsActive(false);
+		bossHPGageSprite_Icon_->SetIsActive(false);
 	}
 }
 
