@@ -2,8 +2,22 @@
 
 void FeedVegetable::Init()
 {
-	// モデル追加
-	AddMesh(&transform_, color_, "./Resources/Carrot", "Carrot.obj");
+	// 0 ~ 2 までのランダムな値を生成
+	int generateValue = Math::Random(0, 2);
+
+	switch (generateValue)
+	{
+	case 0:
+		AddMesh(&transform_, color_, "./Resources/FallingCarrot", "fallingCarrot.obj");
+		break;
+	case 1:
+		AddMesh(&transform_, color_, "./Resources/Tomato", "tomato.obj");
+		break;
+	case 2:
+		AddMesh(&transform_, color_, "./Resources/GreenPepper", "greenPepper.obj");
+		break;
+
+	}
 }
 
 void FeedVegetable::PostInit(const Vector3& start, const Vector3& end)
