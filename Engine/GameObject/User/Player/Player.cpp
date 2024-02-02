@@ -42,6 +42,10 @@ void Player::Init()
 	variables->AddItem(name_, "correctFrame", correctEndFrame_);
 	variables->AddItem(name_, "correctValue", correctOffsetValue_);
 
+	variables->AddItem(name_, "axelTime", dashAxelTime_);
+	variables->AddItem(name_, "brakeTime", dashBrakeTime_);
+	variables->AddItem(name_, "dashPower", dashPower);
+
 	variables->AddItem(name_, "MoveAcceleration", moveAcceleration_);
 	variables->AddItem(name_, "StanTime", damageStanTime_);
 	variables->AddItem(name_, "healpower", healPower_);
@@ -209,6 +213,12 @@ void Player::DisplayImGui()
 	ImGui::DragFloat("correctFrame", &correctEndFrame_, 0.01f);
 	// 修正量
 	ImGui::DragFloat("correctValue", &correctOffsetValue_, 0.01f);
+	// 無敵時間
+	ImGui::DragFloat("axelTime", &dashAxelTime_, 0.01f);
+	// 無敵時間
+	ImGui::DragFloat("brakeTime", &dashBrakeTime_, 0.01f);
+	// 無敵時間
+	ImGui::DragFloat("dashPower", &dashPower, 0.01f);
 	// 吸収数
 	ImGui::DragInt("Absorption Count", &absorptionCount_);
     // 回復力
@@ -243,6 +253,10 @@ void Player::DisplayImGui()
 		variables->SetValue(name_, "hitCoolTime", hitCoolTime_);
 		variables->SetValue(name_, "correctFrame", correctEndFrame_);
 		variables->SetValue(name_, "correctValue", correctOffsetValue_);
+
+		variables->SetValue(name_, "axelTime", dashAxelTime_);
+		variables->SetValue(name_, "brakeTime", dashBrakeTime_);
+		variables->SetValue(name_, "dashPower", dashPower);
 
 		variables->SetValue(name_, "MoveAcceleration", moveAcceleration_);
 		variables->SetValue(name_, "StanTime", damageStanTime_);
@@ -437,6 +451,14 @@ void Player::SetGlobalVariables()
 	correctEndFrame_ = variables->GetFloatValue(name_, "correctFrame");
 	// 修正量
 	correctOffsetValue_ = variables->GetFloatValue(name_, "correctValue");
+
+	// 加速の時間
+	dashAxelTime_ = variables->GetFloatValue(name_, "axelTime");
+	// 減速の時間
+	dashBrakeTime_ = variables->GetFloatValue(name_, "brakeTime");
+	// ダッシュの量
+	dashPower = variables->GetFloatValue(name_, "dashPower");
+
 	// ダメージ受けた際の硬直時間
 	damageStanTime_ = variables->GetFloatValue(name_, "StanTime");
 	// 回復力

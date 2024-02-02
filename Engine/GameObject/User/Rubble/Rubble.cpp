@@ -20,16 +20,7 @@ void Rubble::Update()
 		lerpTimer_.Start(moveTime_);
 		aliveTimer_.Start(lerpTime_);
 	}
-	// 移動後パーティクルのセットアップ
-	if (lerpTimer_.GetIsFinish() && !isGenerateParticle_) {
-		SetUpParticle();
-	}
 	transform_.scale_ = { gameManager_->rubbleSize_, gameManager_->rubbleSize_, gameManager_->rubbleSize_ };
-	
-	// パーティクルの更新
-	if (isGenerateParticle_) {
-		fadeParticleEmitter_->transform_.translate_ = transform_.translate_;
-	}
 
 	lerpTimer_.Update();
 	aliveTimer_.Update();
@@ -37,10 +28,21 @@ void Rubble::Update()
 	color_.w = KLib::Lerp<float>(1.0f, 0.0f, aliveTimer_.GetProgress());
 	//時間が切れるか表示フラグがない場合オブジェクトを破壊
 	if (aliveTimer_.GetIsFinish()||!isActive_) {
-		fadeParticleEmitter_->SetIsPlay(false);
-		fadeParticleEmitter_->SetIsEnd(true);
+		if (fadeParticleEmitter_ != nullptr) {
+			fadeParticleEmitter_->SetIsPlay(false);
+			fadeParticleEmitter_->SetIsEnd(true);
+		}
 		Destroy();
 		return;
+	}
+
+	// 移動後パーティクルのセットアップ
+	if (lerpTimer_.GetIsFinish() && !isGenerateParticle_) {
+		SetUpParticle();
+	}
+	// パーティクルの更新
+	if (isGenerateParticle_) {
+		fadeParticleEmitter_->transform_.translate_ = transform_.translate_;
 	}
 }
 
@@ -53,12 +55,11 @@ void Rubble::DisplayImGui()
 
 void Rubble::SetUpParticle()
 {
-	transform_.translate_ = startPos_;
 	isGenerateParticle_ = true;
 
 	fadeParticleEmitter_ =
 		emitterManager_->CreateEmitter<RubbleFadeParticleEmitter, RubbleFadeParticle>
-		("Fade", 25, 1, transform_.translate_, lerpTime_ + moveTime_, 1.0f, TextureManager::Load("uvChecker.png"));
+		("Fade", 25, 1, goalPos_, lerpTime_ + moveTime_, 1.0f, TextureManager::Load("uvChecker.png"));
 	
 	// 開始処理
 	fadeParticleEmitter_->SetIsEnd(false);
