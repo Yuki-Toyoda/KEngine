@@ -10,31 +10,31 @@ void DashState::Init()
 	// 進ませる方向ベクトル
 	moveDirect_ = Math::Normalize(player_->GetMoveDirect());
 	// 終了フレーム
-	float endFrame = 5.0f;
+	endFrame_ = 5.0f;
 	// 加速と減速の段階を管理する
 	endCount_ = 0;
 	// 開始
-	dashTimer_.Start(1.0f / endFrame);
+	dashTimer_.Start(1.0f / endFrame_);
 }
 
 void DashState::Update()
 {
 	// 更新
 	dashTimer_.Update();
-	// ダッシュのパワー
-	float dashPower = 1.5f;
+
 
 	// 加速の終了するタイミング
 	if (dashTimer_.GetIsFinish() && endCount_ == 0) {
 
-		dashTimer_.Start(1.0f / 5.0f);
-
-		endCount_++;
+		dashTimer_.Start(1.0f / endFrame_);
+		// 最大速度設定
 		maxVelocity_ = velocity_;
+		// 状態を変更
+		endCount_++;
 	}
 	// 加速処理
 	if(dashTimer_.GetIsActive() && endCount_ == 0) {
-		velocity_ += (moveDirect_ * player_->GetMoveAcceleration()) * dashPower;
+		velocity_ += (moveDirect_ * player_->GetMoveAcceleration()) * dashPower_;
 	}
 	// 減速の終了タイミング（ステートが戻る
 	else if (dashTimer_.GetIsActive() && endCount_ == 1) {

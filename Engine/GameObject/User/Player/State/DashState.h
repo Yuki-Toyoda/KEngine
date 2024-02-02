@@ -21,5 +21,8 @@ private:
 
 	int endCount_ = 0;
 
+	float endFrame_ = 5.0f;
+	float dashPower_ = 5.5f;
+
 };
 
