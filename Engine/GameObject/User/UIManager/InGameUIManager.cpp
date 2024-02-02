@@ -167,7 +167,6 @@ void InGameUIManager::Update()
 		else {
 			uriboAlert_->SetIsActive(false);
 		}
-
 		// ウリボのHPの残量によってゲージを変える
 		uriboGage_F_->scale_.x = Math::Linear((float)uribo_->GetHP(), 0.0f, 280.0f, (float)uribo_->GetDefaultHP());
 

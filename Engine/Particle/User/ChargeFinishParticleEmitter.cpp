@@ -21,7 +21,7 @@ void ChargeFinishParticleEmitter::GenerateParticle()
 		Vector2 generateScale = { 2.0f, 2.0f };
 		// 生成粒子の方向ベクトルを角度を元に設定する
 		Vector3 generateVelocity
-			= { std::cos(generateAngle * i), std::sin(generateAngle * i), 0.0f };
+			= { std::cos(generateAngle * i), 0.0f, std::sin(generateAngle * i) };
 		// 方向ベクトルに速度を掛ける
 		generateVelocity = generateVelocity * 5.0f;
 

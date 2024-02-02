@@ -1,7 +1,11 @@
 #pragma once
 #include "../../../BaseObject.h"
 #include "../../../../Audio/Audio.h"
+#include "../../../../Utility/Animation/AnimationManager.h"
 
+/// <summary>
+/// ウリ丸
+/// </summary>
 class Uribo :public BaseObject
 {
 public:
@@ -26,34 +30,33 @@ public://アクセッサ
 	int GetDefaultHP() { return defaultHP_; }
 
 	/// <summary>
-	/// ボスの死亡トリガー状態セッター
+	/// ボスの死亡状態トリガーゲッター
 	/// </summary>
-	/// <param name="isBossDead">ボスの死亡トリガー状態</param>
+	/// <param name="isBossDead">true or false</param>
 	void SetIsBossDead(const bool& isBossDead) { isBossDead_ = isBossDead; }
 
-private:
+private: // プライベートなメンバ関数
 
+	/// <summary>
+	/// 調整項目クラス
+	/// </summary>
 	void SetGlobalVariables();
-private:
 
-	// 音再生クラス
-	
+public: // パブリックなメンバ変数
 
-	// ゲージ背景トランスフォーム
-	WorldTransform gageBGTransform_;
-	WorldTransform gageTransform_;
+	// 身体のトランスフォーム
+	WorldTransform bodyTransform_;
 
-	// 
-	BillboardPlane* gageBGPlane_ = nullptr;
-	BillboardPlane* gagePlane_ = nullptr;
+private: // メンバ変数
 
-	Vector4 bgColor_ = { 0.0f, 0.0f, 0.0f, 1.0f };
-	Vector4 gageColor_ = { 1.0f, 0.1f, 0.0f, 1.0f };
+	// 餌を与えられるエリアのトランスフォーム
+	WorldTransform feedAreaTransform_;
 
-	// 大きさ
-	Vector2 scale_ = { 10.0f, 1.0f };
-	// 中心点
-	Vector2 anchorPoint_ = { 0.5f, 0.5f };
+	// エリア色
+	Vector4 areaColor_ = { 1.0f, 1.0f, 1.0f, 0.75f };
+
+	// 餌を与えられるエリアのメッシュ
+	Mesh* feedAreaMesh_ = nullptr;
 
 	//体力
 	int hitPoint_;
@@ -61,10 +64,13 @@ private:
 	int defaultHP_= 6000;
 	//毎フレーム減らす体力
 	int decrementHP = 1;
-	Vector3 collisionScaele_;
+	Vector3 collisionScale_;
 
 	// ボスの死亡トリガー
 	bool isBossDead_ = false;
+
+	// 餌を与えられる状態トリガー
+	bool canFeed_ = false;
 
 };
 

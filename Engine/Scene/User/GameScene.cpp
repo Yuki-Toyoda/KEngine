@@ -28,6 +28,11 @@ void GameScene::Init(){
 	SkyDome* skyDome = nullptr;
 	skyDome = gameObjectManager_->CreateInstance<SkyDome>("SkyDome", BaseObject::TagNone);
 
+	// 地面生成
+	Ground* ground;
+	ground = gameObjectManager_->CreateInstance<Ground>("Ground", BaseObject::TagFloor);
+	ground->transform_.scale_ = { 55.0f,1.0f,55.0f };
+
 	// プレイヤー生成
 	player_ = nullptr;
 	player_ = gameObjectManager_->CreateInstance<Player>("Player", BaseObject::TagPlayer);
@@ -35,6 +40,8 @@ void GameScene::Init(){
 	player_->transform_.scale_ = { 2.0f, 2.0f, 2.0f };
 	player_->transform_.translate_.y = 3.0f;
 	player_->transform_.translate_.x = 10.0f;
+	// プレイヤーに生成した地面をセット
+	player_->SetGround(ground);
 
 	// プレイヤーをカメラにセットする
 	camera_->SetPlayer(player_);
@@ -53,13 +60,6 @@ void GameScene::Init(){
 	player_->SetPlayerAnimManager(am);
 	// アニメーションを生成
 	am->CreateAnimation();
-
-	// 地面生成
-	Ground* ground;
-	ground = gameObjectManager_->CreateInstance<Ground>("Ground", BaseObject::TagFloor);
-	ground->transform_.scale_ = { 55.0f,1.0f,55.0f };
-	// プレイヤーに生成した地面をセット
-	player_->SetGround(ground);
 
 	// ボスの生成
 	boss_ = gameObjectManager_->CreateInstance<Boss>("Boss", BaseObject::TagEnemy);
