@@ -59,7 +59,7 @@ void Rubble::SetUpParticle()
 
 	fadeParticleEmitter_ =
 		emitterManager_->CreateEmitter<RubbleFadeParticleEmitter, RubbleFadeParticle>
-		("Fade", 25, 1, goalPos_, lerpTime_ + moveTime_, 1.0f, TextureManager::Load("uvChecker.png"));
+		("Fade", 25, 1, goalPos_, lerpTime_ + moveTime_, 1.0f, TextureManager::Load("vegetableParticle.png"));
 	
 	// 開始処理
 	fadeParticleEmitter_->SetIsEnd(false);
