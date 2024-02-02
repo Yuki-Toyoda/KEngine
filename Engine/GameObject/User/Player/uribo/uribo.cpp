@@ -45,7 +45,7 @@ void Uribo::Init()
 void Uribo::Update()
 {
 	// ボスが死亡していない場合
-	if (!isBossDead_) {
+	if (!isBossDead_&&hitPoint_>=0) {
 		hitPoint_ -= decrementHP;
 	}
 
@@ -106,6 +106,23 @@ void Uribo::OnCollision(Collider* collider)
 void Uribo::Heal(int healPower)
 {
 	hitPoint_ += healPower;
+	if (hitPoint_ >= defaultHP_) {
+		hitPoint_ = defaultHP_;
+	}
+}
+
+void Uribo::Tutrial()
+{
+	//チュートリアル用に体力を1/3に減らす
+	hitPoint_ = defaultHP_/3;
+}
+
+bool Uribo::TutrialEnd()
+{
+	if (hitPoint_ > defaultHP_ / 2) {
+		return true;
+	}
+	return false;
 }
 
 void Uribo::SetGlobalVariables()

@@ -28,7 +28,7 @@ void Boss::SuccessorInit()
 	gameObjectManager_ = GameObjectManager::GetInstance();
 	// 行動状態リストの生成
 	MakeStateList();
-
+	tutrialAtackEnd_ = false;
 	GlobalVariables* variables = GlobalVariables::GetInstance();
 	variables->CreateGroup(name_);
 	variables->AddItem(name_, "HitPoint", hitPoint_);
@@ -49,6 +49,11 @@ void Boss::SuccessorUpdate()
 		if (state_.get()) {
 			// 現在ステートを更新
 			state_->Update();
+		}
+		// HPが0以下でない場合
+		if (hitPoint_ < 0.0f) {
+			GlobalVariables* variables = GlobalVariables::GetInstance();
+			hitPoint_ = variables->GetFloatValue(name_, "HitPoint");
 		}
 	}
 	else {
@@ -154,6 +159,7 @@ void Boss::ApplyParameter(const std::string& levelName, const std::string& enemy
 
 void Boss::OnCollisionEnter(Collider* collider)
 {
+	
 	//プレイヤーが攻撃していたらダメージをくらう
 	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagPlayer && player_->GetIsAtack()) {
 		// ボスのHPをプレイヤーの攻撃力に基づいて減少させる
@@ -164,17 +170,20 @@ void Boss::OnCollisionEnter(Collider* collider)
 		//吸収した数をリセットして座標とスケール調整
 		player_->ResetAbsorptionCount();
 
-		
+		//チュートリアルの攻撃を終了
+		tutrialAtackEnd_ = true;
 
 		// HPが0以下になっていたら
 		if (hitPoint_ <= 0) {
-			// 行動状態を強制的に変更
-			ChangeState(std::make_unique<WaitTimeState>());
+			if (!isTutrial_) {
+				// 行動状態を強制的に変更
+				ChangeState(std::make_unique<WaitTimeState>());
 
-			// アニメーションマネージャーセットされている場合
-			if (bam_ != nullptr) {
-				// ダメージアニメーション再生
-				bam_->PlayDeadAnim();
+				// アニメーションマネージャーセットされている場合
+				if (bam_ != nullptr) {
+					// ダメージアニメーション再生
+					bam_->PlayDeadAnim();
+				}
 			}
 		}
 		else {
@@ -189,37 +198,42 @@ void Boss::OnCollisionEnter(Collider* collider)
 
 void Boss::OnCollision(Collider* collider)
 {
-	//プレイヤーが攻撃していたらダメージをくらう
-	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagPlayer && player_->GetIsAtack()) {
-		// ボスのHPをプレイヤーの攻撃力に基づいて減少させる
-		hitPoint_ -= player_->GetAtackPower();
-		// プレイヤーを攻撃していない状態に
-		player_->SetIsAtack(false);
+		//プレイヤーが攻撃していたらダメージをくらう
+		if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagPlayer && player_->GetIsAtack()) {
+			// ボスのHPをプレイヤーの攻撃力に基づいて減少させる
+			hitPoint_ -= player_->GetAtackPower();
+			// プレイヤーを攻撃していない状態に
+			player_->SetIsAtack(false);
 
-		//吸収した数をリセットして座標とスケール調整
-		player_->ResetAbsorptionCount();
+			//吸収した数をリセットして座標とスケール調整
+			player_->ResetAbsorptionCount();
 
-		
-		// HPが0以下になっていたら
-		if (hitPoint_ <= 0) {
-			// 行動状態を強制的に変更
-			ChangeState(std::make_unique<WaitTimeState>());
+			//チュートリアルの攻撃を終了
+			tutrialAtackEnd_ = true;
+			// HPが0以下になっていたら
+			if (hitPoint_ <= 0) {
+				if (!isTutrial_) {
+					// 行動状態を強制的に変更
+					ChangeState(std::make_unique<WaitTimeState>());
 
-			// アニメーションマネージャーセットされている場合
-			if (bam_ != nullptr) {
-				// ダメージアニメーション再生
-				bam_->PlayDeadAnim();
+
+					// アニメーションマネージャーセットされている場合
+					if (bam_ != nullptr) {
+						// ダメージアニメーション再生
+						bam_->PlayDeadAnim();
+					}
+				}
 			}
-		}
-		else {
-			// アニメーションマネージャーセットされている場合
-			if (bam_ != nullptr) {
-				// ダメージアニメーション再生
-				bam_->PlayDamageAnim();
+			else {
+				// アニメーションマネージャーセットされている場合
+				if (bam_ != nullptr) {
+					// ダメージアニメーション再生
+					bam_->PlayDamageAnim();
+				}
 			}
-		}
 
-	}
+		}
+	
 }
 
 void Boss::MakeStateList()

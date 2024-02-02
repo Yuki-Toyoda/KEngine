@@ -1,6 +1,7 @@
 #include "TutrialScene.h"
 #include "../SceneManager.h"
 #include "../../GameObject/SampleList.h"
+#include "../SceneList.h"
 void TutrialScene::Init()
 {
 	// 入力マネージャの初期化
@@ -33,6 +34,7 @@ void TutrialScene::Init()
 	player_->transform_.scale_ = { 2.0f, 2.0f, 2.0f };
 	player_->transform_.translate_.y = 3.0f;
 	player_->transform_.translate_.x = 10.0f;
+	player_->SetIsTutrial(true);
 	//// 敵を生成
 	// ボスの生成
 	boss_ = gameObjectManager_->CreateInstance<Boss>("Boss", BaseObject::TagEnemy);
@@ -58,10 +60,8 @@ void TutrialScene::Init()
 	ground->transform_.scale_ = { 55.0f,1.0f,55.0f };
 	// プレイヤーに生成した地面をセット
 	player_->SetGround(ground);
-
-	TutrialManager* tm = gameObjectManager_->CreateInstance<TutrialManager>("tutrialManager", BaseObject::TagNone);
-
-	tm;
+	
+	
 	// ボスのアニメーションマネージャーの生成
 	BossAnimManager* bam = gameObjectManager_->CreateInstance<BossAnimManager>("bossAnim", BaseObject::TagEnemy);
 	// アニメーションマネージャーにボスをセット
@@ -88,7 +88,11 @@ void TutrialScene::Init()
 	iUIm->SetBoss(boss_);
 	// UIマネージャーにウリボーをセット
 	iUIm->SetUribo(uribo_);
+	 tm_ = gameObjectManager_->CreateInstance<TutrialManager>("tutrialManager", BaseObject::TagNone);
 
+	tm_->SetBoss(boss_);
+	tm_->SetPlayer(player_);
+	tm_->SetUribo(uribo_);
 	// フェードイン
 	FadeManager::GetInstance()->ChangeParameter("FadeIn", true);
 	FadeManager::GetInstance()->Play();
@@ -98,4 +102,8 @@ void TutrialScene::Init()
 void TutrialScene::Update()
 {
 	InputManager::Update();
+	if (tm_->GetTutrialEnd()) {
+		BaseScene* nextScene = new GameScene();
+		SceneManager::GetInstance()->SetNextScene(nextScene);
+	}
 }

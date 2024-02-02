@@ -13,6 +13,12 @@ public:
 /// 回復関数
 /// </summary>
 	void Heal(int healPower);
+
+/// <summary>
+/// チュートリアル用の関数
+/// </summary>
+	void Tutrial();
+	bool TutrialEnd();
 public://アクセッサ
 /// <summary>
 /// 体力のげった

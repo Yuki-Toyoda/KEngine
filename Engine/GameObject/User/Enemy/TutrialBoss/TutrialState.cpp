@@ -32,6 +32,7 @@ void TutrialState::Init()
 
 void TutrialState::Update()
 {
+	timer_.Update();
 	if (timer_.GetIsFinish()) {
 		Init();
 	}

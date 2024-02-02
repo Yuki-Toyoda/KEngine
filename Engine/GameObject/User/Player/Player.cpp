@@ -45,6 +45,7 @@ void Player::Init()
 	variables->AddItem(name_, "DecelerationRate", decelerationRate);
 	variables->AddItem(name_, "subtractionAbsorptionCount_", subtractionAbsorptionCount_);
 	SetGlobalVariables();
+	isTutrial_ = false;
 }
 
 void Player::Update()
@@ -138,7 +139,7 @@ void Player::Update()
 	//SubtractVelocity();
 
 	// 現在HPの取得
-	if (uribo_->GetHP() <= 0) {
+	if (uribo_->GetHP() <= 0&&!isTutrial_) {
 		// ゲームオーバーフラグtrue
 		isGameOver_ = true;
 	}

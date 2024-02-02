@@ -121,6 +121,14 @@ bool InputManager::Heal()
     return false;
 }
 
+bool InputManager::TutrialSkip()
+{
+    if (joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_Y) {
+        return true;
+    }
+    return false;
+}
+
 
 XINPUT_STATE InputManager::joyState_;
 XINPUT_STATE InputManager::preJoyState_;

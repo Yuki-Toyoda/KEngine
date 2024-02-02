@@ -34,5 +34,8 @@ private:
 
 	// ウリボー
 	Uribo* uribo_ = nullptr;
+
+	//チュートリアルマネージャー
+	TutrialManager* tm_ = nullptr;
 };
 
