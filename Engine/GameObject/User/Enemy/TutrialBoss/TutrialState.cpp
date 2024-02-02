@@ -26,7 +26,7 @@ void TutrialState::Init()
 
 	// 落下攻撃アニメーション開始
 	enemy_->GetBossAnimManager()->PlayFallAttackAnim(enemy_->GetFallAttackReadyTime());
-	coolTime_ = 4.0f;
+	coolTime_ = enemy_->gameManager_->rubbleAliveCount_;
 	timer_.Start(coolTime_);
 }
 

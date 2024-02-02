@@ -52,8 +52,9 @@ void TutrialManager::Update()
 	case atumero:
 		//五個集めたら回復へ
 		sprites_[1]->SetIsActive(true);
-		if (player_->GetAbsorptionCount() >= 5) {
+		if (player_->GetAbsorptionCount() >= 10) {
 			step++;
+			//うりぼーの体力を減らす
 			uribo_->Tutrial();
 		}
 		break;
@@ -63,6 +64,7 @@ void TutrialManager::Update()
 		sprites_[4]->SetIsActive(true);
 		if (uribo_->TutrialEnd()) {
 			step++;
+			boss_->SetTutrialAtackEnd(false);
 		}
 		break;
 	case kougeki:

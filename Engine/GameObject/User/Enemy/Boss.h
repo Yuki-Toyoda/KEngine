@@ -67,6 +67,7 @@ public: // アクセッサ等
 
 	bool GetTutrialAtackEnd() { return tutrialAtackEnd_; }
 
+	void SetTutrialAtackEnd(bool flag) { tutrialAtackEnd_ = flag; }
 private: // メンバ関数
 
 	/// <summary>
