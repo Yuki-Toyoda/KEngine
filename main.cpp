@@ -76,6 +76,16 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// 衝突マネージャーの初期化
 	CollisionManager* collisionManager = CollisionManager::GetInstance();
 
+	// メインループに入る直前で重いモデルやテクスチャのプリロードを行う
+	Mesh* mesh = PrimitiveManager::GetInstance()->CreateInstance<Mesh>();
+	mesh->LoadFile("./Resources/Carrot", "Carrot.obj"); // 人参モデル
+	mesh->LoadFile("./Resources/Tomato", "tomato.obj"); // トマトモデル
+	mesh->LoadFile("./Resources/FallingCarrot", "fallingCarrot.obj"); // 落ちてくる人参モデル
+	mesh->LoadFile("./Resources/GreenPepper", "greenPepper.obj"); // ピーマンモデル
+
+	// 読み込み後再度形状マネージャ初期化
+	primitiveManager->Init();
+
 	// シーンマネージャーの初期化
 	SceneManager* sceneManager = SceneManager::GetInstance();
 	sceneManager->Init();
