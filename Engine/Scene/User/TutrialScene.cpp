@@ -88,6 +88,7 @@ void TutrialScene::Init()
 	iUIm->SetBoss(boss_);
 	// UIマネージャーにウリボーをセット
 	iUIm->SetUribo(uribo_);
+	iUIm->SetIsTutrial(true);
 	 tm_ = gameObjectManager_->CreateInstance<TutrialManager>("tutrialManager", BaseObject::TagNone);
 
 	tm_->SetBoss(boss_);

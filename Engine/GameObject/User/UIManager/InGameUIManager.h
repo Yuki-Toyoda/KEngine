@@ -51,6 +51,8 @@ public: // アクセッサ等
 	/// <param name="player"></param>
 	void SetPlayer(Player* player) { player_ = player; }
 
+
+	void SetIsTutrial(bool flag) { isTutrial_ = flag; }
 private: // メンバ変数
 
 	// 入力検知用
@@ -83,5 +85,7 @@ private: // メンバ変数
 	Sprite* moveSprite_ = nullptr; // スティックスプライト背景
 	Sprite* AttackSprite_ = nullptr; // 攻撃方法スプライト
 	Sprite* FeedSprite_ = nullptr; // 攻撃方法スプライト
+
+	bool isTutrial_;
 };
 

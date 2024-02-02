@@ -28,7 +28,7 @@ void TutrialManager::Update()
 		skipCount_ = 0;
 	}
 	//一定以上でスキップ
-	if (skipCount_ >= 120) {
+	if (skipCount_ >= 60) {
 		isEnd_ = true;
 	}
 	//全てのスプライトを非表示

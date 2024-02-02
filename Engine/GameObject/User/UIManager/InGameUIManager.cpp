@@ -55,6 +55,7 @@ void InGameUIManager::Init()
 	// スプライトの描画範囲設定
 	AttackSprite_->texSize_ = { 448.0f, 96.0f };
 	FeedSprite_->texSize_ = { 512.0f, 96.0f };
+	isTutrial_ = false;
 }
 
 void InGameUIManager::Update()
@@ -133,6 +134,10 @@ void InGameUIManager::Update()
 	// ウリボーが存在する場合
 	if (uribo_ != nullptr) {
 		
+	}
+	if (isTutrial_) {
+		bossHPGageSprite_BG_->SetIsActive(false);
+		bossHPGageSprite_F_->SetIsActive(false);
 	}
 }
 
