@@ -40,8 +40,10 @@ public: // パブリックなメンバ変数
 	// ライティングを行うか
 	bool enableLighting_ = false;
 
-	// 鏡面反射を行うか
-	bool enableReflection_ = false;
+	// フォン反射を行うか
+	bool enablePhongReflection_ = false;
+	// ブリン・フォン反射を行うか
+	bool enableBlinnPhonReflection_ = false;
 	// 光沢度
 	float shininess_ = 40.8f;
 

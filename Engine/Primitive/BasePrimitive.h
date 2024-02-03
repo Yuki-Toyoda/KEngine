@@ -126,6 +126,9 @@ public: // パブリックなメンバ変数
 
 	// UIとして使用するか
 	bool isUI_ = false;
+
+	// 鏡面反射タイプ
+	int reflectionType_ = 0;
 };
 
 /// <summary>

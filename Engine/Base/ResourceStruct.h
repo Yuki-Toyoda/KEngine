@@ -61,14 +61,16 @@ struct VertexBuffer {
 struct MaterialData {
 	Matrix4x4 uvTransform;    // UVトランスフォーム
 	int32_t enableLighting;   // ライトの有効トリガー
-	int32_t enableReflection; // 鏡面反射の有効トリガー
+	int32_t enablePhongReflection; // 鏡面反射の有効トリガー
+	int32_t enableBlinnPhonReflection; // 鏡面反射の有効トリガー
 	float shininess;		  // 光沢度
 
 	// MaterialDataを=演算子で代入できるようにオーバーロード
 	MaterialData& operator=(const Material& material) {
 		uvTransform = material.uvTransform_.GetMatWorld();					 // ワールド行列の取得
 		enableLighting = static_cast<int32_t>(material.enableLighting_);	 // ライティング有効トリガー
-		enableReflection = static_cast<int32_t>(material.enableReflection_); // 鏡面反射有効トリガー
+		enablePhongReflection = static_cast<int32_t>(material.enablePhongReflection_); // 鏡面反射有効トリガー
+		enableBlinnPhonReflection = static_cast<int32_t>(material.enableBlinnPhonReflection_); // 鏡面反射有効トリガー
 		shininess = material.shininess_;									 // 光沢度
 		// 自身のポインタを返す
 		return *this;

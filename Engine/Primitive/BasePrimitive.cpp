@@ -60,6 +60,29 @@ void BasePrimitive::DisplayImGui()
 		// 光沢度
 		ImGui::DragFloat("Shininess", &material_.shininess_, 0.01f, 0.01f, 100.0f);
 
+		// ラジオボタンで反射タイプを切り替え
+		ImGui::RadioButton("No Reflection", &reflectionType_, 0);
+		ImGui::RadioButton("PhongReflection", &reflectionType_, 1);
+		ImGui::RadioButton("BlinnPhonReflection", &reflectionType_, 2);
+
+		// 切り替え
+		switch (reflectionType_)
+		{
+		case 0: // 無効
+			material_.enablePhongReflection_ = false;
+			material_.enableBlinnPhonReflection_ = false;
+			break;
+		case 1: // PhongReflection
+			material_.enablePhongReflection_ = true;
+			material_.enableBlinnPhonReflection_ = false;
+			break;
+		case 2: // Bling PhongReflection
+			material_.enablePhongReflection_ = false;
+			material_.enableBlinnPhonReflection_ = true;
+			break;
+
+		}
+
 		// 表示状態の設定
 		ImGui::Checkbox("isActive", &isActive_);
 		// マテリアルのuvトランスフォームを表示

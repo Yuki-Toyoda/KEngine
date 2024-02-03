@@ -19,7 +19,8 @@ struct Material
 {
     float4x4 uvTransform;
     int enableLighting;
-    int enableReflection;
+    int enablePhongReflection;
+    int enableBlinnPhonReflection;
     float shininess;
 };
 

@@ -19,13 +19,10 @@ float4 main(VertexShaderOutput input) : SV_TARGET
         float NdotL = dot(normalize(input.normal), -normalize(gDirectionalLight.direction));
         float cos = pow(NdotL * 0.5f + 0.5f, 2.0f);
         
-        if (gMaterial[m].enableReflection != 0){
+        if (gMaterial[m].enableBlinnPhonReflection != 0){
             
             float3 toEye = normalize(input.cameraWorldPos - input.worldPos);
             
-            float3 reflectLight = reflect(normalize(gDirectionalLight.direction), normalize(input.normal));
-            
-            float rDotE = dot(reflectLight, toEye);
             float3 halfVector = normalize(-gDirectionalLight.direction + toEye);
             float NDotH = dot(normalize(input.normal), halfVector);
             float specularPow = pow(saturate(NDotH), gMaterial[m].shininess);
@@ -39,7 +36,24 @@ float4 main(VertexShaderOutput input) : SV_TARGET
             output.rgb = diffuse + specular;
             output.w = input.color.a * gTexture[t].Sample(gSampler, transformUV.xy).a;
         }
-        else
+        else if (gMaterial[m].enablePhongReflection != 0)
+        {
+            float3 toEye = normalize(input.cameraWorldPos - input.worldPos);
+            
+            float3 reflectLight = reflect(normalize(gDirectionalLight.direction), normalize(input.normal));
+            
+            float rDotE = dot(reflectLight, toEye);
+            float specularPow = pow(saturate(rDotE), gMaterial[m].shininess);
+
+            float3 diffuse =
+            input.color.rgb * textureColor.rgb * gDirectionalLight.color.rgb * cos * gDirectionalLight.intensity;
+            
+            float3 specular =
+            gDirectionalLight.color.rgb * gDirectionalLight.intensity * specularPow * float3(1.0f, 1.0f, 1.0f);
+
+            output.rgb = diffuse + specular;
+            output.w = input.color.a * gTexture[t].Sample(gSampler, transformUV.xy).a;
+        }else
         {
             output.rgb = input.color.rgb * gTexture[t].Sample(gSampler, transformUV.xy).rgb * gDirectionalLight.color.rgb * cos * gDirectionalLight.intensity;
             output.w = input.color.a * textureColor.a;
