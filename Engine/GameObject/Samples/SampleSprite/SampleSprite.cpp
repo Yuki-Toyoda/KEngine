@@ -22,6 +22,6 @@ void SampleSprite::Update()
 
 void SampleSprite::DisplayImGui()
 {
-	//　スプライトのImGuiの表示
+	// スプライトのImGuiの表示
 	sprites_[0]->DisplayImGui();
 }

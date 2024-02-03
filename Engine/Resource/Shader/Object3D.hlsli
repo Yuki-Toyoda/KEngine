@@ -7,6 +7,13 @@ struct Vertex
     float4 color; // 色(頂点ごと)
 };
 
+// カメラ
+struct Camera
+{
+    float4x4 mat; // カメラのVP行列
+    float3 worldPosition; // カメラのワールド座標
+};
+
 // マテリアル
 struct Material
 {
@@ -14,13 +21,6 @@ struct Material
     int enableLighting; // ライティング有効トリガー
     int enableReflection; // 鏡面反射有効トリガー
     float shininess; // 光沢度
-};
-
-// カメラ
-struct Camera
-{
-    float4x4 mat; // カメラのVP行列
-    float3 worldPosition; // カメラのワールド座標
 };
 
 // 平行光源

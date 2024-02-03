@@ -36,8 +36,8 @@ void DSV::CreateDepthStencilResource(int32_t width, int32_t height)
 	D3D12_RESOURCE_DESC depthResourceDesc{};
 
 	depthResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
-	depthResourceDesc.Width = width; // リソースのサイズ　
-	depthResourceDesc.Height = height; // リソースのサイズ　
+	depthResourceDesc.Width = width; // リソースのサイズ
+	depthResourceDesc.Height = height; // リソースのサイズ
 	depthResourceDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;
 	depthResourceDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
