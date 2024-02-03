@@ -37,7 +37,7 @@ void Camera::Update()
 
 		// アドレスに書き込む
 		*vpDataTarget_ = viewProjectionMatrix_; // ビュープロジェクション行列
-		*worldPosDataTarget_ = transform_.GetWorldPos(); // ワールド座標
+		*worldPosDataTarget_ = transform_.translate_; // ワールド座標
 	}
 
 	// デバッグカメラだった場合はキー入力でカメラを移動させる

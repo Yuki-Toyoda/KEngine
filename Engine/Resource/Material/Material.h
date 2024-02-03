@@ -43,7 +43,7 @@ public: // パブリックなメンバ変数
 	// 鏡面反射を行うか
 	bool enableReflection_ = false;
 	// 光沢度
-	float shininess_ = 1.0f;
+	float shininess_ = 40.8f;
 
 	// 形状描画設定
 	fillMode fillMode_ = fillMode::Fill;

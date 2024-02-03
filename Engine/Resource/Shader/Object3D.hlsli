@@ -1,69 +1,67 @@
-// 頂点
+
 struct Vertex
 {
-    float4 position; // 位置座標
-    float2 texcoord; // テクスチャ座標
-    float3 normal; // 法線
-    float4 color; // 色(頂点ごと)
+    float4 position;
+    float2 texcoord;
+    float3 normal;
+    float4 color;
 };
 
-// カメラ
+
 struct Camera
 {
-    float4x4 mat; // カメラのVP行列
-    float3 worldPosition; // カメラのワールド座標
+    float4x4 mat;
+    float3 worldPosition;
 };
 
-// マテリアル
+
 struct Material
 {
-    float4x4 uvTransform; // uvトランスフォーム
-    int enableLighting; // ライティング有効トリガー
-    int enableReflection; // 鏡面反射有効トリガー
-    float shininess; // 光沢度
+    float4x4 uvTransform;
+    int enableLighting;
+    int enableReflection;
+    float shininess;
 };
 
-// 平行光源
+
 struct DirectionalLight
 {
     float4x4 viewProjection;
-    float4 color; // !< ライトの色
-    float3 direction; // !< ライトの向き
-    float intensity; // !< 輝度
+    float4 color;
+    float3 direction;
+    float intensity;
 };
 
-// インデックス情報の構造体
+
 struct IndexInfo
 {
-    uint vertex; // 頂点
-    uint cameraVP; // ビュープロジェクション行列
-    uint worldMatrix; // ワールドトランスフォーム
-    uint material; // マテリアル
-    uint tex2d; // テクスチャ
+    uint vertex;
+    uint cameraVP;
+    uint worldMatrix;
+    uint material;
+    uint tex2d;
 };
 
 
-// インデックス情報
 StructuredBuffer<IndexInfo> gIndex : register(t0);
-// 平行光源
+
 ConstantBuffer<DirectionalLight> gDirectionalLight : register(b0);
 
-// 頂点データ
+
 StructuredBuffer<Vertex> gVertex : register(t1);
-// カメラのViewProjection
+
 StructuredBuffer<Camera> gCameraVP : register(t2);
-// WorldTransform
+
 StructuredBuffer<float4x4> gWorldMatrix : register(t3);
 
-// マテリアル
+
 StructuredBuffer<Material> gMaterial : register(t1);
 
-// テクスチャ
+
 Texture2D<float4> gTexture[] : register(t2);
 SamplerState gSampler : register(s0);
 
 
-// 頂点シェーダーの出力結果の構造体
 struct VertexShaderOutput
 {
     float4 position : SV_Position0;
@@ -71,5 +69,6 @@ struct VertexShaderOutput
     float3 normal : NORMAL0;
     float4 color : COLOR0;
     float3 worldPos : POSITION0;
-    uint id : SV_InstanceID; // VSで参照したIndexInfoの番号
+    float3 cameraWorldPos : POSITION1;
+    uint id : SV_InstanceID;
 };

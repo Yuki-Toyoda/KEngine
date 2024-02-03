@@ -57,6 +57,9 @@ void BasePrimitive::DisplayImGui()
 			ImGui::TreePop();
 		}
 		
+		// 光沢度
+		ImGui::DragFloat("Shininess", &material_.shininess_, 0.01f, 0.01f, 100.0f);
+
 		// 表示状態の設定
 		ImGui::Checkbox("isActive", &isActive_);
 		// マテリアルのuvトランスフォームを表示
