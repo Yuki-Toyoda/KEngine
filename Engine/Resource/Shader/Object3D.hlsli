@@ -1,17 +1,26 @@
-﻿// 頂点
+// 頂点
 struct Vertex
 {
-    float4 position;// 位置座標
-    float2 texcoord;// テクスチャ座標
-    float3 normal;// 法線
-    float4 color;// 色(頂点ごと)
+    float4 position; // 位置座標
+    float2 texcoord; // テクスチャ座標
+    float3 normal; // 法線
+    float4 color; // 色(頂点ごと)
 };
 
 // マテリアル
 struct Material
 {
-    float4x4 uvTransform;// uvトランスフォーム
-    int enableLighting;// ライティング有効トリガー
+    float4x4 uvTransform; // uvトランスフォーム
+    int enableLighting; // ライティング有効トリガー
+    int enableReflection; // 鏡面反射有効トリガー
+    float shininess; // 光沢度
+};
+
+// カメラ
+struct Camera
+{
+    float4x4 mat; // カメラのVP行列
+    float3 worldPosition; // カメラのワールド座標
 };
 
 // 平行光源
@@ -26,11 +35,11 @@ struct DirectionalLight
 // インデックス情報の構造体
 struct IndexInfo
 {
-    uint vertex;// 頂点
-    uint cameraVP;// ビュープロジェクション行列
-    uint worldMatrix;// ワールドトランスフォーム
-    uint material;// マテリアル
-    uint tex2d;// テクスチャ
+    uint vertex; // 頂点
+    uint cameraVP; // ビュープロジェクション行列
+    uint worldMatrix; // ワールドトランスフォーム
+    uint material; // マテリアル
+    uint tex2d; // テクスチャ
 };
 
 
@@ -42,7 +51,7 @@ ConstantBuffer<DirectionalLight> gDirectionalLight : register(b0);
 // 頂点データ
 StructuredBuffer<Vertex> gVertex : register(t1);
 // カメラのViewProjection
-StructuredBuffer<float4x4> gCameraVP : register(t2);
+StructuredBuffer<Camera> gCameraVP : register(t2);
 // WorldTransform
 StructuredBuffer<float4x4> gWorldMatrix : register(t3);
 
@@ -61,5 +70,6 @@ struct VertexShaderOutput
     float2 texcoord : TEXCOORD0;
     float3 normal : NORMAL0;
     float4 color : COLOR0;
+    float3 worldPos : POSITION0;
     uint id : SV_InstanceID; // VSで参照したIndexInfoの番号
 };

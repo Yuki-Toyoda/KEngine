@@ -204,8 +204,13 @@ void CommandManager::SetHeaps(RTV* rtv, SRV* srv, DSV* dsv, std::wstring vs, std
 }
 
 Matrix4x4* const CommandManager::GetViewProjection() const {
-	viewProjectionBuffer_->mat[1] = Math::MakeIdentity4x4() * Math::MakeOrthGraphicMatrix(0.0f, 0.0f, (float)WinApp::kWindowWidth, (float)WinApp::kwindowHeight, 0.0f, 100.0f);
-	return viewProjectionBuffer_->mat;
+	viewProjectionBuffer_->cameraData[1].mat = Math::MakeIdentity4x4() * Math::MakeOrthGraphicMatrix(0.0f, 0.0f, (float)WinApp::kWindowWidth, (float)WinApp::kwindowHeight, 0.0f, 100.0f);
+	return &viewProjectionBuffer_->cameraData->mat;
+}
+
+Vector3* const CommandManager::GetCameraWorldPosition() const
+{
+	return &viewProjectionBuffer_->cameraData->worldPosition;
 }
 
 void CommandManager::SetDrawData(BasePrimitive* primitive)
@@ -434,16 +439,18 @@ void CommandManager::CreateStructuredBuffer()
 	vertexBuffer_->view = srv_->GetGPUHandle(srv_->GetUsedCount());
 	device_->CreateShaderResourceView(vertexBuffer_->resource.Get(), &vertexDesc, srv_->GetCPUHandle(srv_->GetUsedCount()));
 	srv_->AddUsedCount();	// SRV使用数を+1
+
 	// カメラのビュープロジェクション用
-	viewProjectionBuffer_ = std::make_unique<MatrixBuffer>();
-	viewProjectionBuffer_->resource = CreateBuffer(sizeof(Matrix4x4) * kMaxVP);
-	viewProjectionBuffer_->resource->Map(0, nullptr, reinterpret_cast<void**>(&viewProjectionBuffer_->mat));
+	viewProjectionBuffer_ = std::make_unique<CameraBuffer>();
+	viewProjectionBuffer_->resource = CreateBuffer(sizeof(CameraData) * kMaxVP);
+	viewProjectionBuffer_->resource->Map(0, nullptr, reinterpret_cast<void**>(&viewProjectionBuffer_->cameraData));
 	D3D12_SHADER_RESOURCE_VIEW_DESC vpDesc = { commonDesc };
 	vpDesc.Buffer.NumElements = kMaxVP;
-	vpDesc.Buffer.StructureByteStride = sizeof(Matrix4x4);
+	vpDesc.Buffer.StructureByteStride = sizeof(CameraData);
 	viewProjectionBuffer_->view = srv_->GetGPUHandle(srv_->GetUsedCount());
 	device_->CreateShaderResourceView(viewProjectionBuffer_->resource.Get(), &vpDesc, srv_->GetCPUHandle(srv_->GetUsedCount()));
 	srv_->AddUsedCount();	// SRV使用数を+1
+
 	// WorldTransformデータ
 	worldTransformBuffer_ = std::make_unique<MatrixBuffer>();
 	worldTransformBuffer_->resource = CreateBuffer(sizeof(Matrix4x4) * kMaxWorldTransform);

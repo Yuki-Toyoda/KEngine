@@ -17,6 +17,9 @@ float4 main(VertexShaderOutput input) : SV_TARGET
     if (textureColor.a <= 0.5f)
         discard;
     
+    // カメラへの方向を算出する
+    float3 toEye = normalize(gCameraVP[input.id].worldPosition - input.worldPos);
+    
     if (gMaterial[m].enableLighting != 0)
     { // Lightingの計算を行う
         // シェーディング

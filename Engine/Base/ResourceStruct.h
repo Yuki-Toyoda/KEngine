@@ -59,13 +59,17 @@ struct VertexBuffer {
 /// マテリアルデータ構造体
 /// </summary>
 struct MaterialData {
-	Matrix4x4 uvTransform;  // UVトランスフォーム
-	int32_t enableLighting; // ライトの有効トリガー
+	Matrix4x4 uvTransform;    // UVトランスフォーム
+	int32_t enableLighting;   // ライトの有効トリガー
+	int32_t enableReflection; // 鏡面反射の有効トリガー
+	float shininess;		  // 光沢度
 
 	// MaterialDataを=演算子で代入できるようにオーバーロード
 	MaterialData& operator=(const Material& material) {
-		uvTransform = material.uvTransform_.GetMatWorld();				 // ワールド行列の取得
-		enableLighting = static_cast<int32_t>(material.enableLighting_); // ライティング有効トリガー
+		uvTransform = material.uvTransform_.GetMatWorld();					 // ワールド行列の取得
+		enableLighting = static_cast<int32_t>(material.enableLighting_);	 // ライティング有効トリガー
+		enableReflection = static_cast<int32_t>(material.enableReflection_); // 鏡面反射有効トリガー
+		shininess = material.shininess_;									 // 光沢度
 		// 自身のポインタを返す
 		return *this;
 	}
@@ -81,6 +85,28 @@ struct MaterialBuffer {
 	UINT usedCount = 0;							      // 使用中のインデックスバッファの数
 };
 #pragma endregion
+
+#pragma region カメラデータ
+/// <summary>
+/// カメラデータ構造体
+/// </summary>
+struct CameraData{
+	Matrix4x4 mat; // ビュープロジェクション行列
+	Vector3 worldPosition; // ワールド座標
+};
+
+/// <summary>
+/// カメラバッファ構造体
+/// </summary>
+struct CameraBuffer {
+	Microsoft::WRL::ComPtr<ID3D12Resource> resource;  // バッファリソース
+	D3D12_GPU_DESCRIPTOR_HANDLE view{};				  // GPU上のハンドルを格納
+	CameraData* cameraData;							  // カメラのデータ本体
+	UINT usedCount = 0;							      // 使用中のインデックスバッファの数
+};
+
+#pragma endregion
+
 
 #pragma region 行列データ
 /// <summary>

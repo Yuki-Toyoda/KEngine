@@ -52,8 +52,17 @@ public: // アクセッサ等
 	/// <param name="dsv">深度ステンシルビュー</param>
 	void SetHeaps(RTV* rtv, SRV* srv, DSV* dsv, std::wstring vs, std::wstring ps);
 
-
+	/// <summary>
+	/// ビュープロジェクション行列を書き込むアドレスゲッター
+	/// </summary>
+	/// <returns>アドレス</returns>
 	Matrix4x4* const GetViewProjection() const;
+
+	/// <summary>
+	/// カメラのワールド座標を書き込むアドレスゲッター
+	/// </summary>
+	/// <returns>アドレス</returns>
+	Vector3* const GetCameraWorldPosition() const;
 
 	/// <summary>
 	/// 描画データ登録関数
@@ -167,7 +176,7 @@ private: // メンバ変数
 	const UINT kMaxVertex = 655360;				 // 頂点情報の最大数(今回は受け売りで設定)
 
 	// ビュープロジェクション行列バッファ
-	std::unique_ptr<MatrixBuffer> viewProjectionBuffer_; // 本体
+	std::unique_ptr<CameraBuffer> viewProjectionBuffer_; // 本体
 	const UINT kMaxVP = 2;
 	// ワールドトランスフォームバッファ
 	std::unique_ptr<MatrixBuffer> worldTransformBuffer_; // 本体

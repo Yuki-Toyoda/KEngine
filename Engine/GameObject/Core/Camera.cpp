@@ -35,8 +35,9 @@ void Camera::Update()
 		Matrix4x4 projectionMatrix = Math::MakePerspectiveFovMatrix(fov_, float(WinApp::kWindowWidth) / float(WinApp::kwindowHeight), 0.1f, 100.0f); // プロジェクション行列の生成
 		viewProjectionMatrix_ = viewMatrix_ * projectionMatrix; // 実際に計算
 
-		// アドレスに
-		*vpDataTarget_ = viewProjectionMatrix_;
+		// アドレスに書き込む
+		*vpDataTarget_ = viewProjectionMatrix_; // ビュープロジェクション行列
+		*worldPosDataTarget_ = transform_.GetWorldPos(); // ワールド座標
 	}
 
 	// デバッグカメラだった場合はキー入力でカメラを移動させる
@@ -142,4 +143,5 @@ void Camera::SetVPDataTarget()
 {
 	// ビュープロジェクション行列を書き込むためのアドレスを取得
 	vpDataTarget_ = DirectXCommon::GetInstance()->GetCommandManager()->GetViewProjection();
+	worldPosDataTarget_ = DirectXCommon::GetInstance()->GetCommandManager()->GetCameraWorldPosition();
 }

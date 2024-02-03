@@ -83,6 +83,8 @@ protected: // メンバ変数
 
 	// ビュープロジェクション行列をコマンドマネージャーに送るためのポインタ
 	Matrix4x4* vpDataTarget_ = nullptr;
+	// カメラのワールド座標をコマンドマネージャーに送るためのポインタ
+	Vector3* worldPosDataTarget_ = nullptr;
 
 };
 
