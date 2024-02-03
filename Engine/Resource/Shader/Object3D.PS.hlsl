@@ -26,7 +26,9 @@ float4 main(VertexShaderOutput input) : SV_TARGET
             float3 reflectLight = reflect(normalize(gDirectionalLight.direction), normalize(input.normal));
             
             float rDotE = dot(reflectLight, toEye);
-            float specularPow = pow(saturate(rDotE), gMaterial[m].shininess);
+            float3 halfVector = normalize(-gDirectionalLight.direction + toEye);
+            float NDotH = dot(normalize(input.normal), halfVector);
+            float specularPow = pow(saturate(NDotH), gMaterial[m].shininess);
 
             float3 diffuse =
             input.color.rgb * textureColor.rgb * gDirectionalLight.color.rgb * cos * gDirectionalLight.intensity;
