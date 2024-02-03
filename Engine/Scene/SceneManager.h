@@ -1,5 +1,6 @@
 #pragma once
 #include "BaseScene.h"
+#include "ISceneFactory.h"
 
 /// <summary>
 /// シーンマネージャー
@@ -32,18 +33,19 @@ public: // メンバ関数
 	/// </summary>
 	void Update();
 
-	/// <summary>
-	/// 描画関数
-	/// </summary>
-	void Draw();
-
 public: // アクセッサ等
 
 	/// <summary>
-	/// 次のシーンのセッター
+	/// シーンファクトリーセッター
 	/// </summary>
-	/// <param name="nextScene">次のシーンの実体</param>
-	void SetNextScene(BaseScene* nextScene) { nextScene_ = nextScene; }
+	/// <param name="sceneFactory">シーンファクトリー</param>
+	void SetSceneFactory(std::unique_ptr<ISceneFactory> sceneFacotory) { sceneFactory_ = std::move(sceneFacotory); }
+
+	/// <summary>
+	/// シーン切り替え関数
+	/// </summary>
+	/// <param name="name">切り替えシーン名</param>
+	void ChangeScene(const std::string& name);
 
 private: // メンバ変数
 
@@ -51,5 +53,8 @@ private: // メンバ変数
 	BaseScene* currentScene_ = nullptr;
 	// 次のシーン
 	BaseScene* nextScene_ = nullptr;
+
+	// シーンファクトリー
+	std::unique_ptr<ISceneFactory> sceneFactory_;
 };
 

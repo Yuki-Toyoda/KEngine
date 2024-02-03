@@ -86,9 +86,6 @@
     <ClCompile Include="Engine\Scene\User\TitleScene.cpp">
       <Filter>App\Scene\User</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Scene\SceneManager.cpp">
-      <Filter>App\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Scene\User\GameScene.cpp">
       <Filter>App\Scene\User</Filter>
     </ClCompile>
@@ -117,10 +114,10 @@
       <Filter>Engine\Primitive\2d</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Sprite\Sprite.cpp">
-      <Filter>Engine\Sprite</Filter>
+      <Filter>App\Sprite</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Sprite\SpriteManager.cpp">
-      <Filter>Engine\Sprite</Filter>
+      <Filter>App\Sprite</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Scene\User\SampleScene.cpp">
       <Filter>App\Scene\User</Filter>
@@ -220,6 +217,12 @@
     </ClCompile>
     <ClCompile Include="Engine\KEngine.cpp">
       <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Scene\SceneManager.cpp">
+      <Filter>Engine\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Scene\SceneFactory.cpp">
+      <Filter>App\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -358,9 +361,6 @@
     <ClInclude Include="Engine\Scene\User\TitleScene.h">
       <Filter>App\Scene\User</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Scene\SceneManager.h">
-      <Filter>App\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Scene\User\GameScene.h">
       <Filter>App\Scene\User</Filter>
     </ClInclude>
@@ -410,10 +410,10 @@
       <Filter>Engine\Primitive\2d</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Sprite\Sprite.h">
-      <Filter>Engine\Sprite</Filter>
+      <Filter>App\Sprite</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Sprite\SpriteManager.h">
-      <Filter>Engine\Sprite</Filter>
+      <Filter>App\Sprite</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utility\Animation\AnimationKey.h">
       <Filter>App\Utility\Animation</Filter>
@@ -474,6 +474,15 @@
     </ClInclude>
     <ClInclude Include="Engine\KEngine.h">
       <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Scene\SceneManager.h">
+      <Filter>Engine\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Scene\ISceneFactory.h">
+      <Filter>Engine\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Scene\SceneFactory.h">
+      <Filter>App\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -557,9 +566,6 @@
     <Filter Include="Engine\Resource\Material">
       <UniqueIdentifier>{c3f5e39c-9e6c-4ace-9726-921e54810c5b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Sprite">
-      <UniqueIdentifier>{89930de6-5713-4b33-a25e-c80afe7ab47c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="App">
       <UniqueIdentifier>{1b95f390-2ad6-4ec0-b37a-dd359fe8fc5b}</UniqueIdentifier>
     </Filter>
@@ -622,6 +628,12 @@
     </Filter>
     <Filter Include="Game">
       <UniqueIdentifier>{d78747ab-06c5-47b0-88ad-2075142a0e5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Scene">
+      <UniqueIdentifier>{427a96d7-68dc-4a21-9ff7-c7d1d8ce5faa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Sprite">
+      <UniqueIdentifier>{89930de6-5713-4b33-a25e-c80afe7ab47c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

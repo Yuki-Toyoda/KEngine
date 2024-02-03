@@ -42,12 +42,14 @@ void KEngine::Init()
 
 	// 衝突マネージャーの初期化
 	collisionManager_ = CollisionManager::GetInstance();
+
+	// シーンマネージャーのインスタンス取得
+	sceneManager_ = SceneManager::GetInstance();
 }
 
 void KEngine::PostInit()
 {
 	// シーンマネージャーの初期化
-	sceneManager_ = SceneManager::GetInstance();
 	sceneManager_->Init();
 }
 

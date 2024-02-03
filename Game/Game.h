@@ -4,6 +4,7 @@
 #include "../Engine/Sprite/SpriteManager.h"
 #include "../Engine/Utility/Animation/AnimationManager.h"
 #include "../Engine/KEngine.h"
+#include "../Engine/Scene/SceneFactory.h"
 
 /// <summary>
 /// ゲームクラス

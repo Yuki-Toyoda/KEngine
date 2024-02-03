@@ -14,8 +14,7 @@ void TitleScene::Update()
 #ifdef _DEBUG
 	// デバッグ遷移
 	if (input_->TriggerKey(DIK_RSHIFT)) {
-		BaseScene* nextScene = new GameScene();
-		SceneManager::GetInstance()->SetNextScene(nextScene);
+		SceneManager::GetInstance()->ChangeScene("Game");
 	}
 #endif // _DEBUG
 }

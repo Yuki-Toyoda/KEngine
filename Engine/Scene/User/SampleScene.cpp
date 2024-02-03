@@ -1,5 +1,6 @@
 #include "SampleScene.h"
 #include "../../GameObject/SampleList.h"
+#include "../SceneManager.h"
 
 void SampleScene::Init()
 {
@@ -11,5 +12,8 @@ void SampleScene::Init()
 
 void SampleScene::Update()
 {
-	
+	// デバッグ遷移
+	if (input_->TriggerKey(DIK_RSHIFT)) {
+		SceneManager::GetInstance()->ChangeScene("");
+	}
 }

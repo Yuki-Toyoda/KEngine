@@ -20,6 +20,10 @@ void Game::Init()
 	// パーティクルマネージャの初期化
 	particleManager_ = ParticleEmitterManager::GetInstance();
 	particleManager_->Init();
+
+	// シーンマネージャーにファクトリークラスをセット
+	sceneManager_->SetSceneFactory(std::make_unique<SceneFactory>());
+
 }
 
 void Game::Update()
