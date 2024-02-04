@@ -52,6 +52,7 @@ void RootState::Update()
 			player_->chargeFinishParticleEmitter_->SetIsPlay(false);
 		}
 
+		player_->SetIsCharge(true);
 
 		//攻撃ボタンを押いるカウントを加算
 		player_->AddAtackCount();
@@ -62,7 +63,7 @@ void RootState::Update()
 	else {
 		// チャージパーティクルをとめる
 		player_->chargeParticleEmitter_->SetIsPlay(false);
-
+		player_->SetIsCharge(false);
 		//攻撃ボタンを押しているカウントを0に
 		player_->ResetAtackCount();
 		// 移動処理

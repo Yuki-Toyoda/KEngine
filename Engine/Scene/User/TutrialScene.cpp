@@ -15,14 +15,9 @@ void TutrialScene::Init()
 	bgmHandle_ = audio_->LoadWave("./Resources/Audio/BGM/inGame.wav");
 
 	gameManager = gameObjectManager_->CreateInstance<GameManager>("gameManager", BaseObject::TagNone);
-	// カメラの生成
 	camera_ = nullptr;
 	camera_ = gameObjectManager_->CreateInstance<InGameCamera>("Incamera", BaseObject::TagCamera);
 	camera_->UseThisCamera();
-	camera_->fov_ = 0.85f;
-	camera_->transform_.translate_ = { 0.0f,47.0f,-90.0f };
-	camera_->transform_.rotate_ = { 0.55f,0.0f,0.0f };
-
 	// スカイドーム生成
 	SkyDome* skyDome = nullptr;
 	skyDome = gameObjectManager_->CreateInstance<SkyDome>("SkyDome", BaseObject::TagNone);
@@ -35,7 +30,11 @@ void TutrialScene::Init()
 	player_->transform_.translate_.y = 3.0f;
 	player_->transform_.translate_.x = 10.0f;
 	player_->SetIsTutrial(true);
-	//// 敵を生成
+	// プレイヤーをカメラにセットする
+	camera_->SetPlayer(player_);
+	// プレイヤーにカメラをセットする
+	player_->SetCamera(camera_);
+
 	// ボスの生成
 	boss_ = gameObjectManager_->CreateInstance<Boss>("Boss", BaseObject::TagEnemy);
 	// ボスにプレイヤーをセット
@@ -44,6 +43,7 @@ void TutrialScene::Init()
 	boss_->SetgameManager(gameManager);
 	
 	uribo_ = gameObjectManager_->CreateInstance<Uribo>("uribo", BaseObject::TagUribo);
+	uribo_->SetTutrial(true);
 	player_->SetUribo(uribo_);
 	// プレイヤーアニメーションマネージャの生成
 	PlayerAnimManager* am = gameObjectManager_->CreateInstance<PlayerAnimManager>("playerAnim", BaseObject::TagPlayer);
@@ -89,6 +89,8 @@ void TutrialScene::Init()
 	// UIマネージャーにウリボーをセット
 	iUIm->SetUribo(uribo_);
 	iUIm->SetIsTutrial(true);
+	// UIマネージャーにカメラをセット
+	iUIm->SetCamera(camera_);
 	 tm_ = gameObjectManager_->CreateInstance<TutrialManager>("tutrialManager", BaseObject::TagNone);
 
 	tm_->SetBoss(boss_);
