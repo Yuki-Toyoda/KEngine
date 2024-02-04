@@ -29,9 +29,9 @@ void ResultManager::Update()
 {
 	// 再生されていなければ再生する
 	if (!isSceneChange_) {
-		if (!audio_->IsPlaying(bgmVoiceHadle_) || bgmVoiceHadle_ == -1) {
+		/*if (!audio_->IsPlaying(bgmVoiceHadle_) || bgmVoiceHadle_ == -1) {
 			bgmVoiceHadle_ = audio_->PlayWave(bgmHandle_, false, 1.0f);
-		}
+		}*/
 	}
 
 	// BGM音量を設定
@@ -173,6 +173,7 @@ void ResultManager::PostInit(bool isClear)
 
 		// BGMロード
 		bgmHandle_ = audio_->LoadWave("./Resources/Audio/BGM/clear.wav");
+		bgmVoiceHadle_ = audio_->PlayWave(bgmHandle_, true, 1.0f);
 
 		/// 各種トランスフォームの初期化
 		// 野菜の山用
@@ -206,6 +207,7 @@ void ResultManager::PostInit(bool isClear)
 
 		// BGMロード
 		bgmHandle_ = audio_->LoadWave("./Resources/Audio/BGM/gameOver.wav");
+		bgmVoiceHadle_ = audio_->PlayWave(bgmHandle_, true, 1.0f);
 
 		/// スプライト追加
 		// 失敗テキスト
