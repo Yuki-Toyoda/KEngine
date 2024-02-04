@@ -8,6 +8,9 @@ void Camera::Init()
 {
 	// 入力取得
 	input_ = Input::GetInstance();
+	// コントローラー入力取得
+	input_->GetJoystickState(0, joyState_); // 現在フレームの入力取得
+	preJoyState_ = joyState_; // 前フレームの入力取得
 
 	// カメラ初期位置設定
 	transform_.translate_ = { 0.0f, 1.0f, -10.0f };
@@ -42,10 +45,17 @@ void Camera::Update()
 	// デバッグカメラだった場合はキー入力でカメラを移動させる
 	if (name_ == "DebugCamera") {
 
+		// 入力取得
+		preJoyState_ = joyState_; // 前フレームの入力取得
+		input_->GetJoystickState(0, joyState_); // 現在フレームの入力取得
+
 		// 移動速度
 		const float speed = 0.1f;
-		// 移動ベクトル
-		Vector3 move = { 0.0f };
+		
+		// スティックの方向を元に移動ベクトルを求める
+		Vector3 move = {
+			(float)joyState_.Gamepad.sThumbLX, 0.0f,
+			(float)joyState_.Gamepad.sThumbLY };
 
 		// Wキーが押されたら
 		if (input_->PushKey(DIK_W)) {
@@ -62,26 +72,38 @@ void Camera::Update()
 			move.x = 1.0f;
 		}
 
-		if (input_->PushKey(DIK_SPACE)) {
+		if (input_->PushKey(DIK_SPACE) || joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) {
 			move.y = 1.0f;
 		}
-		else if (input_->PushKey(DIK_LCONTROL)) {
+		else if (input_->PushKey(DIK_LCONTROL) || joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) {
 			move.y = -1.0f;
 		}
 
+		// スティックの方向を元に移動ベクトルを求める
+		Vector3 rotatePower = {
+			-(float)joyState_.Gamepad.sThumbRY, (float)joyState_.Gamepad.sThumbRX,
+			0.0f };
+		// 求めたベクトルを正規化
+		rotatePower = Math::Normalize(rotatePower);
+
+		rotatePower = rotatePower * 0.01f;
+
 		if (input_->PushKey(DIK_UP)) {
-			transform_.rotate_.x -= 0.015f;
+			rotatePower.x = -0.015f;
 		}
 		else if (input_->PushKey(DIK_DOWN)) {
-			transform_.rotate_.x += 0.015f;
+			rotatePower.x = 0.015f;
 		}
 
 		if (input_->PushKey(DIK_LEFT)) {
-			transform_.rotate_.y -= 0.015f;
+			rotatePower.y = -0.015f;
 		}
 		else if (input_->PushKey(DIK_RIGHT)) {
-			transform_.rotate_.y += 0.015f;
+			rotatePower.y = 0.015f;
 		}
+
+		// カメラの回転
+		transform_.rotate_ += rotatePower;
 
 		// 移動量を正規化、スピードを加算
 		move = Math::Normalize(move) * speed;

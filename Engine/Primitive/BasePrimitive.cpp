@@ -62,6 +62,7 @@ void BasePrimitive::DisplayImGui()
 		// マテリアルのuvトランスフォームを表示
 		material_.uvTransform_.DisplayImGui("uvTransform");
 		ImGui::Checkbox("isUI", &isUI_);
+
 		if (commonColor != nullptr) {
 			ImGui::ColorPicker4("Color", &commonColor->x);
 		}

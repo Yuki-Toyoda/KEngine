@@ -73,6 +73,10 @@ protected: // メンバ変数
 	// 入力検知用
 	Input* input_;
 
+	// コントローラー入力
+	XINPUT_STATE joyState_; // 現在フレーム用
+	XINPUT_STATE preJoyState_; // 前フレーム用
+
 	// カメラ使用トリガー
 	bool isUseThisCamera_;
 
