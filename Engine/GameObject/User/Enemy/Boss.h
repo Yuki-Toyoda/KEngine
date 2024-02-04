@@ -66,6 +66,11 @@ public: // アクセッサ等
 	/// <returns>シーン遷移トリガー状態</returns>
 	bool GetIsSceneChage() { return isSceneChange_; }
 
+	void SetIsTutrial(bool flag) { isTutrial_ = flag; }
+
+	bool GetTutrialAtackEnd() { return tutrialAtackEnd_; }
+
+	void SetTutrialAtackEnd(bool flag) { tutrialAtackEnd_ = flag; }
 private: // メンバ関数
 
 	/// <summary>
@@ -103,5 +108,6 @@ private:
 	bool isFade_ = false;
 	// シーン遷移トリガー
 	bool isSceneChange_ = false;
-
+	bool isTutrial_=true;
+	bool tutrialAtackEnd_=false;
 };

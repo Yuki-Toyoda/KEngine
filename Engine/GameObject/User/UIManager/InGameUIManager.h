@@ -58,6 +58,8 @@ public: // アクセッサ等
 	/// <param name="camera">カメラ</param>
 	void SetCamera(Camera* camera) { camera_ = camera; }
 
+
+	void SetIsTutrial(bool flag) { isTutrial_ = flag; }
 private: // メンバ変数
 
 	// 入力検知用
@@ -102,5 +104,7 @@ private: // メンバ変数
 	float switchAlertIconTime_ = 1.0f;
 	// ウリボのアラートアイコン表示切り替えタイマー
 	KLib::DeltaTimer switchAlertIconTimer_;
+
+	bool isTutrial_;
 };
 

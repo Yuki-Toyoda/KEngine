@@ -57,6 +57,7 @@ void Player::Init()
 	variables->AddItem(name_, "DecelerationRate", decelerationRate);
 	variables->AddItem(name_, "subtractionAbsorptionCount_", subtractionAbsorptionCount_);
 	SetGlobalVariables();
+	isTutrial_ = false;
 
 	// パーティクルエミッタマネージャのインスタンス取得
 	pem_ = ParticleEmitterManager::GetInstance();
@@ -188,6 +189,7 @@ void Player::Update()
 	}
 
 	// 現在HPの取得
+	if (uribo_->GetHP() <= 0&&!isTutrial_) {
 	if (uribo_->GetIsDead()) {
 		// ゲームオーバーフラグtrue
 		isGameOver_ = true;

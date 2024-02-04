@@ -57,6 +57,11 @@ public:
 	/// <returns></returns>
 	static bool Heal();
 	
+/// <summary>
+/// チュートリアルスキップ用
+/// </summary>
+	static bool TutrialSkip();
+private:
 	/// <summary>
 	/// 右スティックの入力取得関数
 	/// </summary>

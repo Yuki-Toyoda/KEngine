@@ -61,6 +61,7 @@ void InGameUIManager::Init()
 	// スプライトの描画範囲設定
 	AttackSprite_->texSize_ = { 448.0f, 96.0f };
 	FeedSprite_->texSize_ = { 512.0f, 96.0f };
+	isTutrial_ = false;
 
 	// アラートアイコンの切り替えタイマー
 	switchAlertIconTimer_.Start(switchAlertIconTime_);
@@ -188,6 +189,11 @@ void InGameUIManager::Update()
 			// アラートアイコン切り替えタイマーの更新
 			switchAlertIconTimer_.Update();
 		}
+	}
+	if (isTutrial_) {
+		bossHPGageSprite_BG_->SetIsActive(false);
+		bossHPGageSprite_F_->SetIsActive(false);
+		bossHPGageSprite_Icon_->SetIsActive(false);
 	}
 }
 

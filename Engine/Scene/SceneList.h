@@ -9,3 +9,4 @@
 #include "User/EditorScene.h"
 #include "User/ResultScene.h"
 #include "User/AnimDevScene.h"
+#include "User/TutrialScene.h"

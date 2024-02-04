@@ -108,9 +108,12 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\GameObject\User\Enemy\State\PushUpAtackState.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\State\RollerAtackState.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\State\WaitTimeState.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\TutrialBoss\TutrialBoss.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\TutrialBoss\TutrialState.cpp" />
     <ClCompile Include="Engine\GameObject\User\GameManager\GameManager.cpp" />
     <ClCompile Include="Engine\GameObject\User\Player\State\PushUpHitState.cpp" />
     <ClCompile Include="Engine\GameObject\User\Player\uribo\uribo.cpp" />
+    <ClCompile Include="Engine\GameObject\User\TutrialManager\TutrialManager.cpp" />
     <ClCompile Include="Engine\Scene\User\AnimDevScene.cpp" />
     <ClCompile Include="Engine\GameObject\User\ResultManager\ResultManager.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\State\MultiAtackState.cpp" />
@@ -184,6 +187,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Scene\User\GameScene.cpp" />
     <ClCompile Include="Engine\Scene\User\SampleScene.cpp" />
     <ClCompile Include="Engine\Scene\User\TitleScene.cpp" />
+    <ClCompile Include="Engine\Scene\User\TutrialScene.cpp" />
     <ClCompile Include="Engine\Sprite\Sprite.cpp" />
     <ClCompile Include="Engine\Sprite\SpriteManager.cpp" />
     <ClCompile Include="Engine\Utility\Animation\Animation.cpp" />
@@ -231,9 +235,12 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\GameObject\User\Enemy\State\PushUpAtackState.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\State\RollerAtackState.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\State\WaitTimeState.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\TutrialBoss\TutrialBoss.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\TutrialBoss\TutrialState.h" />
     <ClInclude Include="Engine\GameObject\User\GameManager\GameManager.h" />
     <ClInclude Include="Engine\GameObject\User\Player\State\PushUpHitState.h" />
     <ClInclude Include="Engine\GameObject\User\Player\uribo\uribo.h" />
+    <ClInclude Include="Engine\GameObject\User\TutrialManager\TutrialManager.h" />
     <ClInclude Include="Engine\Particle\ParticleList.h" />
     <ClInclude Include="Engine\Scene\User\AnimDevScene.h" />
     <ClInclude Include="Engine\GameObject\User\ResultManager\ResultManager.h" />
@@ -324,6 +331,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Scene\User\GameScene.h" />
     <ClInclude Include="Engine\Scene\User\SampleScene.h" />
     <ClInclude Include="Engine\Scene\User\TitleScene.h" />
+    <ClInclude Include="Engine\Scene\User\TutrialScene.h" />
     <ClInclude Include="Engine\Sprite\Sprite.h" />
     <ClInclude Include="Engine\Sprite\SpriteManager.h" />
     <ClInclude Include="Engine\Utility\Animation\Animation.h" />

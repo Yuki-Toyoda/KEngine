@@ -130,6 +130,14 @@ bool InputManager::Heal()
     return false;
 }
 
+bool InputManager::TutrialSkip()
+{
+    if (joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_Y) {
+        return true;
+    }
+    return false;
+}
+
 Vector3 InputManager::GetRStickInput()
 {
     // スティックの入力を取得

@@ -67,6 +67,10 @@ void Uribo::Init()
 
 void Uribo::Update()
 {
+	// ボスが死亡していない場合
+	if (!isBossDead_&&hitPoint_>=0) {
+		hitPoint_ -= decrementHP;
+	}
 	// HPが0以下になったら死亡アニメーション再生
 	if (hitPoint_ <= 0) {
 		// アニメーションの読み込みパラメータ名が同一でない場合
@@ -195,6 +199,23 @@ void Uribo::Heal(int healPower)
 {
 	// 回復させる
 	hitPoint_ += healPower;
+	if (hitPoint_ >= defaultHP_) {
+		hitPoint_ = defaultHP_;
+	}
+}
+
+void Uribo::Tutrial()
+{
+	//チュートリアル用に体力を1/3に減らす
+	hitPoint_ = defaultHP_/3;
+}
+
+bool Uribo::TutrialEnd()
+{
+	if (hitPoint_ > defaultHP_ / 2) {
+		return true;
+	}
+	return false;
 
 	// HPが最大値以上になったときは最大値で打ち止め
 	if (hitPoint_ > defaultHP_) {

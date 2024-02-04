@@ -107,6 +107,10 @@
     <ClCompile Include="Engine\GameObject\User\GameManager\GameManager.cpp" />
     <ClCompile Include="Engine\GameObject\User\Player\uribo\uribo.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\BossAnimManager.cpp" />
+    <ClCompile Include="Engine\Scene\User\TutrialScene.cpp" />
+    <ClCompile Include="Engine\GameObject\User\TutrialManager\TutrialManager.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\TutrialBoss\TutrialBoss.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\TutrialBoss\TutrialState.cpp" />
     <ClCompile Include="Engine\Particle\User\HitParticleEmiiter.cpp" />
     <ClCompile Include="Engine\Particle\User\HitParticle.cpp" />
     <ClCompile Include="Engine\Particle\User\ChargeParticle.cpp" />
@@ -242,6 +246,10 @@
     <ClInclude Include="Engine\GameObject\User\GameManager\GameManager.h" />
     <ClInclude Include="Engine\GameObject\User\Player\uribo\uribo.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\BossAnimManager.h" />
+    <ClInclude Include="Engine\Scene\User\TutrialScene.h" />
+    <ClInclude Include="Engine\GameObject\User\TutrialManager\TutrialManager.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\TutrialBoss\TutrialBoss.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\TutrialBoss\TutrialState.h" />
     <ClInclude Include="Engine\Particle\ParticleList.h" />
     <ClInclude Include="Engine\Particle\User\HitParticleEmiiter.h" />
     <ClInclude Include="Engine\Particle\User\HitParticle.h" />
