@@ -200,7 +200,9 @@ void Uribo::OnCollision(Collider* collider)
 void Uribo::Heal(int healPower)
 {
 	// 回復させる
-	hitPoint_ += healPower;
+	if (hitPoint_ > 0) {
+		hitPoint_ += healPower;
+	}
 	if (hitPoint_ >= defaultHP_) {
 		hitPoint_ = defaultHP_;
 	}
