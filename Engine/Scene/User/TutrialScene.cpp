@@ -111,10 +111,10 @@ void TutrialScene::Update()
 	}
 
 	// デバッグ遷移
-	if (input_->TriggerKey(DIK_RSHIFT)) {
+	/*if (input_->TriggerKey(DIK_RSHIFT)) {
 		BaseScene* nextScene = new GameScene();
 		SceneManager::GetInstance()->SetNextScene(nextScene);
-	}
+	}*/
 
 #ifdef _DEBUG
 
