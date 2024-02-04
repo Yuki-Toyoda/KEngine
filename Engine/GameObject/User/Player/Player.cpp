@@ -402,7 +402,7 @@ void Player::SubtractVelocity()
 void Player::Heal()
 {
 	//カウントが０じゃなくヒールボタンを押したとき
-	if (InputManager::Heal() && absorptionCount_ > 0) {
+	if (InputManager::Heal() && absorptionCount_ > 0 && hitCollTimer_.GetIsFinish()&&!isCharge_) {
 		if (healTimer.GetIsFinish()) {
 			//うりぼーの回復
 			uribo_->Heal(healPower_);

@@ -182,7 +182,10 @@ public: // アクセッサ等
 	/// </summary>
 	/// <returns></returns>
 	Vector3 GetCorrectPosition() { return correctionPos_; }
-
+/// <summary>
+/// isChargeのセッター
+/// </summary>
+	void SetIsCharge(bool flag) { isCharge_ = flag; }
 private: // プライベートなメンバ関数
 
 	/// <summary>
@@ -302,6 +305,7 @@ private: // メンバ変数
 	int kMaxAtackPushCount_;
 	//ダメージをくらったときに減らす食べ物の数
 	int subtractionAbsorptionCount_;
-
+	//攻撃をチャージしているかのフラグ
+	bool isCharge_;
 };
 
