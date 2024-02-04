@@ -63,13 +63,13 @@ void Player::Init()
 	pem_ = ParticleEmitterManager::GetInstance();
 
 	// チャージパーティクル生成
-	chargeParticleEmitter_ = pem_->CreateEmitter<ChargeParticleEmitter, ChargeParticle>("Charge", 25, 1, {0.0f, 0.0f, 0.0f}, 10.0f, 0.1f, TextureManager::Load("uvChecker.png"));
+	chargeParticleEmitter_ = pem_->CreateEmitter<ChargeParticleEmitter, ChargeParticle>("Charge", 25, 1, {0.0f, 0.0f, 0.0f}, 10.0f, 0.1f, TextureManager::Load("chargeParticle.png"));
 	chargeParticleEmitter_->transform_.SetParent(&transform_);
 	chargeParticleEmitter_->SetIsLoop(true);
 	chargeParticleEmitter_->SetIsPlay(false);
 	
 	// チャージ終了時パーティクル生成
-	chargeFinishParticleEmitter_ = pem_->CreateEmitter<ChargeFinishParticleEmitter, ChargeFinishParticle>("ChargeFinish", 8, 8, {0.0f, 0.0f, 0.0f}, 10.0f, 0.25f, TextureManager::Load("uvChecker.png"));
+	chargeFinishParticleEmitter_ = pem_->CreateEmitter<ChargeFinishParticleEmitter, ChargeFinishParticle>("ChargeFinish", 8, 8, {0.0f, 0.0f, 0.0f}, 10.0f, 0.25f, TextureManager::Load("chargeMaxParticle.png"));
 	chargeFinishParticleEmitter_->transform_.SetParent(&transform_);
 	chargeFinishParticleEmitter_->SetIsLoop(true);
 	chargeFinishParticleEmitter_->SetIsPlay(false);
