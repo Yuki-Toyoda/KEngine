@@ -212,15 +212,17 @@ void Uribo::Tutrial()
 
 bool Uribo::TutrialEnd()
 {
+	// 
 	if (hitPoint_ > defaultHP_ / 2) {
 		return true;
 	}
-	return false;
 
 	// HPが最大値以上になったときは最大値で打ち止め
 	if (hitPoint_ > defaultHP_) {
 		hitPoint_ = defaultHP_;
 	}
+
+	return false;
 }
 
 void Uribo::SetGlobalVariables()

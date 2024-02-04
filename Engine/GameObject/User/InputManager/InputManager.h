@@ -61,7 +61,9 @@ public:
 /// チュートリアルスキップ用
 /// </summary>
 	static bool TutrialSkip();
-private:
+
+public:
+
 	/// <summary>
 	/// 右スティックの入力取得関数
 	/// </summary>

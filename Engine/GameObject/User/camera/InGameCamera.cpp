@@ -6,6 +6,7 @@
 #include "../Random/RandomEngine.h"
 #include"../../../GlobalVariables/GlobalVariables.h"
 #include "../../User/Player/Player.h"
+#include "../InputManager/InputManager.h"
 
 void InGameCamera::Init()
 {
