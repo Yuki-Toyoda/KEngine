@@ -107,11 +107,6 @@ void GameScene::Init(){
 
 void GameScene::Update()
 {
-	// 再生されていなければ再生する
-	if (!audio_->IsPlaying(bgmVoiceHadle_) || bgmVoiceHadle_ == -1) {
-		bgmVoiceHadle_ = audio_->PlayWave(bgmHandle_, false, 1.0f);
-	}
-
 	// BGM音量を設定
 	//audio_->SetVolume(bgmHandle_, FadeManager::GetInstance()->GetVolume());
 
@@ -132,7 +127,7 @@ void GameScene::Update()
 		// BGMを止める
 		audio_->StopWave(bgmVoiceHadle_);
 	}
-	if (boss_->GetIsSceneChage()){
+	else if (boss_->GetIsSceneChage()){
 		// クリアフラグをtrue
 		ResultScene::isClear_ = true;
 		BaseScene * nextScene = new ResultScene();
@@ -140,6 +135,12 @@ void GameScene::Update()
 
 		// BGMを止める
 		audio_->StopWave(bgmVoiceHadle_);
+	}
+	else {
+		// 再生されていなければ再生する
+		if (!audio_->IsPlaying(bgmVoiceHadle_) || bgmVoiceHadle_ == -1) {
+			bgmVoiceHadle_ = audio_->PlayWave(bgmHandle_, false, 1.0f);
+		}
 	}
 	// デバッグ時のみ特定のキーでシーン遷移
 #ifdef _DEBUG

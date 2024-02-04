@@ -110,6 +110,15 @@ void TutrialScene::Update()
 		SceneManager::GetInstance()->SetNextScene(nextScene);
 	}
 
+	// デバッグ遷移
+	if (input_->TriggerKey(DIK_RSHIFT)) {
+		BaseScene* nextScene = new GameScene();
+		SceneManager::GetInstance()->SetNextScene(nextScene);
+
+		// BGMを止める
+		audio_->StopWave(bgmVoiceHadle_);
+	}
+
 #ifdef _DEBUG
 
 	// デバッグ遷移

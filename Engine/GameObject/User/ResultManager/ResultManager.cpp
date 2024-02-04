@@ -28,8 +28,10 @@ void ResultManager::Init()
 void ResultManager::Update()
 {
 	// 再生されていなければ再生する
-	if (!audio_->IsPlaying(bgmVoiceHadle_) || bgmVoiceHadle_ == -1) {
-		bgmVoiceHadle_ = audio_->PlayWave(bgmHandle_, false, 1.0f);
+	if (!isSceneChange_) {
+		if (!audio_->IsPlaying(bgmVoiceHadle_) || bgmVoiceHadle_ == -1) {
+			bgmVoiceHadle_ = audio_->PlayWave(bgmHandle_, false, 1.0f);
+		}
 	}
 
 	// BGM音量を設定
