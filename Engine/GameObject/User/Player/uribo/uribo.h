@@ -46,7 +46,10 @@ public://アクセッサ
 	/// </summary>
 	/// <returns>ウリボの死亡状態</returns>
 	bool GetIsDead() { return isDead_; }
-
+/// <summary>
+/// チュートリアル状態のセッター
+/// </summary>
+   void SetTutrial(bool flag) { isTutrial_ = flag; }
 private: // プライベートなメンバ関数
 
 	/// <summary>
@@ -100,6 +103,7 @@ private: // メンバ変数
 	bool isFade_ = false;
 	// 死亡状態トリガー
 	bool isDead_ = false;
-
+	//チュートリアルフラグ
+	bool isTutrial_;
 };
 
