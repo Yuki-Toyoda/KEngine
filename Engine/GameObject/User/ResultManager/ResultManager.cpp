@@ -58,19 +58,35 @@ void ResultManager::Update()
 				// リトライする
 				isRetry_ = true;
 
-				// タイトルへ戻るテキスト
-				sprites_[2]->texBase_ = { 432.0f, 0.0f };
-				// リトライテキスト
-				sprites_[3]->texBase_ = { 0.0f, 0.0f };
+				if (isCleared_) {
+					// タイトルへ戻るテキスト
+					sprites_[2]->texBase_ = { 432.0f, 0.0f };
+					// リトライテキスト
+					sprites_[3]->texBase_ = { 0.0f, 0.0f };
+				}
+				else {
+					// タイトルへ戻るテキスト
+					sprites_[2]->texBase_ = { 0.0f, 0.0f };
+					// リトライテキスト
+					sprites_[3]->texBase_ = { 432.0f, 0.0f };
+				}
 			}
 			else {
 				// リトライする
 				isRetry_ = false;
 
-				// タイトルへ戻るテキスト
-				sprites_[2]->texBase_ = { 0.0f, 0.0f };
-				// リトライテキスト
-				sprites_[3]->texBase_ = { 432.0f, 0.0f };
+				if (isCleared_) {
+					// タイトルへ戻るテキスト
+					sprites_[2]->texBase_ = { 0.0f, 0.0f };
+					// リトライテキスト
+					sprites_[3]->texBase_ = { 432.0f, 0.0f };
+				}
+				else {
+					// タイトルへ戻るテキスト
+					sprites_[2]->texBase_ = { 432.0f, 0.0f };
+					// リトライテキスト
+					sprites_[3]->texBase_ = { 0.0f, 0.0f };
+				}
 			}
 		}
 	}
