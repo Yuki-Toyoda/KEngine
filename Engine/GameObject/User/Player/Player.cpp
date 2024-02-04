@@ -283,42 +283,42 @@ void Player::DisplayImGui()
 }
 
 void Player::OnCollisionEnter(Collider* collider) {
-	//if (state_->name_ == "Root") {
-	//	// 破片に衝突した場合
-	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagRubble) {
-		//がれきにぶつかったらしてサイズを大きくする
-		absorptionCount_++;
-		if (transform_.scale_.x < maxSize) {
-			// 加算するサイズを計算
-			float addSize = absorptionCount_ * scaleForce_;
-			// 加算サイズ分y座標を加算
-			transform_.translate_.y += addSize;
-			// 大きさにサイズを加算
-			transform_.scale_ = {
-				transform_.scale_.x + addSize,
-				transform_.scale_.y + addSize,
-				transform_.scale_.z + addSize };
+	if (state_->name_ == "Root") {
+		//	// 破片に衝突した場合
+		if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagRubble) {
+			//がれきにぶつかったらしてサイズを大きくする
+			absorptionCount_++;
+			if (transform_.scale_.x < maxSize) {
+				// 加算するサイズを計算
+				float addSize = absorptionCount_ * scaleForce_;
+				// 加算サイズ分y座標を加算
+				transform_.translate_.y += addSize;
+				// 大きさにサイズを加算
+				transform_.scale_ = {
+					transform_.scale_.x + addSize,
+					transform_.scale_.y + addSize,
+					transform_.scale_.z + addSize };
 
+			}
+
+			// 食べたSEを再生する
+			audio_->PlayWave(eatSE_);
 		}
-
-		// 食べたSEを再生する
-		audio_->PlayWave(eatSE_);
-	}
 		// 降ってくる野菜に衝突した場合
-		if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagMeteor && 
+		if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagMeteor &&
 			state_->name_ != "BlowAway" && !isAtack_) {
 			// ダメージ処理を行う
 			Damage();
 		}
-	
-
-	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagPushUp) {
-		transform_.translate_ = prevPos_;
-		pushUpPos_ = collider->GetGameObject()->transform_.translate_;
-		ChangeState(std::make_unique<PushUpHitState>());
-
 	}
+	if (state_->name_ == "Root"||state_->name_=="Dash") {
+		if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagPushUp) {
+			transform_.translate_ = prevPos_;
+			pushUpPos_ = collider->GetGameObject()->transform_.translate_;
+			ChangeState(std::make_unique<PushUpHitState>());
 
+		}
+	}
 }
 
 void Player::OnCollision(Collider* collider)
