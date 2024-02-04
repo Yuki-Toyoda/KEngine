@@ -188,7 +188,10 @@ public: // アクセッサ等
 	Vector3 GetCorrectPosition() { return correctionPos_; }
 
 	Vector3 GetMoveDirect() { return moveVector_; }
-
+/// <summary>
+/// 
+/// </summary>
+	void SetIsCharge(bool flag) { isCharge_ = flag; }
 private: // プライベートなメンバ関数
 
 	/// <summary>
@@ -321,5 +324,7 @@ private: // メンバ変数
 	int subtractionAbsorptionCount_;
 	//チュートリアルかどうか
 	bool isTutrial_;
+	//攻撃チャージ
+	bool isCharge_;
 };
 
