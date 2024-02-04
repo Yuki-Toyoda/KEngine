@@ -2,6 +2,8 @@
 #include "../../BaseObject.h"
 #include "../../../Utility/KLib.h"
 #include "../../User/GameManager/GameManager.h"
+#include "../../../Particle/ParticleEmitterManager.h"
+
 class Rubble:public BaseObject
 {
 public: // メンバ関数
@@ -29,6 +31,7 @@ public://アクセッサ
 	void  SetGoal(Vector3 pos) { goalPos_ = pos; }
 	void  SetStart(Vector3 pos) { startPos_ = pos; }
 	void SetCollisionScale(Vector3 scale) { CollisionScale_ = scale; }
+	void SetUpParticle();
 private:
 	void OnCollisionEnter(Collider* collider)override;
 	
@@ -42,5 +45,15 @@ private:
 	Vector3 startPos_;
 	Vector3 goalPos_;
 	Vector3 CollisionScale_;
+
+private: // パーティクル
+	// エミッタマネージャー
+	ParticleEmitterManager* emitterManager_ = nullptr;
+
+	// 消えるときのパーティクル
+	IParticleEmitter* fadeParticleEmitter_ = nullptr;
+	// フラグで出現開始を取得
+	bool isGenerateParticle_ = false;
+
 };
 

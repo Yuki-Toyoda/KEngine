@@ -98,6 +98,7 @@ void Meteor::OnCollisionEnter(Collider* collider)
 			rubble->moveTime_ = gameManager_->rubblMoveTime_;
 			rubble->SetCollisionScale(gameManager_->rubbleCollisionScale_);
 			rubble->SetgameManager(gameManager_);
+			//rubble->SetUpParticle();
 			//もしゴール位置が枠の外ならDestroy
 			if (std::abs(pos.x + gameManager_->rubbleSize_) >= 55.0f || std::abs(pos.z + gameManager_->rubbleSize_) >= 55.0f) {
 				rubble->Destroy();

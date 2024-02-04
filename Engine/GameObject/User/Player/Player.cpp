@@ -45,6 +45,10 @@ void Player::Init()
 	variables->AddItem(name_, "correctFrame", correctEndFrame_);
 	variables->AddItem(name_, "correctValue", correctOffsetValue_);
 
+	variables->AddItem(name_, "axelTime", dashAxelTime_);
+	variables->AddItem(name_, "brakeTime", dashBrakeTime_);
+	variables->AddItem(name_, "dashPower", dashPower);
+
 	variables->AddItem(name_, "MoveAcceleration", moveAcceleration_);
 	variables->AddItem(name_, "StanTime", damageStanTime_);
 	variables->AddItem(name_, "healpower", healPower_);
@@ -113,6 +117,8 @@ void Player::Update()
 		if ((velocity_.x != 0.0f || velocity_.z != 0.0f) && !isDamaged_) {
 			// 向いている方向に角度を合わせる
 			transform_.rotate_.y = -std::atan2(velocity_.x, -velocity_.z);
+			// 方向ベクトル保存
+			moveVector_ = velocity_;
 		}
 	}
 
@@ -210,6 +216,12 @@ void Player::DisplayImGui()
 	ImGui::DragFloat("correctFrame", &correctEndFrame_, 0.01f);
 	// 修正量
 	ImGui::DragFloat("correctValue", &correctOffsetValue_, 0.01f);
+	// 無敵時間
+	ImGui::DragFloat("axelTime", &dashAxelTime_, 0.01f);
+	// 無敵時間
+	ImGui::DragFloat("brakeTime", &dashBrakeTime_, 0.01f);
+	// 無敵時間
+	ImGui::DragFloat("dashPower", &dashPower, 0.01f);
 	// 吸収数
 	ImGui::DragInt("Absorption Count", &absorptionCount_);
     // 回復力
@@ -224,6 +236,9 @@ void Player::DisplayImGui()
 
 	ImGui::DragInt( "subtractionAbsorptionCount_", &subtractionAbsorptionCount_);
 	ImGui::DragInt("AtackCount", &atackPushCount_);
+
+	ImGui::DragFloat3("MoveVect", &moveVector_.x);
+
 	// 改行する
 	ImGui::NewLine();
 
@@ -241,6 +256,10 @@ void Player::DisplayImGui()
 		variables->SetValue(name_, "hitCoolTime", hitCoolTime_);
 		variables->SetValue(name_, "correctFrame", correctEndFrame_);
 		variables->SetValue(name_, "correctValue", correctOffsetValue_);
+
+		variables->SetValue(name_, "axelTime", dashAxelTime_);
+		variables->SetValue(name_, "brakeTime", dashBrakeTime_);
+		variables->SetValue(name_, "dashPower", dashPower);
 
 		variables->SetValue(name_, "MoveAcceleration", moveAcceleration_);
 		variables->SetValue(name_, "StanTime", damageStanTime_);
@@ -293,28 +312,6 @@ void Player::OnCollisionEnter(Collider* collider) {
 	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagPushUp) {
 		transform_.translate_ = prevPos_;
 		pushUpPos_ = collider->GetGameObject()->transform_.translate_;
-		////食べた野菜の数を減らす
-		//absorptionCount_ -= subtractionAbsorptionCount_;
-		//if (absorptionCount_ < 0) {
-		//	absorptionCount_ = 0;
-		//}
-		//// 大きさリセット
-		//transform_.scale_ = { 2.0f , 2.0f , 2.0f };
-		//transform_.translate_.y = 3.0f;
-		//for (int i = 0; i < absorptionCount_; i++) {
-		//	if (transform_.scale_.x > maxSize) {
-		//		break;
-		//	}
-		//	// 加算するサイズを計算
-		//	float addSize = i * scaleForce_;
-		//	// 加算サイズ分y座標を加算
-		//	transform_.translate_.y += addSize;
-		//	// 大きさにサイズを加算
-		//	transform_.scale_ = {
-		//		transform_.scale_.x + addSize,
-		//		transform_.scale_.y + addSize,
-		//		transform_.scale_.z + addSize };
-		//}
 		ChangeState(std::make_unique<PushUpHitState>());
 
 	}
@@ -462,6 +459,14 @@ void Player::SetGlobalVariables()
 	correctEndFrame_ = variables->GetFloatValue(name_, "correctFrame");
 	// 修正量
 	correctOffsetValue_ = variables->GetFloatValue(name_, "correctValue");
+
+	// 加速の時間
+	dashAxelTime_ = variables->GetFloatValue(name_, "axelTime");
+	// 減速の時間
+	dashBrakeTime_ = variables->GetFloatValue(name_, "brakeTime");
+	// ダッシュの量
+	dashPower = variables->GetFloatValue(name_, "dashPower");
+
 	// ダメージ受けた際の硬直時間
 	damageStanTime_ = variables->GetFloatValue(name_, "StanTime");
 	// 回復力

@@ -8,3 +8,5 @@
 #include "User/ChargeParticleEmitter.h"
 #include "User/ChargeFinishParticle.h"
 #include "User/ChargeFinishParticleEmitter.h"
+#include "User/RubbleFadeParticle.h"
+#include "User/RubbleFadeParticleEmitter.h"

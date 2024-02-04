@@ -2,7 +2,7 @@
     "PushUpAttack3": {
         "Parameter": {
             "MaxCount": 3,
-            "RemainTime": 16.799999237060547,
+            "RemainTime": 12.0,
             "Scale": [
                 5.0,
                 1.0,
