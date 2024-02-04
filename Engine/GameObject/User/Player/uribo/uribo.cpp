@@ -62,7 +62,7 @@ void Uribo::Init()
 	anim_->isLoop_ = true;
 	// アニメーション再生
 	anim_->Play();
-
+	isTutrial_ = false;
 }
 
 void Uribo::Update()
@@ -73,29 +73,31 @@ void Uribo::Update()
 	}
 	// HPが0以下になったら死亡アニメーション再生
 	if (hitPoint_ <= 0) {
-		// アニメーションの読み込みパラメータ名が同一でない場合
-		if (anim_->GetReadingParameterName() != "Uribo_Dead") {
-			// アニメーションのループを切る
-			anim_->isLoop_ = false;
-			// アニメーション状態を変更する
-			anim_->ChangeParameter("Uribo_Dead", true);
-		}
-		else {
-			// アニメーション終了時
-			if (anim_->isEnd_) {
-				// 死亡トリガーTrue
-				isDead_ = true;
+		if (!isTutrial_) {
+			// アニメーションの読み込みパラメータ名が同一でない場合
+			if (anim_->GetReadingParameterName() != "Uribo_Dead") {
+				// アニメーションのループを切る
+				anim_->isLoop_ = false;
+				// アニメーション状態を変更する
+				anim_->ChangeParameter("Uribo_Dead", true);
 			}
+			else {
+				// アニメーション終了時
+				if (anim_->isEnd_) {
+					// 死亡トリガーTrue
+					isDead_ = true;
+				}
 
-			// アニメーション進捗が一定値を超えたらフェードアウト開始
-			if (anim_->GetAnimationProgress() >= 0.8f) {
-				if (!isFade_) {
-					// フェードアウト
-					FadeManager::GetInstance()->ChangeParameter("FadeOut", true);
-					FadeManager::GetInstance()->Play();
+				// アニメーション進捗が一定値を超えたらフェードアウト開始
+				if (anim_->GetAnimationProgress() >= 0.8f) {
+					if (!isFade_) {
+						// フェードアウト
+						FadeManager::GetInstance()->ChangeParameter("FadeOut", true);
+						FadeManager::GetInstance()->Play();
 
-					// フェード演出を行っていたらtrue
-					isFade_ = true;
+						// フェード演出を行っていたらtrue
+						isFade_ = true;
+					}
 				}
 			}
 		}
