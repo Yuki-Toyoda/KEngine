@@ -38,6 +38,7 @@ void SceneManager::Update()
 	// 現在のシーンから次のシーンへ遷移するよう指示されたら
 	if (nextScene_ != nullptr) {
 		GameObjectManager::GetInstance()->Init();
+		ParticleEmitterManager::GetInstance()->Init();
 		AnimationManager::GetInstance()->Init();
 		// 現在のシーンがあるなら
 		if (currentScene_) {
