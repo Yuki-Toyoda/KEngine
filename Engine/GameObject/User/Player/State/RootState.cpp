@@ -58,7 +58,6 @@ void RootState::Update()
 		velocity_ = { 0.0f,0.0f,0.0f };
 		//移動ベクトルをプレイヤーに渡す
 		player_->SetVelocity(velocity_);
-		
 	}
 	else {
 		// チャージパーティクルをとめる
@@ -98,6 +97,13 @@ void RootState::Move()
 	else {
 		// 無操作状態の場合は現在速度を0に近づけていく
 		velocity_ = KLib::Lerp<Vector3>(velocity_, Vector3(0.0f, 0.0f, 0.0f), player_->GetDecayAcceleration());
+	}
+
+	if (velocity_.x == 0.0f && velocity_.y == 0.0f && velocity_.z == 0.0f) {
+		player_->moveParticleEmitter_->SetIsPlay(false);
+	}
+	else {
+		player_->moveParticleEmitter_->SetIsPlay(true);
 	}
 
 	// 各軸の速度ベクトルが最大加速度を超過していた場合

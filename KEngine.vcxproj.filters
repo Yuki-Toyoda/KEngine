@@ -122,6 +122,8 @@
     <ClCompile Include="Engine\Particle\User\RubbleFadeParticle.cpp" />
     <ClCompile Include="Engine\Particle\User\RubbleFadeParticleEmitter.cpp" />
     <ClCompile Include="Engine\GameObject\User\FeedVegetable\FeedVegetable.cpp" />
+    <ClCompile Include="Engine\Particle\User\MoveParticle.cpp" />
+    <ClCompile Include="Engine\Particle\User\MoveParticleEmitter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\GameObject\User\Enemy\State\MultiAtackState.h" />
@@ -262,6 +264,8 @@
     <ClInclude Include="Engine\Particle\User\RubbleFadeParticle.h" />
     <ClInclude Include="Engine\Particle\User\RubbleFadeParticleEmitter.h" />
     <ClInclude Include="Engine\GameObject\User\FeedVegetable\FeedVegetable.h" />
+    <ClInclude Include="Engine\Particle\User\MoveParticle.h" />
+    <ClInclude Include="Engine\Particle\User\MoveParticleEmitter.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Object3D.hlsli" />

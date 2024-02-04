@@ -10,3 +10,5 @@
 #include "User/ChargeFinishParticleEmitter.h"
 #include "User/RubbleFadeParticle.h"
 #include "User/RubbleFadeParticleEmitter.h"
+#include "User/MoveParticle.h"
+#include "User/MoveParticleEmitter.h"

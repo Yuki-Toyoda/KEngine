@@ -2,6 +2,8 @@
 #include "../../../BaseObject.h"
 #include "../../Rubble/Rubble.h"
 #include "../../GameManager/GameManager.h"
+#include "../../../../Particle/ParticleEmitterManager.h"
+
 class Meteor:public BaseObject
 {
 public: // メンバ関数
@@ -62,6 +64,9 @@ private: // メンバ変数
 	
 	// 落下トリガー
 	bool isFall_ = false;
+
+	// パーティクルエミッタマネージャ
+	ParticleEmitterManager* pem_ = nullptr;
 
 };
 
