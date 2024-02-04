@@ -8,7 +8,6 @@ void TestObject::Init()
 	// メッシュ追加関数
 	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Sphere", "Sphere.obj");
 	meshes_[0]->texture_ = TextureManager::Load("uvChecker.png");
-	meshes_[0]->material_.enablePhongReflection_ = true;
 
 	/// ~スプライトの追加関数~
 	//AddSprite("TestSprite", { 0.0f, 0.0f }, { 512.0f, 512.0f }, TextureManager::Load("./Engine/Resource/Samples/Box", "uvChecker.png"));
@@ -47,29 +46,14 @@ void TestObject::Update()
 
 void TestObject::DisplayImGui()
 {
-	//line_->DisplayParameterImGui();
-
-	// 基底クラスのImGuiを表示する
-	//BaseObject::DisplayParameterImGui();
-
 	// 表示状態の切り替え
 	ImGui::Checkbox("isActive", &isActive_);
 
+	// 位置座標のImGuiを表示
 	transform_.DisplayImGui();
 
-	animation_->DisplayImGui();
-
+	// メッシュのImGuiを表示
 	meshes_[0]->DisplayImGui();
-
-	// 読み込むパラメータを変更
-	if (ImGui::Button("ChangeParam")) {
-		if (animation_->parameterName_ == "Test") {
-			animation_->ChangeParameter("Test2", true);
-		}
-		else {
-			animation_->ChangeParameter("Test");
-		}
-	}
 }
 
 void TestObject::OnCollisionEnter(Collider* collider)

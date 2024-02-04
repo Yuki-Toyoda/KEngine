@@ -57,6 +57,8 @@ void BasePrimitive::DisplayImGui()
 			ImGui::TreePop();
 		}
 		
+		// 反射のImGuiを表示
+		ImGui::Text("ReflectionMenu");
 		// 光沢度
 		ImGui::DragFloat("Shininess", &material_.shininess_, 0.01f, 0.01f, 100.0f);
 
