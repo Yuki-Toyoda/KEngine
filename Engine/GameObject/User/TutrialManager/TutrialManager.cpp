@@ -13,6 +13,10 @@ void TutrialManager::Init()
 	sprites_[3]->anchorPoint_ = { 0.5f,0.5f };
 	AddSprite("kaihuku", {648.0f,128.0f}, {768.0f,64.0f}, TextureManager::Load("./Resources/UI/Tutorial", "Tutorial_05.png"));
 	sprites_[4]->anchorPoint_ = { 0.5f,0.5f };
+	AddSprite("owari", uiPosition_, { 768.0f,64.0f }, TextureManager::Load("./Resources/UI/Tutorial", "Tutorial_08.png"));
+	sprites_[5]->anchorPoint_ = { 0.5f,0.5f };
+	AddSprite(" plactice", { 648.0f,128.0f }, { 768.0f,64.0f }, TextureManager::Load("./Resources/UI/Tutorial", "Tutorial_09.png"));
+	sprites_[6]->anchorPoint_ = { 0.5f,0.5f };
 	step = yokero;
 	skipCount_ = 0;
 	isEnd_ = false;
@@ -75,7 +79,8 @@ void TutrialManager::Update()
 		}
 		break;
 	case end:
-
+		sprites_[5]->SetIsActive(true);
+		sprites_[6]->SetIsActive(true);
 		break;
 	default:
 		break;
