@@ -75,11 +75,10 @@ void Player::Init()
 	chargeFinishParticleEmitter_->SetIsPlay(false);
 
 	// 移動時のパーティクルエフェクト
-	moveParticleEmitter_ = pem_->CreateEmitter<MoveParticleEmitter, MoveParticle>("Move", 60, 1, { 0.0f, 0.0f, 0.0f }, 10.0f, 0.075f, TextureManager::Load("uvChecker.png"));
+	moveParticleEmitter_ = pem_->CreateEmitter<MoveParticleEmitter, MoveParticle>("Move", 60, 1, { 0.0f, 0.0f, 0.0f }, 10.0f, 0.075f, TextureManager::Load("moveParticle.png"));
 	moveParticleEmitter_->transform_.SetParent(&transform_);
 	moveParticleEmitter_->SetIsLoop(true);
-	moveParticleEmitter_->SetIsPlay(false);
-
+	moveParticleEmitter_->SetIsPlay(true);
 }
 
 void Player::Update()
@@ -389,7 +388,7 @@ void Player::Damage()
 				transform_.scale_.z + addSize };
 		}
 
-
+		moveParticleEmitter_->SetIsPlay(false);
 		// ヒットクールタイマーリセット
 		hitCollTimer_.Start(hitCoolTime_);
 		ChangeState(std::make_unique<RootState>());

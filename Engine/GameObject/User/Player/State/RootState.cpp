@@ -100,7 +100,7 @@ void RootState::Move()
 		velocity_ = KLib::Lerp<Vector3>(velocity_, Vector3(0.0f, 0.0f, 0.0f), player_->GetDecayAcceleration());
 	}
 
-	if (velocity_.x == 0.0f && velocity_.y == 0.0f && velocity_.z == 0.0f) {
+	if (player_->GetIsDamaged()) {
 		player_->moveParticleEmitter_->SetIsPlay(false);
 	}
 	else {

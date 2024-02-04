@@ -22,8 +22,8 @@ void MoveParticleEmitter::GenerateParticle()
 		generatePosition += transform_.GetWorldPos();
 
 		// 生成粒子の色
-		Vector4 generateColor = { Math::RandomF(0.35f, 1.0f, 2), Math::RandomF(0.35f, 1.0f, 2), Math::RandomF(0.35f, 1.0f, 2), 1.0f };
-
+		//Vector4 generateColor = { Math::RandomF(0.5f, 1.0f, 2), Math::RandomF(0.5f, 1.0f, 2), Math::RandomF(0.0f, 0.5f, 2), 1.0f };
+		Vector4 generateColor = { 1.0f,1.0f,1.0f,1.0f };
 		// 新しい粒子を生成
 		std::unique_ptr<IParticle>newParticle = type_();
 		newParticle->PreInit(2.0f, generatePosition, generateScale, {}, texture_, generateColor);

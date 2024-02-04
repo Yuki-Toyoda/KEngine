@@ -2,6 +2,10 @@
 
 void MoveParticle::Init()
 {
+	Vector3 randomRotate
+		= { Math::RandomF(0,0.5f,3),Math::RandomF(0,0.5f,3) ,0 };
+
+	transform_.rotate_ = randomRotate;
 }
 
 void MoveParticle::Update()
