@@ -45,6 +45,7 @@ void Boss::SuccessorInit()
 	variables->AddItem(name_, "PushUpReadyTime", pushUpReadyTime_);
 	variables->AddItem(name_, "RollerAttackReadyTime", rollerAttackReadyTime_);
 	ApplyGlobalVariables();
+	isTutrial_ = false;
 }
 
 void Boss::SuccessorUpdate()
