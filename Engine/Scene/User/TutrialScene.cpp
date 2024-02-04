@@ -12,7 +12,7 @@ void TutrialScene::Init()
 	audio_ = Audio::GetInstance();
 
 	// BGMロード
-	bgmHandle_ = audio_->LoadWave("./Resources/Audio/BGM/inGame.wav");
+	//bgmHandle_ = audio_->LoadWave("./Resources/Audio/BGM/inGame.wav");
 
 	gameManager = gameObjectManager_->CreateInstance<GameManager>("gameManager", BaseObject::TagNone);
 	camera_ = nullptr;
@@ -109,4 +109,24 @@ void TutrialScene::Update()
 		BaseScene* nextScene = new GameScene();
 		SceneManager::GetInstance()->SetNextScene(nextScene);
 	}
+
+	// デバッグ遷移
+	/*if (input_->TriggerKey(DIK_RSHIFT)) {
+		BaseScene* nextScene = new GameScene();
+		SceneManager::GetInstance()->SetNextScene(nextScene);
+	}*/
+
+#ifdef _DEBUG
+
+	// デバッグ遷移
+	if (input_->TriggerKey(DIK_RSHIFT)) {
+		BaseScene* nextScene = new GameScene();
+		SceneManager::GetInstance()->SetNextScene(nextScene);
+
+		// BGMを止める
+		audio_->StopWave(bgmVoiceHadle_);
+	}
+
+#endif // _DEBUG
+
 }

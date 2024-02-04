@@ -11,6 +11,7 @@ void TitleManager::Init()
 
 	// BGMロード
 	bgmHandle_ = audio_->LoadWave("./Resources/Audio/BGM/title.wav");
+	bgmVoiceHadle_ = audio_->PlayWave(bgmHandle_, true, 1.0f);
 
 	/// 効果音ロード
 	// 決定音
@@ -67,14 +68,16 @@ void TitleManager::Init()
 	CreateParameter("Title_Idle");
 	// ゲーム開始アニメーション
 	CreateParameter("Title_GameStart");
-
 }
 
 void TitleManager::Update()
 {
 	// 再生されていなければ再生する
-	if (!audio_->IsPlaying(bgmVoiceHadle_) || bgmVoiceHadle_ == -1) {
-		bgmVoiceHadle_ = audio_->PlayWave(bgmHandle_, false, 1.0f);
+	// 再生されていなければ再生する
+	if (!isSceneChange_) {
+		if (!audio_->IsPlaying(bgmVoiceHadle_) || bgmVoiceHadle_ == -1) {
+			
+		}
 	}
 
 	// BGM音量を設定
@@ -144,7 +147,6 @@ void TitleManager::Update()
 
 			// bgm停止
 			audio_->StopWave(bgmVoiceHadle_);
-			
 		}
 	}
 }

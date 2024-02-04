@@ -51,25 +51,13 @@ void ResultScene::Update()
 	// リザルトマネージャの状態で遷移
 	if (rm_->GetIsSceneChange()) {
 		if (rm_->GetIsRetry()) {
-			if (isClear_) {
-				BaseScene* nextScene = new GameScene();
-				SceneManager::GetInstance()->SetNextScene(nextScene);
-			}
-			else {
-				BaseScene* nextScene = new TitleScene();
-				SceneManager::GetInstance()->SetNextScene(nextScene);
-			}
+			BaseScene* nextScene = new GameScene();
+			SceneManager::GetInstance()->SetNextScene(nextScene);
 			
 		}
 		else {
-			if (isClear_) {
-				BaseScene* nextScene = new TitleScene();
-				SceneManager::GetInstance()->SetNextScene(nextScene);
-			}
-			else {
-				BaseScene* nextScene = new GameScene();
-				SceneManager::GetInstance()->SetNextScene(nextScene);
-			}
+			BaseScene* nextScene = new TitleScene();
+			SceneManager::GetInstance()->SetNextScene(nextScene);
 		}
 	}
 

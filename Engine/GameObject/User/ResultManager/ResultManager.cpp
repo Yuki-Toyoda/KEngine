@@ -28,8 +28,10 @@ void ResultManager::Init()
 void ResultManager::Update()
 {
 	// 再生されていなければ再生する
-	if (!audio_->IsPlaying(bgmVoiceHadle_) || bgmVoiceHadle_ == -1) {
-		bgmVoiceHadle_ = audio_->PlayWave(bgmHandle_, false, 1.0f);
+	if (!isSceneChange_) {
+		/*if (!audio_->IsPlaying(bgmVoiceHadle_) || bgmVoiceHadle_ == -1) {
+			bgmVoiceHadle_ = audio_->PlayWave(bgmHandle_, false, 1.0f);
+		}*/
 	}
 
 	// BGM音量を設定
@@ -58,19 +60,35 @@ void ResultManager::Update()
 				// リトライする
 				isRetry_ = true;
 
-				// タイトルへ戻るテキスト
-				sprites_[2]->texBase_ = { 432.0f, 0.0f };
-				// リトライテキスト
-				sprites_[3]->texBase_ = { 0.0f, 0.0f };
+				if (isCleared_) {
+					// タイトルへ戻るテキスト
+					sprites_[2]->texBase_ = { 432.0f, 0.0f };
+					// リトライテキスト
+					sprites_[3]->texBase_ = { 0.0f, 0.0f };
+				}
+				else {
+					// タイトルへ戻るテキスト
+					sprites_[2]->texBase_ = { 0.0f, 0.0f };
+					// リトライテキスト
+					sprites_[3]->texBase_ = { 432.0f, 0.0f };
+				}
 			}
 			else {
 				// リトライする
 				isRetry_ = false;
 
-				// タイトルへ戻るテキスト
-				sprites_[2]->texBase_ = { 0.0f, 0.0f };
-				// リトライテキスト
-				sprites_[3]->texBase_ = { 432.0f, 0.0f };
+				if (isCleared_) {
+					// タイトルへ戻るテキスト
+					sprites_[2]->texBase_ = { 0.0f, 0.0f };
+					// リトライテキスト
+					sprites_[3]->texBase_ = { 432.0f, 0.0f };
+				}
+				else {
+					// タイトルへ戻るテキスト
+					sprites_[2]->texBase_ = { 432.0f, 0.0f };
+					// リトライテキスト
+					sprites_[3]->texBase_ = { 0.0f, 0.0f };
+				}
 			}
 		}
 	}
@@ -155,6 +173,7 @@ void ResultManager::PostInit(bool isClear)
 
 		// BGMロード
 		bgmHandle_ = audio_->LoadWave("./Resources/Audio/BGM/clear.wav");
+		bgmVoiceHadle_ = audio_->PlayWave(bgmHandle_, true, 1.0f);
 
 		/// 各種トランスフォームの初期化
 		// 野菜の山用
@@ -188,6 +207,7 @@ void ResultManager::PostInit(bool isClear)
 
 		// BGMロード
 		bgmHandle_ = audio_->LoadWave("./Resources/Audio/BGM/gameOver.wav");
+		bgmVoiceHadle_ = audio_->PlayWave(bgmHandle_, true, 1.0f);
 
 		/// スプライト追加
 		// 失敗テキスト
