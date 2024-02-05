@@ -7,6 +7,12 @@ void SampleScene::Init()
 	// オブジェクトの生成
 	gameObjectManager_->CreateInstance<Camera>("Camera", BaseObject::TagCamera);
 
+	// スカイドームの生成
+	gameObjectManager_->CreateInstance<SkyDome>("SkyDome", BaseObject::TagNone);
+
+	// 該当シーンのマネージャーを生成
+	gameObjectManager_->CreateInstance<ObjectSceneManager>("ObjectSceneManager", BaseObject::TagNone);
+
 	// テストオブジェクトの生成
 	TestObject* test = gameObjectManager_->CreateInstance<TestObject>("Test", BaseObject::TagPlayer);
 	test->transform_.translate_.x = -1.5f;

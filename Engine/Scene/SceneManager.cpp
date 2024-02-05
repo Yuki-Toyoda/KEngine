@@ -1,6 +1,7 @@
 #include "SceneManager.h"
 #include "SceneList.h"
 #include "../GameObject/GameObjectManager.h"
+#include "../Particle/ParticleEmitterManager.h"
 
 SceneManager* SceneManager::GetInstance()
 {
@@ -30,6 +31,7 @@ void SceneManager::Update()
 	// 現在のシーンから次のシーンへ遷移するよう指示されたら
 	if (nextScene_ != nullptr) {
 		GameObjectManager::GetInstance()->Init();
+		ParticleEmitterManager::GetInstance()->Init();
 		// 現在のシーンがあるなら
 		if (currentScene_) {
 			// 現在のシーンを削除

@@ -14,7 +14,7 @@ float4 main(VertexShaderOutput input) : SV_TARGET
     float4 textureColor = gTexture[t].Sample(gSampler, transformUV.xy);
     
     // テクスチャの透明度が0.5以下ならピクセルを棄却
-    if (textureColor.a <= 0.5f)
+    if (textureColor.a <= 0.1f)
         discard;
     
     if (gMaterial[m].enableLighting != 0)
