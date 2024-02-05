@@ -168,6 +168,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Engine\Scene\SceneFactory.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Rifle\Rifle.cpp" />
     <ClCompile Include="Engine\GameObject\User\ObjectSceneManager\ObjectSceneManager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -262,6 +263,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Engine\KEngine.h" />
     <ClInclude Include="Engine\Scene\SceneFactory.h" />
+    <ClInclude Include="Engine\GameObject\User\Rifle\Rifle.h" />
     <ClInclude Include="Engine\GameObject\User\ObjectSceneManager\ObjectSceneManager.h" />
   </ItemGroup>
   <ItemGroup>

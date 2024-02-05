@@ -224,9 +224,10 @@
     <ClCompile Include="Engine\Scene\SceneFactory.cpp">
       <Filter>App\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\GameObject\User\ObjectSceneManager\ObjectSceneManager.cpp">
-      <Filter>App\GameObject\User\ObjectSceneManager</Filter>
+    <ClCompile Include="Engine\GameObject\User\Rifle\Rifle.cpp">
+      <Filter>App\GameObject\User\Rifle</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\GameObject\User\ObjectSceneManager\ObjectSceneManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -487,9 +488,10 @@
     <ClInclude Include="Engine\Scene\SceneFactory.h">
       <Filter>App\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\GameObject\User\ObjectSceneManager\ObjectSceneManager.h">
-      <Filter>App\GameObject\User\ObjectSceneManager</Filter>
+    <ClInclude Include="Engine\GameObject\User\Rifle\Rifle.h">
+      <Filter>App\GameObject\User\Rifle</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\GameObject\User\ObjectSceneManager\ObjectSceneManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -641,8 +643,8 @@
     <Filter Include="App\Sprite">
       <UniqueIdentifier>{89930de6-5713-4b33-a25e-c80afe7ab47c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="App\GameObject\User\ObjectSceneManager">
-      <UniqueIdentifier>{9c7be569-455c-40c7-a362-99cda64fd96a}</UniqueIdentifier>
+    <Filter Include="App\GameObject\User\Rifle">
+      <UniqueIdentifier>{3c9cef33-dfc3-42e7-acbe-4c95fc742800}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

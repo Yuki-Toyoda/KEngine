@@ -1,0 +1,71 @@
+{
+    "Idle": {
+        "Base_Rotate : KeyCount": 2,
+        "Base_Rotate key : 0": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Base_Rotate key : 0 : EasingParameter": 0,
+        "Base_Rotate key : 0 : PlayFrame": 0,
+        "Base_Rotate key : 1": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Base_Rotate key : 1 : EasingParameter": 0,
+        "Base_Rotate key : 1 : PlayFrame": 60,
+        "Base_Translate : KeyCount": 2,
+        "Base_Translate key : 0": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Base_Translate key : 0 : EasingParameter": 0,
+        "Base_Translate key : 0 : PlayFrame": 0,
+        "Base_Translate key : 1": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Base_Translate key : 1 : EasingParameter": 0,
+        "Base_Translate key : 1 : PlayFrame": 60,
+        "Bullet_Rotate : KeyCount": 2,
+        "Bullet_Rotate key : 0": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Bullet_Rotate key : 0 : EasingParameter": 0,
+        "Bullet_Rotate key : 0 : PlayFrame": 0,
+        "Bullet_Rotate key : 1": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Bullet_Rotate key : 1 : EasingParameter": 0,
+        "Bullet_Rotate key : 1 : PlayFrame": 60,
+        "Bullet_Translate : KeyCount": 2,
+        "Bullet_Translate key : 0": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Bullet_Translate key : 0 : EasingParameter": 0,
+        "Bullet_Translate key : 0 : PlayFrame": 0,
+        "Bullet_Translate key : 1": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Bullet_Translate key : 1 : EasingParameter": 0,
+        "Bullet_Translate key : 1 : PlayFrame": 60,
+        "Forend_Push : KeyCount": 2,
+        "Forend_Push key : 0": 0.0,
+        "Forend_Push key : 0 : EasingParameter": 0,
+        "Forend_Push key : 0 : PlayFrame": 0,
+        "Forend_Push key : 1": 0.0,
+        "Forend_Push key : 1 : EasingParameter": 0,
+        "Forend_Push key : 1 : PlayFrame": 60
+    }
+}

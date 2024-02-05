@@ -6,6 +6,8 @@
 /// </summary>
 class ObjectSceneManager : public BaseObject
 {
+public: // メンバ関数
+
 	/// <summary>
 	/// 初期化関数
 	/// </summary>
@@ -20,5 +22,6 @@ class ObjectSceneManager : public BaseObject
 	/// ImGuiを表示させる関数
 	/// </summary>
 	void DisplayImGui() override;
+
 };
 

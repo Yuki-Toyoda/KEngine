@@ -3,12 +3,13 @@
 
 void ObjectSceneManager::Init()
 {
-	AddSprite("UI", { 760.0f, 225.0f }, { 512.0f, 512.0f }, TextureManager::Load("SceneTex1.png"));
+	// スプライト追加
+	AddSprite("UI", { 760.0f, 200.0f }, { 512.0f, 512.0f }, TextureManager::Load("SceneTex1.png"));
 }
 
 void ObjectSceneManager::Update()
 {
-	
+
 }
 
 void ObjectSceneManager::DisplayImGui()

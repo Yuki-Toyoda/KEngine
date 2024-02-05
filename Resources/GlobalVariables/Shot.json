@@ -1,0 +1,85 @@
+{
+    "Shot": {
+        "Base_Rotate : KeyCount": 3,
+        "Base_Rotate key : 0": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Base_Rotate key : 0 : EasingParameter": 0,
+        "Base_Rotate key : 0 : PlayFrame": 0,
+        "Base_Rotate key : 1": [
+            -0.25,
+            0.0,
+            0.0
+        ],
+        "Base_Rotate key : 1 : EasingParameter": 7,
+        "Base_Rotate key : 1 : PlayFrame": 15,
+        "Base_Rotate key : 2": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Base_Rotate key : 2 : EasingParameter": 9,
+        "Base_Rotate key : 2 : PlayFrame": 35,
+        "Base_Translate : KeyCount": 3,
+        "Base_Translate key : 0": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Base_Translate key : 0 : EasingParameter": 0,
+        "Base_Translate key : 0 : PlayFrame": 0,
+        "Base_Translate key : 1": [
+            0.0,
+            0.0,
+            -0.44999998807907104
+        ],
+        "Base_Translate key : 1 : EasingParameter": 7,
+        "Base_Translate key : 1 : PlayFrame": 10,
+        "Base_Translate key : 2": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Base_Translate key : 2 : EasingParameter": 8,
+        "Base_Translate key : 2 : PlayFrame": 45,
+        "Bullet_Rotate : KeyCount": 2,
+        "Bullet_Rotate key : 0": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Bullet_Rotate key : 0 : EasingParameter": 0,
+        "Bullet_Rotate key : 0 : PlayFrame": 0,
+        "Bullet_Rotate key : 1": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Bullet_Rotate key : 1 : EasingParameter": 0,
+        "Bullet_Rotate key : 1 : PlayFrame": 60,
+        "Bullet_Translate : KeyCount": 2,
+        "Bullet_Translate key : 0": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Bullet_Translate key : 0 : EasingParameter": 0,
+        "Bullet_Translate key : 0 : PlayFrame": 0,
+        "Bullet_Translate key : 1": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Bullet_Translate key : 1 : EasingParameter": 0,
+        "Bullet_Translate key : 1 : PlayFrame": 60,
+        "Forend_Push : KeyCount": 2,
+        "Forend_Push key : 0": 0.0,
+        "Forend_Push key : 0 : EasingParameter": 0,
+        "Forend_Push key : 0 : PlayFrame": 0,
+        "Forend_Push key : 1": 0.0,
+        "Forend_Push key : 1 : EasingParameter": 0,
+        "Forend_Push key : 1 : PlayFrame": 60
+    }
+}
