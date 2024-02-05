@@ -36,10 +36,15 @@ public://アクセッサ
 	int GetDefaultHP() { return defaultHP_; }
 
 	/// <summary>
-	/// ボスの死亡状態トリガーゲッター
+	/// ボスの死亡状態トリガーセッター
 	/// </summary>
 	/// <param name="isBossDead">true or false</param>
 	void SetIsBossDead(const bool& isBossDead) { isBossDead_ = isBossDead; }
+	/// <summary>
+	/// ボスの死亡状態トリガーゲッター
+	/// </summary>
+	/// <returns>死亡しているか</returns>
+	bool GetIsBossDead() { return isBossDead_; }
 
 	/// <summary>
 	/// ウリボの死亡状態ゲッター

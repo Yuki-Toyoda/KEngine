@@ -69,6 +69,12 @@ void InGameUIManager::Init()
 
 void InGameUIManager::Update()
 {
+	// ボスが死亡しているなら
+	if (uribo_->GetIsBossDead()) {
+		// 全てのUIを隠す
+		HideAllUI();
+	}
+
 	// 入力取得
 	preJoyState_ = joyState_; // 前フレームの入力取得
 	input_->GetJoystickState(0, joyState_); // 現在フレームの入力取得
@@ -207,5 +213,13 @@ void InGameUIManager::DisplayImGui()
 			s->DisplayImGui();
 		}
 		ImGui::EndChild();
+	}
+}
+
+void InGameUIManager::HideAllUI()
+{
+	// 全てのスプライトを非表示にする
+	for (Sprite* s : sprites_) {
+		s->SetIsActive(false);
 	}
 }

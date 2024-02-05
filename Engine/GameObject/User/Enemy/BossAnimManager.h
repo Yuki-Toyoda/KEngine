@@ -24,6 +24,11 @@ public: // メンバ関数
 	void Update() override;
 
 	/// <summary>
+	/// カメラの更新関数
+	/// </summary>
+	void CameraUpdate();
+
+	/// <summary>
 	/// ImGui表示関数
 	/// </summary>
 	void DisplayImGui() override;
@@ -146,6 +151,9 @@ private: // メンバ変数
 
 	// 倒れる演出用カメラ
 	Camera* stagingCamera_ = nullptr;
+
+	// カメラオフセット
+	Vector3 cameraOffset_ = { 0.0f, 0.0f, 0.0f };
 
 };
 

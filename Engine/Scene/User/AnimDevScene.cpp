@@ -23,12 +23,8 @@ void AnimDevScene::Init()
 	// プレイヤーアニメーションマネージャの生成
 	BossAnimManager* eam_ = gameObjectManager_->CreateInstance<BossAnimManager>("bossAnim", BaseObject::TagEnemy);
 	
-	eam_->transform_.translate_.x = 3.0f;
 	// アニメーション生成
 	eam_->CreateAnimation();
-
-	// ウリボの生成
-	gameObjectManager_->CreateInstance<Uribo>("Uribo", BaseObject::TagEnemy);
 
 }
 

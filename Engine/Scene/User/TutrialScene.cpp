@@ -44,6 +44,7 @@ void TutrialScene::Init()
 	//GameManagerをセット
 	boss_->SetgameManager(gameManager);
 	
+	// ウリボの生成
 	uribo_ = gameObjectManager_->CreateInstance<Uribo>("uribo", BaseObject::TagUribo);
 	uribo_->SetTutrial(true);
 	player_->SetUribo(uribo_);
