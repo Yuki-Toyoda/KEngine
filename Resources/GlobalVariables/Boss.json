@@ -4,6 +4,11 @@
         "HitPoint": 100.0,
         "PushUpReadyTime": 0.25,
         "RollerAttackReadyTime": 0.25,
+        "ShakeStrength": [
+            5.0,
+            5.0
+        ],
+        "ShakeTime": 0.5,
         "waitPushUp": 1.2999999523162842,
         "waitRoller": 1.5,
         "waitSingle": 1.5,

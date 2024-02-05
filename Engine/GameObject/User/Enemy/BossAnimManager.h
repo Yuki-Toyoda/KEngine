@@ -4,6 +4,7 @@
 
 // クラスの前方宣言
 class Boss;
+class Camera;
 
 /// <summary>
 /// ボスのアニメーションマネージャー
@@ -142,6 +143,9 @@ private: // メンバ変数
 
 	// ローラー攻撃待機時間
 	float rollerAttackReadyTime_ = 0.5f;
+
+	// 倒れる演出用カメラ
+	Camera* stagingCamera_ = nullptr;
 
 };
 

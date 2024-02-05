@@ -1,5 +1,6 @@
 #include "BossAnimManager.h"
 #include "Boss.h"
+#include "../../Core/Camera.h"
 
 void BossAnimManager::Init()
 {
@@ -82,6 +83,9 @@ void BossAnimManager::Init()
 	CreateParameter("Boss_StartRollerAttack");
 	CreateParameter("Boss_RollerAttacking");
 	CreateParameter("Boss_EndRollerAttack");
+
+	// 演出用カメラの生成
+	stagingCamera_ = GameObjectManager::GetInstance()->CreateInstance<Camera>("stagingCamera", BaseObject::TagCamera);
 
 }
 
@@ -316,6 +320,8 @@ void BossAnimManager::CreateParameter(const std::string& name)
 	animManager_->AddSelectAnimationKeys<Vector3>(name, "Foot_L_Translate");
 	animManager_->AddSelectAnimationKeys<Vector3>(name, "Foot_R_Rotate");
 	animManager_->AddSelectAnimationKeys<Vector3>(name, "Foot_R_Translate");
+	animManager_->AddSelectAnimationKeys<Vector3>(name, "Camera_Rotate");
+	animManager_->AddSelectAnimationKeys<Vector3>(name, "Camera_Translate");
 }
 
 void BossAnimManager::CreateAnimation()
@@ -334,6 +340,8 @@ void BossAnimManager::CreateAnimation()
 	anim_->AddAnimationKeys<Vector3>("Foot_L_Translate", &footTransform_L_.translate_);
 	anim_->AddAnimationKeys<Vector3>("Foot_R_Rotate", &footTransform_R_.rotate_);
 	anim_->AddAnimationKeys<Vector3>("Foot_R_Translate", &footTransform_R_.translate_);
+	anim_->AddAnimationKeys<Vector3>("Camera_Rotate", &stagingCamera_->transform_.rotate_);
+	anim_->AddAnimationKeys<Vector3>("Camera_Translate", &stagingCamera_->transform_.translate_);
 
 	// アニメーションループtrue
 	anim_->isLoop_ = true;

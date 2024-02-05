@@ -4,6 +4,7 @@
 
 // クラスの前方宣言
 class ParticleEmitterManager;
+class InGameCamera;
 
 /// <summary>
 /// ボスのクラス
@@ -49,6 +50,12 @@ public: // メンバ関数
 public: // アクセッサ等
 
 	/// <summary>
+	/// インゲームカメラのセッター
+	/// </summary>
+	/// <param name="inGameCamera">使用中インゲームカメラ</param>
+	void SetInGameCamera(InGameCamera* inGameCamera) { inGameCamera_ = inGameCamera; }
+
+	/// <summary>
 	/// 現在HPのゲッター
 	/// </summary>
 	/// <returns>現在HP</returns>
@@ -66,11 +73,23 @@ public: // アクセッサ等
 	/// <returns>シーン遷移トリガー状態</returns>
 	bool GetIsSceneChage() { return isSceneChange_; }
 
+	/// <summary>
+	/// チュートリアルフラグのセッター
+	/// </summary>
+	/// <param name="flag">チュートリアルを有効にするか</param>
 	void SetIsTutrial(bool flag) { isTutrial_ = flag; }
 
+	/// <summary>
+	/// 攻撃チュートリアルが終了しているかのゲッター
+	/// </summary>
+	/// <returns>攻撃チュートリアルが終了しているか</returns>
 	bool GetTutrialAtackEnd() { return tutrialAtackEnd_; }
-
+	/// <summary>
+	/// 攻撃チュートリアルの終了状態セッター
+	/// </summary>
+	/// <param name="flag">攻撃チュートリアルを終了するか</param>
 	void SetTutrialAtackEnd(bool flag) { tutrialAtackEnd_ = flag; }
+
 private: // メンバ関数
 
 	/// <summary>
@@ -96,10 +115,18 @@ private:
 	// パーティクルエミッタマネージャ
 	ParticleEmitterManager* pem_ = nullptr;
 
+	// インゲーム内のカメラ
+	InGameCamera* inGameCamera_ = nullptr;
+
 	//体力
 	float hitPoint_;
 	// 最大体力
 	float kMaxHitPoint_;
+
+	// 衝突時のシェイク秒数
+	float shakeTime_ = 0.5f;
+	// 衝突時のシェイク強さ
+	Vector2 shakeStrength_ = { 1.0f, 1.0f };
 
 	// ゲームオブジェクトマネージャ
 	GameObjectManager* gameObjectManager_;

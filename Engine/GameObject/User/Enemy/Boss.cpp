@@ -4,6 +4,7 @@
 #include "../../../Scene/FadeManager.h"
 #include "../../../Particle/ParticleEmitterManager.h"
 #include "../../../Particle/ParticleList.h"
+#include "../camera/InGameCamera.h"
 
 void Boss::SuccessorInit()
 {
@@ -44,6 +45,8 @@ void Boss::SuccessorInit()
 	variables->AddItem(name_, "FallAttackReadyTime", fallAttackReadyTime_);
 	variables->AddItem(name_, "PushUpReadyTime", pushUpReadyTime_);
 	variables->AddItem(name_, "RollerAttackReadyTime", rollerAttackReadyTime_);
+	variables->AddItem(name_, "ShakeTime", shakeTime_);
+	variables->AddItem(name_, "ShakeStrength", shakeStrength_);
 	ApplyGlobalVariables();
 	isTutrial_ = false;
 }
@@ -99,11 +102,20 @@ void Boss::DisplayImGui()
 	// 各種パラメータのImGuiを表示
 	ImGui::DragFloat("HitPoint", &hitPoint_); // HP
 	ImGui::InputInt("PatternNumber", &patternNumber_); // パターン番号
+	
 	// 攻撃後待機時間の設定
 	ImGui::DragFloat("waitSingle", &waitForSingle_,0.1f);
 	ImGui::DragFloat("waitmulti", &waitForMulti_, 0.1f); 
 	ImGui::DragFloat("waitRoller", &waitForRoller_, 0.1f);
 	ImGui::DragFloat("waitPushUp", &waitForPushUp_, 0.1f);
+
+	// カメラシェイクに関するパラメータの設定
+	if (ImGui::TreeNode("ShakeParameters")) {
+		ImGui::DragFloat("ShakeTime", &shakeTime_, 0.01f, 0.01f); // 振動秒数
+		ImGui::DragFloat2("ShakeStrength", &shakeStrength_.x, 0.1f); // カメラ振動強さ
+
+		ImGui::TreePop();
+	}
 
 	// アニメーション時の待機時間
 	if (ImGui::TreeNode("ReadyTime")) {
@@ -125,6 +137,8 @@ void Boss::DisplayImGui()
 		variables->SetValue(name_, "FallAttackReadyTime", fallAttackReadyTime_);
 		variables->SetValue(name_, "PushUpReadyTime", pushUpReadyTime_);
 		variables->SetValue(name_, "RollerAttackReadyTime", rollerAttackReadyTime_);
+		variables->SetValue(name_, "ShakeTime", shakeTime_);
+		variables->SetValue(name_, "ShakeStrength", shakeStrength_);
 		variables->SaveFile(name_);
 	}if (ImGui::Button("changeStateAtack")) {
 		ChangeState(std::make_unique<SingleAtackState>());
@@ -178,10 +192,14 @@ void Boss::OnCollisionEnter(Collider* collider)
 
 		//チュートリアルの攻撃を終了
 		tutrialAtackEnd_ = true;
+
 		// パーティクル再生
 		Vector3 generatePos = transform_.translate_;
 		generatePos.y = 7.0f;
 		pem_->CreateEmitter<HitParticleEmiiter, HitParticle>("Boss_Hit", 25, 25, generatePos, 1.0f, 10.0f, TextureManager::Load("bossHitParticle.png"));
+
+		// カメラのシェイク演出をする
+		inGameCamera_->Shake(shakeTime_, shakeStrength_);
 
 		// HPが0以下になっていたら
 		if (hitPoint_ <= 0) {
@@ -218,6 +236,14 @@ void Boss::OnCollision(Collider* collider)
 			//吸収した数をリセットして座標とスケール調整
 			player_->ResetAbsorptionCount();
 
+			// パーティクル再生
+			Vector3 generatePos = transform_.translate_;
+			generatePos.y = 7.0f;
+			pem_->CreateEmitter<HitParticleEmiiter, HitParticle>("Boss_Hit", 25, 25, generatePos, 1.0f, 10.0f, TextureManager::Load("bossHitParticle.png"));
+
+			// カメラのシェイク演出をする
+			inGameCamera_->Shake(shakeTime_, shakeStrength_);
+
 			//チュートリアルの攻撃を終了
 			tutrialAtackEnd_ = true;
 			// HPが0以下になっていたら
@@ -248,30 +274,6 @@ void Boss::OnCollision(Collider* collider)
 
 void Boss::MakeStateList()
 {
-	/*stateList_.state_.resize(1);
-	stateList_.state_.at(0).push_back(std::make_unique<WaitTimeState>());
-	stateList_.stateNumber_.resize( 1);
-	stateList_.stateNumber_.at(0).push_back(0);*/
-	//for (int i = 0; i < 1; i++) {
-	//	//行動状態のリストを作成
-	//	stateList_.state_.resize(i+1);
-	//	stateList_.state_.at(i).push_back(MakeState("SingleAtack"));
-	//	stateList_.state_.at(i).push_back(MakeState("MultiAtack"));
-	//	stateList_.state_.at(i).push_back(MakeState("Roller"));
-	//	stateList_.state_.at(i).push_back(MakeState("PushUp"));
-	//	stateList_.state_.at(i).push_back(MakeState("SingleAtack"));
-	//	//行動状態のリストからどの種類を選ぶかの番号を設定
-	//	stateList_.stateNumber_.resize(i+1);
-	//	stateList_.stateNumber_.at(i).push_back(0);
-	//	stateList_.stateNumber_.at(i).push_back(1);
-	//	stateList_.stateNumber_.at(i).push_back(2);
-	//	stateList_.stateNumber_.at(i).push_back(3);
-	//	stateList_.stateNumber_.at(i).push_back(4);
-	//}
-	//std::list<int> testList = { 0,1,1,1,2 };
-	//std::vector<int> tmpVector(testList.begin(), testList.end());
-	//stateList_.stateNumber_.push_back(tmpVector);
-
 	for (int i = 0; i < 5; i++) {
 		// 番号
 		std::string section = "TableList" + std::to_string(i);
@@ -288,14 +290,7 @@ void Boss::MakeStateList()
 		for (int numValue : numList) {
 			stateList_.stateNumber_.at(i).push_back(numValue);
 		}
-		
-		//std::vector<int> numVector(numList.begin(), numList.end());
-		//stateList_.stateNumber_.push_back(numVector);
-
-		//std::vector<std::string> actVector(actList.begin(), actList.end());
-		//stateList_.state_.at(i).
 	}
-
 }
 
 void Boss::ApplyGlobalVariables()
@@ -311,6 +306,8 @@ void Boss::ApplyGlobalVariables()
 	fallAttackReadyTime_ = variables->GetFloatValue(name_, "FallAttackReadyTime");
 	pushUpReadyTime_ = variables->GetFloatValue(name_, "PushUpReadyTime");
 	rollerAttackReadyTime_ = variables->GetFloatValue(name_, "RollerAttackReadyTime");
+	shakeTime_ = variables->GetFloatValue(name_, "ShakeTime");
+	shakeStrength_ = variables->GetVector2Value(name_, "ShakeStrength");
 }
 
 std::unique_ptr<IEnemyState> Boss::MakeState(std::string name)
