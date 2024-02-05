@@ -192,6 +192,11 @@ public: // アクセッサ等
 /// 
 /// </summary>
 	void SetIsCharge(bool flag) { isCharge_ = flag; }
+/// <summary>
+/// チュートリアルでダッシュしたか
+/// </summary>
+	bool GetISTutrialDash() { return isTutrialDash_; }
+	void SetIsTutrialDash(bool flag) { isTutrialDash_ = flag; }
 private: // プライベートなメンバ関数
 
 	/// <summary>
@@ -326,5 +331,6 @@ private: // メンバ変数
 	bool isTutrial_;
 	//攻撃チャージ
 	bool isCharge_;
+	bool isTutrialDash_;
 };
 

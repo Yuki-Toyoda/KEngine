@@ -23,7 +23,9 @@ void InGameUIManager::Init()
 	moveSprite_ = AddSprite("MoveUI", { 0.0f, 0.0f }, { 192.0f, 64.0f }, TextureManager::Load("./Resources/UI/InGame", "moveFront.png"));
 	AttackSprite_ = AddSprite("Attack", { 1040.0f, 590.0f }, { 224.0f, 48.0f }, TextureManager::Load("./Resources/UI/InGame", "attack.png"));
 	FeedSprite_ = AddSprite("Feed", { 1000.0f, 650.0f }, { 256.0f, 48.0f }, TextureManager::Load("./Resources/UI/InGame", "feed.png"));
-
+	moveSpriteBG_->SetIsActive(false);
+	moveSprite_->SetIsActive(false);
+	AttackSprite_->SetIsActive(false);
 	// アンカーポイント設定
 	bossHPGageSprite_Icon_->anchorPoint_ = { 0.5f, 0.2f };
 	playerVegetableCount2_->anchorPoint_ = { 0.5f, 0.5f };
