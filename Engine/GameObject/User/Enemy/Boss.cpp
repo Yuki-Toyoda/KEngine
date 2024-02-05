@@ -94,6 +94,7 @@ void Boss::SuccessorUpdate()
 
 void Boss::DisplayImGui()
 {
+	float time = GetBossAnimManager()->GetAnimation()->GetAnimationProgress();
 	// 基底クラスのImGuiを表示
 	IEnemy::DisplayImGui();
 	// 各種パラメータのImGuiを表示
@@ -104,7 +105,7 @@ void Boss::DisplayImGui()
 	ImGui::DragFloat("waitmulti", &waitForMulti_, 0.1f); 
 	ImGui::DragFloat("waitRoller", &waitForRoller_, 0.1f);
 	ImGui::DragFloat("waitPushUp", &waitForPushUp_, 0.1f);
-
+	ImGui::DragFloat("Time", &time);
 	// アニメーション時の待機時間
 	if (ImGui::TreeNode("ReadyTime")) {
 		// 落下攻撃待機時間

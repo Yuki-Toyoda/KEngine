@@ -23,7 +23,7 @@ void Roller::Update()
 {
 	// 移動加速度をゲームマネージャーから取得
 	moveAcceleration_ = gameManager_->RollerSpeed_;
-
+	
 	// 動作トリガーがtrueの時
 	if (isMove_) {
 		// ?????????????

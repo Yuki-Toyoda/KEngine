@@ -29,5 +29,7 @@ private: // メンバ変数
 	// 転がり開始
 	bool isRotateStart_ = false;
 
+	KLib::DeltaTimer fallTimer_;
+
 };
 
