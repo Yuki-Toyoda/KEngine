@@ -18,7 +18,7 @@ void MoveParticleEmitter::GenerateParticle()
 		Vector2 generateScale = { size, size };
 		// 生成場所をランダム設定
 		Vector3 generatePosition
-			= { Math::RandomF(-0.75f,0.75f,3),Math::RandomF(-0.25f,0.25f,3) ,0 };
+			= { Math::RandomF(-0.75f,0.75f,3),Math::RandomF(-0.25f,0,3) ,0 };
 		generatePosition += transform_.GetWorldPos();
 
 		// 生成粒子の色

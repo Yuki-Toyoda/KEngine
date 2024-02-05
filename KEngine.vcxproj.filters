@@ -124,6 +124,8 @@
     <ClCompile Include="Engine\GameObject\User\FeedVegetable\FeedVegetable.cpp" />
     <ClCompile Include="Engine\Particle\User\MoveParticle.cpp" />
     <ClCompile Include="Engine\Particle\User\MoveParticleEmitter.cpp" />
+    <ClCompile Include="Engine\Particle\User\BoxBreakParticle.cpp" />
+    <ClCompile Include="Engine\Particle\User\BoxBreakParticleEmitter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\GameObject\User\Enemy\State\MultiAtackState.h" />
@@ -266,6 +268,8 @@
     <ClInclude Include="Engine\GameObject\User\FeedVegetable\FeedVegetable.h" />
     <ClInclude Include="Engine\Particle\User\MoveParticle.h" />
     <ClInclude Include="Engine\Particle\User\MoveParticleEmitter.h" />
+    <ClInclude Include="Engine\Particle\User\BoxBreakParticle.h" />
+    <ClInclude Include="Engine\Particle\User\BoxBreakParticleEmitter.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Object3D.hlsli" />

@@ -2,7 +2,7 @@
 
 void MoveParticle::Init()
 {
-	rotate_ = Math::RandomF(0.0f, 1.57f, 2);
+	//rotate_ = Math::RandomF(0.0f, 1.57f, 2);
 }
 
 void MoveParticle::Update()
