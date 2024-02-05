@@ -18,7 +18,7 @@ void Rifle::Init()
 	reloadSE_ = audio_->LoadWave("./Resources/Audio/Reload.wav");
 
 	// 各種トランスフォームの初期化
-	transform_.translate_ = { 1.35f, 2.25f, 2.5f };
+	transform_.translate_ = { 1.5f, 0.8f, 2.5f };
 	transform_.rotate_.y = -(float)std::numbers::pi / 2.0f;
 	baseTransform_.Init();
 	baseTransform_.SetParent(&transform_);

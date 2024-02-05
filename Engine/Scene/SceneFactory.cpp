@@ -17,6 +17,12 @@ BaseScene* SceneFactory::CreateScene(const std::string& name)
 		newScene = new GameScene();
 	}
 
+	// サンプルシーンの生成
+	if (name == "SampleScene2") {
+		// ゲームシーンを生成
+		newScene = new SampleScene2();
+	}
+
 	// 生成したシーンを受け取り元に渡す
 	return newScene;
 }

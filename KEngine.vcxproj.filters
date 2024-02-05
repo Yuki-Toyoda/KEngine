@@ -227,7 +227,12 @@
     <ClCompile Include="Engine\GameObject\User\Rifle\Rifle.cpp">
       <Filter>App\GameObject\User\Rifle</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\GameObject\User\ObjectSceneManager\ObjectSceneManager.cpp" />
+    <ClCompile Include="Engine\GameObject\User\ObjectSceneManager\ObjectSceneManager.cpp">
+      <Filter>App\GameObject\User\ObjectSceneManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Scene\User\SampleScene2.cpp">
+      <Filter>App\Scene\User</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -491,7 +496,12 @@
     <ClInclude Include="Engine\GameObject\User\Rifle\Rifle.h">
       <Filter>App\GameObject\User\Rifle</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\GameObject\User\ObjectSceneManager\ObjectSceneManager.h" />
+    <ClInclude Include="Engine\GameObject\User\ObjectSceneManager\ObjectSceneManager.h">
+      <Filter>App\GameObject\User\ObjectSceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Scene\User\SampleScene2.h">
+      <Filter>App\Scene\User</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -645,6 +655,9 @@
     </Filter>
     <Filter Include="App\GameObject\User\Rifle">
       <UniqueIdentifier>{3c9cef33-dfc3-42e7-acbe-4c95fc742800}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\GameObject\User\ObjectSceneManager">
+      <UniqueIdentifier>{14c49495-151b-403c-9c64-d2967eadd199}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

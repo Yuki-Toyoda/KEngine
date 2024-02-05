@@ -23,5 +23,10 @@ public: // メンバ関数
 	/// </summary>
 	void DisplayImGui() override;
 
+	/// <summary>
+	/// シーンによって表示内容を変える
+	/// </summary>
+	/// <param name="scene">変更シーン</param>
+	void SetSceneNo(bool scene);
 };
 
