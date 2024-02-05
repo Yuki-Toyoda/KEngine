@@ -31,17 +31,21 @@ void InGameCamera::Init()
 
 void InGameCamera::Update()
 {
-	if (!isShake_) {
-		shakeCount_++;
-		translate_ = transform_.translate_;
+	// 振動タイマー終了が終了していない時
+	if (!shakeTimer_.GetIsFinish()) {
+		// カメラの振動オフセットを軸ごとにランダムに設定する
+		shakeOffset_.x = Math::RandomF(-shakeStrength_.x, shakeStrength_.x, 2);
+		shakeOffset_.y = Math::RandomF(-shakeStrength_.y, shakeStrength_.y, 2);
+		// 振動強さを補間で下げる
+		shakeStrength_.x = KLib::Lerp<float>(startShakeStrength_.x, 0.0f, KLib::EaseOutQuad(shakeTimer_.GetProgress()));
+		shakeStrength_.y = KLib::Lerp<float>(startShakeStrength_.y, 0.0f, KLib::EaseOutQuad(shakeTimer_.GetProgress()));
+
+		// 振動タイマー更新
+		shakeTimer_.Update();
 	}
 	else {
-		transform_.translate_.x =translate_.x + RandomEngine::GetInstance()->GetRandom(-shakeForce_ / 2.0f, shakeForce_ / 2.0f);
-		transform_.translate_.y = translate_.y + RandomEngine::GetInstance()->GetRandom(-shakeForce_ / 2.0f, shakeForce_ / 2.0f);
-		shakeForce_ *= 0.8f;
-		if (shakeForce_ <= 0.1f) {
-			isShake_ = false;
-		}
+		// オフセットを0でリセット
+		shakeOffset_ = { 0.0f, 0.0f, 0.0f };
 	}
 
 	// オフセットを取得
@@ -62,6 +66,9 @@ void InGameCamera::Update()
 	else if (player_->transform_.translate_.z < 0.0f) {
 		offset.z = Math::Linear(player_->transform_.translate_.z, offset_.z, offset_.z -5.0f, -53.0f);
 	}
+
+	// シェイクのオフセットを格納
+	offset += shakeOffset_;
 
 	// 回転角から行列を生成
 	Matrix4x4 rotateMat = Math::MakeRotateXYZMatrix(transform_.rotate_);
@@ -113,6 +120,15 @@ void InGameCamera::DisplayImGui()
 	// オフセットのImGuiを表示
 	ImGui::DragFloat3("Offset", &offset_.x);
 
+	// テストの振動値の強さを設定
+	ImGui::DragFloat2("ShakeStrength", &imGuiShakeStrength_.x, 0.1f, 0.0f);
+	// テスト用の振動時間の調整
+	ImGui::DragFloat("ShakeTime", &imGuiShakeTime_, 0.01f, 0.01f);
+	// ボタンを押したら振動演出開始
+	if (ImGui::Button("ShakeStart")) {
+		Shake(imGuiShakeTime_, imGuiShakeStrength_);
+	}
+
 	if (ImGui::Button("Save")) {
 		SaveData();
 	}
@@ -127,14 +143,13 @@ void InGameCamera::DisplayImGui()
 	}
 }
 
-void InGameCamera::Shake()
+void InGameCamera::Shake(const float& time, const Vector2& strength)
 {
-	
-	if (shakeCount_ > maxShakeCount_) {
-		shakeForce_ = kShakeForce_;
-		isShake_ = true;
-		shakeCount_ = 0;
-	}
+	// 引数で指定した秒数で振動タイマー開始
+	shakeTimer_.Start(time);
+
+	// 振動強さ取得
+	startShakeStrength_ = strength;
 }
 
 void InGameCamera::SaveData()
@@ -151,21 +166,3 @@ void InGameCamera::SaveData()
 	variables->SaveFile(name_);
 
 }
-
-
-//void InGameCamera::UseThisCamera() {
-//	// 配列
-//	std::vector<Camera*>cameraObjects = GameObjectManager::GetInstance()->GetGameObject<Camera>();
-//	// 全てのカメラの使用トリガーを一度false
-//	for (Camera* camera : cameraObjects)
-//		camera->SetIsUseThisCamera(false);
-//
-//	// このカメラを使用する
-//	isUseThisCamera_ = true;
-//}
-//
-//void InGameCamera::SetVPDataTarget()
-//{
-//	// ビュープロジェクション行列を書き込むためのアドレスを取得
-//	vpDataTarget_ = DirectXCommon::GetInstance()->GetCommandManager()->GetViewProjection();
-//}

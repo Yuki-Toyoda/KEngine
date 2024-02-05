@@ -28,19 +28,13 @@ public: // メンバ関数
 	void DisplayImGui() override;
 
 	/// <summary>
-	/// カメラシェイク関数
+	/// カメラシェイク開始関数
 	/// </summary>
-	void Shake();
-
-
+	/// <param name="shakeTime">シェイク時間</param>
+	/// <param name="strength">シェイク強さ</param>
+	void Shake(const float& time, const Vector2& strength);
 
 public: // アクセッサ等
-
-	/// <summary>
-	/// カメラシェイク状態ゲッター
-	/// </summary>
-	/// <returns>カメラシェイク状態</returns>
-	bool GetIsShake() { return isShake_; }
 
 	/// <summary>
 	/// プレイヤーセッター
@@ -58,19 +52,22 @@ private: // メンバ関数
 	// カメラのオフセット
 	Vector3 offset_ = { 0.0f, -15.0f, -100.0f };
 	
+	// 振動オフセット
+	Vector3 shakeOffset_ = { 0.0f, 0.0f, 0.0f };
+	// 振動強さ格納用
+	Vector2 shakeStrength_ = { 0.0f, 0.0f };
+	// 振動強さ始端値
+	Vector2 startShakeStrength_ = { 0.0f, 0.0f };
+	// 振動演出タイマー
+	KLib::DeltaTimer shakeTimer_;
+
 	// 目標角度Y軸
 	float targetAngleY_ = 0.0f;
 
-	//シェイクする時間
-	int shakeCount_;
-	int maxShakeCount_=30;
-	//画面シェイクの強さ
-	float shakeForce_;
-	float kShakeForce_=4.0f;
-	//前フレームの座標
-	Vector3 translate_;
-	//シェイクしているか
-	bool isShake_;
+	// ImGui調整用の振動強さ変数
+	Vector2 imGuiShakeStrength_ = { 15.0f, 15.0f };
+	// ImGui調整用の振動時間
+	float imGuiShakeTime_ = 0.25f;
 
 private:
 
