@@ -188,7 +188,7 @@ private: // メンバ変数
 	// 使用中のカメラ
 	Camera* mainCamera_ = nullptr;
 
-#ifdef _DEBUG // ImGui用デバッグ変数
+#ifdef USEIMGUI // ImGui用デバッグ変数
 
 	// 選択中オブジェクト
 	int imGuiSelectObjects_;

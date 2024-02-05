@@ -68,7 +68,8 @@ void Rifle::Update()
 		// 弾数1以上
 		if (ammoCount_ > 0) {
 			// トリガーが押し込まれてたら
-			if (joyState_.Gamepad.bRightTrigger >= 100) {
+			if (joyState_.Gamepad.bRightTrigger >= 100 ||
+				input_->IsTriggerMouse(0)) {
 				// 射撃
 				anim_->ChangeParameter("Shot", true);
 				// ループを切る
@@ -86,7 +87,8 @@ void Rifle::Update()
 		if (ammoCount_ < maxAmmoCount_) {
 			// Xボタンを押したら
 			if ((joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_X &&
-				!(preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_X))) {
+				!(preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_X)) ||
+				input_->TriggerKey(DIK_R)) {
 				// リロード
 				anim_->ChangeParameter("Reload", true);
 				// ループを切る

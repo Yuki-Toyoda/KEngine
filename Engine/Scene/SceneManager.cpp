@@ -19,7 +19,7 @@ void SceneManager::Init()
 
 void SceneManager::Update()
 {
-#ifdef _DEBUG
+#ifdef USEIMGUI
 
 	// FPSカウンターの表示
 	ImGui::Begin("Control panel");

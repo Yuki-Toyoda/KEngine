@@ -11,7 +11,7 @@ void TitleScene::Update()
 {
 
 	// デバッグ時のみ特定のキーでシーン遷移
-#ifdef _DEBUG
+#ifdef USEIMGUI
 	// デバッグ遷移
 	if (input_->TriggerKey(DIK_RSHIFT)) {
 		SceneManager::GetInstance()->ChangeScene("Game");

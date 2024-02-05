@@ -20,7 +20,7 @@ void GameObjectManager::Init()
 		return false;
 	});
 
-#ifdef _DEBUG // ImGui用デバッグ変数
+#ifdef USEIMGUI // ImGui用デバッグ変数
 
 	// 選択オブジェクトリセット
 	imGuiSelectObjects_ = 0;
@@ -47,7 +47,7 @@ void GameObjectManager::Update()
 	}
 
 	// デバッグ時のみImGuiを描画
-#ifdef _DEBUG
+#ifdef USEIMGUI
 	ImGui::Begin("Objects");
 	// 全オブジェクトのImGuiを描画
 	ImGui::BeginChild(ImGui::GetID((void*)0), ImVec2(250, 100), ImGuiWindowFlags_NoTitleBar);

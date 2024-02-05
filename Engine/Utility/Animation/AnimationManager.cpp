@@ -24,7 +24,7 @@ void AnimationManager::Update()
 
 void AnimationManager::DisplayImGui()
 {
-#ifdef _DEBUG
+#ifdef USEIMGUI
 
 	ImGui::Begin("AnimationParameters", nullptr, ImGuiWindowFlags_MenuBar);
 	// メニューバーの表示
