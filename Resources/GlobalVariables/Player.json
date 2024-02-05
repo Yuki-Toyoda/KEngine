@@ -1,10 +1,10 @@
 {
     "Player": {
-        "DecayAcceleration": 0.05000000074505806,
+        "DecayAcceleration": 0.11999999731779099,
         "DecelerationRate": 0.6000000238418579,
-        "MaxMoveAcceleration": 0.4000000059604645,
+        "MaxMoveAcceleration": 0.33000001311302185,
         "MaxSize": 5.0,
-        "MoveAcceleration": 0.007000000216066837,
+        "MoveAcceleration": 0.014000000432133675,
         "PushUpHitForce": 10.0,
         "StanTime": 0.5,
         "Velocity": 0.0,

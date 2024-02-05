@@ -13,6 +13,18 @@ void TutrialManager::Init()
 	sprites_[3]->anchorPoint_ = { 0.5f,0.5f };
 	AddSprite("kaihuku", {648.0f,128.0f}, {768.0f,64.0f}, TextureManager::Load("./Resources/UI/Tutorial", "Tutorial_05.png"));
 	sprites_[4]->anchorPoint_ = { 0.5f,0.5f };
+	AddSprite("owari", uiPosition_, { 768.0f,64.0f }, TextureManager::Load("./Resources/UI/Tutorial", "Tutorial_08.png"));
+	sprites_[5]->anchorPoint_ = { 0.5f,0.5f };
+	AddSprite(" plactice", { 648.0f,128.0f }, { 768.0f,64.0f }, TextureManager::Load("./Resources/UI/Tutorial", "Tutorial_09.png"));
+	sprites_[6]->anchorPoint_ = { 0.5f,0.5f };
+	AddSprite("dash", uiPosition_, { 768.0f,64.0f }, TextureManager::Load("./Resources/UI/Tutorial", "Tutorial_07.png"));
+	sprites_[7]->anchorPoint_ = { 0.5f,0.5f };
+	AddSprite("skipGauge", { 0.0f,0.0f }, { 554.0f,51.0f }, TextureManager::Load("./Resources/UI/Tutorial", "tutorialSkipGauge.png"));
+	sprites_[8]->anchorPoint_ = { 0.5f,0.5f };
+	AddSprite("skipFrame ", { 1000.0f,684.0f }, { 554.0f,51.0f }, TextureManager::Load("./Resources/UI/Tutorial", "tutorialSkipFram.png"));
+	sprites_[9]->anchorPoint_ = { 0.5f,0.5f };
+	
+	sprites_[8]->SetParent(sprites_[9]->GetWorldTransform());
 	step = yokero;
 	skipCount_ = 0;
 	isEnd_ = false;
@@ -35,6 +47,10 @@ void TutrialManager::Update()
 	for (Sprite* sprite : sprites_) {
 		sprite->SetIsActive(false);
 	}
+	sprites_[8]->SetIsActive(true);
+	sprites_[9]->SetIsActive(true);
+	sprites_[8]->scale_.y = Math::Linear((float)skipCount_,0.0f,51.0f,60.0f);
+	sprites_[8]->translate_.y = Math::Linear((float)skipCount_, 25.5f, 0.0f, 60.0f);
 	switch (step)
 	{
 
@@ -65,6 +81,13 @@ void TutrialManager::Update()
 		if (uribo_->TutrialEnd()) {
 			step++;
 			boss_->SetTutrialAtackEnd(false);
+			player_->SetIsTutrialDash(false);
+		}
+		break;
+	case Dash:
+		sprites_[7]->SetIsActive(true);
+		if (player_->GetISTutrialDash()) {
+			step++;
 		}
 		break;
 	case kougeki:
@@ -75,7 +98,8 @@ void TutrialManager::Update()
 		}
 		break;
 	case end:
-
+		sprites_[5]->SetIsActive(true);
+		sprites_[6]->SetIsActive(true);
 		break;
 	default:
 		break;
