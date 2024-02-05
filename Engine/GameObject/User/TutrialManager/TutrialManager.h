@@ -8,6 +8,7 @@ enum TutrialStep {
 	yokero,
 	atumero,
 	kaihuku,
+	Dash,
 	kougeki,
 	end,
 };

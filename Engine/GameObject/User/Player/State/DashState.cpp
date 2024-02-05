@@ -18,6 +18,7 @@ void DashState::Init()
 	moveStep_ = kAccleratorStep;
 	// 開始
 	dashTimer_.Start(axelTimer_);
+	player_->SetIsTutrialDash(true);
 }
 
 void DashState::Update()

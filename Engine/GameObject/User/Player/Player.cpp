@@ -58,7 +58,7 @@ void Player::Init()
 	variables->AddItem(name_, "subtractionAbsorptionCount_", subtractionAbsorptionCount_);
 	SetGlobalVariables();
 	isTutrial_ = false;
-
+	isTutrialDash_ = false;
 	// パーティクルエミッタマネージャのインスタンス取得
 	pem_ = ParticleEmitterManager::GetInstance();
 
