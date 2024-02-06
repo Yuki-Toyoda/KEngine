@@ -74,13 +74,14 @@ void Uribo::Init()
 
 void Uribo::Update()
 {
+	timer_.Update();
 	// カメラ使用中のみに更新処理を呼び出す
 	if (stagingCamera_->GetIsUsedCamera()) {
 		CameraUpdate();
 	}
 
 	// ボスが死亡していない場合
-	if (!isBossDead_&&hitPoint_>=0) {
+	if (!isBossDead_&&hitPoint_>=0&&timer_.GetIsFinish()) {
 		hitPoint_ -= decrementHP;
 	}
 	// HPが0以下になったら死亡アニメーション再生
@@ -238,13 +239,24 @@ void Uribo::CameraUpdate()
 
 void Uribo::Heal(int healPower)
 {
+	if (timer_.GetIsFinish()) {
+		
+	}
+	else {
+		IsCanHeal = false;
+		return;
+	}
 	// 回復させる
 	if (hitPoint_ > 0) {
 		hitPoint_ += healPower;
+		IsCanHeal = true;
 	}
 	if (hitPoint_ >= defaultHP_) {
 		hitPoint_ = defaultHP_;
+		timer_.Start(3.0f);
+		IsCanHeal = true;
 	}
+	
 }
 
 void Uribo::Tutrial()

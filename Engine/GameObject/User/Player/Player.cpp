@@ -419,35 +419,39 @@ void Player::Heal()
 		if (healTimer.GetIsFinish()) {
 			//うりぼーの回復
 			uribo_->Heal(healPower_);
-			// 減算するサイズを計算
-			float decSize = absorptionCount_ * scaleForce_;
-			if (transform_.scale_.y - decSize > 2.0f) {
-
-				// 減算サイズ分y座標を減算
-				transform_.translate_.y -= decSize;
-				// 大きさにサイズを減算
-				transform_.scale_ = {
-					transform_.scale_.x - decSize,
-					transform_.scale_.y - decSize,
-					transform_.scale_.z - decSize };
-				
-				
-			}
-			else {
-				transform_.translate_.y = 3.0f;
-				transform_.scale_ = { 2.0f,2.0f,2.0f };
-			}
 			//食べたカウントを減らす
-			absorptionCount_--;
-			healTimer.Start(healCoolTime_);
+			if (uribo_->GetIsCanHeal()) {
+				absorptionCount_--;
 
-			// 野菜を投げる演出用
-		 	FeedVegetable* fvg = GameObjectManager::GetInstance()->CreateInstance<FeedVegetable>("FeedVege", BaseObject::TagNone);
-			// 初期化後処理を呼び出す
-			fvg->PostInit(pam_->bodyTransform_.GetWorldPos(), uribo_->transform_.GetWorldPos());
+				// 減算するサイズを計算
+				float decSize = absorptionCount_ * scaleForce_;
+				if (transform_.scale_.y - decSize > 2.0f) {
 
-			// 与えたSEを再生する
-			audio_->PlayWave(feedSE_);
+					// 減算サイズ分y座標を減算
+					transform_.translate_.y -= decSize;
+					// 大きさにサイズを減算
+					transform_.scale_ = {
+						transform_.scale_.x - decSize,
+						transform_.scale_.y - decSize,
+						transform_.scale_.z - decSize };
+
+
+				}
+				else {
+					transform_.translate_.y = 3.0f;
+					transform_.scale_ = { 2.0f,2.0f,2.0f };
+				}
+
+				healTimer.Start(healCoolTime_);
+
+				// 野菜を投げる演出用
+				FeedVegetable* fvg = GameObjectManager::GetInstance()->CreateInstance<FeedVegetable>("FeedVege", BaseObject::TagNone);
+				// 初期化後処理を呼び出す
+				fvg->PostInit(pam_->bodyTransform_.GetWorldPos(), uribo_->transform_.GetWorldPos());
+
+				// 与えたSEを再生する
+				audio_->PlayWave(feedSE_);
+			}
 		}
 	}
 }
