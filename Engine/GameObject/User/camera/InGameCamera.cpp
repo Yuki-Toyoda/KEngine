@@ -47,22 +47,24 @@ void InGameCamera::Update()
 	// オフセットを取得
 	Vector3 offset = offset_;
 
-	/// プレイヤーの座標によってカメラのオフセットを移動させる
-	// x軸
-	if (player_->transform_.translate_.x > 0.0f) {
-		offset.x = Math::Linear(player_->transform_.translate_.x, 0.0f, 5.0f, 53.0f);
+	// プレイヤーがセットされているときのみ
+	if (player_ != nullptr) {
+		/// プレイヤーの座標によってカメラのオフセットを移動させる
+		// x軸
+		if (player_->transform_.translate_.x > 0.0f) {
+			offset.x = Math::Linear(player_->transform_.translate_.x, 0.0f, 5.0f, 53.0f);
+		}
+		else if (player_->transform_.translate_.x < 0.0f) {
+			offset.x = Math::Linear(player_->transform_.translate_.x, 0.0f, -5.0f, -53.0f);
+		}
+		// z軸
+		if (player_->transform_.translate_.z > 0.0f) {
+			offset.z = Math::Linear(player_->transform_.translate_.z, offset_.z, offset_.z + 5.0f, 53.0f);
+		}
+		else if (player_->transform_.translate_.z < 0.0f) {
+			offset.z = Math::Linear(player_->transform_.translate_.z, offset_.z, offset_.z - 5.0f, -53.0f);
+		}
 	}
-	else if (player_->transform_.translate_.x < 0.0f) {
-		offset.x = Math::Linear(player_->transform_.translate_.x, 0.0f, -5.0f, -53.0f);
-	}
-	// z軸
-	if (player_->transform_.translate_.z > 0.0f) {
-		offset.z = Math::Linear(player_->transform_.translate_.z, offset_.z, offset_.z + 5.0f, 53.0f);
-	}
-	else if (player_->transform_.translate_.z < 0.0f) {
-		offset.z = Math::Linear(player_->transform_.translate_.z, offset_.z, offset_.z -5.0f, -53.0f);
-	}
-
 	// 回転角から行列を生成
 	Matrix4x4 rotateMat = Math::MakeRotateXYZMatrix(transform_.rotate_);
 	// オフセットをカメラの回転に合わせて回転させる
