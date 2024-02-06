@@ -75,10 +75,10 @@ void IParticle::PostUpdate()
 	float tex_bottom = (texBase_.y + texSize_.y) / plane_->texture_->GetTextureSize().y;
 
 	// テクスチャの描画座標をずらす
-	plane_->vertices_[0].texCoord = { tex_left, tex_top };  // 左下
-	plane_->vertices_[1].texCoord = { tex_right, tex_top };     // 左上
-	plane_->vertices_[2].texCoord = { tex_right, tex_bottom }; // 右下
-	plane_->vertices_[3].texCoord = { tex_left, tex_bottom };    // 右上
+	plane_->vertices_[0].texCoord = { tex_left, tex_bottom };  // 左下
+	plane_->vertices_[1].texCoord = { tex_right, tex_bottom };     // 左上
+	plane_->vertices_[2].texCoord = { tex_right, tex_top }; // 右下
+	plane_->vertices_[3].texCoord = { tex_left, tex_top };    // 右上
 
 	// 回転設定
 	plane_->transform_->rotate_ = { 0.0f, 0.0f, rotate_ };
