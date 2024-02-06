@@ -84,6 +84,14 @@ public: // アクセッサ等
 	/// <param name="isPlay">再生トリガー</param>
 	void SetIsPlay(const bool& isPlay) { isPlay_ = isPlay; }
 
+
+public:	// 今回の拡張部分（後で消して
+	/// <summary>
+	/// ワールドトランスフォームのセッター
+	/// </summary>
+	/// <param name="worldTransform"></param>
+	void SetPlayerWorldTransform(WorldTransform* worldTransform) { playerWorldTransform_ = worldTransform; }
+
 protected: // 継承先メンバ関数
 
 	/// <summary>
@@ -137,6 +145,9 @@ protected: // メンバ変数
 	// 粒子生成間隔タイマー
 	KLib::DeltaTimer frequencyTimer_;
 	float frequency_ = 0.0f;
+
+	// サイズ変更に対応するためのポインタ
+	WorldTransform* playerWorldTransform_ = nullptr;
 
 };
 

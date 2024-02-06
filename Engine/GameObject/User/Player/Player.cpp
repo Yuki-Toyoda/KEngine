@@ -68,10 +68,12 @@ void Player::Init()
 	chargeParticleEmitter_->SetIsLoop(true);
 	chargeParticleEmitter_->SetIsPlay(false);
 
+	// チャージ時の円のパーティクル
 	chargeCircleEmitter_ = pem_->CreateEmitter<ChargeCircleParticleEmitter, ChargeCircleParticle>("Circle", 30, 1, {}, 10.0f, 0.5f, TextureManager::Load("chargeParticle.png"));
 	chargeCircleEmitter_->transform_.SetParent(&transform_);
 	chargeCircleEmitter_->SetIsLoop(true);
 	chargeCircleEmitter_->SetIsPlay(false);
+	chargeCircleEmitter_->SetPlayerWorldTransform(&transform_);
 	
 	// チャージ終了時パーティクル生成
 	chargeFinishParticleEmitter_ = pem_->CreateEmitter<ChargeFinishParticleEmitter, ChargeFinishParticle>("ChargeFinish", 8, 8, {0.0f, 0.0f, 0.0f}, 10.0f, 0.25f, TextureManager::Load("chargeMaxParticle.png"));

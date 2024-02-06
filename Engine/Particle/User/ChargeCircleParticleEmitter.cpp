@@ -2,6 +2,7 @@
 
 void ChargeCircleParticleEmitter::Init()
 {
+	//playerWorldTransform_->scale_
 }
 
 void ChargeCircleParticleEmitter::GenerateParticle()
@@ -15,6 +16,19 @@ void ChargeCircleParticleEmitter::GenerateParticle()
 
 		// 生成粒子の大きさ設定
 		float scale = 15.0f;
+		// プレイヤーの最小最大
+		float minPlScale = 2.0f;
+		float maxPlScale = 5.0f;
+		// 円の最小最大
+		float minCirScale = 12.5f;
+		float maxCirScale = 27.5f;
+		float nowPlScale = playerWorldTransform_->scale_.x;
+
+		// スケールの計算
+		// 割合
+		float ratio = (nowPlScale - minPlScale) / (maxPlScale - minPlScale);
+		// スケール
+		scale = KLib::Lerp<float>(minCirScale, maxCirScale, ratio);
 
 		Vector2 generateScale = { scale , scale };
 		// 生成粒子の方向ベクトルをランダムに設定
