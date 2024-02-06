@@ -17,10 +17,13 @@ void RollerAtackState::Init()
 		//std::string group = "RollerAttack";
 		std::string section = "Roller" + std::to_string(i);
 
+		// パスから取得
 		Vector3 newPos = dataManager->GetValue<Vector3>({ group,section }, "Position");
+		// 座標生成
 		object->transform_.translate_.z = newPos.z;
 		object->transform_.translate_.x = newPos.x;
-		object->transform_.translate_.y = 20.0f;
+		float defaultPosition_Y = 50.0f;
+		object->transform_.translate_.y = defaultPosition_Y;
 		object->SetVelocity(dataManager->GetValue<Vector3>({ group,section }, "Direct"));
 		object->transform_.scale_ = dataManager->GetValue<Vector3>({ group,section }, "Scale");
 		object->SetgameManager(enemy_->gameManager_);
