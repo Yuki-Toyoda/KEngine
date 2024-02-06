@@ -65,6 +65,8 @@ void Meteor::OnCollisionEnter(Collider* collider)
 {
 	// プレイヤーと当たった際のコールバック
 	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagPlayer) {
+		Vector3 generatePos = transform_.translate_;
+		pem_->CreateEmitter<BoxBreakParticleEmitter, BoxBreakParticle>("MeteorBreak", 10, 10, generatePos, 1.0f, 10.0f, TextureManager::Load("boxBreakParticle.png"));
 		Destroy();
 		if (isAudioPlay_) {
 			audio_->PlayWave(BreakSE_);
