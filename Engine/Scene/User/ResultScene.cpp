@@ -3,7 +3,7 @@
 #include "../SceneManager.h"
 
 // 静的なメンバ変数の実体を宣言
-bool ResultScene::isClear_ = false;
+bool ResultScene::isClear_ = true;
 
 void ResultScene::Init()
 {
@@ -24,12 +24,14 @@ void ResultScene::Init()
 	pam->transform_.translate_ = { -1.35f, 1.0f, 0.0f };
 	pam->transform_.rotate_ = { 0.0f, -0.0f, 0.0f };
 
-	BossAnimManager* bam = gameObjectManager_->CreateInstance<BossAnimManager>("BossAnim", BaseObject::TagNone);
-	// アニメーション生成
-	bam->CreateAnimation();
-	bam->transform_.scale_ = { 3.0f, 3.0f, 3.0f };
-	bam->transform_.rotate_ = { 0.0f, 0.45f, 0.0f };
-	bam->transform_.translate_ = { 7.0f, 0.0f, 15.0f };
+	if (!isClear_) {
+		BossAnimManager* bam = gameObjectManager_->CreateInstance<BossAnimManager>("BossAnim", BaseObject::TagNone);
+		// アニメーション生成
+		bam->CreateAnimation();
+		bam->transform_.scale_ = { 3.0f, 3.0f, 3.0f };
+		bam->transform_.rotate_ = { 0.0f, 0.45f, 0.0f };
+		bam->transform_.translate_ = { 7.0f, 0.0f, 15.0f };
+	}
 
 	// リザルトマネージャ生成
 	rm_ = gameObjectManager_->CreateInstance<ResultManager>("ResultManager", BaseObject::TagNone);

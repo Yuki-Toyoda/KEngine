@@ -248,6 +248,8 @@ void ResultManager::PostInit(bool isClear)
 		// リトライする
 		isRetry_ = false;
 
+		// アニメーション生成
+		anim_ = animManager_->CreateAnimation("ResultAnim", "Result_ClearStart");
 		
 	}
 	else {
@@ -285,24 +287,27 @@ void ResultManager::PostInit(bool isClear)
 
 		// アニメーション生成
 		anim_ = animManager_->CreateAnimation("ResultAnim", "Result_FailStart");
-		// キー生成
-		anim_->AddAnimationKeys<Vector3>("Camera_Rotate", &camera_->transform_.rotate_);
-		anim_->AddAnimationKeys<Vector3>("Camera_Translate", &camera_->transform_.translate_);
-		anim_->AddAnimationKeys<Vector3>("Player_Scale", &pam_->bodyTransform_.scale_);
-		anim_->AddAnimationKeys<Vector3>("Player_Rotate", &pam_->bodyTransform_.rotate_);
-		anim_->AddAnimationKeys<Vector3>("Player_Translate", &pam_->bodyTransform_.translate_);
-		anim_->AddAnimationKeys<Vector3>("Uribo_Scale", &uriboTransform_.scale_);
-		anim_->AddAnimationKeys<Vector3>("Uribo_Rotate", &uriboTransform_.rotate_);
-		anim_->AddAnimationKeys<Vector3>("Uribo_Translate", &uriboTransform_.translate_);
-		anim_->AddAnimationKeys<Vector2>("Text_Translate", &sprites_[1]->translate_);
-		anim_->AddAnimationKeys<float>("Text_Rotate", &sprites_[1]->rotate_);
-		anim_->AddAnimationKeys<Vector2>("Button1_Translate", &sprites_[2]->translate_);
-		anim_->AddAnimationKeys<Vector2>("Button2_Translate", &sprites_[3]->translate_);
-		anim_->AddAnimationKeys<float>("ButtonAlpha", &spriteAlpha_);
-
-		// アニメーション再生
-		anim_->Play();
+		
 	}
+
+	// キー生成
+	anim_->AddAnimationKeys<Vector3>("Camera_Rotate", &camera_->transform_.rotate_);
+	anim_->AddAnimationKeys<Vector3>("Camera_Translate", &camera_->transform_.translate_);
+	anim_->AddAnimationKeys<Vector3>("Player_Scale", &pam_->bodyTransform_.scale_);
+	anim_->AddAnimationKeys<Vector3>("Player_Rotate", &pam_->bodyTransform_.rotate_);
+	anim_->AddAnimationKeys<Vector3>("Player_Translate", &pam_->bodyTransform_.translate_);
+	anim_->AddAnimationKeys<Vector3>("Uribo_Scale", &uriboTransform_.scale_);
+	anim_->AddAnimationKeys<Vector3>("Uribo_Rotate", &uriboTransform_.rotate_);
+	anim_->AddAnimationKeys<Vector3>("Uribo_Translate", &uriboTransform_.translate_);
+	anim_->AddAnimationKeys<Vector2>("Text_Translate", &sprites_[1]->translate_);
+	anim_->AddAnimationKeys<float>("Text_Rotate", &sprites_[1]->rotate_);
+	anim_->AddAnimationKeys<Vector2>("Text_Scale", &sprites_[1]->scale_);
+	anim_->AddAnimationKeys<Vector2>("Button1_Translate", &sprites_[2]->translate_);
+	anim_->AddAnimationKeys<Vector2>("Button2_Translate", &sprites_[3]->translate_);
+	anim_->AddAnimationKeys<float>("ButtonAlpha", &spriteAlpha_);
+
+	// アニメーション再生
+	anim_->Play();
 
 }
 
@@ -321,6 +326,7 @@ void ResultManager::CreateParameter(const std::string& name)
 	animManager_->AddSelectAnimationKeys<Vector3>(name, "Uribo_Translate");
 	animManager_->AddSelectAnimationKeys<Vector2>(name, "Text_Translate");
 	animManager_->AddSelectAnimationKeys<float>(name, "Text_Rotate");
+	animManager_->AddSelectAnimationKeys<Vector2>(name, "Text_Scale");
 	animManager_->AddSelectAnimationKeys<Vector2>(name, "Button1_Translate");
 	animManager_->AddSelectAnimationKeys<Vector2>(name, "Button2_Translate");
 	animManager_->AddSelectAnimationKeys<float>(name, "ButtonAlpha");

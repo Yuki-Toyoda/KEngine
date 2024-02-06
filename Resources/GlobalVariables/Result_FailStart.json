@@ -189,6 +189,13 @@
         "Text_Rotate key : 2": 0.10000000149011612,
         "Text_Rotate key : 2 : EasingParameter": 11,
         "Text_Rotate key : 2 : PlayFrame": 120,
+        "Text_Scale : KeyCount": 0,
+        "Text_Scale key : 0": [
+            0.0,
+            0.0
+        ],
+        "Text_Scale key : 0 : EasingParameter": 0,
+        "Text_Scale key : 0 : PlayFrame": 0,
         "Text_Translate : KeyCount": 3,
         "Text_Translate key : 0": [
             640.0,
