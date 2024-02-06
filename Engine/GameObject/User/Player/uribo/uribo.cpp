@@ -85,6 +85,11 @@ void Uribo::Update()
 	if (!isBossDead_&&hitPoint_>=0&&timer_.GetIsFinish()&&tutrialStart_) {
 		hitPoint_ -= decrementHP;
 	}
+	if (isTutrial_) {
+		if (hitPoint_ <= 50) {
+			hitPoint_ = 50;
+		}
+	}
 	// HPが0以下になったら死亡アニメーション再生
 	if (hitPoint_ <= 0) {
 		if (!isTutrial_) {
