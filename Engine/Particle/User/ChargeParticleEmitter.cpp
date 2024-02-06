@@ -13,17 +13,41 @@ void ChargeParticleEmitter::GenerateParticle()
 			break;
 		}
 
+		float scale = 0;
+		// プレイヤーの最小最大
+		float minPlScale = 2.0f;
+		float maxPlScale = 5.0f;
+		// 円の最小最大
+		float targetMin = 1.5f;
+		float targetMax = 2.5f;
+		float nowPlScale = playerWorldTransform_->scale_.x;
+
+		// スケールの計算
+		// 割合
+		float ratio = (nowPlScale - minPlScale) / (maxPlScale - minPlScale);
+		// スケール
+		scale = KLib::Lerp<float>(targetMin, targetMax, ratio);
+
+		float offset = 0.25f;
+
 		// 生成粒子の大きさ設定
-		float scale = Math::RandomF(1.5f, 1.75f, 3);
-		Vector2 generateScale = { scale, scale };
+		float size = Math::RandomF(scale, scale + offset, 3);
+		Vector2 generateScale = { size, size };
 		// 生成粒子の方向ベクトルをランダムに設定
 		Vector3 generateVelocity
 			= { Math::RandomF(-1.0f, 1.0f, 3), Math::RandomF(0.35f, 0.75f, 3), Math::RandomF(-1.0f, 1.0f, 3) };
+
+		targetMin = 3.0f;
+		targetMax = 5.0f;
+		float powerRatio = KLib::Lerp<float>(targetMin, targetMax, ratio);
+		offset = 2.0f;
+
 		// 方向ベクトルにランダムな速度を掛ける
-		generateVelocity = generateVelocity * Math::RandomF(3.0f, 5.0f, 1);
+		generateVelocity = generateVelocity * Math::RandomF(powerRatio, powerRatio + offset, 1);
 
 		// 生成粒子の色
-		Vector4 generateColor = { Math::RandomF(0.35f, 1.0f, 2), Math::RandomF(0.35f, 1.0f, 2), Math::RandomF(0.35f, 1.0f, 2), 1.0f };
+		//Vector4 generateColor = { Math::RandomF(0.35f, 1.0f, 2), Math::RandomF(0.35f, 1.0f, 2), Math::RandomF(0.35f, 1.0f, 2), 1.0f };
+		Vector4 generateColor = { Math::RandomF(0.35f, 0.75f, 2), Math::RandomF(0.35f, 0.75f, 2), 0, 0.75f };
 
 		// 新しい粒子を生成
 		std::unique_ptr<IParticle>newParticle = type_();

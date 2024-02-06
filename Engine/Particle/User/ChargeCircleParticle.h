@@ -20,6 +20,7 @@ private: // メンバ変数
 	// 線形補間始端スケール
 	Vector3 startScale_ = { 1.0f, 1.0f, 1.0f };
 
+	Vector4 startColor_ = {};
 
 };
 

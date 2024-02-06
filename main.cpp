@@ -89,6 +89,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	TextureManager::Load("Scrap2.png");
 	TextureManager::Load("Scrap3.png");
 	TextureManager::Load("Scrap4.png");
+	// 野菜
+	TextureManager::Load("vegetableIcon.png");
+	TextureManager::Load("tomato.png");
+	TextureManager::Load("greenPepper.png");
 
 	// 読み込み後再度形状マネージャ初期化
 	primitiveManager->Init();

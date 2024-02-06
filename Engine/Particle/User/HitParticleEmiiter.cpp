@@ -22,9 +22,16 @@ void HitParticleEmiiter::GenerateParticle()
 		// 生成粒子の色
 		Vector4 generateColor = { Math::RandomF(0.35f, 1.0f, 2), Math::RandomF(0.35f, 1.0f, 2), Math::RandomF(0.35f, 1.0f, 2), 1.0f };
 
+		Texture* vegTexture[3];
+		vegTexture[0] = TextureManager::Load("vegetableIcon.png");
+		vegTexture[1] = TextureManager::Load("tomato.png");
+		vegTexture[2] = TextureManager::Load("greenPepper.png");
+
+		int randomNum = Math::Random(0, 2);
+
 		// 新しい粒子を生成
 		std::unique_ptr<IParticle>newParticle = type_();
-		newParticle->PreInit(1.0f, transform_.translate_, generateScale, generateVelocity, texture_, generateColor);
+		newParticle->PreInit(1.0f, transform_.translate_, generateScale, generateVelocity, vegTexture[randomNum], generateColor);
 
 		// 生成した粒子をリストに追加
 		particles_.push_back(std::move(newParticle));

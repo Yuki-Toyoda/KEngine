@@ -38,7 +38,7 @@ void ChargeCircleParticleEmitter::GenerateParticle()
 		generateVelocity = generateVelocity * Math::RandomF(3.0f, 5.0f, 1);
 
 		// 生成粒子の色
-		Vector4 generateColor = { Math::RandomF(0.1f, 0.3f, 2), Math::RandomF(0.1f, 0.3f, 2), Math::RandomF(0.1f, 0.3f, 2), 1.0f };
+		Vector4 generateColor = { Math::RandomF(0.2f, 0.25f, 2), Math::RandomF(0.2f, 0.25f, 2), Math::RandomF(0.1f, 0.25f, 2), 1.0f };
 		//Vector4 generateColor = { Math::RandomF(0.35f, 0.5f, 2), Math::RandomF(0.35f, 0.5f, 2), Math::RandomF(0.0f, 0.2f, 2), 1.0f };
 
 		// 新しい粒子を生成
