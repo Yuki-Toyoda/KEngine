@@ -27,6 +27,9 @@ private:
 	void OnCollisionEnter(Collider* collider)override;
 private: // メンバ変数
 
+	// モデル用ワールドトランスフォーム
+	WorldTransform modelTransform_;
+
 	// 移動方向ベクトル
 	Vector3 velocity_;
 	// 移動スピード
