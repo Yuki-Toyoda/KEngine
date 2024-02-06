@@ -235,7 +235,7 @@ void BossAnimManager::Update()
 void BossAnimManager::CameraUpdate()
 {
 	// オフセットを取得
-	Vector3 offset = transform_.translate_ + cameraOffset_;
+	Vector3 offset = cameraOffset_;
 
 	// 回転角から行列を生成
 	Matrix4x4 rotateMat = Math::MakeRotateXYZMatrix(stagingCamera_->transform_.rotate_);
@@ -243,7 +243,7 @@ void BossAnimManager::CameraUpdate()
 	offset = Math::Transform(offset, rotateMat);
 
 	// オフセットをもとにカメラ座標を計算する
-	stagingCamera_->transform_.translate_ = offset;
+	stagingCamera_->transform_.translate_ = transform_.GetWorldPos() + offset;
 
 	// カメラの更新
 	stagingCamera_->Update();

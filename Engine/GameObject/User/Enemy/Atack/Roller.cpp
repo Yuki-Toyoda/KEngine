@@ -18,9 +18,6 @@ void Roller::Init()
 	transform_.scale_ = { 8.0f,1.0f,1.0f };
 	// 座標の高さを設定
 	transform_.translate_.y = 2.0f;
-	
-	
-	color_ = { 1.0f,0.0f,0.0f,1.0f };
 
 	isFall_ = true;
 
@@ -34,6 +31,12 @@ void Roller::Update()
 	moveAcceleration_ = gameManager_->RollerSpeed_;
 
 	fallTimer_.Update();
+
+	// z軸方向のスケールが一定以上の場合
+	if (transform_.scale_.z >= 2.0f) {
+		// 回転させる
+		transform_.rotate_.y = (float)std::numbers::pi / 2.0f;
+	}
 
 	// 動作トリガーがtrueの時
 	if (isMove_ && !isFall_) {
