@@ -4,7 +4,7 @@
 #include "../../Core/Camera.h"
 #include "../../GameObjectManager.h"
 #include "../FeedVegetable/FeedVegetable.h"
-
+#include "../Enemy/Boss.h"
 void Player::Init()
 {
 	// 音再生クラスのインスタンス取得
@@ -17,12 +17,12 @@ void Player::Init()
 	eatSE_ = audio_->LoadWave("./Resources/Audio/SE/eat.wav");
 	// 餌を与える
 	feedSE_ = audio_->LoadWave("./Resources/Audio/SE/feed.wav");
-
+	callapseSE= audio_->LoadWave("./Resources/Audio/SE/callapse.wav");
 	// 移動ベクトル初期化
 	velocity_ = { 0.0f,0.0f,0.0f };
 	// 球のコライダーを追加
 	AddColliderSphere("Enemy", &worldPos_, &transform_.scale_.x);
-	
+
 	// 行動状態を待機状態に変更
 	ChangeState(std::make_unique<RootState>());
 
@@ -33,7 +33,7 @@ void Player::Init()
 	GlobalVariables* variables = GlobalVariables::GetInstance();
 	// 調整項目クラスのグループ生成
 	variables->CreateGroup(name_);
-	
+
 	/// 調整項目クラスに値を追加する
 	variables->AddItem(name_, "MoveAcceleration", moveAcceleration_);
 	variables->AddItem(name_, "MaxMoveAcceleration", kMaxMoveAcceleration_);
@@ -56,6 +56,7 @@ void Player::Init()
 	variables->AddItem(name_, "PushUpHitForce", pushUpHitForce);
 	variables->AddItem(name_, "DecelerationRate", decelerationRate);
 	variables->AddItem(name_, "subtractionAbsorptionCount_", subtractionAbsorptionCount_);
+	variables->AddItem(name_, "AbsorptionAcceleration", absorptionAccelerationForce_);
 	SetGlobalVariables();
 	isTutrial_ = false;
 	isTutrialDash_ = false;
@@ -63,7 +64,7 @@ void Player::Init()
 	pem_ = ParticleEmitterManager::GetInstance();
 
 	// チャージパーティクル生成
-	chargeParticleEmitter_ = pem_->CreateEmitter<ChargeParticleEmitter, ChargeParticle>("Charge", 25, 1, {0.0f, 0.0f, 0.0f}, 10.0f, 0.1f, TextureManager::Load("chargeParticle.png"));
+	chargeParticleEmitter_ = pem_->CreateEmitter<ChargeParticleEmitter, ChargeParticle>("Charge", 25, 1, { 0.0f, 0.0f, 0.0f }, 10.0f, 0.1f, TextureManager::Load("chargeParticle.png"));
 	chargeParticleEmitter_->transform_.SetParent(&transform_);
 	chargeParticleEmitter_->SetIsLoop(true);
 	chargeParticleEmitter_->SetIsPlay(false);
@@ -77,7 +78,7 @@ void Player::Init()
 	chargeCircleEmitter_->SetPlayerWorldTransform(&transform_);
 	
 	// チャージ終了時パーティクル生成
-	chargeFinishParticleEmitter_ = pem_->CreateEmitter<ChargeFinishParticleEmitter, ChargeFinishParticle>("ChargeFinish", 8, 8, {0.0f, 0.0f, 0.0f}, 10.0f, 0.25f, TextureManager::Load("chargeMaxParticle.png"));
+	chargeFinishParticleEmitter_ = pem_->CreateEmitter<ChargeFinishParticleEmitter, ChargeFinishParticle>("ChargeFinish", 8, 8, { 0.0f, 0.0f, 0.0f }, 10.0f, 0.25f, TextureManager::Load("chargeMaxParticle.png"));
 	chargeFinishParticleEmitter_->transform_.SetParent(&transform_);
 	chargeFinishParticleEmitter_->SetIsLoop(true);
 	chargeFinishParticleEmitter_->SetIsPlay(false);
@@ -257,7 +258,7 @@ void Player::DisplayImGui()
 	ImGui::DragInt("AtackCount", &atackPushCount_);
 
 	ImGui::DragFloat3("MoveVect", &moveVector_.x);
-
+	ImGui::DragFloat("absorptionAccelerationForce", &absorptionAccelerationForce_, 0.001f);
 	// 改行する
 	ImGui::NewLine();
 
@@ -288,6 +289,7 @@ void Player::DisplayImGui()
 		variables->SetValue(name_, "DecelerationRate", decelerationRate);
 		variables->SetValue(name_, "maxAtackCount", kMaxAtackPushCount_);
 		variables->SetValue(name_, "subtractionAbsorptionCount_", subtractionAbsorptionCount_);
+		variables->SetValue(name_, "AbsorptionAcceleration", absorptionAccelerationForce_);
 		 variables->SaveFile(name_);
 		/*kMaxMoveAcceleration_ = variables->GetFloatValue(name_, "MaxMoveAcceleration");
 		decayAcceleration_ = variables->GetFloatValue(name_, "DecayAcceleration");
@@ -300,6 +302,16 @@ void Player::DisplayImGui()
 
 void Player::OnCollisionEnter(Collider* collider) {
 	if (state_->name_ == "Root") {
+		
+		// 降ってくる野菜に衝突した場合
+		if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagMeteor &&
+			state_->name_ != "BlowAway" && !isAtack_) {
+			// ダメージ処理を行う
+			Damage();
+			state_->Update();
+		}
+	}
+	if (state_->name_ == "Root"||state_->name_=="Dash") {
 		//	// 破片に衝突した場合
 		if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagRubble) {
 			//がれきにぶつかったらしてサイズを大きくする
@@ -320,19 +332,13 @@ void Player::OnCollisionEnter(Collider* collider) {
 			// 食べたSEを再生する
 			audio_->PlayWave(eatSE_);
 		}
-		// 降ってくる野菜に衝突した場合
-		if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagMeteor &&
-			state_->name_ != "BlowAway" && !isAtack_) {
-			// ダメージ処理を行う
-			Damage();
-		}
-	}
-	if (state_->name_ == "Root"||state_->name_=="Dash") {
 		if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagPushUp) {
+			state_->Update();
 			transform_.translate_ = prevPos_;
 			pushUpPos_ = collider->GetGameObject()->transform_.translate_;
+			
 			ChangeState(std::make_unique<PushUpHitState>());
-
+			
 		}
 	}
 }
@@ -351,12 +357,13 @@ void Player::OnCollision(Collider* collider)
 		transform_.scale_ = { 2.0f , 2.0f , 2.0f };
 		// 攻撃状態でない
 		//isAtack_ = false;
-		// 速度をリセット
-		velocity_ = { 0.0f,0.0f,0.0f };
+		
 		
 		// 与えたSEを再生する
 		audio_->PlayWave(attackSE_);
 		ChangeState(std::make_unique<BlowAwayState>());
+		// 速度をリセット
+		velocity_ = { 0.0f,0.0f,0.0f };
 		return;
 	}
 }
@@ -373,11 +380,11 @@ void Player::Damage()
 
 		// ダメージアニメーション再生
 		pam_->Damage(damageStanTime_);
-
+		audio_->PlayWave(callapseSE);
 		// HPを減らす
 		//hitPoint_--;
 		//食べた野菜の数を減らす
-		absorptionCount_ -= subtractionAbsorptionCount_;
+		absorptionCount_ -= absorptionCount_/ subtractionAbsorptionCount_;
 		if (absorptionCount_ < 0) {
 			absorptionCount_ = 0;
 		}
@@ -424,35 +431,39 @@ void Player::Heal()
 		if (healTimer.GetIsFinish()) {
 			//うりぼーの回復
 			uribo_->Heal(healPower_);
-			// 減算するサイズを計算
-			float decSize = absorptionCount_ * scaleForce_;
-			if (transform_.scale_.y - decSize > 2.0f) {
-
-				// 減算サイズ分y座標を減算
-				transform_.translate_.y -= decSize;
-				// 大きさにサイズを減算
-				transform_.scale_ = {
-					transform_.scale_.x - decSize,
-					transform_.scale_.y - decSize,
-					transform_.scale_.z - decSize };
-				
-				
-			}
-			else {
-				transform_.translate_.y = 3.0f;
-				transform_.scale_ = { 2.0f,2.0f,2.0f };
-			}
 			//食べたカウントを減らす
-			absorptionCount_--;
-			healTimer.Start(healCoolTime_);
+			if (uribo_->GetIsCanHeal()) {
+				absorptionCount_--;
 
-			// 野菜を投げる演出用
-		 	FeedVegetable* fvg = GameObjectManager::GetInstance()->CreateInstance<FeedVegetable>("FeedVege", BaseObject::TagNone);
-			// 初期化後処理を呼び出す
-			fvg->PostInit(pam_->bodyTransform_.GetWorldPos(), uribo_->transform_.GetWorldPos());
+				// 減算するサイズを計算
+				float decSize = absorptionCount_ * scaleForce_;
+				if (transform_.scale_.y - decSize > 2.0f) {
 
-			// 与えたSEを再生する
-			audio_->PlayWave(feedSE_);
+					// 減算サイズ分y座標を減算
+					transform_.translate_.y -= decSize;
+					// 大きさにサイズを減算
+					transform_.scale_ = {
+						transform_.scale_.x - decSize,
+						transform_.scale_.y - decSize,
+						transform_.scale_.z - decSize };
+
+
+				}
+				else {
+					transform_.translate_.y = 3.0f;
+					transform_.scale_ = { 2.0f,2.0f,2.0f };
+				}
+
+				healTimer.Start(healCoolTime_);
+
+				// 野菜を投げる演出用
+				FeedVegetable* fvg = GameObjectManager::GetInstance()->CreateInstance<FeedVegetable>("FeedVege", BaseObject::TagNone);
+				// 初期化後処理を呼び出す
+				fvg->PostInit(pam_->bodyTransform_.GetWorldPos(), uribo_->transform_.GetWorldPos());
+
+				// 与えたSEを再生する
+				audio_->PlayWave(feedSE_);
+			}
 		}
 	}
 }
@@ -500,17 +511,19 @@ void Player::SetGlobalVariables()
 	kMaxAtackPushCount_= variables->GetIntValue(name_, "maxAtackCount");
 	//減らす野菜の数
 	subtractionAbsorptionCount_= variables->GetIntValue(name_, "subtractionAbsorptionCount_" );
+
+	absorptionAccelerationForce_ = variables->GetFloatValue(name_, "AbsorptionAcceleration");
 }
 
 void Player::Atacking()
 {
+	if (boss_) {
+		//攻撃力を吸収した数*攻撃倍率に
+		atackPower_ = static_cast<float>(absorptionCount_) * atackForce_;
+		velocity_ = Math::Normalize(Vector3(boss_->transform_.translate_.x, transform_.translate_.y, boss_->transform_.translate_.z) - transform_.translate_) * 2.0f;
 
-	//攻撃力を吸収した数*攻撃倍率に
-	atackPower_ = static_cast<float>(absorptionCount_) * atackForce_;
-	velocity_ = Math::Normalize(Vector3(0.0f, transform_.translate_.y, 0.0f) - transform_.translate_) * 2.0f;
-
-	isAtack_ = true;
-	
+		isAtack_ = true;
+	}
 }
 
 void Player::AddAtackCount()

@@ -28,5 +28,8 @@ private: // メンバ変数
 
 	// リザルトマネージャ
 	ResultManager* rm_ = nullptr;
+	// 音再生クラス
+	Audio* audio_ = nullptr;
+
 
 };

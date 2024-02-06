@@ -64,6 +64,8 @@ public://アクセッサ
 /// チュートリアル状態のセッター
 /// </summary>
    void SetTutrial(bool flag) { isTutrial_ = flag; }
+
+   bool GetIsCanHeal() { return IsCanHeal; }
 private: // プライベートなメンバ関数
 
 	/// <summary>
@@ -124,5 +126,9 @@ private: // メンバ変数
 	bool isDead_ = false;
 	//チュートリアルフラグ
 	bool isTutrial_;
+	//体力が減るまでの時間
+	KLib::DeltaTimer timer_;
+	//回復できるか
+	bool IsCanHeal;
 };
 

@@ -6,10 +6,31 @@ void RootState::Init()
 {
 	// 名称設定
 	name_ = "Root";
+	audio_= Audio::GetInstance();
+	chargeEnd_ = audio_->LoadWave("./Resources/Audio/SE/chargeMax.wav");
+	charge_ = audio_->LoadWave("./Resources/Audio/SE/charge.wav");
 }
 
 void RootState::Update()
 {
+	
+	//チャージ完了時
+	if (player_->GetAtackCount() == player_->GetmaxAtackCount()) {
+		chargeEndhandle = audio_->PlayWave(chargeEnd_);
+	}
+	if (InputManager::AtackCharge()&& player_->GetAbsorptionCount() >= kMinCount) {
+		if (!audio_->IsPlaying(chargeHandle)) {
+
+			chargeHandle = audio_->PlayWave(charge_);
+		}
+	}
+	else {
+		audio_->StopWave(chargeHandle);
+	}
+	if (player_->GetIsDamaged()) {
+		audio_->StopWave(chargeHandle);
+		return;
+	}
 	// チャージ秒数が既定秒数以上のとき、かつボタンを話したとき
 	if (player_->GetAtackCount() > player_->GetmaxAtackCount() && InputManager::Atacking()) {
 		// チャージパーティクルをとめる
@@ -76,6 +97,7 @@ void RootState::Update()
 		player_->SetIsCharge(false);
 		//攻撃ボタンを押しているカウントを0に
 		player_->ResetAtackCount();
+	
 		// 移動処理
 		Move();
 		
@@ -85,6 +107,8 @@ void RootState::Update()
 void RootState::DisplayImGui()
 {
 }
+
+
 
 void RootState::Move()
 {
@@ -100,10 +124,9 @@ void RootState::Move()
 	
 	// 求めた回転行列を元に移動ベクトルを回転させる
 	move = Math::Transform(move, rotateMat);
-
 	if (move.x != 0.0f || move.y != 0.0f || move.z != 0.0f) {
 		// プレイヤーの移動ベクトルと加速度を乗算
-		velocity_ += move * player_->GetMoveAcceleration();
+		velocity_ += move * (player_->GetMoveAcceleration()/*-((player_->GetAbsorptionAcceleration()/100.0f)*player_->GetAbsorptionCount())*/);
 	}
 	else {
 		// 無操作状態の場合は現在速度を0に近づけていく

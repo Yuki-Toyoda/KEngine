@@ -26,6 +26,7 @@ void InGameUIManager::Init()
 	moveSpriteBG_->SetIsActive(false);
 	moveSprite_->SetIsActive(false);
 	AttackSprite_->SetIsActive(false);
+	FeedSprite_->SetIsActive(false);
 	// アンカーポイント設定
 	bossHPGageSprite_Icon_->anchorPoint_ = { 0.5f, 0.2f };
 	playerVegetableCount2_->anchorPoint_ = { 0.5f, 0.5f };
@@ -211,6 +212,7 @@ void InGameUIManager::Update()
 		bossHPGageSprite_BG_->SetIsActive(false);
 		bossHPGageSprite_F_->SetIsActive(false);
 		bossHPGageSprite_Icon_->SetIsActive(false);
+		FeedSprite_->SetIsActive(false);
 	}
 }
 

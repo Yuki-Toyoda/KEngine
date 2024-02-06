@@ -3,7 +3,7 @@
 #include "../../Rubble/Rubble.h"
 #include "../../GameManager/GameManager.h"
 #include "../../../../Particle/ParticleEmitterManager.h"
-
+#include "../../../../Audio/Audio.h"
 class Meteor:public BaseObject
 {
 public: // メンバ関数
@@ -36,7 +36,7 @@ public: // アクセッサ等
 	/// </summary>
 	/// <param name="isFall">落下トリガー状態</param>
 	void SetIsFall(const bool& isFall) { isFall_ = isFall; }
-
+	void SetIsAudioPlay(bool flag) { isAudioPlay_ = flag; }
 private: // プライベートなメンバ関数
 
 	/// <summary>
@@ -67,6 +67,9 @@ private: // メンバ変数
 
 	// パーティクルエミッタマネージャ
 	ParticleEmitterManager* pem_ = nullptr;
-
+	
+	Audio* audio_;
+	int32_t BreakSE_;
+	bool isAudioPlay_;
 };
 

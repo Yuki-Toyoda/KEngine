@@ -122,6 +122,15 @@ bool InputManager::AtackCharge()
     return false;
 }
 
+bool InputManager::AtackChargeStart()
+{
+    if ((joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A) &&
+        (!(preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A))) {
+        return true;
+    }
+    return false;
+}
+
 bool InputManager::Heal()
 {
     if (joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_X) {

@@ -10,7 +10,7 @@
 // クラスの前方宣言
 class PlayerAnimManager;
 class Camera;
-
+class Boss;
 /// <summary>
 /// プレイヤークラス
 /// </summary>
@@ -143,7 +143,12 @@ public: // アクセッサ等
 	/// <returns>加速度</returns>
 	float GetMoveAcceleration() { return moveAcceleration_; }
 	/// <summary>
-	/// 最大加速度ゲッター
+	/// 加速度ゲッター
+	/// </summary>
+	/// <returns>加速度</returns>
+	float GetAbsorptionAcceleration() { return absorptionAccelerationForce_; }
+	/// <summary>
+	/// 最大加速度ゲッター 
 	/// </summary>
 	/// <returns>最大加速度</returns>
 	float GetMaxMoveAcceleration() { return kMaxMoveAcceleration_; }
@@ -202,6 +207,7 @@ public: // アクセッサ等
 	float GetDashAxelTime() { return dashAxelTime_; }
 	float GetDashBrakeTime() { return dashBrakeTime_; }
 
+	void SetBoss(Boss* boss) { boss_ = boss; }
 private: // プライベートなメンバ関数
 
 	/// <summary>
@@ -247,7 +253,7 @@ private: // メンバ変数
 	int32_t eatSE_ = 0u;
 	// 餌を与える
 	int32_t feedSE_ = 0u;
-
+	
 	// カメラ
 	Camera* camera_ = nullptr;
 
@@ -341,5 +347,10 @@ private: // メンバ変数
 	//攻撃チャージ
 	bool isCharge_;
 	bool isTutrialDash_;
+	//食べてるカウントによる加速度
+	float absorptionAccelerationForce_;
+	//つぶれたときのSE
+	int32_t callapseSE = 0u;
+	Boss* boss_;
 };
 

@@ -122,6 +122,7 @@
     <ClCompile Include="Engine\Particle\User\RubbleFadeParticle.cpp" />
     <ClCompile Include="Engine\Particle\User\RubbleFadeParticleEmitter.cpp" />
     <ClCompile Include="Engine\GameObject\User\FeedVegetable\FeedVegetable.cpp" />
+    <ClCompile Include="Engine\GameObject\User\camera\TutrialCmera.cpp" />
     <ClCompile Include="Engine\Particle\User\MoveParticle.cpp" />
     <ClCompile Include="Engine\Particle\User\MoveParticleEmitter.cpp" />
     <ClCompile Include="Engine\Particle\User\BoxBreakParticle.cpp" />
@@ -268,6 +269,7 @@
     <ClInclude Include="Engine\Particle\User\RubbleFadeParticle.h" />
     <ClInclude Include="Engine\Particle\User\RubbleFadeParticleEmitter.h" />
     <ClInclude Include="Engine\GameObject\User\FeedVegetable\FeedVegetable.h" />
+    <ClInclude Include="Engine\GameObject\User\camera\TutrialCmera.h" />
     <ClInclude Include="Engine\Particle\User\MoveParticle.h" />
     <ClInclude Include="Engine\Particle\User\MoveParticleEmitter.h" />
     <ClInclude Include="Engine\Particle\User\BoxBreakParticle.h" />

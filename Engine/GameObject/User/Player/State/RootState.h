@@ -1,6 +1,6 @@
 #pragma once
 #include "IPlayerState.h"
-
+#include "../../../../Audio/Audio.h"
 /// <summary>
 /// 待機時行動状態
 /// </summary>
@@ -20,7 +20,7 @@ class RootState:public IPlayerState
 	/// ImGui表示関数
 	/// </summary>
 	void DisplayImGui() override;
-
+	
 private: // プライベートなメンバ関数
 
 	/// <summary>
@@ -37,6 +37,11 @@ public:
 
 	//攻撃可能になるための破片最低数
 	int kMinCount = 1;
-
+	//チャージ
+	int32_t charge_ = 0u;
+	int32_t chargeEnd_ = 0u;
+	int chargeHandle=-1;
+	int chargeEndhandle=-1;
+	Audio* audio_;
 };
 

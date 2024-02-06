@@ -7,6 +7,11 @@ bool ResultScene::isClear_ = false;
 
 void ResultScene::Init()
 {
+
+	// 音再生クラスのインスタンス取得
+	audio_ = Audio::GetInstance();
+
+	
 	// カメラ生成
 	Camera* c = gameObjectManager_->CreateInstance<Camera>("Incamera", BaseObject::TagCamera);
 	// このカメラを使用
@@ -51,6 +56,7 @@ void ResultScene::Update()
 	// リザルトマネージャの状態で遷移
 	if (rm_->GetIsSceneChange()) {
 		if (rm_->GetIsRetry()) {
+			
 			BaseScene* nextScene = new GameScene();
 			SceneManager::GetInstance()->SetNextScene(nextScene);
 			
@@ -59,6 +65,7 @@ void ResultScene::Update()
 			BaseScene* nextScene = new TitleScene();
 			SceneManager::GetInstance()->SetNextScene(nextScene);
 		}
+		
 	}
 
 }

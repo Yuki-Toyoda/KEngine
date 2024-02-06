@@ -31,3 +31,4 @@
 #include "User/Enemy/TutrialBoss/TutrialBoss.h"
 #include "User/GameManager/GameManager.h"
 #include "User/FeedVegetable/FeedVegetable.h"
+#include "User/camera/TutrialCmera.h"

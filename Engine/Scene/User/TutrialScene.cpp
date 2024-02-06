@@ -12,23 +12,30 @@ void TutrialScene::Init()
 	audio_ = Audio::GetInstance();
 
 	// BGMロード
-	//bgmHandle_ = audio_->LoadWave("./Resources/Audio/BGM/inGame.wav");
+	// BGMロード
+	bgmHandle_ = audio_->LoadWave("./Resources/Audio/BGM/tutorial.wav");
+	bgmVoiceHadle_ = audio_->PlayWave(bgmHandle_, true, 1.0f);
 
 	gameManager = gameObjectManager_->CreateInstance<GameManager>("gameManager", BaseObject::TagNone);
 	camera_ = nullptr;
 	camera_ = gameObjectManager_->CreateInstance<InGameCamera>("Incamera", BaseObject::TagCamera);
 	camera_->UseThisCamera();
+	TutrialCamera* tcamera = nullptr;
+	tcamera = gameObjectManager_->CreateInstance<TutrialCamera>("TutrialCamera", BaseObject::TagCamera);
 	// スカイドーム生成
 	SkyDome* skyDome = nullptr;
 	skyDome = gameObjectManager_->CreateInstance<SkyDome>("SkyDome", BaseObject::TagNone);
-
+	// 地面生成
+	Ground* ground;
+	ground = gameObjectManager_->CreateInstance<Ground>("Ground", BaseObject::TagFloor);
+	ground->transform_.scale_ = { 55.0f,1.0f,55.0f };
 	// プレイヤー生成
 	player_ = nullptr;
 	player_ = gameObjectManager_->CreateInstance<Player>("Player", BaseObject::TagPlayer);
 	// プレイヤーのy座標
 	player_->transform_.scale_ = { 2.0f, 2.0f, 2.0f };
-	player_->transform_.translate_.y = 3.0f;
-	player_->transform_.translate_.x = 10.0f;
+	player_->transform_.translate_ = { 0.0f,3.0f,-40.0f };
+
 	player_->SetIsTutrial(true);
 	// プレイヤーをカメラにセットする
 	camera_->SetPlayer(player_);
@@ -43,7 +50,7 @@ void TutrialScene::Init()
 	boss_->SetInGameCamera(camera_);
 	//GameManagerをセット
 	boss_->SetgameManager(gameManager);
-	
+	player_->SetBoss(boss_);
 	// ウリボの生成
 	uribo_ = gameObjectManager_->CreateInstance<Uribo>("uribo", BaseObject::TagUribo);
 	uribo_->SetTutrial(true);
@@ -57,10 +64,7 @@ void TutrialScene::Init()
 	// アニメーションを生成
 	am->CreateAnimation();
 
-	// 地面生成
-	Ground* ground;
-	ground = gameObjectManager_->CreateInstance<Ground>("Ground", BaseObject::TagFloor);
-	ground->transform_.scale_ = { 55.0f,1.0f,55.0f };
+	
 	// プレイヤーに生成した地面をセット
 	player_->SetGround(ground);
 	
@@ -99,6 +103,8 @@ void TutrialScene::Init()
 	tm_->SetBoss(boss_);
 	tm_->SetPlayer(player_);
 	tm_->SetUribo(uribo_);
+	tm_->SetIngameCamera(camera_);
+	tm_->SetTutrialCamera(tcamera);
 	// フェードイン
 	FadeManager::GetInstance()->ChangeParameter("FadeIn", true);
 	FadeManager::GetInstance()->Play();
@@ -109,6 +115,8 @@ void TutrialScene::Update()
 {
 	InputManager::Update();
 	if (tm_->GetTutrialEnd()) {
+		// BGMを止める
+		audio_->StopWave(bgmVoiceHadle_);
 		BaseScene* nextScene = new GameScene();
 		SceneManager::GetInstance()->SetNextScene(nextScene);
 	}
@@ -123,6 +131,7 @@ void TutrialScene::Update()
 
 	// デバッグ遷移
 	if (input_->TriggerKey(DIK_RSHIFT)) {
+
 		BaseScene* nextScene = new GameScene();
 		SceneManager::GetInstance()->SetNextScene(nextScene);
 

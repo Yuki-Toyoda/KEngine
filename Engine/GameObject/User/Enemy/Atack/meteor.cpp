@@ -6,6 +6,8 @@
 
 void Meteor::Init()
 {
+	audio_ = Audio::GetInstance();
+	BreakSE_ = audio_->LoadWave("./Resources/Audio/SE/woodBreak.wav");
 	// パーティクルエミッタマネージャのインスタンス取得
 	pem_ = ParticleEmitterManager::GetInstance();
 
@@ -64,7 +66,9 @@ void Meteor::OnCollisionEnter(Collider* collider)
 	// プレイヤーと当たった際のコールバック
 	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagPlayer) {
 		Destroy();
-		return;
+		if (isAudioPlay_) {
+			audio_->PlayWave(BreakSE_);
+		}return;
 	}
 
 	//床と当たったらオブジェクトを破壊してがれきを生成
@@ -109,6 +113,9 @@ void Meteor::OnCollisionEnter(Collider* collider)
 			if (std::abs(pos.x + gameManager_->rubbleSize_) >= 55.0f || std::abs(pos.z + gameManager_->rubbleSize_) >= 55.0f) {
 				rubble->Destroy();
 			}
+		}
+		if (isAudioPlay_) {
+			audio_->PlayWave(BreakSE_);
 		}
 		Destroy();
 		return;

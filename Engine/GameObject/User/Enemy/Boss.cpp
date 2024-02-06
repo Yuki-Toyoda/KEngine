@@ -47,6 +47,7 @@ void Boss::SuccessorInit()
 	variables->AddItem(name_, "RollerAttackReadyTime", rollerAttackReadyTime_);
 	variables->AddItem(name_, "ShakeTime", shakeTime_);
 	variables->AddItem(name_, "ShakeStrength", shakeStrength_);
+	variables->AddItem(name_, "Translate",transform_.translate_ );
 	ApplyGlobalVariables();
 	isTutrial_ = false;
 }
@@ -141,6 +142,7 @@ void Boss::DisplayImGui()
 		variables->SetValue(name_, "RollerAttackReadyTime", rollerAttackReadyTime_);
 		variables->SetValue(name_, "ShakeTime", shakeTime_);
 		variables->SetValue(name_, "ShakeStrength", shakeStrength_);
+		variables->SetValue(name_, "Translate", transform_.translate_);
 		variables->SaveFile(name_);
 	}if (ImGui::Button("changeStateAtack")) {
 		ChangeState(std::make_unique<SingleAtackState>());
@@ -310,6 +312,7 @@ void Boss::ApplyGlobalVariables()
 	rollerAttackReadyTime_ = variables->GetFloatValue(name_, "RollerAttackReadyTime");
 	shakeTime_ = variables->GetFloatValue(name_, "ShakeTime");
 	shakeStrength_ = variables->GetVector2Value(name_, "ShakeStrength");
+	transform_.translate_=  variables->GetVector3Value(name_, "Translate");
 }
 
 std::unique_ptr<IEnemyState> Boss::MakeState(std::string name)
