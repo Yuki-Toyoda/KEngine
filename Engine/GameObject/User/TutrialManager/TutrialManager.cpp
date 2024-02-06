@@ -15,7 +15,7 @@ void TutrialManager::Init()
 	sprites_[4]->anchorPoint_ = { 0.5f,0.5f };
 	AddSprite("owari", uiPosition_, { 768.0f,64.0f }, TextureManager::Load("./Resources/UI/Tutorial", "Tutorial_08.png"));
 	sprites_[5]->anchorPoint_ = { 0.5f,0.5f };
-	AddSprite(" plactice", { 648.0f,128.0f }, { 768.0f,64.0f }, TextureManager::Load("./Resources/UI/Tutorial", "Tutorial_09.png"));
+	AddSprite(" plactice", uiPosition_, { 768.0f,64.0f }, TextureManager::Load("./Resources/UI/Tutorial", "Tutorial_09.png"));
 	sprites_[6]->anchorPoint_ = { 0.5f,0.5f };
 	AddSprite("dash", uiPosition_, { 768.0f,64.0f }, TextureManager::Load("./Resources/UI/Tutorial", "Tutorial_07.png"));
 	sprites_[7]->anchorPoint_ = { 0.5f,0.5f };
@@ -99,7 +99,17 @@ void TutrialManager::Update()
 		break;
 	case end:
 		sprites_[5]->SetIsActive(true);
+		if (timer_.GetIsFinish()) {
+			timer_.Start(2.0f);
+		}
+		timer_.Update();
+		if (timer_.GetIsFinish()) {
+			step++;
+		}
+		break;
+	case plactice:
 		sprites_[6]->SetIsActive(true);
+		sprites_[9]->translate_ = { 648.0f,128.0f };
 		break;
 	default:
 		break;
