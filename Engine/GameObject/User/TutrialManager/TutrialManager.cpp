@@ -111,13 +111,14 @@ void TutrialManager::Update()
 		sprites_[4]->SetIsActive(true);
 		if (uribo_->TutrialEnd()) {
 			step++;
-			boss_->SetTutrialAtackEnd(false);
+			
 			player_->SetIsTutrialDash(false);
 		}
 		break;
 	case Dash:
 		sprites_[7]->SetIsActive(true);
 		if (player_->GetISTutrialDash()) {
+			boss_->SetTutrialAtackEnd(false);
 			step++;
 		}
 		break;
