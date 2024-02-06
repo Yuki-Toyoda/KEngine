@@ -42,6 +42,11 @@ public: // メンバ関数
 	void Play(const int32_t& keyIndex);
 
 	/// <summary>
+	/// アニメーションの強制終了関数
+	/// </summary>
+	void End();
+
+	/// <summary>
 	/// ImGuiの表示関数
 	/// </summary>
 	void DisplayImGui();
@@ -283,6 +288,12 @@ inline void AnimationKeys<T>::Play(const int32_t& keyIndex){
 	isPlay_ = true;
 	// 再生中
 	isEnd_ = false;
+
+}
+
+template<typename T>
+inline void AnimationKeys<T>::End()
+{
 
 }
 

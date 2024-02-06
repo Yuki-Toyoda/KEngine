@@ -45,18 +45,6 @@ void ResultManager::Update()
 	preJoyState_ = joyState_; // 前フレームの入力取得
 	input_->GetJoystickState(0, joyState_); // 現在フレームの入力取得
 
-	// スティックの入力検知
-	Vector3 stickVec = Vector3((float)joyState_.Gamepad.sThumbLX / SHRT_MAX,
-		0.0f, (float)joyState_.Gamepad.sThumbLY / SHRT_MAX);
-	// スティック入力の正規化を行う
-	stickVec = Math::Normalize(stickVec);
-
-	// 前フレームのスティックの入力検知
-	Vector3 preStickVec = Vector3((float)preJoyState_.Gamepad.sThumbLX / SHRT_MAX,
-		0.0f, (float)preJoyState_.Gamepad.sThumbLY / SHRT_MAX);
-	// スティック入力の正規化を行う
-	preStickVec = Math::Normalize(preStickVec);
-
 	// スプライトの透明度を設定
 	sprites_[0]->color_ = { 1.0f, 1.0f, 1.0f, spriteAlpha_ };
 	sprites_[2]->color_ = { 1.0f, 1.0f, 1.0f, spriteAlpha_ };
@@ -64,6 +52,26 @@ void ResultManager::Update()
 
 	// パラメータがStart状態の時
 	if (anim_->GetReadingParameterName() == "Result_FailStart" || anim_->GetReadingParameterName() == "Result_ClearStart") {
+		// アニメーション進捗が2割りを超えている場合
+		if (anim_->GetAnimationProgress() >= 0.35f) {
+			// Aボタンを押したら開始演出スキップ
+			if ((joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A &&
+				!(preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A))) {
+				// クリアしたかによって再生アニメーション変更
+				if (isCleared_) {
+					anim_->ChangeParameter("Result_ClearIdle", true);
+				}
+				else {
+					anim_->ChangeParameter("Result_FailIdle", true);
+				}
+
+				// ループ有効
+				anim_->isLoop_ = true;
+				// 再生
+				anim_->Play();
+			}
+		}
+		
 		// アニメーション終了時
 		if (anim_->isEnd_) {
 			// クリアしたかによって再生アニメーション変更
@@ -80,69 +88,82 @@ void ResultManager::Update()
 			anim_->Play();
 		}
 	}
-
-	if (!isFade_) {
-		// 左右方向への入力があった場合
-		if ((stickVec.x >= 0.5f && preStickVec.x <= 0.5f) || (stickVec.x <= -0.5f && preStickVec.x >= -0.5f)) {
-			if (!isRetry_) {
-				// リトライする
-				isRetry_ = true;
-
-				if (isCleared_) {
-					// タイトルへ戻るテキスト
-					sprites_[2]->texBase_ = { 432.0f, 0.0f };
-					// リトライテキスト
-					sprites_[3]->texBase_ = { 0.0f, 0.0f };
-				}
-				else {
-					// タイトルへ戻るテキスト
-					sprites_[2]->texBase_ = { 0.0f, 0.0f };
-					// リトライテキスト
-					sprites_[3]->texBase_ = { 432.0f, 0.0f };
-				}
-			}
-			else {
-				// リトライする
-				isRetry_ = false;
-
-				if (isCleared_) {
-					// タイトルへ戻るテキスト
-					sprites_[2]->texBase_ = { 0.0f, 0.0f };
-					// リトライテキスト
-					sprites_[3]->texBase_ = { 432.0f, 0.0f };
-				}
-				else {
-					// タイトルへ戻るテキスト
-					sprites_[2]->texBase_ = { 432.0f, 0.0f };
-					// リトライテキスト
-					sprites_[3]->texBase_ = { 0.0f, 0.0f };
-				}
-			}
-		}
-	}
-
-	// Aボタンを押すとその遷移を開始する
-	if ((joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A &&
-		!(preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A))) {
-		// UIを変更する
-		sprites_[0]->texBase_ = Vector2(304.0f, 0.0f);
-
-		// フェード演出を一回も行っていない場合
-		if (!isFade_) {
-			// フェードアウトさせる
-			fadeManager_->ChangeParameter("FadeOut");
-			fadeManager_->Play();
-
-			// 決定音再生
-			audio_->PlayWave(decisionSE_);
-
-			// フェードトリガーtrue
-			isFade_ = true;
-		}
-	}
 	else {
-		// UIを変更する
-		sprites_[0]->texBase_ = Vector2(0.0f, 0.0f);
+		// スティックの入力検知
+		Vector3 stickVec = Vector3((float)joyState_.Gamepad.sThumbLX / SHRT_MAX,
+			0.0f, (float)joyState_.Gamepad.sThumbLY / SHRT_MAX);
+		// スティック入力の正規化を行う
+		stickVec = Math::Normalize(stickVec);
+
+		// 前フレームのスティックの入力検知
+		Vector3 preStickVec = Vector3((float)preJoyState_.Gamepad.sThumbLX / SHRT_MAX,
+			0.0f, (float)preJoyState_.Gamepad.sThumbLY / SHRT_MAX);
+		// スティック入力の正規化を行う
+		preStickVec = Math::Normalize(preStickVec);
+
+		if (!isFade_) {
+			// 左右方向への入力があった場合
+			if ((stickVec.x >= 0.5f && preStickVec.x <= 0.5f) || (stickVec.x <= -0.5f && preStickVec.x >= -0.5f)) {
+				if (!isRetry_) {
+					// リトライする
+					isRetry_ = true;
+
+					if (isCleared_) {
+						// タイトルへ戻るテキスト
+						sprites_[2]->texBase_ = { 432.0f, 0.0f };
+						// リトライテキスト
+						sprites_[3]->texBase_ = { 0.0f, 0.0f };
+					}
+					else {
+						// タイトルへ戻るテキスト
+						sprites_[2]->texBase_ = { 0.0f, 0.0f };
+						// リトライテキスト
+						sprites_[3]->texBase_ = { 432.0f, 0.0f };
+					}
+				}
+				else {
+					// リトライする
+					isRetry_ = false;
+
+					if (isCleared_) {
+						// タイトルへ戻るテキスト
+						sprites_[2]->texBase_ = { 0.0f, 0.0f };
+						// リトライテキスト
+						sprites_[3]->texBase_ = { 432.0f, 0.0f };
+					}
+					else {
+						// タイトルへ戻るテキスト
+						sprites_[2]->texBase_ = { 432.0f, 0.0f };
+						// リトライテキスト
+						sprites_[3]->texBase_ = { 0.0f, 0.0f };
+					}
+				}
+			}
+		}
+
+		// Aボタンを押すとその遷移を開始する
+		if ((joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A &&
+			!(preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A))) {
+			// UIを変更する
+			sprites_[0]->texBase_ = Vector2(304.0f, 0.0f);
+
+			// フェード演出を一回も行っていない場合
+			if (!isFade_) {
+				// フェードアウトさせる
+				fadeManager_->ChangeParameter("FadeOut");
+				fadeManager_->Play();
+
+				// 決定音再生
+				audio_->PlayWave(decisionSE_);
+
+				// フェードトリガーtrue
+				isFade_ = true;
+			}
+		}
+		else {
+			// UIを変更する
+			sprites_[0]->texBase_ = Vector2(0.0f, 0.0f);
+		}
 	}
 
 	// フェードマネージャが演出中ではない、かつフェード演出トリガーがtrueなら
