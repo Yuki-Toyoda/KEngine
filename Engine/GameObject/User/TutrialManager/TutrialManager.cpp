@@ -9,7 +9,7 @@ void TutrialManager::Init()
 	sprites_[1]->anchorPoint_ = { 0.5f,0.5f };
 	AddSprite("butukare", uiPosition_, { 768.0f,64.0f }, TextureManager::Load("./Resources/UI/Tutorial", "Tutorial_03.png"));
 	sprites_[2]->anchorPoint_ = { 0.5f,0.5f };
-	AddSprite("onakasuita", uiPosition_, { 768.0f,64.0f }, TextureManager::Load("./Resources/UI/Tutorial", "Tutorial_04.png"));
+	AddSprite("onakasuita", uiPosition_, { 1136.0f,80.0f }, TextureManager::Load("./Resources/UI/Tutorial", "Tutorial_04.png"));
 	sprites_[3]->anchorPoint_ = { 0.5f,0.5f };
 	AddSprite("kaihuku", {648.0f,128.0f}, {768.0f,64.0f}, TextureManager::Load("./Resources/UI/Tutorial", "Tutorial_05.png"));
 	sprites_[4]->anchorPoint_ = { 0.5f,0.5f };
@@ -23,7 +23,7 @@ void TutrialManager::Init()
 	sprites_[8]->anchorPoint_ = { 0.5f,0.5f };
 	AddSprite("skipFrame ", { 1000.0f,684.0f }, { 554.0f,51.0f }, TextureManager::Load("./Resources/UI/Tutorial", "tutorialSkipFram.png"));
 	sprites_[9]->anchorPoint_ = { 0.5f,0.5f };
-	AddSprite("GameOver", uiPosition_, { 768.0f,64.0f }, TextureManager::Load("./Resources/UI/Tutorial", "Ttutorial_06.png"));
+	AddSprite("GameOver", uiPosition_, { 894.0f,64.0f }, TextureManager::Load("./Resources/UI/Tutorial", "Ttutorial_06.png"));
 	sprites_[10]->anchorPoint_ = { 0.5f,0.5f };
 	sprites_[8]->SetParent(sprites_[9]->GetWorldTransform());
 	step = yokero;
@@ -51,7 +51,14 @@ void TutrialManager::Update()
 	sprites_[8]->SetIsActive(true);
 	sprites_[9]->SetIsActive(true);
 	sprites_[8]->scale_.y = Math::Linear((float)skipCount_,0.0f,51.0f,60.0f);
+	sprites_[8]->texBase_.y = Math::Linear((float)skipCount_, 80.0f,0.0f,60.0f);
+	sprites_[8]->texSize_.y = Math::Linear((float)skipCount_, 0.0f, 80.0f,60.0f);
 	sprites_[8]->translate_.y = Math::Linear((float)skipCount_, 25.5f, 0.0f, 60.0f);
+
+	if (sprites_[8]->texSize_.y > 80.0f) {
+		sprites_[8]->texSize_.y = 80.0f;
+	}
+
 	switch (step)
 	{
 
