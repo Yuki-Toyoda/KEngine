@@ -14,7 +14,7 @@ void MoveParticleEmitter::GenerateParticle()
 		}
 
 		// 生成粒子の大きさ設定
-		float size = Math::RandomF(0.75f, 1.75f, 1);
+		float size = Math::RandomF(0.75f, 1.25f, 1);
 		Vector2 generateScale = { size, size };
 		// 生成場所をランダム設定
 		Vector3 generatePosition
@@ -26,7 +26,7 @@ void MoveParticleEmitter::GenerateParticle()
 		Vector4 generateColor = { 1.0f,1.0f,1.0f,1.0f };
 		// 新しい粒子を生成
 		std::unique_ptr<IParticle>newParticle = type_();
-		newParticle->PreInit(2.0f, generatePosition, generateScale, {}, texture_, generateColor);
+		newParticle->PreInit(0.75f, generatePosition, generateScale, {}, texture_, generateColor);
 
 		// 生成した粒子をリストに追加
 		particles_.push_back(std::move(newParticle));
