@@ -14,7 +14,7 @@ void HitParticleEmiiter::GenerateParticle()
 		}
 
 		// 生成粒子の大きさ設定
-		float size = Math::RandomF(1.0f, 4.5f, 1);
+		float size = Math::RandomF(2.5f, 5.5f, 1);
 		Vector2 generateScale = { size, size };
 		// 生成粒子の速度ベクトル設定
 		Vector3 generateVelocity
