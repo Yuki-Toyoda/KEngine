@@ -44,7 +44,7 @@ void BillboardPlane::UpdateBillboardMat()
 	);
 	// ビルボード行列を調べる
 	billboardMat_ = viewMat * worldMatrix;
-
+	
 	// 計算したワールド行列を代入
 	transform_->SetWorldMat(billboardMat_);
 }

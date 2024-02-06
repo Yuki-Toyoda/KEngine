@@ -113,6 +113,9 @@ private: // メンバ変数
 	// プレイヤーのモデル
 	PlayerAnimManager* pam_ = nullptr;
 
+	// ウリボのワールド座標
+	WorldTransform uriboTransform_;
+
 	// 天球モデル
 	SkyDome* skyDome_ = nullptr;
 
@@ -128,6 +131,9 @@ private: // メンバ変数
 	bool isFade_ = false;
 	// シーンチェンジトリガー
 	bool isSceneChange_ = false;
+
+	// スプライトの透明度用
+	float spriteAlpha_ = 0.0f;
 
 #pragma endregion
 

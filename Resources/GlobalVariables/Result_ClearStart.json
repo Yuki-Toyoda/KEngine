@@ -1,0 +1,97 @@
+{
+    "Result_ClearStart": {
+        "Button1_Translate : KeyCount": 0,
+        "Button1_Translate key : 0": [
+            0.0,
+            0.0
+        ],
+        "Button1_Translate key : 0 : EasingParameter": 0,
+        "Button1_Translate key : 0 : PlayFrame": 0,
+        "Button2_Translate : KeyCount": 0,
+        "Button2_Translate key : 0": [
+            0.0,
+            0.0
+        ],
+        "Button2_Translate key : 0 : EasingParameter": 0,
+        "Button2_Translate key : 0 : PlayFrame": 0,
+        "ButtonAlpha : KeyCount": 0,
+        "ButtonAlpha key : 0": 0.0,
+        "ButtonAlpha key : 0 : EasingParameter": 0,
+        "ButtonAlpha key : 0 : PlayFrame": 0,
+        "Camera_Rotate : KeyCount": 0,
+        "Camera_Rotate key : 0": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Camera_Rotate key : 0 : EasingParameter": 0,
+        "Camera_Rotate key : 0 : PlayFrame": 0,
+        "Camera_Translate : KeyCount": 0,
+        "Camera_Translate key : 0": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Camera_Translate key : 0 : EasingParameter": 0,
+        "Camera_Translate key : 0 : PlayFrame": 0,
+        "Player_Rotate : KeyCount": 0,
+        "Player_Rotate key : 0": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Player_Rotate key : 0 : EasingParameter": 0,
+        "Player_Rotate key : 0 : PlayFrame": 0,
+        "Player_Scale : KeyCount": 0,
+        "Player_Scale key : 0": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Player_Scale key : 0 : EasingParameter": 0,
+        "Player_Scale key : 0 : PlayFrame": 0,
+        "Player_Translate : KeyCount": 0,
+        "Player_Translate key : 0": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Player_Translate key : 0 : EasingParameter": 0,
+        "Player_Translate key : 0 : PlayFrame": 0,
+        "Text_Rotate : KeyCount": 0,
+        "Text_Rotate key : 0": 0.0,
+        "Text_Rotate key : 0 : EasingParameter": 0,
+        "Text_Rotate key : 0 : PlayFrame": 0,
+        "Text_Translate : KeyCount": 0,
+        "Text_Translate key : 0": [
+            0.0,
+            0.0
+        ],
+        "Text_Translate key : 0 : EasingParameter": 0,
+        "Text_Translate key : 0 : PlayFrame": 0,
+        "Uribo_Rotate : KeyCount": 0,
+        "Uribo_Rotate key : 0": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Uribo_Rotate key : 0 : EasingParameter": 0,
+        "Uribo_Rotate key : 0 : PlayFrame": 0,
+        "Uribo_Scale : KeyCount": 0,
+        "Uribo_Scale key : 0": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Uribo_Scale key : 0 : EasingParameter": 0,
+        "Uribo_Scale key : 0 : PlayFrame": 0,
+        "Uribo_Translate : KeyCount": 0,
+        "Uribo_Translate key : 0": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Uribo_Translate key : 0 : EasingParameter": 0,
+        "Uribo_Translate key : 0 : PlayFrame": 0
+    }
+}

@@ -121,6 +121,7 @@
     <ClCompile Include="Engine\Particle\User\RubbleFadeParticle.cpp" />
     <ClCompile Include="Engine\Particle\User\RubbleFadeParticleEmitter.cpp" />
     <ClCompile Include="Engine\GameObject\User\FeedVegetable\FeedVegetable.cpp" />
+    <ClCompile Include="Engine\GameObject\User\ResultManager\ResultManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\GameObject\User\Enemy\State\MultiAtackState.h" />
