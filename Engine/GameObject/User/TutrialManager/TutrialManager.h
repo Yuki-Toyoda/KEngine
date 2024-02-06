@@ -4,9 +4,14 @@
 #include "../Enemy/Boss.h"
 #include "../Player/Player.h"
 #include "../Player/uribo/uribo.h"
+#include "../camera/InGameCamera.h"
+#include "../camera/TutrialCmera.h"
 enum TutrialStep {
 	yokero,
 	atumero,
+	cameraMove,
+	onakasuita,
+	cameraBack,
 	kaihuku,
 	Dash,
 	kougeki,
@@ -35,6 +40,9 @@ public://アクセッサ
 	void SetPlayer(Player* player) { player_ = player; }
 	void SetUribo(Uribo* uribo) { uribo_ = uribo; }
 	bool GetTutrialEnd() { return isEnd_; }
+
+	void SetTutrialCamera(TutrialCamera* camera) { tCamera_ = camera; }
+	void SetIngameCamera(InGameCamera* camera) { iCamera_ = camera; }
 private:
      int step;
 	 KLib::DeltaTimer timer_;
@@ -44,5 +52,7 @@ private:
 	 Uribo* uribo_;
 	 int skipCount_;
 	 bool isEnd_;
+	 InGameCamera* iCamera_;
+	 TutrialCamera* tCamera_;
 };
 
