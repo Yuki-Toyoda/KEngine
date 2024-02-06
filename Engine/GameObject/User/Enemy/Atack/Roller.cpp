@@ -15,7 +15,10 @@ void Roller::Init()
 	// 座標の高さを設定
 	transform_.translate_.y = 2.0f;
 	color_ = { 1.0f,0.0f,0.0f,1.0f };
-	
+
+	isFall_ = true;
+
+	fallTimer_.Start(1.5f);
 	
 }
 
@@ -23,9 +26,11 @@ void Roller::Update()
 {
 	// 移動加速度をゲームマネージャーから取得
 	moveAcceleration_ = gameManager_->RollerSpeed_;
-	
+
+	fallTimer_.Update();
+
 	// 動作トリガーがtrueの時
-	if (isMove_) {
+	if (isMove_ && !isFall_) {
 		// ?????????????
 		if (std::fabsf(velocity_.x) > std::fabsf(velocity_.z)) {
 
@@ -47,6 +52,14 @@ void Roller::Update()
 			}
 		}
 		transform_.translate_ += Math::Normalize(velocity_) * moveAcceleration_;
+	}
+	if (isFall_) 
+	{
+		transform_.translate_.y = KLib::Lerp<float>(50.0f, 2.0f, KLib::EaseInQuad(fallTimer_.GetProgress()));
+	}
+
+	if (fallTimer_.GetIsFinish()) {
+		isFall_ = false;
 	}
 
 	if (std::abs(transform_.translate_.x) >= 60.0f || std::abs(transform_.translate_.z) >= 60.0f) {

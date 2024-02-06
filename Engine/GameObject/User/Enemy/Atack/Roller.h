@@ -40,6 +40,11 @@ private: // メンバ変数
 	// 動作トリガー
 	bool isMove_ = false;
 
+	// 落下トリガー
+	bool isFall_ = true;
+
+	KLib::DeltaTimer fallTimer_;
+
 public: // アクセッサ
 
 	/// <summary>

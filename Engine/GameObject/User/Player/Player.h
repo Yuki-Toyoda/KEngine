@@ -197,6 +197,11 @@ public: // アクセッサ等
 /// </summary>
 	bool GetISTutrialDash() { return isTutrialDash_; }
 	void SetIsTutrialDash(bool flag) { isTutrialDash_ = flag; }
+
+	float GetDashPower() { return dashPower_; }
+	float GetDashAxelTime() { return dashAxelTime_; }
+	float GetDashBrakeTime() { return dashBrakeTime_; }
+
 private: // プライベートなメンバ関数
 
 	/// <summary>
@@ -277,7 +282,7 @@ private: // メンバ変数
 	// 減速の時間
 	float dashBrakeTime_ = 0.15f;
 	// ダッシュの量
-	float dashPower = 7.5f;
+	float dashPower_ = 7.5f;
 
 	//吸収した数
 	int absorptionCount_;

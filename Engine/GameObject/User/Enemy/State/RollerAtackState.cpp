@@ -33,8 +33,6 @@ void RollerAtackState::Init()
 	// 落下攻撃アニメーション開始
 	enemy_->GetBossAnimManager()->PlayRollerAttackAnim(enemy_->GetRollerAttackReadyTime());
 
-	fallTimer_.Start(1.5f);
-
 }
 
 void RollerAtackState::Update()
@@ -54,13 +52,6 @@ void RollerAtackState::Update()
 		enemy_->ChangeState(std::make_unique<WaitTimeState>());
 		// これ以降の処理を行わない
 		return;
-	}
-	else {
-		fallTimer_.Update();
-
-		for (Roller* r : rollers_) {
-			r->transform_.translate_.y = KLib::Lerp<float>(50.0f, 2.0f, KLib::EaseInQuad(fallTimer_.GetProgress()));
-		}
 	}
 
 }

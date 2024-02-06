@@ -10,10 +10,10 @@ void DashState::Init()
 	// 進ませる方向ベクトル
 	moveDirect_ = Math::Normalize(player_->GetMoveDirect());
 	// 終了フレーム
-	GlobalVariables* variables = GlobalVariables::GetInstance();
-	axelTimer_ = variables->GetFloatValue(player_->GetObjectName(), "axelTime");
-	brakeTimer_ = variables->GetFloatValue(player_->GetObjectName(), "brakeTime");
-	dashPower_ = variables->GetFloatValue(player_->GetObjectName(), "dashPower");
+	//GlobalVariables* variables = GlobalVariables::GetInstance();
+	axelTimer_ = player_->GetDashAxelTime();
+	brakeTimer_ = player_->GetDashBrakeTime();
+	dashPower_ = player_->GetDashPower();
 	// 加速と減速の段階を管理する
 	moveStep_ = kAccleratorStep;
 	// 開始
