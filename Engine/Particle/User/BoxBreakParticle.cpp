@@ -2,6 +2,7 @@
 
 void BoxBreakParticle::Init()
 {
+	//rotate_ = Math::RandomF(0, 180.0f, 3);
 }
 
 void BoxBreakParticle::Update()
@@ -13,5 +14,6 @@ void BoxBreakParticle::Update()
 	color_.w = KLib::Lerp(1.0f, 0.0f, KLib::EaseInOutQuad(aliveTimer_.GetProgress()));
 
 	// 粒子の移動ベクトルを徐々に下げる
-	velocity_.y -= 0.015f;
+	float decrementValue = 0.03f;
+	velocity_.y -= decrementValue;
 }

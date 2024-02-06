@@ -14,3 +14,5 @@
 #include "User/MoveParticleEmitter.h"
 #include "User/BoxBreakParticle.h"
 #include "User/BoxBreakParticleEmitter.h"
+#include "User/ChargeCircleParticle.h"
+#include "User/ChargeCircleParticleEmitter.h"

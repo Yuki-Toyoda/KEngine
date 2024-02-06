@@ -25,5 +25,7 @@ private: // メンバ変数
 	// 線形補間終端座標
 	Vector3 endPos_ = { 0.0f,0.0f,0.0f };
 
+	Vector3 endSize_ = {};
+
 };
 

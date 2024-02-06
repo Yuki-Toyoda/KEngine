@@ -18,7 +18,7 @@ void ChargeFinishParticleEmitter::GenerateParticle()
 		}
 
 		// 生成粒子の大きさ設定
-		Vector2 generateScale = { 2.0f, 2.0f };
+		Vector2 generateScale = { 1.5f, 1.5f };
 		// 生成粒子の方向ベクトルを角度を元に設定する
 		Vector3 generateVelocity
 			= { std::cos(generateAngle * i), 0.0f, std::sin(generateAngle * i) };
@@ -26,7 +26,8 @@ void ChargeFinishParticleEmitter::GenerateParticle()
 		generateVelocity = generateVelocity * 5.0f;
 
 		// 生成粒子の色
-		Vector4 generateColor = { Math::RandomF(0.35f, 1.0f, 2), Math::RandomF(0.35f, 1.0f, 2), Math::RandomF(0.35f, 1.0f, 2), 1.0f };
+		//Vector4 generateColor = { Math::RandomF(0.35f, 1.0f, 2), Math::RandomF(0.35f, 1.0f, 2), Math::RandomF(0.35f, 1.0f, 2), 1.0f };
+		Vector4 generateColor = { Math::RandomF(0.35f, 1.0f, 2), Math::RandomF(0.6f, 1.0f, 2), Math::RandomF(0.35f, 1.0f, 2), 1.0f };
 
 		// 新しい粒子を生成
 		std::unique_ptr<IParticle>newParticle = type_();

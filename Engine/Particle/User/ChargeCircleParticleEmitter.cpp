@@ -1,10 +1,10 @@
-#include "ChargeParticleEmitter.h"
+#include "ChargeCircleParticleEmitter.h"
 
-void ChargeParticleEmitter::Init()
+void ChargeCircleParticleEmitter::Init()
 {
 }
 
-void ChargeParticleEmitter::GenerateParticle()
+void ChargeCircleParticleEmitter::GenerateParticle()
 {
 	// 一度に生成する数分のパーティクルを生成する
 	for (int i = 0; i < generateParticleCount_; i++) {
@@ -14,8 +14,9 @@ void ChargeParticleEmitter::GenerateParticle()
 		}
 
 		// 生成粒子の大きさ設定
-		float scale = Math::RandomF(1.5f, 1.75f, 3);
-		Vector2 generateScale = { scale, scale };
+		float scale = 15.0f;
+
+		Vector2 generateScale = { scale , scale };
 		// 生成粒子の方向ベクトルをランダムに設定
 		Vector3 generateVelocity
 			= { Math::RandomF(-1.0f, 1.0f, 3), Math::RandomF(0.35f, 0.75f, 3), Math::RandomF(-1.0f, 1.0f, 3) };
@@ -23,12 +24,13 @@ void ChargeParticleEmitter::GenerateParticle()
 		generateVelocity = generateVelocity * Math::RandomF(3.0f, 5.0f, 1);
 
 		// 生成粒子の色
-		Vector4 generateColor = { Math::RandomF(0.35f, 1.0f, 2), Math::RandomF(0.35f, 1.0f, 2), Math::RandomF(0.35f, 1.0f, 2), 1.0f };
+		Vector4 generateColor = { Math::RandomF(0.1f, 0.3f, 2), Math::RandomF(0.1f, 0.3f, 2), Math::RandomF(0.1f, 0.3f, 2), 1.0f };
+		//Vector4 generateColor = { Math::RandomF(0.35f, 0.5f, 2), Math::RandomF(0.35f, 0.5f, 2), Math::RandomF(0.0f, 0.2f, 2), 1.0f };
 
 		// 新しい粒子を生成
 		std::unique_ptr<IParticle>newParticle = type_();
 		// 共通初期化
-		newParticle->PreInit(1.f, transform_.GetWorldPos(), generateScale, generateVelocity, texture_, generateColor);
+		newParticle->PreInit(1.f, transform_.GetWorldPos(), generateScale, {}, texture_, generateColor);
 		// 固有初期化
 		newParticle->Init();
 

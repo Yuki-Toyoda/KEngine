@@ -8,12 +8,18 @@ void ChargeFinishParticle::Init()
 	transform_.translate_ = (transform_.translate_ + velocity_);
 	// 始端座標は計算した後の座標
 	endPos_ = transform_.translate_;
+
+	float size = 2.0f;
+	endSize_ = { size,size,size };
 }
 
 void ChargeFinishParticle::Update()
 {
 	// 線形補間によって座標移動
 	transform_.translate_ = KLib::Lerp<Vector3>(startPos_, endPos_, KLib::EaseOutQuad(aliveTimer_.GetProgress()));
+	// サイズ補間
+	float start = 1.5f;
+	transform_.scale_ = KLib::Lerp<Vector3>({ start,start,start }, endSize_, KLib::EaseInOutQuad(aliveTimer_.GetProgress()));
 
 	// 透明度を補間で下げる
 	color_.w = KLib::Lerp(1.0f, 0.0f, KLib::EaseInOutQuad(aliveTimer_.GetProgress()));

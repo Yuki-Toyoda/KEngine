@@ -228,6 +228,8 @@ public: // パブリックなメンバ変数
 
 	// チャージパーティクル
 	IParticleEmitter* chargeParticleEmitter_ = nullptr;
+	// チャージ時の円
+	IParticleEmitter* chargeCircleEmitter_ = nullptr;
 	// チャージ終了時のパーティクル
 	IParticleEmitter* chargeFinishParticleEmitter_ = nullptr;
 	// 移動時のパーティクル

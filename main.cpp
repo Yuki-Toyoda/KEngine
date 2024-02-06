@@ -83,6 +83,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	mesh->LoadFile("./Resources/FallingCarrot", "fallingCarrot.obj"); // 落ちてくる人参モデル
 	mesh->LoadFile("./Resources/GreenPepper", "greenPepper.obj"); // ピーマンモデル
 
+	// 箱の破片
+	TextureManager::Load("Scrap0.png");
+	TextureManager::Load("Scrap1.png");
+	TextureManager::Load("Scrap2.png");
+	TextureManager::Load("Scrap3.png");
+	TextureManager::Load("Scrap4.png");
+
 	// 読み込み後再度形状マネージャ初期化
 	primitiveManager->Init();
 
