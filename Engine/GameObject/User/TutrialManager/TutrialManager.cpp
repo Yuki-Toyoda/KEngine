@@ -72,11 +72,40 @@ void TutrialManager::Update()
 			step++;
 			//うりぼーの体力を減らす
 			uribo_->Tutrial();
+			tCamera_->SetIsUseThisCamera(true);
+			tCamera_->transform_ = iCamera_->transform_;
+			tCamera_->fov_ = iCamera_->fov_;
+			timer_.Start(1.5f);
+		}
+		break;
+	case cameraMove:
+		timer_.Update();
+		tCamera_->transform_.translate_ = Math::Linear(KLib::EaseInOutSine( timer_.GetProgress()), iCamera_->transform_.translate_, tCamera_->goalTransform_.translate_);
+		if (timer_.GetIsFinish()) {
+			step++;
+			timer_.Start(2.0f);
+		}
+		break;
+	case onakasuita:
+		timer_.Update();
+		sprites_[3]->SetIsActive(true);
+		if (timer_.GetIsFinish()) {
+			step++;
+			timer_.Start(1.5f);
+		}
+		break;
+	case cameraBack:
+		timer_.Update();
+		tCamera_->transform_.translate_ = Math::Linear(KLib::EaseInOutSine(timer_.GetProgress()),  tCamera_->goalTransform_.translate_, iCamera_->transform_.translate_ );
+		if (timer_.GetIsFinish()) {
+			step++;
+			iCamera_->SetIsUseThisCamera(true);
+			tCamera_->SetIsUseThisCamera(false);
 		}
 		break;
 	case kaihuku:
 		//うりぼーの体力が半分以上で攻撃へ
-		sprites_[3]->SetIsActive(true);
+		
 		sprites_[4]->SetIsActive(true);
 		if (uribo_->TutrialEnd()) {
 			step++;

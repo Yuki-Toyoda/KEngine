@@ -18,6 +18,8 @@ void TutrialScene::Init()
 	camera_ = nullptr;
 	camera_ = gameObjectManager_->CreateInstance<InGameCamera>("Incamera", BaseObject::TagCamera);
 	camera_->UseThisCamera();
+	TutrialCamera* tcamera = nullptr;
+	tcamera = gameObjectManager_->CreateInstance<TutrialCamera>("TutrialCamera", BaseObject::TagCamera);
 	// スカイドーム生成
 	SkyDome* skyDome = nullptr;
 	skyDome = gameObjectManager_->CreateInstance<SkyDome>("SkyDome", BaseObject::TagNone);
@@ -99,6 +101,8 @@ void TutrialScene::Init()
 	tm_->SetBoss(boss_);
 	tm_->SetPlayer(player_);
 	tm_->SetUribo(uribo_);
+	tm_->SetIngameCamera(camera_);
+	tm_->SetTutrialCamera(tcamera);
 	// フェードイン
 	FadeManager::GetInstance()->ChangeParameter("FadeIn", true);
 	FadeManager::GetInstance()->Play();
