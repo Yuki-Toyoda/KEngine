@@ -11,6 +11,7 @@ enum TutrialStep {
 	Dash,
 	kougeki,
 	end,
+	plactice,
 };
 class TutrialManager:public BaseObject
 {
