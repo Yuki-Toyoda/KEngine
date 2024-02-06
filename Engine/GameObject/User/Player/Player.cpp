@@ -4,7 +4,7 @@
 #include "../../Core/Camera.h"
 #include "../../GameObjectManager.h"
 #include "../FeedVegetable/FeedVegetable.h"
-
+#include "../Enemy/Boss.h"
 void Player::Init()
 {
 	// 音再生クラスのインスタンス取得
@@ -346,12 +346,13 @@ void Player::OnCollision(Collider* collider)
 		transform_.scale_ = { 2.0f , 2.0f , 2.0f };
 		// 攻撃状態でない
 		//isAtack_ = false;
-		// 速度をリセット
-		velocity_ = { 0.0f,0.0f,0.0f };
+		
 		
 		// 与えたSEを再生する
 		audio_->PlayWave(attackSE_);
 		ChangeState(std::make_unique<BlowAwayState>());
+		// 速度をリセット
+		velocity_ = { 0.0f,0.0f,0.0f };
 		return;
 	}
 }
@@ -505,13 +506,13 @@ void Player::SetGlobalVariables()
 
 void Player::Atacking()
 {
+	if (boss_) {
+		//攻撃力を吸収した数*攻撃倍率に
+		atackPower_ = static_cast<float>(absorptionCount_) * atackForce_;
+		velocity_ = Math::Normalize(Vector3(boss_->transform_.translate_.x, transform_.translate_.y, boss_->transform_.translate_.z) - transform_.translate_) * 2.0f;
 
-	//攻撃力を吸収した数*攻撃倍率に
-	atackPower_ = static_cast<float>(absorptionCount_) * atackForce_;
-	velocity_ = Math::Normalize(Vector3(0.0f, transform_.translate_.y, 0.0f) - transform_.translate_) * 2.0f;
-
-	isAtack_ = true;
-	
+		isAtack_ = true;
+	}
 }
 
 void Player::AddAtackCount()

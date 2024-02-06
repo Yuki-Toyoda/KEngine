@@ -5,7 +5,7 @@ void BlowAwayState::Init()
 	name_ = "BlowAway";
 	//攻撃状態を解除
 	
-	velocity_ = player_->transform_.translate_ - Vector3(0.0f, 0.0f, 0.0f);
+	velocity_ = player_->GetVelocity()*-1.0f;
 }
 
 void BlowAwayState::Update()

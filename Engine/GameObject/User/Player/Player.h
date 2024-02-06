@@ -10,7 +10,7 @@
 // クラスの前方宣言
 class PlayerAnimManager;
 class Camera;
-
+class Boss;
 /// <summary>
 /// プレイヤークラス
 /// </summary>
@@ -202,7 +202,7 @@ public: // アクセッサ等
 /// </summary>
 	bool GetISTutrialDash() { return isTutrialDash_; }
 	void SetIsTutrialDash(bool flag) { isTutrialDash_ = flag; }
-
+	void SetBoss(Boss* boss) { boss_ = boss; }
 private: // プライベートなメンバ関数
 
 	/// <summary>
@@ -344,5 +344,6 @@ private: // メンバ変数
 	float absorptionAccelerationForce_;
 	//つぶれたときのSE
 	int32_t callapseSE = 0u;
+	Boss* boss_;
 };
 

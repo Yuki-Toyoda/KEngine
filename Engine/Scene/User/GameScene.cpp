@@ -70,7 +70,7 @@ void GameScene::Init(){
 
 	//GameManagerをセット
 	boss_->SetgameManager(gameManager);
-
+	player_->SetBoss(boss_);
 	// ボスのアニメーションマネージャーの生成
 	BossAnimManager* bam = gameObjectManager_->CreateInstance<BossAnimManager>("bossAnim", BaseObject::TagEnemy);
 	// アニメーションマネージャーにボスをセット
