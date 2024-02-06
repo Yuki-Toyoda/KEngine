@@ -23,7 +23,8 @@ void TutrialManager::Init()
 	sprites_[8]->anchorPoint_ = { 0.5f,0.5f };
 	AddSprite("skipFrame ", { 1000.0f,684.0f }, { 554.0f,51.0f }, TextureManager::Load("./Resources/UI/Tutorial", "tutorialSkipFram.png"));
 	sprites_[9]->anchorPoint_ = { 0.5f,0.5f };
-	
+	AddSprite("GameOver", uiPosition_, { 768.0f,64.0f }, TextureManager::Load("./Resources/UI/Tutorial", "Ttutorial_06.png"));
+	sprites_[10]->anchorPoint_ = { 0.5f,0.5f };
 	sprites_[8]->SetParent(sprites_[9]->GetWorldTransform());
 	step = yokero;
 	skipCount_ = 0;
@@ -84,6 +85,7 @@ void TutrialManager::Update()
 		if (timer_.GetIsFinish()) {
 			step++;
 			timer_.Start(2.0f);
+			uribo_->SetTutrialStart(true);
 		}
 		break;
 	case onakasuita:
@@ -105,7 +107,7 @@ void TutrialManager::Update()
 		break;
 	case kaihuku:
 		//うりぼーの体力が半分以上で攻撃へ
-		
+		sprites_[10]->SetIsActive(true);
 		sprites_[4]->SetIsActive(true);
 		if (uribo_->TutrialEnd()) {
 			step++;

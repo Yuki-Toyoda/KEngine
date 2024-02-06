@@ -70,6 +70,7 @@ void Uribo::Init()
 	// アニメーション再生
 	anim_->Play();
 	isTutrial_ = false;
+	tutrialStart_ = true;
 }
 
 void Uribo::Update()
@@ -81,8 +82,13 @@ void Uribo::Update()
 	}
 
 	// ボスが死亡していない場合
-	if (!isBossDead_&&hitPoint_>=0&&timer_.GetIsFinish()) {
+	if (!isBossDead_&&hitPoint_>=0&&timer_.GetIsFinish()&&tutrialStart_) {
 		hitPoint_ -= decrementHP;
+	}
+	if (isTutrial_) {
+		if (hitPoint_ <= 50) {
+			hitPoint_ = 50;
+		}
 	}
 	// HPが0以下になったら死亡アニメーション再生
 	if (hitPoint_ <= 0) {
@@ -119,10 +125,10 @@ void Uribo::Update()
 	}
 	else {
 
-		// ボスが死亡していない場合
-		if (!isBossDead_) {
-			hitPoint_ -= decrementHP;
-		}
+		//// ボスが死亡していない場合
+		//if (!isBossDead_) {
+		//	hitPoint_ -= decrementHP;
+		//}
 
 		// テクスチャが同一でない場合テクスチャを変更
 		if (feedAreaMesh_->texture_ != TextureManager::Load("FeedAreaTex_Disable.png")) {
