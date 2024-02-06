@@ -84,6 +84,7 @@ void TutrialManager::Update()
 		if (timer_.GetIsFinish()) {
 			step++;
 			timer_.Start(2.0f);
+			uribo_->SetTutrialStart(true);
 		}
 		break;
 	case onakasuita:
