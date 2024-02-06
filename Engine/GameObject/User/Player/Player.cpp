@@ -56,6 +56,7 @@ void Player::Init()
 	variables->AddItem(name_, "PushUpHitForce", pushUpHitForce);
 	variables->AddItem(name_, "DecelerationRate", decelerationRate);
 	variables->AddItem(name_, "subtractionAbsorptionCount_", subtractionAbsorptionCount_);
+	variables->AddItem(name_, "AbsorptionAcceleration", absorptionAccelerationForce_);
 	SetGlobalVariables();
 	isTutrial_ = false;
 	isTutrialDash_ = false;
@@ -246,7 +247,7 @@ void Player::DisplayImGui()
 	ImGui::DragInt("AtackCount", &atackPushCount_);
 
 	ImGui::DragFloat3("MoveVect", &moveVector_.x);
-
+	ImGui::DragFloat("absorptionAccelerationForce", &absorptionAccelerationForce_, 0.001f);
 	// 改行する
 	ImGui::NewLine();
 
@@ -277,6 +278,7 @@ void Player::DisplayImGui()
 		variables->SetValue(name_, "DecelerationRate", decelerationRate);
 		variables->SetValue(name_, "maxAtackCount", kMaxAtackPushCount_);
 		variables->SetValue(name_, "subtractionAbsorptionCount_", subtractionAbsorptionCount_);
+		variables->SetValue(name_, "AbsorptionAcceleration", absorptionAccelerationForce_);
 		 variables->SaveFile(name_);
 		/*kMaxMoveAcceleration_ = variables->GetFloatValue(name_, "MaxMoveAcceleration");
 		decayAcceleration_ = variables->GetFloatValue(name_, "DecayAcceleration");
@@ -489,6 +491,8 @@ void Player::SetGlobalVariables()
 	kMaxAtackPushCount_= variables->GetIntValue(name_, "maxAtackCount");
 	//減らす野菜の数
 	subtractionAbsorptionCount_= variables->GetIntValue(name_, "subtractionAbsorptionCount_" );
+
+	absorptionAccelerationForce_ = variables->GetFloatValue(name_, "AbsorptionAcceleration");
 }
 
 void Player::Atacking()

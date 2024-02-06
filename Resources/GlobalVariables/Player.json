@@ -1,5 +1,6 @@
 {
     "Player": {
+        "AbsorptionAcceleration": 0.02500000037252903,
         "DecayAcceleration": 0.11999999731779099,
         "DecelerationRate": 0.6000000238418579,
         "MaxMoveAcceleration": 0.33000001311302185,
@@ -7,7 +8,7 @@
         "MoveAcceleration": 0.014000000432133675,
         "PushUpHitForce": 10.0,
         "StanTime": 0.5,
-        "Velocity": 0.0,
+        "Velocity": -0.33000001311302185,
         "atack rate": 1.5,
         "axelTime": 0.20000000298023224,
         "brakeTime": 0.15000000596046448,

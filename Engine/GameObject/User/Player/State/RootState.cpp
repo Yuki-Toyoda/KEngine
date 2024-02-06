@@ -90,10 +90,9 @@ void RootState::Move()
 	
 	// 求めた回転行列を元に移動ベクトルを回転させる
 	move = Math::Transform(move, rotateMat);
-
 	if (move.x != 0.0f || move.y != 0.0f || move.z != 0.0f) {
 		// プレイヤーの移動ベクトルと加速度を乗算
-		velocity_ += move * player_->GetMoveAcceleration();
+		velocity_ += move * (player_->GetMoveAcceleration()-((player_->GetAbsorptionAcceleration()/100.0f)*player_->GetAbsorptionCount()));
 	}
 	else {
 		// 無操作状態の場合は現在速度を0に近づけていく
