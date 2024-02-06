@@ -9,8 +9,6 @@ void BoxBreakParticle::Update()
 	// 粒子が移動させる
 	transform_.translate_ = transform_.translate_ + velocity_;
 
-	transform_.rotate_.x += 0.1f;
-
 	// 透明度を補間で下げる
 	color_.w = KLib::Lerp(1.0f, 0.0f, KLib::EaseInOutQuad(aliveTimer_.GetProgress()));
 
