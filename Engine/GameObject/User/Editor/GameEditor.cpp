@@ -164,7 +164,7 @@ void GameEditor::ParameterInitialize()
 		Vector3 newPos = {};
 		dataManager_->AddItem({ group,section }, key, newPos);
 		dataManager_->AddItem({ group,section }, "Direct", newPos);
-		dataManager_->AddItem({ group,section }, "Scale", newPos);
+		dataManager_->AddItem({ group,section }, "Scale", rollerSize_);
 		newPos = dataManager_->GetValue<Vector3>({ group,section }, key);
 		object->transform_.scale_ = dataManager_->GetValue<Vector3>({ group,section }, "Scale");
 
