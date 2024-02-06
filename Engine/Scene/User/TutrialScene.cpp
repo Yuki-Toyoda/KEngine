@@ -39,9 +39,12 @@ void TutrialScene::Init()
 	boss_ = gameObjectManager_->CreateInstance<Boss>("Boss", BaseObject::TagEnemy);
 	// ボスにプレイヤーをセット
 	boss_->SetPlayer(player_);
+	// ボスにインゲームカメラをセットする
+	boss_->SetInGameCamera(camera_);
 	//GameManagerをセット
 	boss_->SetgameManager(gameManager);
 	
+	// ウリボの生成
 	uribo_ = gameObjectManager_->CreateInstance<Uribo>("uribo", BaseObject::TagUribo);
 	uribo_->SetTutrial(true);
 	player_->SetUribo(uribo_);

@@ -4,6 +4,7 @@
 
 // クラスの前方宣言
 class Boss;
+class Camera;
 
 /// <summary>
 /// ボスのアニメーションマネージャー
@@ -21,6 +22,11 @@ public: // メンバ関数
 	/// 更新関数
 	/// </summary>
 	void Update() override;
+
+	/// <summary>
+	/// カメラの更新関数
+	/// </summary>
+	void CameraUpdate();
 
 	/// <summary>
 	/// ImGui表示関数
@@ -142,6 +148,12 @@ private: // メンバ変数
 
 	// ローラー攻撃待機時間
 	float rollerAttackReadyTime_ = 0.5f;
+
+	// 倒れる演出用カメラ
+	Camera* stagingCamera_ = nullptr;
+
+	// カメラオフセット
+	Vector3 cameraOffset_ = { 0.0f, 0.0f, 0.0f };
 
 };
 

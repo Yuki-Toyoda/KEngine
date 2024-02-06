@@ -133,6 +133,22 @@
         ],
         "Body_Translate key : 2 : EasingParameter": 8,
         "Body_Translate key : 2 : PlayFrame": 60,
+        "Camera_Rotate : KeyCount": 0,
+        "Camera_Rotate key : 0": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Camera_Rotate key : 0 : EasingParameter": 0,
+        "Camera_Rotate key : 0 : PlayFrame": 0,
+        "Camera_Translate : KeyCount": 0,
+        "Camera_Translate key : 0": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Camera_Translate key : 0 : EasingParameter": 0,
+        "Camera_Translate key : 0 : PlayFrame": 0,
         "Foot_L_Rotate : KeyCount": 2,
         "Foot_L_Rotate key : 0": [
             0.0,

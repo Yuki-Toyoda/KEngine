@@ -60,6 +60,12 @@ public: // アクセッサ等
 
 
 	void SetIsTutrial(bool flag) { isTutrial_ = flag; }
+
+	/// <summary>
+	/// 全てのUIを非表示にする関数
+	/// </summary>
+	void HideAllUI();
+
 private: // メンバ変数
 
 	// 入力検知用

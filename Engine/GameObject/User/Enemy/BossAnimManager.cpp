@@ -1,5 +1,6 @@
 #include "BossAnimManager.h"
 #include "Boss.h"
+#include "../../Core/Camera.h"
 
 void BossAnimManager::Init()
 {
@@ -83,10 +84,18 @@ void BossAnimManager::Init()
 	CreateParameter("Boss_RollerAttacking");
 	CreateParameter("Boss_EndRollerAttack");
 
+	// 演出用カメラの生成
+	stagingCamera_ = GameObjectManager::GetInstance()->CreateInstance<Camera>("stagingCamera_Boss", BaseObject::TagCamera);
+
 }
 
 void BossAnimManager::Update()
 {
+	// 演出用カメラが使用中のときのみカメラを更新する
+	if (stagingCamera_->GetIsUsedCamera()) {
+		CameraUpdate();
+	}
+
 	// ダメージアニメーション再生中の場合
 	if (anim_->GetReadingParameterName() == "Boss_Damage") {
 		// アニメーションが終了している場合
@@ -224,6 +233,23 @@ void BossAnimManager::Update()
 	}
 }
 
+void BossAnimManager::CameraUpdate()
+{
+	// オフセットを取得
+	Vector3 offset = transform_.translate_ + cameraOffset_;
+
+	// 回転角から行列を生成
+	Matrix4x4 rotateMat = Math::MakeRotateXYZMatrix(stagingCamera_->transform_.rotate_);
+	// オフセットをカメラの回転に合わせて回転させる
+	offset = Math::Transform(offset, rotateMat);
+
+	// オフセットをもとにカメラ座標を計算する
+	stagingCamera_->transform_.translate_ = offset;
+
+	// カメラの更新
+	stagingCamera_->Update();
+}
+
 void BossAnimManager::DisplayImGui()
 {
 	// アニメーションのImGui
@@ -298,6 +324,9 @@ void BossAnimManager::DisplayImGui()
 	armTransform_R_.DisplayImGuiWithTreeNode("Arm_R"); // 右腕
 	footTransform_L_.DisplayImGuiWithTreeNode("Foot_L"); // 左足
 	footTransform_R_.DisplayImGuiWithTreeNode("Foot_R"); // 右足
+
+	// 演出用カメラのオフセット
+	ImGui::DragFloat3("CameraOffset", &cameraOffset_.x);
 }
 
 void BossAnimManager::CreateParameter(const std::string& name)
@@ -316,6 +345,8 @@ void BossAnimManager::CreateParameter(const std::string& name)
 	animManager_->AddSelectAnimationKeys<Vector3>(name, "Foot_L_Translate");
 	animManager_->AddSelectAnimationKeys<Vector3>(name, "Foot_R_Rotate");
 	animManager_->AddSelectAnimationKeys<Vector3>(name, "Foot_R_Translate");
+	animManager_->AddSelectAnimationKeys<Vector3>(name, "Camera_Rotate");
+	animManager_->AddSelectAnimationKeys<Vector3>(name, "Camera_Translate");
 }
 
 void BossAnimManager::CreateAnimation()
@@ -334,6 +365,8 @@ void BossAnimManager::CreateAnimation()
 	anim_->AddAnimationKeys<Vector3>("Foot_L_Translate", &footTransform_L_.translate_);
 	anim_->AddAnimationKeys<Vector3>("Foot_R_Rotate", &footTransform_R_.rotate_);
 	anim_->AddAnimationKeys<Vector3>("Foot_R_Translate", &footTransform_R_.translate_);
+	anim_->AddAnimationKeys<Vector3>("Camera_Rotate", &stagingCamera_->transform_.rotate_);
+	anim_->AddAnimationKeys<Vector3>("Camera_Translate", &cameraOffset_);
 
 	// アニメーションループtrue
 	anim_->isLoop_ = true;
@@ -455,6 +488,9 @@ void BossAnimManager::PlayDeadAnim()
 	// アニメーションの読み込みパラメータ変更
 	anim_->ChangeParameter("Boss_Dead", true);
 	
+	// 演出用カメラを使用する
+	stagingCamera_->UseThisCamera();
+
 	/// 再生時にかぶらないようにトリガーをリセット
 	// 複数落下アニメーション再生中トリガー
 	isMultiFalling_ = false;

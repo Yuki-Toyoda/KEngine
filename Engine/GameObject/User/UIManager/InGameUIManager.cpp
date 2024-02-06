@@ -71,6 +71,12 @@ void InGameUIManager::Init()
 
 void InGameUIManager::Update()
 {
+	// ボスが死亡しているなら
+	if (uribo_->GetIsBossDead() || uribo_->GetHP() <= 0) {
+		// 全てのUIを隠す
+		HideAllUI();
+	}
+
 	// 入力取得
 	preJoyState_ = joyState_; // 前フレームの入力取得
 	input_->GetJoystickState(0, joyState_); // 現在フレームの入力取得
@@ -163,13 +169,22 @@ void InGameUIManager::Update()
 		// ウリボのHP割合を取得
 		float uriboHPRatio = (float)uribo_->GetHP() / (float)uribo_->GetDefaultHP();
 
-		// ウリボのHPが3 / 1 以下になったときにアラートアイコンを表示
-		if (uriboHPRatio <= 0.33f) {
-			uriboAlert_->SetIsActive(true);
+		// ボスが死亡しているなら
+		if (!uribo_->GetIsBossDead() && uribo_->GetHP() > 0) {
+			// ウリボのHPが3 / 1 以下になったときにアラートアイコンを表示
+			if (uriboHPRatio <= 0.33f) {
+
+				uriboAlert_->SetIsActive(true);
+			}
+			else {
+				uriboAlert_->SetIsActive(false);
+			}
 		}
 		else {
+			// アラートアイコンを非表示
 			uriboAlert_->SetIsActive(false);
 		}
+
 		// ウリボのHPの残量によってゲージを変える
 		uriboGage_F_->scale_.x = Math::Linear((float)uribo_->GetHP(), 0.0f, 280.0f, (float)uribo_->GetDefaultHP());
 
@@ -209,5 +224,13 @@ void InGameUIManager::DisplayImGui()
 			s->DisplayImGui();
 		}
 		ImGui::EndChild();
+	}
+}
+
+void InGameUIManager::HideAllUI()
+{
+	// 全てのスプライトを非表示にする
+	for (Sprite* s : sprites_) {
+		s->SetIsActive(false);
 	}
 }
