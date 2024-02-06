@@ -101,8 +101,8 @@ void Player::Update()
 
 	// 行動状態クラスがあれば
 	if (state_.get()) {
-		// ダメージを喰らっている状態でなければ
-		if (!isDamaged_) {
+		// ダメージを喰らっている状態でなければ かつ うりぼが死んでいない時
+		if (!isDamaged_ && uribo_->GetHP() > 0) {
 			// 行動状態の更新を行う
 			state_->Update();
 		}
@@ -141,7 +141,7 @@ void Player::Update()
 	}
 
 	// ダメージを喰らっていない状態の場合
-	if (!isDamaged_) {
+	if (!isDamaged_ && uribo_->GetHP() > 0) {
 		// 座標に速度ベクトルを加算する
 		transform_.translate_ = transform_.translate_ + velocity_;
 

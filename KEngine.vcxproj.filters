@@ -94,7 +94,6 @@
     <ClCompile Include="Engine\GameObject\Samples\SampleSphere\SampleSphere.cpp" />
     <ClCompile Include="Engine\GameObject\User\TitleManager\TitleManager.cpp" />
     <ClCompile Include="Engine\Scene\User\ResultScene.cpp" />
-    <ClCompile Include="Engine\GameObject\User\ResultManager\ResultManager.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\Atack\Roller.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\Atack\PushUp.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\State\PushUpAtackState.cpp" />
@@ -122,6 +121,7 @@
     <ClCompile Include="Engine\Particle\User\RubbleFadeParticle.cpp" />
     <ClCompile Include="Engine\Particle\User\RubbleFadeParticleEmitter.cpp" />
     <ClCompile Include="Engine\GameObject\User\FeedVegetable\FeedVegetable.cpp" />
+    <ClCompile Include="Engine\GameObject\User\ResultManager\ResultManager.cpp" />
     <ClCompile Include="Engine\GameObject\User\camera\TutrialCmera.cpp" />
     <ClCompile Include="Engine\Particle\User\MoveParticle.cpp" />
     <ClCompile Include="Engine\Particle\User\MoveParticleEmitter.cpp" />

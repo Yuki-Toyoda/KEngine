@@ -5,8 +5,12 @@ void Roller::Init()
 	// 速度ベクトルを既定値でリセット
 	velocity_ = { 1.0f,0.0f,0.0f };
 
+	// 各種ワールドトランスフォームの初期化
+	modelTransform_.Init();
+	modelTransform_.SetParent(&transform_, 0b011);
+
 	// メッシュの追加
-	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Box", "Box.obj");
+	AddMesh(&modelTransform_, color_, "./Resources/Cucumber", "Cucumber.obj");
 	// AABBのコライダーを追加
 	AddColliderAABB("Roller", &transform_.translate_, &transform_.scale_);
 	
@@ -14,6 +18,8 @@ void Roller::Init()
 	transform_.scale_ = { 8.0f,1.0f,1.0f };
 	// 座標の高さを設定
 	transform_.translate_.y = 2.0f;
+	
+	
 	color_ = { 1.0f,0.0f,0.0f,1.0f };
 
 	isFall_ = true;

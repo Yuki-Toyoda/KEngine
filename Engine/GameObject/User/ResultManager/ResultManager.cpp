@@ -23,16 +23,20 @@ void ResultManager::Init()
 
 	// フェード演出マネージャ取得
 	fadeManager_ = FadeManager::GetInstance();
+
+	// アニメーションマネージャーのインスタンス取得
+	animManager_ = AnimationManager::GetInstance();
+
+	// パラメータ生成
+	CreateParameter("Result_ClearStart");
+	CreateParameter("Result_FailStart");
+	CreateParameter("Result_ClearIdle");
+	CreateParameter("Result_FailIdle");
+
 }
 
 void ResultManager::Update()
 {
-	// 再生されていなければ再生する
-	if (!isSceneChange_) {
-		/*if (!audio_->IsPlaying(bgmVoiceHadle_) || bgmVoiceHadle_ == -1) {
-			bgmVoiceHadle_ = audio_->PlayWave(bgmHandle_, false, 1.0f);
-		}*/
-	}
 
 	// BGM音量を設定
 	//audio_->SetVolume(bgmHandle_, FadeManager::GetInstance()->GetVolume());
@@ -41,81 +45,125 @@ void ResultManager::Update()
 	preJoyState_ = joyState_; // 前フレームの入力取得
 	input_->GetJoystickState(0, joyState_); // 現在フレームの入力取得
 
-	// スティックの入力検知
-	Vector3 stickVec = Vector3((float)joyState_.Gamepad.sThumbLX / SHRT_MAX,
-		0.0f, (float)joyState_.Gamepad.sThumbLY / SHRT_MAX);
-	// スティック入力の正規化を行う
-	stickVec = Math::Normalize(stickVec);
+	// スプライトの透明度を設定
+	sprites_[0]->color_ = { 1.0f, 1.0f, 1.0f, spriteAlpha_ };
+	sprites_[2]->color_ = { 1.0f, 1.0f, 1.0f, spriteAlpha_ };
+	sprites_[3]->color_ = { 1.0f, 1.0f, 1.0f, spriteAlpha_ };
 
-	// 前フレームのスティックの入力検知
-	Vector3 preStickVec = Vector3((float)preJoyState_.Gamepad.sThumbLX / SHRT_MAX,
-		0.0f, (float)preJoyState_.Gamepad.sThumbLY / SHRT_MAX);
-	// スティック入力の正規化を行う
-	preStickVec = Math::Normalize(preStickVec);
-
-	if (!isFade_) {
-		// 左右方向への入力があった場合
-		if ((stickVec.x >= 0.5f && preStickVec.x <= 0.5f) || (stickVec.x <= -0.5f && preStickVec.x >= -0.5f)) {
-			audio_->PlayWave(selectSE);
-			if (!isRetry_) {
-				// リトライする
-				isRetry_ = true;
-
+	// パラメータがStart状態の時
+	if (anim_->GetReadingParameterName() == "Result_FailStart" || anim_->GetReadingParameterName() == "Result_ClearStart") {
+		// アニメーション進捗が2割りを超えている場合
+		if (anim_->GetAnimationProgress() >= 0.35f) {
+			// Aボタンを押したら開始演出スキップ
+			if ((joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A &&
+				!(preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A))) {
+				// クリアしたかによって再生アニメーション変更
 				if (isCleared_) {
-					// タイトルへ戻るテキスト
-					sprites_[2]->texBase_ = { 432.0f, 0.0f };
-					// リトライテキスト
-					sprites_[3]->texBase_ = { 0.0f, 0.0f };
+					anim_->ChangeParameter("Result_ClearIdle", true);
 				}
 				else {
-					// タイトルへ戻るテキスト
-					sprites_[2]->texBase_ = { 0.0f, 0.0f };
-					// リトライテキスト
-					sprites_[3]->texBase_ = { 432.0f, 0.0f };
+					anim_->ChangeParameter("Result_FailIdle", true);
 				}
-			}
-			else {
-				// リトライする
-				isRetry_ = false;
 
-				if (isCleared_) {
-					// タイトルへ戻るテキスト
-					sprites_[2]->texBase_ = { 0.0f, 0.0f };
-					// リトライテキスト
-					sprites_[3]->texBase_ = { 432.0f, 0.0f };
-				}
-				else {
-					// タイトルへ戻るテキスト
-					sprites_[2]->texBase_ = { 432.0f, 0.0f };
-					// リトライテキスト
-					sprites_[3]->texBase_ = { 0.0f, 0.0f };
-				}
+				// ループ有効
+				anim_->isLoop_ = true;
+				// 再生
+				anim_->Play();
 			}
 		}
-	}
-
-	// Aボタンを押すとその遷移を開始する
-	if ((joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A &&
-		!(preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A))) {
-		// UIを変更する
-		sprites_[0]->texBase_ = Vector2(304.0f, 0.0f);
 		
-		// フェード演出を一回も行っていない場合
-		if (!isFade_) {
-			// フェードアウトさせる
-			fadeManager_->ChangeParameter("FadeOut");
-			fadeManager_->Play();
+		// アニメーション終了時
+		if (anim_->isEnd_) {
+			// クリアしたかによって再生アニメーション変更
+			if (isCleared_) {
+				anim_->ChangeParameter("Result_ClearIdle", true);
+			}
+			else {
+				anim_->ChangeParameter("Result_FailIdle", true);
+			}
 
-			// 決定音再生
-			audio_->PlayWave(decisionSE_);
-
-			// フェードトリガーtrue
-			isFade_ = true;
+			// ループ有効
+			anim_->isLoop_ = true;
+			// 再生
+			anim_->Play();
 		}
 	}
 	else {
-		// UIを変更する
-		sprites_[0]->texBase_ = Vector2(0.0f, 0.0f);
+		// スティックの入力検知
+		Vector3 stickVec = Vector3((float)joyState_.Gamepad.sThumbLX / SHRT_MAX,
+			0.0f, (float)joyState_.Gamepad.sThumbLY / SHRT_MAX);
+		// スティック入力の正規化を行う
+		stickVec = Math::Normalize(stickVec);
+
+		// 前フレームのスティックの入力検知
+		Vector3 preStickVec = Vector3((float)preJoyState_.Gamepad.sThumbLX / SHRT_MAX,
+			0.0f, (float)preJoyState_.Gamepad.sThumbLY / SHRT_MAX);
+		// スティック入力の正規化を行う
+		preStickVec = Math::Normalize(preStickVec);
+
+		if (!isFade_) {
+			// 左右方向への入力があった場合
+			if ((stickVec.x >= 0.5f && preStickVec.x <= 0.5f) || (stickVec.x <= -0.5f && preStickVec.x >= -0.5f)) {
+				if (!isRetry_) {
+					// リトライする
+					isRetry_ = true;
+
+					if (isCleared_) {
+						// タイトルへ戻るテキスト
+						sprites_[2]->texBase_ = { 432.0f, 0.0f };
+						// リトライテキスト
+						sprites_[3]->texBase_ = { 0.0f, 0.0f };
+					}
+					else {
+						// タイトルへ戻るテキスト
+						sprites_[2]->texBase_ = { 0.0f, 0.0f };
+						// リトライテキスト
+						sprites_[3]->texBase_ = { 432.0f, 0.0f };
+					}
+				}
+				else {
+					// リトライする
+					isRetry_ = false;
+
+					if (isCleared_) {
+						// タイトルへ戻るテキスト
+						sprites_[2]->texBase_ = { 0.0f, 0.0f };
+						// リトライテキスト
+						sprites_[3]->texBase_ = { 432.0f, 0.0f };
+					}
+					else {
+						// タイトルへ戻るテキスト
+						sprites_[2]->texBase_ = { 432.0f, 0.0f };
+						// リトライテキスト
+						sprites_[3]->texBase_ = { 0.0f, 0.0f };
+					}
+				}
+			}
+		}
+
+		// Aボタンを押すとその遷移を開始する
+		if ((joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A &&
+			!(preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A))) {
+			// UIを変更する
+			sprites_[0]->texBase_ = Vector2(304.0f, 0.0f);
+
+			// フェード演出を一回も行っていない場合
+			if (!isFade_) {
+				// フェードアウトさせる
+				fadeManager_->ChangeParameter("FadeOut");
+				fadeManager_->Play();
+
+				// 決定音再生
+				audio_->PlayWave(decisionSE_);
+
+				// フェードトリガーtrue
+				isFade_ = true;
+			}
+		}
+		else {
+			// UIを変更する
+			sprites_[0]->texBase_ = Vector2(0.0f, 0.0f);
+		}
 	}
 
 	// フェードマネージャが演出中ではない、かつフェード演出トリガーがtrueなら
@@ -135,10 +183,24 @@ void ResultManager::DisplayImGui()
 	// プレイヤーマネージャ
 	pam_->DisplayImGui();
 
-	// クリアしたかによってImGuiの表示を変更
-	if (isCleared_) {
-		vegetablesTransform_.DisplayImGuiWithTreeNode("Vegetables");
+	// アニメーションのImGuiを表示
+	anim_->DisplayImGui();
+	// アニメーションの読み込みパラメータ変更
+	if (ImGui::Button("ClearStart")) {
+		anim_->ChangeParameter("Result_ClearStart", true);
 	}
+	if (ImGui::Button("FailStart")) {
+		anim_->ChangeParameter("Result_FailStart", true);
+	}
+	if (ImGui::Button("ClearIdle")) {
+		anim_->ChangeParameter("Result_ClearIdle", true);
+	}
+	if (ImGui::Button("FailIdle")) {
+		anim_->ChangeParameter("Result_FailIdle", true);
+	}
+
+	// クリアしたかによってImGuiの表示を変更
+	vegetablesTransform_.DisplayImGuiWithTreeNode("Vegetables");
 
 	// スプライト情報があれば
 	if (sprites_.size() > 0) {
@@ -168,6 +230,10 @@ void ResultManager::PostInit(bool isClear)
 	// 決定テキスト
 	AddSprite("decision", { 950.0f, 625.0f }, { 304.0f, 80.0f }, TextureManager::Load("./Resources/UI/Result", "decision.png"));
 	sprites_[0]->texSize_ = { 304.0f, 80.0f };
+
+	// 各種ワールドトランスフォームの初期化
+	uriboTransform_.Init();
+	AddMesh(&uriboTransform_, color_, "./Resources/Uribo", "Uribo.obj");
 
 	// クリアしたかによって処理を変える
 	if (isCleared_) {
@@ -203,12 +269,25 @@ void ResultManager::PostInit(bool isClear)
 		// リトライする
 		isRetry_ = false;
 
+		// アニメーション生成
+		anim_ = animManager_->CreateAnimation("ResultAnim", "Result_ClearStart");
+		
 	}
 	else {
 
 		// BGMロード
 		bgmHandle_ = audio_->LoadWave("./Resources/Audio/BGM/gameOver.wav");
 		bgmVoiceHadle_ = audio_->PlayWave(bgmHandle_, true, 1.0f);
+
+		/// 各種トランスフォームの初期化
+		// 野菜の山用
+		vegetablesTransform_.Init();
+		vegetablesTransform_.translate_ = { 2.5f, 0.0f, 12.5f };
+		vegetablesTransform_.rotate_ = { 0.0f, 0.45f, 0.0f };
+
+		/// メッシュ追加
+		// 野菜の山
+		AddMesh(&vegetablesTransform_, color_, "./Resources/Vegetables", "Vegetables.obj");
 
 		/// スプライト追加
 		// 失敗テキスト
@@ -226,7 +305,53 @@ void ResultManager::PostInit(bool isClear)
 
 		// リトライする
 		isRetry_ = true;
+
+		// アニメーション生成
+		anim_ = animManager_->CreateAnimation("ResultAnim", "Result_FailStart");
+		
 	}
+
+	// キー生成
+	anim_->AddAnimationKeys<Vector3>("Camera_Rotate", &camera_->transform_.rotate_);
+	anim_->AddAnimationKeys<Vector3>("Camera_Translate", &camera_->transform_.translate_);
+	anim_->AddAnimationKeys<Vector3>("Player_Scale", &pam_->bodyTransform_.scale_);
+	anim_->AddAnimationKeys<Vector3>("Player_Rotate", &pam_->bodyTransform_.rotate_);
+	anim_->AddAnimationKeys<Vector3>("Player_Translate", &pam_->bodyTransform_.translate_);
+	anim_->AddAnimationKeys<Vector3>("Uribo_Scale", &uriboTransform_.scale_);
+	anim_->AddAnimationKeys<Vector3>("Uribo_Rotate", &uriboTransform_.rotate_);
+	anim_->AddAnimationKeys<Vector3>("Uribo_Translate", &uriboTransform_.translate_);
+	anim_->AddAnimationKeys<Vector2>("Text_Translate", &sprites_[1]->translate_);
+	anim_->AddAnimationKeys<float>("Text_Rotate", &sprites_[1]->rotate_);
+	anim_->AddAnimationKeys<Vector2>("Text_Scale", &sprites_[1]->scale_);
+	anim_->AddAnimationKeys<Vector2>("Button1_Translate", &sprites_[2]->translate_);
+	anim_->AddAnimationKeys<Vector2>("Button2_Translate", &sprites_[3]->translate_);
+	anim_->AddAnimationKeys<float>("ButtonAlpha", &spriteAlpha_);
+
+	// アニメーション再生
+	anim_->Play();
+
+}
+
+void ResultManager::CreateParameter(const std::string& name)
+{
+	// パラメータ生成
+	animManager_->CreateAnimationParameter(name);
+	// キー生成
+	animManager_->AddSelectAnimationKeys<Vector3>(name, "Camera_Rotate");
+	animManager_->AddSelectAnimationKeys<Vector3>(name, "Camera_Translate");
+	animManager_->AddSelectAnimationKeys<Vector3>(name, "Player_Scale");
+	animManager_->AddSelectAnimationKeys<Vector3>(name, "Player_Rotate");
+	animManager_->AddSelectAnimationKeys<Vector3>(name, "Player_Translate");
+	animManager_->AddSelectAnimationKeys<Vector3>(name, "Uribo_Scale");
+	animManager_->AddSelectAnimationKeys<Vector3>(name, "Uribo_Rotate");
+	animManager_->AddSelectAnimationKeys<Vector3>(name, "Uribo_Translate");
+	animManager_->AddSelectAnimationKeys<Vector2>(name, "Text_Translate");
+	animManager_->AddSelectAnimationKeys<float>(name, "Text_Rotate");
+	animManager_->AddSelectAnimationKeys<Vector2>(name, "Text_Scale");
+	animManager_->AddSelectAnimationKeys<Vector2>(name, "Button1_Translate");
+	animManager_->AddSelectAnimationKeys<Vector2>(name, "Button2_Translate");
+	animManager_->AddSelectAnimationKeys<float>(name, "ButtonAlpha");
+
 }
 
 void ResultManager::SetSkyDome(SkyDome* skyDome)

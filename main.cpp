@@ -82,6 +82,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	mesh->LoadFile("./Resources/Tomato", "tomato.obj"); // トマトモデル
 	mesh->LoadFile("./Resources/FallingCarrot", "fallingCarrot.obj"); // 落ちてくる人参モデル
 	mesh->LoadFile("./Resources/GreenPepper", "greenPepper.obj"); // ピーマンモデル
+	mesh->LoadFile("./Resources/Cucumber", "Cucumber.obj"); // きゅうりモデル
 
 	// 箱の破片
 	TextureManager::Load("Scrap0.png");
