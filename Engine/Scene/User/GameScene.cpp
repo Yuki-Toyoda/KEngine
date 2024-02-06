@@ -123,7 +123,17 @@ void GameScene::Update()
 	}
 
 	InputManager::Update();
-	if (player_->GetgameOver()) {
+	
+	if (boss_->GetIsSceneChage()){
+		// BGMを止める
+		audio_->StopWave(bgmVoiceHadle_);
+
+		// クリアフラグをtrue
+		ResultScene::isClear_ = true;
+		BaseScene * nextScene = new ResultScene();
+		SceneManager::GetInstance()->SetNextScene(nextScene);
+	}
+	else if (player_->GetgameOver() && !FadeManager::GetInstance()->GetIsStaging()) {
 		// BGMを止める
 		audio_->StopWave(bgmVoiceHadle_);
 
@@ -132,15 +142,6 @@ void GameScene::Update()
 		BaseScene* nextScene = new ResultScene();
 		SceneManager::GetInstance()->SetNextScene(nextScene);
 
-	}
-	else if (boss_->GetIsSceneChage()){
-		// BGMを止める
-		audio_->StopWave(bgmVoiceHadle_);
-
-		// クリアフラグをtrue
-		ResultScene::isClear_ = true;
-		BaseScene * nextScene = new ResultScene();
-		SceneManager::GetInstance()->SetNextScene(nextScene);
 	}
 	else {
 		// 再生されていなければ再生する
