@@ -228,6 +228,20 @@ void ResultManager::PostInit(bool isClear)
 	}
 }
 
+void ResultManager::CreateParameter(const std::string& name)
+{
+	// パラメータ生成
+	animManager_->CreateAnimationParameter(name);
+	// キー生成
+	animManager_->AddSelectAnimationKeys<Vector3>(name, "Camera_Rotate");
+	animManager_->AddSelectAnimationKeys<Vector3>(name, "Camera_Translate");
+	animManager_->AddSelectAnimationKeys<Vector3>(name, "Player_Scale");
+	animManager_->AddSelectAnimationKeys<Vector3>(name, "Player_Rotate");
+	animManager_->AddSelectAnimationKeys<Vector3>(name, "Player_Translate");
+	animManager_->AddSelectAnimationKeys<Vector2>(name, "Clear");
+
+}
+
 void ResultManager::SetSkyDome(SkyDome* skyDome)
 {
 	// 天球を代入

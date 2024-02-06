@@ -94,7 +94,6 @@
     <ClCompile Include="Engine\GameObject\Samples\SampleSphere\SampleSphere.cpp" />
     <ClCompile Include="Engine\GameObject\User\TitleManager\TitleManager.cpp" />
     <ClCompile Include="Engine\Scene\User\ResultScene.cpp" />
-    <ClCompile Include="Engine\GameObject\User\ResultManager\ResultManager.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\Atack\Roller.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\Atack\PushUp.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\State\PushUpAtackState.cpp" />
