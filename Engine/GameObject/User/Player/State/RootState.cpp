@@ -6,17 +6,33 @@ void RootState::Init()
 {
 	// 名称設定
 	name_ = "Root";
+	audio_= Audio::GetInstance();
+	chargeEnd_ = audio_->LoadWave("./Resources/Audio/SE/chargeMax.wav");
+	charge_ = audio_->LoadWave("./Resources/Audio/SE/charge.wav");
 }
 
 void RootState::Update()
 {
+	//チャージ完了時
+	if (player_->GetAtackCount() == player_->GetmaxAtackCount()) {
+		chargeEndhandle = audio_->PlayWave(chargeEnd_);
+	}
+	if (InputManager::AtackCharge()) {
+		if (!audio_->IsPlaying(chargeHandle)) {
+
+			chargeHandle = audio_->PlayWave(charge_,true);
+		}
+	}
+	else {
+		audio_->StopWave(chargeHandle);
+	}
 	// チャージ秒数が既定秒数以上のとき、かつボタンを話したとき
 	if (player_->GetAtackCount() > player_->GetmaxAtackCount() && InputManager::Atacking()) {
 		// チャージパーティクルをとめる
 		player_->chargeParticleEmitter_->SetIsPlay(false);
 		// チャージ終了パーティクルをとめる
 		player_->chargeFinishParticleEmitter_->SetIsPlay(false);
-
+		
 		//攻撃ボタンを押しているカウントが一定以上でボタンを離したときに攻撃開始
 		player_->ChangeState(std::make_unique<AtackState>());
 		return;
@@ -29,7 +45,7 @@ void RootState::Update()
 		player_->chargeParticleEmitter_->SetIsPlay(false);
 		// チャージ終了パーティクルをとめる
 		player_->chargeFinishParticleEmitter_->SetIsPlay(false);
-
+		
 		// ダッシュステートへ変更
 		player_->ChangeState(std::make_unique<DashState>());
 		return;
@@ -66,6 +82,7 @@ void RootState::Update()
 		player_->SetIsCharge(false);
 		//攻撃ボタンを押しているカウントを0に
 		player_->ResetAtackCount();
+	
 		// 移動処理
 		Move();
 		

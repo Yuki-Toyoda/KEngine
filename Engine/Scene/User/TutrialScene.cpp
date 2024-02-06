@@ -29,8 +29,8 @@ void TutrialScene::Init()
 	player_ = gameObjectManager_->CreateInstance<Player>("Player", BaseObject::TagPlayer);
 	// プレイヤーのy座標
 	player_->transform_.scale_ = { 2.0f, 2.0f, 2.0f };
-	player_->transform_.translate_.y = 3.0f;
-	player_->transform_.translate_.x = 10.0f;
+	player_->transform_.translate_ = { 0.0f,3.0f,-40.0f };
+
 	player_->SetIsTutrial(true);
 	// プレイヤーをカメラにセットする
 	camera_->SetPlayer(player_);

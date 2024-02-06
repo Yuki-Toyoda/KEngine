@@ -22,7 +22,7 @@ void Player::Init()
 	velocity_ = { 0.0f,0.0f,0.0f };
 	// 球のコライダーを追加
 	AddColliderSphere("Enemy", &worldPos_, &transform_.scale_.x);
-	
+
 	// 行動状態を待機状態に変更
 	ChangeState(std::make_unique<RootState>());
 
@@ -33,7 +33,7 @@ void Player::Init()
 	GlobalVariables* variables = GlobalVariables::GetInstance();
 	// 調整項目クラスのグループ生成
 	variables->CreateGroup(name_);
-	
+
 	/// 調整項目クラスに値を追加する
 	variables->AddItem(name_, "MoveAcceleration", moveAcceleration_);
 	variables->AddItem(name_, "MaxMoveAcceleration", kMaxMoveAcceleration_);
@@ -64,13 +64,13 @@ void Player::Init()
 	pem_ = ParticleEmitterManager::GetInstance();
 
 	// チャージパーティクル生成
-	chargeParticleEmitter_ = pem_->CreateEmitter<ChargeParticleEmitter, ChargeParticle>("Charge", 25, 1, {0.0f, 0.0f, 0.0f}, 10.0f, 0.1f, TextureManager::Load("chargeParticle.png"));
+	chargeParticleEmitter_ = pem_->CreateEmitter<ChargeParticleEmitter, ChargeParticle>("Charge", 25, 1, { 0.0f, 0.0f, 0.0f }, 10.0f, 0.1f, TextureManager::Load("chargeParticle.png"));
 	chargeParticleEmitter_->transform_.SetParent(&transform_);
 	chargeParticleEmitter_->SetIsLoop(true);
 	chargeParticleEmitter_->SetIsPlay(false);
-	
+
 	// チャージ終了時パーティクル生成
-	chargeFinishParticleEmitter_ = pem_->CreateEmitter<ChargeFinishParticleEmitter, ChargeFinishParticle>("ChargeFinish", 8, 8, {0.0f, 0.0f, 0.0f}, 10.0f, 0.25f, TextureManager::Load("chargeMaxParticle.png"));
+	chargeFinishParticleEmitter_ = pem_->CreateEmitter<ChargeFinishParticleEmitter, ChargeFinishParticle>("ChargeFinish", 8, 8, { 0.0f, 0.0f, 0.0f }, 10.0f, 0.25f, TextureManager::Load("chargeMaxParticle.png"));
 	chargeFinishParticleEmitter_->transform_.SetParent(&transform_);
 	chargeFinishParticleEmitter_->SetIsLoop(true);
 	chargeFinishParticleEmitter_->SetIsPlay(false);

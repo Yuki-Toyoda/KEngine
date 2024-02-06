@@ -202,6 +202,7 @@ public: // アクセッサ等
 /// </summary>
 	bool GetISTutrialDash() { return isTutrialDash_; }
 	void SetIsTutrialDash(bool flag) { isTutrialDash_ = flag; }
+
 private: // プライベートなメンバ関数
 
 	/// <summary>
@@ -245,7 +246,7 @@ private: // メンバ変数
 	int32_t eatSE_ = 0u;
 	// 餌を与える
 	int32_t feedSE_ = 0u;
-
+	
 	// カメラ
 	Camera* camera_ = nullptr;
 
