@@ -13,18 +13,23 @@ void RootState::Init()
 
 void RootState::Update()
 {
+	
 	//チャージ完了時
 	if (player_->GetAtackCount() == player_->GetmaxAtackCount()) {
 		chargeEndhandle = audio_->PlayWave(chargeEnd_);
 	}
-	if (InputManager::AtackCharge()) {
+	if (InputManager::AtackCharge()&& player_->GetAbsorptionCount() >= kMinCount) {
 		if (!audio_->IsPlaying(chargeHandle)) {
 
-			chargeHandle = audio_->PlayWave(charge_,true);
+			chargeHandle = audio_->PlayWave(charge_);
 		}
 	}
 	else {
 		audio_->StopWave(chargeHandle);
+	}
+	if (player_->GetIsDamaged()) {
+		audio_->StopWave(chargeHandle);
+		return;
 	}
 	// チャージ秒数が既定秒数以上のとき、かつボタンを話したとき
 	if (player_->GetAtackCount() > player_->GetmaxAtackCount() && InputManager::Atacking()) {
@@ -92,6 +97,8 @@ void RootState::Update()
 void RootState::DisplayImGui()
 {
 }
+
+
 
 void RootState::Move()
 {

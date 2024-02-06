@@ -14,7 +14,7 @@ void ResultManager::Init()
 	/// 音ロード
 	// 決定音
 	decisionSE_ = audio_->LoadWave("./Resources/Audio/SE/decision.wav");
-
+	selectSE= audio_->LoadWave("./Resources/Audio/SE/select.wav");
 	// 入力取得
 	input_ = Input::GetInstance();
 	// コントローラー入力取得
@@ -56,6 +56,7 @@ void ResultManager::Update()
 	if (!isFade_) {
 		// 左右方向への入力があった場合
 		if ((stickVec.x >= 0.5f && preStickVec.x <= 0.5f) || (stickVec.x <= -0.5f && preStickVec.x >= -0.5f)) {
+			audio_->PlayWave(selectSE);
 			if (!isRetry_) {
 				// リトライする
 				isRetry_ = true;

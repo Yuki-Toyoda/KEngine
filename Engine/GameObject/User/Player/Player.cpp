@@ -17,7 +17,7 @@ void Player::Init()
 	eatSE_ = audio_->LoadWave("./Resources/Audio/SE/eat.wav");
 	// 餌を与える
 	feedSE_ = audio_->LoadWave("./Resources/Audio/SE/feed.wav");
-
+	callapseSE= audio_->LoadWave("./Resources/Audio/SE/callapse.wav");
 	// 移動ベクトル初期化
 	velocity_ = { 0.0f,0.0f,0.0f };
 	// 球のコライダーを追加
@@ -291,6 +291,16 @@ void Player::DisplayImGui()
 
 void Player::OnCollisionEnter(Collider* collider) {
 	if (state_->name_ == "Root") {
+		
+		// 降ってくる野菜に衝突した場合
+		if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagMeteor &&
+			state_->name_ != "BlowAway" && !isAtack_) {
+			// ダメージ処理を行う
+			Damage();
+			state_->Update();
+		}
+	}
+	if (state_->name_ == "Root"||state_->name_=="Dash") {
 		//	// 破片に衝突した場合
 		if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagRubble) {
 			//がれきにぶつかったらしてサイズを大きくする
@@ -311,19 +321,13 @@ void Player::OnCollisionEnter(Collider* collider) {
 			// 食べたSEを再生する
 			audio_->PlayWave(eatSE_);
 		}
-		// 降ってくる野菜に衝突した場合
-		if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagMeteor &&
-			state_->name_ != "BlowAway" && !isAtack_) {
-			// ダメージ処理を行う
-			Damage();
-		}
-	}
-	if (state_->name_ == "Root"||state_->name_=="Dash") {
 		if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagPushUp) {
+			state_->Update();
 			transform_.translate_ = prevPos_;
 			pushUpPos_ = collider->GetGameObject()->transform_.translate_;
+			
 			ChangeState(std::make_unique<PushUpHitState>());
-
+			
 		}
 	}
 }
@@ -364,7 +368,7 @@ void Player::Damage()
 
 		// ダメージアニメーション再生
 		pam_->Damage(damageStanTime_);
-
+		audio_->PlayWave(callapseSE);
 		// HPを減らす
 		//hitPoint_--;
 		//食べた野菜の数を減らす

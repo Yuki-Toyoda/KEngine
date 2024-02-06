@@ -20,7 +20,7 @@ class RootState:public IPlayerState
 	/// ImGui表示関数
 	/// </summary>
 	void DisplayImGui() override;
-
+	
 private: // プライベートなメンバ関数
 
 	/// <summary>

@@ -93,6 +93,7 @@ private: // メンバ変数
 	// 決定音
 	int32_t decisionSE_ = 0u;
 
+	int32_t selectSE = 0u;
 	// 入力検知用
 	Input* input_ = nullptr;
 	// コントローラー入力

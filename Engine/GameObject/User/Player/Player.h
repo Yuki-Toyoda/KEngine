@@ -342,5 +342,7 @@ private: // メンバ変数
 	bool isTutrialDash_;
 	//食べてるカウントによる加速度
 	float absorptionAccelerationForce_;
+	//つぶれたときのSE
+	int32_t callapseSE = 0u;
 };
 

@@ -47,6 +47,8 @@ void MultiAtackState::Update()
 
 		// 落下させる
 		meteor->SetIsFall(true);
+
+		meteor->SetIsAudioPlay(true);
 		// 攻撃アニメーション再生
 		enemy_->GetBossAnimManager()->SetPlayMultiFallAttackAnim(true);
 	}

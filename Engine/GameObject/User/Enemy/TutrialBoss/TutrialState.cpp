@@ -18,11 +18,11 @@ void TutrialState::Init()
 		meteor->transform_.translate_.y = jsonData->GetValue<float>(names, "Distance");
 		meteor->transform_.scale_ = jsonData->GetValue<Vector3>(names, "Scale");
 		meteor->SetgameManager(enemy_->gameManager_);
-
+		meteor->SetIsAudioPlay(false);
 		// 野菜配列に追加
 		meteors_.push_back(meteor);
 	}
-
+	meteors_[0]->SetIsAudioPlay(true);
 
 	// 落下攻撃アニメーション開始
 	enemy_->GetBossAnimManager()->PlayFallAttackAnim(enemy_->GetFallAttackReadyTime());
