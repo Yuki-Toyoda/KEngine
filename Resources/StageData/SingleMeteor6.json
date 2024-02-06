@@ -52,7 +52,7 @@
         "Parameter": {
             "Distance": 60.0,
             "IsGravity": 0,
-            "MaxCount": 4,
+            "MaxCount": 5,
             "Scale": [
                 15.0,
                 1.0,
