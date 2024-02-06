@@ -23,7 +23,10 @@ void TutrialScene::Init()
 	// スカイドーム生成
 	SkyDome* skyDome = nullptr;
 	skyDome = gameObjectManager_->CreateInstance<SkyDome>("SkyDome", BaseObject::TagNone);
-
+	// 地面生成
+	Ground* ground;
+	ground = gameObjectManager_->CreateInstance<Ground>("Ground", BaseObject::TagFloor);
+	ground->transform_.scale_ = { 55.0f,1.0f,55.0f };
 	// プレイヤー生成
 	player_ = nullptr;
 	player_ = gameObjectManager_->CreateInstance<Player>("Player", BaseObject::TagPlayer);
@@ -59,10 +62,7 @@ void TutrialScene::Init()
 	// アニメーションを生成
 	am->CreateAnimation();
 
-	// 地面生成
-	Ground* ground;
-	ground = gameObjectManager_->CreateInstance<Ground>("Ground", BaseObject::TagFloor);
-	ground->transform_.scale_ = { 55.0f,1.0f,55.0f };
+	
 	// プレイヤーに生成した地面をセット
 	player_->SetGround(ground);
 	

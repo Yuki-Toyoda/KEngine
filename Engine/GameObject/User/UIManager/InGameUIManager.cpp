@@ -211,6 +211,7 @@ void InGameUIManager::Update()
 		bossHPGageSprite_BG_->SetIsActive(false);
 		bossHPGageSprite_F_->SetIsActive(false);
 		bossHPGageSprite_Icon_->SetIsActive(false);
+		FeedSprite_->SetIsActive(false);
 	}
 }
 
