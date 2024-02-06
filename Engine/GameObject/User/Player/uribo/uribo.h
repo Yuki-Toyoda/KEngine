@@ -66,6 +66,7 @@ public://アクセッサ
    void SetTutrial(bool flag) { isTutrial_ = flag; }
 
    bool GetIsCanHeal() { return IsCanHeal; }
+   void SetTutrialStart(bool flag) { tutrialStart_ = flag; }
 private: // プライベートなメンバ関数
 
 	/// <summary>
@@ -130,5 +131,7 @@ private: // メンバ変数
 	KLib::DeltaTimer timer_;
 	//回復できるか
 	bool IsCanHeal;
+
+	bool tutrialStart_;
 };
 
