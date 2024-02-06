@@ -95,6 +95,9 @@ void GameEditor::SaveRoller()
 		std::string keyPath = "Direct";
 		dataManager_->AddItem({ groupPath,sectionPath }, keyPath, object->GetVelocity());
 		dataManager_->SetValue({ groupPath,sectionPath }, keyPath, object->GetVelocity());
+		keyPath = "Scale";
+		dataManager_->AddItem({ groupPath,sectionPath }, keyPath, object->transform_.scale_);
+		dataManager_->SetValue({ groupPath,sectionPath }, keyPath, object->transform_.scale_);
 		counter_++;
 	}
 

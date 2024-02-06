@@ -22,7 +22,7 @@ void RollerAtackState::Init()
 		object->transform_.translate_.x = newPos.x;
 		object->transform_.translate_.y = 20.0f;
 		object->SetVelocity(dataManager->GetValue<Vector3>({ group,section }, "Direct"));
-		object->transform_.scale_ = dataManager->GetValue<Vector3>({ group,"Parameter" }, "Scale");
+		object->transform_.scale_ = dataManager->GetValue<Vector3>({ group,section }, "Scale");
 		object->SetgameManager(enemy_->gameManager_);
 
 		// 一時格納のため配列に保存
