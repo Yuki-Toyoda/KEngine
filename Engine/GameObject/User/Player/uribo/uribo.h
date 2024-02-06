@@ -3,6 +3,9 @@
 #include "../../../../Audio/Audio.h"
 #include "../../../../Utility/Animation/AnimationManager.h"
 
+// クラスの前方宣言
+class Camera;
+
 /// <summary>
 /// ウリ丸
 /// </summary>
@@ -13,6 +16,12 @@ public:
 	void Update()override;
 	void DisplayImGui()override;
 	void OnCollision(Collider* collider)override;
+
+	/// <summary>
+	/// 演出用カメラ更新処理
+	/// </summary>
+	void CameraUpdate();
+
 	/// <summary>
 /// 回復関数
 /// </summary>
@@ -80,6 +89,11 @@ private: // メンバ変数
 
 	// アニメーション
 	Animation* anim_ = nullptr;
+
+	// 演出用カメラ
+	Camera* stagingCamera_ = nullptr;
+	// カメラオフセット
+	Vector3 cameraOffset_ = { 0.0f, 0.0f, 0.0f };
 
 	// 餌を与えられるエリアのトランスフォーム
 	WorldTransform feedAreaTransform_;

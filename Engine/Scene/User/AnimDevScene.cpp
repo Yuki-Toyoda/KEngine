@@ -22,13 +22,16 @@ void AnimDevScene::Init()
 
 	// プレイヤーアニメーションマネージャの生成
 	BossAnimManager* eam_ = gameObjectManager_->CreateInstance<BossAnimManager>("bossAnim", BaseObject::TagEnemy);
-	
+	// 座標を移動させる
+	eam_->transform_.translate_.x = -3.0f;
 	// アニメーション生成
 	eam_->CreateAnimation();
 
+	// ウリボ生成
+	u_ = gameObjectManager_->CreateInstance<Uribo>("uribo", BaseObject::TagPlayer);
 }
 
 void AnimDevScene::Update()
 {
-
+	u_->Heal(u_->GetDefaultHP());
 }

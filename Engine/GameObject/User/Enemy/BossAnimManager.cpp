@@ -85,7 +85,7 @@ void BossAnimManager::Init()
 	CreateParameter("Boss_EndRollerAttack");
 
 	// 演出用カメラの生成
-	stagingCamera_ = GameObjectManager::GetInstance()->CreateInstance<Camera>("stagingCamera", BaseObject::TagCamera);
+	stagingCamera_ = GameObjectManager::GetInstance()->CreateInstance<Camera>("stagingCamera_Boss", BaseObject::TagCamera);
 
 }
 

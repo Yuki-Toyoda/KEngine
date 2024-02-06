@@ -1,6 +1,8 @@
 #include "uribo.h"
 #include "../../../../Resource/Texture/TextureManager.h"
 #include "../../../../Scene/FadeManager.h"
+#include "../../../GameObjectManager.h"
+#include "../../../Core/Camera.h"
 
 void Uribo::Init()
 {
@@ -39,6 +41,9 @@ void Uribo::Init()
 	feedAreaTransform_.scale_ = {collisionScale_.x / 2.0f, collisionScale_.z / 2.0f, 1.0f };
 	feedAreaTransform_.translate_.y = -(transform_.scale_.y / 2.0f) + 0.1f;
 
+	// 演出用カメラの生成
+	stagingCamera_ = GameObjectManager::GetInstance()->CreateInstance<Camera>("stagingCamera_Uribo", BaseObject::TagCamera);
+
 	// アニメーションマネージャーのインスタンス取得
 	animManager_ = AnimationManager::GetInstance();
 
@@ -57,6 +62,8 @@ void Uribo::Init()
 	anim_->AddAnimationKeys<Vector3>("Body_Scale", &bodyTransform_.scale_);
 	anim_->AddAnimationKeys<Vector3>("Body_Rotate", &bodyTransform_.rotate_);
 	anim_->AddAnimationKeys<Vector3>("Body_Translate", &bodyTransform_.translate_);
+	anim_->AddAnimationKeys<Vector3>("Camera_Rotate", &stagingCamera_->transform_.rotate_);
+	anim_->AddAnimationKeys<Vector3>("Camera_Translate", &cameraOffset_);
 
 	// ループ有効
 	anim_->isLoop_ = true;
@@ -67,6 +74,11 @@ void Uribo::Init()
 
 void Uribo::Update()
 {
+	// カメラ使用中のみに更新処理を呼び出す
+	if (stagingCamera_->GetIsUsedCamera()) {
+		CameraUpdate();
+	}
+
 	// ボスが死亡していない場合
 	if (!isBossDead_&&hitPoint_>=0) {
 		hitPoint_ -= decrementHP;
@@ -76,6 +88,8 @@ void Uribo::Update()
 		if (!isTutrial_) {
 			// アニメーションの読み込みパラメータ名が同一でない場合
 			if (anim_->GetReadingParameterName() != "Uribo_Dead") {
+				// 演出用カメラの有効化
+				stagingCamera_->UseThisCamera();
 				// アニメーションのループを切る
 				anim_->isLoop_ = false;
 				// アニメーション状態を変更する
@@ -149,6 +163,14 @@ void Uribo::Update()
 void Uribo::DisplayImGui()
 {
 	transform_.DisplayImGui();
+	
+	if (ImGui::TreeNode("StagingCamera")) {
+		// 演出用カメラのオフセット
+		ImGui::DragFloat3("CameraOffset", &cameraOffset_.x);
+		ImGui::DragFloat3("CameraRotate", &stagingCamera_->transform_.rotate_.x, 0.01f);
+
+		ImGui::TreePop();
+	}
 
 	anim_->DisplayImGui();
 	// アニメーションの読み込みパラメータ変更
@@ -195,6 +217,23 @@ void Uribo::OnCollision(Collider* collider)
 		// 餌を与えられる状態であることを示す
 		canFeed_ = true;
 	}
+}
+
+void Uribo::CameraUpdate()
+{
+	// オフセットを取得
+	Vector3 offset = cameraOffset_;
+
+	// 回転角から行列を生成
+	Matrix4x4 rotateMat = Math::MakeRotateXYZMatrix(stagingCamera_->transform_.rotate_);
+	// オフセットをカメラの回転に合わせて回転させる
+	offset = Math::Transform(offset, rotateMat);
+
+	// オフセットをもとにカメラ座標を計算する
+	stagingCamera_->transform_.translate_ = transform_.translate_ + offset;
+
+	// カメラの更新
+	stagingCamera_->Update();
 }
 
 void Uribo::Heal(int healPower)
@@ -246,4 +285,6 @@ void Uribo::CreateParameter(const std::string& name)
 	animManager_->AddSelectAnimationKeys<Vector3>(name, "Body_Scale");
 	animManager_->AddSelectAnimationKeys<Vector3>(name, "Body_Rotate");
 	animManager_->AddSelectAnimationKeys<Vector3>(name, "Body_Translate");
+	animManager_->AddSelectAnimationKeys<Vector3>(name, "Camera_Rotate");
+	animManager_->AddSelectAnimationKeys<Vector3>(name, "Camera_Translate");
 }
