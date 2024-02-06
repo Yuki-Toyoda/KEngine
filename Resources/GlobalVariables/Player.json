@@ -19,6 +19,6 @@
         "hitCoolTime": 2.0,
         "maxAtackCount": 90,
         "scale rate": 0.007000000216066837,
-        "subtractionAbsorptionCount_": 1
+        "subtractionAbsorptionCount_": 2
     }
 }

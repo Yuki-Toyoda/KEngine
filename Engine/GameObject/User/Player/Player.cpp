@@ -368,7 +368,7 @@ void Player::Damage()
 		// HPを減らす
 		//hitPoint_--;
 		//食べた野菜の数を減らす
-		absorptionCount_ -= subtractionAbsorptionCount_;
+		absorptionCount_ -= absorptionCount_/ subtractionAbsorptionCount_;
 		if (absorptionCount_ < 0) {
 			absorptionCount_ = 0;
 		}
