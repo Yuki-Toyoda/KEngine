@@ -97,6 +97,9 @@ void Meteor::OnCollisionEnter(Collider* collider)
 			//上下左右から一定角度ずらす
 			theta *= angle;
 			Rubble* rubble = GameObjectManager::GetInstance()->CreateInstance<Rubble>("rubble", BaseObject::TagRubble);
+			// 初期座標を下に
+			rubble->transform_.translate_.y = -5.0f;
+
 			Vector3 pos;
 			//Lerpのゴールとスタートを設定
 			pos.x = transform_.translate_.x + std::cosf(theta) * (distance + transform_.scale_.x);
