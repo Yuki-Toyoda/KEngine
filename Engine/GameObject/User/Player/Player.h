@@ -148,7 +148,7 @@ public: // アクセッサ等
 	/// <returns>加速度</returns>
 	float GetAbsorptionAcceleration() { return absorptionAccelerationForce_; }
 	/// <summary>
-	/// 最大加速度ゲッター
+	/// 最大加速度ゲッター 
 	/// </summary>
 	/// <returns>最大加速度</returns>
 	float GetMaxMoveAcceleration() { return kMaxMoveAcceleration_; }
