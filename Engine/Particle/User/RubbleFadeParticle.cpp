@@ -4,6 +4,10 @@ void RubbleFadeParticle::Init()
 {
 	// 開始時のサイズ
 	startScale_ = transform_.scale_;
+	Vector3 randomRotate
+		= { Math::RandomF(0,1.57f,3),Math::RandomF(0,1.57f,3) ,0 };
+
+	transform_.rotate_ = randomRotate;
 
 }
 

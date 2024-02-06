@@ -82,9 +82,9 @@ public:
 			}
 		}
 
-		for (Roller* roller : rollers_) {
-			roller->transform_.scale_ = rollerSize_;
-		}
+		//for (Roller* roller : rollers_) {
+		//	roller->transform_.scale_ = rollerSize_;
+		//}
 
 		for (PushUp* object : pushUps_) {
 			//object->transform_.scale_ = pushUpSize_;

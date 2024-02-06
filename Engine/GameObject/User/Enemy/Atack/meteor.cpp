@@ -6,6 +6,9 @@
 
 void Meteor::Init()
 {
+	// パーティクルエミッタマネージャのインスタンス取得
+	pem_ = ParticleEmitterManager::GetInstance();
+
 	// 攻撃範囲用トランスフォームの初期化
 	attackAreaTransform_.Init();
 	// 親座標とペアレント
@@ -68,6 +71,9 @@ void Meteor::OnCollisionEnter(Collider* collider)
 	
 	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagFloor) {
 		float angle= RandomEngine::GetRandom(0.0f, 10.0f);
+		Vector3 generatePos = transform_.translate_;
+		pem_->CreateEmitter<BoxBreakParticleEmitter, BoxBreakParticle>("MeteorBreak", 10, 10, generatePos, 1.0f, 10.0f, TextureManager::Load("boxBreakParticle.png"));
+
 		for (int i = 0; i< 3; i++) {
 			float distance = RandomEngine::GetRandom(0.0f, gameManager_->rubbleRange);
 			float theta=0.0f;

@@ -23,18 +23,18 @@ void Roller::Update()
 {
 	// 移動加速度をゲームマネージャーから取得
 	moveAcceleration_ = gameManager_->RollerSpeed_;
-
+	
 	// 動作トリガーがtrueの時
 	if (isMove_) {
 		// ?????????????
-		if (velocity_.x > velocity_.x) {
+		if (std::fabsf(velocity_.x) > std::fabsf(velocity_.z)) {
 
 			transform_.rotate_.x = 0.0f;
 			if (velocity_.x >= 0.0f) {
-				transform_.rotate_.z += 0.1f;
+				transform_.rotate_.z -= 0.1f;
 			}
 			else {
-				transform_.rotate_.z -= 0.1f;
+				transform_.rotate_.z += 0.1f;
 			}
 		}
 		else {
@@ -71,5 +71,5 @@ void Roller::SetVelocity(const Vector3& velocity)
 	// 速度ベクトルをセット
 	velocity_ = velocity;
 	// ローラーの向きを速度ベクトルに合わせて回転させる
-	transform_.rotate_.y = std::atan2(velocity_.x, velocity_.z);
+	//transform_.rotate_.y = std::atan2(velocity_.x, velocity_.z);
 }

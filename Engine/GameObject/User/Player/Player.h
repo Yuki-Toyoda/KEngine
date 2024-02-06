@@ -225,6 +225,8 @@ public: // パブリックなメンバ変数
 	IParticleEmitter* chargeParticleEmitter_ = nullptr;
 	// チャージ終了時のパーティクル
 	IParticleEmitter* chargeFinishParticleEmitter_ = nullptr;
+	// 移動時のパーティクル
+	IParticleEmitter* moveParticleEmitter_ = nullptr;
 
 private: // メンバ変数
 

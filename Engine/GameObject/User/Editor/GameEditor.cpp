@@ -13,6 +13,10 @@ void GameEditor::Init()
 	ParameterInitialize();
 
 
+	//for (Roller* roller : rollers_) {
+	//	roller->transform_.scale_ = rollerSize_;
+	//}
+
 	dataManager_->CreateGroup({ "TableData","TableList0" });
 	dataManager_->CreateGroup({ "TableData","TableList1" });
 
@@ -160,7 +164,9 @@ void GameEditor::ParameterInitialize()
 		Vector3 newPos = {};
 		dataManager_->AddItem({ group,section }, key, newPos);
 		dataManager_->AddItem({ group,section }, "Direct", newPos);
+		dataManager_->AddItem({ group,section }, "Scale", newPos);
 		newPos = dataManager_->GetValue<Vector3>({ group,section }, key);
+		object->transform_.scale_ = dataManager_->GetValue<Vector3>({ group,section }, "Scale");
 
 		object->transform_.translate_ = newPos;
 		Vector3 direct = dataManager_->GetValue<Vector3>({ group,section }, "Direct");
@@ -497,7 +503,9 @@ void GameEditor::EditorImGui()
 				std::string section = "Roller" + std::to_string(rollerCounter_);
 				Vector3 newPos = {};
 				dataManager_->AddItem({ group,section }, "Position", newPos);
+				dataManager_->AddItem({ group,section }, "Scale", rollerSize_);
 				object->transform_.translate_ = dataManager_->GetValue<Vector3>({ group,section }, "Position");
+				object->transform_.translate_ = dataManager_->GetValue<Vector3>({ group,section }, "Scale");
 				object->SetVelocity({});
 				object->SetgameManager(gameManager_);
 				rollers_.push_back(object);
@@ -526,6 +534,19 @@ void GameEditor::EditorImGui()
 				Vector3 direct = object->GetVelocity();
 				fullTag = "Direct" + fullTag;
 				ImGui::DragFloat3(fullTag.c_str(), &direct.x, 0.01f, -1.0f, 1.0f);
+				std::string Tag = "Scale" + fullTag + " : 90";
+				if (ImGui::Button(Tag.c_str())) {
+					if (object->transform_.scale_.x <= 1.0f) {
+						object->transform_.scale_.x = 16.0f;
+						object->transform_.scale_.z = 1.0f;
+					}
+					else {
+						object->transform_.scale_.x = 1.0f;
+						object->transform_.scale_.z = 16.0f;
+					}
+				}
+				fullTag = "Scale" + fullTag;
+				ImGui::DragFloat3(fullTag.c_str(), &object->transform_.scale_.x, 0.01f, -1.0f, 1.0f);
 				object->SetVelocity(direct);
 				ImGui::Text("\n");
 				counter_++;
