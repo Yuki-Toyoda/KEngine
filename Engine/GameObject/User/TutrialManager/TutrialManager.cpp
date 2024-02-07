@@ -170,14 +170,14 @@ void TutrialManager::Update()
 			
 			player_->SetIsTutrialDash(false);
 			player_->SetCanDash(true);
-			stopTimer_.Stop();
+			
 			stopTimer_.Start(stopTime_);
 		}
 		break;
 	case Dash:
 		if (stopTimer_.GetIsFinish()) {
 			boss_->SetTutrialStart(true);
-			stopTimer_.Start(300.0f);
+			stopTimer_.Start(30.0f);
 		}
 		sprites_[7]->SetIsActive(true);
 		if (player_->GetISTutrialDash()) {
@@ -190,7 +190,7 @@ void TutrialManager::Update()
 	case kougeki:
 		if (stopTimer_.GetIsFinish()) {
 			boss_->SetTutrialStart(true);
-			stopTimer_.Start(300.0f);
+			stopTimer_.Start(30.0f);
 		}
 		//攻撃が終わったらendへ
 		sprites_[2]->SetIsActive(true);
@@ -198,15 +198,15 @@ void TutrialManager::Update()
 
 		if (boss_->GetTutrialAtackEnd()) {
 			step++;
-			stopTimer_.Stop();
-			stopTimer_.Start(stopTime_);
+		/*	stopTimer_.Stop();
+			stopTimer_.Start(stopTime_);*/
 		}
 		break;
 	case end:
-		if (stopTimer_.GetIsFinish()) {
+		/*if (stopTimer_.GetIsFinish()) {
 			boss_->SetTutrialStart(true);
 			stopTimer_.Start(300.0f);
-		}
+		}*/
 		sprites_[5]->SetIsActive(true);
 		if (timer_.GetIsFinish()) {
 			timer_.Start(2.0f);
