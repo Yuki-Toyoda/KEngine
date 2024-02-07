@@ -32,7 +32,7 @@ void TutrialManager::Init()
 	ArrowUpper_ = { 133.0f,460.0f };
 	AddSprite("Arrow", ArrowUpper_, { 144.0f,160.0f }, TextureManager::Load("./Resources/UI/Tutorial", "tutorialArrow.png"));
 	sprites_[11]->anchorPoint_ = { 0.5f,0.5f };
-	AddSprite("Power", uiPosition_, { 1072.0f,128.0f }, TextureManager::Load("./Resources/UI/Tutorial", "Tutorial_10.png"));
+	AddSprite("Power", {648.0f,128.0f}, {1072.0f,64.0f}, TextureManager::Load("./Resources/UI/Tutorial", "Tutorial_10.png"));
 	sprites_[12]->anchorPoint_ = { 0.5f,0.5f };
 	step = yokero;
 	skipCount_ = 0;
