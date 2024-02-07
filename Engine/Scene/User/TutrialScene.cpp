@@ -130,11 +130,13 @@ void TutrialScene::Update()
 		SceneManager::GetInstance()->SetNextScene(nextScene);
 	}
 
-	// デバッグ遷移
-	/*if (input_->TriggerKey(DIK_RSHIFT)) {
-		BaseScene* nextScene = new GameScene();
+	// 開発者コマンド
+	if (input_->PushKey(DIK_RSHIFT) && input_->PushKey(DIK_R)) {
+		// BGMを止める
+		audio_->StopWave(bgmVoiceHadle_);
+		BaseScene* nextScene = new TitleScene();
 		SceneManager::GetInstance()->SetNextScene(nextScene);
-	}*/
+	}
 
 #ifdef _DEBUG
 

@@ -148,6 +148,16 @@ void GameScene::Update()
 			
 		}
 	}
+
+	// 開発者コマンド
+	if (input_->PushKey(DIK_RSHIFT) && input_->PushKey(DIK_R)) {
+		TitleScene* nextScene = new TitleScene();
+		SceneManager::GetInstance()->SetNextScene(nextScene);
+
+		// BGMを止める
+		audio_->StopWave(bgmVoiceHadle_);
+	}
+
 	// デバッグ時のみ特定のキーでシーン遷移
 #ifdef _DEBUG
 	// デバッグ遷移
