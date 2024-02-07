@@ -37,6 +37,8 @@ void TutrialScene::Init()
 	player_->transform_.translate_ = { 0.0f,3.0f,-40.0f };
 
 	player_->SetIsTutrial(true);
+	player_->SetIsTutrialDash(false);
+	player_->SetCanDash(false);
 	// プレイヤーをカメラにセットする
 	camera_->SetPlayer(player_);
 	// プレイヤーにカメラをセットする
@@ -55,6 +57,7 @@ void TutrialScene::Init()
 	uribo_ = gameObjectManager_->CreateInstance<Uribo>("uribo", BaseObject::TagUribo);
 	uribo_->SetTutrial(true);
 	uribo_->SetTutrialStart(false);
+
 	player_->SetUribo(uribo_);
 	// プレイヤーアニメーションマネージャの生成
 	PlayerAnimManager* am = gameObjectManager_->CreateInstance<PlayerAnimManager>("playerAnim", BaseObject::TagPlayer);

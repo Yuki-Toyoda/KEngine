@@ -32,6 +32,8 @@ void TutrialManager::Init()
 	ArrowUpper_ = { 133.0f,460.0f };
 	AddSprite("Arrow", ArrowUpper_, { 144.0f,160.0f }, TextureManager::Load("./Resources/UI/Tutorial", "tutorialArrow.png"));
 	sprites_[11]->anchorPoint_ = { 0.5f,0.5f };
+	AddSprite("Power", {648.0f,128.0f}, {1072.0f,64.0f}, TextureManager::Load("./Resources/UI/Tutorial", "Tutorial_10.png"));
+	sprites_[12]->anchorPoint_ = { 0.5f,0.5f };
 	step = yokero;
 	skipCount_ = 0;
 	isEnd_ = false;
@@ -156,6 +158,7 @@ void TutrialManager::Update()
 			step++;
 			
 			player_->SetIsTutrialDash(false);
+			player_->SetCanDash(true);
 		}
 		break;
 	case Dash:
@@ -168,6 +171,8 @@ void TutrialManager::Update()
 	case kougeki:
 		//攻撃が終わったらendへ
 		sprites_[2]->SetIsActive(true);
+		sprites_[12]->SetIsActive(true);
+
 		if (boss_->GetTutrialAtackEnd()) {
 			step++;
 		}
@@ -180,6 +185,7 @@ void TutrialManager::Update()
 		timer_.Update();
 		if (timer_.GetIsFinish()) {
 			step++;
+			uribo_->SetTutrialPlactice(true);
 		}
 		break;
 	case plactice:
@@ -193,7 +199,10 @@ void TutrialManager::Update()
 	default:
 		break;
 	}
-
+	if (uribo_->GetHP() <= 0) {
+		uribo_->Reset();
+		
+	}
 }
 
 void TutrialManager::DisplayImGui()

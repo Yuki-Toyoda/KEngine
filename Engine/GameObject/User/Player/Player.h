@@ -212,6 +212,8 @@ public: // アクセッサ等
 	/// </summary>
 	/// <param name="boss">ボスの実体</param>
 	void SetBoss(Boss* boss) { boss_ = boss; }
+	void SetCanDash(bool flag) { canDash_=flag; }
+	bool GetCanDash() { return canDash_; }
 
 	/// <summary>
 	/// ボスへの方向ベクトルゲッター
@@ -358,6 +360,8 @@ private: // メンバ変数
 	//攻撃チャージ
 	bool isCharge_;
 	bool isTutrialDash_;
+	//チュートリアル時ダッシュ可能か
+	bool canDash_;
 	//食べてるカウントによる加速度
 	float absorptionAccelerationForce_;
 	//つぶれたときのSE
