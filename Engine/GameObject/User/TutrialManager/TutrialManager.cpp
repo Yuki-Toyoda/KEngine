@@ -28,6 +28,10 @@ void TutrialManager::Init()
 	AddSprite("GameOver", uiPosition_, { 894.0f,64.0f }, TextureManager::Load("./Resources/UI/Tutorial", "Ttutorial_06.png"));
 	sprites_[10]->anchorPoint_ = { 0.5f,0.5f };
 	sprites_[8]->SetParent(sprites_[9]->GetWorldTransform());
+	ArroeBottom_ = { 133.0f,500.0f };
+	ArrowUpper_ = { 133.0f,430.0f };
+	AddSprite("Arrow", ArrowUpper_, { 144.0f,160.0f }, TextureManager::Load("./Resources/UI/Tutorial", "tutorialArrow.png"));
+	sprites_[11]->anchorPoint_ = { 0.5f,0.5f };
 	step = yokero;
 	skipCount_ = 0;
 	isEnd_ = false;
@@ -81,8 +85,26 @@ void TutrialManager::Update()
 
 	break;
 	case atumero:
+		if (arrowTimer_.GetIsFinish()) {
+			if (sprites_[11]->translate_.y == ArroeBottom_.y) {
+				//矢印が下なら下降フラグをfalse
+				arrowIsDown = false;
+				arrowGoal_ = ArrowUpper_;
+				arrowStart_ = ArroeBottom_;
+			}
+			else {
+				//上ならtrue
+				arrowIsDown = true;
+				arrowGoal_ = ArroeBottom_;
+				arrowStart_ = ArrowUpper_;
+			}
+			arrowTimer_.Start(1.0f);
+		}
+		arrowTimer_.Update();
 		//五個集めたら回復へ
 		sprites_[1]->SetIsActive(true);
+		sprites_[11]->SetIsActive(true);
+		sprites_[11]->translate_.y = Math::Linear(KLib::EaseInOutQuad(arrowTimer_.GetProgress()), arrowStart_.y, arrowGoal_.y);
 		if (player_->GetAbsorptionCount() >= 10) {
 			step++;
 			//うりぼーの体力を減らす

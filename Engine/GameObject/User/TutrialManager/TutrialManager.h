@@ -74,5 +74,11 @@ private:
 	 // インゲーム内のUIマネージャー
 	 InGameUIManager* inGameUIManager_ = nullptr;
 
+	 Vector2  ArroeBottom_;
+	 Vector2 ArrowUpper_;
+	 bool arrowIsDown;
+	 KLib::DeltaTimer arrowTimer_;
+	 Vector2 arrowGoal_;
+	 Vector2 arrowStart_;
 };
 
