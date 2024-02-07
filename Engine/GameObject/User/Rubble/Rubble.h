@@ -46,6 +46,11 @@ private:
 	Vector3 goalPos_;
 	Vector3 CollisionScale_;
 
+	KLib::DeltaTimer animTimer_;
+	bool isReturn_ = false;
+	float default_Y_ = 0;
+	float animOffset_ = 0;
+
 private: // パーティクル
 	// エミッタマネージャー
 	ParticleEmitterManager* emitterManager_ = nullptr;

@@ -30,6 +30,8 @@ void Rubble::Init()
 	isGenerateParticle_ = false;
 	emitterManager_ = ParticleEmitterManager::GetInstance();
 
+	animOffset_ = 1.2f;
+	isReturn_ = false;
 }
 
 void Rubble::Update()
@@ -42,7 +44,10 @@ void Rubble::Update()
 
 	lerpTimer_.Update();
 	aliveTimer_.Update();
-	transform_.translate_ = KLib::Lerp<Vector3>(startPos_, goalPos_, KLib::EaseOutQuad(lerpTimer_.GetProgress()));
+	animTimer_.Update();
+	if (lerpTimer_.GetIsActive()) {
+		transform_.translate_ = KLib::Lerp<Vector3>(startPos_, goalPos_, KLib::EaseOutQuad(lerpTimer_.GetProgress()));
+	}
 	color_.w = KLib::Lerp<float>(1.0f, 0.0f, aliveTimer_.GetProgress());
 	//時間が切れるか表示フラグがない場合オブジェクトを破壊
 	if (aliveTimer_.GetIsFinish()||!isActive_) {
@@ -57,11 +62,31 @@ void Rubble::Update()
 	// 移動後パーティクルのセットアップ
 	if (lerpTimer_.GetIsFinish() && !isGenerateParticle_) {
 		SetUpParticle();
+		default_Y_ = transform_.translate_.y;
+		animTimer_.Start(1.f);
 	}
 	// パーティクルの更新
 	if (isGenerateParticle_) {
 		fadeParticleEmitter_->transform_.translate_ = transform_.translate_;
+		fadeParticleEmitter_->transform_.translate_.y = fadeParticleEmitter_->transform_.translate_.y + 0.5f;
+		if (isReturn_) {
+			transform_.translate_.y = KLib::Lerp<float>(default_Y_, default_Y_ + animOffset_, KLib::EaseOutQuad(animTimer_.GetProgress()));
+		}
+		else {
+			transform_.translate_.y = KLib::Lerp<float>(default_Y_ + animOffset_, default_Y_, KLib::EaseOutQuad(animTimer_.GetProgress()));
+		}
 	}
+
+	if (animTimer_.GetIsFinish()) {
+		if (isReturn_) {
+			isReturn_ = false;
+		}
+		else {
+			isReturn_ = true;
+		}
+		animTimer_.Start(1);
+	}
+
 }
 
 void Rubble::DisplayImGui()
