@@ -94,6 +94,9 @@ void Player::Init()
 
 void Player::Update()
 {
+	if (absorptionCount_ >= 99) {
+		absorptionCount_ = 99;
+	}
 	// 現在のスケールが最大スケールを超えている場合は
 	if (transform_.scale_.x >= maxSize) {
 		// スケールを最大スケールで固定する
@@ -320,6 +323,9 @@ void Player::OnCollisionEnter(Collider* collider) {
 		if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagRubble) {
 			//がれきにぶつかったらしてサイズを大きくする
 			absorptionCount_++;
+			if (absorptionCount_ >= 99) {
+				absorptionCount_ = 99;
+			}
 			if (transform_.scale_.x < maxSize) {
 				// 加算するサイズを計算
 				float addSize = absorptionCount_ * scaleForce_;

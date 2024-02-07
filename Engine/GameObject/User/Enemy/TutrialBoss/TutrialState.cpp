@@ -32,6 +32,14 @@ void TutrialState::Init()
 
 void TutrialState::Update()
 {
+	if (enemy_->GetTutrialStop()) {
+		timer_.Stop();
+		enemy_->SetTutrialStop(false);
+	}
+	if (enemy_->GetTutrialStart()) {
+		timer_.Start();
+		enemy_->SetTutrialStart(false);
+	}
 	timer_.Update();
 	if (timer_.GetIsFinish()) {
 		Init();

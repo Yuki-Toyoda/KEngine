@@ -90,6 +90,7 @@ public: // アクセッサ等
 	/// <param name="flag">攻撃チュートリアルを終了するか</param>
 	void SetTutrialAtackEnd(bool flag) { tutrialAtackEnd_ = flag; }
 
+	
 private: // メンバ関数
 
 	/// <summary>
@@ -141,4 +142,5 @@ private:
 	bool isSceneChange_ = false;
 	bool isTutrial_=true;
 	bool tutrialAtackEnd_=false;
+	
 };
