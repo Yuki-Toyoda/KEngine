@@ -14,7 +14,7 @@
             0.0,
             6.0
         ],
-        "rubbleRange": 10.0,
+        "rubbleRange": 4.0,
         "rubblemoveTime": 1.0
     }
 }

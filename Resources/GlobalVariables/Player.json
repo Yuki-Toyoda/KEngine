@@ -14,11 +14,11 @@
         "brakeTime": 0.15000000596046448,
         "correctFrame": 10.0,
         "correctValue": 0.5,
-        "dashPower": 15.0,
+        "dashPower": 10.0,
         "healpower": 450,
         "hitCoolTime": 2.0,
         "maxAtackCount": 90,
         "scale rate": 0.007000000216066837,
-        "subtractionAbsorptionCount_": 2
+        "subtractionAbsorptionCount_": 3
     }
 }
