@@ -187,7 +187,9 @@ void Boss::OnCollisionEnter(Collider* collider)
 	//プレイヤーが攻撃していたらダメージをくらう
 	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagPlayer && player_->GetIsAtack()) {
 		// ボスのHPをプレイヤーの攻撃力に基づいて減少させる
-		hitPoint_ -= player_->GetAtackPower();
+		if (!isTutrial_) {
+			hitPoint_ -= player_->GetAtackPower();
+		}
 		// プレイヤーを攻撃していない状態に
 		player_->SetIsAtack(false);
 		
@@ -233,7 +235,9 @@ void Boss::OnCollision(Collider* collider)
 		//プレイヤーが攻撃していたらダメージをくらう
 		if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagPlayer && player_->GetIsAtack()) {
 			// ボスのHPをプレイヤーの攻撃力に基づいて減少させる
-			hitPoint_ -= player_->GetAtackPower();
+			if (!isTutrial_) {
+				hitPoint_ -= player_->GetAtackPower();
+			}
 			// プレイヤーを攻撃していない状態に
 			player_->SetIsAtack(false);
 
