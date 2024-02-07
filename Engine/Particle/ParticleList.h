@@ -16,3 +16,5 @@
 #include "User/BoxBreakParticleEmitter.h"
 #include "User/ChargeCircleParticle.h"
 #include "User/ChargeCircleParticleEmitter.h"
+#include "User/HealParticle.h"
+#include "User/HealParticleEmitter.h"

@@ -27,6 +27,9 @@ void Uribo::Init()
 	transform_.translate_.x = 30.0f;
 	transform_.scale_ = { 1.75f,1.75f, 1.75f };
 
+	// パーティクルエミッタマネージャのインスタンス取得
+	pem_ = ParticleEmitterManager::GetInstance();
+
 	GlobalVariables* variables = GlobalVariables::GetInstance();
 	variables->CreateGroup(name_);
 	variables->AddItem(name_, "DefaultHp", defaultHP_);
@@ -259,6 +262,9 @@ void Uribo::Heal(int healPower)
 	if (hitPoint_ > 0) {
 		hitPoint_ += healPower;
 		IsCanHeal = true;
+		Vector3 generatePos = transform_.translate_;
+		generatePos.y += 5.0f;
+		pem_->CreateEmitter<HealParticleEmitter, HealParticle>("Uribo_Heal", 25, 1, generatePos, 4.0f, 10.0f, TextureManager::Load("vegetableParticle.png"));
 	}
 	if (hitPoint_ >= defaultHP_) {
 		hitPoint_ = defaultHP_;
