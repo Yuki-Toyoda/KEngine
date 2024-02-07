@@ -94,6 +94,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	TextureManager::Load("vegetableIcon.png");
 	TextureManager::Load("tomato.png");
 	TextureManager::Load("greenPepper.png");
+	TextureManager::Load("./Resources/Player", "TexGameClear.png");
+	TextureManager::Load("./Resources/Player", "TexGameOver.png");
 
 	// 読み込み後再度形状マネージャ初期化
 	primitiveManager->Init();

@@ -72,6 +72,13 @@ void ResultManager::Update()
 			}
 		}
 		
+		// アニメーション進捗が5割りを超えている場合
+		if (anim_->GetAnimationProgress() >= 0.55f) {
+			// メッシュのテクスチャ変更
+			pam_->ChangeTex(TextureManager::Load("./Resources/Player", "TexGameClear.png"));
+			uribo_->texture_ = TextureManager::Load("./Resources/Player", "TexGameClear.png");
+		}
+
 		// アニメーション終了時
 		if (anim_->isEnd_) {
 			// クリアしたかによって再生アニメーション変更
@@ -233,7 +240,7 @@ void ResultManager::PostInit(bool isClear)
 
 	// 各種ワールドトランスフォームの初期化
 	uriboTransform_.Init();
-	Mesh* m = AddMesh(&uriboTransform_, color_, "./Resources/Uribo", "Uribo.obj");
+	uribo_ = AddMesh(&uriboTransform_, color_, "./Resources/Uribo", "Uribo.obj");
 
 	// クリアしたかによって処理を変える
 	if (isCleared_) {
@@ -276,7 +283,8 @@ void ResultManager::PostInit(bool isClear)
 	else {
 
 		// メッシュのテクスチャ変更
-		m->texture_ = TextureManager::Load("./Resources/Uribo", "TexGameOver.png");
+		pam_->ChangeTex(TextureManager::Load("./Resources/Player", "TexGameOver.png"));
+		uribo_->texture_ = TextureManager::Load("./Resources/Player", "TexGameOver.png");
 
 		// BGMロード
 		bgmHandle_ = audio_->LoadWave("./Resources/Audio/BGM/gameOver.wav");
