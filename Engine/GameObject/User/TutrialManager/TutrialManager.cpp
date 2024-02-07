@@ -180,6 +180,7 @@ void TutrialManager::Update()
 		timer_.Update();
 		if (timer_.GetIsFinish()) {
 			step++;
+			uribo_->SetTutrialPlactice(true);
 		}
 		break;
 	case plactice:
@@ -193,7 +194,10 @@ void TutrialManager::Update()
 	default:
 		break;
 	}
-
+	if (uribo_->GetHP() <= 0) {
+		uribo_->Reset();
+		
+	}
 }
 
 void TutrialManager::DisplayImGui()

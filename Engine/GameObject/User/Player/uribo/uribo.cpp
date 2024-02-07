@@ -71,6 +71,7 @@ void Uribo::Init()
 	anim_->Play();
 	isTutrial_ = false;
 	tutrialStart_ = true;
+	tutrialPlactice_ = false;
 }
 
 void Uribo::Update()
@@ -85,7 +86,7 @@ void Uribo::Update()
 	if (!isBossDead_&&hitPoint_>=0&&timer_.GetIsFinish()&&tutrialStart_) {
 		hitPoint_ -= decrementHP;
 	}
-	if (isTutrial_) {
+	if (isTutrial_&&!tutrialPlactice_) {
 		if (hitPoint_ <= 50) {
 			hitPoint_ = 50;
 		}
@@ -287,6 +288,28 @@ bool Uribo::TutrialEnd()
 	}
 
 	return false;
+}
+
+void Uribo::Reset()
+{
+	if (!isFade_) {
+		// フェードアウト
+		FadeManager::GetInstance()->ChangeParameter("FadeOut", true);
+		FadeManager::GetInstance()->Play();
+
+		// フェード演出を行っていたらtrue
+		isFade_ = true;
+	}
+	else {
+		// フェードイン
+		FadeManager::GetInstance()->ChangeParameter("FadeIn", true);
+		FadeManager::GetInstance()->Play();
+		isFade_ = false;
+		hitPoint_ = defaultHP_;
+		isDead_ = false;
+	}
+	
+	
 }
 
 void Uribo::SetGlobalVariables()
