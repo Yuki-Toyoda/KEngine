@@ -6,3 +6,4 @@
 #include "PushUpHitState.h"
 #include "WallCollisionState.h"
 #include "DashState.h"
+#include "DamageState.h"

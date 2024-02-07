@@ -18,6 +18,10 @@ void Player::Init()
 	// 餌を与える
 	feedSE_ = audio_->LoadWave("./Resources/Audio/SE/feed.wav");
 	callapseSE= audio_->LoadWave("./Resources/Audio/SE/callapse.wav");
+	
+	chargeEnd_ = audio_->LoadWave("./Resources/Audio/SE/chargeMax.wav");
+	charge_ = audio_->LoadWave("./Resources/Audio/SE/charge.wav");
+
 	// 移動ベクトル初期化
 	velocity_ = { 0.0f,0.0f,0.0f };
 	// 球のコライダーを追加

@@ -96,6 +96,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\GameObject\User\Player\State\DamageState.cpp" />
     <ClCompile Include="Engine\Particle\User\ChargeCircleParticleEmitter.cpp" />
     <ClCompile Include="Engine\Particle\User\ChargeCircleParticle.cpp" />
     <ClCompile Include="Engine\GameObject\User\camera\TutrialCmera.cpp" />
@@ -233,6 +234,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Particle\User\MoveParticleEmitter.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\GameObject\User\Player\State\DamageState.h" />
     <ClInclude Include="Engine\Particle\User\ChargeCircleParticleEmitter.h" />
     <ClInclude Include="Engine\Particle\User\ChargeCircleParticle.h" />
     <ClInclude Include="Engine\GameObject\User\camera\TutrialCmera.h" />

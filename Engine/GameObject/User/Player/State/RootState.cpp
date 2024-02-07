@@ -7,8 +7,6 @@ void RootState::Init()
 	// 名称設定
 	name_ = "Root";
 	audio_= Audio::GetInstance();
-	chargeEnd_ = audio_->LoadWave("./Resources/Audio/SE/chargeMax.wav");
-	charge_ = audio_->LoadWave("./Resources/Audio/SE/charge.wav");
 	//攻撃ボタンを押しているカウントを0に
 	player_->ResetAtackCount();
 }
@@ -19,19 +17,25 @@ void RootState::Update()
 	if (player_->GetCanDash()) {
 		//チャージ完了時
 		if (player_->GetAtackCount() == player_->GetmaxAtackCount() && player_->GetISTutrialDash()) {
-			chargeEndhandle = audio_->PlayWave(chargeEnd_);
+			player_->chargeEndhandle = audio_->PlayWave(player_->chargeEnd_);
 		}
-		if (InputManager::AtackCharge() && player_->GetAbsorptionCount() >= kMinCount) {
-			if (!audio_->IsPlaying(chargeHandle)) {
-
-				chargeHandle = audio_->PlayWave(charge_);
+		if (InputManager::AtackCharge() && player_->GetAbsorptionCount() >= kMinCount && !player_->GetIsDamaged()) {
+			if (!audio_->IsPlaying(player_->chargeHandle) || player_->chargeHandle == -1) {
+				player_->chargeHandle = audio_->PlayWave(player_->charge_, false);
 			}
 		}
 		else {
-			audio_->StopWave(chargeHandle);
+			if (audio_->IsPlaying(player_->chargeHandle)) {
+				audio_->StopWave(player_->chargeHandle);
+			}
 		}
 		if (player_->GetIsDamaged()) {
-			audio_->StopWave(chargeHandle);
+			if (audio_->IsPlaying(player_->chargeHandle)) {
+				audio_->StopWave(player_->chargeHandle);
+			}
+			// ステートをダメージ状態に変更
+			player_->ChangeState(std::make_unique<DamageState>());
+			// 早期リターン
 			return;
 		}
 		// チャージ秒数が既定秒数以上のとき、かつボタンを話したとき

@@ -43,7 +43,7 @@ void PlayerAnimManager::Update()
 	// 矢印メッシュが存在するかつ、プレイヤーが存在場合
 	if (arrow_ != nullptr && player_ != nullptr) {
 		// 入力があった場合矢印を表示する
-		if (InputManager::AtackCharge() && player_->GetAbsorptionCount() >= 1 && player_->GetCanDash()) {
+		if (InputManager::AtackCharge() && player_->GetAbsorptionCount() >= 1 && player_->GetCanDash() && anim_->GetReadingParameterName() != "Player_Damage" && anim_->GetReadingParameterName() != "Player_DamageRecovery" && anim_->GetReadingParameterName() != "Player_Damaging") {
 			// 矢印が非表示だったら
 			if (!arrow_->isActive_) {
 				// 表示

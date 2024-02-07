@@ -254,6 +254,15 @@ public: // パブリックなメンバ変数
 	// 移動時のパーティクル
 	IParticleEmitter* moveParticleEmitter_ = nullptr;
 
+	// プレイヤーアニメーションマネージャ
+	PlayerAnimManager* pam_ = nullptr;
+
+	//チャージ
+	int32_t charge_ = 0u;
+	int32_t chargeEnd_ = 0u;
+	int chargeHandle = -1;
+	int chargeEndhandle = -1;
+
 private: // メンバ変数
 
 	// 音再生用クラス
@@ -266,7 +275,7 @@ private: // メンバ変数
 	int32_t eatSE_ = 0u;
 	// 餌を与える
 	int32_t feedSE_ = 0u;
-	
+
 	// カメラ
 	Camera* camera_ = nullptr;
 
@@ -333,8 +342,6 @@ private: // メンバ変数
 	// 行動状態クラス
 	std::unique_ptr<IPlayerState> state_;
 
-	// プレイヤーアニメーションマネージャ
-	PlayerAnimManager* pam_ = nullptr;
 	//うりぼー
 	Uribo* uribo_;
 	//一回の回復量

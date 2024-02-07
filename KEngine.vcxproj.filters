@@ -131,6 +131,7 @@
     <ClCompile Include="Engine\Particle\User\ChargeCircleParticleEmitter.cpp" />
     <ClCompile Include="Engine\Particle\User\HealParticle.cpp" />
     <ClCompile Include="Engine\Particle\User\HealParticleEmitter.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Player\State\DamageState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\GameObject\User\Enemy\State\MultiAtackState.h" />
@@ -280,6 +281,7 @@
     <ClInclude Include="Engine\Particle\User\ChargeCircleParticleEmitter.h" />
     <ClInclude Include="Engine\Particle\User\HealParticle.h" />
     <ClInclude Include="Engine\Particle\User\HealParticleEmitter.h" />
+    <ClInclude Include="Engine\GameObject\User\Player\State\DamageState.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Object3D.hlsli" />
