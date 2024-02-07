@@ -1,7 +1,7 @@
 {
     "Boss": {
         "FallAttackReadyTime": 0.25,
-        "HitPoint": 60.0,
+        "HitPoint": 50.0,
         "PushUpReadyTime": 0.25,
         "RollerAttackReadyTime": 0.25,
         "ShakeStrength": [

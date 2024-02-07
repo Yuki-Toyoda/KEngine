@@ -2,13 +2,13 @@
     "TableData": {
         "TableList0": {
             "ActionList": [
-                "MultiAttack",
+                "SingleAttack",
                 "SingleAttack",
                 "MultiAttack"
             ],
             "NumberList": [
                 0,
-                0,
+                5,
                 0
             ]
         },
