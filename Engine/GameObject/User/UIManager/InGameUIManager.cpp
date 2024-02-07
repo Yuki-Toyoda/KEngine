@@ -13,15 +13,16 @@ void InGameUIManager::Init()
 	bossHPGageSprite_F_ = AddSprite("BossHPGage", { 0.0f, 0.0f }, { 1120.0f, 32.0f }, TextureManager::Load("./Resources/UI/InGame", "BossHpGauge.png"));
 	bossHPGageSprite_Icon_ = AddSprite("BossIcon", { 0.0f, 0.0f }, { 48.0f, 48.0f }, TextureManager::Load("./Resources/UI/InGame", "bossIcon.png"));
 	playerHPFrame_ = AddSprite("PlayerHPFrame", { 5.0f, 583.0f }, { 256.0f, 140.0f }, TextureManager::Load("./Resources/UI/InGame", "playerHPFram.png"));
-	playerVegetableCount2_ = AddSprite("VegetableCount2", { 196.0f, 62.0f }, { 40.0f, 52.0f }, TextureManager::Load("./Resources/UI/InGame", "vegetableNumbert.png"));
-	playerVegetableCount1_ = AddSprite("VegetableCount1", { 156.0f, 62.0f }, { 40.0f, 52.0f }, TextureManager::Load("./Resources/UI/InGame", "vegetableNumbert.png"));
+	playerSwordIcon_ = AddSprite("PlayerSworldIcon", { 170.0f, 35.0f }, { 53.0f, 64.0f }, TextureManager::Load("./Resources/UI/InGame", "swordIcon.png"));
+	playerVegetableCount2_ = AddSprite("VegetableCount2", { 85.0f, 62.0f }, { 40.0f, 52.0f }, TextureManager::Load("./Resources/UI/InGame", "vegetableNumbert.png"));
+	playerVegetableCount1_ = AddSprite("VegetableCount1", { 45.0f, 62.0f }, { 40.0f, 52.0f }, TextureManager::Load("./Resources/UI/InGame", "vegetableNumbert.png"));
+	attackUpNumber_ = AddSprite("attackUpNumber", { 150.0f, 45.0f }, { 80.0f, 48.0f }, TextureManager::Load("./Resources/UI/InGame", "attackUpNumber.png"));
 	uriboGage_BG_ = AddSprite("UriboGage_BG", { 80.0f, 650.0f }, { 280.0f, 12.0f }, TextureManager::Load("./Resources/UI/InGame", "urimaruHpFram.png"));
 	uriboGage_F_ = AddSprite("UriboGage_F", { 80.0f, 650.0f }, { 280.0f, 12.0f }, TextureManager::Load("./Resources/UI/InGame", "urimaruHpGauge.png"));
 	uriboIcon_ = AddSprite("UriboIcon", { 80.0f, 650.0f }, { 24.0f, 24.0f }, TextureManager::Load("./Resources/UI/InGame", "UrimaruIconNormal.png"));
 	uriboAlert_ = AddSprite("UriboAlert", { 80.0f, 650.0f }, { 96.0f, 96.0f }, TextureManager::Load("./Resources/UI/InGame", "urimaruAlert.png"));
 	rotateCamera_ = AddSprite("CameraRotate", { 925.0f, 90.0f }, { 344.0f, 48.0f }, TextureManager::Load("./Resources/UI/InGame", "CameraRotate.png"));
-	//rotateCameraUnder_ = AddSprite("CameraRotate_Under", { 990.0f, 670.0f }, { 275.2f, 38.4f }, TextureManager::Load("./Resources/UI/InGame", "CameraRotate.png"));
-
+	
 	// アンカーポイント設定
 	bossHPGageSprite_Icon_->anchorPoint_ = { 0.5f, 0.2f };
 	playerVegetableCount2_->anchorPoint_ = { 0.5f, 0.5f };
@@ -34,8 +35,10 @@ void InGameUIManager::Init()
 	bossHPGageSprite_Icon_->SetParent(bossHPGageSprite_BG_->GetWorldTransform());
 
 	// プレイヤーのHP背景に親子付けする
+	playerSwordIcon_->SetParent(playerHPFrame_->GetWorldTransform());
 	playerVegetableCount2_->SetParent(playerHPFrame_->GetWorldTransform());
 	playerVegetableCount1_->SetParent(playerHPFrame_->GetWorldTransform());
+	attackUpNumber_->SetParent(playerHPFrame_->GetWorldTransform());
 
 	// 野菜カウント数スプライトのリセット
 	playerVegetableCount2_->texSize_ = Vector2(48.0f, 64.0f);

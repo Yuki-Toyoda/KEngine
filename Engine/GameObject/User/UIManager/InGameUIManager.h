@@ -93,8 +93,10 @@ private: // メンバ変数
 	Sprite* playerHPFrame_ = nullptr; // プレイヤーのHPフレーム
 	Sprite* playerIcon_ = nullptr; // プレイヤーのHPフレーム
 	Sprite* playerVegetableIcon_ = nullptr; // プレイヤーの野菜アイコン
+	Sprite* playerSwordIcon_ = nullptr; // 剣のアイコン
 	Sprite* playerVegetableCount1_ = nullptr; // 1桁目
 	Sprite* playerVegetableCount2_ = nullptr; // 2桁目
+	Sprite* attackUpNumber_ = nullptr; // 攻撃倍率
 	Sprite* uriboGage_BG_ = nullptr; // ウリボのゲージ背景
 	Sprite* uriboGage_F_ = nullptr; // ウリボのゲージ
 	Sprite* uriboIcon_ = nullptr; // ウリボのゲージアイコン
