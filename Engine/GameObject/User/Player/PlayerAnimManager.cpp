@@ -35,7 +35,7 @@ void PlayerAnimManager::Init()
 	CreateParameter("Player_StunRecovery");
 
 	// ブリンクタイマー開始
-	arrowBlinkTimer_.Start(arrowBlinkTime_);
+	arrowBlinkTimer_.Start(kMinArrowBlinkTime_);
 }
 
 void PlayerAnimManager::Update()
@@ -43,9 +43,14 @@ void PlayerAnimManager::Update()
 	// 矢印メッシュが存在するかつ、プレイヤーが存在場合
 	if (arrow_ != nullptr && player_ != nullptr) {
 		// 入力があった場合矢印を表示する
-		if (InputManager::AtackCharge() && player_->GetAbsorptionCount() >= 1) {
-			// 表示
-			arrow_->isActive_ = true;
+		if (InputManager::AtackCharge() && player_->GetAbsorptionCount() >= 1 && player_->GetCanDash()) {
+			// 矢印が非表示だったら
+			if (!arrow_->isActive_) {
+				// 表示
+				arrow_->isActive_ = true;
+				// ブリンクタイマーリスタート
+				arrowBlinkTimer_.Start(kMinArrowBlinkTime_);
+			}
 		}
 		else {
 			// 入力がない場合は非表示
@@ -66,17 +71,24 @@ void PlayerAnimManager::Update()
 					isBlinkReturn_ = true;
 				}
 
-				// ブリンクタイマー開始
-				arrowBlinkTimer_.Start(arrowBlinkTime_);
+				// 
+				if (player_->GetAtackCount() > player_->GetmaxAtackCount()) {
+					// ブリンクタイマー開始
+					arrowBlinkTimer_.Start(kMaxArrowBlinkTime_);
+				}
+				else {
+					// ブリンクタイマー開始
+					arrowBlinkTimer_.Start(kMinArrowBlinkTime_);
+				}
 			}
 			else {
 				if (isBlinkReturn_) {
 					// オフセットを線形補間で動かす
-					arrowOffset_.z = KLib::Lerp<float>(-9.0f, -7.0f, KLib::EaseInQuad(arrowBlinkTimer_.GetProgress()));
+					arrowOffset_.z = KLib::Lerp<float>(blinkStrength_, -7.0f, KLib::EaseInQuad(arrowBlinkTimer_.GetProgress()));
 				}
 				else {
 					// オフセットを線形補間で動かす
-					arrowOffset_.z = KLib::Lerp<float>(-7.0f, -9.0f, KLib::EaseOutQuad(arrowBlinkTimer_.GetProgress()));
+					arrowOffset_.z = KLib::Lerp<float>(-7.0f, blinkStrength_, KLib::EaseOutQuad(arrowBlinkTimer_.GetProgress()));
 				}
 
 				// 矢印のブリンクタイマー更新
@@ -103,6 +115,8 @@ void PlayerAnimManager::Update()
 
 			// 矢印色を変える
 			arrowColor_ = {1.0f, 0.85f, 0.0f, 1.0f};
+			// ブリンクの強さをチャージ時のモノに
+			blinkStrength_ = kMaxBlinkStrength_;
 		}
 		else {
 			// 回転行列を生成
@@ -111,6 +125,8 @@ void PlayerAnimManager::Update()
 
 			// 矢印色を変える
 			arrowColor_ = { 0.0f, 1.0f, 0.1f, 1.0f };
+			// ブリンクの強さを通常時のモノに
+			blinkStrength_ = kMaxBlinkStrength_;
 		}
 
 		// オフセットと回転行列を元に再度オフセットを計算

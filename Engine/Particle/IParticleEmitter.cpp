@@ -85,8 +85,10 @@ void IParticleEmitter::End()
 {
 	// 粒子をリストから除外
 	particles_.remove_if([](std::unique_ptr<IParticle>& particle) {
-		if (true)
+		if (true) {
+			particle;
 			return true;
+		}
 
 		return false;
 	});

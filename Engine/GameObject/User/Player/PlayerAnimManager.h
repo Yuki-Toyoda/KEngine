@@ -89,11 +89,16 @@ public: // パブリックなメンバ変数
 
 	// 矢印のブリンクタイマー
 	KLib::DeltaTimer arrowBlinkTimer_;
-	// 矢印のブリンク秒数
-	float arrowBlinkTime_ = 1.0f;
+	float kMinArrowBlinkTime_ = 1.0f;
+	// 矢印のチャージ時のブリンク秒数
+	float kMaxArrowBlinkTime_ = 0.35f;
 
 	// ブリンク強さ格納用
 	float blinkStrength_ = -9.0f;
+	// ブリンク最小強さ
+	float kMinBlinkStrength_ = -9.0f;
+	// ブリンク最大強さ
+	float kMaxBlinkStrength_ = -12.0f;
 
 	// ブリンク切り替えフラグ
 	bool isBlinkReturn_ = false;
