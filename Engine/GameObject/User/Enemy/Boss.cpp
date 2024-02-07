@@ -206,7 +206,7 @@ void Boss::OnCollisionEnter(Collider* collider)
 
 		// 最小・最大のプレイヤーサイズ
 		float minPl = 2.0f;
-		float maxPl = 5.0f;
+		float maxPl = 7.0f;
 		// 生成粒子の大きさ設定
 		int value = 15;
 		// 円の最小最大

@@ -17,7 +17,7 @@ void MoveParticleEmitter::GenerateParticle()
 		float scale = 0;
 		// プレイヤーの最小最大
 		float minPlScale = 2.0f;
-		float maxPlScale = 5.0f;
+		float maxPlScale = 7.0f;
 		// 円の最小最大
 		float minTargetScale = 0.75f;
 		float maxTargetScale = 2.35f;
