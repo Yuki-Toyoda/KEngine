@@ -29,7 +29,7 @@ void TutrialManager::Init()
 	sprites_[10]->anchorPoint_ = { 0.5f,0.5f };
 	sprites_[8]->SetParent(sprites_[9]->GetWorldTransform());
 	ArroeBottom_ = { 133.0f,500.0f };
-	ArrowUpper_ = { 133.0f,430.0f };
+	ArrowUpper_ = { 133.0f,460.0f };
 	AddSprite("Arrow", ArrowUpper_, { 144.0f,160.0f }, TextureManager::Load("./Resources/UI/Tutorial", "tutorialArrow.png"));
 	sprites_[11]->anchorPoint_ = { 0.5f,0.5f };
 	step = yokero;
