@@ -7,7 +7,7 @@
         "MaxSize": 7.0,
         "MoveAcceleration": 0.014000000432133675,
         "PushUpHitForce": 10.0,
-        "StanTime": 0.5,
+        "StanTime": 0.4000000059604645,
         "Velocity": 0.0,
         "atack rate": 1.2999999523162842,
         "axelTime": 0.20000000298023224,
@@ -15,9 +15,9 @@
         "correctFrame": 10.0,
         "correctValue": 0.5,
         "dashPower": 10.0,
-        "healpower": 450,
+        "healpower": 350,
         "hitCoolTime": 2.0,
-        "maxAtackCount": 90,
+        "maxAtackCount": 75,
         "scale rate": 0.007000000216066837,
         "subtractionAbsorptionCount_": 3
     }

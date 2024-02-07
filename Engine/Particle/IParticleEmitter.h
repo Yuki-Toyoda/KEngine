@@ -49,9 +49,9 @@ public: // メンバ関数
 	void PostUpdate();
 
 	/// <summary>
-	/// エフェクトの強制終了関数
+	/// 生成間隔のタイマーリセット
 	/// </summary>
-	void End();
+	void Reset();
 
 public: // アクセッサ等
 

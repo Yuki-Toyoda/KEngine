@@ -27,6 +27,9 @@ void Uribo::Init()
 	transform_.translate_.x = 30.0f;
 	transform_.scale_ = { 1.75f,1.75f, 1.75f };
 
+	// パーティクルエミッタマネージャのインスタンス取得
+	pem_ = ParticleEmitterManager::GetInstance();
+
 	GlobalVariables* variables = GlobalVariables::GetInstance();
 	variables->CreateGroup(name_);
 	variables->AddItem(name_, "DefaultHp", defaultHP_);
@@ -183,6 +186,13 @@ void Uribo::DisplayImGui()
 		ImGui::TreePop();
 	}
 
+	if (ImGui::Button("HealEff")) {
+		Vector3 generatePos = transform_.translate_;
+		//generatePos.y -= 1.5f;
+		//generatePos.z += 5.0f;
+		pem_->CreateEmitter<HealParticleEmitter, HealParticle>("Uribo_Heal", 6, 6, generatePos, 4.0f, 10.0f, TextureManager::Load("vegetableParticle.png"));
+	}
+
 	anim_->DisplayImGui();
 	// アニメーションの読み込みパラメータ変更
 	if (ImGui::TreeNode("Uribo_ChangeReadParameter")) {
@@ -260,6 +270,8 @@ void Uribo::Heal(int healPower)
 	if (hitPoint_ > 0) {
 		hitPoint_ += healPower;
 		IsCanHeal = true;
+		Vector3 generatePos = transform_.translate_;
+		pem_->CreateEmitter<HealParticleEmitter, HealParticle>("Uribo_Heal", 25, 5, generatePos, 4.0f, 10.0f, TextureManager::Load("vegetableParticle.png"));
 	}
 	if (hitPoint_ >= defaultHP_) {
 		hitPoint_ = defaultHP_;

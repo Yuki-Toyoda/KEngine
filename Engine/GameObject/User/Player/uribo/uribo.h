@@ -2,6 +2,7 @@
 #include "../../../BaseObject.h"
 #include "../../../../Audio/Audio.h"
 #include "../../../../Utility/Animation/AnimationManager.h"
+#include "../../../../Particle/ParticleEmitterManager.h"
 
 // クラスの前方宣言
 class Camera;
@@ -89,6 +90,9 @@ public: // パブリックなメンバ変数
 	WorldTransform bodyTransform_;
 
 private: // メンバ変数
+
+	// パーティクルエミッタマネージャ
+	ParticleEmitterManager* pem_ = nullptr;
 
 	// アニメーションマネージャー
 	AnimationManager* animManager_ = nullptr;

@@ -129,6 +129,8 @@
     <ClCompile Include="Engine\Particle\User\BoxBreakParticleEmitter.cpp" />
     <ClCompile Include="Engine\Particle\User\ChargeCircleParticle.cpp" />
     <ClCompile Include="Engine\Particle\User\ChargeCircleParticleEmitter.cpp" />
+    <ClCompile Include="Engine\Particle\User\HealParticle.cpp" />
+    <ClCompile Include="Engine\Particle\User\HealParticleEmitter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\GameObject\User\Enemy\State\MultiAtackState.h" />
@@ -276,6 +278,8 @@
     <ClInclude Include="Engine\Particle\User\BoxBreakParticleEmitter.h" />
     <ClInclude Include="Engine\Particle\User\ChargeCircleParticle.h" />
     <ClInclude Include="Engine\Particle\User\ChargeCircleParticleEmitter.h" />
+    <ClInclude Include="Engine\Particle\User\HealParticle.h" />
+    <ClInclude Include="Engine\Particle\User\HealParticleEmitter.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Object3D.hlsli" />

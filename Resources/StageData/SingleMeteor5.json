@@ -4,26 +4,26 @@
             "Position": [
                 32.0,
                 2.0,
-                32.0
+                0.0
             ]
         },
         "Meteor1": {
             "Position": [
                 0.0,
                 2.0,
-                32.0
+                -32.0
             ]
         },
         "Meteor2": {
             "Position": [
                 -32.0,
                 2.0,
-                32.0
+                0.0
             ]
         },
         "Meteor3": {
             "Position": [
-                32.0,
+                0.0,
                 2.0,
                 -32.0
             ]
@@ -52,7 +52,7 @@
         "Parameter": {
             "Distance": 60.0,
             "IsGravity": 0,
-            "MaxCount": 6,
+            "MaxCount": 3,
             "Scale": [
                 15.0,
                 1.0,

@@ -81,20 +81,9 @@ void IParticleEmitter::PostUpdate()
 	}
 }
 
-void IParticleEmitter::End()
+void IParticleEmitter::Reset()
 {
-	// 粒子をリストから除外
-	particles_.remove_if([](std::unique_ptr<IParticle>& particle) {
-		if (true) {
-			particle;
-			return true;
-		}
-
-		return false;
-	});
-
-	// エミッタの終了
-	isEnd_ = true;
+	frequencyTimer_.Start(frequency_);
 }
 
 void IParticleEmitter::GenerateParticle()

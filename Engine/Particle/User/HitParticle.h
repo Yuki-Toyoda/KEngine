@@ -23,5 +23,7 @@ private: // メンバ変数
 	// 開始時ベクトル格納用
 	Vector3 startVelocity_ = { 0.0f, 0.0f, 0.0f };
 
+	float decrementValue_ = 0;
+
 };
 
