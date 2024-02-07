@@ -80,5 +80,7 @@ private:
 	 KLib::DeltaTimer arrowTimer_;
 	 Vector2 arrowGoal_;
 	 Vector2 arrowStart_;
+	 KLib::DeltaTimer stopTimer_;
+	 float stopTime_ = 2.0f;
 };
 

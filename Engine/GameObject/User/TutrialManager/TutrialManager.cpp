@@ -42,6 +42,7 @@ void TutrialManager::Init()
 	step = 0;
 	skipCount_ = 0;
 	isEnd_ = false;
+	stopTimer_.Start(1.0f);
 }
 
 void TutrialManager::Update()
@@ -61,12 +62,16 @@ void TutrialManager::Update()
 	for (Sprite* sprite : sprites_) {
 		sprite->SetIsActive(false);
 	}
-	
+	stopTimer_.Update();
 
 	switch (step)
 	{
 
 	case yokero:
+		if (stopTimer_.GetIsFinish()) {
+			boss_->SetTutrialStart(true);
+			stopTimer_.Start(300.0f);
+		}
 	//6.5秒間表示したら集めるチュートリアルへ
 		if (timer_.GetIsFinish()) {
 			timer_.Start(6.5f);
@@ -75,10 +80,17 @@ void TutrialManager::Update()
 		sprites_[0]->SetIsActive(true);
 		if (timer_.GetIsFinish()) {
 			step++;
+			stopTimer_.Stop();
+			stopTimer_.Start(stopTime_);
 		}
 
 	break;
 	case atumero:
+		if (stopTimer_.GetIsFinish()) {
+			boss_->SetTutrialStart(true);
+			stopTimer_.Start(300.0f);
+		}
+
 		if (arrowTimer_.GetIsFinish()) {
 			if (sprites_[11]->translate_.y == ArroeBottom_.y) {
 				//矢印が下なら下降フラグをfalse
@@ -111,14 +123,18 @@ void TutrialManager::Update()
 			inGameUIManager_->SetCamera(tCamera_);
 
 			timer_.Start(1.5f);
+			boss_->SetTutrialStop(true);
+			stopTimer_.Stop();
+			stopTimer_.Start(stopTime_);
 		}
 		break;
 	case cameraMove:
 		timer_.Update();
 		tCamera_->transform_.translate_ = Math::Linear(KLib::EaseInOutSine( timer_.GetProgress()), iCamera_->transform_.translate_, tCamera_->goalTransform_.translate_);
+		
 		if (timer_.GetIsFinish()) {
 			step++;
-			timer_.Start(2.0f);
+			timer_.Start(3.0f);
 			uribo_->SetTutrialStart(true);
 		}
 		break;
@@ -140,9 +156,11 @@ void TutrialManager::Update()
 
 			// UIマネージャーにセットされているカメラを変更
 			inGameUIManager_->SetCamera(iCamera_);
+			boss_->SetTutrialStart(true);
 		}
 		break;
 	case kaihuku:
+		
 		//うりぼーの体力が半分以上で攻撃へ
 		sprites_[10]->SetIsActive(true);
 		sprites_[4]->SetIsActive(true);
@@ -151,25 +169,43 @@ void TutrialManager::Update()
 			
 			player_->SetIsTutrialDash(false);
 			player_->SetCanDash(true);
+			stopTimer_.Stop();
+			stopTimer_.Start(stopTime_);
 		}
 		break;
 	case Dash:
+		if (stopTimer_.GetIsFinish()) {
+			boss_->SetTutrialStart(true);
+			stopTimer_.Start(300.0f);
+		}
 		sprites_[7]->SetIsActive(true);
 		if (player_->GetISTutrialDash()) {
 			boss_->SetTutrialAtackEnd(false);
 			step++;
+			stopTimer_.Stop();
+			stopTimer_.Start(stopTime_);
 		}
 		break;
 	case kougeki:
+		if (stopTimer_.GetIsFinish()) {
+			boss_->SetTutrialStart(true);
+			stopTimer_.Start(300.0f);
+		}
 		//攻撃が終わったらendへ
 		sprites_[2]->SetIsActive(true);
 		sprites_[12]->SetIsActive(true);
 
 		if (boss_->GetTutrialAtackEnd()) {
 			step++;
+			stopTimer_.Stop();
+			stopTimer_.Start(stopTime_);
 		}
 		break;
 	case end:
+		if (stopTimer_.GetIsFinish()) {
+			boss_->SetTutrialStart(true);
+			stopTimer_.Start(300.0f);
+		}
 		sprites_[5]->SetIsActive(true);
 		if (timer_.GetIsFinish()) {
 			timer_.Start(2.0f);
