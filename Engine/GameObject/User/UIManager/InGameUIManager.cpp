@@ -18,6 +18,8 @@ void InGameUIManager::Init()
 	uriboGage_F_ = AddSprite("UriboGage_F", { 80.0f, 650.0f }, { 280.0f, 12.0f }, TextureManager::Load("./Resources/UI/InGame", "urimaruHpGauge.png"));
 	uriboIcon_ = AddSprite("UriboIcon", { 80.0f, 650.0f }, { 24.0f, 24.0f }, TextureManager::Load("./Resources/UI/InGame", "UrimaruIconNormal.png"));
 	uriboAlert_ = AddSprite("UriboAlert", { 80.0f, 650.0f }, { 96.0f, 96.0f }, TextureManager::Load("./Resources/UI/InGame", "urimaruAlert.png"));
+	rotateCamera_ = AddSprite("CameraRotate", { 925.0f, 90.0f }, { 344.0f, 48.0f }, TextureManager::Load("./Resources/UI/InGame", "CameraRotate.png"));
+	rotateCameraUnder_ = AddSprite("CameraRotate_Under", { 990.0f, 620.0f }, { 275.2f, 38.4f }, TextureManager::Load("./Resources/UI/InGame", "CameraRotate.png"));
 
 	// アンカーポイント設定
 	bossHPGageSprite_Icon_->anchorPoint_ = { 0.5f, 0.2f };
@@ -41,8 +43,9 @@ void InGameUIManager::Init()
 	// ウリボのアラートアイコンの表示領域を設定
 	uriboAlert_->texSize_ = { 96.0f, 96.0f };
 
-	// ウリボゲージ背景親子付けする
-	//uriboGage_F_->SetParent(uriboGage_BG_->GetWorldTransform());
+	// スプライトの描画範囲設定
+	rotateCamera_->texSize_ = { 688.0f, 96.0f };
+	rotateCameraUnder_->texSize_ = { 688.0f, 96.0f };
 
 	// 入力取得
 	input_ = Input::GetInstance();
@@ -158,6 +161,22 @@ void InGameUIManager::Update()
 
 			// アラートアイコン切り替えタイマーの更新
 			switchAlertIconTimer_.Update();
+		}
+
+		// 何も入力が入っていないときようにリセット
+		rotateCamera_->texBase_ = { 0.0f, 0.0f };
+		rotateCameraUnder_->texBase_ = { 0.0f, 0.0f };
+
+		// 左トリガーの入力が入った場合
+		if (InputManager::GetLTInput() > 100) {
+			rotateCamera_->texBase_ = { 688.0f, 0.0f };
+			rotateCameraUnder_->texBase_ = { 688.0f, 0.0f };
+		}
+
+		// 右トリガーの入力が入った場合
+		if (InputManager::GetRTInput() > 100) {
+			rotateCamera_->texBase_ = { 1376.0f, 0.0f };
+			rotateCameraUnder_->texBase_ = { 1376.0f, 0.0f };
 		}
 	}
 	if (isTutrial_) {

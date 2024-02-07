@@ -59,6 +59,10 @@ void TutrialManager::Update()
 		sprites_[8]->texSize_.y = 80.0f;
 	}
 
+	if (sprites_[8]->texBase_.y < 0.0f) {
+		sprites_[8]->texBase_.y = 0.0f;
+	}
+
 	switch (step)
 	{
 

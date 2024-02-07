@@ -99,6 +99,8 @@ private: // メンバ変数
 	Sprite* uriboGage_F_ = nullptr; // ウリボのゲージ
 	Sprite* uriboIcon_ = nullptr; // ウリボのゲージアイコン
 	Sprite* uriboAlert_ = nullptr; // ウリボのアラートアイコン
+	Sprite* rotateCamera_ = nullptr; // カメラの回転UI
+	Sprite* rotateCameraUnder_ = nullptr; // 下画面に置くカメラの回転UI
 
 	/// チュートリアル実装まで残すスプライト
 	Sprite* moveSpriteBG_ = nullptr; // スティックスプライト背景
