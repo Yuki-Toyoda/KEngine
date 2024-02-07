@@ -81,6 +81,20 @@ void IParticleEmitter::PostUpdate()
 	}
 }
 
+void IParticleEmitter::End()
+{
+	// 粒子をリストから除外
+	particles_.remove_if([](std::unique_ptr<IParticle>& particle) {
+		if (true)
+			return true;
+
+		return false;
+	});
+
+	// エミッタの終了
+	isEnd_ = true;
+}
+
 void IParticleEmitter::GenerateParticle()
 {
 	// 一度に生成する数分のパーティクルを生成する

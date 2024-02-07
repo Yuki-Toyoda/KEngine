@@ -6,23 +6,12 @@ void PlayerAnimManager::Init()
 	// 各トランスフォームの初期化
 	bodyTransform_.Init();
 	bodyTransform_.SetParent(&transform_);
+	arrowTransform_.Init();
+	arrowTransform_.scale_ = { 7.5f, 7.5f, 7.5f };
+	arrowTransform_.rotate_.x = (float)std::numbers::pi / 2.0f;
 
 	// メッシュ追加
-	// デバッグ時のみ
-#ifdef _DEBUG
-
-	// デバッグ時でも一応プレイヤー描画
 	AddMesh(&bodyTransform_, color_, "./Resources/Player", "Player.obj");
-
-#endif // _DEBUG
-
-	// リリースビルドの時
-#ifndef _DEBUG
-
-	// 身体
-	AddMesh(&bodyTransform_, color_, "./Resources/Player", "Player.obj");
-
-#endif // _RELEASE
 
 	// アニメーションマネージャ取得
 	animManager_ = AnimationManager::GetInstance();
@@ -44,10 +33,93 @@ void PlayerAnimManager::Init()
 	CreateParameter("Player_Stuning");
 	// スタン復帰アニメーション
 	CreateParameter("Player_StunRecovery");
+
+	// ブリンクタイマー開始
+	arrowBlinkTimer_.Start(arrowBlinkTime_);
 }
 
 void PlayerAnimManager::Update()
 {
+	// 矢印メッシュが存在するかつ、プレイヤーが存在場合
+	if (arrow_ != nullptr && player_ != nullptr) {
+		// 入力があった場合矢印を表示する
+		if (InputManager::AtackCharge() && player_->GetAbsorptionCount() >= 1) {
+			// 表示
+			arrow_->isActive_ = true;
+		}
+		else {
+			// 入力がない場合は非表示
+			arrow_->isActive_ = false;
+		}
+		
+		// オフセットの取得
+		Vector3 offset = arrowOffset_;
+
+		/// 矢印が表示されている間ブリンク処理を挟む
+		if (arrow_->isActive_) {
+			// ブリンクタイマー終了時
+			if (arrowBlinkTimer_.GetIsFinish()) {
+				if (isBlinkReturn_) {
+					isBlinkReturn_ = false;
+				}
+				else {
+					isBlinkReturn_ = true;
+				}
+
+				// ブリンクタイマー開始
+				arrowBlinkTimer_.Start(arrowBlinkTime_);
+			}
+			else {
+				if (isBlinkReturn_) {
+					// オフセットを線形補間で動かす
+					arrowOffset_.z = KLib::Lerp<float>(-9.0f, -7.0f, KLib::EaseInQuad(arrowBlinkTimer_.GetProgress()));
+				}
+				else {
+					// オフセットを線形補間で動かす
+					arrowOffset_.z = KLib::Lerp<float>(-7.0f, -9.0f, KLib::EaseOutQuad(arrowBlinkTimer_.GetProgress()));
+				}
+
+				// 矢印のブリンクタイマー更新
+				arrowBlinkTimer_.Update();
+			}
+		}
+		
+		// プレイヤーの回転角から回転行列を生成
+		Matrix4x4 rotateMat = Math::MakeIdentity4x4();
+
+		// プレイヤーの攻撃チャージが終了している場合、矢印をボスのいる方に向ける
+		if (player_->GetAtackCount() > player_->GetmaxAtackCount()) {
+
+			// プレイヤーからボスへの方向ベクトルを求める
+			Vector3 dir = player_->GetBossDirection();
+
+			// 角度をラジアンで求める
+			float angleY = atan2(dir.x, dir.z);
+
+			// 回転行列を生成
+			rotateMat = Math::MakeRotateYMatrix(angleY);
+			// 矢印の向きを固定
+			arrowTransform_.rotate_.y = angleY;
+
+			// 矢印色を変える
+			arrowColor_ = {1.0f, 0.85f, 0.0f, 1.0f};
+		}
+		else {
+			// 回転行列を生成
+			rotateMat = Math::MakeRotateYMatrix(player_->transform_.rotate_.y);
+			arrowTransform_.rotate_.y = player_->transform_.rotate_.y;
+
+			// 矢印色を変える
+			arrowColor_ = { 0.0f, 1.0f, 0.1f, 1.0f };
+		}
+
+		// オフセットと回転行列を元に再度オフセットを計算
+		offset = Math::Transform(offset, rotateMat);
+
+		// 矢印座標をオフセットを元に求める
+		arrowTransform_.translate_ = player_->transform_.translate_ + offset;
+	}
+
 	// アニメーションがnullptr以外だったら
 	if (anim_ != nullptr) {
 		// ダメージの開始アニメーション中
@@ -99,7 +171,9 @@ void PlayerAnimManager::DisplayImGui()
 
 	transform_.DisplayImGuiWithTreeNode("PamTranslate");
 	// 各種パーツの情報表示
-	bodyTransform_.DisplayImGuiWithTreeNode("body");
+	bodyTransform_.DisplayImGuiWithTreeNode("body"); // 身体
+	arrowTransform_.DisplayImGuiWithTreeNode("Arrow"); // 矢印
+	ImGui::DragFloat3("ArrowOffset", &arrowOffset_.x); // 矢印オフセット
 
 	// アニメーションのImGui
 	if (anim_ != nullptr) {
@@ -172,6 +246,10 @@ void PlayerAnimManager::CreateAnimation()
 	anim_->isLoop_ = true;
 	// アニメーション再生
 	anim_->Play();
+
+	// アニメーション生成を行ったときのみ矢印を生成する
+	arrow_ = AddPlane(&arrowTransform_, arrowColor_, TextureManager::Load("dashArrow.png"));
+
 }
 
 void PlayerAnimManager::ChangeParamameter(const std::string& name, const bool& isChanged)

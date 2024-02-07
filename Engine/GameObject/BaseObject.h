@@ -199,6 +199,15 @@ protected: // プライベートなメンバ関数
 	Mesh* AddMesh(WorldTransform* wt, Vector4& color, const std::string& path, const std::string& fileName, bool enableLighting = true);
 
 	/// <summary>
+	/// 平面追加関数
+	/// </summary>
+	/// <param name="wt">ワールドトランスフォーム実体</</param>
+	/// <param name="color">平面の色</param>
+	/// <param name="tex">平面のテクスチャ</param>
+	/// <returns>生成した平面</returns>
+	Plane* AddPlane(WorldTransform* wt, Vector4& color, Texture* tex);
+
+	/// <summary>
 	/// ビルボード平面追加関数
 	/// </summary>
 	/// <param name="wt">ワールドトランスフォーム実体</param>

@@ -48,6 +48,11 @@ public: // メンバ関数
 	/// </summary>
 	void PostUpdate();
 
+	/// <summary>
+	/// エフェクトの強制終了関数
+	/// </summary>
+	void End();
+
 public: // アクセッサ等
 
 	/// <summary>

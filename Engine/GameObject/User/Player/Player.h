@@ -207,7 +207,18 @@ public: // アクセッサ等
 	float GetDashAxelTime() { return dashAxelTime_; }
 	float GetDashBrakeTime() { return dashBrakeTime_; }
 
+	/// <summary>
+	/// ボスのセッター
+	/// </summary>
+	/// <param name="boss">ボスの実体</param>
 	void SetBoss(Boss* boss) { boss_ = boss; }
+
+	/// <summary>
+	/// ボスへの方向ベクトルゲッター
+	/// </summary>
+	/// <returns>ボスへの方向ベクトル</returns>
+	Vector3 GetBossDirection();
+
 private: // プライベートなメンバ関数
 
 	/// <summary>

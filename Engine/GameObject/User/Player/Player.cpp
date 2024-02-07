@@ -368,6 +368,12 @@ void Player::OnCollision(Collider* collider)
 	}
 }
 
+Vector3 Player::GetBossDirection()
+{
+	// ボスへの方向ベクトルを返す
+	return  transform_.translate_ - boss_->transform_.translate_;
+}
+
 void Player::Damage()
 {
 	//クールタイムを過ぎていたら攻撃をくらう
