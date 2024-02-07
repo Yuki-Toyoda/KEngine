@@ -30,7 +30,7 @@ void Rubble::Init()
 	isGenerateParticle_ = false;
 	emitterManager_ = ParticleEmitterManager::GetInstance();
 
-	animOffset_ = 1.2f;
+	animOffset_ = 0.5f;
 	isReturn_ = false;
 }
 
