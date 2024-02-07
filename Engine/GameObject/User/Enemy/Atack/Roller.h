@@ -29,6 +29,10 @@ private: // メンバ変数
 
 	// モデル用ワールドトランスフォーム
 	WorldTransform modelTransform_;
+	// 攻撃範囲開示用トランスフォーム
+	WorldTransform attackAreaTransform_;
+	// 攻撃範囲色
+	Vector4 areaColor_;
 
 	// 移動方向ベクトル
 	Vector3 velocity_;

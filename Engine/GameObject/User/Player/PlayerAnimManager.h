@@ -65,6 +65,12 @@ public: // アクセッサ等
 	/// <returns>アニメーション</returns>
 	Animation* GetAnimation() { return anim_; }
 
+	/// <summary>
+	/// プレイヤーテクスチャ変更関数
+	/// </summary>
+	/// <param name="tex">変更するテクスチャ</param>
+	void ChangeTex(Texture* tex) { meshes_[0]->texture_ = tex; }
+
 public: // パブリックなメンバ変数
 
 	// パーツごとのトランスフォーム
