@@ -208,6 +208,8 @@ public: // アクセッサ等
 	float GetDashBrakeTime() { return dashBrakeTime_; }
 
 	void SetBoss(Boss* boss) { boss_ = boss; }
+	void SetCanDash(bool flag) { canDash_=flag; }
+	bool GetCanDash() { return canDash_; }
 private: // プライベートなメンバ関数
 
 	/// <summary>
@@ -347,6 +349,8 @@ private: // メンバ変数
 	//攻撃チャージ
 	bool isCharge_;
 	bool isTutrialDash_;
+	//チュートリアル時ダッシュ可能か
+	bool canDash_;
 	//食べてるカウントによる加速度
 	float absorptionAccelerationForce_;
 	//つぶれたときのSE

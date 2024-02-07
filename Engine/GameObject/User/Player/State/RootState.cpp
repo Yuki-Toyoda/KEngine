@@ -13,58 +13,77 @@ void RootState::Init()
 
 void RootState::Update()
 {
-	
-	//チャージ完了時
-	if (player_->GetAtackCount() == player_->GetmaxAtackCount()) {
-		chargeEndhandle = audio_->PlayWave(chargeEnd_);
-	}
-	if (InputManager::AtackCharge()&& player_->GetAbsorptionCount() >= kMinCount) {
-		if (!audio_->IsPlaying(chargeHandle)) {
-
-			chargeHandle = audio_->PlayWave(charge_);
+	//プレイヤーがダッシュできるとき
+	if (player_->GetCanDash()) {
+		//チャージ完了時
+		if (player_->GetAtackCount() == player_->GetmaxAtackCount() && player_->GetISTutrialDash()) {
+			chargeEndhandle = audio_->PlayWave(chargeEnd_);
 		}
-	}
-	else {
-		audio_->StopWave(chargeHandle);
-	}
-	if (player_->GetIsDamaged()) {
-		audio_->StopWave(chargeHandle);
-		return;
-	}
-	// チャージ秒数が既定秒数以上のとき、かつボタンを話したとき
-	if (player_->GetAtackCount() > player_->GetmaxAtackCount() && InputManager::Atacking()) {
-		// チャージパーティクルをとめる
-		player_->chargeParticleEmitter_->SetIsPlay(false);
-		// チャージ終了パーティクルをとめる
-		player_->chargeFinishParticleEmitter_->SetIsPlay(false);
-		// チャージの円
-		player_->chargeCircleEmitter_->SetIsPlay(false);
+		if (InputManager::AtackCharge() && player_->GetAbsorptionCount() >= kMinCount) {
+			if (!audio_->IsPlaying(chargeHandle)) {
 
-		//攻撃ボタンを押しているカウントが一定以上でボタンを離したときに攻撃開始
-		player_->ChangeState(std::make_unique<AtackState>());
-		return;
-	}
-	// チャージ秒数が足りない場合（ダッシュステートに移動
-	else if(player_->GetAtackCount() <= player_->GetmaxAtackCount() && InputManager::Atacking()
-		&& player_->GetAbsorptionCount() >= kMinCount)
-	{
-		// チャージパーティクルをとめる
-		player_->chargeParticleEmitter_->SetIsPlay(false);
-		// チャージ終了パーティクルをとめる
-		player_->chargeFinishParticleEmitter_->SetIsPlay(false);
-		// チャージの円
-		player_->chargeCircleEmitter_->SetIsPlay(false);
+				chargeHandle = audio_->PlayWave(charge_);
+			}
+		}
+		else {
+			audio_->StopWave(chargeHandle);
+		}
+		if (player_->GetIsDamaged()) {
+			audio_->StopWave(chargeHandle);
+			return;
+		}
+		// チャージ秒数が既定秒数以上のとき、かつボタンを話したとき
+		if (player_->GetAtackCount() > player_->GetmaxAtackCount() && InputManager::Atacking() && player_->GetISTutrialDash()) {
+			// チャージパーティクルをとめる
+			player_->chargeParticleEmitter_->SetIsPlay(false);
+			// チャージ終了パーティクルをとめる
+			player_->chargeFinishParticleEmitter_->SetIsPlay(false);
+			// チャージの円
+			player_->chargeCircleEmitter_->SetIsPlay(false);
 
-		// ダッシュステートへ変更
-		player_->ChangeState(std::make_unique<DashState>());
-		return;
+			//攻撃ボタンを押しているカウントが一定以上でボタンを離したときに攻撃開始
+			player_->ChangeState(std::make_unique<AtackState>());
+			return;
+		}
+		// 攻撃不可能な場合（ダッシュステートに移動
+		else if (!player_->GetISTutrialDash() && InputManager::Atacking()
+			&& player_->GetAbsorptionCount() >= kMinCount)
+		{
+			// チャージパーティクルをとめる
+			player_->chargeParticleEmitter_->SetIsPlay(false);
+			// チャージ終了パーティクルをとめる
+			player_->chargeFinishParticleEmitter_->SetIsPlay(false);
+			// チャージの円
+			player_->chargeCircleEmitter_->SetIsPlay(false);
 
-	}
+			// ダッシュステートへ変更
+			player_->ChangeState(std::make_unique<DashState>());
+			return;
+
+		}
+		// チャージ秒数が足りない場合（ダッシュステートに移動
+		else if (player_->GetAtackCount() <= player_->GetmaxAtackCount() && InputManager::Atacking()
+			&& player_->GetAbsorptionCount() >= kMinCount)
+		{
+			// チャージパーティクルをとめる
+			player_->chargeParticleEmitter_->SetIsPlay(false);
+			// チャージ終了パーティクルをとめる
+			player_->chargeFinishParticleEmitter_->SetIsPlay(false);
+			// チャージの円
+			player_->chargeCircleEmitter_->SetIsPlay(false);
+
+			// ダッシュステートへ変更
+			player_->ChangeState(std::make_unique<DashState>());
+			return;
+
+		}
+	
+	
 
 	//攻撃ボタンを押して且つ攻撃できるときにStateをAtackに
 	if (InputManager::AtackCharge()&&player_->GetAbsorptionCount()>=kMinCount) {
 		// 最大チャージされている場合
-		if (player_->GetAtackCount() > player_->GetmaxAtackCount()) {
+		if (player_->GetAtackCount() > player_->GetmaxAtackCount() && player_->GetISTutrialDash()) {
 			// チャージ終了パーティクルを再生
 			player_->chargeFinishParticleEmitter_->SetIsPlay(true);
 			// チャージパーティクルをとめる
@@ -97,10 +116,14 @@ void RootState::Update()
 		player_->SetIsCharge(false);
 		//攻撃ボタンを押しているカウントを0に
 		player_->ResetAtackCount();
-	
+
 		// 移動処理
 		Move();
-		
+	}
+	}
+else {
+	// 移動処理
+	Move();
 	}
 }
 

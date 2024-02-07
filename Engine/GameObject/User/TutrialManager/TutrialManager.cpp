@@ -158,6 +158,7 @@ void TutrialManager::Update()
 			step++;
 			
 			player_->SetIsTutrialDash(false);
+			player_->SetCanDash(true);
 		}
 		break;
 	case Dash:

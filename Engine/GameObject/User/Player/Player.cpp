@@ -59,7 +59,8 @@ void Player::Init()
 	variables->AddItem(name_, "AbsorptionAcceleration", absorptionAccelerationForce_);
 	SetGlobalVariables();
 	isTutrial_ = false;
-	isTutrialDash_ = false;
+	isTutrialDash_ = true;
+	canDash_ = true;
 	// パーティクルエミッタマネージャのインスタンス取得
 	pem_ = ParticleEmitterManager::GetInstance();
 
