@@ -35,10 +35,13 @@ void RootState::Update()
 		// チャージ秒数が既定秒数以上のとき、かつボタンを話したとき
 		if (player_->GetAtackCount() > player_->GetmaxAtackCount() && InputManager::Atacking() && player_->GetISTutrialDash()) {
 			// チャージパーティクルをとめる
+			player_->chargeParticleEmitter_->Reset();
 			player_->chargeParticleEmitter_->SetIsPlay(false);
 			// チャージ終了パーティクルをとめる
+			player_->chargeFinishParticleEmitter_->Reset();
 			player_->chargeFinishParticleEmitter_->SetIsPlay(false);
 			// チャージの円
+			player_->chargeCircleEmitter_->Reset();
 			player_->chargeCircleEmitter_->SetIsPlay(false);
 
 			//攻撃ボタンを押しているカウントが一定以上でボタンを離したときに攻撃開始
@@ -50,10 +53,13 @@ void RootState::Update()
 			&& player_->GetAbsorptionCount() >= kMinCount)
 		{
 			// チャージパーティクルをとめる
+			player_->chargeParticleEmitter_->Reset();
 			player_->chargeParticleEmitter_->SetIsPlay(false);
 			// チャージ終了パーティクルをとめる
+			player_->chargeFinishParticleEmitter_->Reset();
 			player_->chargeFinishParticleEmitter_->SetIsPlay(false);
 			// チャージの円
+			player_->chargeCircleEmitter_->Reset();
 			player_->chargeCircleEmitter_->SetIsPlay(false);
 
 			// ダッシュステートへ変更
@@ -66,10 +72,13 @@ void RootState::Update()
 			&& player_->GetAbsorptionCount() >= kMinCount)
 		{
 			// チャージパーティクルをとめる
+			player_->chargeParticleEmitter_->Reset();
 			player_->chargeParticleEmitter_->SetIsPlay(false);
 			// チャージ終了パーティクルをとめる
+			player_->chargeFinishParticleEmitter_->Reset();
 			player_->chargeFinishParticleEmitter_->SetIsPlay(false);
 			// チャージの円
+			player_->chargeCircleEmitter_->Reset();
 			player_->chargeCircleEmitter_->SetIsPlay(false);
 
 			// ダッシュステートへ変更
@@ -85,19 +94,22 @@ void RootState::Update()
 		// 最大チャージされている場合
 		if (player_->GetAtackCount() > player_->GetmaxAtackCount() && player_->GetISTutrialDash()) {
 			// チャージ終了パーティクルを再生
+			player_->chargeParticleEmitter_->Reset();
 			player_->chargeFinishParticleEmitter_->SetIsPlay(true);
 			// チャージパーティクルをとめる
 			player_->chargeParticleEmitter_->SetIsPlay(false);
 			// チャージの円
+			player_->chargeCircleEmitter_->Reset();
 			player_->chargeCircleEmitter_->SetIsPlay(false);
 		}
 		else {
 			// チャージパーティクルを再生
 			player_->chargeParticleEmitter_->SetIsPlay(true);
+			// チャージ終了パーティクルをとめる
+			player_->chargeFinishParticleEmitter_->Reset();
+			player_->chargeFinishParticleEmitter_->SetIsPlay(false);
 			// チャージの円
 			player_->chargeCircleEmitter_->SetIsPlay(true);
-			// チャージ終了パーティクルをとめる
-			player_->chargeFinishParticleEmitter_->SetIsPlay(false);
 		}
 
 		player_->SetIsCharge(true);
@@ -110,8 +122,10 @@ void RootState::Update()
 	}
 	else {
 		// チャージパーティクルをとめる
+		player_->chargeParticleEmitter_->Reset();
 		player_->chargeParticleEmitter_->SetIsPlay(false);
 		// チャージの円
+		player_->chargeCircleEmitter_->Reset();
 		player_->chargeCircleEmitter_->SetIsPlay(false);
 		player_->SetIsCharge(false);
 		//攻撃ボタンを押しているカウントを0に
