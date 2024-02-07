@@ -47,6 +47,8 @@ void Boss::SuccessorInit()
 	variables->AddItem(name_, "RollerAttackReadyTime", rollerAttackReadyTime_);
 	variables->AddItem(name_, "ShakeTime", shakeTime_);
 	variables->AddItem(name_, "ShakeStrength", shakeStrength_);
+	variables->AddItem(name_, "ShakeMagnification", shakeMagnification_);
+	variables->AddItem(name_, "MaxShakeStrength", maxShakeStrength_);
 	variables->AddItem(name_, "Translate",transform_.translate_ );
 	ApplyGlobalVariables();
 	isTutrial_ = false;
@@ -116,6 +118,8 @@ void Boss::DisplayImGui()
 	if (ImGui::TreeNode("ShakeParameters")) {
 		ImGui::DragFloat("ShakeTime", &shakeTime_, 0.01f, 0.01f); // 振動秒数
 		ImGui::DragFloat2("ShakeStrength", &shakeStrength_.x, 0.1f); // カメラ振動強さ
+		ImGui::DragFloat("ShakeMagnification", &shakeMagnification_, 0.1f); // カメラ振動強さの倍率
+		ImGui::DragFloat2("MaxShakeStrength", &maxShakeStrength_.x, 0.1f); // カメラ振動強さの最大値
 
 		ImGui::TreePop();
 	}
@@ -142,6 +146,8 @@ void Boss::DisplayImGui()
 		variables->SetValue(name_, "RollerAttackReadyTime", rollerAttackReadyTime_);
 		variables->SetValue(name_, "ShakeTime", shakeTime_);
 		variables->SetValue(name_, "ShakeStrength", shakeStrength_);
+		variables->SetValue(name_, "ShakeMagnification", shakeMagnification_);
+		variables->SetValue(name_, "MaxShakeStrength", maxShakeStrength_);
 		variables->SetValue(name_, "Translate", transform_.translate_);
 		variables->SaveFile(name_);
 	}if (ImGui::Button("changeStateAtack")) {
@@ -190,11 +196,6 @@ void Boss::OnCollisionEnter(Collider* collider)
 		if (!isTutrial_) {
 			hitPoint_ -= player_->GetAtackPower();
 		}
-		// プレイヤーを攻撃していない状態に
-		player_->SetIsAtack(false);
-		
-		//吸収した数をリセットして座標とスケール調整
-		player_->ResetAbsorptionCount();
 
 		//チュートリアルの攻撃を終了
 		tutrialAtackEnd_ = true;
@@ -221,8 +222,31 @@ void Boss::OnCollisionEnter(Collider* collider)
 
 		pem_->CreateEmitter<HitParticleEmiiter, HitParticle>("Boss_Hit", value, value, generatePos, 1.0f, 10.0f, TextureManager::Load("bossHitParticle.png"));
 
+		// カメラシェイクの強さを取得
+		Vector2 shakeStrength = shakeStrength_;
+		// シェイク強さをプレイヤーの吸収数に応じて変える
+		shakeStrength.x *= shakeMagnification_ * player_->GetAbsorptionCount();
+		shakeStrength.y *= shakeMagnification_ * player_->GetAbsorptionCount();
+
+		// x軸方向のシェイク強さが最大値を超過している場合
+		if (shakeStrength.x > maxShakeStrength_.x) {
+			// 最大値で補間
+			shakeStrength.x = maxShakeStrength_.x;
+		}
+		// y軸方向			``
+		if (shakeStrength.y > maxShakeStrength_.y) {
+			// 最大値で補間
+			shakeStrength.y = maxShakeStrength_.y;
+		}
+
 		// カメラのシェイク演出をする
-		inGameCamera_->Shake(shakeTime_, shakeStrength_);
+		inGameCamera_->Shake(shakeTime_, shakeStrength);
+
+		// プレイヤーを攻撃していない状態に
+		player_->SetIsAtack(false);
+
+		//吸収した数をリセットして座標とスケール調整
+		player_->ResetAbsorptionCount();
 
 		// HPが0以下になっていたら
 		if (hitPoint_ <= 0) {
@@ -251,6 +275,32 @@ void Boss::OnCollision(Collider* collider)
 {
 		//プレイヤーが攻撃していたらダメージをくらう
 		if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagPlayer && player_->GetIsAtack()) {
+
+			// パーティクル再生
+			Vector3 generatePos = transform_.translate_;
+			generatePos.y = 7.0f;
+			pem_->CreateEmitter<HitParticleEmiiter, HitParticle>("Boss_Hit", 25, 25, generatePos, 1.0f, 10.0f, TextureManager::Load("bossHitParticle.png"));
+
+			// カメラシェイクの強さを取得
+			Vector2 shakeStrength = shakeStrength_;
+			// シェイク強さをプレイヤーの吸収数に応じて変える
+			shakeStrength.x *= shakeMagnification_ * player_->GetAbsorptionCount();
+			shakeStrength.y *= shakeMagnification_ * player_->GetAbsorptionCount();
+
+			// x軸方向のシェイク強さが最大値を超過している場合
+			if (shakeStrength.x > maxShakeStrength_.x) {
+				// 最大値で補間
+				shakeStrength.x = maxShakeStrength_.x;
+			}
+			// y軸方向			``
+			if (shakeStrength.y > maxShakeStrength_.y) {
+				// 最大値で補間
+				shakeStrength.y = maxShakeStrength_.y;
+			}
+
+			// カメラのシェイク演出をする
+			inGameCamera_->Shake(shakeTime_, shakeStrength);
+
 			// ボスのHPをプレイヤーの攻撃力に基づいて減少させる
 			if (!isTutrial_) {
 				hitPoint_ -= player_->GetAtackPower();
@@ -260,14 +310,6 @@ void Boss::OnCollision(Collider* collider)
 
 			//吸収した数をリセットして座標とスケール調整
 			player_->ResetAbsorptionCount();
-
-			// パーティクル再生
-			Vector3 generatePos = transform_.translate_;
-			generatePos.y = 7.0f;
-			pem_->CreateEmitter<HitParticleEmiiter, HitParticle>("Boss_Hit", 25, 25, generatePos, 1.0f, 10.0f, TextureManager::Load("bossHitParticle.png"));
-
-			// カメラのシェイク演出をする
-			inGameCamera_->Shake(shakeTime_, shakeStrength_);
 
 			//チュートリアルの攻撃を終了
 			tutrialAtackEnd_ = true;
@@ -333,6 +375,8 @@ void Boss::ApplyGlobalVariables()
 	rollerAttackReadyTime_ = variables->GetFloatValue(name_, "RollerAttackReadyTime");
 	shakeTime_ = variables->GetFloatValue(name_, "ShakeTime");
 	shakeStrength_ = variables->GetVector2Value(name_, "ShakeStrength");
+	shakeMagnification_ = variables->GetFloatValue(name_, "ShakeMagnification");
+	maxShakeStrength_ = variables->GetVector2Value(name_, "MaxShakeStrength");
 	transform_.translate_=  variables->GetVector3Value(name_, "Translate");
 }
 

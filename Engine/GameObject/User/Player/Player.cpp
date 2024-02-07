@@ -225,6 +225,9 @@ void Player::DisplayImGui()
 	ImGui::DragFloat("MaxMoveAcceleration", &kMaxMoveAcceleration_, 0.01f);
 	// 減衰速度
 	ImGui::DragFloat("DecayAcceleration", &decayAcceleration_, 0.01f);
+
+	ImGui::DragInt("AbsorptionCount", &absorptionCount_, 1.0f);
+
 	// 速度ベクトル
 	ImGui::DragFloat3("Velocity", &velocity_.x, 0.01f);
 	// 拡大率

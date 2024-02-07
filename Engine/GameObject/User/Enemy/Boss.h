@@ -127,6 +127,10 @@ private:
 	float shakeTime_ = 0.5f;
 	// 衝突時のシェイク強さ
 	Vector2 shakeStrength_ = { 1.0f, 1.0f };
+	// シェイク強さの倍率
+	float shakeMagnification_ = 1.0f;
+	// 衝突時のシェイク強さ最大値
+	Vector2 maxShakeStrength_ = { 15.0f, 15.0f };
 
 	// ゲームオブジェクトマネージャ
 	GameObjectManager* gameObjectManager_;
