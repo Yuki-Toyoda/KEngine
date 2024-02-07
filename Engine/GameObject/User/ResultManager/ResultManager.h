@@ -116,6 +116,8 @@ private: // メンバ変数
 
 	// ウリボのワールド座標
 	WorldTransform uriboTransform_;
+	// うり丸のメッシュ
+	Mesh* uribo_ = nullptr;
 
 	// 天球モデル
 	SkyDome* skyDome_ = nullptr;

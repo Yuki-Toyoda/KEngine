@@ -74,18 +74,21 @@ void InGameCamera::Update()
 	// オフセットをカメラの回転に合わせて回転させる
 	offset = Math::Transform(offset, rotateMat);
 
-	// 右スティックの右方向の入力があった場合
-	if (InputManager::GetRTInput() >= 155.0f) {
-		// 目標角度を設定
-		targetAngleY_ = -(float)std::numbers::pi / 2.0f;
-	}// 右スティックの左方向の入力があった場合
-	else if (InputManager::GetLTInput() >= 155.0f) {
-		// 目標角度を設定
-		targetAngleY_ = (float)std::numbers::pi / 2.0f;
-	}
-	else {
-		// 目標角度をリセット
-		targetAngleY_ = 0.0f;
+	// 回転可能か
+	if (canRotate_) {
+		// 右スティックの右方向の入力があった場合
+		if (InputManager::GetRTInput() >= 155.0f) {
+			// 目標角度を設定
+			targetAngleY_ = -(float)std::numbers::pi / 2.0f;
+		}// 右スティックの左方向の入力があった場合
+		else if (InputManager::GetLTInput() >= 155.0f) {
+			// 目標角度を設定
+			targetAngleY_ = (float)std::numbers::pi / 2.0f;
+		}
+		else {
+			// 目標角度をリセット
+			targetAngleY_ = 0.0f;
+		}
 	}
 
 	// 目標角度に徐々に補間する

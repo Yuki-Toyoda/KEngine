@@ -101,6 +101,9 @@ void Uribo::Update()
 				anim_->isLoop_ = false;
 				// アニメーション状態を変更する
 				anim_->ChangeParameter("Uribo_Dead", true);
+
+				// 死亡時のテクスチャに変更
+				meshes_[0]->texture_ = TextureManager::Load("./Resources/Player", "TexGameOver.png");
 			}
 			else {
 				// アニメーション終了時

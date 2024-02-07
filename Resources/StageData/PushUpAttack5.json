@@ -2,6 +2,7 @@
     "PushUpAttack5": {
         "Parameter": {
             "MaxCount": 3,
+            "RemainTime": 4.0,
             "Scale": [
                 1.0,
                 1.0,

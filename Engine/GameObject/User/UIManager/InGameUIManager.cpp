@@ -4,6 +4,7 @@
 #include "../Enemy/Boss.h"
 #include "../Player/uribo/uribo.h"
 #include "../../Core/Camera.h"
+#include "../camera/InGameCamera.h"
 
 void InGameUIManager::Init()
 {
@@ -18,15 +19,9 @@ void InGameUIManager::Init()
 	uriboGage_F_ = AddSprite("UriboGage_F", { 80.0f, 650.0f }, { 280.0f, 12.0f }, TextureManager::Load("./Resources/UI/InGame", "urimaruHpGauge.png"));
 	uriboIcon_ = AddSprite("UriboIcon", { 80.0f, 650.0f }, { 24.0f, 24.0f }, TextureManager::Load("./Resources/UI/InGame", "UrimaruIconNormal.png"));
 	uriboAlert_ = AddSprite("UriboAlert", { 80.0f, 650.0f }, { 96.0f, 96.0f }, TextureManager::Load("./Resources/UI/InGame", "urimaruAlert.png"));
+	rotateCamera_ = AddSprite("CameraRotate", { 925.0f, 90.0f }, { 344.0f, 48.0f }, TextureManager::Load("./Resources/UI/InGame", "CameraRotate.png"));
+	//rotateCameraUnder_ = AddSprite("CameraRotate_Under", { 990.0f, 670.0f }, { 275.2f, 38.4f }, TextureManager::Load("./Resources/UI/InGame", "CameraRotate.png"));
 
-	moveSpriteBG_ = AddSprite("MoveUI_BG", { 1075.0f, 520.0f }, { 192.0f, 64.0f }, TextureManager::Load("./Resources/UI/InGame", "moveBack.png"));
-	moveSprite_ = AddSprite("MoveUI", { 0.0f, 0.0f }, { 192.0f, 64.0f }, TextureManager::Load("./Resources/UI/InGame", "moveFront.png"));
-	AttackSprite_ = AddSprite("Attack", { 1040.0f, 590.0f }, { 224.0f, 48.0f }, TextureManager::Load("./Resources/UI/InGame", "attack.png"));
-	FeedSprite_ = AddSprite("Feed", { 1000.0f, 650.0f }, { 256.0f, 48.0f }, TextureManager::Load("./Resources/UI/InGame", "feed.png"));
-	moveSpriteBG_->SetIsActive(false);
-	moveSprite_->SetIsActive(false);
-	AttackSprite_->SetIsActive(false);
-	FeedSprite_->SetIsActive(false);
 	// アンカーポイント設定
 	bossHPGageSprite_Icon_->anchorPoint_ = { 0.5f, 0.2f };
 	playerVegetableCount2_->anchorPoint_ = { 0.5f, 0.5f };
@@ -49,8 +44,8 @@ void InGameUIManager::Init()
 	// ウリボのアラートアイコンの表示領域を設定
 	uriboAlert_->texSize_ = { 96.0f, 96.0f };
 
-	// ウリボゲージ背景親子付けする
-	//uriboGage_F_->SetParent(uriboGage_BG_->GetWorldTransform());
+	// スプライトの描画範囲設定
+	rotateCamera_->texSize_ = { 688.0f, 96.0f };
 
 	// 入力取得
 	input_ = Input::GetInstance();
@@ -58,12 +53,7 @@ void InGameUIManager::Init()
 	input_->GetJoystickState(0, joyState_); // 現在フレームの入力取得
 	preJoyState_ = joyState_; // 前フレームの入力取得
 
-	// スティックUIの背景に親子付けする
-	moveSprite_->SetParent(moveSpriteBG_->GetWorldTransform());
-
-	// スプライトの描画範囲設定
-	AttackSprite_->texSize_ = { 448.0f, 96.0f };
-	FeedSprite_->texSize_ = { 512.0f, 96.0f };
+	// チュートリアルフラグをfalse
 	isTutrial_ = false;
 
 	// アラートアイコンの切り替えタイマー
@@ -78,41 +68,6 @@ void InGameUIManager::Update()
 		HideAllUI();
 	}
 
-	// 入力取得
-	preJoyState_ = joyState_; // 前フレームの入力取得
-	input_->GetJoystickState(0, joyState_); // 現在フレームの入力取得
-	
-	// スティックの方向を元に移動ベクトルを求める
-	Vector3 move = {
-		(float)joyState_.Gamepad.sThumbLX, 0.0f,
-		(float)-joyState_.Gamepad.sThumbLY };
-
-	// 正規化
-	move = Math::Normalize(move) * 10.0f;
-
-	// スティックの結果をUIの反映
-	moveSprite_->translate_ = Vector2(move.x, move.z);
-
-	// Aボタンを押すとUIを変化させる
-	if (joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A) {
-		// UIを変更する
-		AttackSprite_->texBase_ = Vector2(448.0f, 0.0f);
-	}
-	else {
-		// UIを変更する
-		AttackSprite_->texBase_ = Vector2(0.0f, 0.0f);
-	}
-
-	// Xボタンを押すとUIを変化させる
-	if (joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_X) {
-		// UIを変更する
-		FeedSprite_->texBase_ = Vector2(512.0f, 0.0f);
-	}
-	else {
-		// UIを変更する
-		FeedSprite_->texBase_ = Vector2(0.0f, 0.0f);
-	}
-	
 	// プレイヤーが存在する場合
 	if (player_ != nullptr) {
 		if (player_->GetAbsorptionCount() >= 10) {
@@ -207,12 +162,35 @@ void InGameUIManager::Update()
 			// アラートアイコン切り替えタイマーの更新
 			switchAlertIconTimer_.Update();
 		}
+
+		// 何も入力が入っていないときようにリセット
+		rotateCamera_->texBase_ = { 0.0f, 0.0f };
+
+		// 左トリガーの入力が入った場合
+		if (InputManager::GetLTInput() > 100) {
+			rotateCamera_->texBase_ = { 688.0f, 0.0f };
+		}
+
+		// 右トリガーの入力が入った場合
+		if (InputManager::GetRTInput() > 100) {
+			rotateCamera_->texBase_ = { 1376.0f, 0.0f };
+		}
 	}
 	if (isTutrial_) {
 		bossHPGageSprite_BG_->SetIsActive(false);
 		bossHPGageSprite_F_->SetIsActive(false);
 		bossHPGageSprite_Icon_->SetIsActive(false);
-		FeedSprite_->SetIsActive(false);
+
+		// インゲームカメラの回転UIをフラグによって表示、非表示を切り替える
+		InGameCamera* icam = dynamic_cast<InGameCamera*>(camera_);
+		if (icam != nullptr) {
+			if (icam->GetCanRotate()) {
+				rotateCamera_->SetIsActive(true);
+			}
+			else {
+				rotateCamera_->SetIsActive(false);
+			}
+		}
 	}
 }
 

@@ -5,11 +5,19 @@ void Roller::Init()
 	// 速度ベクトルを既定値でリセット
 	velocity_ = { 1.0f,0.0f,0.0f };
 
-	// 各種ワールドトランスフォームの初期化
+	// モデル用ワールドトランスフォームの初期化
 	modelTransform_.Init();
 	modelTransform_.SetParent(&transform_, 0b011);
+	// 攻撃範囲用トランスフォームの初期化
+	attackAreaTransform_.Init();
+	// 親座標とペアレント
+	attackAreaTransform_.SetParent(&transform_);
 
 	// メッシュの追加
+	// 攻撃範囲表示
+	AddMesh(&attackAreaTransform_, areaColor_, "./Engine/Resource/Samples/Box", "Box.obj");
+	// 色の設定
+	areaColor_ = { 1.f, 0.f, 0.f, 0.8f };
 	AddMesh(&modelTransform_, color_, "./Resources/Cucumber", "Cucumber.obj");
 	// AABBのコライダーを追加
 	AddColliderAABB("Roller", &transform_.translate_, &transform_.scale_);
@@ -35,8 +43,13 @@ void Roller::Update()
 	// z軸方向のスケールが一定以上の場合
 	if (transform_.scale_.z >= 2.0f) {
 		// 回転させる
-		transform_.rotate_.y = (float)std::numbers::pi / 2.0f;
+		modelTransform_.rotate_.y = (float)std::numbers::pi / 2.0f;
 	}
+
+	// 攻撃範囲の座標を座標に同期させながら動かす
+	attackAreaTransform_.translate_.y = -transform_.translate_.y + 1.25f;
+	// 大きさを当たり判定の大きさと同期
+	//attackAreaTransform_.scale_ = transform_.scale_;
 
 	// 動作トリガーがtrueの時
 	if (isMove_ && !isFall_) {
@@ -68,6 +81,9 @@ void Roller::Update()
 	}
 
 	if (fallTimer_.GetIsFinish()) {
+		// 落下終了時攻撃範囲メッシュ非表示
+		meshes_[0]->isActive_ = false;
+
 		isFall_ = false;
 	}
 
