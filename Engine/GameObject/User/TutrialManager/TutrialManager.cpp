@@ -7,13 +7,13 @@ void TutrialManager::Init()
 	Vector2 uiPosition_ = {640.0f,64.0f};
 	AddSprite("yokero", uiPosition_ , {768.0f,64.0f}, TextureManager::Load("./Resources/UI/Tutorial", "Tutorial_01.png"));
 	sprites_[0]->anchorPoint_ = { 0.5f,0.5f };
-	AddSprite("hiroe", uiPosition_, { 768.0f,64.0f }, TextureManager::Load("./Resources/UI/Tutorial", "Tutorial_02.png"));
+	AddSprite("hiroe", uiPosition_, { 832.0f,64.0f }, TextureManager::Load("./Resources/UI/Tutorial", "Tutorial_02.png"));
 	sprites_[1]->anchorPoint_ = { 0.5f,0.5f };
-	AddSprite("butukare", uiPosition_, { 768.0f,64.0f }, TextureManager::Load("./Resources/UI/Tutorial", "Tutorial_03.png"));
+	AddSprite("butukare", uiPosition_, { 944.0f,64.0f }, TextureManager::Load("./Resources/UI/Tutorial", "Tutorial_03.png"));
 	sprites_[2]->anchorPoint_ = { 0.5f,0.5f };
 	AddSprite("onakasuita", uiPosition_, { 1136.0f,80.0f }, TextureManager::Load("./Resources/UI/Tutorial", "Tutorial_04.png"));
 	sprites_[3]->anchorPoint_ = { 0.5f,0.5f };
-	AddSprite("kaihuku", {648.0f,128.0f}, {768.0f,64.0f}, TextureManager::Load("./Resources/UI/Tutorial", "Tutorial_05.png"));
+	AddSprite("kaihuku", {648.0f,128.0f}, {832.0f,64.0f}, TextureManager::Load("./Resources/UI/Tutorial", "Tutorial_05.png"));
 	sprites_[4]->anchorPoint_ = { 0.5f,0.5f };
 	AddSprite("owari", uiPosition_, { 768.0f,64.0f }, TextureManager::Load("./Resources/UI/Tutorial", "Tutorial_08.png"));
 	sprites_[5]->anchorPoint_ = { 0.5f,0.5f };
@@ -39,7 +39,7 @@ void TutrialManager::Init()
 	AddSprite("PlacticeEnd", { 0.0f,0.0f}, { 752.0f,80.0f }, TextureManager::Load("./Resources/UI/Tutorial", "practiceSkipGauge.png"));
 	sprites_[14]->anchorPoint_ = { 0.5f,0.5f };
 	sprites_[14]->SetParent(sprites_[13]->GetWorldTransform());
-	step = plactice;
+	step = 0;
 	skipCount_ = 0;
 	isEnd_ = false;
 }
