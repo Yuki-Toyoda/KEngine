@@ -317,6 +317,9 @@ void Player::OnCollisionEnter(Collider* collider) {
 		if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagRubble) {
 			//がれきにぶつかったらしてサイズを大きくする
 			absorptionCount_++;
+			if (absorptionCount_ >= 99) {
+				absorptionCount_ = 99;
+			}
 			if (transform_.scale_.x < maxSize) {
 				// 加算するサイズを計算
 				float addSize = absorptionCount_ * scaleForce_;
