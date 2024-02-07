@@ -72,7 +72,7 @@ void PlayerAnimManager::Update()
 				}
 
 				// 
-				if (player_->GetAtackCount() > player_->GetmaxAtackCount()) {
+				if (player_->GetAtackCount() > player_->GetmaxAtackCount() && player_->GetISTutrialDash()) {
 					// ブリンクタイマー開始
 					arrowBlinkTimer_.Start(kMaxArrowBlinkTime_);
 				}
@@ -100,7 +100,7 @@ void PlayerAnimManager::Update()
 		Matrix4x4 rotateMat = Math::MakeIdentity4x4();
 
 		// プレイヤーの攻撃チャージが終了している場合、矢印をボスのいる方に向ける
-		if (player_->GetAtackCount() > player_->GetmaxAtackCount()) {
+		if (player_->GetAtackCount() > player_->GetmaxAtackCount() && player_->GetISTutrialDash()) {
 
 			// プレイヤーからボスへの方向ベクトルを求める
 			Vector3 dir = player_->GetBossDirection();
