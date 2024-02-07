@@ -33,6 +33,8 @@ public:
 /// </summary>
 	void Tutrial();
 	bool TutrialEnd();
+
+	void Reset();
 public://アクセッサ
 /// <summary>
 /// 体力のげった
@@ -68,6 +70,7 @@ public://アクセッサ
 
    bool GetIsCanHeal() { return IsCanHeal; }
    void SetTutrialStart(bool flag) { tutrialStart_ = flag; }
+   void SetTutrialPlactice(bool flag) { tutrialPlactice_ = flag; }
 private: // プライベートなメンバ関数
 
 	/// <summary>
@@ -137,5 +140,6 @@ private: // メンバ変数
 	bool IsCanHeal;
 
 	bool tutrialStart_;
+	bool tutrialPlactice_;
 };
 

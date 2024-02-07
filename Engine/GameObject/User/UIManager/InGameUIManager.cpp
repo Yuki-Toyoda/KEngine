@@ -210,7 +210,9 @@ void InGameUIManager::DisplayImGui()
 void InGameUIManager::HideAllUI()
 {
 	// 全てのスプライトを非表示にする
-	for (Sprite* s : sprites_) {
-		s->SetIsActive(false);
+	if (!isTutrial_) {
+		for (Sprite* s : sprites_) {
+			s->SetIsActive(false);
+		}
 	}
 }

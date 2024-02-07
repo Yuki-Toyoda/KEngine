@@ -76,6 +76,28 @@ public: // パブリックなメンバ変数
 	// パーツごとのトランスフォーム
 	WorldTransform bodyTransform_; // 身体
 
+	// 矢印のトランスフォーム
+	WorldTransform arrowTransform_;
+	// 矢印メッシュ格納用
+	Plane* arrow_ = nullptr;
+
+	// 矢印平面のオフセット
+	Vector3 arrowOffset_ = { 0.0f, 0.0f, -7.0f };
+
+	// 矢印色
+	Vector4 arrowColor_ = { 0.0f, 1.0f, 0.1f, 1.0f };
+
+	// 矢印のブリンクタイマー
+	KLib::DeltaTimer arrowBlinkTimer_;
+	// 矢印のブリンク秒数
+	float arrowBlinkTime_ = 1.0f;
+
+	// ブリンク強さ格納用
+	float blinkStrength_ = -9.0f;
+
+	// ブリンク切り替えフラグ
+	bool isBlinkReturn_ = false;
+
 private: // メンバ変数
 
 	// アニメーションマネージャ

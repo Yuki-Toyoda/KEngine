@@ -59,7 +59,8 @@ void Player::Init()
 	variables->AddItem(name_, "AbsorptionAcceleration", absorptionAccelerationForce_);
 	SetGlobalVariables();
 	isTutrial_ = false;
-	isTutrialDash_ = false;
+	isTutrialDash_ = true;
+	canDash_ = true;
 	// パーティクルエミッタマネージャのインスタンス取得
 	pem_ = ParticleEmitterManager::GetInstance();
 
@@ -366,6 +367,12 @@ void Player::OnCollision(Collider* collider)
 		velocity_ = { 0.0f,0.0f,0.0f };
 		return;
 	}
+}
+
+Vector3 Player::GetBossDirection()
+{
+	// ボスへの方向ベクトルを返す
+	return  transform_.translate_ - boss_->transform_.translate_;
 }
 
 void Player::Damage()

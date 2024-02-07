@@ -145,6 +145,26 @@ Mesh* BaseObject::AddMesh(WorldTransform* wt, Vector4& color, const std::string&
 	return newMesh;
 }
 
+Plane* BaseObject::AddPlane(WorldTransform* wt, Vector4& color, Texture* tex)
+{
+	// 形状マネージャのインスタンスが取得されていない場合ここで取得
+	if (primitiveManager_ == nullptr)
+		primitiveManager_ = PrimitiveManager::GetInstance();
+
+	// メッシュのインスタンスを生成
+	Plane* newPlane = primitiveManager_->CreateInstance<Plane>(); // インスタンス生成
+	newPlane->transform_ = wt;								   // ワールドトランスフォームを与える
+	newPlane->commonColor = &color;							   // 色を設定
+	newPlane->material_.enableLighting_ = false;			   // ライティングの有効設定
+	newPlane->texture_ = tex;								   // テクスチャ変更
+
+	// メッシュリストに生成メッシュを追加
+	meshes_.push_back(newPlane);
+
+	// 生成したメッシュを返還する
+	return newPlane;
+}
+
 BillboardPlane* BaseObject::AddBillboardPlane(WorldTransform* wt, Vector4& color, Texture* texture)
 {
 	// ビルボード平面のインスタンスを生成
