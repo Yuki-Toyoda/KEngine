@@ -65,6 +65,13 @@ void ResultManager::Update()
 					anim_->ChangeParameter("Result_FailIdle", true);
 				}
 
+				// クリア時のみ
+				if (isCleared_) {
+					// メッシュのテクスチャ変更
+					pam_->ChangeTex(TextureManager::Load("./Resources/Player", "TexGameClear.png"));
+					uribo_->texture_ = TextureManager::Load("./Resources/Player", "TexGameClear.png");
+				}
+
 				// ループ有効
 				anim_->isLoop_ = true;
 				// 再生
