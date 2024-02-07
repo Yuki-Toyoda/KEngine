@@ -8,10 +8,10 @@
         ],
         "PushUpReadyTime": 0.25,
         "RollerAttackReadyTime": 0.25,
-        "ShakeMagnification": 0.3499999940395355,
+        "ShakeMagnification": 1.350000023841858,
         "ShakeStrength": [
-            1.0,
-            1.0
+            0.20000000298023224,
+            0.20000000298023224
         ],
         "ShakeTime": 0.5,
         "Translate": [

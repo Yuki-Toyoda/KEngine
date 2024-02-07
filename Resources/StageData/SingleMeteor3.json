@@ -9,9 +9,9 @@
         },
         "Meteor1": {
             "Position": [
-                0.0,
+                32.0,
                 2.0,
-                32.0
+                0.0
             ]
         },
         "Meteor2": {
@@ -52,7 +52,7 @@
         "Parameter": {
             "Distance": 60.0,
             "IsGravity": 0,
-            "MaxCount": 4,
+            "MaxCount": 2,
             "Scale": [
                 15.0,
                 1.0,
