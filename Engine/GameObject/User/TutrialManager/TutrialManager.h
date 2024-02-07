@@ -6,6 +6,10 @@
 #include "../Player/uribo/uribo.h"
 #include "../camera/InGameCamera.h"
 #include "../camera/TutrialCmera.h"
+
+// クラスの前方宣言
+class InGameUIManager;
+
 enum TutrialStep {
 	yokero,
 	atumero,
@@ -42,7 +46,19 @@ public://アクセッサ
 	bool GetTutrialEnd() { return isEnd_; }
 
 	void SetTutrialCamera(TutrialCamera* camera) { tCamera_ = camera; }
-	void SetIngameCamera(InGameCamera* camera) { iCamera_ = camera; }
+
+	/// <summary>
+	/// インゲームカメラのセッター
+	/// </summary>
+	/// <param name="camera">インゲームカメラ</param>
+	void SetIngameCamera(InGameCamera* camera);
+
+	/// <summary>
+	/// インゲームUIマネージャーのセッター
+	/// </summary>
+	/// <param name="iGUIM">インゲームUIマネージャー本体</param>
+	void SetInGameUIManger(InGameUIManager* iGUIM) { inGameUIManager_ = iGUIM; }
+
 private:
      int step;
 	 KLib::DeltaTimer timer_;
@@ -54,5 +70,9 @@ private:
 	 bool isEnd_;
 	 InGameCamera* iCamera_;
 	 TutrialCamera* tCamera_;
+
+	 // インゲーム内のUIマネージャー
+	 InGameUIManager* inGameUIManager_ = nullptr;
+
 };
 

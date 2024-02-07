@@ -4,6 +4,7 @@
 #include "../Enemy/Boss.h"
 #include "../Player/uribo/uribo.h"
 #include "../../Core/Camera.h"
+#include "../camera/InGameCamera.h"
 
 void InGameUIManager::Init()
 {
@@ -19,7 +20,7 @@ void InGameUIManager::Init()
 	uriboIcon_ = AddSprite("UriboIcon", { 80.0f, 650.0f }, { 24.0f, 24.0f }, TextureManager::Load("./Resources/UI/InGame", "UrimaruIconNormal.png"));
 	uriboAlert_ = AddSprite("UriboAlert", { 80.0f, 650.0f }, { 96.0f, 96.0f }, TextureManager::Load("./Resources/UI/InGame", "urimaruAlert.png"));
 	rotateCamera_ = AddSprite("CameraRotate", { 925.0f, 90.0f }, { 344.0f, 48.0f }, TextureManager::Load("./Resources/UI/InGame", "CameraRotate.png"));
-	rotateCameraUnder_ = AddSprite("CameraRotate_Under", { 990.0f, 620.0f }, { 275.2f, 38.4f }, TextureManager::Load("./Resources/UI/InGame", "CameraRotate.png"));
+	rotateCameraUnder_ = AddSprite("CameraRotate_Under", { 990.0f, 670.0f }, { 275.2f, 38.4f }, TextureManager::Load("./Resources/UI/InGame", "CameraRotate.png"));
 
 	// アンカーポイント設定
 	bossHPGageSprite_Icon_->anchorPoint_ = { 0.5f, 0.2f };
@@ -183,6 +184,19 @@ void InGameUIManager::Update()
 		bossHPGageSprite_BG_->SetIsActive(false);
 		bossHPGageSprite_F_->SetIsActive(false);
 		bossHPGageSprite_Icon_->SetIsActive(false);
+
+		// インゲームカメラの回転UIをフラグによって表示、非表示を切り替える
+		InGameCamera* icam = dynamic_cast<InGameCamera*>(camera_);
+		if (icam != nullptr) {
+			if (icam->GetCanRotate()) {
+				rotateCamera_->SetIsActive(true);
+				rotateCameraUnder_->SetIsActive(true);
+			}
+			else {
+				rotateCamera_->SetIsActive(false);
+				rotateCameraUnder_->SetIsActive(false);
+			}
+		}
 	}
 }
 

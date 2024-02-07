@@ -106,6 +106,10 @@ void TutrialScene::Init()
 	tm_->SetUribo(uribo_);
 	tm_->SetIngameCamera(camera_);
 	tm_->SetTutrialCamera(tcamera);
+
+	// チュートリアルマネージャーにインゲームUIマネージャーをセット
+	tm_->SetInGameUIManger(iUIm);
+
 	// フェードイン
 	FadeManager::GetInstance()->ChangeParameter("FadeIn", true);
 	FadeManager::GetInstance()->Play();

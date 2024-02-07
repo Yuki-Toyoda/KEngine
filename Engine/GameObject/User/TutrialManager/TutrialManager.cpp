@@ -1,5 +1,7 @@
 #include "TutrialManager.h"
 #include "../../../Resource/Texture/TextureManager.h"
+#include "../UIManager/InGameUIManager.h"
+
 void TutrialManager::Init()
 {
 	Vector2 uiPosition_ = {640.0f,64.0f};
@@ -76,6 +78,7 @@ void TutrialManager::Update()
 		if (timer_.GetIsFinish()) {
 			step++;
 		}
+
 	break;
 	case atumero:
 		//五個集めたら回復へ
@@ -87,6 +90,10 @@ void TutrialManager::Update()
 			tCamera_->SetIsUseThisCamera(true);
 			tCamera_->transform_ = iCamera_->transform_;
 			tCamera_->fov_ = iCamera_->fov_;
+
+			// UIマネージャーにセットされているカメラを変更
+			inGameUIManager_->SetCamera(tCamera_);
+
 			timer_.Start(1.5f);
 		}
 		break;
@@ -114,6 +121,9 @@ void TutrialManager::Update()
 			step++;
 			iCamera_->SetIsUseThisCamera(true);
 			tCamera_->SetIsUseThisCamera(false);
+
+			// UIマネージャーにセットされているカメラを変更
+			inGameUIManager_->SetCamera(iCamera_);
 		}
 		break;
 	case kaihuku:
@@ -153,6 +163,10 @@ void TutrialManager::Update()
 	case plactice:
 		sprites_[6]->SetIsActive(true);
 		sprites_[9]->translate_ = { 648.0f,128.0f };
+
+		// 操作によるカメラ回転を有効に
+		iCamera_->SetCanRotate(true);
+		
 		break;
 	default:
 		break;
@@ -166,4 +180,12 @@ void TutrialManager::DisplayImGui()
 	for (Sprite* s : sprites_) {
 		s->DisplayImGui();
 	}
+}
+
+void TutrialManager::SetIngameCamera(InGameCamera* camera)
+{
+	// インゲームカメラをセット
+	iCamera_ = camera;
+	// 操作によるカメラ回転を無効に
+	iCamera_->SetCanRotate(false);
 }

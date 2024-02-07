@@ -42,6 +42,17 @@ public: // アクセッサ等
 	/// <param name="player">セットするプレイヤー本体</param>
 	void SetPlayer(Player* player) { player_ = player; }
 
+	/// <summary>
+	/// 回転可能フラグゲッター
+	/// </summary>
+	/// <returns>回転可能か</returns>
+	bool GetCanRotate() { return canRotate_; }
+	/// <summary>
+	/// 回転可能フラグセッター
+	/// </summary>
+	/// <param name="canRotate">回転可能か</param>
+	void SetCanRotate(const bool& canRotate) { canRotate_ = canRotate; }
+
 private: // メンバ関数
 
 	// プレイヤー
@@ -61,6 +72,8 @@ private: // メンバ関数
 	// 振動演出タイマー
 	KLib::DeltaTimer shakeTimer_;
 
+	// 回転可能フラグ
+	bool canRotate_ = true;
 	// 目標角度Y軸
 	float targetAngleY_ = 0.0f;
 
