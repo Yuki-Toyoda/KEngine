@@ -19,7 +19,7 @@ void TutrialManager::Init()
 	sprites_[5]->anchorPoint_ = { 0.5f,0.5f };
 	AddSprite(" plactice", uiPosition_, { 768.0f,64.0f }, TextureManager::Load("./Resources/UI/Tutorial", "Tutorial_09.png"));
 	sprites_[6]->anchorPoint_ = { 0.5f,0.5f };
-	AddSprite("dash", uiPosition_, { 768.0f,64.0f }, TextureManager::Load("./Resources/UI/Tutorial", "Tutorial_07.png"));
+	AddSprite("dash", uiPosition_, { 1072.0f,64.0f }, TextureManager::Load("./Resources/UI/Tutorial", "Tutorial_07.png"));
 	sprites_[7]->anchorPoint_ = { 0.5f,0.5f };
 	AddSprite("skipGauge", { 0.0f,0.0f }, { 554.0f,51.0f }, TextureManager::Load("./Resources/UI/Tutorial", "tutorialSkipGauge.png"));
 	sprites_[8]->anchorPoint_ = { 0.5f,0.5f };
@@ -34,11 +34,12 @@ void TutrialManager::Init()
 	sprites_[11]->anchorPoint_ = { 0.5f,0.5f };
 	AddSprite("Power", {648.0f,128.0f}, {1072.0f,64.0f}, TextureManager::Load("./Resources/UI/Tutorial", "Tutorial_10.png"));
 	sprites_[12]->anchorPoint_ = { 0.5f,0.5f };
+	AddSprite("PlacticeEnd", { 0.0f,0.0f }, { 752.0f,80.0f }, TextureManager::Load("./Resources/UI/Tutorial", "practiceSkipGauge.png"));
 	AddSprite("PlacticeEnd", { 648.0f,128.0f }, { 752.0f,80.0f }, TextureManager::Load("./Resources/UI/Tutorial", "practiceSkipFram.png"));
 	sprites_[13]->anchorPoint_ = { 0.5f,0.5f };
-	AddSprite("PlacticeEnd", { 0.0f,0.0f}, { 752.0f,80.0f }, TextureManager::Load("./Resources/UI/Tutorial", "practiceSkipGauge.png"));
+	
 	sprites_[14]->anchorPoint_ = { 0.5f,0.5f };
-	sprites_[14]->SetParent(sprites_[13]->GetWorldTransform());
+	sprites_[13]->SetParent(sprites_[14]->GetWorldTransform());
 	step = 0;
 	skipCount_ = 0;
 	isEnd_ = false;
@@ -222,17 +223,17 @@ void TutrialManager::Update()
 		sprites_[14]->SetIsActive(true);
 	
 
-		sprites_[14]->scale_.y = Math::Linear((float)skipCount_, 0.0f, 80.0f, 60.0f);
-		sprites_[14]->texBase_.y = Math::Linear((float)skipCount_, 80.0f, 0.0f, 60.0f);
-		sprites_[14]->texSize_.y = Math::Linear((float)skipCount_, 0.0f, 80.0f, 60.0f);
-		sprites_[14]->translate_.y = Math::Linear((float)skipCount_, 40.0f, 0.0f, 60.0f);
+		sprites_[13]->scale_.y = Math::Linear((float)skipCount_, 0.0f, 80.0f, 60.0f);
+		sprites_[13]->texBase_.y = Math::Linear((float)skipCount_, 80.0f, 0.0f, 60.0f);
+		sprites_[13]->texSize_.y = Math::Linear((float)skipCount_, 0.0f, 80.0f, 60.0f);
+		sprites_[13]->translate_.y = Math::Linear((float)skipCount_, 40.0f, 0.0f, 60.0f);
 
-		if (sprites_[14]->texSize_.y > 80.0f) {
-			sprites_[14]->texSize_.y = 80.0f;
+		if (sprites_[13]->texSize_.y > 80.0f) {
+			sprites_[13]->texSize_.y = 80.0f;
 		}
 
-		if (sprites_[14]->texBase_.y < 0.0f) {
-			sprites_[14]->texBase_.y = 0.0f;
+		if (sprites_[13]->texBase_.y < 0.0f) {
+			sprites_[13]->texBase_.y = 0.0f;
 		}
 		// 操作によるカメラ回転を有効に
 		iCamera_->SetCanRotate(true);

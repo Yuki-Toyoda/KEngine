@@ -16,7 +16,7 @@ void ChargeParticleEmitter::GenerateParticle()
 		float scale = 0;
 		// プレイヤーの最小最大
 		float minPlScale = 2.0f;
-		float maxPlScale = 5.0f;
+		float maxPlScale = 7.0f;
 		// 円の最小最大
 		float targetMin = 1.5f;
 		float targetMax = 2.5f;
