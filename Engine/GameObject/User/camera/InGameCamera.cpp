@@ -69,6 +69,10 @@ void InGameCamera::Update()
 			offset.z = Math::Linear(player_->transform_.translate_.z, offset_.z, offset_.z - 5.0f, -53.0f);
 		}
 	}
+
+	// オフセット計算終了後に振動強さを設定
+	offset += shakeOffset_;
+
 	// 回転角から行列を生成
 	Matrix4x4 rotateMat = Math::MakeRotateXYZMatrix(transform_.rotate_);
 	// オフセットをカメラの回転に合わせて回転させる
