@@ -94,6 +94,9 @@ void Player::Init()
 
 void Player::Update()
 {
+	if (absorptionCount_ >= 99) {
+		absorptionCount_ = 99;
+	}
 	// 現在のスケールが最大スケールを超えている場合は
 	if (transform_.scale_.x >= maxSize) {
 		// スケールを最大スケールで固定する
