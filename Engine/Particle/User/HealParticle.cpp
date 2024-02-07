@@ -10,15 +10,15 @@ void HealParticle::Init()
 	startPos_ = transform_.translate_;
 	// 始端サイズは最初に与えられたサイズ
 	startScale_ = transform_.scale_;
-
+	addValue_Y_ = Math::RandomF(0.1f, 0.2f, 3);
 }
 
 void HealParticle::Update()
 {
 	// 線形補間によって座標移動
-	transform_.translate_ = KLib::Lerp<Vector3>(startPos_, endPos_, KLib::EaseOutQuad(aliveTimer_.GetProgress()));
+	//transform_.translate_ = KLib::Lerp<Vector3>(startPos_, endPos_, KLib::EaseOutQuad(aliveTimer_.GetProgress()));
 	transform_.scale_ = KLib::Lerp<Vector3>(startScale_, { 0.0f, 0.0f, 0.0f }, KLib::EaseOutQuad(aliveTimer_.GetProgress()));
-
+	transform_.translate_.y += addValue_Y_;
 	// 透明度を補間で下げる
-	color_.w = KLib::Lerp(0.75f, 0.0f, KLib::EaseInOutQuad(aliveTimer_.GetProgress()));
+	color_.w = KLib::Lerp(1.0f, 0.0f, KLib::EaseInOutQuad(aliveTimer_.GetProgress()));
 }

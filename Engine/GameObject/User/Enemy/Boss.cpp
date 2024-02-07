@@ -200,7 +200,24 @@ void Boss::OnCollisionEnter(Collider* collider)
 		// パーティクル再生
 		Vector3 generatePos = transform_.translate_;
 		generatePos.y = 7.0f;
-		pem_->CreateEmitter<HitParticleEmiiter, HitParticle>("Boss_Hit", 25, 25, generatePos, 1.0f, 10.0f, TextureManager::Load("bossHitParticle.png"));
+
+		// 最小・最大のプレイヤーサイズ
+		float minPl = 2.0f;
+		float maxPl = 5.0f;
+		// 生成粒子の大きさ設定
+		int value = 15;
+		// 円の最小最大
+		int minNumber = 10;
+		int maxNumber = 30;
+		float playerScale = player_->transform_.scale_.x;
+
+		// スケールの計算
+		// 割合
+		float ratio = (playerScale - minPl) / (maxPl - minPl);
+		// 数を割合に合わせて
+		value = KLib::Lerp<int>(minNumber, maxNumber, ratio);
+
+		pem_->CreateEmitter<HitParticleEmiiter, HitParticle>("Boss_Hit", value, value, generatePos, 1.0f, 10.0f, TextureManager::Load("bossHitParticle.png"));
 
 		// カメラのシェイク演出をする
 		inGameCamera_->Shake(shakeTime_, shakeStrength_);

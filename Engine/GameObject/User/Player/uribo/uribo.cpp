@@ -185,6 +185,13 @@ void Uribo::DisplayImGui()
 		ImGui::TreePop();
 	}
 
+	if (ImGui::Button("HealEff")) {
+		Vector3 generatePos = transform_.translate_;
+		//generatePos.y -= 1.5f;
+		//generatePos.z += 5.0f;
+		pem_->CreateEmitter<HealParticleEmitter, HealParticle>("Uribo_Heal", 6, 6, generatePos, 4.0f, 10.0f, TextureManager::Load("vegetableParticle.png"));
+	}
+
 	anim_->DisplayImGui();
 	// アニメーションの読み込みパラメータ変更
 	if (ImGui::TreeNode("Uribo_ChangeReadParameter")) {
@@ -263,8 +270,7 @@ void Uribo::Heal(int healPower)
 		hitPoint_ += healPower;
 		IsCanHeal = true;
 		Vector3 generatePos = transform_.translate_;
-		generatePos.y += 5.0f;
-		pem_->CreateEmitter<HealParticleEmitter, HealParticle>("Uribo_Heal", 25, 1, generatePos, 4.0f, 10.0f, TextureManager::Load("vegetableParticle.png"));
+		pem_->CreateEmitter<HealParticleEmitter, HealParticle>("Uribo_Heal", 25, 5, generatePos, 4.0f, 10.0f, TextureManager::Load("vegetableParticle.png"));
 	}
 	if (hitPoint_ >= defaultHP_) {
 		hitPoint_ = defaultHP_;

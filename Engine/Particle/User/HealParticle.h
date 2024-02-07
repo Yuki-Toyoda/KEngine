@@ -25,5 +25,8 @@ private: // メンバ変数
 	// 線形補間始端スケール
 	Vector3 startScale_ = { 1.0f, 1.0f, 1.0f };
 
+	// 上昇量
+	float addValue_Y_ = 0;
+
 };
 
