@@ -87,6 +87,7 @@ void Player::Init()
 	chargeFinishParticleEmitter_->transform_.SetParent(&transform_);
 	chargeFinishParticleEmitter_->SetIsLoop(true);
 	chargeFinishParticleEmitter_->SetIsPlay(false);
+	chargeFinishParticleEmitter_->SetPlayerWorldTransform(&transform_);
 
 	// 移動時のパーティクルエフェクト
 	moveParticleEmitter_ = pem_->CreateEmitter<MoveParticleEmitter, MoveParticle>("Move", 80, 1, { 0.0f, 0.0f, 0.0f }, 10.0f, 0.04f, TextureManager::Load("moveParticle.png"));

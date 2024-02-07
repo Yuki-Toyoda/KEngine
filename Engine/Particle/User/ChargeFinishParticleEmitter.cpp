@@ -22,8 +22,23 @@ void ChargeFinishParticleEmitter::GenerateParticle()
 		// 生成粒子の方向ベクトルを角度を元に設定する
 		Vector3 generateVelocity
 			= { std::cos(generateAngle * i), 0.0f, std::sin(generateAngle * i) };
+
+		// プレイヤーの最小最大
+		float minPlScale = 2.0f;
+		float maxPlScale = 7.0f;
+		// 円の最小最大
+		float minCirScale = 5.0f;
+		float maxCirScale = 8.5f;
+		float nowPlScale = playerWorldTransform_->scale_.x;
+		// スケールの計算
+		// 割合
+		float ratio = (nowPlScale - minPlScale) / (maxPlScale - minPlScale);
+		float value = 0;
+		// スケール
+		value = KLib::Lerp<float>(minCirScale, maxCirScale, ratio);
+
 		// 方向ベクトルに速度を掛ける
-		generateVelocity = generateVelocity * 5.0f;
+		generateVelocity = generateVelocity * value;
 
 		// 生成粒子の色
 		//Vector4 generateColor = { Math::RandomF(0.35f, 1.0f, 2), Math::RandomF(0.35f, 1.0f, 2), Math::RandomF(0.35f, 1.0f, 2), 1.0f };
