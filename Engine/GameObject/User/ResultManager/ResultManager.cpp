@@ -72,6 +72,7 @@ void ResultManager::Update()
 			}
 		}
 		
+		// クリア時のみ
 		if (isCleared_) {
 			// アニメーション進捗が5割りを超えている場合
 			if (anim_->GetAnimationProgress() >= 0.55f) {
@@ -79,8 +80,7 @@ void ResultManager::Update()
 				pam_->ChangeTex(TextureManager::Load("./Resources/Player", "TexGameClear.png"));
 				uribo_->texture_ = TextureManager::Load("./Resources/Player", "TexGameClear.png");
 			}
-		}
-		
+		}	
 
 		// アニメーション終了時
 		if (anim_->isEnd_) {
