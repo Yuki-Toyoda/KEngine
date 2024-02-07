@@ -124,7 +124,10 @@ public: // アクセッサ等
 	/// </summary>
 	/// <returns>ボスのアニメーションマネージャー</returns>
 	BossAnimManager* GetBossAnimManager() { return bam_; }
-
+	void SetTutrialStop(bool flag) { TutrialStop = flag; }
+	bool GetTutrialStop() { return TutrialStop; }
+	void SetTutrialStart(bool flag) { TutrialAtackStart_ = flag; }
+	bool GetTutrialStart() { return TutrialAtackStart_; }
 public: // パブリックなメンバ変数
 	struct MyState
 	{
@@ -182,6 +185,8 @@ protected: // 継承先メンバ変数
 	float pushUpReadyTime_ = 0.25f;
 	// ボスのローラー攻撃時の待機時間
 	float rollerAttackReadyTime_ = 0.25f;
+	bool TutrialStop = false;
+	bool TutrialAtackStart_ = false;
 };
 
 /// <summary>
