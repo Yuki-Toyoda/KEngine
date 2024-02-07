@@ -19,14 +19,6 @@ void InGameUIManager::Init()
 	uriboIcon_ = AddSprite("UriboIcon", { 80.0f, 650.0f }, { 24.0f, 24.0f }, TextureManager::Load("./Resources/UI/InGame", "UrimaruIconNormal.png"));
 	uriboAlert_ = AddSprite("UriboAlert", { 80.0f, 650.0f }, { 96.0f, 96.0f }, TextureManager::Load("./Resources/UI/InGame", "urimaruAlert.png"));
 
-	moveSpriteBG_ = AddSprite("MoveUI_BG", { 1075.0f, 520.0f }, { 192.0f, 64.0f }, TextureManager::Load("./Resources/UI/InGame", "moveBack.png"));
-	moveSprite_ = AddSprite("MoveUI", { 0.0f, 0.0f }, { 192.0f, 64.0f }, TextureManager::Load("./Resources/UI/InGame", "moveFront.png"));
-	AttackSprite_ = AddSprite("Attack", { 1040.0f, 590.0f }, { 224.0f, 48.0f }, TextureManager::Load("./Resources/UI/InGame", "attack.png"));
-	FeedSprite_ = AddSprite("Feed", { 1000.0f, 650.0f }, { 256.0f, 48.0f }, TextureManager::Load("./Resources/UI/InGame", "feed.png"));
-	moveSpriteBG_->SetIsActive(false);
-	moveSprite_->SetIsActive(false);
-	AttackSprite_->SetIsActive(false);
-	FeedSprite_->SetIsActive(false);
 	// アンカーポイント設定
 	bossHPGageSprite_Icon_->anchorPoint_ = { 0.5f, 0.2f };
 	playerVegetableCount2_->anchorPoint_ = { 0.5f, 0.5f };
@@ -58,12 +50,7 @@ void InGameUIManager::Init()
 	input_->GetJoystickState(0, joyState_); // 現在フレームの入力取得
 	preJoyState_ = joyState_; // 前フレームの入力取得
 
-	// スティックUIの背景に親子付けする
-	moveSprite_->SetParent(moveSpriteBG_->GetWorldTransform());
-
-	// スプライトの描画範囲設定
-	AttackSprite_->texSize_ = { 448.0f, 96.0f };
-	FeedSprite_->texSize_ = { 512.0f, 96.0f };
+	// チュートリアルフラグをfalse
 	isTutrial_ = false;
 
 	// アラートアイコンの切り替えタイマー
@@ -78,41 +65,6 @@ void InGameUIManager::Update()
 		HideAllUI();
 	}
 
-	// 入力取得
-	preJoyState_ = joyState_; // 前フレームの入力取得
-	input_->GetJoystickState(0, joyState_); // 現在フレームの入力取得
-	
-	// スティックの方向を元に移動ベクトルを求める
-	Vector3 move = {
-		(float)joyState_.Gamepad.sThumbLX, 0.0f,
-		(float)-joyState_.Gamepad.sThumbLY };
-
-	// 正規化
-	move = Math::Normalize(move) * 10.0f;
-
-	// スティックの結果をUIの反映
-	moveSprite_->translate_ = Vector2(move.x, move.z);
-
-	// Aボタンを押すとUIを変化させる
-	if (joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A) {
-		// UIを変更する
-		AttackSprite_->texBase_ = Vector2(448.0f, 0.0f);
-	}
-	else {
-		// UIを変更する
-		AttackSprite_->texBase_ = Vector2(0.0f, 0.0f);
-	}
-
-	// Xボタンを押すとUIを変化させる
-	if (joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_X) {
-		// UIを変更する
-		FeedSprite_->texBase_ = Vector2(512.0f, 0.0f);
-	}
-	else {
-		// UIを変更する
-		FeedSprite_->texBase_ = Vector2(0.0f, 0.0f);
-	}
-	
 	// プレイヤーが存在する場合
 	if (player_ != nullptr) {
 		if (player_->GetAbsorptionCount() >= 10) {
@@ -212,7 +164,6 @@ void InGameUIManager::Update()
 		bossHPGageSprite_BG_->SetIsActive(false);
 		bossHPGageSprite_F_->SetIsActive(false);
 		bossHPGageSprite_Icon_->SetIsActive(false);
-		FeedSprite_->SetIsActive(false);
 	}
 }
 
