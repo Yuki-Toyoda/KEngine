@@ -18,9 +18,14 @@ void HitParticleEmiiter::GenerateParticle()
 		Vector2 generateScale = { size, size };
 		// 生成粒子の速度ベクトル設定
 		Vector3 generateVelocity
-			= { Math::RandomF(-0.35f, 0.35f, 3), Math::RandomF(0.25f, 0.65f, 3), Math::RandomF(-0.35f, 0.35f, 3) };
+			= { Math::RandomF(-0.35f, 0.35f, 3), Math::RandomF(0.35f, 0.65f, 3), Math::RandomF(-0.35f, 0.35f, 3) };
+
+		float randomRatio = Math::RandomF(1.0f, 1.25f, 2);
+		generateVelocity.x = generateVelocity.x * randomRatio;
+		generateVelocity.y = generateVelocity.y * 1.05f;
+		generateVelocity.z = generateVelocity.z * randomRatio;
 		// 生成粒子の色
-		Vector4 generateColor = { Math::RandomF(0.35f, 1.0f, 2), Math::RandomF(0.35f, 1.0f, 2), Math::RandomF(0.35f, 1.0f, 2), 1.0f };
+		Vector4 generateColor = { Math::RandomF(0.8f, 1.0f, 2), Math::RandomF(0.8f, 1.0f, 2), Math::RandomF(0.8f, 1.0f, 2), 1.0f };
 
 		Texture* vegTexture[3];
 		vegTexture[0] = TextureManager::Load("vegetableIcon.png");
