@@ -9,6 +9,8 @@ void RootState::Init()
 	audio_= Audio::GetInstance();
 	chargeEnd_ = audio_->LoadWave("./Resources/Audio/SE/chargeMax.wav");
 	charge_ = audio_->LoadWave("./Resources/Audio/SE/charge.wav");
+	//攻撃ボタンを押しているカウントを0に
+	player_->ResetAtackCount();
 }
 
 void RootState::Update()
