@@ -31,7 +31,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// ウィンドウズアプリケーションクラスのインスタンスを取得
 	winApp = WinApp::GetInstance();
 	// ゲームウィンドウを生成する
-	winApp->CreateGameWindow(L"KEngine");
+	winApp->CreateGameWindow(L"2307_まるまるイノ丸");
 
 	// DirectX汎用クラスのインスタンスを取得
 	dxCommon = DirectXCommon::GetInstance();
