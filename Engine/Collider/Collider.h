@@ -2,7 +2,7 @@
 #include <list>
 #include <string>
 #include <memory>
-#include "../Math/Math.h"
+
 #include "ShapeList.h"
 
 // クラスの前方宣言

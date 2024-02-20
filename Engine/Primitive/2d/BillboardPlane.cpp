@@ -30,14 +30,14 @@ void BillboardPlane::ResizeVertices()
 void BillboardPlane::UpdateBillboardMat()
 {
 	// 使用中カメラのビュー行列取得
-	Matrix4x4 viewMat = Math::Inverse(GameObjectManager::GetInstance()->GetUseCamera()->GetViewMatrix());
+	Matrix4x4 viewMat = Matrix4x4::MakeInverse(GameObjectManager::GetInstance()->GetUseCamera()->GetViewMatrix());
 	// ビュー行列の移動要素を消す
 	viewMat.m[3][0] = 0.0f;
 	viewMat.m[3][1] = 0.0f;
 	viewMat.m[3][2] = 0.0f;
 
 	// ワールド行列の計算
-	Matrix4x4 worldMatrix = Math::MakeAffineMatrix(
+	Matrix4x4 worldMatrix = Matrix4x4::MakeAffin(
 		transform_->scale_,
 		transform_->rotate_,
 		transform_->translate_

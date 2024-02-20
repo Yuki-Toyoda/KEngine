@@ -1,178 +1,274 @@
 #pragma once
+
+// クラスの前方宣言
+class Vector3;
+
 /// <summary>
-/// 4x4行列構造体
+/// 4x4行列クラス
 /// </summary>
-struct Matrix4x4 final {
-	float m[4][4]; // 行列要素
+class Matrix4x4 final
+{
+public: // コンストラクタ等
 
-	// 演算子オーバーロード(+)
-	Matrix4x4 operator+(const Matrix4x4 matrix) const {
-		// 結果格納用
-		Matrix4x4 result;
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	Matrix4x4();
 
-		// 計算処理
-		result.m[0][0] = m[0][0] + matrix.m[0][0];
-		result.m[1][0] = m[1][0] + matrix.m[1][0];
-		result.m[2][0] = m[2][0] + matrix.m[2][0];
-		result.m[3][0] = m[3][0] + matrix.m[3][0];
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	/// <param name="mat">行列</param>
+	Matrix4x4(const Matrix4x4& mat);
 
-		result.m[0][1] = m[0][1] + matrix.m[0][1];
-		result.m[1][1] = m[1][1] + matrix.m[1][1];
-		result.m[2][1] = m[2][1] + matrix.m[2][1];
-		result.m[3][1] = m[3][1] + matrix.m[3][1];
+	// 既定のデストラクタを使用する
+	~Matrix4x4() = default;
 
-		result.m[0][2] = m[0][2] + matrix.m[0][2];
-		result.m[1][2] = m[1][2] + matrix.m[1][2];
-		result.m[2][2] = m[2][2] + matrix.m[2][2];
-		result.m[3][2] = m[3][2] + matrix.m[3][2];
+public: // 演算子のオーバーロード
 
-		result.m[0][3] = m[0][3] + matrix.m[0][3];
-		result.m[1][3] = m[1][3] + matrix.m[1][3];
-		result.m[2][3] = m[2][3] + matrix.m[2][3];
-		result.m[3][3] = m[3][3] + matrix.m[3][3];
+	/// <summary>
+	/// 演算子オーバーロード(+)
+	/// </summary>
+	/// <param name="mat">右辺値</param>
+	/// <returns>計算後値</returns>
+	Matrix4x4 operator+(const Matrix4x4& mat) const noexcept;
+	/// <summary>
+	/// 演算子オーバーロード(-)
+	/// </summary>
+	/// <param name="mat">右辺値</param>
+	/// <returns>計算後値</returns>
+	Matrix4x4 operator-(const Matrix4x4& mat) const noexcept;
+	/// <summary>
+	/// 演算子オーバーロード(*)
+	/// </summary>
+	/// <param name="mat">右辺値</param>
+	/// <returns>計算後値</returns>
+	Matrix4x4 operator*(const Matrix4x4& mat) const noexcept;
 
-		return result;
-	}
-	// 演算子オーバーロード(+=)
-	Matrix4x4 operator+=(const Matrix4x4 matrix) const {
-		// 結果格納用
-		Matrix4x4 result;
+	/// <summary>
+	/// 演算子オーバーロード(=)
+	/// </summary>
+	/// <param name="mat">右辺値</param>
+	/// <returns>計算後値</returns>
+	Matrix4x4& operator=(const Matrix4x4& mat) noexcept;
+	/// <summary>
+	/// 演算子オーバーロード(=)
+	/// </summary>
+	/// <param name="mat">右辺値</param>
+	/// <returns>計算後値</returns>
+	Matrix4x4& operator=(Matrix4x4&& mat) noexcept;
 
-		// 計算処理
-		result.m[0][0] = m[0][0] + matrix.m[0][0];
-		result.m[1][0] = m[1][0] + matrix.m[1][0];
-		result.m[2][0] = m[2][0] + matrix.m[2][0];
-		result.m[3][0] = m[3][0] + matrix.m[3][0];
+	/// <summary>
+	/// 演算子オーバーロード(+=)
+	/// </summary>
+	/// <param name="mat">右辺値</param>
+	/// <returns>計算後値</returns>
+	Matrix4x4 operator+=(const Matrix4x4& mat) noexcept;
+	/// <summary>
+	/// 演算子オーバーロード(-=)
+	/// </summary>
+	/// <param name="mat">右辺値</param>
+	/// <returns>計算後値</returns>
+	Matrix4x4 operator-=(const Matrix4x4& mat) noexcept;
 
-		result.m[0][1] = m[0][1] + matrix.m[0][1];
-		result.m[1][1] = m[1][1] + matrix.m[1][1];
-		result.m[2][1] = m[2][1] + matrix.m[2][1];
-		result.m[3][1] = m[3][1] + matrix.m[3][1];
+public: // メンバ関数
 
-		result.m[0][2] = m[0][2] + matrix.m[0][2];
-		result.m[1][2] = m[1][2] + matrix.m[1][2];
-		result.m[2][2] = m[2][2] + matrix.m[2][2];
-		result.m[3][2] = m[3][2] + matrix.m[3][2];
+	/// <summary>
+	/// 単位行列生成
+	/// </summary>
+	/// <returns>単位行列</returns>
+	const Matrix4x4& Identity();
 
-		result.m[0][3] = m[0][3] + matrix.m[0][3];
-		result.m[1][3] = m[1][3] + matrix.m[1][3];
-		result.m[2][3] = m[2][3] + matrix.m[2][3];
-		result.m[3][3] = m[3][3] + matrix.m[3][3];
+	/// <summary>
+	/// 拡大縮小行列生成
+	/// </summary>
+	/// <param name="scale">拡縮</param>
+	/// <returns>拡大縮小行列</returns>
+	const Matrix4x4& Scale(const Vector3& scale);
 
-		return result;
-	}
+	/// <summary>
+	/// x軸の回転行列生成
+	/// </summary>
+	/// <param name="x">x軸の回転角</param>
+	/// <returns>回転行列</returns>
+	const Matrix4x4& RotateX(const float& x);
+	/// <summary>
+	/// y軸の回転行列生成
+	/// </summary>
+	/// <param name="y">y軸の回転角</param>
+	/// <returns>回転行列</returns>
+	const Matrix4x4& RotateY(const float& y);
+	/// <summary>
+	/// z軸の回転行列生成
+	/// </summary>
+	/// <param name="z">z軸の回転角</param>
+	/// <returns>回転行列</returns>
+	const Matrix4x4& RotateZ(const float& z);
+	
+	/// <summary>
+	/// 全軸回転行列生成
+	/// </summary>
+	/// <param name="rotate">回転角</param>
+	/// <returns>回転行列</returns>
+	const Matrix4x4& Rotate(const Vector3& rotate);
 
-	// 演算子オーバーロード(-)
-	Matrix4x4 operator-(const Matrix4x4 matrix) const {
-		// 結果格納用
-		Matrix4x4 result;
+	/// <summary>
+	/// 平行移動行列生成
+	/// </summary>
+	/// <param name="translate">位置座標</param>
+	/// <returns>平行移動行列</returns>
+	const Matrix4x4& Translate(const Vector3& translate);
 
-		// 計算処理
-		result.m[0][0] = m[0][0] - matrix.m[0][0];
-		result.m[1][0] = m[1][0] - matrix.m[1][0];
-		result.m[2][0] = m[2][0] - matrix.m[2][0];
-		result.m[3][0] = m[3][0] - matrix.m[3][0];
+	/// <summary>
+	/// アフィン行列生成
+	/// </summary>
+	/// <param name="scale">拡縮</param>
+	/// <param name="rotate">回転角</param>
+	/// <param name="translate">位置座標</param>
+	/// <returns>アフィン行列</returns>
+	const Matrix4x4& Affin(const Vector3& scale, const Vector3& rotate, const Vector3& translate);
 
-		result.m[0][1] = m[0][1] - matrix.m[0][1];
-		result.m[1][1] = m[1][1] - matrix.m[1][1];
-		result.m[2][1] = m[2][1] - matrix.m[2][1];
-		result.m[3][1] = m[3][1] - matrix.m[3][1];
+	/// <summary>
+	/// 逆行列生成
+	/// </summary>
+	/// <returns>逆行列</returns>
+	const Matrix4x4& Inverse();
 
-		result.m[0][2] = m[0][2] - matrix.m[0][2];
-		result.m[1][2] = m[1][2] - matrix.m[1][2];
-		result.m[2][2] = m[2][2] - matrix.m[2][2];
-		result.m[3][2] = m[3][2] - matrix.m[3][2];
+	/// <summary>
+	/// 正射影行列生成
+	/// </summary>
+	/// <param name="left">画面左</param>
+	/// <param name="top">画面上</param>
+	/// <param name="right">画面右</param>
+	/// <param name="bottom">画面下</param>
+	/// <param name="nearClip">近平面</param>
+	/// <param name="farClip">遠平面</param>
+	/// <returns>正射影行列</returns>
+	const Matrix4x4& OrthGraphic(const float& left, const float& top, const float& right, const float& bottom, const float& nearClip, const float& farClip);
 
-		result.m[0][3] = m[0][3] - matrix.m[0][3];
-		result.m[1][3] = m[1][3] - matrix.m[1][3];
-		result.m[2][3] = m[2][3] - matrix.m[2][3];
-		result.m[3][3] = m[3][3] - matrix.m[3][3];
+	/// <summary>
+	/// 透視射影行列生成
+	/// </summary>
+	/// <param name="fovY">視野角</param>
+	/// <param name="aspectRatio">画面アスペクト比</param>
+	/// <param name="nearClip">近平面への距離</param>
+	/// <param name="farClip">遠平面への距離</param>
+	/// <returns>透視射影行列</returns>
+	const Matrix4x4& PerspectiveFov(const float& fovY, const float& aspectRatio, const float& nearClip, const float& farClip);
 
-		return result;
-	}
-	// 演算子オーバーロード(-=)
-	Matrix4x4 operator-=(const Matrix4x4 matrix) const {
-		// 結果格納用
-		Matrix4x4 result;
+	/// <summary>
+	/// ビューポート変換行列生成関数
+	/// </summary>
+	/// <param name="left">画面左</param>
+	/// <param name="top">画面上</param>
+	/// <param name="width">画面横幅</param>
+	/// <param name="height">画面縦幅</param>
+	/// <param name="minDepth">最低深度</param>
+	/// <param name="maxDepth">最大深度</param>
+	/// <returns>ビューポート行列</returns>
+	const Matrix4x4& Viewport(float left, float top, float width, float height, float minDepth, float maxDepth);
 
-		// 計算処理
-		result.m[0][0] = m[0][0] - matrix.m[0][0];
-		result.m[1][0] = m[1][0] - matrix.m[1][0];
-		result.m[2][0] = m[2][0] - matrix.m[2][0];
-		result.m[3][0] = m[3][0] - matrix.m[3][0];
+public: // 静的なメンバ関数
 
-		result.m[0][1] = m[0][1] - matrix.m[0][1];
-		result.m[1][1] = m[1][1] - matrix.m[1][1];
-		result.m[2][1] = m[2][1] - matrix.m[2][1];
-		result.m[3][1] = m[3][1] - matrix.m[3][1];
+	/// <summary>
+	/// 単位行列
+	/// </summary>
+	static const Matrix4x4 kIdentity;
 
-		result.m[0][2] = m[0][2] - matrix.m[0][2];
-		result.m[1][2] = m[1][2] - matrix.m[1][2];
-		result.m[2][2] = m[2][2] - matrix.m[2][2];
-		result.m[3][2] = m[3][2] - matrix.m[3][2];
+	/// <summary>
+	/// 拡大縮小行列
+	/// </summary>
+	/// <param name="scale">拡縮</param>
+	/// <returns></returns>
+	static Matrix4x4 MakeScale(const Vector3& scale);
 
-		result.m[0][3] = m[0][3] - matrix.m[0][3];
-		result.m[1][3] = m[1][3] - matrix.m[1][3];
-		result.m[2][3] = m[2][3] - matrix.m[2][3];
-		result.m[3][3] = m[3][3] - matrix.m[3][3];
+	/// <summary>
+	/// x軸回転行列
+	/// </summary>
+	/// <param name="x">x軸の回転角</param>
+	/// <returns>回転行列</returns>
+	static Matrix4x4 MakeRotateX(const float& x);
+	/// <summary>
+	/// y軸回転行列
+	/// </summary>
+	/// <param name="y">y軸の回転角</param>
+	/// <returns>回転行列</returns>
+	static Matrix4x4 MakeRotateY(const float& y);
+	/// <summary>
+	/// z軸回転行列
+	/// </summary>
+	/// <param name="z">z軸の回転角</param>
+	/// <returns>回転行列</returns>
+	static Matrix4x4 MakeRotateZ(const float& z);
 
-		return result;
-	}
+	/// <summary>
+	/// 回転行列
+	/// </summary>
+	/// <param name="rotate">回転角</param>
+	/// <returns>回転行列</returns>
+	static Matrix4x4 MakeRotate(const Vector3& rotate);
 
-	// 演算子オーバーロード(*)
-	Matrix4x4 operator*(const Matrix4x4 matrix) const {
-		// 結果格納用
-		Matrix4x4 result;
+	/// <summary>
+	/// 平行移動行列
+	/// </summary>
+	/// <param name="translate">位置座標</param>
+	/// <returns></returns>
+	static Matrix4x4 MakeTranslate(const Vector3& translate);
 
-		// 計算処理
-		result.m[0][0] = (m[0][0] * matrix.m[0][0]) + (m[0][1] * matrix.m[1][0]) + (m[0][2] * matrix.m[2][0]) + (m[0][3] * matrix.m[3][0]);
-		result.m[1][0] = (m[1][0] * matrix.m[0][0]) + (m[1][1] * matrix.m[1][0]) + (m[1][2] * matrix.m[2][0]) + (m[1][3] * matrix.m[3][0]);
-		result.m[2][0] = (m[2][0] * matrix.m[0][0]) + (m[2][1] * matrix.m[1][0]) + (m[2][2] * matrix.m[2][0]) + (m[2][3] * matrix.m[3][0]);
-		result.m[3][0] = (m[3][0] * matrix.m[0][0]) + (m[3][1] * matrix.m[1][0]) + (m[3][2] * matrix.m[2][0]) + (m[3][3] * matrix.m[3][0]);
+	/// <summary>
+	/// アフィン行列
+	/// </summary>
+	/// <param name="scale">拡縮</param>
+	/// <param name="rotate">回転角</param>
+	/// <param name="translate">位置座標</param>
+	/// <returns>アフィン行列</returns>
+	static Matrix4x4 MakeAffin(const Vector3& scale, const Vector3& rotate, const Vector3& translate);
 
-		result.m[0][1] = (m[0][0] * matrix.m[0][1]) + (m[0][1] * matrix.m[1][1]) + (m[0][2] * matrix.m[2][1]) + (m[0][3] * matrix.m[3][1]);
-		result.m[1][1] = (m[1][0] * matrix.m[0][1]) + (m[1][1] * matrix.m[1][1]) + (m[1][2] * matrix.m[2][1]) + (m[1][3] * matrix.m[3][1]);
-		result.m[2][1] = (m[2][0] * matrix.m[0][1]) + (m[2][1] * matrix.m[1][1]) + (m[2][2] * matrix.m[2][1]) + (m[2][3] * matrix.m[3][1]);
-		result.m[3][1] = (m[3][0] * matrix.m[0][1]) + (m[3][1] * matrix.m[1][1]) + (m[3][2] * matrix.m[2][1]) + (m[3][3] * matrix.m[3][1]);
+	/// <summary>
+	/// 逆行列
+	/// </summary>
+	/// <param name="mat">変換する行列</param>
+	/// <returns>逆行列</returns>
+	static Matrix4x4 MakeInverse(Matrix4x4 mat);
 
-		result.m[0][2] = (m[0][0] * matrix.m[0][2]) + (m[0][1] * matrix.m[1][2]) + (m[0][2] * matrix.m[2][2]) + (m[0][3] * matrix.m[3][2]);
-		result.m[1][2] = (m[1][0] * matrix.m[0][2]) + (m[1][1] * matrix.m[1][2]) + (m[1][2] * matrix.m[2][2]) + (m[1][3] * matrix.m[3][2]);
-		result.m[2][2] = (m[2][0] * matrix.m[0][2]) + (m[2][1] * matrix.m[1][2]) + (m[2][2] * matrix.m[2][2]) + (m[2][3] * matrix.m[3][2]);
-		result.m[3][2] = (m[3][0] * matrix.m[0][2]) + (m[3][1] * matrix.m[1][2]) + (m[3][2] * matrix.m[2][2]) + (m[3][3] * matrix.m[3][2]);
+	/// <summary>
+	/// 正射影行列生成
+	/// </summary>
+	/// <param name="left">画面左</param>
+	/// <param name="top">画面上</param>
+	/// <param name="right">画面右</param>
+	/// <param name="bottom">画面下</param>
+	/// <param name="nearClip">近平面</param>
+	/// <param name="farClip">遠平面</param>
+	/// <returns>正射影行列</returns>
+	static Matrix4x4 MakeOrthGraphic(const float& left, const float& top, const float& right, const float& bottom, const float& nearClip, const float& farClip);
 
-		result.m[0][3] = (m[0][0] * matrix.m[0][3]) + (m[0][1] * matrix.m[1][3]) + (m[0][2] * matrix.m[2][3]) + (m[0][3] * matrix.m[3][3]);
-		result.m[1][3] = (m[1][0] * matrix.m[0][3]) + (m[1][1] * matrix.m[1][3]) + (m[1][2] * matrix.m[2][3]) + (m[1][3] * matrix.m[3][3]);
-		result.m[2][3] = (m[2][0] * matrix.m[0][3]) + (m[2][1] * matrix.m[1][3]) + (m[2][2] * matrix.m[2][3]) + (m[2][3] * matrix.m[3][3]);
-		result.m[3][3] = (m[3][0] * matrix.m[0][3]) + (m[3][1] * matrix.m[1][3]) + (m[3][2] * matrix.m[2][3]) + (m[3][3] * matrix.m[3][3]);
+	/// <summary>
+	/// 透視射影行列生成
+	/// </summary>
+	/// <param name="fovY">視野角</param>
+	/// <param name="aspectRatio">画面アスペクト比</param>
+	/// <param name="nearClip">近平面への距離</param>
+	/// <param name="farClip">遠平面への距離</param>
+	/// <returns>透視射影行列</returns>
+	static Matrix4x4 MakePerspectiveFov(const float& fovY, const float& aspectRatio, const float& nearClip, const float& farClip);
 
-		return result;
-	}
-	// 演算子オーバーロード(*=)
-	Matrix4x4 operator*=(const Matrix4x4 matrix) const {
-		// 結果格納用
-		Matrix4x4 result;
+	/// <summary>
+	/// ビューポート変換行列生成関数
+	/// </summary>
+	/// <param name="left">画面左</param>
+	/// <param name="top">画面上</param>
+	/// <param name="width">画面横幅</param>
+	/// <param name="height">画面縦幅</param>
+	/// <param name="minDepth">最低深度</param>
+	/// <param name="maxDepth">最大深度</param>
+	/// <returns>ビューポート行列</returns>
+	static Matrix4x4 MakeViewport(float left, float top, float width, float height, float minDepth, float maxDepth);
 
-		// 計算処理
-		result.m[0][0] = (m[0][0] * matrix.m[0][0]) + (m[0][1] * matrix.m[1][0]) + (m[0][2] * matrix.m[2][0]) + (m[0][3] * matrix.m[3][0]);
-		result.m[1][0] = (m[1][0] * matrix.m[0][0]) + (m[1][1] * matrix.m[1][0]) + (m[1][2] * matrix.m[2][0]) + (m[1][3] * matrix.m[3][0]);
-		result.m[2][0] = (m[2][0] * matrix.m[0][0]) + (m[2][1] * matrix.m[1][0]) + (m[2][2] * matrix.m[2][0]) + (m[2][3] * matrix.m[3][0]);
-		result.m[3][0] = (m[3][0] * matrix.m[0][0]) + (m[3][1] * matrix.m[1][0]) + (m[3][2] * matrix.m[2][0]) + (m[3][3] * matrix.m[3][0]);
+public: // メンバ変数
 
-		result.m[0][1] = (m[0][0] * matrix.m[0][1]) + (m[0][1] * matrix.m[1][1]) + (m[0][2] * matrix.m[2][1]) + (m[0][3] * matrix.m[3][1]);
-		result.m[1][1] = (m[1][0] * matrix.m[0][1]) + (m[1][1] * matrix.m[1][1]) + (m[1][2] * matrix.m[2][1]) + (m[1][3] * matrix.m[3][1]);
-		result.m[2][1] = (m[2][0] * matrix.m[0][1]) + (m[2][1] * matrix.m[1][1]) + (m[2][2] * matrix.m[2][1]) + (m[2][3] * matrix.m[3][1]);
-		result.m[3][1] = (m[3][0] * matrix.m[0][1]) + (m[3][1] * matrix.m[1][1]) + (m[3][2] * matrix.m[2][1]) + (m[3][3] * matrix.m[3][1]);
+	// 行列要素
+	float m[4][4];
 
-		result.m[0][2] = (m[0][0] * matrix.m[0][2]) + (m[0][1] * matrix.m[1][2]) + (m[0][2] * matrix.m[2][2]) + (m[0][3] * matrix.m[3][2]);
-		result.m[1][2] = (m[1][0] * matrix.m[0][2]) + (m[1][1] * matrix.m[1][2]) + (m[1][2] * matrix.m[2][2]) + (m[1][3] * matrix.m[3][2]);
-		result.m[2][2] = (m[2][0] * matrix.m[0][2]) + (m[2][1] * matrix.m[1][2]) + (m[2][2] * matrix.m[2][2]) + (m[2][3] * matrix.m[3][2]);
-		result.m[3][2] = (m[3][0] * matrix.m[0][2]) + (m[3][1] * matrix.m[1][2]) + (m[3][2] * matrix.m[2][2]) + (m[3][3] * matrix.m[3][2]);
-
-		result.m[0][3] = (m[0][0] * matrix.m[0][3]) + (m[0][1] * matrix.m[1][3]) + (m[0][2] * matrix.m[2][3]) + (m[0][3] * matrix.m[3][3]);
-		result.m[1][3] = (m[1][0] * matrix.m[0][3]) + (m[1][1] * matrix.m[1][3]) + (m[1][2] * matrix.m[2][3]) + (m[1][3] * matrix.m[3][3]);
-		result.m[2][3] = (m[2][0] * matrix.m[0][3]) + (m[2][1] * matrix.m[1][3]) + (m[2][2] * matrix.m[2][3]) + (m[2][3] * matrix.m[3][3]);
-		result.m[3][3] = (m[3][0] * matrix.m[0][3]) + (m[3][1] * matrix.m[1][3]) + (m[3][2] * matrix.m[2][3]) + (m[3][3] * matrix.m[3][3]);
-
-		return result;
-	}
 };
+

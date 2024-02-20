@@ -65,10 +65,10 @@ void Line::Update()
 	// オフセットを求めるよ
 	Vector3 offset = { 0.0f, length_, 0.0f };
 	// 回転角を元に回転行列を求める
-	Matrix4x4 rotateMat = Math::MakeRotateXYZMatrix(transform_.rotate_);
+	Matrix4x4 rotateMat = Matrix4x4::MakeRotate(transform_.rotate_);
 
 	// オフセットを元に移動
-	transform_.translate_ = position_ + Math::Transform(offset, rotateMat);
+	transform_.translate_ = position_ + (offset * rotateMat);
 	
 	// 親がいるのであれば
 	if (transform_.GetParent() != nullptr) {

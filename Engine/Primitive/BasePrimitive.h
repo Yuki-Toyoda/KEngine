@@ -1,6 +1,8 @@
 #pragma once
 #include "../GameObject/WorldTransform.h"
-#include "../Math/Math.h"
+#include "../Math/Vector2.h"
+#include "../Math/Vector3.h"
+#include "../Math/Vector4.h"
 #include "../Resource/Texture/Texture.h"
 #include "../Resource/Material/Material.h"
 #include "../Utility/Observer/Observer.h"

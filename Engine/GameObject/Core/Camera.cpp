@@ -19,7 +19,7 @@ void Camera::Init()
 	isUseThisCamera_ = false;
 
 	// 行列に単位行列を書き込んでおく
-	viewMatrix_ = Math::MakeIdentity4x4();
+	viewMatrix_ = Matrix4x4::kIdentity;
 
 	// ビュープロジェクション行列の書き込み先を指定
 	SetVPDataTarget();
@@ -31,8 +31,8 @@ void Camera::Update()
 	if (isUseThisCamera_) {
 		// ビュープロジェクション行列の計算
 		Matrix4x4 cameraMatrix = transform_.GetMatWorld(); // ワールド行列の生成
-		viewMatrix_ = Math::Inverse(cameraMatrix); // ビュー表列の生成
-		Matrix4x4 projectionMatrix = Math::MakePerspectiveFovMatrix(fov_, float(WinApp::kWindowWidth) / float(WinApp::kwindowHeight), 0.1f, 100.0f); // プロジェクション行列の生成
+		viewMatrix_ = Matrix4x4::MakeInverse(cameraMatrix); // ビュー表列の生成
+		Matrix4x4 projectionMatrix = Matrix4x4::MakePerspectiveFov(fov_, float(WinApp::kWindowWidth) / float(WinApp::kwindowHeight), 0.1f, 100.0f); // プロジェクション行列の生成
 		viewProjectionMatrix_ = viewMatrix_ * projectionMatrix; // 実際に計算
 
 		// アドレスに
@@ -45,7 +45,7 @@ void Camera::Update()
 		// 移動速度
 		const float speed = 0.1f;
 		// 移動ベクトル
-		Vector3 move = { 0.0f };
+		Vector3 move = Vector3();
 
 		// Wキーが押されたら
 		if (input_->PushKey(DIK_W)) {
@@ -84,12 +84,12 @@ void Camera::Update()
 		}
 
 		// 移動量を正規化、スピードを加算
-		move = Math::Normalize(move) * speed;
+		move = Vector3::Normalize(move) * speed;
 
 		// カメラの角度から回転行列を生成
-		Matrix4x4 rotateMat = Math::MakeRotateXYZMatrix(transform_.rotate_);
+		Matrix4x4 rotateMat = Matrix4x4::MakeRotate(transform_.rotate_);
 		// 移動ベクトルをカメラの角度に応じて回転させる
-		move = Math::Transform(move, rotateMat);
+		move = move * rotateMat;
 
 		// 移動
 		transform_.translate_ = transform_.translate_ + move;

@@ -5,7 +5,8 @@
 #include <map>
 #include <string>
 #include <fstream>
-#include "../Math/Math.h"
+#include "../Math/Vector2.h"
+#include "../Math/Vector3.h"
 
 #ifdef _DEBUG
 #include "../../externals/imgui/imgui.h"

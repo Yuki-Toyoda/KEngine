@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "../../Math/Math.h"
+#include "../../Math/Vector3.h"
 #include "../../../Externals/imgui/imgui.h"
 
 /// <summary>

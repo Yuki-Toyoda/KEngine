@@ -12,8 +12,8 @@ Quaternion Quaternion::operator+(const Quaternion q) const
 Quaternion Quaternion::operator*(const Quaternion q) const
 {
 	Quaternion result;
-	result.vec() = Math::Cross(this->vec(), q.vec()) + (this->vec() * q.w) + (q.vec() * this->w);
-	result.w = this->w * q.w - Math::Dot(this->vec(), q.vec());
+	result.vec() = Vector3::Cross(this->vec(), q.vec()) + (this->vec() * q.w) + (q.vec() * this->w);
+	result.w = this->w * q.w - Vector3::Dot(this->vec(), q.vec());
 	return result;
 }
 

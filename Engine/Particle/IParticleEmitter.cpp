@@ -87,12 +87,12 @@ void IParticleEmitter::GenerateParticle()
 		}
 
 		// 生成粒子の大きさ設定
-		float size = Math::RandomF(1.0f, 1.5f, 1);
+		float size = 1.0f;
 		Vector2 generateScale = { size, size };
 		// 生成粒子の速度ベクトル設定
-		Vector3 generateVelocity = { Math::RandomF(-0.05f, 0.05f, 3), Math::RandomF(-0.05f, 0.05f, 3), Math::RandomF(-0.05f, 0.05f, 3) };
+		Vector3 generateVelocity = Vector3(1.0f, 1.0f, 1.0f);
 		// 生成粒子の色
-		Vector4 generateColor = { Math::RandomF(0.35f, 1.0f, 2), Math::RandomF(0.35f, 1.0f, 2), Math::RandomF(0.35f, 1.0f, 2), 1.0f };
+		Vector4 generateColor = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 
 		// 新しい粒子を生成
 		std::unique_ptr<IParticle>newParticle = type_();

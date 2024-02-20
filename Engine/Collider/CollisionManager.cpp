@@ -249,15 +249,15 @@ bool CollisionManager::isCollisionOBB(BaseShape* shapeA, BaseShape* shapeB)
 	axis[5] = otientatuonsB[2];
 
 	// クロス積
-	axis[6] = Math::Cross(otientatuonsA[0], otientatuonsB[0]);
-	axis[7] = Math::Cross(otientatuonsA[0], otientatuonsB[1]);
-	axis[8] = Math::Cross(otientatuonsA[0], otientatuonsB[2]);
-	axis[9] = Math::Cross(otientatuonsA[1], otientatuonsB[0]);
-	axis[10] = Math::Cross(otientatuonsA[1], otientatuonsB[1]);
-	axis[11] = Math::Cross(otientatuonsA[1], otientatuonsB[2]);
-	axis[12] = Math::Cross(otientatuonsA[2], otientatuonsB[0]);
-	axis[13] = Math::Cross(otientatuonsA[2], otientatuonsB[1]);
-	axis[14] = Math::Cross(otientatuonsA[2], otientatuonsB[2]);
+	axis[6] = Vector3::Cross(otientatuonsA[0], otientatuonsB[0]);
+	axis[7] = Vector3::Cross(otientatuonsA[0], otientatuonsB[1]);
+	axis[8] = Vector3::Cross(otientatuonsA[0], otientatuonsB[2]);
+	axis[9] = Vector3::Cross(otientatuonsA[1], otientatuonsB[0]);
+	axis[10] = Vector3::Cross(otientatuonsA[1], otientatuonsB[1]);
+	axis[11] = Vector3::Cross(otientatuonsA[1], otientatuonsB[2]);
+	axis[12] = Vector3::Cross(otientatuonsA[2], otientatuonsB[0]);
+	axis[13] = Vector3::Cross(otientatuonsA[2], otientatuonsB[1]);
+	axis[14] = Vector3::Cross(otientatuonsA[2], otientatuonsB[2]);
 
 	// 頂点
 
@@ -280,27 +280,27 @@ bool CollisionManager::isCollisionOBB(BaseShape* shapeA, BaseShape* shapeB)
 
 	obbVertex[7] = { -sizeA.x, -sizeA.y, -sizeA.z };
 
-	Matrix4x4 obbRotateMatrix = {
-		otientatuonsA[0].x,
-		otientatuonsA[0].y,
-		otientatuonsA[0].z,
-		0.0f,
-		otientatuonsA[1].x,
-		otientatuonsA[1].y,
-		otientatuonsA[1].z,
-		0.0f,
-		otientatuonsA[2].x,
-		otientatuonsA[2].y,
-		otientatuonsA[2].z,
-		0.0f,
-		0.0f,
-		0.0f,
-		0.0f,
-		1.0f };
+	Matrix4x4 obbRotateMatrix = Matrix4x4();
+	obbRotateMatrix.m[0][0] = otientatuonsA[0].x;
+	obbRotateMatrix.m[0][1] = otientatuonsA[0].y;
+	obbRotateMatrix.m[0][2] = otientatuonsA[0].z;
+	obbRotateMatrix.m[0][3] = 0.0f;
+	obbRotateMatrix.m[1][0] = otientatuonsA[1].x;
+	obbRotateMatrix.m[1][1] = otientatuonsA[1].y;
+	obbRotateMatrix.m[1][2] = otientatuonsA[1].z;
+	obbRotateMatrix.m[1][3] = 0.0f;
+	obbRotateMatrix.m[2][0] = otientatuonsA[2].x;
+	obbRotateMatrix.m[2][1] = otientatuonsA[2].y;
+	obbRotateMatrix.m[2][2] = otientatuonsA[2].z;
+	obbRotateMatrix.m[2][3] = 0.0f;
+	obbRotateMatrix.m[3][0] = 0.0f;
+	obbRotateMatrix.m[3][1] = 0.0f;
+	obbRotateMatrix.m[3][2] = 0.0f;
+	obbRotateMatrix.m[3][3] = 1.0f;
 
 	for (int i = 0; i < 8; i++) {
 
-		obbVertex[i] = Math::Transform(obbVertex[i], obbRotateMatrix);
+		obbVertex[i] = obbVertex[i] * obbRotateMatrix;
 		obbVertex[i] = obbVertex[i] + centerA;
 	}
 
@@ -315,27 +315,27 @@ bool CollisionManager::isCollisionOBB(BaseShape* shapeA, BaseShape* shapeB)
 		{ -sizeB.x, -sizeB.y, -sizeB.z }
 	};
 
-	Matrix4x4 obb2RotateMatrix = {
-		otientatuonsB[0].x,
-		otientatuonsB[0].y,
-		otientatuonsB[0].z,
-		0.0f,
-		otientatuonsB[1].x,
-		otientatuonsB[1].y,
-		otientatuonsB[1].z,
-		0.0f,
-		otientatuonsB[2].x,
-		otientatuonsB[2].y,
-		otientatuonsB[2].z,
-		0.0f,
-		0.0f,
-		0.0f,
-		0.0f,
-		1.0f };
+	Matrix4x4 obb2RotateMatrix = Matrix4x4();
+	obb2RotateMatrix.m[0][0] = otientatuonsB[0].x;
+	obb2RotateMatrix.m[0][1] = otientatuonsB[0].y;
+	obb2RotateMatrix.m[0][2] = otientatuonsB[0].z;
+	obb2RotateMatrix.m[0][3] = 0.0f;
+	obb2RotateMatrix.m[1][0] = otientatuonsB[1].x;
+	obb2RotateMatrix.m[1][1] = otientatuonsB[1].y;
+	obb2RotateMatrix.m[1][2] = otientatuonsB[1].z;
+	obb2RotateMatrix.m[1][3] = 0.0f;
+	obb2RotateMatrix.m[2][0] = otientatuonsB[2].x;
+	obb2RotateMatrix.m[2][1] = otientatuonsB[2].y;
+	obb2RotateMatrix.m[2][2] = otientatuonsB[2].z;
+	obb2RotateMatrix.m[2][3] = 0.0f;
+	obb2RotateMatrix.m[3][0] = 0.0f;
+	obb2RotateMatrix.m[3][1] = 0.0f;
+	obb2RotateMatrix.m[3][2] = 0.0f;
+	obb2RotateMatrix.m[3][3] = 1.0f;
 
 	for (int i = 0; i < 8; i++) {
 
-		obb2Vertex[i] = Math::Transform(obb2Vertex[i], obb2RotateMatrix);
+		obb2Vertex[i] = obb2Vertex[i] * obb2RotateMatrix;
 		obb2Vertex[i] = obb2Vertex[i] + centerB;
 	}
 
@@ -350,7 +350,7 @@ bool CollisionManager::isCollisionOBB(BaseShape* shapeA, BaseShape* shapeB)
 			// 一時保存
 			float tmp = 0.0f;
 			// obb
-			tmp = Math::Dot(Math::Normalize(axis[a]), obbVertex[v]);
+			tmp = Vector3::Dot(axis[a].Normalize(), obbVertex[v]);
 			// 2.射影した点の最大値と最小値を求める
 			if (v == 0 || min1 > tmp) {
 				min1 = tmp;
@@ -360,7 +360,7 @@ bool CollisionManager::isCollisionOBB(BaseShape* shapeA, BaseShape* shapeB)
 			}
 
 			// obb2
-			tmp = Math::Dot(Math::Normalize(axis[a]), obb2Vertex[v]);
+			tmp = Vector3::Dot(axis[a].Normalize(), obb2Vertex[v]);
 			// 2.射影した点の最大値と最小値を求める
 			if (v == 0 || min2 > tmp) {
 				min2 = tmp;
@@ -401,7 +401,7 @@ bool CollisionManager::IsCollisionSphereWithAABB(BaseShape* shapeA, BaseShape* s
 		std::clamp(sphereCenter.z, AABBMin.z, AABBMax.z) };
 
 	// 最近接点と球の中心との距離を求める
-	float distance = Math::Length(closestPoint - sphereCenter);
+	float distance = Vector3::Length(closestPoint - sphereCenter);
 	// 距離が半径よりも小さければ衝突
 	if (distance <= sphereRadius) {
 		return true;
@@ -423,21 +423,32 @@ bool CollisionManager::IsCollisionSphereWithOBB(BaseShape* shapeA, BaseShape* sh
 	// obbの座標軸取得
 	std::vector<Vector3> otientatuons = shapeB->GetOtientatuons();
 
-	Matrix4x4 t = Math::MakeAffineMatrix(obbSize, shapeB->GetRotate(), obbCenter);
+	Matrix4x4 t = Matrix4x4::MakeAffin(obbSize, shapeB->GetRotate(), obbCenter);
 
 	// obbのワールド行列を取得
-	Matrix4x4 obbWorldMatrix = {
-		otientatuons[0].x, otientatuons[0].y, otientatuons[0].z, 0.0f,
-		otientatuons[1].x, otientatuons[1].y, otientatuons[1].z, 0.0f,
-		otientatuons[2].x, otientatuons[2].y, otientatuons[2].z, 0.0f,
-		t.m[3][0], t.m[3][1], t.m[3][2], 1.0f
-	};
+	Matrix4x4 obbWorldMatrix = Matrix4x4();
+	obbWorldMatrix.m[0][0] = otientatuons[0].x;
+	obbWorldMatrix.m[0][1] = otientatuons[0].y;
+	obbWorldMatrix.m[0][2] = otientatuons[0].z;
+	obbWorldMatrix.m[0][3] = 0.0f;
+	obbWorldMatrix.m[1][0] = otientatuons[1].x;
+	obbWorldMatrix.m[1][1] = otientatuons[1].y;
+	obbWorldMatrix.m[1][2] = otientatuons[1].z;
+	obbWorldMatrix.m[1][3] = 0.0f;
+	obbWorldMatrix.m[2][0] = otientatuons[2].x;
+	obbWorldMatrix.m[2][1] = otientatuons[2].y;
+	obbWorldMatrix.m[2][2] = otientatuons[2].z;
+	obbWorldMatrix.m[2][3] = 0.0f;
+	obbWorldMatrix.m[3][0] = t.m[3][0];
+	obbWorldMatrix.m[3][1] = t.m[3][1];
+	obbWorldMatrix.m[3][2] = t.m[3][2];
+	obbWorldMatrix.m[3][3] = 1.0f;
 
 	// 逆行列を求める
-	Matrix4x4 invObbWorldMatrix = Math::Inverse(obbWorldMatrix);
+	Matrix4x4 invObbWorldMatrix = Matrix4x4::MakeInverse(obbWorldMatrix);
 
 	// obbのローカル座標を求める
-	Vector3 centerInOBBLocalSpace = Math::Transform(sphereCenter, invObbWorldMatrix);
+	Vector3 centerInOBBLocalSpace = sphereCenter * invObbWorldMatrix;
 
 	// aabbのローカル座標
 	//Vector3 aabbMin = Vector3(-obbSize.x, -obbSize.y, -obbSize.z);

@@ -84,7 +84,7 @@ inline AnimationKey<T>::AnimationKey(const std::string& animationName, const std
 	}
 	else {
 		// float型の値で全ての要素を初期化
-		value_ = { 0.0f };
+		value_ = T();
 	}
 
 	// アニメーション名の取得

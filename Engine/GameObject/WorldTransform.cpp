@@ -95,7 +95,7 @@ const WorldTransform* WorldTransform::GetParent()
 Matrix4x4 WorldTransform::GetMatWorld() const
 {
 	// 結果格納用
-	Matrix4x4 result = Math::MakeAffineMatrix(scale_, rotate_, translate_);
+	Matrix4x4 result = Matrix4x4::MakeAffin(scale_, rotate_, translate_);
 
 	// ワールド行列セット中はそれを使う
 	if (worldMat_ != nullptr) {
@@ -104,7 +104,7 @@ Matrix4x4 WorldTransform::GetMatWorld() const
 
 	// 親がいる場合
 	if (parent_) {
-		Matrix4x4 parentMat = Math::MakeIdentity4x4();
+		Matrix4x4 parentMat = Matrix4x4::kIdentity;
 		// 親子関係タイプが一括でない場合
 		if (parentType_ != 0b111) {
 			const WorldTransform* grandParent = parent_->parent_;
@@ -112,11 +112,11 @@ Matrix4x4 WorldTransform::GetMatWorld() const
 				parentMat = grandParent->GetMatWorld();
 			}
 			if (parentType_ & FLAG_SCALE)
-				parentMat = parentMat * Math::MakeScaleMatrix(parent_->scale_);
+				parentMat = parentMat * Matrix4x4::MakeScale(parent_->scale_);
 			if (parentType_ & FLAG_ROTATE)
-				parentMat = parentMat * Math::MakeRotateXYZMatrix(parent_->rotate_);
+				parentMat = parentMat * Matrix4x4::MakeRotate(parent_->rotate_);
 			if (parentType_ & FLAG_TRANSLATE)
-				parentMat = parentMat * Math::MakeTranslateMatrix(parent_->translate_);
+				parentMat = parentMat * Matrix4x4::MakeTranslate(parent_->translate_);
 		}
 		else {
 			parentMat = parent_->GetMatWorld();

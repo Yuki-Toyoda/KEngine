@@ -1,5 +1,4 @@
 #pragma once
-#include "../../Math/Math.h"
 #include "../../GameObject/WorldTransform.h"
 
 // 描画状態列挙子クラス

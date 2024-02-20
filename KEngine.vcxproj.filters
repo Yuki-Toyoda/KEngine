@@ -173,9 +173,6 @@
     <ClCompile Include="Engine\Utility\Line\Line.cpp">
       <Filter>App\Utility\Line</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Math\Math.cpp">
-      <Filter>Engine\Math</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Base\WinApp.cpp">
       <Filter>Engine\Base</Filter>
     </ClCompile>
@@ -224,6 +221,10 @@
     <ClCompile Include="Engine\Scene\SceneFactory.cpp">
       <Filter>App\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Math\Matrix4x4.cpp" />
+    <ClCompile Include="Engine\Math\Vector2.cpp" />
+    <ClCompile Include="Engine\Math\Vector3.cpp" />
+    <ClCompile Include="Engine\Math\Vector4.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -246,9 +247,6 @@
     </ClInclude>
     <ClInclude Include="Engine\Input\Input.h">
       <Filter>Engine\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Math\Math.h">
-      <Filter>Engine\Math</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Math\Matrix4x4.h">
       <Filter>Engine\Math</Filter>

@@ -204,7 +204,7 @@ void CommandManager::SetHeaps(RTV* rtv, SRV* srv, DSV* dsv, std::wstring vs, std
 }
 
 Matrix4x4* const CommandManager::GetViewProjection() const {
-	viewProjectionBuffer_->mat[1] = Math::MakeIdentity4x4() * Math::MakeOrthGraphicMatrix(0.0f, 0.0f, (float)WinApp::kWindowWidth, (float)WinApp::kwindowHeight, 0.0f, 100.0f);
+	viewProjectionBuffer_->mat[1] = Matrix4x4::kIdentity * Matrix4x4::MakeOrthGraphic(0.0f, 0.0f, (float)WinApp::kWindowWidth, (float)WinApp::kwindowHeight, 0.0f, 100.0f);
 	return viewProjectionBuffer_->mat;
 }
 

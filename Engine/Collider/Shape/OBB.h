@@ -1,5 +1,6 @@
 #pragma once
 #include "BaseShape.h"
+#include "../../Math/Matrix4x4.h"
 
 /// <summary>
 /// コライダー形状(OBB)
@@ -53,7 +54,7 @@ public: // メンバ関数
 	/// <returns>座標軸</returns>
 	const std::vector<Vector3> GetOtientatuons() override { 
 		// 回転行列を求める
-		Matrix4x4 rMat = Math::MakeRotateXYZMatrix(*rotate_);
+		Matrix4x4 rMat = Matrix4x4::MakeRotate(*rotate_);
 
 		// 回転軸を求める
 		Vector3 o1 = { rMat.m[0][0], rMat.m[0][1], rMat.m[0][2] };
@@ -61,9 +62,9 @@ public: // メンバ関数
 		Vector3 o3 = { rMat.m[2][0], rMat.m[2][1], rMat.m[2][2] };
 
 		// 各列の正規化を行う
-		o1 = Math::Normalize(o1);
-		o2 = Math::Normalize(o2);
-		o3 = Math::Normalize(o3);
+		o1.Normalize();
+		o2.Normalize();
+		o3.Normalize();
 
 		// 回転軸格納用
 		std::vector<Vector3> o;

@@ -2,6 +2,8 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <cmath>
+#include <numbers>
 #include "../../Externals/imgui/imgui.h"
 #include "WorldTransform.h"
 #include "../Primitive/PrimitiveManager.h"
