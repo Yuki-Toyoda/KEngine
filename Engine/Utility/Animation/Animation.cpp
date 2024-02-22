@@ -84,6 +84,22 @@ void Animation::Play()
 	isAllKeyEnd_ = false;
 }
 
+void Animation::Play(const float& trantionTime)
+{
+	// 全てのキーを
+	for (auto& keys : animationKeys_) {
+		std::visit([&trantionTime](auto& key) {
+			// 最初のフレームからキーを再生
+			key.Play(trantionTime);
+			}, keys);
+	}
+
+	// アニメーションは終了していない
+	isEnd_ = false;
+	// 全てのキーは終了していない
+	isAllKeyEnd_ = false;
+}
+
 void Animation::Stop()
 {
 	// 全てのキーを
@@ -97,7 +113,6 @@ void Animation::Stop()
 
 bool Animation::GetIsPlay()
 {
-
 	// 値返還用
 	bool isPlay = false;
 
@@ -118,8 +133,9 @@ bool Animation::GetIsPlay()
 
 void Animation::ChangeParameter(const std::string name, bool isChange)
 {
+	// パラメータ名の取得
 	parameterName_ = name;
-
+	// アニメーションは終了していない
 	isEnd_ = false;
 
 	// 全キー配列の読み込みパラメータを変更する
@@ -136,6 +152,27 @@ void Animation::ChangeParameter(const std::string name, bool isChange)
 		if (GetIsPlay()) {
 			Play();
 		}
+	}
+}
+
+void Animation::ChangeParameter(const std::string name, const float& transitionTime, bool isChange)
+{
+	// パラメータ名の取得
+	parameterName_ = name;
+	// アニメーションは終了していない
+	isEnd_ = false;
+
+	// 全キー配列の読み込みパラメータを変更する
+	for (auto& keys : animationKeys_) {
+		std::visit([&](auto& key) {
+			// 読み込みパラメータ名変更
+			key.name_ = parameterName_;
+			}, keys);
+	}
+
+	// 強制遷移を行うのであればキーの最初から再生
+	if (isChange) {
+		Play(transitionTime);
 	}
 }
 
@@ -157,6 +194,17 @@ float Animation::GetAnimationProgress()
 	}
 
 	return progress;
+}
+
+void Animation::SetAnimationSpeed(const float& animSpeed)
+{
+	// 全キー配列の再生速度を変更する
+	for (auto& keys : animationKeys_) {
+		std::visit([&animSpeed](auto& key) {
+			// 再生速度を変更
+			key.SetAnimSpeed(animSpeed);
+			}, keys);
+	}
 }
 
 void Animation::DisplayImGui()
@@ -199,6 +247,13 @@ void Animation::DisplayImGui()
 		// アニメーションの進捗
 		float progress = GetAnimationProgress();
 		ImGui::Text("Progress : %4.2f", progress);
+
+		// タイマーのImGuiを表示
+		ImGui::DragFloat("AnimSpeed", &imGuiAnimSpeed_, 0.05f, 0.05f, 10.0f);
+		// ボタンを押すとアニメーション再生速度を指定された値でセット
+		if (ImGui::Button("SetAnimSpeed")) {
+			SetAnimationSpeed(imGuiAnimSpeed_);
+		}
 
 		ImGui::TreePop();
 	}

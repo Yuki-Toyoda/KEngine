@@ -24,7 +24,7 @@ void EnemyShot::Init()
 
 	// アニメーションを変更
 	if (enemy_->enemyAnim_->GetReadingParameterName() != "Enemy_Charge") {
-		enemy_->enemyAnim_->ChangeParameter("Enemy_Charge", true);
+		enemy_->enemyAnim_->ChangeParameter("Enemy_Charge", 0.1f, true);
 	}
 
 	// タイマーの初期化
@@ -40,7 +40,7 @@ void EnemyShot::Update()
 			// アニメーションのループを行う
 			enemy_->enemyAnim_->isLoop_ = true;
 			// 次のアニメーションを設定
-			enemy_->enemyAnim_->ChangeParameter("Enemy_Charging", true);
+			enemy_->enemyAnim_->ChangeParameter("Enemy_Charging", 0.1f, true);
 		}
 
 		// 弾の座標を左手に合わせる
@@ -54,7 +54,7 @@ void EnemyShot::Update()
 			// アニメーションのループを行う
 			enemy_->enemyAnim_->isLoop_ = false;
 			// 次のアニメーションを設定
-			enemy_->enemyAnim_->ChangeParameter("Enemy_Shot", true);
+			enemy_->enemyAnim_->ChangeParameter("Enemy_Shot", 0.1f, true);
 			// プレイヤーに向かって弾を発射する
 			bullet_->SetVelocity(true, enemy_->GetRallyCount());
 			// 

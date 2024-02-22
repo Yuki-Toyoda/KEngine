@@ -61,6 +61,12 @@ namespace KLib {
 		float GetProgress() const;
 
 		/// <summary>
+		/// タイマー再生速度のセッター
+		/// </summary>
+		/// <param name="speed">再生速度</param>
+		void SetTimerSpeed(const float& speed) { speed_ = speed; }
+
+		/// <summary>
 		/// 終了状態ゲッター
 		/// </summary>
 		/// <returns>タイマーが終了しているか</returns>
@@ -87,6 +93,9 @@ namespace KLib {
 
 		// 現在の経過秒数
 		float nowFlame_;
+
+		// タイマー再生速度
+		float speed_ = 1.0f;
 
 		// 終了トリガー
 		bool isFinish_;

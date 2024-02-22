@@ -19,7 +19,7 @@ void Root::Init()
 
 	// プレイヤーアニメーションを変更
 	if (player_->playerAnim_->GetReadingParameterName() != "Player_Idle") {
-		player_->playerAnim_->ChangeParameter("Player_Idle", true);
+		player_->playerAnim_->ChangeParameter("Player_Idle", 0.15f, true);
 	}
 }
 
@@ -45,7 +45,7 @@ void Root::Update()
 
 		// プレイヤーアニメーションを変更
 		if (player_->playerAnim_->GetReadingParameterName() != "Player_Run") {
-			player_->playerAnim_->ChangeParameter("Player_Run", true);
+			player_->playerAnim_->ChangeParameter("Player_Run", 0.1f, true);
 		}
 
 		// プレイヤーに追従カメラがセットされている場合
@@ -84,7 +84,7 @@ void Root::Update()
 	else {
 		// プレイヤーアニメーションを変更
 		if (player_->playerAnim_->GetReadingParameterName() != "Player_Idle") {
-			player_->playerAnim_->ChangeParameter("Player_Idle", true);
+			player_->playerAnim_->ChangeParameter("Player_Idle", 0.15f, true);
 		}
 	}
 
