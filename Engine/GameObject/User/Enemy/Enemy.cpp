@@ -295,7 +295,7 @@ void Enemy::OnCollision(Collider* collider)
 				// ループを切る
 				enemyAnim_->isLoop_ = false;
 				enemyAnim_->ChangeParameter("Enemy_Damage", true);
-				ParticleEmitterManager::GetInstance()->CreateEmitter<IParticleEmitter, IParticle>("test", 3, 3, transform_.translate_, 0.1f, 0.15f, TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png"));
+				ParticleEmitterManager::GetInstance()->CreateEmitter<IParticleEmitter, IParticle>("test", 5, 5, transform_.translate_, 0.1f, 0.15f, TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png"));
 			}
 		}
 	}

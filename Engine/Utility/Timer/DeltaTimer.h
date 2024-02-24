@@ -73,6 +73,11 @@ namespace KLib {
 		bool GetIsFinish() { return isFinish_; }
 
 		/// <summary>
+		/// 有効状態セッター
+		/// </summary>
+		/// <param name="active">タイマーが有効かどうか</param>
+		void SetIsActive(const bool& active) { isActive_ = active; }
+		/// <summary>
 		/// 有効状態ゲッター
 		/// </summary>
 		/// <returns>タイマーが有効かどうか</returns>

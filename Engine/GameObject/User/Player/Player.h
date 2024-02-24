@@ -49,6 +49,17 @@ public: // メンバ関数
 	/// <param name="translate">衝突したやつの座標</param>
 	void HitDamage(const Vector3& translate);
 
+	/// <summary>
+	/// ヒットストップ演出開始関数
+	/// </summary>
+	void HitStop();
+
+	/// <summary>
+	/// 衝突した瞬間にコールバックされる関数
+	/// </summary>
+	/// <param name="collider">衝突したコライダー</param>
+	void OnCollisionEnter(Collider* collider) override;
+
 private: // プライベートなメンバ関数
 
 	/// <summary>
@@ -122,6 +133,13 @@ private: // メンバ変数
 	KLib::DeltaTimer hitCoolTimeTimer_;
 	// ヒットクールタイム定数値
 	const float kHitCoolTime_ = 0.35f;
+
+	// ヒットストップ演出
+	bool enableHitStop_ = false;
+	// ヒットストップタイマー
+	KLib::DeltaTimer hitStopTimer_;
+	// ヒットストップ時間定数値
+	const float kHitStopTime_ = 0.025f;
 
 	// コライダーのワールド座標
 	Vector3 colliderWorldPos_;

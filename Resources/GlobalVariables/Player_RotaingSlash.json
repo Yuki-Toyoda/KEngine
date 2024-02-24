@@ -97,7 +97,7 @@
         ],
         "Arm_R_Translate key : 1 : EasingParameter": 0,
         "Arm_R_Translate key : 1 : PlayFrame": 25,
-        "Body_Rotate : KeyCount": 3,
+        "Body_Rotate : KeyCount": 4,
         "Body_Rotate key : 0": [
             0.05000000074505806,
             -0.44999998807907104,
@@ -119,6 +119,13 @@
         ],
         "Body_Rotate key : 2 : EasingParameter": 0,
         "Body_Rotate key : 2 : PlayFrame": 35,
+        "Body_Rotate key : 3": [
+            0.0,
+            -0.27000001072883606,
+            0.0
+        ],
+        "Body_Rotate key : 3 : EasingParameter": 0,
+        "Body_Rotate key : 3 : PlayFrame": 36,
         "Body_Scale : KeyCount": 2,
         "Body_Scale key : 0": [
             1.0,

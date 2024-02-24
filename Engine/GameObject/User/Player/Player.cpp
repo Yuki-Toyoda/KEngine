@@ -234,10 +234,37 @@ void Player::Update()
 		//コライダーのワールド座標更新
 		colliderWorldPos_ = colliderTransform_.GetWorldPos();
 
+		// ヒットストップが有効なら
+		if (enableHitStop_) {
+			// 終了している場合
+			if (!hitStopTimer_.GetIsFinish()) {
+				// アニメーション再生速度を0に
+				playerAnim_->SetAnimationSpeed(0.0f);
+
+				// ヒットストップタイマー更新
+				hitStopTimer_.Update();
+				// 命中クールタイマーを停止
+				hitCoolTimeTimer_.SetIsActive(false);
+			}
+			else {
+				// 再生速度をリセット
+				playerAnim_->SetAnimationSpeed(1.0f);
+				// ヒットストップ無効
+				enableHitStop_ = false;
+
+				// 命中クールタイマーを再開
+				hitCoolTimeTimer_.SetIsActive(true);
+			}
+		}
+
 		// ヒットクールタイム更新
 		hitCoolTimeTimer_.Update();
+
 	}
 	else {
+		// 再生速度をリセット
+		playerAnim_->SetAnimationSpeed(1.0f);
+
 		if (playerAnim_->GetReadingParameterName() != "Player_Idle") {
 			playerAnim_->isLoop_ = true;
 			playerAnim_->ChangeParameter("Player_Idle", true);
@@ -329,6 +356,22 @@ void Player::HitDamage(const Vector3& translate)
 
 		// 命中クールタイムリセット
 		hitCoolTimeTimer_.Start(kHitCoolTime_);
+	}
+}
+
+void Player::HitStop()
+{
+	// ヒットストップを有効にする
+	enableHitStop_ = true;
+	// ヒットストップタイマーを開始
+	hitStopTimer_.Start(kHitStopTime_);
+}
+
+void Player::OnCollisionEnter(Collider* collider)
+{
+	// 敵と衝突時ヒットストップを行う
+	if (collider->GetGameObject()->GetObjectTag() == BaseObject::TagEnemy) {
+		HitStop();
 	}
 }
 
