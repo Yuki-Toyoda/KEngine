@@ -212,7 +212,7 @@ inline void AnimationKeys<T>::Update()
 		}
 		else {
 			// 再生中フレームで遷移させる
-			*animateObject_ = KLib::Lerp<T>(prevKey_.value_, nextKey_.value_, KLib::EaseLinear(lerpTimer_.GetProgress()));
+			*animateObject_ = KLib::Lerp<T>(prevKey_.value_, nextKey_.value_, KLib::EaseInOutQuad(lerpTimer_.GetProgress()));
 		}
 		
 

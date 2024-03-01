@@ -1,6 +1,6 @@
 {
     "Test": {
-        "Rotate : KeyCount": 4,
+        "Rotate : KeyCount": 3,
         "Rotate key : 0": [
             0.0,
             0.0,
@@ -9,27 +9,27 @@
         "Rotate key : 0 : EasingParameter": 0,
         "Rotate key : 0 : PlayFrame": 0,
         "Rotate key : 1": [
-            -1.0,
+            6.28000020980835,
             0.0,
-            -1.0
+            0.0
         ],
-        "Rotate key : 1 : EasingParameter": 7,
-        "Rotate key : 1 : PlayFrame": 30,
+        "Rotate key : 1 : EasingParameter": 9,
+        "Rotate key : 1 : PlayFrame": 120,
         "Rotate key : 2": [
             0.0,
             0.0,
             0.0
         ],
-        "Rotate key : 2 : EasingParameter": 3,
-        "Rotate key : 2 : PlayFrame": 90,
+        "Rotate key : 2 : EasingParameter": 9,
+        "Rotate key : 2 : PlayFrame": 250,
         "Rotate key : 3": [
-            1.2000000476837158,
+            0.0,
             0.0,
             0.0
         ],
         "Rotate key : 3 : EasingParameter": 0,
-        "Rotate key : 3 : PlayFrame": 180,
-        "Scale : KeyCount": 3,
+        "Rotate key : 3 : PlayFrame": 120,
+        "Scale : KeyCount": 5,
         "Scale key : 0": [
             1.0,
             1.0,
@@ -38,40 +38,54 @@
         "Scale key : 0 : EasingParameter": 0,
         "Scale key : 0 : PlayFrame": 0,
         "Scale key : 1": [
-            1.0,
-            1.0,
-            1.0
+            0.75,
+            0.75,
+            0.75
         ],
-        "Scale key : 1 : EasingParameter": 0,
-        "Scale key : 1 : PlayFrame": 30,
+        "Scale key : 1 : EasingParameter": 7,
+        "Scale key : 1 : PlayFrame": 60,
         "Scale key : 2": [
             1.0,
             1.0,
             1.0
         ],
-        "Scale key : 2 : EasingParameter": 0,
-        "Scale key : 2 : PlayFrame": 90,
+        "Scale key : 2 : EasingParameter": 8,
+        "Scale key : 2 : PlayFrame": 120,
+        "Scale key : 3": [
+            0.75,
+            0.75,
+            0.75
+        ],
+        "Scale key : 3 : EasingParameter": 7,
+        "Scale key : 3 : PlayFrame": 180,
+        "Scale key : 4": [
+            1.0,
+            1.0,
+            1.0
+        ],
+        "Scale key : 4 : EasingParameter": 8,
+        "Scale key : 4 : PlayFrame": 240,
         "Translate : KeyCount": 3,
         "Translate key : 0": [
-            0.0,
+            5.0,
             0.0,
             0.0
         ],
         "Translate key : 0 : EasingParameter": 0,
         "Translate key : 0 : PlayFrame": 0,
         "Translate key : 1": [
-            0.0,
-            0.0,
-            15.0
-        ],
-        "Translate key : 1 : EasingParameter": 0,
-        "Translate key : 1 : PlayFrame": 30,
-        "Translate key : 2": [
-            0.0,
+            -5.0,
             0.0,
             0.0
         ],
-        "Translate key : 2 : EasingParameter": 0,
-        "Translate key : 2 : PlayFrame": 90
+        "Translate key : 1 : EasingParameter": 9,
+        "Translate key : 1 : PlayFrame": 120,
+        "Translate key : 2": [
+            5.0,
+            0.0,
+            0.0
+        ],
+        "Translate key : 2 : EasingParameter": 9,
+        "Translate key : 2 : PlayFrame": 240
     }
 }
