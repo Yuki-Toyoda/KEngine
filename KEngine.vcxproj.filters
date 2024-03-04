@@ -197,9 +197,6 @@
     <ClCompile Include="Engine\Utility\Line\Line.cpp">
       <Filter>App\Utility\Line</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Math\Math.cpp">
-      <Filter>Engine\Math</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Base\WinApp.cpp">
       <Filter>Engine\Base</Filter>
     </ClCompile>
@@ -221,10 +218,21 @@
     <ClCompile Include="Engine\Scene\SceneFactory.cpp">
       <Filter>App\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Math\Matrix4x4.cpp" />
-    <ClCompile Include="Engine\Math\Vector2.cpp" />
-    <ClCompile Include="Engine\Math\Vector3.cpp" />
-    <ClCompile Include="Engine\Math\Vector4.cpp" />
+    <ClCompile Include="Engine\Math\Matrix4x4.cpp">
+      <Filter>Engine\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Math\Vector2.cpp">
+      <Filter>Engine\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Math\Vector3.cpp">
+      <Filter>Engine\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Math\Vector4.cpp">
+      <Filter>Engine\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Base\PSO\MeshletPSO.cpp">
+      <Filter>Engine\Base\PSO</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -482,6 +490,9 @@
     <ClInclude Include="Engine\Scene\SceneFactory.h">
       <Filter>App\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Base\PSO\MeshletPSO.h">
+      <Filter>Engine\Base\PSO</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -644,6 +655,9 @@
       <Filter>Engine\Resource\Shader</Filter>
     </FxCompile>
     <FxCompile Include="Engine\Resource\Shader\Object3D.VS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\MeshletMS.hlsl">
       <Filter>Engine\Resource\Shader</Filter>
     </FxCompile>
   </ItemGroup>

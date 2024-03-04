@@ -1,5 +1,5 @@
 #pragma once
-#include <d3d12.h>
+#include <d3dx12.h>
 #include <dxgi1_6.h>
 
 #include <wrl.h>
@@ -30,7 +30,7 @@ public: // アクセッサ等
 	IDXGIFactory7* GetDXGIFactory() { return dxgiFactory_.Get(); }
 private: // メンバ変数
 	// デバイス本体
-	Microsoft::WRL::ComPtr<ID3D12Device> device_;
+	Microsoft::WRL::ComPtr<ID3D12Device2> device_;
 	// DXGIファクトリー
 	Microsoft::WRL::ComPtr<IDXGIFactory7> dxgiFactory_;
 };

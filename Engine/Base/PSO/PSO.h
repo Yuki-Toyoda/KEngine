@@ -18,7 +18,7 @@ struct DXC {
 /// <summary>
 /// パイプラインステートオブジェクトクラス
 /// </summary>
-class PSO final{
+class PSO{
 public: // メンバ関数
 	
 	/// <summary>
@@ -31,7 +31,7 @@ public: // メンバ関数
 	/// <param name="ps">使用するピクセルシェーダまでのファイルパス</param>
 	/// <param name="blendType">ブレンド設定</param>
 	/// <param name="wire">ワイヤーフレーム状態にするか 0 : 通常表示 ** 1 : ワイヤー表示</param>
-	void Init(
+	virtual void Init(
 		ID3D12Device* device, 
 		ID3D12RootSignature* signature, 
 		DXC* dxc, 
@@ -41,25 +41,25 @@ public: // メンバ関数
 		bool isWriteDSV,
 		UINT wire);
 
-private: // プライベートなメンバ関数
+protected: // プライベートなメンバ関数
 
 	/// <summary>
 	/// ブレンド設定を行う関数
 	/// </summary>
 	/// <returns>ブレンド設定</returns>
-	D3D12_BLEND_DESC SettingBlendState(int state);
+	virtual D3D12_BLEND_DESC SettingBlendState(int state);
 	/// <summary>
 	/// ラスタライザ設定を行う関数
 	/// </summary>
 	/// <param name="wire">ワイヤーフレーム表示</param>
 	/// <returns>ラスタライザ設定</returns>
-	D3D12_RASTERIZER_DESC SettingRasterizerDesc(UINT wire);
+	virtual D3D12_RASTERIZER_DESC SettingRasterizerDesc(UINT wire);
 	/// <summary>
 	/// 深度ステンシルビュー設定を行う関数
 	/// </summary>
 	/// <param name="isWriteDSV">Depthを書き込むか</param>
 	/// <returns>深度ステンシルビュー設定</returns>
-	D3D12_DEPTH_STENCIL_DESC SettingDepthStencilState(bool isWriteDSV = false);
+	virtual D3D12_DEPTH_STENCIL_DESC SettingDepthStencilState(bool isWriteDSV = false);
 
 	/// <summary>
 	/// 頂点シェーダ生成関数
@@ -67,14 +67,14 @@ private: // プライベートなメンバ関数
 	/// <param name="dxc">HLSLコード変換用</param>
 	/// <param name="vs">頂点シェーダまでのファイルパス</param>
 	/// <returns>頂点シェーダのバイナリオブジェクト</returns>
-	IDxcBlob* CreateVertexShader(DXC* dxc, std::wstring vs);
+	virtual IDxcBlob* CreateVertexShader(DXC* dxc, std::wstring vs);
 	/// <summary>
 	/// ピクセルシェーダ生成関数
 	/// </summary>
 	/// <param name="dxc">HLSLコード変換用</param>
 	/// <param name="ps">ピクセルシェーダまでのファイルパス</param>
 	/// <returns>ピクセルシェーダのバイナリオブジェクト</returns>
-	IDxcBlob* CreatePixelShader(DXC* dxc, std::wstring ps);
+	virtual IDxcBlob* CreatePixelShader(DXC* dxc, std::wstring ps);
 
 	/// <summary>
 	/// シェーダーのコンパイルを行う関数
@@ -85,7 +85,7 @@ private: // プライベートなメンバ関数
 	/// <param name="dxcCompiler">dxcCompiler</param>
 	/// <param name="includeHandler">includeHandler</param>
 	/// <returns>コンパイル済みシェーダーのバイナリオブジェクト</returns>
-	IDxcBlob* CompileShader(const std::wstring& filePath, const wchar_t* profile, DXC* dxc);
+	virtual IDxcBlob* CompileShader(const std::wstring& filePath, const wchar_t* profile, DXC* dxc);
 
 public: // パブリックなメンバ変数
 	// パイプラインステートオブジェクトの状態
