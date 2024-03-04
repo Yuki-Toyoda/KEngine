@@ -1,6 +1,5 @@
 #pragma once
 #include "../Primitive/BasePrimitive.h"
-
 #pragma region インデックスデータ
 /// <summary>
 /// 使用するインデックス情報構造体

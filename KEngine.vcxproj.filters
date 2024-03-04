@@ -233,6 +233,9 @@
     <ClCompile Include="Engine\Base\PSO\MeshletPSO.cpp">
       <Filter>Engine\Base\PSO</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Utility\DataSegment\DataSegment.cpp">
+      <Filter>App\Utility\DataSegment</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -493,6 +496,9 @@
     <ClInclude Include="Engine\Base\PSO\MeshletPSO.h">
       <Filter>Engine\Base\PSO</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Utility\DataSegment\DataSegment.h">
+      <Filter>App\Utility\DataSegment</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -643,6 +649,9 @@
     </Filter>
     <Filter Include="App\Sprite">
       <UniqueIdentifier>{89930de6-5713-4b33-a25e-c80afe7ab47c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Utility\DataSegment">
+      <UniqueIdentifier>{9e357208-003e-40e1-b204-427750b773bc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
