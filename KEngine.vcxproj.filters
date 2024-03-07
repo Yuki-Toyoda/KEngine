@@ -236,6 +236,7 @@
     <ClCompile Include="Engine\Utility\DataSegment\DataSegment.cpp">
       <Filter>App\Utility\DataSegment</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Primitive\3d\Model\Model.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -499,6 +500,7 @@
     <ClInclude Include="Engine\Utility\DataSegment\DataSegment.h">
       <Filter>App\Utility\DataSegment</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Primitive\3d\Model\Model.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">

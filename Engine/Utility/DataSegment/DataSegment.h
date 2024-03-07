@@ -38,12 +38,12 @@ public: // アクセッサ等
 	/// データ内の最終要素ゲッター
 	/// </summary>
 	/// <returns>データ内の最終要素</returns>
-	T* GetBack() { return *(data_ + count_ - 1); }
+	T& GetBack() { return *(data_ + count_ - 1); }
 	/// <summary>
 	/// データ内の最終要素ゲッター(定数)
 	/// </summary>
 	/// <returns>データ内の最終要素</returns>
-	const T* GetBack() const { return *(data_ + count_ - 1); }
+	const T& GetBack() const { return *(data_ + count_ - 1); }
 
 	/// <summary>
 	/// 保存されているデータ数ゲッター
