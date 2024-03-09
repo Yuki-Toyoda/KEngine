@@ -1,3 +1,10 @@
+#define ROOT_SIG "CBV(b0), \
+                  RootConstants(b1, num32bitconstants=2), \
+                  SRV(t0), \
+                  SRV(t1), \
+                  SRV(t2), \
+                  SRV(t3)"
+
 struct Constants
 {
     float4x4 World;

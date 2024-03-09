@@ -189,7 +189,7 @@ void CommandManager::SetDrawData()
 	// コマンドリストに定数バッファをセットする
 	commandList_->SetGraphicsRootConstantBufferView(0, generalCBuffer_->GetGPUVirtualAddress() + sizeof(GeneralCBuffer) * rtv_->GetDescriptorSize());
 
-	//
+	// 
 	for (auto& mesh : model_)
 	{
 		commandList_->SetGraphicsRoot32BitConstant(1, mesh.IndexSize, 0);
@@ -246,114 +246,102 @@ void CommandManager::CreateRootSignature()
 	// 結果確認用
 	HRESULT result = S_FALSE;
 
-	//// ルートシグネチャの設定用構造体を生成
-	//D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature{};			 // 設定用インスタンス生成
-	//descriptionRootSignature.Flags = D3D12_ROOT_SIGNATURE_FLAG_NONE; // フラッグはなし
-	//
-	//// ルートパラメータ生成
-	//D3D12_ROOT_PARAMETER rootParameters[6] = {};
-	//
-	//// サンプラー
-	//D3D12_STATIC_SAMPLER_DESC staticSamplers[1] = {};
-	//
-	//// StructuredBuffer用の範囲設定
-	//D3D12_DESCRIPTOR_RANGE descRange[1] = {};												// DescriptorRangeを作成
-	//descRange[0].BaseShaderRegister = 0;													// 0から始まる
-	//descRange[0].NumDescriptors = 1;														// 数は1つ
-	//descRange[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;								// SRVを使う
-	//descRange[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; // Offsetを自動計算
+	// ルートシグネチャの設定用構造体を生成
+	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature{};			 // 設定用インスタンス生成
+	descriptionRootSignature.Flags = D3D12_ROOT_SIGNATURE_FLAG_NONE; // フラッグはなし
+	
+	// ルートパラメータ生成
+	D3D12_ROOT_PARAMETER rootParameters[6] = {};
+	
+	// サンプラー
+	D3D12_STATIC_SAMPLER_DESC staticSamplers[1] = {};
+	
+	// StructuredBuffer用の範囲設定
+	D3D12_DESCRIPTOR_RANGE descRange[1] = {};												// DescriptorRangeを作成
+	descRange[0].BaseShaderRegister = 0;													// 0から始まる
+	descRange[0].NumDescriptors = 1;														// 数は1つ
+	descRange[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;								// SRVを使う
+	descRange[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; // Offsetを自動計算
 
-	//// RootSignatureにrootParametersを登録
-	//descriptionRootSignature.pParameters = rootParameters;					// ルートパラメータ配列へのポインタ
-	//descriptionRootSignature.NumParameters = _countof(rootParameters);		// 配列の長さ
+	// RootSignatureにrootParametersを登録
+	descriptionRootSignature.pParameters = rootParameters;					// ルートパラメータ配列へのポインタ
+	descriptionRootSignature.NumParameters = _countof(rootParameters);		// 配列の長さ
 
-	//// RootSignatureにサンプラーを登録
-	//descriptionRootSignature.pStaticSamplers = staticSamplers;
-	//descriptionRootSignature.NumStaticSamplers = _countof(staticSamplers);
+	// RootSignatureにサンプラーを登録
+	descriptionRootSignature.pStaticSamplers = staticSamplers;
+	descriptionRootSignature.NumStaticSamplers = _countof(staticSamplers);
 
-	//// 汎用定数バッファ用
-	//rootParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;  // ConstantBufferを使う
-	//rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL; // PixelとVertexで使う
-	//rootParameters[0].Descriptor.ShaderRegister = 0;				  // レジスタ番号0とバインド
+	// 汎用定数バッファ用
+	rootParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;  // ConstantBufferを使う
+	rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL; // PixelとVertexで使う
+	rootParameters[0].Descriptor.ShaderRegister = 0;				  // レジスタ番号0とバインド
 
-	//// インデックスバッファ用
-	//rootParameters[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_32BIT_CONSTANTS;  // CBVを使う
-	//rootParameters[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;			  // PixelとVertexで使う
-	//rootParameters[1].Descriptor.ShaderRegister = 1;							  // レジスタ番号0とバインド
+	// インデックスバッファ用
+	rootParameters[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_32BIT_CONSTANTS;  // CBVを使う
+	rootParameters[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;			  // PixelとVertexで使う
+	rootParameters[1].Descriptor.ShaderRegister = 1;							  // レジスタ番号0とバインド
 
-	//// 頂点バッファ用
-	//D3D12_DESCRIPTOR_RANGE vertexDesc[1] = { descRange[0] };					  // DescriptorRangeを作成
-	//vertexDesc[0].BaseShaderRegister = 0;										  // レジスタ番号は0
-	//rootParameters[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE; // DescriptorTableを使う
-	//rootParameters[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;		      // PixelとVertexで使う
-	//rootParameters[2].DescriptorTable.pDescriptorRanges = vertexDesc;			  // Tabelの中身の配列を指定
-	//rootParameters[2].DescriptorTable.NumDescriptorRanges = _countof(vertexDesc); // Tableで利用する数
+	// 頂点バッファ用
+	D3D12_DESCRIPTOR_RANGE vertexDesc[1] = { descRange[0] };					  // DescriptorRangeを作成
+	vertexDesc[0].BaseShaderRegister = 0;										  // レジスタ番号は0
+	rootParameters[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE; // DescriptorTableを使う
+	rootParameters[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;		      // PixelとVertexで使う
+	rootParameters[2].DescriptorTable.pDescriptorRanges = vertexDesc;			  // Tabelの中身の配列を指定
+	rootParameters[2].DescriptorTable.NumDescriptorRanges = _countof(vertexDesc); // Tableで利用する数
 
-	//// メッシュレットバッファ用
-	//D3D12_DESCRIPTOR_RANGE meshletDesc[1] = { descRange[0] };					   // DescriptorRangeを作成
-	//meshletDesc[0].BaseShaderRegister = 1;										   // レジスタ番号は0
-	//rootParameters[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;  // DescriptorTableを使う
-	//rootParameters[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;		       // PixelとVertexで使う
-	//rootParameters[3].DescriptorTable.pDescriptorRanges = meshletDesc;			   // Tabelの中身の配列を指定
-	//rootParameters[3].DescriptorTable.NumDescriptorRanges = _countof(meshletDesc); // Tableで利用する数
+	// メッシュレットバッファ用
+	D3D12_DESCRIPTOR_RANGE meshletDesc[1] = { descRange[0] };					   // DescriptorRangeを作成
+	meshletDesc[0].BaseShaderRegister = 1;										   // レジスタ番号は0
+	rootParameters[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;  // DescriptorTableを使う
+	rootParameters[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;		       // PixelとVertexで使う
+	rootParameters[3].DescriptorTable.pDescriptorRanges = meshletDesc;			   // Tabelの中身の配列を指定
+	rootParameters[3].DescriptorTable.NumDescriptorRanges = _countof(meshletDesc); // Tableで利用する数
 
-	//// 固有頂点バッファ用
-	//D3D12_DESCRIPTOR_RANGE uniqueVertexDesc[1] = { descRange[0] };						// DescriptorRangeを作成
-	//uniqueVertexDesc[0].BaseShaderRegister = 2;											// レジスタ番号は0
-	//rootParameters[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;		// DescriptorTableを使う
-	//rootParameters[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;					// PixelとVertexで使う
-	//rootParameters[4].DescriptorTable.pDescriptorRanges = uniqueVertexDesc;				// Tabelの中身の配列を指定
-	//rootParameters[4].DescriptorTable.NumDescriptorRanges = _countof(uniqueVertexDesc); // Tableで利用する数
-	//
-	//// プリミティブインデックスバッファ用
-	//D3D12_DESCRIPTOR_RANGE primitiveIndexDesc[1] = { descRange[0] };					  // DescriptorRangeを作成
-	//primitiveIndexDesc[0].BaseShaderRegister = 3;										  // レジスタ番号は0
-	//rootParameters[5].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;		  // DescriptorTableを使う
-	//rootParameters[5].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;					  // PixelとVertexで使う
-	//rootParameters[5].DescriptorTable.pDescriptorRanges = primitiveIndexDesc;			  // Tabelの中身の配列を指定
-	//rootParameters[5].DescriptorTable.NumDescriptorRanges = _countof(primitiveIndexDesc); // Tableで利用する数
+	// 固有頂点バッファ用
+	D3D12_DESCRIPTOR_RANGE uniqueVertexDesc[1] = { descRange[0] };						// DescriptorRangeを作成
+	uniqueVertexDesc[0].BaseShaderRegister = 2;											// レジスタ番号は0
+	rootParameters[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;		// DescriptorTableを使う
+	rootParameters[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;					// PixelとVertexで使う
+	rootParameters[4].DescriptorTable.pDescriptorRanges = uniqueVertexDesc;				// Tabelの中身の配列を指定
+	rootParameters[4].DescriptorTable.NumDescriptorRanges = _countof(uniqueVertexDesc); // Tableで利用する数
+	
+	// プリミティブインデックスバッファ用
+	D3D12_DESCRIPTOR_RANGE primitiveIndexDesc[1] = { descRange[0] };					  // DescriptorRangeを作成
+	primitiveIndexDesc[0].BaseShaderRegister = 3;										  // レジスタ番号は0
+	rootParameters[5].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;		  // DescriptorTableを使う
+	rootParameters[5].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;					  // PixelとVertexで使う
+	rootParameters[5].DescriptorTable.pDescriptorRanges = primitiveIndexDesc;			  // Tabelの中身の配列を指定
+	rootParameters[5].DescriptorTable.NumDescriptorRanges = _countof(primitiveIndexDesc); // Tableで利用する数
 
-	//// Samplerの設定
-	//staticSamplers[0].Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR; // バイオリニアフィルタ
-	//staticSamplers[0].AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP; // 0~1の範囲外をリピート
-	//staticSamplers[0].AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
-	//staticSamplers[0].AddressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
-	//staticSamplers[0].ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER; // 比較しない
-	//staticSamplers[0].MaxLOD = D3D12_FLOAT32_MAX; // ありったけのMipmapを使う
-	//staticSamplers[0].ShaderRegister = 0; // レジスタ番号は0
-	//staticSamplers[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; // PixelShaderで使う
+	// Samplerの設定
+	staticSamplers[0].Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR; // バイオリニアフィルタ
+	staticSamplers[0].AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP; // 0~1の範囲外をリピート
+	staticSamplers[0].AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+	staticSamplers[0].AddressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+	staticSamplers[0].ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER; // 比較しない
+	staticSamplers[0].MaxLOD = D3D12_FLOAT32_MAX; // ありったけのMipmapを使う
+	staticSamplers[0].ShaderRegister = 0; // レジスタ番号は0
+	staticSamplers[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; // PixelShaderで使う
 
-	//// シリアライズを行う
-	//ID3DBlob* signatureBlob = nullptr; // シリアライズ後のバイナリオブジェクト
-	//ID3DBlob* errorBlob = nullptr;	   // エラーログを出すためのバイナリオブジェクト
-	//// ルートシグネチャ用にシリアライズ
-	//result = D3D12SerializeRootSignature(&descriptionRootSignature, D3D_ROOT_SIGNATURE_VERSION_1, &signatureBlob, &errorBlob);
-	//// 生成に失敗した場合
-	//if (FAILED(result)) {
-	//	// ログを出力
-	//	Debug::Log(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
-	//	// 停止
-	//	assert(false);
-	//}
-	//// バイナリを元にルートシグネチャを生成
-	//result = device_->CreateRootSignature(0, signatureBlob->GetBufferPointer(), signatureBlob->GetBufferSize(), IID_PPV_ARGS(&rootSignature_)); // 生成
-	//assert(SUCCEEDED(result));																													// 生成確認
+	// シリアライズを行う
+	ID3DBlob* signatureBlob = nullptr; // シリアライズ後のバイナリオブジェクト
+	ID3DBlob* errorBlob = nullptr;	   // エラーログを出すためのバイナリオブジェクト
+	// ルートシグネチャ用にシリアライズ
+	result = D3D12SerializeRootSignature(&descriptionRootSignature, D3D_ROOT_SIGNATURE_VERSION_1, &signatureBlob, &errorBlob);
+	// 生成に失敗した場合
+	if (FAILED(result)) {
+		// ログを出力
+		Debug::Log(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
+		// 停止
+		assert(false);
+	}
+	// バイナリを元にルートシグネチャを生成
+	result = device_->CreateRootSignature(0, signatureBlob->GetBufferPointer(), signatureBlob->GetBufferSize(), IID_PPV_ARGS(&rootSignature_)); // 生成
+	assert(SUCCEEDED(result));																													// 生成確認
 
-	//// 使わないリソースを解放
-	//signatureBlob->Release();
-	////errorBlob->Release();
-
-	struct
-	{
-		byte* data;
-		uint32_t size;
-	} meshShader;
-
-	ReadDataFile(L"Engine/Resource/Shader/MeshletMS.hlsl", &meshShader.data, &meshShader.size);
-
-	// Pull root signature from the precompiled mesh shader.
-	result = device_->CreateRootSignature(0, commands_[0]->GetShaderBlob()->GetBufferPointer(), commands_[0]->GetShaderBlob()->GetBufferSize(), IID_PPV_ARGS(&rootSignature_));
-	assert(SUCCEEDED(result));
+	// 使わないリソースを解放
+	signatureBlob->Release();
+	//errorBlob->Release();
 }
 
 void CommandManager::CreateStructuredBuffer()
