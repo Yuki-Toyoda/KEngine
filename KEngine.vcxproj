@@ -103,11 +103,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Math\Vector4.cpp" />
     <ClCompile Include="Engine\Primitive\2d\BillboardPlane.cpp" />
     <ClCompile Include="Engine\Audio\Audio.cpp" />
-    <ClCompile Include="Engine\Base\Command\BaseCommand.cpp" />
+    <ClCompile Include="Engine\Base\Command\ICommand.cpp" />
     <ClCompile Include="Engine\Base\Command\CommandManager.cpp" />
     <ClCompile Include="Engine\Base\Command\MainCommand.cpp" />
-    <ClCompile Include="Engine\Base\Command\ParticleCommand.cpp" />
-    <ClCompile Include="Engine\Base\Command\SpriteCommand.cpp" />
     <ClCompile Include="Engine\Base\DescriptorHeaps\BaseDescriptorHeap.cpp" />
     <ClCompile Include="Engine\Base\DescriptorHeaps\DSV.cpp" />
     <ClCompile Include="Engine\Base\DescriptorHeaps\RTV.cpp" />
@@ -172,18 +170,15 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Engine\Scene\SceneFactory.cpp" />
-    <ClCompile Include="Engine\Base\PSO\MeshletPSO.cpp" />
     <ClCompile Include="Engine\Primitive\3d\Model\Model.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Utility\DataSegment\DataSegment.h" />
     <ClInclude Include="Engine\Primitive\2d\BillboardPlane.h" />
     <ClInclude Include="Engine\Audio\Audio.h" />
-    <ClInclude Include="Engine\Base\Command\BaseCommand.h" />
+    <ClInclude Include="Engine\Base\Command\ICommand.h" />
     <ClInclude Include="Engine\Base\Command\CommandManager.h" />
     <ClInclude Include="Engine\Base\Command\MainCommand.h" />
-    <ClInclude Include="Engine\Base\Command\ParticleCommand.h" />
-    <ClInclude Include="Engine\Base\Command\SpriteCommand.h" />
     <ClInclude Include="Engine\Base\DescriptorHeaps\BaseDescriptorHeap.h" />
     <ClInclude Include="Engine\Base\DescriptorHeaps\DSV.h" />
     <ClInclude Include="Engine\Base\DescriptorHeaps\RTV.h" />
@@ -267,7 +262,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Engine\KEngine.h" />
     <ClInclude Include="Engine\Scene\SceneFactory.h" />
-    <ClInclude Include="Engine\Base\PSO\MeshletPSO.h" />
     <ClInclude Include="Engine\Primitive\3d\Model\Model.h" />
   </ItemGroup>
   <ItemGroup>
@@ -288,6 +282,16 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="Engine\Resource\Shader\MeshletMS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\MeshletPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </FxCompile>
     <FxCompile Include="Engine\Resource\Shader\Object3D.PS.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -295,10 +299,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <FxCompile Include="Engine\Resource\Shader\Object3D.VS.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </FxCompile>
-    <FxCompile Include="Engine\Resource\Shader\MeshletMS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

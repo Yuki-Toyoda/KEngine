@@ -4,7 +4,7 @@
 /// <summary>
 /// 3Dモデル
 /// </summary>
-class Mesh final : public BasePrimitive
+class DMesh final : public BasePrimitive
 {
 public: // メンバ関数
 

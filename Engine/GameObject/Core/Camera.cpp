@@ -22,7 +22,7 @@ void Camera::Init()
 	viewMatrix_ = Matrix4x4::kIdentity;
 
 	// ビュープロジェクション行列の書き込み先を指定
-	SetVPDataTarget();
+	SetDataTarget();
 
 }
 
@@ -36,6 +36,8 @@ void Camera::Update()
 		viewProjectionMatrix_ = viewMatrix_ * projectionMatrix; // 実際に計算
 
 		// アドレスに
+		*wDataTarget_ = cameraMatrix;
+		*vDataTarget_ = viewMatrix_;
 		*vpDataTarget_ = viewProjectionMatrix_;
 	}
 
@@ -138,8 +140,10 @@ void Camera::UseThisCamera() {
 	GameObjectManager::GetInstance()->SetUseCamera(this);
 }
 
-void Camera::SetVPDataTarget()
+void Camera::SetDataTarget()
 {
-	// ビュープロジェクション行列を書き込むためのアドレスを取得
-	vpDataTarget_ = DirectXCommon::GetInstance()->GetCommandManager()->GetViewProjection();
+	// 行列を書き込むためのアドレスを取得
+	wDataTarget_ = DirectXCommon::GetInstance()->GetCommandManager()->GetWorldMatrixAddress();	   // ワールド行列
+	vDataTarget_ = DirectXCommon::GetInstance()->GetCommandManager()->GetViewMatrixAddress();	   // ビュー行列
+	vpDataTarget_ = DirectXCommon::GetInstance()->GetCommandManager()->GetViewProjectionAddress(); // ビュープロジェクション行列
 }

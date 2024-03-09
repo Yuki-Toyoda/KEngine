@@ -20,26 +20,25 @@ struct DXC {
 /// </summary>
 class PSO{
 public: // メンバ関数
-	
+
 	/// <summary>
 	/// 初期化関数
 	/// </summary>
 	/// <param name="device">デバイス</param>
 	/// <param name="signature">ルートシグネチャ</param>
 	/// <param name="dxc">dxc構造体</param>
-	/// <param name="vs">使用する頂点シェーダまでのファイルパス</param>
+	/// <param name="ms">使用するメッシュシェーダまでのファイルパス</param>
 	/// <param name="ps">使用するピクセルシェーダまでのファイルパス</param>
 	/// <param name="blendType">ブレンド設定</param>
-	/// <param name="wire">ワイヤーフレーム状態にするか 0 : 通常表示 ** 1 : ワイヤー表示</param>
-	virtual void Init(
-		ID3D12Device* device, 
-		ID3D12RootSignature* signature, 
-		DXC* dxc, 
-		std::wstring vs, 
-		std::wstring ps, 
+	/// <param name="isWriteDSV">深度を描画するか</param>
+	void Init(
+		ID3D12Device2* device,
+		ID3D12RootSignature* signature,
+		DXC* dxc,
+		std::wstring ms,
+		std::wstring ps,
 		int blendType,
-		bool isWriteDSV,
-		UINT wire);
+		bool isWriteDSV);
 
 protected: // プライベートなメンバ関数
 
@@ -47,19 +46,18 @@ protected: // プライベートなメンバ関数
 	/// ブレンド設定を行う関数
 	/// </summary>
 	/// <returns>ブレンド設定</returns>
-	virtual D3D12_BLEND_DESC SettingBlendState(int state);
+	D3D12_BLEND_DESC SettingBlendState(int state);
 	/// <summary>
 	/// ラスタライザ設定を行う関数
 	/// </summary>
-	/// <param name="wire">ワイヤーフレーム表示</param>
 	/// <returns>ラスタライザ設定</returns>
-	virtual D3D12_RASTERIZER_DESC SettingRasterizerDesc(UINT wire);
+	D3D12_RASTERIZER_DESC SettingRasterizerDesc();
 	/// <summary>
 	/// 深度ステンシルビュー設定を行う関数
 	/// </summary>
 	/// <param name="isWriteDSV">Depthを書き込むか</param>
 	/// <returns>深度ステンシルビュー設定</returns>
-	virtual D3D12_DEPTH_STENCIL_DESC SettingDepthStencilState(bool isWriteDSV = false);
+	D3D12_DEPTH_STENCIL_DESC SettingDepthStencilState(bool isWriteDSV = false);
 
 	/// <summary>
 	/// 頂点シェーダ生成関数
@@ -67,14 +65,21 @@ protected: // プライベートなメンバ関数
 	/// <param name="dxc">HLSLコード変換用</param>
 	/// <param name="vs">頂点シェーダまでのファイルパス</param>
 	/// <returns>頂点シェーダのバイナリオブジェクト</returns>
-	virtual IDxcBlob* CreateVertexShader(DXC* dxc, std::wstring vs);
+	IDxcBlob* CreateVertexShader(DXC* dxc, std::wstring vs);
+	/// <summary>
+	/// メッシュシェーダ生成関数
+	/// </summary>
+	/// <param name="dxc">HLSLコード変換用</param>
+	/// <param name="ms">メッシュシェーダまでのファイルパス</param>
+	/// <returns>メッシュシェーダのバイナリオブジェクト</returns>
+	IDxcBlob* CreateMeshShader(DXC* dxc, std::wstring ms);
 	/// <summary>
 	/// ピクセルシェーダ生成関数
 	/// </summary>
 	/// <param name="dxc">HLSLコード変換用</param>
 	/// <param name="ps">ピクセルシェーダまでのファイルパス</param>
 	/// <returns>ピクセルシェーダのバイナリオブジェクト</returns>
-	virtual IDxcBlob* CreatePixelShader(DXC* dxc, std::wstring ps);
+	IDxcBlob* CreatePixelShader(DXC* dxc, std::wstring ps);
 
 	/// <summary>
 	/// シェーダーのコンパイルを行う関数
@@ -90,5 +95,8 @@ protected: // プライベートなメンバ関数
 public: // パブリックなメンバ変数
 	// パイプラインステートオブジェクトの状態
 	Microsoft::WRL::ComPtr<ID3D12PipelineState> state_;
+
+	// バイナリオブジェクト格納用
+	Microsoft::WRL::ComPtr<IDxcBlob> meshShaderBlob_;
 };
 

@@ -36,8 +36,7 @@ void BasePrimitive::Draw(CommandManager* manager)
 	if (!isActive_)
 		return;
 
-	// マネージャーに頂点情報を送る
-	manager->SetDrawData(this);
+	manager;
 }
 
 void BasePrimitive::DisplayImGui()

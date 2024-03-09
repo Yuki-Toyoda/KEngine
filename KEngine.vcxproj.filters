@@ -47,7 +47,7 @@
     <ClCompile Include="Engine\Primitive\BasePrimitive.cpp">
       <Filter>Engine\Primitive</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Base\Command\BaseCommand.cpp">
+    <ClCompile Include="Engine\Base\Command\ICommand.cpp">
       <Filter>Engine\Base\Command</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Base\Command\MainCommand.cpp">
@@ -134,17 +134,11 @@
     <ClCompile Include="Engine\Particle\ParticleEmitterManager.cpp">
       <Filter>Engine\Particle</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Base\Command\ParticleCommand.cpp">
-      <Filter>Engine\Base\Command</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Utility\Animation\AnimationManager.cpp">
       <Filter>App\Utility\Animation</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Utility\Animation\Animation.cpp">
       <Filter>App\Utility\Animation</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Base\Command\SpriteCommand.cpp">
-      <Filter>Engine\Base\Command</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\Samples\SampleSphere\SampleSphere.cpp">
       <Filter>App\GameObject\Samples\Sphere</Filter>
@@ -229,9 +223,6 @@
     </ClCompile>
     <ClCompile Include="Engine\Math\Vector4.cpp">
       <Filter>Engine\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Base\PSO\MeshletPSO.cpp">
-      <Filter>Engine\Base\PSO</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Utility\DataSegment\DataSegment.cpp">
       <Filter>App\Utility\DataSegment</Filter>
@@ -320,7 +311,7 @@
     <ClInclude Include="Engine\Primitive\BasePrimitive.h">
       <Filter>Engine\Primitive</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Base\Command\BaseCommand.h">
+    <ClInclude Include="Engine\Base\Command\ICommand.h">
       <Filter>Engine\Base\Command</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Base\ResourceStruct.h">
@@ -449,17 +440,11 @@
     <ClInclude Include="Engine\Particle\ParticleEmitterManager.h">
       <Filter>Engine\Particle</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Base\Command\ParticleCommand.h">
-      <Filter>Engine\Base\Command</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Utility\Animation\AnimationManager.h">
       <Filter>App\Utility\Animation</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utility\Animation\Animation.h">
       <Filter>App\Utility\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Base\Command\SpriteCommand.h">
-      <Filter>Engine\Base\Command</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\Samples\SampleSphere\SampleSphere.h">
       <Filter>App\GameObject\Samples\Sphere</Filter>
@@ -493,9 +478,6 @@
     </ClInclude>
     <ClInclude Include="Engine\Scene\SceneFactory.h">
       <Filter>App\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Base\PSO\MeshletPSO.h">
-      <Filter>Engine\Base\PSO</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utility\DataSegment\DataSegment.h">
       <Filter>App\Utility\DataSegment</Filter>
@@ -668,8 +650,7 @@
     <FxCompile Include="Engine\Resource\Shader\Object3D.VS.hlsl">
       <Filter>Engine\Resource\Shader</Filter>
     </FxCompile>
-    <FxCompile Include="Engine\Resource\Shader\MeshletMS.hlsl">
-      <Filter>Engine\Resource\Shader</Filter>
-    </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\MeshletMS.hlsl" />
+    <FxCompile Include="Engine\Resource\Shader\MeshletPS.hlsl" />
   </ItemGroup>
 </Project>

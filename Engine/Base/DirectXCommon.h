@@ -49,7 +49,7 @@ public: // アクセッサ等
 	/// デバイスゲッター
 	/// </summary>
 	/// <returns>デバイス</returns>
-	ID3D12Device* GetDevice() { return device_; }
+	ID3D12Device2* GetDevice() { return device_; }
 
 	/// <summary>
 	/// 描画コマンドマネージャーゲッター
@@ -100,7 +100,7 @@ private: // メンバ変数
 
 	// デバイス
 	std::unique_ptr<DirectXDevice> dxDevice_;
-	ID3D12Device* device_ = nullptr;
+	ID3D12Device2* device_ = nullptr;
 
 	// 各種ヒープ
 	std::unique_ptr<RTV> rtv_; // レンダーターゲットビュー

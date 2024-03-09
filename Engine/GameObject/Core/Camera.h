@@ -59,9 +59,9 @@ public: // その他関数
 private: // メンバ関数
 
 	/// <summary>
-	///	ViewProjectionMatrixの書き込み先の指定関数
+	///	データの書き込み先の指定関数
 	/// </summary>
-	void SetVPDataTarget();
+	void SetDataTarget();
 
 public: // パブリックなメンバ変数
 
@@ -81,8 +81,10 @@ protected: // メンバ変数
 	// カメラ用ビュープロジェクション行列
 	Matrix4x4 viewProjectionMatrix_;
 
-	// ビュープロジェクション行列をコマンドマネージャーに送るためのポインタ
-	Matrix4x4* vpDataTarget_ = nullptr;
+	// コマンドマネージャーに送るためのポインタ群
+	Matrix4x4* wDataTarget_ = nullptr;  // ワールド行列
+	Matrix4x4* vDataTarget_ = nullptr;	// ビュー行列
+	Matrix4x4* vpDataTarget_ = nullptr; // ビュープロジェクション行列
 
 };
 

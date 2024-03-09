@@ -8,7 +8,7 @@
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
 
-void CommandManager::Init(ID3D12Device* device)
+void CommandManager::Init(ID3D12Device2* device)
 {
 	// 結果確認用
 	HRESULT result = S_FALSE;
@@ -34,8 +34,7 @@ void CommandManager::Init(ID3D12Device* device)
 
 	// HLSLコードコンパイラの生成
 	InitializeDXC();
-	// ルートシグネチャの生成
-	CreateRootSignature();
+	
 }
 
 void CommandManager::DrawCall()
@@ -45,6 +44,9 @@ void CommandManager::DrawCall()
 
 	// コマンドリストの取得
 	ID3D12GraphicsCommandList* cmdList = commandList_.Get();
+	
+	// メモリにバッファの内容をアップロード
+	memcpy(cBufferBegin_ + sizeof(GeneralCBuffer) * rtv_->GetDescriptorSize(), &generalCBufferData_, sizeof(generalCBufferData_));
 
 	// 
 	for (int i = 0; i < (int)commands_.size(); i++) {
@@ -59,27 +61,7 @@ void CommandManager::DrawCall()
 		// PSOを取得、コマンドリストにセット
 		cmdList->SetPipelineState(commands_[i]->GetPSOState());
 
-		// シグネチャのテーブル設定
-		// 0 : バッファのインデックス情報
-		// 1 : 光源情報
-		// 2 : 頂点データ
-		// 3 : viewProjection行列
-		// 4 : worldTransform
-		// 5 : マテリアル情報
-		// 6 : テクスチャ
-		cmdList->SetGraphicsRootDescriptorTable(0, commands_[i]->indexBuffer_->view);
-		cmdList->SetGraphicsRootConstantBufferView(1, lightBuffer_->view);
-		cmdList->SetGraphicsRootDescriptorTable(2, vertexBuffer_->view);
-		cmdList->SetGraphicsRootDescriptorTable(3, viewProjectionBuffer_->view);
-		cmdList->SetGraphicsRootDescriptorTable(4, worldTransformBuffer_->view);
-		cmdList->SetGraphicsRootDescriptorTable(5, materialBuffer_->view);
-		cmdList->SetGraphicsRootDescriptorTable(6, textureBuffer_->view);
-
-		// インデックスバッファが１つも入っていなければ描画しない
-		if (commands_[i]->indexBuffer_->usedCount > 0) {
-			// バッファ内の全3角形を描画
-			cmdList->DrawInstanced(3, commands_[i]->indexBuffer_->usedCount / 3, 0, 0);
-		}
+		SetDrawData();
 
 		// メイン描画コマンドの場合処理を一旦抜ける
 		if (i == (int)commands_.size() - 1) {
@@ -156,18 +138,9 @@ void CommandManager::Reset()
 	result = commandList_->Reset(commandAllocator_.Get(), nullptr); // リセット
 	assert(SUCCEEDED(result)); // リセット確認
 
-	// 全ての描画コマンドのインデックス情報をクリア
-	for (int i = 0; i < commands_.size(); i++) {
-		commands_[i]->indexBuffer_->usedCount = 0;
-	}
-
-	// 全てのバッファのヒープ使用数をリセットする
-	vertexBuffer_->usedCount = 0;		  // 頂点バッファ
-	worldTransformBuffer_->usedCount = 0; // ワールドトランスフォームバッファ
-	materialBuffer_->usedCount = 0;		  // マテリアルバッファ
 }
 
-void CommandManager::SetHeaps(RTV* rtv, SRV* srv, DSV* dsv, std::wstring vs, std::wstring ps)
+void CommandManager::SetHeaps(RTV* rtv, SRV* srv, DSV* dsv)
 {
 	// ヒープのポインタをセット
 	rtv_ = rtv; // レンダーターゲットビュー
@@ -176,79 +149,60 @@ void CommandManager::SetHeaps(RTV* rtv, SRV* srv, DSV* dsv, std::wstring vs, std
 
 	// 描画コマンドクラスの実体を宣言
 	commands_.push_back(new MainCommand()); // メイン描画コマンドを追加
-	commands_.push_back(new ParticleCommand()); // パーティクル描画コマンドを追加
-	commands_.push_back(new SpriteCommand()); // パーティクル描画コマンドを追加
-	//commands_.push_back(new MainCommand()); // スプライト描画コマンドを追加
+
 	// 全ての描画コマンドの初期化
 	for (int i = 0; i < commands_.size(); i++) {
-		commands_[i]->SetDescriptorHeap(rtv_, srv_, dsv_); // ヒープをセット
-		// バッファ配列の生成
-		ID3D12Resource* buffer;
-		// バッファをブレンドモードの数分生成
-		buffer = CreateBuffer(sizeof(IndexInfoStruct) * commands_[i]->kMaxIndex);
-		// リソースの生成を行う
-		if (i == 1) {
-			// パーティクルのみAddで生成
-			commands_[i]->Init(device_, dxc_.get(), rootSignature_.Get(), buffer, vs, ps, BasePrimitive::kBlendAdd); // 初期化
-		}
-		else {
-			commands_[i]->Init(device_, dxc_.get(), rootSignature_.Get(), buffer, vs, ps); // 初期化
-		}
+		commands_[i]->SetDescriptorHeap(rtv_, srv_, dsv_);			    // ヒープをセット
+		commands_[i]->Init(device_, dxc_.get(), rootSignature_.Get()); // 初期化
 	}
 
 	// ストラクチャーバッファを生成
 	CreateStructuredBuffer();
 
+	// ルートシグネチャの生成
+	CreateRootSignature();
+
 	// サンプルテクスチャの読み込み
 	defaultTexture_ = TextureManager::Load("white2x2.png");
 }
 
-Matrix4x4* const CommandManager::GetViewProjection() const {
-	viewProjectionBuffer_->mat[1] = Matrix4x4::kIdentity * Matrix4x4::MakeOrthGraphic(0.0f, 0.0f, (float)WinApp::kWindowWidth, (float)WinApp::kwindowHeight, 0.0f, 100.0f);
-	return viewProjectionBuffer_->mat;
+Matrix4x4* const CommandManager::GetWorldMatrixAddress() const
+{
+	// 書き込み用のアドレスを返す
+	return &generalCBufferData_->World;
 }
 
-void CommandManager::SetDrawData(BasePrimitive* primitive)
+Matrix4x4* const CommandManager::GetViewMatrixAddress() const
 {
-	// いろいろ最大数を超えていないかチェック
-	assert(commands_[(int)primitive->primitiveType_]->indexBuffer_->usedCount < commands_[(int)primitive->primitiveType_]->kMaxIndex); // インデックス情報
-	assert(vertexBuffer_->usedCount < kMaxVertex);							 // 頂点数
-	assert(worldTransformBuffer_->usedCount < kMaxWorldTransform);			 // ワールドトランスフォーム
-	assert(materialBuffer_->usedCount < kMaxMaterial);						 // マテリアル数
+	// 書き込み用のアドレスを返す
+	return &generalCBufferData_->WorldView;
+}
 
-	// 頂点バッファの最初のインデックス番号の取得
-	uint32_t startIndexNum = vertexBuffer_->usedCount;
+Matrix4x4* const CommandManager::GetViewProjectionAddress() const
+{
+	// 書き込み用のアドレスを返す
+	return &generalCBufferData_->WorldViewProj;
+}
 
-	// 頂点データを登録
-	for (int i = 0; i < primitive->GetVertexCount(); i++) {
-		vertexBuffer_->vertex[vertexBuffer_->usedCount++] = primitive->vertices_[i]; // 頂点データをバッファに登録
-		if (primitive->commonColor != nullptr)	// 共通の色があるときはcommonColorを適応
-			vertexBuffer_->vertex[vertexBuffer_->usedCount - 1].color = *primitive->commonColor; // 共通色に変更
-	}
+void CommandManager::SetDrawData()
+{
+	// コマンドリストに定数バッファをセットする
+	commandList_->SetGraphicsRootConstantBufferView(0, generalCBuffer_->GetGPUVirtualAddress() + sizeof(GeneralCBuffer) * rtv_->GetDescriptorSize());
 
-	uint32_t useCamera = (uint32_t)primitive->isUI_;
+	//
+	for (auto& mesh : model_)
+	{
+		commandList_->SetGraphicsRoot32BitConstant(1, mesh.IndexSize, 0);
+		commandList_->SetGraphicsRootShaderResourceView(2, mesh.VertexResources[0]->GetGPUVirtualAddress());
+		commandList_->SetGraphicsRootShaderResourceView(3, mesh.MeshletResource->GetGPUVirtualAddress());
+		commandList_->SetGraphicsRootShaderResourceView(4, mesh.UniqueVertexIndexResource->GetGPUVirtualAddress());
+		commandList_->SetGraphicsRootShaderResourceView(5, mesh.PrimitiveIndexResource->GetGPUVirtualAddress());
 
-	// ワールドトランスフォームをデータに登録
-	uint32_t worldMatrix = worldTransformBuffer_->usedCount;											   // バッファの末尾を取得
-	worldTransformBuffer_->mat[worldTransformBuffer_->usedCount++] = primitive->transform_->GetMatWorld(); // データを代入
-	// マテリアルをデータに登録
-	uint32_t material = materialBuffer_->usedCount;									// バッファの末尾を取得
-	materialBuffer_->material[materialBuffer_->usedCount++] = primitive->material_; // データを代入
-	// テクスチャのインデックスを貰う
-	uint32_t texture = defaultTexture_->GetIndex();
-	if (primitive->texture_ != nullptr) { // テクスチャがある場合
-		texture = primitive->texture_->GetIndex();
-	}
-
-	// Indexの分だけIndexInfoを求める
-	for (int i = 0; i < primitive->GetIndexCount(); i++) {
-		commands_[(int)primitive->primitiveType_]->indexBuffer_->indexData[commands_[(int)primitive->primitiveType_]->indexBuffer_->usedCount++] = IndexInfoStruct{
-			startIndexNum + primitive->indexes_[i],
-			useCamera,
-			worldMatrix,
-			material,
-			texture
-		};
+		for (auto& subset : mesh.MeshletSubsets)
+		{
+			commandList_->SetGraphicsRoot32BitConstant(1, subset.offset_, 1);
+			commandList_->DispatchMesh(subset.count_, 1, 1);
+		}
 	}
 }
 
@@ -264,11 +218,7 @@ int CommandManager::createTextureResource(const DirectX::ScratchImage& image)
 
 void CommandManager::DisplayImGui()
 {
-	ImGui::Begin("Light");
-	ImGui::ColorEdit4("Color", &lightBuffer_->light->color.x);
-	ImGui::SliderFloat3("Direction", &lightBuffer_->light->direction.x, -1.0f, 1.0f);
-	ImGui::DragFloat("Intensity", &lightBuffer_->light->intensity, 0.01f);
-	ImGui::End();
+	
 }
 
 void CommandManager::InitializeDXC()
@@ -296,177 +246,156 @@ void CommandManager::CreateRootSignature()
 	// 結果確認用
 	HRESULT result = S_FALSE;
 
-	// ルートシグネチャ生成
-	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature{};			 // 設定用インスタンス生成
-	descriptionRootSignature.Flags = D3D12_ROOT_SIGNATURE_FLAG_NONE; // フラッグはなし
-	// ルートパラメータ生成
-	D3D12_ROOT_PARAMETER rootParameters[7] = {};
-	// サンプラー
-	D3D12_STATIC_SAMPLER_DESC staticSamplers[1] = {};
-	// 配列用のRangeDesc
-	D3D12_DESCRIPTOR_RANGE descRange[1] = {};	// DescriptorRangeを作成
-	descRange[0].BaseShaderRegister = 0; // 0から始まる
-	descRange[0].NumDescriptors = 1; // 数は1つ
-	descRange[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV; // SRVを使う
-	descRange[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; // Offsetを自動計算
+	//// ルートシグネチャの設定用構造体を生成
+	//D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature{};			 // 設定用インスタンス生成
+	//descriptionRootSignature.Flags = D3D12_ROOT_SIGNATURE_FLAG_NONE; // フラッグはなし
+	//
+	//// ルートパラメータ生成
+	//D3D12_ROOT_PARAMETER rootParameters[6] = {};
+	//
+	//// サンプラー
+	//D3D12_STATIC_SAMPLER_DESC staticSamplers[1] = {};
+	//
+	//// StructuredBuffer用の範囲設定
+	//D3D12_DESCRIPTOR_RANGE descRange[1] = {};												// DescriptorRangeを作成
+	//descRange[0].BaseShaderRegister = 0;													// 0から始まる
+	//descRange[0].NumDescriptors = 1;														// 数は1つ
+	//descRange[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;								// SRVを使う
+	//descRange[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; // Offsetを自動計算
 
-	// RootSignatureにrootParametersを登録
-	descriptionRootSignature.pParameters = rootParameters;					// ルートパラメータ配列へのポインタ
-	descriptionRootSignature.NumParameters = _countof(rootParameters);		// 配列の長さ
+	//// RootSignatureにrootParametersを登録
+	//descriptionRootSignature.pParameters = rootParameters;					// ルートパラメータ配列へのポインタ
+	//descriptionRootSignature.NumParameters = _countof(rootParameters);		// 配列の長さ
 
-	// RootSignatureにサンプラーを登録
-	descriptionRootSignature.pStaticSamplers = staticSamplers;
-	descriptionRootSignature.NumStaticSamplers = _countof(staticSamplers);
+	//// RootSignatureにサンプラーを登録
+	//descriptionRootSignature.pStaticSamplers = staticSamplers;
+	//descriptionRootSignature.NumStaticSamplers = _countof(staticSamplers);
 
-	// ストラクチャーバッファーのインデックス
-	D3D12_DESCRIPTOR_RANGE indexDesc[1] = { descRange[0] };						  // DescriptorRangeを作成
-	indexDesc[0].BaseShaderRegister = 0;										  // レジスタ番号は0
-	rootParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE; // DescriptorTableを使う
-	rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;			  // 全てのシェーダーで使う
-	rootParameters[0].DescriptorTable.pDescriptorRanges = indexDesc;			  // Tabelの中身の配列を指定
-	rootParameters[0].DescriptorTable.NumDescriptorRanges = _countof(indexDesc);  // Tableで利用する数
+	//// 汎用定数バッファ用
+	//rootParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;  // ConstantBufferを使う
+	//rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL; // PixelとVertexで使う
+	//rootParameters[0].Descriptor.ShaderRegister = 0;				  // レジスタ番号0とバインド
 
-	// 平行光源
-	rootParameters[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;  // CBVを使う
-	rootParameters[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL; // PixelとVertexで使う
-	rootParameters[1].Descriptor.ShaderRegister = 0;				  // レジスタ番号0とバインド
+	//// インデックスバッファ用
+	//rootParameters[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_32BIT_CONSTANTS;  // CBVを使う
+	//rootParameters[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;			  // PixelとVertexで使う
+	//rootParameters[1].Descriptor.ShaderRegister = 1;							  // レジスタ番号0とバインド
 
-	// 頂点データ
-	D3D12_DESCRIPTOR_RANGE vertexDesc[1] = { descRange[0] };					  // DescriptorRangeを作成
-	vertexDesc[0].BaseShaderRegister = 1;										  // レジスタ番号は1
-	rootParameters[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE; // DescriptorTableを使う
-	rootParameters[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX;		  // 頂点シェーダーで使う
-	rootParameters[2].DescriptorTable.pDescriptorRanges = vertexDesc;			  // Tabelの中身の配列を指定
-	rootParameters[2].DescriptorTable.NumDescriptorRanges = _countof(vertexDesc); // Tableで利用する数
+	//// 頂点バッファ用
+	//D3D12_DESCRIPTOR_RANGE vertexDesc[1] = { descRange[0] };					  // DescriptorRangeを作成
+	//vertexDesc[0].BaseShaderRegister = 0;										  // レジスタ番号は0
+	//rootParameters[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE; // DescriptorTableを使う
+	//rootParameters[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;		      // PixelとVertexで使う
+	//rootParameters[2].DescriptorTable.pDescriptorRanges = vertexDesc;			  // Tabelの中身の配列を指定
+	//rootParameters[2].DescriptorTable.NumDescriptorRanges = _countof(vertexDesc); // Tableで利用する数
 
-	// カメラのViewProjection
-	D3D12_DESCRIPTOR_RANGE vpDesc[1] = { descRange[0] };						  // DescriptorRangeを作成
-	vpDesc[0].BaseShaderRegister = 2;											  // レジスタ番号は2
-	rootParameters[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE; // DescriptorTableを使う
-	rootParameters[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX;		  // 頂点シェーダーで使う
-	rootParameters[3].DescriptorTable.pDescriptorRanges = vpDesc;				  // Tabelの中身の配列を指定
-	rootParameters[3].DescriptorTable.NumDescriptorRanges = _countof(vpDesc);	  // Tableで利用する数
+	//// メッシュレットバッファ用
+	//D3D12_DESCRIPTOR_RANGE meshletDesc[1] = { descRange[0] };					   // DescriptorRangeを作成
+	//meshletDesc[0].BaseShaderRegister = 1;										   // レジスタ番号は0
+	//rootParameters[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;  // DescriptorTableを使う
+	//rootParameters[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;		       // PixelとVertexで使う
+	//rootParameters[3].DescriptorTable.pDescriptorRanges = meshletDesc;			   // Tabelの中身の配列を指定
+	//rootParameters[3].DescriptorTable.NumDescriptorRanges = _countof(meshletDesc); // Tableで利用する数
 
-	// WorldTransform
-	D3D12_DESCRIPTOR_RANGE wtDesc[1] = { descRange[0] };						  // DescriptorRangeを作成
-	wtDesc[0].BaseShaderRegister = 3;											  // レジスタ番号は3
-	rootParameters[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE; // DescriptorTableを使う
-	rootParameters[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX;		  // 頂点シェーダーで使う
-	rootParameters[4].DescriptorTable.pDescriptorRanges = wtDesc;				  // Tabelの中身の配列を指定
-	rootParameters[4].DescriptorTable.NumDescriptorRanges = _countof(wtDesc);	  // Tableで利用する数
+	//// 固有頂点バッファ用
+	//D3D12_DESCRIPTOR_RANGE uniqueVertexDesc[1] = { descRange[0] };						// DescriptorRangeを作成
+	//uniqueVertexDesc[0].BaseShaderRegister = 2;											// レジスタ番号は0
+	//rootParameters[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;		// DescriptorTableを使う
+	//rootParameters[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;					// PixelとVertexで使う
+	//rootParameters[4].DescriptorTable.pDescriptorRanges = uniqueVertexDesc;				// Tabelの中身の配列を指定
+	//rootParameters[4].DescriptorTable.NumDescriptorRanges = _countof(uniqueVertexDesc); // Tableで利用する数
+	//
+	//// プリミティブインデックスバッファ用
+	//D3D12_DESCRIPTOR_RANGE primitiveIndexDesc[1] = { descRange[0] };					  // DescriptorRangeを作成
+	//primitiveIndexDesc[0].BaseShaderRegister = 3;										  // レジスタ番号は0
+	//rootParameters[5].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;		  // DescriptorTableを使う
+	//rootParameters[5].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;					  // PixelとVertexで使う
+	//rootParameters[5].DescriptorTable.pDescriptorRanges = primitiveIndexDesc;			  // Tabelの中身の配列を指定
+	//rootParameters[5].DescriptorTable.NumDescriptorRanges = _countof(primitiveIndexDesc); // Tableで利用する数
 
-	// マテリアル
-	D3D12_DESCRIPTOR_RANGE materialDesc[1] = { descRange[0] };					    // DescriptorRangeを作成
-	materialDesc[0].BaseShaderRegister = 1;										    // レジスタ番号は1
-	rootParameters[5].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;   // DescriptorTableを使う
-	rootParameters[5].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;			    // ピクセルシェーダーで使う
-	rootParameters[5].DescriptorTable.pDescriptorRanges = materialDesc;			    // Tabelの中身の配列を指定
-	rootParameters[5].DescriptorTable.NumDescriptorRanges = _countof(materialDesc); // Tableで利用する数
+	//// Samplerの設定
+	//staticSamplers[0].Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR; // バイオリニアフィルタ
+	//staticSamplers[0].AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP; // 0~1の範囲外をリピート
+	//staticSamplers[0].AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+	//staticSamplers[0].AddressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+	//staticSamplers[0].ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER; // 比較しない
+	//staticSamplers[0].MaxLOD = D3D12_FLOAT32_MAX; // ありったけのMipmapを使う
+	//staticSamplers[0].ShaderRegister = 0; // レジスタ番号は0
+	//staticSamplers[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; // PixelShaderで使う
 
-	// Samplerの設定
-	staticSamplers[0].Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR; // バイオリニアフィルタ
-	staticSamplers[0].AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP; // 0~1の範囲外をリピート
-	staticSamplers[0].AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
-	staticSamplers[0].AddressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
-	staticSamplers[0].ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER; // 比較しない
-	staticSamplers[0].MaxLOD = D3D12_FLOAT32_MAX; // ありったけのMipmapを使う
-	staticSamplers[0].ShaderRegister = 0; // レジスタ番号は0
-	staticSamplers[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; // PixelShaderで使う
+	//// シリアライズを行う
+	//ID3DBlob* signatureBlob = nullptr; // シリアライズ後のバイナリオブジェクト
+	//ID3DBlob* errorBlob = nullptr;	   // エラーログを出すためのバイナリオブジェクト
+	//// ルートシグネチャ用にシリアライズ
+	//result = D3D12SerializeRootSignature(&descriptionRootSignature, D3D_ROOT_SIGNATURE_VERSION_1, &signatureBlob, &errorBlob);
+	//// 生成に失敗した場合
+	//if (FAILED(result)) {
+	//	// ログを出力
+	//	Debug::Log(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
+	//	// 停止
+	//	assert(false);
+	//}
+	//// バイナリを元にルートシグネチャを生成
+	//result = device_->CreateRootSignature(0, signatureBlob->GetBufferPointer(), signatureBlob->GetBufferSize(), IID_PPV_ARGS(&rootSignature_)); // 生成
+	//assert(SUCCEEDED(result));																													// 生成確認
 
-	// テクスチャ
-	D3D12_DESCRIPTOR_RANGE textureDesc[1] = { descRange[0] };					   // DescriptorRangeを作成
-	textureDesc[0].BaseShaderRegister = 2;										   // レジスタ番号は2
-	textureDesc[0].NumDescriptors = kMaxTexture;								   // 最大数を定義
-	rootParameters[6].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;  // DescriptorTabelを使う
-	rootParameters[6].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;		       // ピクセルシェーダーで使う
-	rootParameters[6].DescriptorTable.pDescriptorRanges = textureDesc;			   // Tabelの中身の配列を指定
-	rootParameters[6].DescriptorTable.NumDescriptorRanges = _countof(textureDesc); // Tableで利用する数
+	//// 使わないリソースを解放
+	//signatureBlob->Release();
+	////errorBlob->Release();
 
-	// シリアライズを行う
-	ID3DBlob* signatureBlob = nullptr; // シリアライズ後のバイナリオブジェクト
-	ID3DBlob* errorBlob = nullptr;	   // エラーログを出すためのバイナリオブジェクト
-	// ルートシグネチャ用にシリアライズ
-	result = D3D12SerializeRootSignature(&descriptionRootSignature, D3D_ROOT_SIGNATURE_VERSION_1, &signatureBlob, &errorBlob);
-	// 生成に失敗した場合
-	if (FAILED(result)) {
-		// ログを出力
-		Debug::Log(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
-		// 停止
-		assert(false);
-	}
-	// バイナリを元にルートシグネチャを生成
-	result = device_->CreateRootSignature(0, signatureBlob->GetBufferPointer(), signatureBlob->GetBufferSize(), IID_PPV_ARGS(&rootSignature_)); // 生成
-	assert(SUCCEEDED(result));																													// 生成確認
+	struct
+	{
+		byte* data;
+		uint32_t size;
+	} meshShader;
 
-	// 使わないリソースを解放
-	signatureBlob->Release();
-	//errorBlob->Release();
+	ReadDataFile(L"Engine/Resource/Shader/MeshletMS.hlsl", &meshShader.data, &meshShader.size);
+
+	// Pull root signature from the precompiled mesh shader.
+	result = device_->CreateRootSignature(0, commands_[0]->GetShaderBlob()->GetBufferPointer(), commands_[0]->GetShaderBlob()->GetBufferSize(), IID_PPV_ARGS(&rootSignature_));
+	assert(SUCCEEDED(result));
 }
 
 void CommandManager::CreateStructuredBuffer()
 {
-	// 共通のSRV用Desc
-	D3D12_SHADER_RESOURCE_VIEW_DESC commonDesc{};								   // 汎用設定用
-	commonDesc.Format = DXGI_FORMAT_UNKNOWN;									   // フォーマット形式は不明
-	commonDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING; // シェーダーからテクスチャにアクセスする際の値指定 
-	commonDesc.ViewDimension = D3D12_SRV_DIMENSION_BUFFER;						   // SRVのバッファであることを指定
-	commonDesc.Buffer.FirstElement = 0;											   // 最初の番号を指定
-	commonDesc.Buffer.Flags = D3D12_BUFFER_SRV_FLAG_NONE;						   // フラッグ設定
+	// 汎用定数バッファ
+	generalCBufferData_ = std::make_unique<GeneralCBuffer>();
 
-	// 平行光源
-	lightBuffer_ = std::make_unique<LightBuffer>();
-	lightBuffer_->resource = CreateBuffer(sizeof(DirectionalLight));
-	lightBuffer_->resource->Map(0, nullptr, reinterpret_cast<void**>(&lightBuffer_->light));
-	lightBuffer_->view = lightBuffer_->resource->GetGPUVirtualAddress();
-	// 平行光源だけ今は生成を変える
-	lightBuffer_->light->color = { 1.0f,1.0f,1.0f,1.0f };
-	lightBuffer_->light->direction = { 0.0f,-1.0f,0.0f };
-	lightBuffer_->light->intensity = 1.0f;
-	lightBuffer_->rotate = { 0.0f,0.0f,0.0f };
+	// バッファサイズを求める
+	const UINT64 constantBufferSize = sizeof(GeneralCBuffer) * rtv_->GetDescriptorSize();
 
-	// 頂点データ
-	vertexBuffer_ = std::make_unique<VertexBuffer>();
-	vertexBuffer_->resource = CreateBuffer(sizeof(Vertex) * kMaxVertex);
-	vertexBuffer_->resource->Map(0, nullptr, reinterpret_cast<void**>(&vertexBuffer_->vertex));
-	D3D12_SHADER_RESOURCE_VIEW_DESC vertexDesc = { commonDesc };
-	vertexDesc.Buffer.NumElements = kMaxVertex;
-	vertexDesc.Buffer.StructureByteStride = sizeof(Vertex);
-	vertexBuffer_->view = srv_->GetGPUHandle(srv_->GetUsedCount());
-	device_->CreateShaderResourceView(vertexBuffer_->resource.Get(), &vertexDesc, srv_->GetCPUHandle(srv_->GetUsedCount()));
-	srv_->AddUsedCount();	// SRV使用数を+1
-	// カメラのビュープロジェクション用
-	viewProjectionBuffer_ = std::make_unique<MatrixBuffer>();
-	viewProjectionBuffer_->resource = CreateBuffer(sizeof(Matrix4x4) * kMaxVP);
-	viewProjectionBuffer_->resource->Map(0, nullptr, reinterpret_cast<void**>(&viewProjectionBuffer_->mat));
-	D3D12_SHADER_RESOURCE_VIEW_DESC vpDesc = { commonDesc };
-	vpDesc.Buffer.NumElements = kMaxVP;
-	vpDesc.Buffer.StructureByteStride = sizeof(Matrix4x4);
-	viewProjectionBuffer_->view = srv_->GetGPUHandle(srv_->GetUsedCount());
-	device_->CreateShaderResourceView(viewProjectionBuffer_->resource.Get(), &vpDesc, srv_->GetCPUHandle(srv_->GetUsedCount()));
-	srv_->AddUsedCount();	// SRV使用数を+1
-	// WorldTransformデータ
-	worldTransformBuffer_ = std::make_unique<MatrixBuffer>();
-	worldTransformBuffer_->resource = CreateBuffer(sizeof(Matrix4x4) * kMaxWorldTransform);
-	worldTransformBuffer_->resource->Map(0, nullptr, reinterpret_cast<void**>(&worldTransformBuffer_->mat));
-	D3D12_SHADER_RESOURCE_VIEW_DESC wtDesc = { commonDesc };
-	wtDesc.Buffer.NumElements = kMaxWorldTransform;
-	wtDesc.Buffer.StructureByteStride = sizeof(Matrix4x4);
-	worldTransformBuffer_->view = srv_->GetGPUHandle(srv_->GetUsedCount());
-	device_->CreateShaderResourceView(worldTransformBuffer_->resource.Get(), &wtDesc, srv_->GetCPUHandle(srv_->GetUsedCount()));
-	srv_->AddUsedCount();	// SRV使用数を+1
+	// アップロード用のヒープを生成
+	const CD3DX12_HEAP_PROPERTIES constantBufferHeapProps(D3D12_HEAP_TYPE_UPLOAD);
+	// ヒープ設定を取得
+	const CD3DX12_RESOURCE_DESC constantBufferDesc = CD3DX12_RESOURCE_DESC::Buffer(constantBufferSize);
 
-	// マテリアルデータ
-	materialBuffer_ = std::make_unique<MaterialBuffer>();
-	materialBuffer_->resource = CreateBuffer(sizeof(Material) * kMaxMaterial);
-	materialBuffer_->resource->Map(0, nullptr, reinterpret_cast<void**>(&materialBuffer_->material));
-	D3D12_SHADER_RESOURCE_VIEW_DESC materialDesc = { commonDesc };
-	materialDesc.Buffer.NumElements = kMaxMaterial;
-	materialDesc.Buffer.StructureByteStride = sizeof(Material);
-	materialBuffer_->view = srv_->GetGPUHandle(srv_->GetUsedCount());
-	device_->CreateShaderResourceView(materialBuffer_->resource.Get(), &materialDesc, srv_->GetCPUHandle(srv_->GetUsedCount()));
-	srv_->AddUsedCount();	// SRV使用数を+1
+	// リソース生成
+	device_->CreateCommittedResource(
+		&constantBufferHeapProps,
+		D3D12_HEAP_FLAG_NONE,
+		&constantBufferDesc,
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(&generalCBuffer_));
+
+	// バッファビューの生成
+	D3D12_CONSTANT_BUFFER_VIEW_DESC cbvDesc = {};
+	// バッファの場所を取得する
+	cbvDesc.BufferLocation = generalCBuffer_->GetGPUVirtualAddress();
+	// バッファのサイズを取得する
+	cbvDesc.SizeInBytes = static_cast<UINT>(constantBufferSize);
+
+	// 何も読み取らないように範囲指定
+	CD3DX12_RANGE readRange(0, 0);
+	// バッファのマッピングを行う
+	generalCBuffer_->Map(0, &readRange, reinterpret_cast<void**>(&cBufferBegin_));
+
 	// テクスチャデータ
 	textureBuffer_ = std::make_unique<TextureBuffer>();
+
+	// モデルのバイナリオブジェクトを読み込む
+	model_.LoadFromFile(L"./Engine/Resource/Samples/Meshlets/Dragon_LOD0.bin");
+	model_.UploadGpuResources(device_, commandList_.Get());
 }
 
 ID3D12Resource* CommandManager::CreateBuffer(size_t size)
@@ -572,4 +501,48 @@ void CommandManager::UploadTextureData(const DirectX::ScratchImage& mipImages)
 	}
 	// SRVの生成
 	device_->CreateShaderResourceView(textureBuffer_->resource[textureBuffer_->usedCount].Get(), &srvDesc, textureSRVHandleCPU);
+}
+
+bool CommandManager::ReadDataFile(LPCWSTR filename, byte** data, UINT* size)
+{
+	using namespace Microsoft::WRL;
+
+#if WINVER >= _WIN32_WINNT_WIN8
+	CREATEFILE2_EXTENDED_PARAMETERS extendedParams = {};
+	extendedParams.dwSize = sizeof(CREATEFILE2_EXTENDED_PARAMETERS);
+	extendedParams.dwFileAttributes = FILE_ATTRIBUTE_NORMAL;
+	extendedParams.dwFileFlags = FILE_FLAG_SEQUENTIAL_SCAN;
+	extendedParams.dwSecurityQosFlags = SECURITY_ANONYMOUS;
+	extendedParams.lpSecurityAttributes = nullptr;
+	extendedParams.hTemplateFile = nullptr;
+
+	Wrappers::FileHandle file(CreateFile2(filename, GENERIC_READ, FILE_SHARE_READ, OPEN_EXISTING, &extendedParams));
+#else
+	Wrappers::FileHandle file(CreateFile(filename, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL | FILE_FLAG_SEQUENTIAL_SCAN | SECURITY_SQOS_PRESENT | SECURITY_ANONYMOUS, nullptr));
+#endif
+	if (file.Get() == INVALID_HANDLE_VALUE)
+	{
+		throw std::exception();
+	}
+
+	FILE_STANDARD_INFO fileInfo = {};
+	if (!GetFileInformationByHandleEx(file.Get(), FileStandardInfo, &fileInfo, sizeof(fileInfo)))
+	{
+		throw std::exception();
+	}
+
+	if (fileInfo.EndOfFile.HighPart != 0)
+	{
+		throw std::exception();
+	}
+
+	*data = reinterpret_cast<byte*>(malloc(fileInfo.EndOfFile.LowPart));
+	*size = fileInfo.EndOfFile.LowPart;
+
+	if (!ReadFile(file.Get(), *data, fileInfo.EndOfFile.LowPart, nullptr, nullptr))
+	{
+		throw std::exception();
+	}
+
+	return true;
 }

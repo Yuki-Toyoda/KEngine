@@ -80,36 +80,45 @@ struct CullData {
 /// </summary>
 struct Mesh {
     // 入力要素格納用
-    D3D12_INPUT_ELEMENT_DESC layOutElems_[Attribute::Count];
+    D3D12_INPUT_ELEMENT_DESC LayOutElems[Attribute::Count];
     // 入力レイアウト設定用
-    D3D12_INPUT_LAYOUT_DESC layOutDesc_;
+    D3D12_INPUT_LAYOUT_DESC LayOutDesc;
 
-    std::vector<DataSegment<uint8_t>> vertices_;       // 頂点情報配列
-    std::vector<uint32_t>             vertexStrides_;  // 頂点情報間隔配列
-    uint32_t                          vertexCount_;    // 頂点数
-    DirectX::BoundingSphere           boundingSphere_; // (カリング用)境界球
+    std::vector<DataSegment<uint8_t>> Vertices;       // 頂点情報配列
+    std::vector<uint32_t>             VertexStrides;  // 頂点情報間隔配列
+    uint32_t                          VertexCount;    // 頂点数
+    DirectX::BoundingSphere           BoundingSphere; // (カリング用)境界球
 
-    DataSegment<Subset>  IndexSubSets_; // インデックスサブセット情報配列
-    DataSegment<uint8_t> indices_;      // インデックス情報配列
-    uint32_t             indexSize_;    // インデックスサイズ
-    uint32_t             IndexCount_;   // インデックス総数
+    DataSegment<Subset>  IndexSubSets; // インデックスサブセット情報配列
+    DataSegment<uint8_t> Indices;      // インデックス情報配列
+    uint32_t             IndexSize;    // インデックスサイズ
+    uint32_t             IndexCount;   // インデックス総数
 
-    DataSegment<Subset>         meshletSubsets_;      // メッシュレットサブセット情報配列
-    DataSegment<Meshlet>        meshlets_;            // メッシュレット情報配列
-    DataSegment<uint8_t>        uniqueVertexIndices_; // 固有頂点インデックス情報配列
-    DataSegment<PackedTriangle> primitiveIndices_;    // プリミティブインデックス情報配列
-    DataSegment<CullData>       cullingData_;         // プリミティブインデックス情報配列
+    DataSegment<Subset>         MeshletSubsets;      // メッシュレットサブセット情報配列
+    DataSegment<Meshlet>        Meshlets;            // メッシュレット情報配列
+    DataSegment<uint8_t>        UniqueVertexIndices; // 固有頂点インデックス情報配列
+    DataSegment<PackedTriangle> PrimitiveIndices;    // プリミティブインデックス情報配列
+    DataSegment<CullData>       CullingData;         // プリミティブインデックス情報配列
 
     std::vector<D3D12_VERTEX_BUFFER_VIEW> VBViews; // 頂点バッファビュー情報配列
     D3D12_INDEX_BUFFER_VIEW               IBView;  // インデックスバッファビュー情報
 
-    std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> vertexResources_;           // 頂点バッファリソース 
-    Microsoft::WRL::ComPtr<ID3D12Resource>              indexResource_;             // インデックスバッファリソース
-    Microsoft::WRL::ComPtr<ID3D12Resource>              meshletResource_;           // メッシュレットバッファリソース
-    Microsoft::WRL::ComPtr<ID3D12Resource>              uniqueVertexIndexResource_; // 固有頂点バッファリソース
-    Microsoft::WRL::ComPtr<ID3D12Resource>              primitiveIndexResource_;    // プリミティブバッファリソース
-    Microsoft::WRL::ComPtr<ID3D12Resource>              cullDataResource_;          // カリング用バッファリソース
-    Microsoft::WRL::ComPtr<ID3D12Resource>              meshInfoResource_;          // メッシュ情報バッファリソース
+    std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> VertexResources;           // 頂点バッファリソース 
+    Microsoft::WRL::ComPtr<ID3D12Resource>              IndexResource;             // インデックスバッファリソース
+    Microsoft::WRL::ComPtr<ID3D12Resource>              MeshletResource;           // メッシュレットバッファリソース
+    Microsoft::WRL::ComPtr<ID3D12Resource>              UniqueVertexIndexResource; // 固有頂点バッファリソース
+    Microsoft::WRL::ComPtr<ID3D12Resource>              PrimitiveIndexResource;    // プリミティブバッファリソース
+    Microsoft::WRL::ComPtr<ID3D12Resource>              CullDataResource;          // カリング用バッファリソース
+    Microsoft::WRL::ComPtr<ID3D12Resource>              MeshInfoResource;          // メッシュ情報バッファリソース
+
+    // アップロード用リソース
+    std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> VertexUploads;           // 頂点リソース
+    Microsoft::WRL::ComPtr<ID3D12Resource>              IndexUpload;             // インデックスリソース
+    Microsoft::WRL::ComPtr<ID3D12Resource>              MeshletUpload;           // メッシュレットリソース
+    Microsoft::WRL::ComPtr<ID3D12Resource>              CullDataUpload;          // カリングデータリソース
+    Microsoft::WRL::ComPtr<ID3D12Resource>              UniqueVertexIndexUpload; // 固有頂点リソース
+    Microsoft::WRL::ComPtr<ID3D12Resource>              PrimitiveIndexUpload;    // プリミティブインデックスリソース
+    Microsoft::WRL::ComPtr<ID3D12Resource>              MeshInfoUpload;          // メッシュ情報リソース
 
     /// <summary>
     /// 引数で指定したメッシュレットのパック化数のゲッター
@@ -121,12 +130,12 @@ struct Mesh {
     uint32_t GetLastMeshletPackCount(uint32_t subsetIndex, uint32_t maxGroupVerts, uint32_t maxGroupPrims)
     {
         // メッシュレットの数がそもそも0だった場合0を変えす
-        if (meshlets_.GetSize() == 0)
+        if (Meshlets.GetSize() == 0)
             return 0;
 
         // 指定されたサブセットとメッシュレットを取得
-        auto& subset = meshletSubsets_[subsetIndex];                   // サブセット
-        auto& meshlet = meshlets_[subset.offset_ + subset.count_ - 1]; // メッシュレット
+        auto& subset = MeshletSubsets[subsetIndex];                   // サブセット
+        auto& meshlet = Meshlets[subset.offset_ + subset.count_ - 1]; // メッシュレット
 
         // 取得したメッシュレットの頂点数とプリミティブ数を割り、その最小値を求める
         return min(maxGroupVerts / meshlet.vertCount_, maxGroupPrims / meshlet.primCount_);
@@ -142,7 +151,7 @@ struct Mesh {
     void GetPrimitive(uint32_t index, uint32_t& i0, uint32_t& i1, uint32_t& i2) const
     {
         // 指定されたインデックスの値を取得
-        auto primitive = primitiveIndices_[index];
+        auto primitive = PrimitiveIndices[index];
 
         // 取得した値を各変数に代入する
         i0 = primitive.i0;
@@ -158,10 +167,10 @@ struct Mesh {
     uint32_t GetVertexIndex(uint32_t index) const
     {
         // 頂点インデックス情報が格納されているアドレスを求める
-        const uint8_t* address = uniqueVertexIndices_.GetFront() + index * indexSize_;
+        const uint8_t* address = UniqueVertexIndices.GetFront() + index * IndexSize;
        
         // インデックスサイズが4バイトの場合
-        if (indexSize_ == 4)
+        if (IndexSize == 4)
         {
             // uint32_t型にキャストして返す
             return *reinterpret_cast<const uint32_t*>(address);

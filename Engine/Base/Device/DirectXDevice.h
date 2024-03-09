@@ -21,7 +21,7 @@ public: // アクセッサ等
 	/// デバイスゲッター
 	/// </summary>
 	/// <returns>デバイス</returns>
-	ID3D12Device* GetDevice() { return device_.Get(); }
+	ID3D12Device2* GetDevice() { return device_.Get(); }
 
 	/// <summary>
 	/// DXGIファクトリーゲッター

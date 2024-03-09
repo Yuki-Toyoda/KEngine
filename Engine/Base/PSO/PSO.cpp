@@ -1,24 +1,24 @@
 #include "PSO.h"
 
-void PSO::Init(ID3D12Device* device, ID3D12RootSignature* signature, DXC* dxc, std::wstring vs, std::wstring ps, int blendType, bool isWriteDSV = true, UINT wire = false)
+void PSO::Init(ID3D12Device2* device, ID3D12RootSignature* signature, DXC* dxc, std::wstring ms, std::wstring ps, int blendType, bool isWriteDSV)
 {
 	// 結果確認用
 	HRESULT result = S_FALSE;
 
 	// シェーダー用のバイナリオブジェクト生成
-	Microsoft::WRL::ComPtr<IDxcBlob> vertexBlob = CreateVertexShader(dxc, vs); // 頂点シェーダー
+	meshShaderBlob_ = CreateMeshShader(dxc, ms);							 // 頂点シェーダー
 	Microsoft::WRL::ComPtr<IDxcBlob> pixelBlob = CreatePixelShader(dxc, ps); // ピクセルシェーダー
 
 	// パイプラインステートの設定を行う
-	D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicPipelineStateDesc{}; // パイプラインステート設定用構造体
+	D3DX12_MESH_SHADER_PIPELINE_STATE_DESC graphicPipelineStateDesc{}; // パイプラインステート設定用構造体
 	graphicPipelineStateDesc.pRootSignature = signature; // RootSignature取得
 	graphicPipelineStateDesc.BlendState = SettingBlendState(blendType); // ブレンド設定
-	graphicPipelineStateDesc.RasterizerState = SettingRasterizerDesc(wire); // ラスタライザ設定
+	graphicPipelineStateDesc.RasterizerState = SettingRasterizerDesc(); // ラスタライザ設定
 	graphicPipelineStateDesc.DepthStencilState = SettingDepthStencilState(isWriteDSV); // 深度ステンシルビュー設定
 	graphicPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT; // フォーマット設定
 	// シェーダーの取得
-	graphicPipelineStateDesc.VS = { vertexBlob->GetBufferPointer(), vertexBlob->GetBufferSize() }; // 頂点シェーダー
-	graphicPipelineStateDesc.PS = { pixelBlob->GetBufferPointer(), pixelBlob->GetBufferSize() }; // ピクセルシェーダー
+	graphicPipelineStateDesc.MS = { meshShaderBlob_->GetBufferPointer(), meshShaderBlob_->GetBufferSize() }; // メッシュシェーダー
+	graphicPipelineStateDesc.PS = { pixelBlob->GetBufferPointer(), pixelBlob->GetBufferSize() };			 // ピクセルシェーダー
 
 	// 書き込むRTVの情報
 	graphicPipelineStateDesc.NumRenderTargets = 1;
@@ -32,8 +32,16 @@ void PSO::Init(ID3D12Device* device, ID3D12RootSignature* signature, DXC* dxc, s
 	graphicPipelineStateDesc.SampleDesc.Count = 1;
 	graphicPipelineStateDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
 
+	// パイプラインの型を変更
+	auto PSOStream = CD3DX12_PIPELINE_MESH_STATE_STREAM(graphicPipelineStateDesc);
+
+	// パイプラインの設定を対応したものに変換する
+	D3D12_PIPELINE_STATE_STREAM_DESC streamDesc;
+	streamDesc.pPipelineStateSubobjectStream = &PSOStream;
+	streamDesc.SizeInBytes = sizeof(PSOStream);
+
 	// 設定を元に実際に生成を行う
-	result = device->CreateGraphicsPipelineState(&graphicPipelineStateDesc,
+	result = device->CreatePipelineState(&streamDesc,
 		IID_PPV_ARGS(&state_));
 	// 生成出来ているかを確認する
 	assert(SUCCEEDED(result));
@@ -85,26 +93,15 @@ D3D12_BLEND_DESC PSO::SettingBlendState(int state)
 	return blendDesc;
 }
 
-D3D12_RASTERIZER_DESC PSO::SettingRasterizerDesc(UINT wire)
+D3D12_RASTERIZER_DESC PSO::SettingRasterizerDesc()
 {
 	// ラスタライザステートの設定を行う
 	D3D12_RASTERIZER_DESC rasterrizerDesc{};
 	// 背面カリング
 	rasterrizerDesc.CullMode = D3D12_CULL_MODE_BACK;
 
-	// フラグによって表示状態切り替え
-	switch (wire)
-	{
-	case 0:
-	default:
-		// 三角形の中を塗りつぶす
-		rasterrizerDesc.FillMode = D3D12_FILL_MODE_SOLID;
-		break;
-	case 1: 
-		// ワイヤーフレームで描画
-		rasterrizerDesc.FillMode = D3D12_FILL_MODE_WIREFRAME;
-		break;
-	}
+	// 三角形の中を塗りつぶす
+	rasterrizerDesc.FillMode = D3D12_FILL_MODE_SOLID;
 
 	// 設定を返す
 	return rasterrizerDesc;
@@ -143,12 +140,24 @@ IDxcBlob* PSO::CreateVertexShader(DXC* dxc, std::wstring vs)
 	return shaderBlob;
 }
 
+IDxcBlob* PSO::CreateMeshShader(DXC* dxc, std::wstring ms)
+{
+	// 生成シェーダー格納用
+	IDxcBlob* shaderBlob = nullptr;
+	// 引数パスのシェーダーをコンパイルする
+	shaderBlob = CompileShader(ms.c_str(), L"ms_6_5", dxc);
+	assert(shaderBlob != nullptr); // コンパイル確認
+
+	// 生成したシェーダーを返す
+	return shaderBlob;
+}
+
 IDxcBlob* PSO::CreatePixelShader(DXC* dxc, std::wstring ps)
 {
 	// 生成シェーダー格納用
 	IDxcBlob* shaderBlob = nullptr;
 	// 引数パスのシェーダーをコンパイルする
-	shaderBlob = CompileShader(ps.c_str(), L"ps_6_0", dxc);
+	shaderBlob = CompileShader(ps.c_str(), L"ps_6_5", dxc);
 	assert(shaderBlob != nullptr); // コンパイル確認
 
 	// 生成したシェーダーを返す

@@ -1,9 +1,14 @@
 #pragma once
 #include <vector>
+#include "../../../Externals/imgui/imgui.h"
 #include "../../Debug/Debug.h"
 #include "MainCommand.h"
-#include "ParticleCommand.h"
-#include "SpriteCommand.h"
+#include "../../Resource/Texture/Texture.h"
+#include "../../Math/Vector2.h"
+#include "../../Math/Vector3.h"
+#include "../../Math/Vector4.h"
+#include "../../Math/Matrix4x4.h"
+#include "../../Primitive/3d/Model/Model.h"
 
 #include <wrl.h>
 #include <dxcapi.h>
@@ -14,6 +19,26 @@
 /// </summary>
 class CommandManager
 {
+private: // サブクラス
+
+	// <para>汎用定数バッファ</para>
+	struct GeneralCBuffer
+	{
+		Matrix4x4 World;		 // ワールド行列
+		Matrix4x4 WorldView;	 // ビュー行列
+		Matrix4x4 WorldViewProj; // 射影変換行列
+		uint32_t  DrawMeshlets;  // メッシュレット描画フラグ
+	};
+
+	/// <summary>
+	/// テクスチャバッファ構造体
+	/// </summary>
+	struct TextureBuffer {
+		std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> resource; // バッファリソース
+		D3D12_GPU_DESCRIPTOR_HANDLE view{};							  // GPU上のハンドルを格納
+		UINT usedCount = 0;											  // 使用中のインデックスバッファの数
+	};
+
 public: // メンバ関数
 
 	// コンストラクタ
@@ -25,7 +50,7 @@ public: // メンバ関数
 	/// 初期化関数
 	/// </summary>
 	/// <param name="device">DirectX12のデバイス</param>
-	void Init(ID3D12Device* device);
+	void Init(ID3D12Device2* device);
 
 	/// <summary>
 	/// 描画関数
@@ -50,16 +75,30 @@ public: // アクセッサ等
 	/// <param name="rtv">レンダーターゲットビュー</param>
 	/// <param name="srv">シェーダーリソースビュー</param>
 	/// <param name="dsv">深度ステンシルビュー</param>
-	void SetHeaps(RTV* rtv, SRV* srv, DSV* dsv, std::wstring vs, std::wstring ps);
+	void SetHeaps(RTV* rtv, SRV* srv, DSV* dsv);
 
+	/// <summary>
+	/// ワールド行列の書き込みアドレスゲッター
+	/// </summary>
+	/// <returns>ビュープロジェクション行列の書き込み用アドレス</returns>
+	Matrix4x4* const GetWorldMatrixAddress() const;
 
-	Matrix4x4* const GetViewProjection() const;
+	/// <summary>
+	/// ビュー行列の書き込みアドレスゲッター
+	/// </summary>
+	/// <returns>ビュープロジェクション行列の書き込み用アドレス</returns>
+	Matrix4x4* const GetViewMatrixAddress() const;
+
+	/// <summary>
+	/// ビュープロジェクション行列の書き込みアドレスゲッター
+	/// </summary>
+	/// <returns>ビュープロジェクション行列の書き込み用アドレス</returns>
+	Matrix4x4* const GetViewProjectionAddress() const;
 
 	/// <summary>
 	/// 描画データ登録関数
 	/// </summary>
-	/// <param name="primitive">頂点データ</param>
-	void SetDrawData(BasePrimitive* primitive);
+	void SetDrawData();
 
 	/// <summary>
 	/// コマンドキューのゲッター
@@ -120,10 +159,13 @@ private: // プライベートなメンバ関数
 	/// <param name="mipImages">ミップマップ付きテクスチャ</param>
 	void UploadTextureData(const DirectX::ScratchImage& mipImages);
 
+
+	bool ReadDataFile(LPCWSTR filename, byte** data, UINT* size);
+
 private: // メンバ変数
 
 	// DirectX12のデバイス
-	ID3D12Device* device_ = nullptr;
+	ID3D12Device2* device_ = nullptr;
 
 	// ディスクリプタヒープの本体
 	RTV* rtv_ = nullptr; // レンダーターゲットビュー
@@ -135,11 +177,11 @@ private: // メンバ変数
 	// コマンドアロケーター
 	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> commandAllocator_;
 	// コマンドリスト
-	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList>commandList_;
+	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList6>commandList_;
 
 	// 描画コマンド本体
 	// シャドウマップ等を行うと数が増減する可能性あり
-	std::vector<BaseCommand*> commands_;
+	std::vector<ICommand*> commands_;
 
 	// フェンス
 	Microsoft::WRL::ComPtr<ID3D12Fence> fence_; // 本体
@@ -150,37 +192,30 @@ private: // メンバ変数
 
 	// ルートシグネチャ
 	// 以下はテーブル番号
-	// 0 : バッファのインデックス情報
-	// 1 : 光源情報
-	// 2 : 頂点データ
-	// 3 : viewProjection行列
-	// 4 : worldTransform
-	// 5 : マテリアル情報
-	// 6 : テクスチャ
+	// 0 ... 汎用定数バッファ
+	// 1 ... インデックスバッファ
+	// 2 ... 頂点バッファ
+	// 3 ... メッシュレットバッファ
+	// 4 ... 固有頂点インデックスバッファ
+	// 5 ... プリミティブインデックスバッファ
 	Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature_;
 
-	// 平行光源バッファ
-	std::unique_ptr<LightBuffer> lightBuffer_;
+	// 汎用定数バッファ
+	Microsoft::WRL::ComPtr<ID3D12Resource> generalCBuffer_;
+	// 汎用定数バッファデータ
+	std::unique_ptr<GeneralCBuffer> generalCBufferData_;
+	// 定数バッファアクセス用のポインタ
+	UINT8* cBufferBegin_ = nullptr;
 
-	// 頂点データ
-	std::unique_ptr<VertexBuffer> vertexBuffer_; // 本体
-	const UINT kMaxVertex = 655360;				 // 頂点情報の最大数(今回は受け売りで設定)
-
-	// ビュープロジェクション行列バッファ
-	std::unique_ptr<MatrixBuffer> viewProjectionBuffer_; // 本体
-	const UINT kMaxVP = 2;
-	// ワールドトランスフォームバッファ
-	std::unique_ptr<MatrixBuffer> worldTransformBuffer_; // 本体
-	const UINT kMaxWorldTransform = 128000;				 // 行列最大数
-	// マテリアルバッファ
-	std::unique_ptr<MaterialBuffer> materialBuffer_; // 本体
-	const UINT kMaxMaterial = 12800;				 // マテリアル最大数
 	// テクスチャバッファ
 	std::unique_ptr<TextureBuffer> textureBuffer_; // 本体
 	const UINT kMaxTexture = 128;				   // テクスチャ最大数
 
 	// デフォルトテクスチャ
 	Texture* defaultTexture_;
+
+	// 読み込み用テスト
+	Model model_;
 
 };
 

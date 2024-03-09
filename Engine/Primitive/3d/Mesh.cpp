@@ -6,7 +6,7 @@
 #include <fstream>
 #include <sstream>
 
-void Mesh::LoadFile(const std::string& filePath, const std::string& fileName)
+void DMesh::LoadFile(const std::string& filePath, const std::string& fileName)
 {
 	// 頂点情報とインデックス情報をクリア
 	vertices_.clear(); // 頂点情報
@@ -16,7 +16,7 @@ void Mesh::LoadFile(const std::string& filePath, const std::string& fileName)
 	LoadObj(filePath, fileName);
 }
 
-void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
+void DMesh::LoadObj(const std::string& filePath, const std::string& fileName)
 {
 	// フルパスの合成
 	std::string fullPath = filePath + "/" + fileName;
@@ -135,7 +135,7 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 	}
 }
 
-void Mesh::LoadMaterial(const std::string& filePath, const std::string& fileName)
+void DMesh::LoadMaterial(const std::string& filePath, const std::string& fileName)
 {
 	// フルパスの合成
 	std::string fullPath = filePath + "/" + fileName;

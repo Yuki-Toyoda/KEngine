@@ -88,7 +88,7 @@ void DirectXDevice::Init()
 		// エラー時に停止する
 		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_ERROR, true);
 		// 警告時に停止する
-		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_WARNING, true);
+		//infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_WARNING, true);
 
 		// 抑制するエラーID
 		D3D12_MESSAGE_ID denyIds[] = {

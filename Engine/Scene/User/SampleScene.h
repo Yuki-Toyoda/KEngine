@@ -1,6 +1,7 @@
 #pragma once
 #include "../BaseScene.h"
 #include "../SceneList.h"
+#include "../../Primitive/3d/Model/Model.h"
 
 /// <summary>
 /// サンプルのシーン
