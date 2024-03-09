@@ -186,24 +186,7 @@ Matrix4x4* const CommandManager::GetViewProjectionAddress() const
 
 void CommandManager::SetDrawData()
 {
-	// コマンドリストに定数バッファをセットする
-	commandList_->SetGraphicsRootConstantBufferView(0, generalCBuffer_->GetGPUVirtualAddress() + sizeof(GeneralCBuffer) * rtv_->GetDescriptorSize());
-
-	// 
-	for (auto& mesh : model_)
-	{
-		commandList_->SetGraphicsRoot32BitConstant(1, mesh.IndexSize, 0);
-		commandList_->SetGraphicsRootShaderResourceView(2, mesh.VertexResources[0]->GetGPUVirtualAddress());
-		commandList_->SetGraphicsRootShaderResourceView(3, mesh.MeshletResource->GetGPUVirtualAddress());
-		commandList_->SetGraphicsRootShaderResourceView(4, mesh.UniqueVertexIndexResource->GetGPUVirtualAddress());
-		commandList_->SetGraphicsRootShaderResourceView(5, mesh.PrimitiveIndexResource->GetGPUVirtualAddress());
-
-		for (auto& subset : mesh.MeshletSubsets)
-		{
-			commandList_->SetGraphicsRoot32BitConstant(1, subset.offset_, 1);
-			commandList_->DispatchMesh(subset.count_, 1, 1);
-		}
-	}
+	
 }
 
 int CommandManager::createTextureResource(const DirectX::ScratchImage& image)
