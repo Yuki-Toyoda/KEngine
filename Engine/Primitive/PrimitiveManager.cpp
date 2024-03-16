@@ -45,6 +45,6 @@ void PrimitiveManager::Draw()
 {
 	// 全形状を描画
 	for (std::unique_ptr<IPrimitive>& primitive : primitives_) {
-		primitive->Draw(commandManager_);
+		primitive->Draw();
 	}	
 }

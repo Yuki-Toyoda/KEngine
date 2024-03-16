@@ -1,8 +1,9 @@
 #define ROOT_SIG_MS "CBV(b0), \
-                    SRV(t0), \
-                    SRV(t1), \
-                    SRV(t2), \
-                    SRV(t3)"
+                     CBV(b1), \
+                     SRV(t0), \
+                     SRV(t1), \
+                     SRV(t2), \
+                     SRV(t3)"
 
 struct Constants
 {

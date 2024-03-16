@@ -8,10 +8,14 @@
 #include "../../Math/Vector3.h"
 #include "../../Math/Vector4.h"
 #include "../../Math/Matrix4x4.h"
+#include "../../GameObject/WorldTransform.h"
 
 #include <wrl.h>
 #include <dxcapi.h>
 #pragma comment(lib, "dxcompiler.lib")
+
+// クラスの前方宣言
+class Mesh;
 
 /// <summary>
 /// 描画コマンドマネージャー
@@ -38,6 +42,23 @@ private: // サブクラス
 		Microsoft::WRL::ComPtr<ID3D12Resource> Resource; // バッファリソース
 		D3D12_GPU_VIRTUAL_ADDRESS View;					 // GPU上のアドレス
 		GeneralData* Data;								 // データ本体
+	};
+
+	/// <summary>
+	///  行列バッファ構造体
+	/// </summary>
+	struct MatrixBuffer {
+		Microsoft::WRL::ComPtr<ID3D12Resource> Resource;  // バッファリソース
+		D3D12_GPU_VIRTUAL_ADDRESS View{};				  // GPU上のハンドルを格納
+		Matrix4x4* mat;							          // 行列本体
+
+		// WorldTransformを=演算子で代入できるようにオーバーロード
+		MatrixBuffer& operator=(const WorldTransform& transform) {
+			// ワールド行列を取得
+			*mat = transform.GetMatWorld();
+			// 自身のポインタを返す
+			return *this;
+		}
 	};
 
 	/// <summary>
@@ -178,6 +199,17 @@ private: // プライベートなメンバ関数
 	/// <param name="mipImages">ミップマップ付きテクスチャ</param>
 	void UploadTextureData(const DirectX::ScratchImage& mipImages);
 
+	/// <summary>
+	/// シェーダーのコンパイルを行う関数
+	/// </summary>
+	/// <param name="filePath">compilerするSharderファイルへのパス</param>
+	/// <param name="profile">compilerに使用するprofile</param>
+	/// <param name="dxcUtils">dxcUtils</param>
+	/// <param name="dxcCompiler">dxcCompiler</param>
+	/// <param name="includeHandler">includeHandler</param>
+	/// <returns>コンパイル済みシェーダーのバイナリオブジェクト</returns>
+	IDxcBlob* CompileShader(const std::wstring& filePath, const wchar_t* profile);
+
 private: // メンバ変数
 
 	// DirectX12のデバイス
@@ -227,6 +259,14 @@ private: // メンバ変数
 
 	// デフォルトテクスチャ
 	Texture* defaultTexture_;
+
+	// バイナリオブジェクト格納用
+	Microsoft::WRL::ComPtr<IDxcBlob> meshShaderBlob_;
+
+	// テスト用メッシュ
+	Mesh* mesh_;
+	// メッシュ用ワールドトランスフォーム
+	WorldTransform transform_;
 
 };
 

@@ -39,6 +39,23 @@ struct Buffer {
 };
 
 /// <summary>
+///  行列バッファ構造体
+/// </summary>
+struct MatrixBuffer {
+	Microsoft::WRL::ComPtr<ID3D12Resource> Resource;  // バッファリソース
+	D3D12_GPU_VIRTUAL_ADDRESS View{};				  // GPU上のハンドルを格納
+	Matrix4x4* mat;							          // 行列本体
+
+	// WorldTransformを=演算子で代入できるようにオーバーロード
+	MatrixBuffer& operator=(const WorldTransform& transform) {
+		// ワールド行列を取得
+		*mat = transform.GetMatWorld();
+		// 自身のポインタを返す
+		return *this;
+	}
+};
+
+/// <summary>
 /// 形状情報の基底クラス
 /// </summary>
 class IPrimitive
@@ -117,6 +134,11 @@ public: // アクセッサ等
 	/// </summary>
 	/// <returns></returns>
 	virtual int GetIndexCount() const;
+	/// <summary>
+	/// メッシュレット数ゲッター
+	/// </summary>
+	/// <returns>メッシュレット数</returns>
+	virtual int GetMeshletCount() const;
 
 public: // パブリックなメンバ変数
 
@@ -137,6 +159,8 @@ public: // パブリックなメンバ変数
 	std::vector<uint8_t>				  uniqueVertices_;
 	std::vector<DirectX::MeshletTriangle> primitiveIndices_;
 
+	// ワールドトランスフォームバッファ
+	std::unique_ptr<MatrixBuffer> worldTransformBuffer_;
 	// 頂点バッファ
 	std::unique_ptr<Buffer> vertexBuffer_;
 	// メッシュレットバッファ
@@ -148,6 +172,8 @@ public: // パブリックなメンバ変数
 
 	// 描画中心座標
 	WorldTransform* transform_;
+
+	Matrix4x4 matWorld_;
 
 	// マテリアル
 	Material material_;

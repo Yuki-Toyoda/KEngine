@@ -1,5 +1,6 @@
 #include "IPrimitive.h"
 #include "../Base/Command/CommandManager.h"
+#include "../GameObject/WorldTransform.h"
 
 IPrimitive::IPrimitive(CommandManager* manager)
 {
@@ -39,10 +40,15 @@ void IPrimitive::Draw()
 	// コマンドリストの取得
 	ID3D12GraphicsCommandList* cmdList = cmdManager_->GetRenderCommandList();
 
-	cmdList->SetGraphicsRootShaderResourceView(1, vertexBuffer_->View);
-	cmdList->SetGraphicsRootShaderResourceView(2, meshletBuffer_->View);
-	cmdList->SetGraphicsRootShaderResourceView(3, uniqueVertexBuffer_->View);
-	cmdList->SetGraphicsRootShaderResourceView(4, primitiveVertexBuffer_->View);
+	// トランスフォームをバッファにセット
+	matWorld_ = transform_->GetMatWorld();
+	worldTransformBuffer_->mat = &matWorld_;
+
+	cmdList->SetGraphicsRootConstantBufferView(1, worldTransformBuffer_->View);
+	cmdList->SetGraphicsRootShaderResourceView(2, vertexBuffer_->View);
+	cmdList->SetGraphicsRootShaderResourceView(3, meshletBuffer_->View);
+	cmdList->SetGraphicsRootShaderResourceView(4, uniqueVertexBuffer_->View);
+	cmdList->SetGraphicsRootShaderResourceView(5, primitiveVertexBuffer_->View);
 }
 
 void IPrimitive::DisplayImGui()
@@ -114,4 +120,9 @@ int IPrimitive::GetVertexCount() const
 int IPrimitive::GetIndexCount() const
 {
 	return (GetVertexCount() - 2) * 3; // インデックス情報の数を求めて返す
+}
+
+int IPrimitive::GetMeshletCount() const
+{
+	return static_cast<int>(meshlets_.size());
 }

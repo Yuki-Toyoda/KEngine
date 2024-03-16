@@ -35,6 +35,7 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 	else { // 読み込まれていなかった場合は読み込む
 
 		// バッファリソースの生成
+		worldTransformBuffer_ = std::make_unique<MatrixBuffer>(); // ワールドトランスフォームバッファ
 		vertexBuffer_		   = std::make_unique<Buffer>(); // 頂点バッファ
 		meshletBuffer_		   = std::make_unique<Buffer>(); // メッシュレットバッファ
 		uniqueVertexBuffer_    = std::make_unique<Buffer>(); // 固有頂点バッファ
@@ -47,6 +48,8 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 		std::vector<DirectX::XMFLOAT3> positions; // 位置
 		std::vector<DirectX::XMFLOAT2> texcoords; // テクスチャ座標
 		std::vector<DirectX::XMFLOAT3> normals;	  // 法線
+
+		std::vector<uint32_t> verticesPositions;
 
 		// ファイルを開く
 		std::ifstream file(fullPath); // ファイルを開く
@@ -97,6 +100,10 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 					for (int32_t i = 0; i < 3; i++) {
 						std::getline(v, elements[i], '/'); // それぞれの要素を取得
 					}
+
+					// 頂点インデックスの位置情報のみを格納
+
+					verticesPositions.push_back((std::stoi(elements[0]) - 1));
 
 					// 実際に頂点を追加する前に追加する頂点が新しいデータかどうかチェック
 					int indexInfo = key[std::stoi(elements[0])][std::stoi(elements[1])][std::stoi(elements[2])]; // インデックス情報を取得
@@ -155,7 +162,7 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 		HRESULT result = S_FALSE;
 		// 読み込んだモデルデータをメッシュレットに変換する
 		result = DirectX::ComputeMeshlets(
-			indexes_.data(), indexes_.size() / 3,
+			verticesPositions.data(), verticesPositions.size() / 3,
 			positions.data(), positions.size(),
 			nullptr,
 			meshlets_,
@@ -174,11 +181,16 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 		commonDesc.Buffer.Flags			   = D3D12_BUFFER_SRV_FLAG_NONE;			   // フラッグ設定
 		
 		/// バッファのリソース生成
+		// ワールドトランスフォームバッファ
+		worldTransformBuffer_->Resource = CreateBuffer(sizeof(Matrix4x4));
+		worldTransformBuffer_->Resource->Map(0, nullptr, reinterpret_cast<void**>(&worldTransformBuffer_->mat)); // 生成したバッファのマッピングを行う
+		worldTransformBuffer_->View = worldTransformBuffer_->Resource->GetGPUVirtualAddress();					  // GPU上のアドレスの取得
+
 		// 頂点バッファ
 		vertexBuffer_->Resource = CreateBuffer(sizeof(VertexData) * vertices_.size());
 		vertexBuffer_->Resource->Map(0, nullptr, reinterpret_cast<void**>(&vertices_));
 		D3D12_SHADER_RESOURCE_VIEW_DESC vertexDesc = { commonDesc };
-		vertexDesc.Buffer.NumElements = vertices_.size();
+		vertexDesc.Buffer.NumElements = static_cast<UINT>(vertices_.size());
 		vertexDesc.Buffer.StructureByteStride = sizeof(VertexData);
 		vertexBuffer_->View = vertexBuffer_->Resource->GetGPUVirtualAddress();
 		cmdManager_->GetDevice()->CreateShaderResourceView(vertexBuffer_->Resource.Get(), &vertexDesc, cmdManager_->GetSRV()->GetCPUHandle(cmdManager_->GetSRV()->GetUsedCount()));
@@ -188,7 +200,7 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 		meshletBuffer_->Resource = CreateBuffer(sizeof(DirectX::Meshlet) * meshlets_.size());
 		meshletBuffer_->Resource->Map(0, nullptr, reinterpret_cast<void**>(&meshlets_));
 		D3D12_SHADER_RESOURCE_VIEW_DESC meshletDesc = { commonDesc };
-		meshletDesc.Buffer.NumElements = meshlets_.size();
+		meshletDesc.Buffer.NumElements = static_cast<UINT>(meshlets_.size());
 		meshletDesc.Buffer.StructureByteStride = sizeof(DirectX::Meshlet);
 		meshletBuffer_->View = meshletBuffer_->Resource->GetGPUVirtualAddress();
 		cmdManager_->GetDevice()->CreateShaderResourceView(meshletBuffer_->Resource.Get(), &meshletDesc, cmdManager_->GetSRV()->GetCPUHandle(cmdManager_->GetSRV()->GetUsedCount()));
@@ -198,7 +210,7 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 		uniqueVertexBuffer_->Resource = CreateBuffer(sizeof(uint8_t) * uniqueVertices_.size());
 		uniqueVertexBuffer_->Resource->Map(0, nullptr, reinterpret_cast<void**>(&uniqueVertices_));
 		D3D12_SHADER_RESOURCE_VIEW_DESC uniqueVertexDesc = { commonDesc };
-		uniqueVertexDesc.Buffer.NumElements = uniqueVertices_.size();
+		uniqueVertexDesc.Buffer.NumElements = static_cast<UINT>(uniqueVertices_.size());
 		uniqueVertexDesc.Buffer.StructureByteStride = sizeof(uint8_t);
 		uniqueVertexBuffer_->View = uniqueVertexBuffer_->Resource->GetGPUVirtualAddress();
 		cmdManager_->GetDevice()->CreateShaderResourceView(uniqueVertexBuffer_->Resource.Get(), &meshletDesc, cmdManager_->GetSRV()->GetCPUHandle(cmdManager_->GetSRV()->GetUsedCount()));
@@ -208,7 +220,7 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 		primitiveVertexBuffer_->Resource = CreateBuffer(sizeof(DirectX::MeshletTriangle) * primitiveIndices_.size());
 		primitiveVertexBuffer_->Resource->Map(0, nullptr, reinterpret_cast<void**>(&primitiveIndices_));
 		D3D12_SHADER_RESOURCE_VIEW_DESC primitiveVertexDesc = { commonDesc };
-		primitiveVertexDesc.Buffer.NumElements = primitiveIndices_.size();
+		primitiveVertexDesc.Buffer.NumElements = static_cast<UINT>(primitiveIndices_.size());
 		primitiveVertexDesc.Buffer.StructureByteStride = sizeof(DirectX::MeshletTriangle);
 		primitiveVertexBuffer_->View = primitiveVertexBuffer_->Resource->GetGPUVirtualAddress();
 		cmdManager_->GetDevice()->CreateShaderResourceView(primitiveVertexBuffer_->Resource.Get(), &meshletDesc, cmdManager_->GetSRV()->GetCPUHandle(cmdManager_->GetSRV()->GetUsedCount()));

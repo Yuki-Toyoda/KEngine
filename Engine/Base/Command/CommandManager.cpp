@@ -6,6 +6,8 @@
 #include "../WinApp.h"
 #include <d3dcompiler.h>
 
+#include "../../Primitive/3d/Mesh.h"
+
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
 
@@ -36,6 +38,14 @@ void CommandManager::Init(ID3D12Device2* device)
 	// HLSLコードコンパイラの生成
 	InitializeDXC();
 	
+	// 引数パスのシェーダーをコンパイルする
+	meshShaderBlob_ = CompileShader(L"Engine/Resource/Shader/MeshletMS.hlsl", L"ms_6_5");
+
+	// ルートシグネチャの生成
+	CreateRootSignature();
+
+	// バッファを生成
+	CreateBuffers();
 }
 
 void CommandManager::DrawCall()
@@ -62,8 +72,10 @@ void CommandManager::DrawCall()
 		// ルートシグネチャにバッファをセットする
 		cmdList->SetGraphicsRootConstantBufferView(0, generalCBuffer_->View);
 
+		mesh_->Draw();
+
 		// メッシュシェーダーを実行
-		commandList_->DispatchMesh(0, 1, 1);
+		commandList_->DispatchMesh(mesh_->GetMeshletCount(), 1, 1);
 
 		// メイン描画コマンドの場合処理を一旦抜ける
 		if (i == (int)commands_.size() - 1) {
@@ -158,14 +170,21 @@ void CommandManager::SetHeaps(RTV* rtv, SRV* srv, DSV* dsv)
 		commands_[i]->Init(device_, dxc_.get(), rootSignature_.Get()); // 初期化
 	}
 
-	// ルートシグネチャの生成
-	CreateRootSignature();
-
-	// バッファを生成
-	CreateBuffers();
-
 	// サンプルテクスチャの読み込み
 	//defaultTexture_ = TextureManager::Load("white2x2.png");
+
+	// メッシュ生成
+	mesh_ = new Mesh(this);
+	// コマンドマネージャーをセット
+	mesh_->SetCommandManager(this);
+	// メッシュのロード
+	mesh_->LoadFile("./Engine/Resource/Samples/Box", "Box.obj");
+
+	// トランスフォーム初期化
+	transform_.Init();
+	// メッシュにトランスフォームを渡す
+	mesh_->transform_ = &transform_;
+
 }
 
 Matrix4x4* const CommandManager::GetWorldMatrixAddress() const
@@ -232,7 +251,7 @@ void CommandManager::CreateRootSignature()
 	HRESULT result = S_FALSE;
 
 	//シェーダーバイナリからRootSignatureの部分をフェッチ
-	result = D3DGetBlobPart(commands_[0]->GetShaderBlob()->GetBufferPointer(), commands_[0]->GetShaderBlob()->GetBufferSize(), D3D_BLOB_ROOT_SIGNATURE, 0, &signatureBlob_);
+	result = D3DGetBlobPart(meshShaderBlob_->GetBufferPointer(), meshShaderBlob_->GetBufferSize(), D3D_BLOB_ROOT_SIGNATURE, 0, &signatureBlob_);
 	// フェッチ出来たか確認
 	assert(SUCCEEDED(result));
 
@@ -248,6 +267,7 @@ void CommandManager::CreateBuffers()
 	generalCBuffer_->Resource = CreateBuffer(sizeof(GeneralData));								  // バッファの生成
 	generalCBuffer_->Resource->Map(0, nullptr, reinterpret_cast<void**>(&generalCBuffer_->Data)); // 生成したバッファのマッピングを行う
 	generalCBuffer_->View = generalCBuffer_->Resource->GetGPUVirtualAddress();					  // GPU上のアドレスの取得
+	generalCBuffer_->Data->DrawMeshlets = true;
 
 	// テクスチャデータ
 	textureBuffer_ = std::make_unique<TextureBuffer>();
@@ -357,4 +377,75 @@ void CommandManager::UploadTextureData(const DirectX::ScratchImage& mipImages)
 	}
 	// SRVの生成
 	device_->CreateShaderResourceView(textureBuffer_->Resource[textureBuffer_->UsedCount].Get(), &srvDesc, textureSRVHandleCPU);
+}
+
+IDxcBlob* CommandManager::CompileShader(const std::wstring& filePath, const wchar_t* profile)
+{
+	// 結果確認用
+	HRESULT result = S_FALSE;
+
+	// シェーダーコンパイルの開始をログに出す
+	Debug::Log(Debug::ConvertString(std::format(L"Begin CompileShader, path:{}, profile{}\n", filePath, profile)));
+
+	// HLSLファイルを読み込む
+	IDxcBlobEncoding* shaderSource = nullptr;
+	result = dxc_->dxcUtils_->LoadFile(filePath.c_str(), nullptr, &shaderSource);
+	// 読み込み出来ているかを確認する
+	assert(SUCCEEDED(result));
+
+	// 読み込んだファイルの内容の設定を行う
+	DxcBuffer shaderSourceBuffer;
+	shaderSourceBuffer.Ptr = shaderSource->GetBufferPointer();
+	shaderSourceBuffer.Size = shaderSource->GetBufferSize();
+	// UTF-8形式の文字コードとして設定する
+	shaderSourceBuffer.Encoding = DXC_CP_UTF8;
+
+	// コンパイルオプションの設定を行う
+	LPCWSTR arguments[] = {
+		filePath.c_str(), // コンパイル対象のhlslファイル名
+		L"-E", L"main", // エントリーポイントの指定 基本的にmain以外にはしない
+		L"-T", profile, // shaderProfileの設定
+		L"-Zi", L"-Qembed_debug", // デバック用の情報埋め込み
+		L"-Od", // 最適化を外す
+		L"-Zpr", // メモリレイアウトは行優先
+	};
+
+	// 実際にシェーダーのコンパイルを行う
+	IDxcResult* shaderResult = nullptr;
+	result = dxc_->dxcCompiler_->Compile(
+		&shaderSourceBuffer,             // 読み込んだファイル
+		arguments,                       // コンパイルオプション
+		_countof(arguments),             // コンパイルオプションの数
+		dxc_->dxcIncludeHandler_.Get(),  // include が含まれた諸々
+		IID_PPV_ARGS(&shaderResult)      // コンパイル結果
+	);
+
+	// ここで吐くエラーはコンパイルエラーではなく、dxcが起動できないなどの致命的なもの
+	assert(SUCCEEDED(result));
+
+	// 警告やエラーが出た場合にはログに出して停止させる
+	IDxcBlobUtf8* shaderError = nullptr;
+	shaderResult->GetOutput(DXC_OUT_ERRORS, IID_PPV_ARGS(&shaderError), nullptr);
+	if (shaderError != nullptr && shaderError->GetStringLength() != 0) {
+		// ログに警告、エラー情報を出力する
+		Debug::Log(shaderError->GetStringPointer());
+		// 警告やエラーが出ている場合停止させる
+		assert(false);
+	}
+
+	// コンパイル結果から実行用のバイナリ部分を取得する
+	IDxcBlob* shaderBlob = nullptr;
+	result = shaderResult->GetOutput(DXC_OUT_OBJECT, IID_PPV_ARGS(&shaderBlob), nullptr);
+	// 取得出来たか確認する
+	assert(SUCCEEDED(result));
+
+	// 成功したことをログに出力
+	Debug::Log(Debug::ConvertString(std::format(L"Compile Succeeded, path:{}, profile{}\n", filePath, profile)));
+
+	// 使わないリソースの解放を行う
+	shaderSource->Release();
+	shaderResult->Release();
+
+	// 実行用のバイナリを返す
+	return shaderBlob;
 }

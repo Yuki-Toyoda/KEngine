@@ -1,6 +1,7 @@
 #include "Meshlet.hlsli"
 
 ConstantBuffer<Constants> Globals : register(b0);
+float4x4 Object : register(b1);
 
 StructuredBuffer<Vertex> Vertices : register(t0);
 StructuredBuffer<Meshlet> Meshlets : register(t1);
@@ -41,9 +42,9 @@ VertexOutPut GetVertexAttribute(uint vertexIndex, uint meshletIndex)
     Vertex v = Vertices[vertexIndex];
 
     VertexOutPut vout;
-    vout.PositionVS = mul(float4(v.Position, 1), Globals.WorldView).xyz;
+    vout.PositionVS = mul(mul(float4(v.Position, 1), Object), Globals.WorldViewProj).xyz;
     vout.PositionHS = mul(float4(v.Position, 1), Globals.WorldViewProj);
-    vout.Normal = mul(float4(v.Normal, 0), Globals.World).xyz;
+    vout.Normal = normalize(mul(v.Normal, (float3x3) Globals.World));
     vout.MeshletIndex = meshletIndex;
 
     return vout;
