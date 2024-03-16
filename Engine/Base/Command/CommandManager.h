@@ -8,7 +8,6 @@
 #include "../../Math/Vector3.h"
 #include "../../Math/Vector4.h"
 #include "../../Math/Matrix4x4.h"
-#include "../../Primitive/3d/Model/Model.h"
 
 #include <wrl.h>
 #include <dxcapi.h>
@@ -21,9 +20,10 @@ class CommandManager
 {
 private: // サブクラス
 
-	// <para>汎用定数バッファ</para>
-	struct GeneralCBuffer
-	{
+	/// <summary>
+	/// 汎用データ
+	/// </summary>
+	struct GeneralData {
 		Matrix4x4 World;		 // ワールド行列
 		Matrix4x4 WorldView;	 // ビュー行列
 		Matrix4x4 WorldViewProj; // 射影変換行列
@@ -31,12 +31,22 @@ private: // サブクラス
 	};
 
 	/// <summary>
+	/// 汎用定数バッファ
+	/// </summary>
+	struct GeneralCBuffer
+	{
+		Microsoft::WRL::ComPtr<ID3D12Resource> Resource; // バッファリソース
+		D3D12_GPU_VIRTUAL_ADDRESS View;					 // GPU上のアドレス
+		GeneralData* Data;								 // データ本体
+	};
+
+	/// <summary>
 	/// テクスチャバッファ構造体
 	/// </summary>
 	struct TextureBuffer {
-		std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> resource; // バッファリソース
-		D3D12_GPU_DESCRIPTOR_HANDLE view{};							  // GPU上のハンドルを格納
-		UINT usedCount = 0;											  // 使用中のインデックスバッファの数
+		std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> Resource; // バッファリソース
+		D3D12_GPU_DESCRIPTOR_HANDLE View{};							  // GPU上のハンドルを格納
+		UINT UsedCount = 0;											  // 使用中のインデックスバッファの数
 	};
 
 public: // メンバ関数
@@ -70,12 +80,21 @@ public: // メンバ関数
 public: // アクセッサ等
 
 	/// <summary>
+	/// デバイスゲッター
+	/// </summary>
+	ID3D12Device* GetDevice() { return device_; }
+
+	/// <summary>
 	/// ディスクリプタヒープのセッター
 	/// </summary>
 	/// <param name="rtv">レンダーターゲットビュー</param>
 	/// <param name="srv">シェーダーリソースビュー</param>
 	/// <param name="dsv">深度ステンシルビュー</param>
 	void SetHeaps(RTV* rtv, SRV* srv, DSV* dsv);
+	/// <summary>
+	/// SRVヒープゲッター
+	/// </summary>
+	SRV* GetSRV() { return srv_; }
 
 	/// <summary>
 	/// ワールド行列の書き込みアドレスゲッター
@@ -139,7 +158,7 @@ private: // プライベートなメンバ関数
 	/// <summary>
 	/// ストラクチャーバッファ生成関数
 	/// </summary>
-	void CreateStructuredBuffer();
+	void CreateBuffers();
 	/// <summary>
 	/// 任意サイズのバッファ生成関数
 	/// </summary>
@@ -158,9 +177,6 @@ private: // プライベートなメンバ関数
 	/// </summary>
 	/// <param name="mipImages">ミップマップ付きテクスチャ</param>
 	void UploadTextureData(const DirectX::ScratchImage& mipImages);
-
-
-	bool ReadDataFile(LPCWSTR filename, byte** data, UINT* size);
 
 private: // メンバ変数
 
@@ -190,6 +206,8 @@ private: // メンバ変数
 	// DXCコンパイラ
 	std::unique_ptr<DXC> dxc_;
 
+	// シェーダーバイナリからRootSignature部分を保持するバイナリオブジェクト
+	Microsoft::WRL::ComPtr<ID3DBlob> signatureBlob_;
 	// ルートシグネチャ
 	// 以下はテーブル番号
 	// 0 ... 汎用定数バッファ
@@ -200,12 +218,8 @@ private: // メンバ変数
 	// 5 ... プリミティブインデックスバッファ
 	Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature_;
 
-	// 汎用定数バッファ
-	Microsoft::WRL::ComPtr<ID3D12Resource> generalCBuffer_;
 	// 汎用定数バッファデータ
-	std::unique_ptr<GeneralCBuffer> generalCBufferData_;
-	// 定数バッファアクセス用のポインタ
-	UINT8* cBufferBegin_ = nullptr;
+	std::unique_ptr<GeneralCBuffer> generalCBuffer_;
 
 	// テクスチャバッファ
 	std::unique_ptr<TextureBuffer> textureBuffer_; // 本体
@@ -213,9 +227,6 @@ private: // メンバ変数
 
 	// デフォルトテクスチャ
 	Texture* defaultTexture_;
-
-	// 読み込み用テスト
-	Model model_;
 
 };
 

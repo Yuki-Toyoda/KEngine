@@ -24,7 +24,7 @@ public: // コンストラクタ等
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	/// <param name="v">他の4次元ベクトル</param>
+	/// <param name="v_">他の4次元ベクトル</param>
 	Vector4(const Vector4& v) noexcept;
 
 	// 既定のデストラクタを使用する

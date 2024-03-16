@@ -3,7 +3,7 @@
 BaseObject::~BaseObject()
 {
 	// 全形状を削除
-	for (BasePrimitive* primitive : meshes_)
+	for (IPrimitive* primitive : meshes_)
 		primitive->isDestroy_ = true;
 	// 全スプライトを削除
 	for (Sprite* sprite : sprites_)
@@ -62,14 +62,14 @@ void BaseObject::PreUpdate()
 	if (transform_.rotate_.z <= -(float)std::numbers::pi * 2.0f) {
 		transform_.rotate_.z += (float)std::numbers::pi * 2.0f;
 	}
-	
+
 	if (!isActive_) {
-		for (BasePrimitive* m : meshes_) {
+		for (IPrimitive* m : meshes_) {
 			m->isActive_ = false;
 		}
 	}
 	else {
-		for (BasePrimitive* m : meshes_) {
+		for (IPrimitive* m : meshes_) {
 			m->isActive_ = true;
 		}
 	}
@@ -97,10 +97,10 @@ void BaseObject::DisplayImGui()
 	if (meshes_.size() > 0) {
 		ImGui::Text("Meshes");
 		ImGui::BeginChild("Meshes", ImVec2(0, 300), ImGuiWindowFlags_NoTitleBar);
-		for (BasePrimitive* p : meshes_) {
+		for (IPrimitive* p : meshes_) {
 			p->DisplayImGui();
 		}
-		ImGui::EndChild();	
+		ImGui::EndChild();
 	}
 
 	// スプライト情報があれば
@@ -130,17 +130,23 @@ void BaseObject::AddMesh(WorldTransform* wt, Vector4& color, const std::string& 
 	if (primitiveManager_ == nullptr)
 		primitiveManager_ = PrimitiveManager::GetInstance();
 
-	// メッシュのインスタンスを生成
-	DMesh* newMesh = primitiveManager_->CreateInstance<DMesh>(); // インスタンス生成
-	newMesh->name_ = fileName;								   // 1メッシュ名をファイル名に
-	newMesh->LoadFile(path, fileName);						   // モデルを読み込み
-	newMesh->transform_ = wt;								   // ワールドトランスフォームを与える
-	newMesh->commonColor = &color;							   // 色を設定
-	newMesh->material_.enableLighting_ = enableLighting;	   // ライティングの有効設定
-	newMesh->layerNo_ = 1;
+	wt;
+	color;
+	path;
+	fileName;
+	enableLighting;
 
-	// メッシュリストに生成メッシュを追加
-	meshes_.push_back(newMesh);
+	//// メッシュのインスタンスを生成
+	//DMesh* newMesh = primitiveManager_->CreateInstance<DMesh>(); // インスタンス生成
+	//newMesh->name_ = fileName;								   // 1メッシュ名をファイル名に
+	//newMesh->LoadFile(path, fileName);						   // モデルを読み込み
+	//newMesh->transform_ = wt;								   // ワールドトランスフォームを与える
+	//newMesh->commonColor = &color;							   // 色を設定
+	//newMesh->material_.enableLighting_ = enableLighting;	   // ライティングの有効設定
+	//newMesh->layerNo_ = 1;
+
+	//// メッシュリストに生成メッシュを追加
+	//meshes_.push_back(newMesh);
 }
 
 void BaseObject::AddSprite(const std::string& name, const Vector2& position, const Vector2& size, Texture* texture)
@@ -211,6 +217,6 @@ void BaseObject::DeleteCollider(const std::string& name)
 			return true;
 		}
 		return false;
-	});
+		});
 }
 

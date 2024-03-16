@@ -26,7 +26,7 @@ public: // メンバ関数
 	/// <param name="device">DirectX12のデバイス</param>
 	/// <param name="dxc">hlslコード変換用</param>
 	/// <param name="signature">ルートシグネチャ</param>
-	/// <param name="resource">インデックスバッファリソース</param>
+	/// <param name="Resource">インデックスバッファリソース</param>
 	/// <param name="vs">使用する頂点シェーダ</param>
 	/// <param name="ps">使用するピクセルシェーダ</param>
 	void Init(ID3D12Device2* device, DXC* dxc, ID3D12RootSignature* signature, int32_t blendType = 0);
@@ -54,11 +54,11 @@ public: // メンバ関数
 	/// <summary>
 	/// リソースバリア設定関数
 	/// </summary>
-	/// <param name="resource">バリアを張るリソース</param>
+	/// <param name="Resource">バリアを張るリソース</param>
 	/// <param name="stateBefore">遷移前のリソース状態</param>
 	/// <param name="stateAfter">遷移後のリソース状態</param>
 	/// <returns>リソースバリアの設定</returns>
-	D3D12_RESOURCE_BARRIER SettingResourceBarrier(ID3D12Resource* resource, D3D12_RESOURCE_STATES stateBefore, D3D12_RESOURCE_STATES stateAfter);
+	D3D12_RESOURCE_BARRIER SettingResourceBarrier(ID3D12Resource* Resource, D3D12_RESOURCE_STATES stateBefore, D3D12_RESOURCE_STATES stateAfter);
 
 public: // アクセッサ等
 

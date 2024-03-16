@@ -31,7 +31,7 @@ void IParticle::PreInit(float aliveTime, const Vector3& position, const Vector2&
 	plane_->transform_ = &transform_;											// トランスフォーム設定
 	plane_->commonColor = &color_;												// 色設定
 	plane_->texture_ = texture;													// テクスチャ設定
-	plane_->primitiveType_ = BasePrimitive::kModelParticle;						// 描画タイプ設定
+	plane_->primitiveType_ = IPrimitive::kModelParticle;						// 描画タイプ設定
 	plane_->SetMainCamera(GameObjectManager::GetInstance()->GetUseCamera());	// 使用中カメラをセット
 	texSize_ = plane_->texture_->GetTextureSize();
 

@@ -1,12 +1,14 @@
 #include "Mesh.h"
 #include "../../Resource/Texture/TextureManager.h"
 #include "MeshManager.h"
+#include "../../Base/Command/CommandManager.h"
+#include "../../Base/DescriptorHeaps/SRV.h"
 
 #include <map>
 #include <fstream>
 #include <sstream>
 
-void DMesh::LoadFile(const std::string& filePath, const std::string& fileName)
+void Mesh::LoadFile(const std::string& filePath, const std::string& fileName)
 {
 	// 頂点情報とインデックス情報をクリア
 	vertices_.clear(); // 頂点情報
@@ -16,7 +18,7 @@ void DMesh::LoadFile(const std::string& filePath, const std::string& fileName)
 	LoadObj(filePath, fileName);
 }
 
-void DMesh::LoadObj(const std::string& filePath, const std::string& fileName)
+void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 {
 	// フルパスの合成
 	std::string fullPath = filePath + "/" + fileName;
@@ -27,17 +29,24 @@ void DMesh::LoadObj(const std::string& filePath, const std::string& fileName)
 	// 頂点マップ内を探索し同名のファイルパスのメッシュが読み込まれているか確認
 	if (meshManaer->meshVertexMap_.count(filePath)){
 		// 読み込まれていた場合は各種情報を渡す
-		vertices_ = meshManaer->meshVertexMap_[filePath]; // 頂点
-		indexes_ = meshManaer->meshIndexMap_[filePath];	  // インデックス
+		//vertices_ = meshManaer->meshVertexMap_[filePath]; // 頂点
+		//indexes_ = meshManaer->meshIndexMap_[filePath];	  // インデックス
 	}
 	else { // 読み込まれていなかった場合は読み込む
+
+		// バッファリソースの生成
+		vertexBuffer_		   = std::make_unique<Buffer>(); // 頂点バッファ
+		meshletBuffer_		   = std::make_unique<Buffer>(); // メッシュレットバッファ
+		uniqueVertexBuffer_    = std::make_unique<Buffer>(); // 固有頂点バッファ
+		primitiveVertexBuffer_ = std::make_unique<Buffer>(); // プリミティブ頂点バッファ
+
 		// インデックス情報を登録するための3次元配列
 		std::map<int, std::map<int, std::map<int, int>>> key;
 
 		// 頂点情報の格納ための変数生成
-		std::vector<Vector3> positions; // 位置
-		std::vector<Vector2> texcoords; // テクスチャ座標
-		std::vector<Vector3> normals;	// 法線
+		std::vector<DirectX::XMFLOAT3> positions; // 位置
+		std::vector<DirectX::XMFLOAT2> texcoords; // テクスチャ座標
+		std::vector<DirectX::XMFLOAT3> normals;	  // 法線
 
 		// ファイルを開く
 		std::ifstream file(fullPath); // ファイルを開く
@@ -58,19 +67,19 @@ void DMesh::LoadObj(const std::string& filePath, const std::string& fileName)
 
 			// 頂点データ登録
 			if (identifier == "v") {
-				Vector3 position;							 // 読み込み情報格納用
+				DirectX::XMFLOAT3 position;					 // 読み込み情報格納用
 				s >> position.x >> position.y >> position.z; // その行から情報を読み込み
 				positions.push_back(position);				 // 読み込んだ情報を配列を格納
 			}
 			// テクスチャ座標登録
 			else if (identifier == "vt") {
-				Vector2 texcoord;			   // 読み込み情報格納用
+				DirectX::XMFLOAT2 texcoord;	   // 読み込み情報格納用
 				s >> texcoord.x >> texcoord.y; // その行から情報を読み込み
 				texcoords.push_back(texcoord); // 読み込んだ情報を配列を格納
 			}
 			// 法線登録
 			else if (identifier == "vn") {
-				Vector3 normal;						   // 読み込み情報格納用
+				DirectX::XMFLOAT3 normal;			   // 読み込み情報格納用
 				s >> normal.x >> normal.y >> normal.z; // その行から情報を読み込み
 				normals.push_back(normal);			   // 読み込んだ情報を配列を格納
 			}
@@ -96,7 +105,7 @@ void DMesh::LoadObj(const std::string& filePath, const std::string& fileName)
 						indexes_.push_back(static_cast<uint32_t> (indexInfo - 1)); // パターンが見つかった場合のインデックス
 					// 新しいパターンの場合は新しく頂点を追加、インデックスも追加
 					else {
-						Vertex newVertex; // 新しい頂点の構造体を宣言
+						VertexData newVertex; // 新しい頂点の構造体を宣言
 						newVertex.position = positions[std::stoi(elements[0]) - 1]; // 頂点
 						newVertex.texCoord = texcoords[std::stoi(elements[1]) - 1]; // テクスチャ座標
 						newVertex.normal = normals[std::stoi(elements[2]) - 1];		// 法線
@@ -106,8 +115,20 @@ void DMesh::LoadObj(const std::string& filePath, const std::string& fileName)
 						newVertex.texCoord.y = 1.0f - newVertex.texCoord.y; // テクスチャ座標を反転
 						newVertex.normal.x *= -1.0f;						// 法線の向きを反転
 
-						// 頂点を追加
-						vertices_.push_back(newVertex);
+						// 読み込んだ頂点座標を任意の形式で受け取る
+						DirectX::XMFLOAT3 vertexPosition = { newVertex.position.x, newVertex.position.y, newVertex.position.z };
+						DirectX::XMFLOAT2 vertexTexCoord = { newVertex.texCoord.x, newVertex.texCoord.y };
+						DirectX::XMFLOAT3 vertexNormal = { newVertex.normal.x, newVertex.normal.y, newVertex.normal.z };
+
+						// 
+						VertexData newData = {
+							vertexPosition,
+							vertexTexCoord,
+							vertexNormal
+						};
+						// 配列に追加
+						vertices_.push_back(newData);
+
 						// インデックスを登録
 						indexes_.push_back(static_cast<uint32_t> (vertices_.size() - 1));
 
@@ -130,12 +151,72 @@ void DMesh::LoadObj(const std::string& filePath, const std::string& fileName)
 		for (size_t i = 0; i < indexes_.size(); i += 3)
 			std::swap(indexes_[i], indexes_[i + 2]); // 0番目と2番目の要素を入れ替え、反転させる
 
-		// 今回読み込んだモデルのフルパスと各種情報を保存
-		meshManaer->AddInfo(fullPath, vertices_, indexes_);
+		// メッシュレットの変換成否確認用
+		HRESULT result = S_FALSE;
+		// 読み込んだモデルデータをメッシュレットに変換する
+		result = DirectX::ComputeMeshlets(
+			indexes_.data(), indexes_.size() / 3,
+			positions.data(), positions.size(),
+			nullptr,
+			meshlets_,
+			uniqueVertices_,
+			primitiveIndices_
+		);
+		// 変換成否確認
+		assert(SUCCEEDED(result));
+
+		// 共通のSRV用Desc
+		D3D12_SHADER_RESOURCE_VIEW_DESC commonDesc{};								   // 汎用設定用
+		commonDesc.Format				   = DXGI_FORMAT_UNKNOWN;					   // フォーマット形式は不明
+		commonDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING; // シェーダーからテクスチャにアクセスする際の値指定 
+		commonDesc.ViewDimension		   = D3D12_SRV_DIMENSION_BUFFER;			   // SRVのバッファであることを指定
+		commonDesc.Buffer.FirstElement	   = 0;										   // 最初の番号を指定
+		commonDesc.Buffer.Flags			   = D3D12_BUFFER_SRV_FLAG_NONE;			   // フラッグ設定
+		
+		/// バッファのリソース生成
+		// 頂点バッファ
+		vertexBuffer_->Resource = CreateBuffer(sizeof(VertexData) * vertices_.size());
+		vertexBuffer_->Resource->Map(0, nullptr, reinterpret_cast<void**>(&vertices_));
+		D3D12_SHADER_RESOURCE_VIEW_DESC vertexDesc = { commonDesc };
+		vertexDesc.Buffer.NumElements = vertices_.size();
+		vertexDesc.Buffer.StructureByteStride = sizeof(VertexData);
+		vertexBuffer_->View = vertexBuffer_->Resource->GetGPUVirtualAddress();
+		cmdManager_->GetDevice()->CreateShaderResourceView(vertexBuffer_->Resource.Get(), &vertexDesc, cmdManager_->GetSRV()->GetCPUHandle(cmdManager_->GetSRV()->GetUsedCount()));
+		cmdManager_->GetSRV()->AddUsedCount();	// SRV使用数を+1
+
+		// メッシュレットバッファ
+		meshletBuffer_->Resource = CreateBuffer(sizeof(DirectX::Meshlet) * meshlets_.size());
+		meshletBuffer_->Resource->Map(0, nullptr, reinterpret_cast<void**>(&meshlets_));
+		D3D12_SHADER_RESOURCE_VIEW_DESC meshletDesc = { commonDesc };
+		meshletDesc.Buffer.NumElements = meshlets_.size();
+		meshletDesc.Buffer.StructureByteStride = sizeof(DirectX::Meshlet);
+		meshletBuffer_->View = meshletBuffer_->Resource->GetGPUVirtualAddress();
+		cmdManager_->GetDevice()->CreateShaderResourceView(meshletBuffer_->Resource.Get(), &meshletDesc, cmdManager_->GetSRV()->GetCPUHandle(cmdManager_->GetSRV()->GetUsedCount()));
+		cmdManager_->GetSRV()->AddUsedCount();	// SRV使用数を+1
+
+		// 固有頂点バッファ
+		uniqueVertexBuffer_->Resource = CreateBuffer(sizeof(uint8_t) * uniqueVertices_.size());
+		uniqueVertexBuffer_->Resource->Map(0, nullptr, reinterpret_cast<void**>(&uniqueVertices_));
+		D3D12_SHADER_RESOURCE_VIEW_DESC uniqueVertexDesc = { commonDesc };
+		uniqueVertexDesc.Buffer.NumElements = uniqueVertices_.size();
+		uniqueVertexDesc.Buffer.StructureByteStride = sizeof(uint8_t);
+		uniqueVertexBuffer_->View = uniqueVertexBuffer_->Resource->GetGPUVirtualAddress();
+		cmdManager_->GetDevice()->CreateShaderResourceView(uniqueVertexBuffer_->Resource.Get(), &meshletDesc, cmdManager_->GetSRV()->GetCPUHandle(cmdManager_->GetSRV()->GetUsedCount()));
+		cmdManager_->GetSRV()->AddUsedCount();	// SRV使用数を+1
+
+		// プリミティブ頂点バッファ
+		primitiveVertexBuffer_->Resource = CreateBuffer(sizeof(DirectX::MeshletTriangle) * primitiveIndices_.size());
+		primitiveVertexBuffer_->Resource->Map(0, nullptr, reinterpret_cast<void**>(&primitiveIndices_));
+		D3D12_SHADER_RESOURCE_VIEW_DESC primitiveVertexDesc = { commonDesc };
+		primitiveVertexDesc.Buffer.NumElements = primitiveIndices_.size();
+		primitiveVertexDesc.Buffer.StructureByteStride = sizeof(DirectX::MeshletTriangle);
+		primitiveVertexBuffer_->View = primitiveVertexBuffer_->Resource->GetGPUVirtualAddress();
+		cmdManager_->GetDevice()->CreateShaderResourceView(primitiveVertexBuffer_->Resource.Get(), &meshletDesc, cmdManager_->GetSRV()->GetCPUHandle(cmdManager_->GetSRV()->GetUsedCount()));
+		cmdManager_->GetSRV()->AddUsedCount();	// SRV使用数を+1
 	}
 }
 
-void DMesh::LoadMaterial(const std::string& filePath, const std::string& fileName)
+void Mesh::LoadMaterial(const std::string& filePath, const std::string& fileName)
 {
 	// フルパスの合成
 	std::string fullPath = filePath + "/" + fileName;
@@ -162,7 +243,7 @@ void DMesh::LoadMaterial(const std::string& filePath, const std::string& fileNam
 			std::string textureName; // テクスチャ情報格納用
 			s >> textureName;		 // テクスチャ名取得
 			// テクスチャ読み込み
-			texture_ = TextureManager::Load(filePath, textureName);
+			//texture_ = TextureManager::Load(filePath, textureName);
 		}
 	}
 }

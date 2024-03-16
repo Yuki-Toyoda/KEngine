@@ -1,7 +1,7 @@
 #pragma once
 #include <list>
 #include <memory>
-#include "BasePrimitive.h"
+#include "IPrimitive.h"
 #include "3d/Mesh.h"
 
 // クラスの前方宣言
@@ -71,7 +71,7 @@ private: // メンバ変数
 	CommandManager* commandManager_ = nullptr;
 
 	// 描画形状リスト
-	std::list<std::unique_ptr<BasePrimitive>> primitives_;
+	std::list<std::unique_ptr<IPrimitive>> primitives_;
 
 };
 

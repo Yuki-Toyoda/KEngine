@@ -1,5 +1,5 @@
 #pragma once
-#include "../BasePrimitive.h"
+#include "../IPrimitive.h"
 
 // クラスの前方宣言
 class Camera;
@@ -7,14 +7,14 @@ class Camera;
 /// <summary>
 /// ビルボードを行う平面
 /// </summary>
-class BillboardPlane : public BasePrimitive
+class BillboardPlane : public IPrimitive
 {
 public: // メンバ関数
 
 	/// <summary>
 	/// コンストラクタに関しては形状基底クラスのを使用
 	/// </summary>
-	using BasePrimitive::BasePrimitive;
+	using IPrimitive::IPrimitive;
 
 	/// <summary>
 	/// (呼び出し禁止)頂点配列を形状の頂点数にリサイズする関数

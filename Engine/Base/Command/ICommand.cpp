@@ -25,13 +25,13 @@ void ICommand::CreatePSO(ID3D12Device2* device, DXC* dxc, ID3D12RootSignature* s
 	blendType;
 }
 
-D3D12_RESOURCE_BARRIER ICommand::SettingResourceBarrier(ID3D12Resource* resource, D3D12_RESOURCE_STATES stateBefore, D3D12_RESOURCE_STATES stateAfter)
+D3D12_RESOURCE_BARRIER ICommand::SettingResourceBarrier(ID3D12Resource* Resource, D3D12_RESOURCE_STATES stateBefore, D3D12_RESOURCE_STATES stateAfter)
 {
 	// TransitionBarrierの設定を行う
 	D3D12_RESOURCE_BARRIER barrier{};
 	barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION; // TransitionBarrier
 	barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;	   // None
-	barrier.Transition.pResource = resource;			   // 設定を行うバッファ
+	barrier.Transition.pResource = Resource;			   // 設定を行うバッファ
 	barrier.Transition.StateBefore = stateBefore;		   // 現在のフロントバッファ
 	barrier.Transition.StateAfter = stateAfter;			   // 現在のバックバッファ
 

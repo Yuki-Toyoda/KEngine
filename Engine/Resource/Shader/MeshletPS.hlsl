@@ -1,22 +1,8 @@
-struct Constants
-{
-    float4x4 World;
-    float4x4 WorldView;
-    float4x4 WorldViewProj;
-    uint DrawMeshlets;
-};
-
-struct VertexOut
-{
-    float4 PositionHS : SV_Position;
-    float3 PositionVS : POSITION0;
-    float3 Normal : NORMAL0;
-    uint MeshletIndex : COLOR0;
-};
+#include "Meshlet.hlsli"
 
 ConstantBuffer<Constants> Globals : register(b0);
 
-float4 main(VertexOut input) : SV_TARGET
+float4 main(VertexOutPut input) : SV_TARGET
 {
     float ambientIntensity = 0.1;
     float3 lightColor = float3(1, 1, 1);

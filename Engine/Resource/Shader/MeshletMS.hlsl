@@ -1,54 +1,11 @@
-#define ROOT_SIG "CBV(b0), \
-                  RootConstants(b1, num32bitconstants=2), \
-                  SRV(t0), \
-                  SRV(t1), \
-                  SRV(t2), \
-                  SRV(t3)"
-
-struct Constants
-{
-    float4x4 World;
-    float4x4 WorldView;
-    float4x4 WorldViewProj;
-    uint DrawMeshlets;
-};
-
-struct MeshInfo
-{
-    uint IndexBytes;
-    uint MeshletOffset;
-};
-
-struct Vertex
-{
-    float3 Position;
-    float3 Normal;
-};
-
-struct VertexOut
-{
-    float4 PositionHS : SV_Position;
-    float3 PositionVS : POSITION0;
-    float3 Normal : NORMAL0;
-    uint MeshletIndex : COLOR0;
-};
-
-struct Meshlet
-{
-    uint VertCount;
-    uint VertOffset;
-    uint PrimCount;
-    uint PrimOffset;
-};
+#include "Meshlet.hlsli"
 
 ConstantBuffer<Constants> Globals : register(b0);
-ConstantBuffer<MeshInfo> meshInfo : register(b1);
 
 StructuredBuffer<Vertex> Vertices : register(t0);
 StructuredBuffer<Meshlet> Meshlets : register(t1);
 ByteAddressBuffer UniqueVertexIndices : register(t2);
 StructuredBuffer<uint> PrimitiveIndices : register(t3);
-
 
 /////
 // Data Loaders
@@ -68,29 +25,22 @@ uint GetVertexIndex(Meshlet m, uint localIndex)
 {
     localIndex = m.VertOffset + localIndex;
 
-    if (meshInfo.IndexBytes == 4) // 32-bit Vertex Indices
-    {
-        return UniqueVertexIndices.Load(localIndex * 4);
-    }
-    else // 16-bit Vertex Indices
-    {
-        // Byte address must be 4-byte aligned.
-        uint wordOffset = (localIndex & 0x1);
-        uint byteOffset = (localIndex / 2) * 4;
+   // Byte address must be 4-byte aligned.
+    uint wordOffset = (localIndex & 0x1);
+    uint byteOffset = (localIndex / 2) * 4;
 
-        // Grab the pair of 16-bit indices, shift & mask off proper 16-bits.
-        uint indexPair = UniqueVertexIndices.Load(byteOffset);
-        uint index = (indexPair >> (wordOffset * 16)) & 0xffff;
+    // Grab the pair of 16-bit indices, shift & mask off proper 16-bits.
+    uint indexPair = UniqueVertexIndices.Load(byteOffset);
+    uint index = (indexPair >> (wordOffset * 16)) & 0xffff;
 
-        return index;
-    }
+    return index;
 }
 
-VertexOut GetVertexAttributes(uint meshletIndex, uint vertexIndex)
+VertexOutPut GetVertexAttribute(uint vertexIndex, uint meshletIndex)
 {
     Vertex v = Vertices[vertexIndex];
 
-    VertexOut vout;
+    VertexOutPut vout;
     vout.PositionVS = mul(float4(v.Position, 1), Globals.WorldView).xyz;
     vout.PositionHS = mul(float4(v.Position, 1), Globals.WorldViewProj);
     vout.Normal = mul(float4(v.Normal, 0), Globals.World).xyz;
@@ -99,29 +49,28 @@ VertexOut GetVertexAttributes(uint meshletIndex, uint vertexIndex)
     return vout;
 }
 
-
-[RootSignature(ROOT_SIG)]
+[RootSignature(ROOT_SIG_MS)]
 [NumThreads(128, 1, 1)]
 [OutputTopology("triangle")]
 void main(
     uint gtid : SV_GroupThreadID,
     uint gid : SV_GroupID,
-    out indices uint3 tris[126],
-    out vertices VertexOut verts[64]
+    out indices uint3 tris[256],
+    out vertices VertexOutPut verts[256]
 )
 {
-    Meshlet m = Meshlets[meshInfo.MeshletOffset + gid];
+    Meshlet m = Meshlets[gid]; // Meshlet取得
 
     SetMeshOutputCounts(m.VertCount, m.PrimCount);
 
     if (gtid < m.PrimCount)
     {
-        tris[gtid] = GetPrimitive(m, gtid);
+        tris[gtid] = GetPrimitive(m, gtid); // 頂点インデックスを設定
     }
 
     if (gtid < m.VertCount)
     {
         uint vertexIndex = GetVertexIndex(m, gtid);
-        verts[gtid] = GetVertexAttributes(gid, vertexIndex);
+        verts[gtid] = GetVertexAttribute(vertexIndex, gid); // 頂点を出力
     }
 }

@@ -1,4 +1,4 @@
-﻿// 頂点
+// 頂点
 struct Vertex
 {
     float4 position;// 位置座標

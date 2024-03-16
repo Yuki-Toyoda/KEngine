@@ -10602,7 +10602,7 @@ void ImGui::ScrollToRect(ImGuiWindow* window, const ImRect& item_rect, ImGuiScro
     ScrollToRectEx(window, item_rect, flags);
 }
 
-// Scroll to keep newly navigated item fully into view
+// Scroll to keep newly navigated item fully into View
 ImVec2 ImGui::ScrollToRectEx(ImGuiWindow* window, const ImRect& item_rect, ImGuiScrollFlags flags)
 {
     ImGuiContext& g = *GImGui;
@@ -10661,7 +10661,7 @@ ImVec2 ImGui::ScrollToRectEx(ImGuiWindow* window, const ImRect& item_rect, ImGui
     ImVec2 next_scroll = CalcNextScrollFromScrollTargetAndClamp(window);
     ImVec2 delta_scroll = next_scroll - window->Scroll;
 
-    // Also scroll parent window to keep us into view if necessary
+    // Also scroll parent window to keep us into View if necessary
     if (!(flags & ImGuiScrollFlags_NoScrollParent) && (window->Flags & ImGuiWindowFlags_ChildWindow))
     {
         // FIXME-SCROLL: May be an option?
@@ -12437,7 +12437,7 @@ void ImGui::NavMoveRequestApplyResult()
             result = &g.NavMoveResultOther;
     IM_ASSERT(g.NavWindow && result->Window);
 
-    // Scroll to keep newly navigated item fully into view.
+    // Scroll to keep newly navigated item fully into View.
     if (g.NavLayer == ImGuiNavLayer_Main)
     {
         ImRect rect_abs = WindowRectRelToAbs(result->Window, result->RectRel);
@@ -19140,7 +19140,7 @@ void ImGui::DebugRenderKeyboardPreview(ImDrawList* draw_list)
     };
 
     // Elements rendered manually via ImDrawList API are not clipped automatically.
-    // While not strictly necessary, here IsItemVisible() is used to avoid rendering these shapes when they are out of view.
+    // While not strictly necessary, here IsItemVisible() is used to avoid rendering these shapes when they are out of View.
     Dummy(board_max - board_min);
     if (!IsItemVisible())
         return;

@@ -6,6 +6,7 @@
 #include "../Resource/Texture/Texture.h"
 #include "../Resource/Material/Material.h"
 #include "../Utility/Observer/Observer.h"
+#include "../../Externals/DirectXMesh/DirectXMesh.h"
 #include <wrl.h>
 #include <d3d12.h>
 
@@ -21,9 +22,26 @@ struct Vertex {
 };
 
 /// <summary>
+/// 頂点データ構造体
+/// </summary>
+struct VertexData {
+	DirectX::XMFLOAT3 position;
+	DirectX::XMFLOAT2 texCoord;
+	DirectX::XMFLOAT3 normal;
+};
+
+/// <summary>
+/// バッファ構造体
+/// </summary>
+struct Buffer {
+	Microsoft::WRL::ComPtr<ID3D12Resource> Resource;   // リソース
+	D3D12_GPU_VIRTUAL_ADDRESS			   View;	   // GPU上のアドレス
+};
+
+/// <summary>
 /// 形状情報の基底クラス
 /// </summary>
-class BasePrimitive
+class IPrimitive
 {
 public: // パブリックなサブクラス
 
@@ -53,7 +71,7 @@ public: // メンバ関数
 	/// (呼び出し禁止)コンストラクタ
 	/// </summary>
 	/// <param name="manager">マネージャー</param>
-	BasePrimitive(CommandManager* manager);
+	IPrimitive(CommandManager* manager);
 
 	/// <summary>
 	/// (呼び出し禁止)頂点配列を形状の頂点数にリサイズする関数
@@ -67,14 +85,27 @@ public: // メンバ関数
 	/// <summary>
 	/// 描画関数
 	/// </summary>
-	virtual void Draw(CommandManager* manager);
+	virtual void Draw();
 
 	/// <summary>
 	/// ImGui表示関数
 	/// </summary>
 	virtual void DisplayImGui();
 
+	/// <summary>
+	/// 任意サイズのバッファ生成関数
+	/// </summary>
+	/// <param name="size"バッファサイズ></param>
+	/// <returns>バッファ本体</returns>
+	ID3D12Resource* CreateBuffer(size_t size);
+
 public: // アクセッサ等
+
+	/// <summary>
+	/// コマンドマネージャーセッター
+	/// </summary>
+	/// <param name="manager">コマンドマネージャー</param>
+	void SetCommandManager(CommandManager* manager) { cmdManager_ = manager; }
 
 	/// <summary>
 	/// 頂点数ゲッター
@@ -89,18 +120,36 @@ public: // アクセッサ等
 
 public: // パブリックなメンバ変数
 
+	// コマンドマネージャー
+	CommandManager* cmdManager_ = nullptr;
+
 	// 形状名称
 	std::string name_ = "primitive";
 
-	// 頂点
-	std::vector<Vertex> vertices_;
+	// 頂点座標配列
+	std::vector<VertexData> vertices_;
+
 	// インデックス情報
 	std::vector<uint32_t> indexes_;
+
+	// メッシュレット変換出力後情報配列群
+	std::vector<DirectX::Meshlet>		  meshlets_;
+	std::vector<uint8_t>				  uniqueVertices_;
+	std::vector<DirectX::MeshletTriangle> primitiveIndices_;
+
+	// 頂点バッファ
+	std::unique_ptr<Buffer> vertexBuffer_;
+	// メッシュレットバッファ
+	std::unique_ptr<Buffer> meshletBuffer_;
+	// 固有頂点バッファ
+	std::unique_ptr<Buffer> uniqueVertexBuffer_;
+	// プリミティブ頂点バッファ
+	std::unique_ptr<Buffer> primitiveVertexBuffer_;
 
 	// 描画中心座標
 	WorldTransform* transform_;
 
-	// マテリアルz
+	// マテリアル
 	Material material_;
 	// 使用するテクスチャ
 	Texture* texture_ = nullptr;
@@ -134,4 +183,4 @@ public: // パブリックなメンバ変数
 /// BasePrimitiveを継承したクラスを選択できるテンプレート
 /// </summary>
 template <class SelectPrimitive>
-concept IsBasePrimitive = std::is_base_of<BasePrimitive, SelectPrimitive>::value;
+concept IsBasePrimitive = std::is_base_of<IPrimitive, SelectPrimitive>::value;

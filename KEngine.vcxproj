@@ -136,7 +136,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Primitive\2d\Plane.cpp" />
     <ClCompile Include="Engine\Primitive\3d\Mesh.cpp" />
     <ClCompile Include="Engine\Primitive\3d\MeshManager.cpp" />
-    <ClCompile Include="Engine\Primitive\BasePrimitive.cpp" />
+    <ClCompile Include="Engine\Primitive\IPrimitive.cpp" />
     <ClCompile Include="Engine\Primitive\PrimitiveManager.cpp" />
     <ClCompile Include="Engine\Resource\Material\Material.cpp" />
     <ClCompile Include="Engine\Resource\Texture\Texture.cpp" />
@@ -170,7 +170,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Engine\Scene\SceneFactory.cpp" />
-    <ClCompile Include="Engine\Primitive\3d\Model\Model.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Utility\DataSegment\DataSegment.h" />
@@ -222,7 +221,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Primitive\2d\Plane.h" />
     <ClInclude Include="Engine\Primitive\3d\Mesh.h" />
     <ClInclude Include="Engine\Primitive\3d\MeshManager.h" />
-    <ClInclude Include="Engine\Primitive\BasePrimitive.h" />
+    <ClInclude Include="Engine\Primitive\IPrimitive.h" />
     <ClInclude Include="Engine\Primitive\PrimitiveManager.h" />
     <ClInclude Include="Engine\Resource\Material\Material.h" />
     <ClInclude Include="Engine\Resource\Texture\Texture.h" />
@@ -262,9 +261,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Engine\KEngine.h" />
     <ClInclude Include="Engine\Scene\SceneFactory.h" />
-    <ClInclude Include="Engine\Primitive\3d\Model\Model.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Engine\Resource\Shader\Meshlet.hlsli" />
     <None Include="Engine\Resource\Shader\Object3D.hlsli">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -277,6 +276,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <Text Include="Externals\imgui\LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="Externals\DirectXMesh\DirectXMesh_Desktop_2022_Win10.vcxproj">
+      <Project>{6857f086-f6fe-4150-9ed7-7446f1c1c220}</Project>
+    </ProjectReference>
     <ProjectReference Include="Externals\DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">
       <Project>{371b9fa9-4c90-4ac6-a123-aced756d6c77}</Project>
     </ProjectReference>

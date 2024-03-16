@@ -1258,7 +1258,7 @@ bool ImGui::RadioButton(const char* label, bool active)
     return pressed;
 }
 
-// FIXME: This would work nicely if it was a public template, e.g. 'template<T> RadioButton(const char* label, T* v, T v_button)', but I'm not sure how we would expose it..
+// FIXME: This would work nicely if it was a public template, e.g. 'template<T> RadioButton(const char* label, T* v_, T v_button)', but I'm not sure how we would expose it..
 bool ImGui::RadioButton(const char* label, int* v, int v_button)
 {
     const bool pressed = RadioButton(label, *v == v_button);
@@ -2646,7 +2646,7 @@ bool ImGui::DragIntRange2(const char* label, int* v_current_min, int* v_current_
 // - VSliderInt()
 //-------------------------------------------------------------------------
 
-// Convert a value v in the output space of a slider into a parametric position on the slider itself (the logical opposite of ScaleValueFromRatioT)
+// Convert a value v_ in the output space of a slider into a parametric position on the slider itself (the logical opposite of ScaleValueFromRatioT)
 template<typename TYPE, typename SIGNEDTYPE, typename FLOATTYPE>
 float ImGui::ScaleRatioFromValueT(ImGuiDataType data_type, TYPE v, TYPE v_min, TYPE v_max, bool is_logarithmic, float logarithmic_zero_epsilon, float zero_deadzone_halfsize)
 {
@@ -2703,7 +2703,7 @@ float ImGui::ScaleRatioFromValueT(ImGuiDataType data_type, TYPE v, TYPE v_min, T
     }
 }
 
-// Convert a parametric position on a slider into a value v in the output space (the logical opposite of ScaleRatioFromValueT)
+// Convert a parametric position on a slider into a value v_ in the output space (the logical opposite of ScaleRatioFromValueT)
 template<typename TYPE, typename SIGNEDTYPE, typename FLOATTYPE>
 TYPE ImGui::ScaleValueFromRatioT(ImGuiDataType data_type, float t, TYPE v_min, TYPE v_max, bool is_logarithmic, float logarithmic_zero_epsilon, float zero_deadzone_halfsize)
 {
@@ -3479,7 +3479,7 @@ bool ImGui::InputScalar(const char* label, ImGuiDataType data_type, void* p_data
         BeginGroup(); // The only purpose of the group here is to allow the caller to query item data e.g. IsItemActive()
         PushID(label);
         SetNextItemWidth(ImMax(1.0f, CalcItemWidth() - (button_size + style.ItemInnerSpacing.x) * 2));
-        if (InputText("", buf, IM_ARRAYSIZE(buf), flags)) // PushId(label) + "" gives us the expected ID from outside point of view
+        if (InputText("", buf, IM_ARRAYSIZE(buf), flags)) // PushId(label) + "" gives us the expected ID from outside point of View
             value_changed = DataTypeApplyFromText(buf, data_type, p_data, format);
         IMGUI_TEST_ENGINE_ITEM_INFO(g.LastItemData.ID, label, g.LastItemData.StatusFlags | ImGuiItemStatusFlags_Inputable);
 

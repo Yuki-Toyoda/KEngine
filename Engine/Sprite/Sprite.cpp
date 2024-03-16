@@ -37,7 +37,7 @@ void Sprite::Init(const std::string& name, const Vector2 position, const Vector2
 	plane_->texture_ = texture; // テクスチャ
 	texSize_ = plane_->texture_->GetTextureSize();
 	plane_->commonColor = &color_;
-	plane_->primitiveType_ = BasePrimitive::kModelSprite;
+	plane_->primitiveType_ = IPrimitive::kModelSprite;
 
 	// 形状にワールドトランスフォームを渡す
 	plane_->transform_ = &transform_;
@@ -52,20 +52,20 @@ void Sprite::Update()
 	float bottom = (1.0f - anchorPoint_.y) * scale_.y; // 下
 
 	// 頂点をずらす
-	plane_->vertices_[0].position = { left, top, 0.0f };  // 左下
-	plane_->vertices_[1].position = { right, top, 0.0f };     // 左上
-	plane_->vertices_[2].position = { right, bottom, 0.0f }; // 右下
-	plane_->vertices_[3].position = { left, bottom, 0.0f };    // 右上
+	plane_->v_[0].position = { left, top, 0.0f };  // 左下
+	plane_->v_[1].position = { right, top, 0.0f };     // 左上
+	plane_->v_[2].position = { right, bottom, 0.0f }; // 右下
+	plane_->v_[3].position = { left, bottom, 0.0f };    // 右上
 
 	float tex_left = texBase_.x / plane_->texture_->GetTextureSize().x;
 	float tex_right = (texBase_.x + texSize_.x) / plane_->texture_->GetTextureSize().x;
 	float tex_top = texBase_.y / plane_->texture_->GetTextureSize().y;
 	float tex_bottom = (texBase_.y + texSize_.y) / plane_->texture_->GetTextureSize().y;
 
-	plane_->vertices_[0].texCoord = { tex_left, tex_top };  // 左下
-	plane_->vertices_[1].texCoord = { tex_right, tex_top };     // 左上
-	plane_->vertices_[2].texCoord = { tex_right, tex_bottom }; // 右下
-	plane_->vertices_[3].texCoord = { tex_left, tex_bottom };    // 右上
+	plane_->v_[0].texCoord = { tex_left, tex_top };  // 左下
+	plane_->v_[1].texCoord = { tex_right, tex_top };     // 左上
+	plane_->v_[2].texCoord = { tex_right, tex_bottom }; // 右下
+	plane_->v_[3].texCoord = { tex_left, tex_bottom };    // 右上
 
 	// 座標設定
 	plane_->transform_->translate_ = { translate_.x, translate_.y, 0.0f };

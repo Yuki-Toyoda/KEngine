@@ -1,17 +1,17 @@
 #pragma once
-#include "../BasePrimitive.h"
+#include "../IPrimitive.h"
 
 /// <summary>
 /// 平面クラス
 /// </summary>
-class Plane final : public BasePrimitive
+class Plane final : public IPrimitive
 {
 public: // メンバ関数
 
 	/// <summary>
 	/// コンストラクタに関しては形状基底クラスのを使用
 	/// </summary>
-	using BasePrimitive::BasePrimitive;
+	using IPrimitive::IPrimitive;
 
 	/// <summary>
 	/// (呼び出し禁止)頂点配列を形状の頂点数にリサイズする関数

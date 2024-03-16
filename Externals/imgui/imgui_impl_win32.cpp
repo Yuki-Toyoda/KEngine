@@ -1060,7 +1060,7 @@ static void ImGui_ImplWin32_UpdateWindow(ImGuiViewport* viewport)
     DWORD new_ex_style;
     ImGui_ImplWin32_GetWin32StyleFromViewportFlags(viewport->Flags, &new_style, &new_ex_style);
 
-    // Only reapply the flags that have been changed from our point of view (as other flags are being modified by Windows)
+    // Only reapply the flags that have been changed from our point of View (as other flags are being modified by Windows)
     if (vd->DwStyle != new_style || vd->DwExStyle != new_ex_style)
     {
         // (Optional) Update TopMost state if it changed _after_ creation

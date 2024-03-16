@@ -491,7 +491,7 @@ static void ImGui_ImplDX12_CreateFontsTexture()
         fence->Release();
         uploadBuffer->Release();
 
-        // Create texture view
+        // Create texture View
         D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc;
         ZeroMemory(&srvDesc, sizeof(srvDesc));
         srvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;

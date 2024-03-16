@@ -5558,7 +5558,7 @@ static void ShowDemoWindowTables()
                     "- OuterSize.x = 0.0f will narrow fit the table unless there are any Stretch columns.\n"
                     "- OuterSize.y then becomes the minimum size for the table, which will extend vertically if there are more rows (unless NoHostExtendY is set).");
 
-                // From a user point of view we will tend to use 'inner_width' differently depending on whether our table is embedding scrolling.
+                // From a user point of View we will tend to use 'inner_width' differently depending on whether our table is embedding scrolling.
                 // To facilitate toying with this demo we will actually pass 0.0f to the BeginTable() when ScrollX is disabled.
                 ImGui::DragFloat("inner_width (when ScrollX active)", &inner_width_with_scroll, 1.0f, 0.0f, FLT_MAX);
 

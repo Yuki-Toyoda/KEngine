@@ -1585,7 +1585,7 @@ const char* ImGui::TableGetColumnName(const ImGuiTable* table, int column_n)
     return &table->ColumnsNames.Buf[column->NameOffset];
 }
 
-// Change user accessible enabled/disabled state of a column (often perceived as "showing/hiding" from users point of view)
+// Change user accessible enabled/disabled state of a column (often perceived as "showing/hiding" from users point of View)
 // Note that end-user can use the context menu to change this themselves (right-click in headers, or right-click in columns body with ImGuiTableFlags_ContextMenuInBody)
 // - Require table to have the ImGuiTableFlags_Hideable flag because we are manipulating user accessible state.
 // - Request will be applied during next layout, which happens on the first call to TableNextRow() after BeginTable().
@@ -2379,7 +2379,7 @@ void ImGui::TableSetupDrawChannels(ImGuiTable* table)
 //
 //   1 group:               2 groups:              2 groups:              4 groups:
 //   [ 0. ] no freeze       [ 0. ] row freeze      [ 01 ] col freeze      [ 01 ] row+col freeze
-//   [ .. ]  or no scroll   [ 2. ]  and v-scroll   [ .. ]  and h-scroll   [ 23 ]  and v+h-scroll
+//   [ .. ]  or no scroll   [ 2. ]  and v_-scroll   [ .. ]  and h-scroll   [ 23 ]  and v_+h-scroll
 //
 // Each column itself can use 1 channel (row freeze disabled) or 2 channels (row freeze enabled).
 // When the contents of a column didn't stray off its limit, we move its channels into the corresponding group
@@ -3448,7 +3448,7 @@ static void* TableSettingsHandler_ReadOpen(ImGuiContext*, ImGuiSettingsHandler*,
 
 static void TableSettingsHandler_ReadLine(ImGuiContext*, ImGuiSettingsHandler*, void* entry, const char* line)
 {
-    // "Column 0  UserID=0x42AD2D21 Width=100 Visible=1 Order=0 Sort=0v"
+    // "Column 0  UserID=0x42AD2D21 Width=100 Visible=1 Order=0 Sort=0v_"
     ImGuiTableSettings* settings = (ImGuiTableSettings*)entry;
     float f = 0.0f;
     int column_n = 0, r = 0, n = 0;
@@ -3496,7 +3496,7 @@ static void TableSettingsHandler_WriteAll(ImGuiContext* ctx, ImGuiSettingsHandle
         ImGuiTableColumnSettings* column = settings->GetColumnSettings();
         for (int column_n = 0; column_n < settings->ColumnsCount; column_n++, column++)
         {
-            // "Column 0  UserID=0x42AD2D21 Width=100 Visible=1 Order=0 Sort=0v"
+            // "Column 0  UserID=0x42AD2D21 Width=100 Visible=1 Order=0 Sort=0v_"
             bool save_column = column->UserID != 0 || save_size || save_visible || save_order || (save_sort && column->SortOrder != -1);
             if (!save_column)
                 continue;

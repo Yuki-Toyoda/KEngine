@@ -90,7 +90,7 @@ protected: // プライベートなメンバ関数
 	/// <param name="dxcCompiler">dxcCompiler</param>
 	/// <param name="includeHandler">includeHandler</param>
 	/// <returns>コンパイル済みシェーダーのバイナリオブジェクト</returns>
-	virtual IDxcBlob* CompileShader(const std::wstring& filePath, const wchar_t* profile, DXC* dxc);
+	IDxcBlob* CompileShader(const std::wstring& filePath, const wchar_t* profile, DXC* dxc);
 
 public: // パブリックなメンバ変数
 	// パイプラインステートオブジェクトの状態

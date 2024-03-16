@@ -1,5 +1,5 @@
 #pragma once
-#include "../Primitive/BasePrimitive.h"
+#include "../Primitive/IPrimitive.h"
 #pragma region インデックスデータ
 /// <summary>
 /// 使用するインデックス情報構造体
@@ -15,10 +15,10 @@ struct IndexInfoStruct {
 /// インデックスバッファ構造体
 /// </summary>
 struct IndexBuffer {
-	Microsoft::WRL::ComPtr<ID3D12Resource> resource;  // バッファリソース
-	D3D12_GPU_DESCRIPTOR_HANDLE view{};				  // GPU上のハンドルを格納
+	Microsoft::WRL::ComPtr<ID3D12Resource> Resource;  // バッファリソース
+	D3D12_GPU_DESCRIPTOR_HANDLE View{};				  // GPU上のハンドルを格納
 	IndexInfoStruct* indexData;						  // 使用するインデックスデータ
-	UINT usedCount = 0;							      // 使用中のインデックスバッファの数
+	UINT UsedCount = 0;							      // 使用中のインデックスバッファの数
 };
 #pragma endregion
 
@@ -46,10 +46,10 @@ struct VertexData {
 /// 頂点バッファ構造体
 /// </summary>
 struct VertexBuffer {
-	Microsoft::WRL::ComPtr<ID3D12Resource> resource;  // バッファリソース
-	D3D12_GPU_DESCRIPTOR_HANDLE view{};				  // GPU上のハンドルを格納
+	Microsoft::WRL::ComPtr<ID3D12Resource> Resource;  // バッファリソース
+	D3D12_GPU_DESCRIPTOR_HANDLE View{};				  // GPU上のハンドルを格納
 	VertexData* vertex;							      // 頂点データ本体
-	UINT usedCount = 0;							      // 使用中のインデックスバッファの数
+	UINT UsedCount = 0;							      // 使用中のインデックスバッファの数
 };
 #pragma endregion
 
@@ -74,10 +74,10 @@ struct MaterialData {
 /// マテリアルバッファ構造体
 /// </summary>
 struct MaterialBuffer {
-	Microsoft::WRL::ComPtr<ID3D12Resource> resource;  // バッファリソース
-	D3D12_GPU_DESCRIPTOR_HANDLE view{};				  // GPU上のハンドルを格納
+	Microsoft::WRL::ComPtr<ID3D12Resource> Resource;  // バッファリソース
+	D3D12_GPU_DESCRIPTOR_HANDLE View{};				  // GPU上のハンドルを格納
 	MaterialData* material;							  // マテリアル本体
-	UINT usedCount = 0;							      // 使用中のインデックスバッファの数
+	UINT UsedCount = 0;							      // 使用中のインデックスバッファの数
 };
 #pragma endregion
 
@@ -86,10 +86,10 @@ struct MaterialBuffer {
 ///  行列バッファ構造体
 /// </summary>
 struct MatrixBuffer {
-	Microsoft::WRL::ComPtr<ID3D12Resource> resource;  // バッファリソース
-	D3D12_GPU_DESCRIPTOR_HANDLE view{};				  // GPU上のハンドルを格納
+	Microsoft::WRL::ComPtr<ID3D12Resource> Resource;  // バッファリソース
+	D3D12_GPU_DESCRIPTOR_HANDLE View{};				  // GPU上のハンドルを格納
 	Matrix4x4* mat;							          // 行列本体
-	UINT usedCount = 0;							      // 使用中のインデックスバッファの数
+	UINT UsedCount = 0;							      // 使用中のインデックスバッファの数
 
 	// WorldTransformを=演算子で代入できるようにオーバーロード
 	MatrixBuffer& operator=(const WorldTransform& transform) {
@@ -106,9 +106,9 @@ struct MatrixBuffer {
 /// テクスチャバッファ構造体
 /// </summary>
 struct TextureBuffer {
-	std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> resource; // バッファリソース
-	D3D12_GPU_DESCRIPTOR_HANDLE view{};							  // GPU上のハンドルを格納
-	UINT usedCount = 0;											  // 使用中のインデックスバッファの数
+	std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> Resource; // バッファリソース
+	D3D12_GPU_DESCRIPTOR_HANDLE View{};							  // GPU上のハンドルを格納
+	UINT UsedCount = 0;											  // 使用中のインデックスバッファの数
 };
 #pragma endregion
 
@@ -125,8 +125,8 @@ struct DirectionalLight {
 
 struct LightBuffer
 {
-	Microsoft::WRL::ComPtr<ID3D12Resource> resource;  // バッファリソース
-	D3D12_GPU_VIRTUAL_ADDRESS view{};				  // GPU上のハンドルを格納
+	Microsoft::WRL::ComPtr<ID3D12Resource> Resource;  // バッファリソース
+	D3D12_GPU_VIRTUAL_ADDRESS View{};				  // GPU上のハンドルを格納
 	DirectionalLight* light = nullptr;				  // ライト本体
 	Vector3 translate;								  // 光源座標
 	Vector3 rotate;									  // 光源向き

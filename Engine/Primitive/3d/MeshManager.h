@@ -1,5 +1,5 @@
 #pragma once
-#include "../BasePrimitive.h"
+#include "../IPrimitive.h"
 #include <map>
 
 /// <summary>

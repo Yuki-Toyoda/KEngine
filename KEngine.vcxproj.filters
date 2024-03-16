@@ -44,7 +44,7 @@
     <ClCompile Include="Engine\Base\PSO\PSO.cpp">
       <Filter>Engine\Base\PSO</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Primitive\BasePrimitive.cpp">
+    <ClCompile Include="Engine\Primitive\IPrimitive.cpp">
       <Filter>Engine\Primitive</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Base\Command\ICommand.cpp">
@@ -227,7 +227,6 @@
     <ClCompile Include="Engine\Utility\DataSegment\DataSegment.cpp">
       <Filter>App\Utility\DataSegment</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Primitive\3d\Model\Model.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -308,7 +307,7 @@
     <ClInclude Include="Engine\Base\PSO\PSO.h">
       <Filter>Engine\Base\PSO</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Primitive\BasePrimitive.h">
+    <ClInclude Include="Engine\Primitive\IPrimitive.h">
       <Filter>Engine\Primitive</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Base\Command\ICommand.h">
@@ -482,7 +481,6 @@
     <ClInclude Include="Engine\Utility\DataSegment\DataSegment.h">
       <Filter>App\Utility\DataSegment</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Primitive\3d\Model\Model.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -497,6 +495,7 @@
     <None Include="Engine\Resource\Shader\Object3D.hlsli">
       <Filter>Engine\Resource\Shader</Filter>
     </None>
+    <None Include="Engine\Resource\Shader\Meshlet.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
