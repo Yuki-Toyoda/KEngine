@@ -158,6 +158,10 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 		for (size_t i = 0; i < indexes_.size(); i += 3)
 			std::swap(indexes_[i], indexes_[i + 2]); // 0番目と2番目の要素を入れ替え、反転させる
 
+		// 左手座標系に変換するため、インデックス情報を反転させる
+		for (size_t i = 0; i < verticesPositions.size(); i += 3)
+			std::swap(verticesPositions[i], verticesPositions[i + 2]); // 0番目と2番目の要素を入れ替え、反転させる
+
 		// メッシュレットの変換成否確認用
 		HRESULT result = S_FALSE;
 		// 読み込んだモデルデータをメッシュレットに変換する

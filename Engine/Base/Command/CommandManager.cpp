@@ -222,7 +222,9 @@ int CommandManager::createTextureResource(const DirectX::ScratchImage& image)
 
 void CommandManager::DisplayImGui()
 {
-	
+	ImGui::Begin("MeshTransform");
+	transform_.DisplayImGui();
+	ImGui::End();
 }
 
 void CommandManager::InitializeDXC()
