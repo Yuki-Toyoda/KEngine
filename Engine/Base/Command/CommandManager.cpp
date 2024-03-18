@@ -64,7 +64,7 @@ void CommandManager::DrawCall()
 		// コマンドリストにルートシグネチャの設定
 		cmdList->SetGraphicsRootSignature(rootSignature_.Get());
 		// 形状を設定する
-		cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		//cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		
 		// PSOを取得、コマンドリストにセット
 		cmdList->SetPipelineState(commands_[i]->GetPSOState());
