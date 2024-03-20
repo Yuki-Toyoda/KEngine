@@ -70,12 +70,12 @@ void CommandManager::DrawCall()
 		cmdList->SetPipelineState(commands_[i]->GetPSOState());
 
 		// ルートシグネチャにバッファをセットする
-		cmdList->SetGraphicsRootConstantBufferView(0, generalCBuffer_->View);
+		cmdList->SetGraphicsRootConstantBufferView(0, generalCBuffer_->Resource->GetGPUVirtualAddress());
 
 		mesh_->Draw();
 
 		// メッシュシェーダーを実行
-		commandList_->DispatchMesh(mesh_->GetMeshletCount(), 1, 1);
+		commandList_->DispatchMesh(0, 1, 1);
 
 		// メイン描画コマンドの場合処理を一旦抜ける
 		if (i == (int)commands_.size() - 1) {
@@ -178,7 +178,7 @@ void CommandManager::SetHeaps(RTV* rtv, SRV* srv, DSV* dsv)
 	// コマンドマネージャーをセット
 	mesh_->SetCommandManager(this);
 	// メッシュのロード
-	mesh_->LoadFile("./Engine/Resource/Samples/Box", "Box.obj");
+	mesh_->LoadFile("./Engine/Resource/Samples/Sphere", "Sphere.obj");
 
 	// トランスフォーム初期化
 	transform_.Init();
@@ -190,13 +190,13 @@ void CommandManager::SetHeaps(RTV* rtv, SRV* srv, DSV* dsv)
 Matrix4x4* const CommandManager::GetWorldMatrixAddress() const
 {
 	// 書き込み用のアドレスを返す
-	return &generalCBuffer_->Data->World;
+	return &generalCBuffer_->Data->WorldViewProj;
 }
 
 Matrix4x4* const CommandManager::GetViewMatrixAddress() const
 {
 	// 書き込み用のアドレスを返す
-	return &generalCBuffer_->Data->WorldView;
+	return &generalCBuffer_->Data->WorldViewProj;
 }
 
 Matrix4x4* const CommandManager::GetViewProjectionAddress() const
@@ -252,24 +252,94 @@ void CommandManager::CreateRootSignature()
 	// 結果確認用
 	HRESULT result = S_FALSE;
 
-	//シェーダーバイナリからRootSignatureの部分をフェッチ
-	result = D3DGetBlobPart(meshShaderBlob_->GetBufferPointer(), meshShaderBlob_->GetBufferSize(), D3D_BLOB_ROOT_SIGNATURE, 0, &signatureBlob_);
-	// フェッチ出来たか確認
-	assert(SUCCEEDED(result));
+	// ルートシグネチャ生成
+	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature{};           // 設定用インスタンス生成
+	descriptionRootSignature.Flags = D3D12_ROOT_SIGNATURE_FLAG_NONE; // フラッグはなし
+	// ルートパラメータ生成
+	D3D12_ROOT_PARAMETER rootParameters[5] = {};
 
-	// 取得したバイナリを元にルートシグネチャを生成
-	result = device_->CreateRootSignature(0, signatureBlob_->GetBufferPointer(), signatureBlob_->GetBufferSize(), IID_PPV_ARGS(&rootSignature_)); // 生成
-	assert(SUCCEEDED(result));																													  // 生成確認
+	// 配列用のRangeDesc
+	D3D12_DESCRIPTOR_RANGE descRange[1] = {};    // DescriptorRangeを作成
+	descRange[0].BaseShaderRegister = 0;         // 0から始まる
+	descRange[0].NumDescriptors = 1;             // 数は1つ
+	descRange[0].RegisterSpace = 0;
+	descRange[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV; // SRVを使う
+	descRange[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; // Offsetを自動計算
+
+	// RootSignatureにrootParametersを登録
+	descriptionRootSignature.pParameters = rootParameters;                    // ルートパラメータ配列へのポインタ
+	descriptionRootSignature.NumParameters = _countof(rootParameters);         // 配列の長さ
+
+	// 汎用データ
+	rootParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;  // CBVを使う
+	rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL; // PixelとVertexで使う
+	rootParameters[0].Descriptor.ShaderRegister = 0;                   // レジスタ番号0とバインド
+
+	// 頂点データ
+	rootParameters[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_SRV; // SRVを使う
+	rootParameters[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL; // PixelとVertexで使う
+	rootParameters[1].Descriptor.ShaderRegister = 0;                  // レジスタ番号0とバインド
+
+	// メッシュレットデータ
+	rootParameters[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_SRV; // SRVを使う
+	rootParameters[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL; // PixelとVertexで使う
+	rootParameters[2].Descriptor.ShaderRegister = 1;                  // レジスタ番号1とバインド
+
+	// 固有頂点データ
+	rootParameters[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_SRV; // SRVを使う
+	rootParameters[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL; // PixelとVertexで使う
+	rootParameters[3].Descriptor.ShaderRegister = 2;                  // レジスタ番号2とバインド
+
+	// プリミティブ頂点データ
+	rootParameters[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_SRV; // SRVを使う
+	rootParameters[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL; // PixelとVertexで使う
+	rootParameters[4].Descriptor.ShaderRegister = 3;                  // レジスタ番号3とバインド
+
+	// シリアライズを行う
+	ID3DBlob* signatureBlob = nullptr; // シリアライズ後のバイナリオブジェクト
+	ID3DBlob* errorBlob = nullptr;     // エラーログを出すためのバイナリオブジェクト
+	// ルートシグネチャ用にシリアライズ
+	result = D3D12SerializeRootSignature(&descriptionRootSignature, D3D_ROOT_SIGNATURE_VERSION_1, &signatureBlob, &errorBlob);
+	// 生成に失敗した場合
+	if (FAILED(result)) {
+		// ログを出力
+		Debug::Log(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
+		// 停止
+		assert(false);
+	}
+	// バイナリを元にルートシグネチャを生成
+	result = device_->CreateRootSignature(0, signatureBlob->GetBufferPointer(), signatureBlob->GetBufferSize(), IID_PPV_ARGS(&rootSignature_)); // 生成
+	assert(SUCCEEDED(result));                                                                                                                  // 生成確認
+
+	// 使わないリソースを解放
+	signatureBlob->Release();
+
+	////シェーダーバイナリからRootSignatureの部分をフェッチ
+	//result = D3DGetBlobPart(meshShaderBlob_->GetBufferPointer(), meshShaderBlob_->GetBufferSize(), D3D_BLOB_ROOT_SIGNATURE, 0, &signatureBlob_);
+	//// フェッチ出来たか確認
+	//assert(SUCCEEDED(result));
+
+	//// 取得したバイナリを元にルートシグネチャを生成
+	//result = device_->CreateRootSignature(0, signatureBlob_->GetBufferPointer(), signatureBlob_->GetBufferSize(), IID_PPV_ARGS(&rootSignature_)); // 生成
+	//assert(SUCCEEDED(result));																													  // 生成確認
 }
 
 void CommandManager::CreateBuffers()
 {
+	// 生成確認
+	HRESULT result = S_FALSE;
+
 	// 汎用データバッファ生成
 	generalCBuffer_ = std::make_unique<GeneralCBuffer>();										  // バッファの生成
 	generalCBuffer_->Resource = CreateBuffer(sizeof(GeneralData));								  // バッファの生成
-	generalCBuffer_->Resource->Map(0, nullptr, reinterpret_cast<void**>(&generalCBuffer_->Data)); // 生成したバッファのマッピングを行う
+	result = generalCBuffer_->Resource->Map(0, nullptr, reinterpret_cast<void**>(&generalCBuffer_->Data)); // 生成したバッファのマッピングを行う
 	generalCBuffer_->View = generalCBuffer_->Resource->GetGPUVirtualAddress();					  // GPU上のアドレスの取得
 	generalCBuffer_->Data->DrawMeshlets = true;
+
+	// マッピングに失敗した場合
+	if (FAILED(result)) {
+		assert(false);
+	}
 
 	// テクスチャデータ
 	textureBuffer_ = std::make_unique<TextureBuffer>();

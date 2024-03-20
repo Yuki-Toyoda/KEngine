@@ -45,32 +45,32 @@ void Sprite::Init(const std::string& name, const Vector2 position, const Vector2
 
 void Sprite::Update()
 {
-	// 頂点座標を求める
-	float left = (0.0f - anchorPoint_.x) * scale_.x;   // 左
-	float right = (1.0f - anchorPoint_.x) * scale_.x;  // 右
-	float top = (0.0f - anchorPoint_.y) * scale_.y;    // 上
-	float bottom = (1.0f - anchorPoint_.y) * scale_.y; // 下
+	//// 頂点座標を求める
+	//float left = (0.0f - anchorPoint_.x) * scale_.x;   // 左
+	//float right = (1.0f - anchorPoint_.x) * scale_.x;  // 右
+	//float top = (0.0f - anchorPoint_.y) * scale_.y;    // 上
+	//float bottom = (1.0f - anchorPoint_.y) * scale_.y; // 下
 
-	// 頂点をずらす
-	plane_->vertices_[0].position = { left, top, 0.0f };  // 左下
-	plane_->vertices_[1].position = { right, top, 0.0f };     // 左上
-	plane_->vertices_[2].position = { right, bottom, 0.0f }; // 右下
-	plane_->vertices_[3].position = { left, bottom, 0.0f };    // 右上
+	//// 頂点をずらす
+	//plane_->vertices_[0].position = { left, top, 0.0f };  // 左下
+	//plane_->vertices_[1].position = { right, top, 0.0f };     // 左上
+	//plane_->vertices_[2].position = { right, bottom, 0.0f }; // 右下
+	//plane_->vertices_[3].position = { left, bottom, 0.0f };    // 右上
 
-	float tex_left = texBase_.x / plane_->texture_->GetTextureSize().x;
-	float tex_right = (texBase_.x + texSize_.x) / plane_->texture_->GetTextureSize().x;
-	float tex_top = texBase_.y / plane_->texture_->GetTextureSize().y;
-	float tex_bottom = (texBase_.y + texSize_.y) / plane_->texture_->GetTextureSize().y;
+	//float tex_left = texBase_.x / plane_->texture_->GetTextureSize().x;
+	//float tex_right = (texBase_.x + texSize_.x) / plane_->texture_->GetTextureSize().x;
+	//float tex_top = texBase_.y / plane_->texture_->GetTextureSize().y;
+	//float tex_bottom = (texBase_.y + texSize_.y) / plane_->texture_->GetTextureSize().y;
 
-	plane_->vertices_[0].texCoord = { tex_left, tex_top };  // 左下
-	plane_->vertices_[1].texCoord = { tex_right, tex_top };     // 左上
-	plane_->vertices_[2].texCoord = { tex_right, tex_bottom }; // 右下
-	plane_->vertices_[3].texCoord = { tex_left, tex_bottom };    // 右上
+	//plane_->vertices_[0].texCoord = { tex_left, tex_top };  // 左下
+	//plane_->vertices_[1].texCoord = { tex_right, tex_top };     // 左上
+	//plane_->vertices_[2].texCoord = { tex_right, tex_bottom }; // 右下
+	//plane_->vertices_[3].texCoord = { tex_left, tex_bottom };    // 右上
 
-	// 座標設定
-	plane_->transform_->translate_ = { translate_.x, translate_.y, 0.0f };
-	// 回転設定
-	plane_->transform_->rotate_ = { 0.0f, 0.0f, rotate_ };
+	//// 座標設定
+	//plane_->transform_->translate_ = { translate_.x, translate_.y, 0.0f };
+	//// 回転設定
+	//plane_->transform_->rotate_ = { 0.0f, 0.0f, rotate_ };
 }
 
 void Sprite::DisplayImGui()

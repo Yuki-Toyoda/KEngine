@@ -1,77 +1,76 @@
 #include "Meshlet.hlsli"
 
-ConstantBuffer<Constants> Globals : register(b0);
-float4x4 Object : register(b1);
-
-StructuredBuffer<Vertex> Vertices : register(t0);
-StructuredBuffer<Meshlet> Meshlets : register(t1);
-ByteAddressBuffer UniqueVertexIndices : register(t2);
-StructuredBuffer<uint> PrimitiveIndices : register(t3);
-
 /////
 // Data Loaders
 
-uint3 UnpackPrimitive(uint primitive)
-{
-    // Unpacks a 10 bits per index triangle from a 32-bit uint.
-    return uint3(primitive & 0x3FF, (primitive >> 10) & 0x3FF, (primitive >> 20) & 0x3FF);
-}
+//uint3 UnpackPrimitive(uint primitive)
+//{
+//    // Unpacks a 10 bits per index triangle from a 32-bit uint.
+//    return uint3(primitive & 0x3FF, (primitive >> 10) & 0x3FF, (primitive >> 20) & 0x3FF);
+//}
 
-uint3 GetPrimitive(Meshlet m, uint index)
-{
-    return UnpackPrimitive(PrimitiveIndices[m.PrimOffset + index]);
-}
+//uint3 GetPrimitive(Meshlet m, uint index)
+//{
+//    return UnpackPrimitive(PrimitiveIndices[m.PrimOffset + index]);
+//}
 
-uint GetVertexIndex(Meshlet m, uint localIndex)
-{
-    localIndex = m.VertOffset + localIndex;
+//uint GetVertexIndex(Meshlet m, uint localIndex)
+//{
+//    localIndex = m.VertOffset + localIndex;
 
-   // Byte address must be 4-byte aligned.
-    uint wordOffset = (localIndex & 0x1);
-    uint byteOffset = (localIndex / 2) * 4;
+//   // Byte address must be 4-byte aligned.
+//    uint wordOffset = (localIndex & 0x1);
+//    uint byteOffset = (localIndex / 2) * 4;
 
-    // Grab the pair of 16-bit indices, shift & mask off proper 16-bits.
-    uint indexPair = UniqueVertexIndices.Load(byteOffset);
-    uint index = (indexPair >> (wordOffset * 16)) & 0xffff;
+//    // Grab the pair of 16-bit indices, shift & mask off proper 16-bits.
+//    uint indexPair = VertexIndices.Load(byteOffset);
+//    uint index = (indexPair >> (wordOffset * 16)) & 0xffff;
 
-    return index;
-}
+//    return index;
+//}
 
 VertexOutPut GetVertexAttribute(uint vertexIndex, uint meshletIndex)
 {
     Vertex v = Vertices[vertexIndex];
 
     VertexOutPut vout;
-    vout.PositionVS = mul(mul(float4(v.Position, 1), Object), Globals.WorldViewProj).xyz;
-    vout.PositionHS = mul(float4(v.Position, 1), Globals.WorldViewProj);
-    vout.Normal = normalize(mul(v.Normal, (float3x3) Globals.World));
     vout.MeshletIndex = meshletIndex;
 
     return vout;
 }
 
-[RootSignature(ROOT_SIG_MS)]
 [NumThreads(128, 1, 1)]
 [OutputTopology("triangle")]
 void main(
-    uint gtid : SV_GroupThreadID,
-    uint gid : SV_GroupID,
-    out indices uint3 tris[256],
-    out vertices VertexOutPut verts[256]
+    in uint gid : SV_GroupID,
+    in uint gtid : SV_GroupThreadID,
+    out vertices VertexOutPut verts[128],
+    out indices uint3         tris[128]
 )
 {
-    Meshlet m = Meshlets[gid]; // Meshlet取得
+    Meshlet meshlet = Meshlets[gid]; // Meshlet取得
 
-    SetMeshOutputCounts(m.VertCount, m.PrimCount);
+    SetMeshOutputCounts(meshlet.VertCount, meshlet.PrimCount);
 
-    if (gtid < m.PrimCount)
-    {
-        tris[gtid] = GetPrimitive(m, gtid); // 頂点インデックスを設定
+    uint vertexIndex = VertexIndices[meshlet.VertOffset + gtid];
+    
+    if (gtid < meshlet.VertCount)
+    {   
+        Vertex vertex = Vertices[vertexIndex];
+        
+        verts[gtid].pos = TransformPosition(vertex.Position);
     }
-
-    if (gtid < m.VertCount)
+    if (gtid < meshlet.PrimCount)
     {
-        uint vertexIndex = GetVertexIndex(m, gtid);
+        uint packedIndices = PrimitiveIndices[meshlet.PrimOffset + gtid];
+        
+        tris[gtid] = uint3(packedIndices & 0xFF,
+                          (packedIndices >> 8) & 0xFF,
+                          (packedIndices >> 16) & 0xFF
+                        );
+        
         verts[gtid] = GetVertexAttribute(vertexIndex, gid); // 頂点を出力
+        
     }
+
 }

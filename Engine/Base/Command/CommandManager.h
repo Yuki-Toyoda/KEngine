@@ -28,8 +28,6 @@ private: // サブクラス
 	/// 汎用データ
 	/// </summary>
 	struct GeneralData {
-		Matrix4x4 World;		 // ワールド行列
-		Matrix4x4 WorldView;	 // ビュー行列
 		Matrix4x4 WorldViewProj; // 射影変換行列
 		uint32_t  DrawMeshlets;  // メッシュレット描画フラグ
 	};

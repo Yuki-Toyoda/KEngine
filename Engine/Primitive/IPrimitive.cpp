@@ -37,18 +37,13 @@ void IPrimitive::Draw()
 	if (!isActive_)
 		return;
 
-	// コマンドリストの取得
-	ID3D12GraphicsCommandList* cmdList = cmdManager_->GetRenderCommandList();
+	//// コマンドリストの取得
+	//ID3D12GraphicsCommandList* cmdList = cmdManager_->GetRenderCommandList();
 
-	// トランスフォームをバッファにセット
-	matWorld_ = transform_->GetMatWorld();
-	worldTransformBuffer_->mat = &matWorld_;
-
-	cmdList->SetGraphicsRootConstantBufferView(1, worldTransformBuffer_->View);
-	cmdList->SetGraphicsRootShaderResourceView(2, vertexBuffer_->View);
-	cmdList->SetGraphicsRootShaderResourceView(3, meshletBuffer_->View);
-	cmdList->SetGraphicsRootShaderResourceView(4, uniqueVertexBuffer_->View);
-	cmdList->SetGraphicsRootShaderResourceView(5, primitiveVertexBuffer_->View);
+	//cmdList->SetGraphicsRootShaderResourceView(1, vertexBuffer_->View);
+	//cmdList->SetGraphicsRootShaderResourceView(2, meshletBuffer_->View);
+	//cmdList->SetGraphicsRootShaderResourceView(3, uniqueVertexBuffer_->View);
+	//cmdList->SetGraphicsRootShaderResourceView(4, primitiveVertexBuffer_->View);
 }
 
 void IPrimitive::DisplayImGui()
@@ -87,7 +82,7 @@ ID3D12Resource* IPrimitive::CreateBuffer(size_t size)
 	HRESULT result = S_FALSE;
 
 	// 返すリソース
-	ID3D12Resource* resource;
+	ID3D12Resource* resource = nullptr;
 
 	// 頂点リソース用のヒープの設定
 	D3D12_HEAP_PROPERTIES uploadHeapProperties{};

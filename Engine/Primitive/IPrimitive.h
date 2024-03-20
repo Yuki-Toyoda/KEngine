@@ -25,9 +25,7 @@ struct Vertex {
 /// 頂点データ構造体
 /// </summary>
 struct VertexData {
-	DirectX::XMFLOAT3 position;
-	DirectX::XMFLOAT2 texCoord;
-	DirectX::XMFLOAT3 normal;
+	DirectX::XMFLOAT4 position;
 };
 
 /// <summary>
