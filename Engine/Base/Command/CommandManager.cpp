@@ -75,7 +75,7 @@ void CommandManager::DrawCall()
 		mesh_->Draw();
 
 		// メッシュシェーダーを実行
-		commandList_->DispatchMesh(0, 1, 1);
+		commandList_->DispatchMesh(mesh_->GetMeshletCount(), 1, 1);
 
 		// メイン描画コマンドの場合処理を一旦抜ける
 		if (i == (int)commands_.size() - 1) {
