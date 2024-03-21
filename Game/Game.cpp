@@ -33,15 +33,16 @@ void Game::Update()
 
 	// オブジェクトマネージャー更新
 	gameObjectManager_->Update();
+
 	// スプライトマネージャ更新
-	spriteManager_->Update();
-	// パーティクルマネージャ更新
-	particleManager_->Update();
-	particleManager_->DisplayImGui();
+	//spriteManager_->Update();
+	//// パーティクルマネージャ更新
+	//particleManager_->Update();
+	//particleManager_->DisplayImGui();
 
 	// アニメーションマネージャ更新
-	animManager_->Update();
-	animManager_->DisplayImGui();
+	/*animManager_->Update();
+	animManager_->DisplayImGui();*/
 }
 
 void Game::Draw()

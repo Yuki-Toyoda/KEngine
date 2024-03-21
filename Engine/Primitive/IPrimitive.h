@@ -26,14 +26,47 @@ struct Vertex {
 /// </summary>
 struct VertexData {
 	DirectX::XMFLOAT4 position;
+	DirectX::XMFLOAT4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
 };
 
 /// <summary>
-/// バッファ構造体
+/// メッシュレットバッファ構造体
 /// </summary>
-struct Buffer {
-	Microsoft::WRL::ComPtr<ID3D12Resource> Resource;   // リソース
-	D3D12_GPU_VIRTUAL_ADDRESS			   View;	   // GPU上のアドレス
+struct MeshletBuffer {
+	Microsoft::WRL::ComPtr<ID3D12Resource> Resource;	  // リソース
+	D3D12_GPU_DESCRIPTOR_HANDLE			   View;		  // GPU上のアドレス
+	DirectX::Meshlet*					   meshlet;		  // メッシュレットのデータ
+	UINT								   usedCount = 0; // バッファの使用数
+};
+
+/// <summary>
+/// 頂点バッファ構造体
+/// </summary>
+struct VertexBuffer {
+	Microsoft::WRL::ComPtr<ID3D12Resource> Resource;	  // リソース
+	D3D12_GPU_DESCRIPTOR_HANDLE			   View;		  // GPU上のアドレス
+	VertexData*							   vertex;		  // メッシュレットのデータ
+	UINT								   usedCount = 0; // バッファの使用数
+};
+
+/// <summary>
+/// 固有頂点バッファ構造体
+/// </summary>
+struct UniqueVertexBuffer {
+	Microsoft::WRL::ComPtr<ID3D12Resource> Resource;	  // リソース
+	D3D12_GPU_DESCRIPTOR_HANDLE			   View;		  // GPU上のアドレス
+	uint8_t*							   uniqueVertex;  // メッシュレットのデータ
+	UINT								   usedCount = 0; // バッファの使用数
+};
+
+/// <summary>
+/// プリミティブ頂点バッファ構造体
+/// </summary>
+struct PrimitiveIndexBuffer {
+	Microsoft::WRL::ComPtr<ID3D12Resource> Resource;	  // リソース
+	D3D12_GPU_DESCRIPTOR_HANDLE			   View;		  // GPU上のアドレス
+	DirectX::MeshletTriangle*			   primitve;      // メッシュレットのデータ
+	UINT								   usedCount = 0; // バッファの使用数
 };
 
 /// <summary>
@@ -157,16 +190,16 @@ public: // パブリックなメンバ変数
 	std::vector<uint8_t>				  uniqueVertices_;
 	std::vector<DirectX::MeshletTriangle> primitiveIndices_;
 
-	// ワールドトランスフォームバッファ
-	std::unique_ptr<MatrixBuffer> worldTransformBuffer_;
-	// 頂点バッファ
-	std::unique_ptr<Buffer> vertexBuffer_;
+	//// ワールドトランスフォームバッファ
+	//std::unique_ptr<MatrixBuffer> worldTransformBuffer_;
 	// メッシュレットバッファ
-	std::unique_ptr<Buffer> meshletBuffer_;
+	std::unique_ptr<MeshletBuffer> meshletBuffer_;
+	// 頂点バッファ
+	std::unique_ptr<VertexBuffer> vertexBuffer_;
 	// 固有頂点バッファ
-	std::unique_ptr<Buffer> uniqueVertexBuffer_;
+	std::unique_ptr<UniqueVertexBuffer> uniqueVertexBuffer_;
 	// プリミティブ頂点バッファ
-	std::unique_ptr<Buffer> primitiveVertexBuffer_;
+	std::unique_ptr<PrimitiveIndexBuffer> primitiveVertexBuffer_;
 
 	// 描画中心座標
 	WorldTransform* transform_;

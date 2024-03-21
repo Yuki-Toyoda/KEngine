@@ -20,15 +20,14 @@ void Mesh::LoadFile(const std::string& filePath, const std::string& fileName)
 
 void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 {
-	// フルパスの合成
+	// フルパスのフルパスの合成
 	std::string fullPath = filePath + "/" + fileName;
 
 	// バッファリソースの生成
-	worldTransformBuffer_ = std::make_unique<MatrixBuffer>(); // ワールドトランスフォームバッファ
-	vertexBuffer_ = std::make_unique<Buffer>(); // 頂点バッファ
-	meshletBuffer_ = std::make_unique<Buffer>(); // メッシュレットバッファ
-	uniqueVertexBuffer_ = std::make_unique<Buffer>(); // 固有頂点バッファ
-	primitiveVertexBuffer_ = std::make_unique<Buffer>(); // プリミティブ頂点バッファ
+	meshletBuffer_ = std::make_unique<MeshletBuffer>(); // メッシュレットバッファ
+	vertexBuffer_ = std::make_unique<VertexBuffer>(); // メッシュレットバッファ
+	uniqueVertexBuffer_ = std::make_unique<UniqueVertexBuffer>(); // メッシュレットバッファ
+	primitiveVertexBuffer_ = std::make_unique<PrimitiveIndexBuffer>(); // メッシュレットバッファ
 
 	// インデックス情報を登録するための3次元配列
 	std::map<int, std::map<int, std::map<int, int>>> key;
@@ -38,6 +37,7 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 	std::vector<DirectX::XMFLOAT2> texcoords; // テクスチャ座標
 	std::vector<DirectX::XMFLOAT3> normals;	  // 法線
 
+	// 頂点位置のインデックス情報格納用配列
 	std::vector<uint32_t> verticesIndices;
 
 	// ファイルを開く
@@ -153,73 +153,80 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 	// 変換成否確認
 	assert(SUCCEEDED(result));
 
+	// バッファにデータを渡す
+	meshletBuffer_->meshlet = meshlets_.data();
+	meshletBuffer_->usedCount = static_cast<UINT>(meshlets_.size());
+	vertexBuffer_->vertex = vertices_.data();
+	vertexBuffer_->usedCount = static_cast<UINT>(vertices_.size());
+	uniqueVertexBuffer_->uniqueVertex = uniqueVertices_.data();
+	uniqueVertexBuffer_->usedCount = static_cast<UINT>(uniqueVertices_.size());
+	primitiveVertexBuffer_->primitve = primitiveIndices_.data();
+	primitiveVertexBuffer_->usedCount = static_cast<UINT>(primitiveIndices_.size());
+
 	// 共通のSRV用Desc
 	D3D12_SHADER_RESOURCE_VIEW_DESC commonDesc{};								   // 汎用設定用
-	commonDesc.Format = DXGI_FORMAT_UNKNOWN;					   // フォーマット形式は不明
+	commonDesc.Format = DXGI_FORMAT_UNKNOWN;									   // フォーマット形式は不明
 	commonDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING; // シェーダーからテクスチャにアクセスする際の値指定 
-	commonDesc.ViewDimension = D3D12_SRV_DIMENSION_BUFFER;			   // SRVのバッファであることを指定
-	commonDesc.Buffer.FirstElement = 0;										   // 最初の番号を指定
-	commonDesc.Buffer.Flags = D3D12_BUFFER_SRV_FLAG_NONE;			   // フラッグ設定
+	commonDesc.ViewDimension = D3D12_SRV_DIMENSION_BUFFER;						   // SRVのバッファであることを指定
+	commonDesc.Buffer.FirstElement = 0;											   // 最初の番号を指定
+	commonDesc.Buffer.Flags = D3D12_BUFFER_SRV_FLAG_NONE;						   // フラッグ設定
 
-	// 頂点バッファ
-	vertexBuffer_->Resource = CreateBuffer(sizeof(VertexData) * vertices_.size());
-	result = vertexBuffer_->Resource->Map(0, nullptr, reinterpret_cast<void**>(&vertices_));
-	D3D12_SHADER_RESOURCE_VIEW_DESC vertexDesc = { commonDesc };
-	vertexDesc.Buffer.NumElements = static_cast<UINT>(vertices_.size());
-	vertexDesc.Buffer.StructureByteStride = sizeof(VertexData);
-	vertexBuffer_->View = vertexBuffer_->Resource->GetGPUVirtualAddress();
-	cmdManager_->GetDevice()->CreateShaderResourceView(vertexBuffer_->Resource.Get(), &vertexDesc, cmdManager_->GetSRV()->GetCPUHandle(cmdManager_->GetSRV()->GetUsedCount()));
-	cmdManager_->GetSRV()->AddUsedCount();	// SRV使用数を+1
-
+	// メッシュレットバッファ
+	meshletBuffer_->Resource = CreateBuffer((sizeof(DirectX::Meshlet) * meshletBuffer_->usedCount));
+	result = meshletBuffer_->Resource->Map(0, nullptr, reinterpret_cast<void**>(&meshletBuffer_->meshlet));
+	D3D12_SHADER_RESOURCE_VIEW_DESC meshletDesc = { commonDesc };
+	meshletDesc.Buffer.NumElements = meshletBuffer_->usedCount;
+	meshletDesc.Buffer.StructureByteStride = sizeof(DirectX::Meshlet);
+	meshletBuffer_->View = cmdManager_->GetSRV()->GetGPUHandle(cmdManager_->GetSRV()->GetUsedCount());
+	cmdManager_->GetDevice()->CreateShaderResourceView(meshletBuffer_->Resource.Get(), &meshletDesc, cmdManager_->GetSRV()->GetCPUHandle(cmdManager_->GetSRV()->GetUsedCount()));
+	cmdManager_->GetSRV()->AddUsedCount();
 	// マッピングに失敗した場合
 	if (FAILED(result)) {
 		assert(false);
 	}
 
-	// メッシュレットバッファ
-	meshletBuffer_->Resource = CreateBuffer(sizeof(DirectX::Meshlet) * meshlets_.size());
-	result = meshletBuffer_->Resource->Map(0, nullptr, reinterpret_cast<void**>(&meshlets_));
-	D3D12_SHADER_RESOURCE_VIEW_DESC meshletDesc = { commonDesc };
-	meshletDesc.Buffer.NumElements = static_cast<UINT>(meshlets_.size());
-	meshletDesc.Buffer.StructureByteStride = sizeof(DirectX::Meshlet);
-	meshletBuffer_->View = meshletBuffer_->Resource->GetGPUVirtualAddress();
-	cmdManager_->GetDevice()->CreateShaderResourceView(meshletBuffer_->Resource.Get(), &meshletDesc, cmdManager_->GetSRV()->GetCPUHandle(cmdManager_->GetSRV()->GetUsedCount()));
-	cmdManager_->GetSRV()->AddUsedCount();	// SRV使用数を+1
-
+	// 頂点バッファ
+	vertexBuffer_->Resource = CreateBuffer((sizeof(VertexData) * vertexBuffer_->usedCount));
+	result = vertexBuffer_->Resource->Map(0, nullptr, reinterpret_cast<void**>(&vertexBuffer_->vertex));
+	D3D12_SHADER_RESOURCE_VIEW_DESC vertexDesc = { commonDesc };
+	vertexDesc.Buffer.NumElements = vertexBuffer_->usedCount;
+	vertexDesc.Buffer.StructureByteStride = sizeof(VertexData);
+	vertexBuffer_->View = cmdManager_->GetSRV()->GetGPUHandle(cmdManager_->GetSRV()->GetUsedCount());
+	cmdManager_->GetDevice()->CreateShaderResourceView(vertexBuffer_->Resource.Get(), &vertexDesc, cmdManager_->GetSRV()->GetCPUHandle(cmdManager_->GetSRV()->GetUsedCount()));
+	cmdManager_->GetSRV()->AddUsedCount();
 	// マッピングに失敗した場合
 	if (FAILED(result)) {
 		assert(false);
 	}
 
 	// 固有頂点バッファ
-	uniqueVertexBuffer_->Resource = CreateBuffer(sizeof(uint8_t) * uniqueVertices_.size());
-	result = uniqueVertexBuffer_->Resource->Map(0, nullptr, reinterpret_cast<void**>(&uniqueVertices_));
+	uniqueVertexBuffer_->Resource = CreateBuffer((sizeof(uint8_t) * uniqueVertexBuffer_->usedCount));
+	result = uniqueVertexBuffer_->Resource->Map(0, nullptr, reinterpret_cast<void**>(&uniqueVertexBuffer_->uniqueVertex));
 	D3D12_SHADER_RESOURCE_VIEW_DESC uniqueVertexDesc = { commonDesc };
-	uniqueVertexDesc.Buffer.NumElements = static_cast<UINT>(uniqueVertices_.size());
+	uniqueVertexDesc.Buffer.NumElements = uniqueVertexBuffer_->usedCount;
 	uniqueVertexDesc.Buffer.StructureByteStride = sizeof(uint8_t);
-	uniqueVertexBuffer_->View = uniqueVertexBuffer_->Resource->GetGPUVirtualAddress();
+	uniqueVertexBuffer_->View = cmdManager_->GetSRV()->GetGPUHandle(cmdManager_->GetSRV()->GetUsedCount());
 	cmdManager_->GetDevice()->CreateShaderResourceView(uniqueVertexBuffer_->Resource.Get(), &uniqueVertexDesc, cmdManager_->GetSRV()->GetCPUHandle(cmdManager_->GetSRV()->GetUsedCount()));
-	cmdManager_->GetSRV()->AddUsedCount();	// SRV使用数を+1
-
+	cmdManager_->GetSRV()->AddUsedCount();
 	// マッピングに失敗した場合
 	if (FAILED(result)) {
 		assert(false);
 	}
 
 	// プリミティブ頂点バッファ
-	primitiveVertexBuffer_->Resource = CreateBuffer(sizeof(primitiveIndices_[0]) * primitiveIndices_.size());
-	result = primitiveVertexBuffer_->Resource->Map(0, nullptr, reinterpret_cast<void**>(&primitiveIndices_));
+	primitiveVertexBuffer_->Resource = CreateBuffer((sizeof(DirectX::MeshletTriangle) * primitiveVertexBuffer_->usedCount));
+	result = primitiveVertexBuffer_->Resource->Map(0, nullptr, reinterpret_cast<void**>(&primitiveVertexBuffer_->primitve));
 	D3D12_SHADER_RESOURCE_VIEW_DESC primitiveVertexDesc = { commonDesc };
-	primitiveVertexDesc.Buffer.NumElements = static_cast<UINT>(primitiveIndices_.size());
-	primitiveVertexDesc.Buffer.StructureByteStride = sizeof(primitiveIndices_[0]);
-	primitiveVertexBuffer_->View = primitiveVertexBuffer_->Resource->GetGPUVirtualAddress();
+	primitiveVertexDesc.Buffer.NumElements = primitiveVertexBuffer_->usedCount;
+	primitiveVertexDesc.Buffer.StructureByteStride = sizeof(DirectX::MeshletTriangle);
+	primitiveVertexBuffer_->View = cmdManager_->GetSRV()->GetGPUHandle(cmdManager_->GetSRV()->GetUsedCount());
 	cmdManager_->GetDevice()->CreateShaderResourceView(primitiveVertexBuffer_->Resource.Get(), &primitiveVertexDesc, cmdManager_->GetSRV()->GetCPUHandle(cmdManager_->GetSRV()->GetUsedCount()));
-	cmdManager_->GetSRV()->AddUsedCount();	// SRV使用数を+1
-
+	cmdManager_->GetSRV()->AddUsedCount();
 	// マッピングに失敗した場合
 	if (FAILED(result)) {
 		assert(false);
 	}
+
 }
 
 void Mesh::LoadMaterial(const std::string& filePath, const std::string& fileName)

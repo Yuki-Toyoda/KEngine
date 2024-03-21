@@ -75,7 +75,7 @@ void CommandManager::DrawCall()
 		mesh_->Draw();
 
 		// メッシュシェーダーを実行
-		commandList_->DispatchMesh(12, 1, 1);
+		commandList_->DispatchMesh(mesh_->GetMeshletCount(), 1, 1);
 
 		// メイン描画コマンドの場合処理を一旦抜ける
 		if (i == (int)commands_.size() - 1) {
@@ -256,15 +256,15 @@ void CommandManager::CreateRootSignature()
 	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature{};           // 設定用インスタンス生成
 	descriptionRootSignature.Flags = D3D12_ROOT_SIGNATURE_FLAG_NONE; // フラッグはなし
 	// ルートパラメータ生成
-	D3D12_ROOT_PARAMETER rootParameters[1] = {};
+	D3D12_ROOT_PARAMETER rootParameters[5] = {};
 
-	//// 配列用のRangeDesc
-	//D3D12_DESCRIPTOR_RANGE descRange[1] = {};    // DescriptorRangeを作成
-	//descRange[0].BaseShaderRegister = 0;         // 0から始まる
-	//descRange[0].NumDescriptors = 1;             // 数は1つ
-	//descRange[0].RegisterSpace = 0;
-	//descRange[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV; // SRVを使う
-	//descRange[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; // Offsetを自動計算
+	// 配列用のRangeDesc
+	D3D12_DESCRIPTOR_RANGE descRange[1] = {};    // DescriptorRangeを作成
+	descRange[0].BaseShaderRegister = 0;         // 0から始まる
+	descRange[0].NumDescriptors = 1;             // 数は1つ
+	descRange[0].RegisterSpace = 0;
+	descRange[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV; // SRVを使う
+	descRange[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; // Offsetを自動計算
 
 	// RootSignatureにrootParametersを登録
 	descriptionRootSignature.pParameters = rootParameters;                    // ルートパラメータ配列へのポインタ
@@ -275,25 +275,37 @@ void CommandManager::CreateRootSignature()
 	rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL; // PixelとVertexで使う
 	rootParameters[0].Descriptor.ShaderRegister = 0;                   // レジスタ番号0とバインド
 
-	//// 頂点データ
-	//rootParameters[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_SRV; // SRVを使う
-	//rootParameters[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL; // PixelとVertexで使う
-	//rootParameters[1].Descriptor.ShaderRegister = 0;                  // レジスタ番号0とバインド
+	// メッシュレットデータ
+	D3D12_DESCRIPTOR_RANGE meshletRangeDesc[1] = { descRange[0] };						// 設定用構造体を取得
+	meshletRangeDesc[0].BaseShaderRegister = 0;											// シェーダーのレジスタ番号にバインド
+	rootParameters[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;		// SRVを使う
+	rootParameters[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;					// PixelとVertexで使う
+	rootParameters[1].DescriptorTable.pDescriptorRanges = meshletRangeDesc;             // ディスクリプタのレンジを設定
+	rootParameters[1].DescriptorTable.NumDescriptorRanges = _countof(meshletRangeDesc); // テーブルのサイズを設定
 
-	//// メッシュレットデータ
-	//rootParameters[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_SRV; // SRVを使う
-	//rootParameters[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL; // PixelとVertexで使う
-	//rootParameters[2].Descriptor.ShaderRegister = 1;                  // レジスタ番号1とバインド
+	// 頂点データ
+	D3D12_DESCRIPTOR_RANGE vertexRangeDesc[1] = { descRange[0] };						// 設定用構造体を取得
+	vertexRangeDesc[0].BaseShaderRegister = 1;											// シェーダーのレジスタ番号にバインド
+	rootParameters[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;		// SRVを使う
+	rootParameters[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;					// PixelとVertexで使う
+	rootParameters[2].DescriptorTable.pDescriptorRanges = vertexRangeDesc;              // ディスクリプタのレンジを設定
+	rootParameters[2].DescriptorTable.NumDescriptorRanges = _countof(vertexRangeDesc);  // テーブルのサイズを設定
+	
+	// 固有頂点データ
+	D3D12_DESCRIPTOR_RANGE uniqueVertexRangeDesc[1] = { descRange[0] };						 // 設定用構造体を取得
+	uniqueVertexRangeDesc[0].BaseShaderRegister = 2;										 // シェーダーのレジスタ番号にバインド
+	rootParameters[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;			 // SRVを使う
+	rootParameters[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;						 // PixelとVertexで使う
+	rootParameters[3].DescriptorTable.pDescriptorRanges = uniqueVertexRangeDesc;             // ディスクリプタのレンジを設定
+	rootParameters[3].DescriptorTable.NumDescriptorRanges = _countof(uniqueVertexRangeDesc); // テーブルのサイズを設定
 
-	//// 固有頂点データ
-	//rootParameters[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_SRV; // SRVを使う
-	//rootParameters[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL; // PixelとVertexで使う
-	//rootParameters[3].Descriptor.ShaderRegister = 2;                  // レジスタ番号2とバインド
-
-	//// プリミティブ頂点データ
-	//rootParameters[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_SRV; // SRVを使う
-	//rootParameters[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL; // PixelとVertexで使う
-	//rootParameters[4].Descriptor.ShaderRegister = 3;                  // レジスタ番号3とバインド
+	// プリミティブ頂点データ
+	D3D12_DESCRIPTOR_RANGE primitiveIndexRangeDesc[1] = { descRange[0] };					   // 設定用構造体を取得
+	primitiveIndexRangeDesc[0].BaseShaderRegister = 3;										   // シェーダーのレジスタ番号にバインド
+	rootParameters[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;			   // SRVを使う
+	rootParameters[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;						   // PixelとVertexで使う
+	rootParameters[4].DescriptorTable.pDescriptorRanges = primitiveIndexRangeDesc;             // ディスクリプタのレンジを設定
+	rootParameters[4].DescriptorTable.NumDescriptorRanges = _countof(primitiveIndexRangeDesc); // テーブルのサイズを設定
 
 	// シリアライズを行う
 	ID3DBlob* signatureBlob = nullptr; // シリアライズ後のバイナリオブジェクト

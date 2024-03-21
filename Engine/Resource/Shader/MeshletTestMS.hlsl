@@ -9,6 +9,14 @@ struct Vertex
     float3 color : COLOR0;
 };
 
+struct Meshlet
+{
+    uint VertCount;
+    uint VertOffset;
+    uint PrimCount;
+    uint PrimOffset;
+};
+
 float4 TransformPosition(float4 v)
 {
     return mul(v, viewProjection);
@@ -53,6 +61,8 @@ static uint3 cubeIndices[] =
     uint3(1, 3, 7),
     uint3(1, 7, 5),
 };
+
+StructuredBuffer<Meshlet> Meshlets : register(t0);
 
 [NumThreads(12, 1, 1)]
 [OutputTopology("triangle")]

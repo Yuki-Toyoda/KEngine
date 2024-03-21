@@ -37,13 +37,13 @@ void IPrimitive::Draw()
 	if (!isActive_)
 		return;
 
-	//// コマンドリストの取得
-	//ID3D12GraphicsCommandList* cmdList = cmdManager_->GetRenderCommandList();
+	// コマンドリストの取得
+	ID3D12GraphicsCommandList* cmdList = cmdManager_->GetRenderCommandList();
 
-	//cmdList->SetGraphicsRootShaderResourceView(1, vertexBuffer_->View);
-	//cmdList->SetGraphicsRootShaderResourceView(2, meshletBuffer_->View);
-	//cmdList->SetGraphicsRootShaderResourceView(3, uniqueVertexBuffer_->View);
-	//cmdList->SetGraphicsRootShaderResourceView(4, primitiveVertexBuffer_->View);
+	cmdList->SetGraphicsRootDescriptorTable(1, meshletBuffer_->View);
+	cmdList->SetGraphicsRootDescriptorTable(2, vertexBuffer_->View);
+	cmdList->SetGraphicsRootDescriptorTable(3, uniqueVertexBuffer_->View);
+	cmdList->SetGraphicsRootDescriptorTable(4, primitiveVertexBuffer_->View);
 }
 
 void IPrimitive::DisplayImGui()
