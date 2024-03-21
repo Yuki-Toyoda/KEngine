@@ -164,7 +164,6 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 	// 頂点バッファ
 	vertexBuffer_->Resource = CreateBuffer(sizeof(VertexData) * vertices_.size());
 	result = vertexBuffer_->Resource->Map(0, nullptr, reinterpret_cast<void**>(&vertices_));
-	vertexBuffer_->Resource->Unmap(0, nullptr);
 	D3D12_SHADER_RESOURCE_VIEW_DESC vertexDesc = { commonDesc };
 	vertexDesc.Buffer.NumElements = static_cast<UINT>(vertices_.size());
 	vertexDesc.Buffer.StructureByteStride = sizeof(VertexData);
@@ -180,7 +179,6 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 	// メッシュレットバッファ
 	meshletBuffer_->Resource = CreateBuffer(sizeof(DirectX::Meshlet) * meshlets_.size());
 	result = meshletBuffer_->Resource->Map(0, nullptr, reinterpret_cast<void**>(&meshlets_));
-	meshletBuffer_->Resource->Unmap(0, nullptr);
 	D3D12_SHADER_RESOURCE_VIEW_DESC meshletDesc = { commonDesc };
 	meshletDesc.Buffer.NumElements = static_cast<UINT>(meshlets_.size());
 	meshletDesc.Buffer.StructureByteStride = sizeof(DirectX::Meshlet);
@@ -196,7 +194,6 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 	// 固有頂点バッファ
 	uniqueVertexBuffer_->Resource = CreateBuffer(sizeof(uint8_t) * uniqueVertices_.size());
 	result = uniqueVertexBuffer_->Resource->Map(0, nullptr, reinterpret_cast<void**>(&uniqueVertices_));
-	uniqueVertexBuffer_->Resource->Unmap(0, nullptr);
 	D3D12_SHADER_RESOURCE_VIEW_DESC uniqueVertexDesc = { commonDesc };
 	uniqueVertexDesc.Buffer.NumElements = static_cast<UINT>(uniqueVertices_.size());
 	uniqueVertexDesc.Buffer.StructureByteStride = sizeof(uint8_t);
@@ -212,7 +209,6 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 	// プリミティブ頂点バッファ
 	primitiveVertexBuffer_->Resource = CreateBuffer(sizeof(primitiveIndices_[0]) * primitiveIndices_.size());
 	result = primitiveVertexBuffer_->Resource->Map(0, nullptr, reinterpret_cast<void**>(&primitiveIndices_));
-	primitiveVertexBuffer_->Resource->Unmap(0, nullptr);
 	D3D12_SHADER_RESOURCE_VIEW_DESC primitiveVertexDesc = { commonDesc };
 	primitiveVertexDesc.Buffer.NumElements = static_cast<UINT>(primitiveIndices_.size());
 	primitiveVertexDesc.Buffer.StructureByteStride = sizeof(primitiveIndices_[0]);

@@ -79,7 +79,7 @@ void MainCommand::PostDraw(ID3D12GraphicsCommandList* cmdList)
 void MainCommand::CreatePSO(ID3D12Device2* device, DXC* dxc, ID3D12RootSignature* signature, int32_t blendType)
 {
 	std::unique_ptr<PSO> newPSO = std::make_unique<PSO>();		 // インスタンスを生成
-	newPSO->Init(device, signature, dxc, L"Engine/Resource/Shader/MeshletMS.hlsl", L"Engine/Resource/Shader/MeshletPS.hlsl", blendType, true); // 初期化
+	newPSO->Init(device, signature, dxc, L"Engine/Resource/Shader/MeshletTestMS.hlsl", L"Engine/Resource/Shader/MeshletTestPS.hlsl", blendType, true); // 初期化
 
 	// PSO配列に追加
 	pso_ = (std::move(newPSO));

@@ -651,5 +651,7 @@
     </FxCompile>
     <FxCompile Include="Engine\Resource\Shader\MeshletMS.hlsl" />
     <FxCompile Include="Engine\Resource\Shader\MeshletPS.hlsl" />
+    <FxCompile Include="Engine\Resource\Shader\MeshletTestMS.hlsl" />
+    <FxCompile Include="Engine\Resource\Shader\MeshletTestPS.hlsl" />
   </ItemGroup>
 </Project>

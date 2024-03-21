@@ -75,7 +75,7 @@ void CommandManager::DrawCall()
 		mesh_->Draw();
 
 		// メッシュシェーダーを実行
-		commandList_->DispatchMesh(mesh_->GetMeshletCount(), 1, 1);
+		commandList_->DispatchMesh(12, 1, 1);
 
 		// メイン描画コマンドの場合処理を一旦抜ける
 		if (i == (int)commands_.size() - 1) {
@@ -256,15 +256,15 @@ void CommandManager::CreateRootSignature()
 	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature{};           // 設定用インスタンス生成
 	descriptionRootSignature.Flags = D3D12_ROOT_SIGNATURE_FLAG_NONE; // フラッグはなし
 	// ルートパラメータ生成
-	D3D12_ROOT_PARAMETER rootParameters[5] = {};
+	D3D12_ROOT_PARAMETER rootParameters[1] = {};
 
-	// 配列用のRangeDesc
-	D3D12_DESCRIPTOR_RANGE descRange[1] = {};    // DescriptorRangeを作成
-	descRange[0].BaseShaderRegister = 0;         // 0から始まる
-	descRange[0].NumDescriptors = 1;             // 数は1つ
-	descRange[0].RegisterSpace = 0;
-	descRange[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV; // SRVを使う
-	descRange[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; // Offsetを自動計算
+	//// 配列用のRangeDesc
+	//D3D12_DESCRIPTOR_RANGE descRange[1] = {};    // DescriptorRangeを作成
+	//descRange[0].BaseShaderRegister = 0;         // 0から始まる
+	//descRange[0].NumDescriptors = 1;             // 数は1つ
+	//descRange[0].RegisterSpace = 0;
+	//descRange[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV; // SRVを使う
+	//descRange[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; // Offsetを自動計算
 
 	// RootSignatureにrootParametersを登録
 	descriptionRootSignature.pParameters = rootParameters;                    // ルートパラメータ配列へのポインタ
@@ -275,25 +275,25 @@ void CommandManager::CreateRootSignature()
 	rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL; // PixelとVertexで使う
 	rootParameters[0].Descriptor.ShaderRegister = 0;                   // レジスタ番号0とバインド
 
-	// 頂点データ
-	rootParameters[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_SRV; // SRVを使う
-	rootParameters[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL; // PixelとVertexで使う
-	rootParameters[1].Descriptor.ShaderRegister = 0;                  // レジスタ番号0とバインド
+	//// 頂点データ
+	//rootParameters[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_SRV; // SRVを使う
+	//rootParameters[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL; // PixelとVertexで使う
+	//rootParameters[1].Descriptor.ShaderRegister = 0;                  // レジスタ番号0とバインド
 
-	// メッシュレットデータ
-	rootParameters[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_SRV; // SRVを使う
-	rootParameters[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL; // PixelとVertexで使う
-	rootParameters[2].Descriptor.ShaderRegister = 1;                  // レジスタ番号1とバインド
+	//// メッシュレットデータ
+	//rootParameters[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_SRV; // SRVを使う
+	//rootParameters[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL; // PixelとVertexで使う
+	//rootParameters[2].Descriptor.ShaderRegister = 1;                  // レジスタ番号1とバインド
 
-	// 固有頂点データ
-	rootParameters[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_SRV; // SRVを使う
-	rootParameters[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL; // PixelとVertexで使う
-	rootParameters[3].Descriptor.ShaderRegister = 2;                  // レジスタ番号2とバインド
+	//// 固有頂点データ
+	//rootParameters[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_SRV; // SRVを使う
+	//rootParameters[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL; // PixelとVertexで使う
+	//rootParameters[3].Descriptor.ShaderRegister = 2;                  // レジスタ番号2とバインド
 
-	// プリミティブ頂点データ
-	rootParameters[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_SRV; // SRVを使う
-	rootParameters[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL; // PixelとVertexで使う
-	rootParameters[4].Descriptor.ShaderRegister = 3;                  // レジスタ番号3とバインド
+	//// プリミティブ頂点データ
+	//rootParameters[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_SRV; // SRVを使う
+	//rootParameters[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL; // PixelとVertexで使う
+	//rootParameters[4].Descriptor.ShaderRegister = 3;                  // レジスタ番号3とバインド
 
 	// シリアライズを行う
 	ID3DBlob* signatureBlob = nullptr; // シリアライズ後のバイナリオブジェクト
@@ -334,7 +334,7 @@ void CommandManager::CreateBuffers()
 	generalCBuffer_->Resource = CreateBuffer(sizeof(GeneralData));								  // バッファの生成
 	result = generalCBuffer_->Resource->Map(0, nullptr, reinterpret_cast<void**>(&generalCBuffer_->Data)); // 生成したバッファのマッピングを行う
 	generalCBuffer_->View = generalCBuffer_->Resource->GetGPUVirtualAddress();					  // GPU上のアドレスの取得
-	generalCBuffer_->Data->DrawMeshlets = true;
+	//generalCBuffer_->Data->DrawMeshlets = true;
 
 	// マッピングに失敗した場合
 	if (FAILED(result)) {

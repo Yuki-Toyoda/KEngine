@@ -29,7 +29,7 @@ private: // サブクラス
 	/// </summary>
 	struct GeneralData {
 		Matrix4x4 WorldViewProj; // 射影変換行列
-		uint32_t  DrawMeshlets;  // メッシュレット描画フラグ
+		//uint32_t  DrawMeshlets;  // メッシュレット描画フラグ
 	};
 
 	/// <summary>
