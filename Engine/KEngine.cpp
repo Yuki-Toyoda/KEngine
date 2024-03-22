@@ -2,6 +2,8 @@
 
 void KEngine::Init()
 {
+	memoryLeakChecker_ = std::make_unique<D3DResourceLeakChecker>();
+
 	// COMの初期化
 	CoInitializeEx(0, COINIT_MULTITHREADED);
 
@@ -122,6 +124,8 @@ void KEngine::Finalize()
 
 	// COM終了
 	CoUninitialize();
+
+	
 }
 
 void KEngine::Run()

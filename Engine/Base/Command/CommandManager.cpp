@@ -198,7 +198,7 @@ void CommandManager::SetDrawData()
 int CommandManager::createTextureResource(const DirectX::ScratchImage& image)
 {
 	// バッファにテクスチャのメタデータを追加
-	textureBuffer_->Resource.push_back(CreateTextureBuffer(image.GetMetadata()));
+	textureBuffer_->Resource.push_back(std::move(CreateTextureBuffer(image.GetMetadata())));
 	// テクスチャをアップロード
 	UploadTextureData(image);
 	// テクスチャバッファの番号を返す
@@ -332,7 +332,7 @@ void CommandManager::CreateBuffers()
 
 	// 汎用データバッファ生成
 	generalCBuffer_ = std::make_unique<GeneralCBuffer>();										  // バッファの生成
-	generalCBuffer_->Resource = CreateBuffer(sizeof(GeneralData));								  // バッファの生成
+	generalCBuffer_->Resource = std::move(CreateBuffer(sizeof(GeneralData)));								  // バッファの生成
 	result = generalCBuffer_->Resource->Map(0, nullptr, reinterpret_cast<void**>(&generalCBuffer_->Data)); // 生成したバッファのマッピングを行う
 	generalCBuffer_->View = generalCBuffer_->Resource->GetGPUVirtualAddress();					  // GPU上のアドレスの取得
 	//generalCBuffer_->Data->DrawMeshlets = true;

@@ -172,7 +172,7 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 	commonDesc.Buffer.Flags = D3D12_BUFFER_SRV_FLAG_NONE;						   // フラッグ設定
 
 	// メッシュレットバッファ
-	meshletBuffer_->Resource = CreateBuffer((sizeof(DirectX::Meshlet) * meshletBuffer_->usedCount));
+	meshletBuffer_->Resource = std::move(CreateBuffer((sizeof(DirectX::Meshlet) * meshletBuffer_->usedCount)));
 	result = meshletBuffer_->Resource->Map(0, nullptr, reinterpret_cast<void**>(&meshletBuffer_->meshlet));
 	D3D12_SHADER_RESOURCE_VIEW_DESC meshletDesc = { commonDesc };
 	meshletDesc.Buffer.NumElements = meshletBuffer_->usedCount;
@@ -186,7 +186,7 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 	}
 
 	// 頂点バッファ
-	vertexBuffer_->Resource = CreateBuffer((sizeof(VertexData) * vertexBuffer_->usedCount));
+	vertexBuffer_->Resource = std::move(CreateBuffer((sizeof(VertexData) * vertexBuffer_->usedCount)));
 	result = vertexBuffer_->Resource->Map(0, nullptr, reinterpret_cast<void**>(&vertexBuffer_->vertex));
 	D3D12_SHADER_RESOURCE_VIEW_DESC vertexDesc = { commonDesc };
 	vertexDesc.Buffer.NumElements = vertexBuffer_->usedCount;
@@ -200,7 +200,7 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 	}
 
 	// 固有頂点バッファ
-	uniqueVertexBuffer_->Resource = CreateBuffer((sizeof(uint8_t) * uniqueVertexBuffer_->usedCount));
+	uniqueVertexBuffer_->Resource = std::move(CreateBuffer((sizeof(uint8_t)* uniqueVertexBuffer_->usedCount)));
 	result = uniqueVertexBuffer_->Resource->Map(0, nullptr, reinterpret_cast<void**>(&uniqueVertexBuffer_->uniqueVertex));
 	D3D12_SHADER_RESOURCE_VIEW_DESC uniqueVertexDesc = { commonDesc };
 	uniqueVertexDesc.Buffer.NumElements = uniqueVertexBuffer_->usedCount;
@@ -214,7 +214,7 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 	}
 
 	// プリミティブ頂点バッファ
-	primitiveVertexBuffer_->Resource = CreateBuffer((sizeof(DirectX::MeshletTriangle) * primitiveVertexBuffer_->usedCount));
+	primitiveVertexBuffer_->Resource = std::move(CreateBuffer((sizeof(DirectX::MeshletTriangle) * primitiveVertexBuffer_->usedCount)));
 	result = primitiveVertexBuffer_->Resource->Map(0, nullptr, reinterpret_cast<void**>(&primitiveVertexBuffer_->primitve));
 	D3D12_SHADER_RESOURCE_VIEW_DESC primitiveVertexDesc = { commonDesc };
 	primitiveVertexDesc.Buffer.NumElements = primitiveVertexBuffer_->usedCount;
