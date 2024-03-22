@@ -148,7 +148,7 @@ public: // アクセッサ等
 	/// コマンドリストゲッター
 	/// </summary>
 	/// <returns>コマンドリスト</returns>
-	ID3D12GraphicsCommandList* GetRenderCommandList() { return commandList_.Get(); }
+	ID3D12GraphicsCommandList6* GetRenderCommandList() { return commandList_.Get(); }
 
 public: // その他関数
 
