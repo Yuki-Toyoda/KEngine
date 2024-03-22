@@ -36,12 +36,12 @@ void KEngine::Init()
 	auto& io = ImGui::GetIO();
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
-	// 形状マネージャの初期化
-	primitiveManager_ = PrimitiveManager::GetInstance();
-	primitiveManager_->Init();
+	//// 形状マネージャの初期化
+	//primitiveManager_ = PrimitiveManager::GetInstance();
+	//primitiveManager_->Init();
 
-	// 衝突マネージャーの初期化
-	collisionManager_ = CollisionManager::GetInstance();
+	//// 衝突マネージャーの初期化
+	//collisionManager_ = CollisionManager::GetInstance();
 
 	// シーンマネージャーのインスタンス取得
 	sceneManager_ = SceneManager::GetInstance();
@@ -68,7 +68,7 @@ void KEngine::Update()
 	input_->Update();
 
 	// 衝突判定リストクリア
-	collisionManager_->ListClear();
+	//collisionManager_->ListClear();
 
 	// グローバル変数の更新
 	GlobalVariables::GetInstance()->Update();
@@ -85,10 +85,10 @@ void KEngine::Update()
 void KEngine::PostUpdate()
 {
 	// 衝突判定検証
-	collisionManager_->CheckAllCollision();
+	//collisionManager_->CheckAllCollision();
 
 	// 形状マネージャ更新
-	primitiveManager_->Update();
+	//primitiveManager_->Update();
 
 	// ImGui受付終了
 	imGuiManager_->End();
@@ -97,7 +97,7 @@ void KEngine::PostUpdate()
 void KEngine::PreFinalize()
 {
 	// 衝突マネージャーリストクリア
-	collisionManager_->ListClear();
+	//collisionManager_->ListClear();
 }
 
 void KEngine::Finalize()

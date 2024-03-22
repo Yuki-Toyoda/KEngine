@@ -249,7 +249,7 @@ private: // メンバ変数
 	Microsoft::WRL::ComPtr<IDxcBlob> meshShaderBlob_;
 
 	// テスト用メッシュ
-	Mesh* mesh_;
+	Mesh* mesh_ = nullptr;
 
 };
 

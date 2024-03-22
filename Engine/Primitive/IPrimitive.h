@@ -122,6 +122,11 @@ public: // メンバ関数
 	IPrimitive(CommandManager* manager);
 
 	/// <summary>
+	/// 仮想デストラクタ
+	/// </summary>
+	virtual ~IPrimitive() = default;
+
+	/// <summary>
 	/// (呼び出し禁止)頂点配列を形状の頂点数にリサイズする関数
 	/// </summary>
 	virtual void ResizeVertices();
@@ -199,7 +204,7 @@ public: // パブリックなメンバ変数
 	std::unique_ptr<PrimitiveIndexBuffer> primitiveVertexBuffer_;
 
 	// 描画中心座標
-	WorldTransform* transform_;
+	WorldTransform* transform_ = nullptr;
 
 	Matrix4x4 matWorld_;
 
