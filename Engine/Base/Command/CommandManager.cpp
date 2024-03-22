@@ -69,10 +69,8 @@ void CommandManager::DrawCall()
 		// ルートシグネチャにバッファをセットする
 		cmdList->SetGraphicsRootConstantBufferView(0, generalCBuffer_->Resource->GetGPUVirtualAddress());
 
+		// 描画処理
 		mesh_->Draw();
-
-		// メッシュシェーダーを実行
-		commandList_->DispatchMesh(mesh_->GetMeshletCount(), 1, 1);
 
 		// メイン描画コマンドの場合処理を一旦抜ける
 		if (i == (int)commands_.size() - 1) {
@@ -209,9 +207,7 @@ int CommandManager::createTextureResource(const DirectX::ScratchImage& image)
 
 void CommandManager::DisplayImGui()
 {
-	ImGui::Begin("MeshTransform");
-	transform_.DisplayImGui();
-	ImGui::End();
+	
 }
 
 void CommandManager::InitializeDXC()
@@ -323,6 +319,12 @@ void CommandManager::CreateRootSignature()
 	//assert(SUCCEEDED(result));																													  // 生成確認
 }
 
+void CommandManager::Finalize()
+{
+	// メッシュの削除
+	delete mesh_;
+}
+
 void CommandManager::CreateBuffers()
 {
 	// 生成確認
@@ -346,11 +348,6 @@ void CommandManager::CreateBuffers()
 	mesh_->SetCommandManager(this);
 	// メッシュのロード
 	mesh_->LoadFile("./Engine/Resource/Samples/Sphere", "Sphere.obj");
-
-	// トランスフォーム初期化
-	transform_.Init();
-	// メッシュにトランスフォームを渡す
-	mesh_->transform_ = &transform_;
 
 	// テクスチャデータ
 	textureBuffer_ = std::make_unique<TextureBuffer>();

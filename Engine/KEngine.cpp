@@ -108,6 +108,9 @@ void KEngine::Finalize()
 	// 読み込み形状を削除
 	primitiveManager_->Init();
 
+	// コマンドマネージャーの終了処理
+	dxCommon_->GetCommandManager()->Finalize();
+
 	// 音解放処理
 	audio_->Finalize();
 

@@ -5,21 +5,21 @@ void Game::Init()
 	// 基底クラスの初期化を呼び出す
 	KEngine::Init();
 
-	// アニメーションマネージャの初期化
-	animManager_ = AnimationManager::GetInstance();
-	animManager_->Init();
+	//// アニメーションマネージャの初期化
+	//animManager_ = AnimationManager::GetInstance();
+	//animManager_->Init();
 
 	// オブジェクトマネージャーの初期化
 	gameObjectManager_ = GameObjectManager::GetInstance();
 	gameObjectManager_->Init();
 
-	// スプライトマネージャの初期化
-	spriteManager_ = SpriteManager::GetInstance();
-	spriteManager_->Init();
+	//// スプライトマネージャの初期化
+	//spriteManager_ = SpriteManager::GetInstance();
+	//spriteManager_->Init();
 
-	// パーティクルマネージャの初期化
-	particleManager_ = ParticleEmitterManager::GetInstance();
-	particleManager_->Init();
+	//// パーティクルマネージャの初期化
+	//particleManager_ = ParticleEmitterManager::GetInstance();
+	//particleManager_->Init();
 
 	// シーンマネージャーにファクトリークラスをセット
 	sceneManager_->SetSceneFactory(std::make_unique<SceneFactory>());
@@ -48,7 +48,7 @@ void Game::Update()
 void Game::Draw()
 {
 	// 形状マネージャ描画
-	primitiveManager_->Draw();
+	/*primitiveManager_->Draw();*/
 
 	// 描画
 	dxCommon_->Draw();
@@ -64,10 +64,10 @@ void Game::Finalize()
 {
 	// 全オブジェクトを削除
 	gameObjectManager_->Init();
-	// 読み込みスプライト削除
-	spriteManager_->Init();
-	// 全アニメーション削除
-	animManager_->Init();
+	//// 読み込みスプライト削除
+	//spriteManager_->Init();
+	//// 全アニメーション削除
+	//animManager_->Init();
 
 	// 基底クラスの終了後処理を呼び出す
 	KEngine::Finalize();

@@ -96,6 +96,11 @@ public: // メンバ関数
 	/// </summary>
 	void Reset();
 
+	/// <summary>
+	/// 終了処理
+	/// </summary>
+	void Finalize();
+
 public: // アクセッサ等
 
 	/// <summary>
@@ -256,15 +261,13 @@ private: // メンバ変数
 	const UINT kMaxTexture = 128;				   // テクスチャ最大数
 
 	// デフォルトテクスチャ
-	Texture* defaultTexture_;
+	Texture* defaultTexture_ = nullptr;
 
 	// バイナリオブジェクト格納用
 	Microsoft::WRL::ComPtr<IDxcBlob> meshShaderBlob_;
 
 	// テスト用メッシュ
 	Mesh* mesh_;
-	// メッシュ用ワールドトランスフォーム
-	WorldTransform transform_;
 
 };
 

@@ -38,12 +38,15 @@ void IPrimitive::Draw()
 		return;
 
 	// コマンドリストの取得
-	ID3D12GraphicsCommandList* cmdList = cmdManager_->GetRenderCommandList();
+	ID3D12GraphicsCommandList6* cmdList = cmdManager_->GetRenderCommandList();
 
 	cmdList->SetGraphicsRootDescriptorTable(1, meshletBuffer_->View);
 	cmdList->SetGraphicsRootDescriptorTable(2, vertexBuffer_->View);
 	cmdList->SetGraphicsRootDescriptorTable(3, uniqueVertexBuffer_->View);
 	cmdList->SetGraphicsRootDescriptorTable(4, primitiveVertexBuffer_->View);
+
+	// メッシュシェーダーを実行
+	cmdList->DispatchMesh(GetMeshletCount(), 1, 1);
 }
 
 void IPrimitive::DisplayImGui()

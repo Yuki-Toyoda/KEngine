@@ -179,19 +179,16 @@ public: // パブリックなメンバ変数
 	// 形状名称
 	std::string name_ = "primitive";
 
-	// 頂点座標配列
-	std::vector<VertexData> vertices_;
-
 	// インデックス情報
 	std::vector<uint32_t> indexes_;
 
+	// 頂点座標配列
+	std::vector<VertexData> vertices_;
 	// メッシュレット変換出力後情報配列群
 	std::vector<DirectX::Meshlet>		  meshlets_;
 	std::vector<uint8_t>				  uniqueVertices_;
 	std::vector<DirectX::MeshletTriangle> primitiveIndices_;
 
-	//// ワールドトランスフォームバッファ
-	//std::unique_ptr<MatrixBuffer> worldTransformBuffer_;
 	// メッシュレットバッファ
 	std::unique_ptr<MeshletBuffer> meshletBuffer_;
 	// 頂点バッファ
