@@ -21,7 +21,7 @@ void main(
         uint vertexIndex = VertexIndices[meshlet.VertOffset + gtid];
         
         // 取得したインデックスから頂点座標を求める
-        VertexOutPut vertex = Vertices[vertexIndex];
+        VertexData vertex = Vertices[vertexIndex];
         
         // 出力する頂点座標を求める
         outVerts[gtid].pos = TransformPosition(vertex.pos);

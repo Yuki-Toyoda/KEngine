@@ -1,7 +1,7 @@
-struct VertexOutPut
+struct VertexData
 {
-    float4 pos   : SV_Position;
-    float4 color : COLOR0;
+    float4 pos;
+    float4 color;
 };
 
 struct Meshlet
@@ -10,6 +10,12 @@ struct Meshlet
     uint VertOffset;
     uint PrimCount;
     uint PrimOffset;
+};
+
+struct VertexOutPut
+{
+    float4 pos : SV_Position;
+    float4 color : COLOR0;
 };
 
 cbuffer GeneralData : register(b0)
@@ -22,7 +28,7 @@ float4 TransformPosition(float4 v)
     return mul(v, WorldViewProj);
 }
 
-StructuredBuffer<Meshlet> Meshlets         : register(t0);
-StructuredBuffer<VertexOutPut> Vertices    : register(t1);
-StructuredBuffer<uint>    VertexIndices    : register(t2);
-StructuredBuffer<uint>    PrimitiveIndices : register(t3);
+StructuredBuffer<Meshlet>    Meshlets         : register(t0);
+StructuredBuffer<VertexData> Vertices         : register(t1);
+StructuredBuffer<uint>       VertexIndices    : register(t2);
+StructuredBuffer<uint>       PrimitiveIndices : register(t3);

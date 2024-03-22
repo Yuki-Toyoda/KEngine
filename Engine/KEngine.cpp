@@ -102,11 +102,11 @@ void KEngine::PreFinalize()
 
 void KEngine::Finalize()
 {	
-	// 全パーティクル削除
-	particleManager_->Init();
+	//// 全パーティクル削除
+	//particleManager_->Init();
 
-	// 読み込み形状を削除
-	primitiveManager_->Init();
+	//// 読み込み形状を削除
+	//primitiveManager_->Init();
 
 	// コマンドマネージャーの終了処理
 	dxCommon_->GetCommandManager()->Finalize();
