@@ -43,23 +43,6 @@ private: // サブクラス
 	};
 
 	/// <summary>
-	///  行列バッファ構造体
-	/// </summary>
-	struct MatrixBuffer {
-		Microsoft::WRL::ComPtr<ID3D12Resource> Resource;  // バッファリソース
-		D3D12_GPU_VIRTUAL_ADDRESS View{};				  // GPU上のハンドルを格納
-		Matrix4x4* mat;							          // 行列本体
-
-		// WorldTransformを=演算子で代入できるようにオーバーロード
-		MatrixBuffer& operator=(const WorldTransform& transform) {
-			// ワールド行列を取得
-			*mat = transform.GetMatWorld();
-			// 自身のポインタを返す
-			return *this;
-		}
-	};
-
-	/// <summary>
 	/// テクスチャバッファ構造体
 	/// </summary>
 	struct TextureBuffer {
@@ -246,11 +229,10 @@ private: // メンバ変数
 	// ルートシグネチャ
 	// 以下はテーブル番号
 	// 0 ... 汎用定数バッファ
-	// 1 ... インデックスバッファ
+	// 1 ... メッシュレットバッファ
 	// 2 ... 頂点バッファ
-	// 3 ... メッシュレットバッファ
-	// 4 ... 固有頂点インデックスバッファ
-	// 5 ... プリミティブインデックスバッファ
+	// 3 ... 固有頂点インデックスバッファ
+	// 4 ... プリミティブ頂点バッファ
 	Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature_;
 
 	// 汎用定数バッファデータ
