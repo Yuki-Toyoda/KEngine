@@ -14,7 +14,7 @@ struct Meshlet
 
 cbuffer GeneralData : register(b0)
 {
-    float4x4 WorldViewProj;
+    matrix WorldViewProj;
 };
 
 float4 TransformPosition(float4 v)

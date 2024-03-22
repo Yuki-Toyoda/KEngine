@@ -43,9 +43,6 @@ void CommandManager::Init(ID3D12Device2* device)
 
 	// ルートシグネチャの生成
 	CreateRootSignature();
-
-	// バッファを生成
-	CreateBuffers();
 }
 
 void CommandManager::DrawCall()
@@ -170,21 +167,11 @@ void CommandManager::SetHeaps(RTV* rtv, SRV* srv, DSV* dsv)
 		commands_[i]->Init(device_, dxc_.get(), rootSignature_.Get()); // 初期化
 	}
 
+	// バッファを生成
+	CreateBuffers();
+
 	// サンプルテクスチャの読み込み
 	//defaultTexture_ = TextureManager::Load("white2x2.png");
-
-	// メッシュ生成
-	mesh_ = new Mesh(this);
-	// コマンドマネージャーをセット
-	mesh_->SetCommandManager(this);
-	// メッシュのロード
-	mesh_->LoadFile("./Engine/Resource/Samples/Sphere", "Sphere.obj");
-
-	// トランスフォーム初期化
-	transform_.Init();
-	// メッシュにトランスフォームを渡す
-	mesh_->transform_ = &transform_;
-
 }
 
 Matrix4x4* const CommandManager::GetWorldMatrixAddress() const
@@ -352,6 +339,18 @@ void CommandManager::CreateBuffers()
 	if (FAILED(result)) {
 		assert(false);
 	}
+
+	// メッシュ生成
+	mesh_ = new Mesh(this);
+	// コマンドマネージャーをセット
+	mesh_->SetCommandManager(this);
+	// メッシュのロード
+	mesh_->LoadFile("./Engine/Resource/Samples/Sphere", "Sphere.obj");
+
+	// トランスフォーム初期化
+	transform_.Init();
+	// メッシュにトランスフォームを渡す
+	mesh_->transform_ = &transform_;
 
 	// テクスチャデータ
 	textureBuffer_ = std::make_unique<TextureBuffer>();
