@@ -37,9 +37,6 @@ void CommandManager::Init(ID3D12Device2* device)
 
 	// HLSLコードコンパイラの生成
 	InitializeDXC();
-	
-	// 引数パスのシェーダーをコンパイルする
-	meshShaderBlob_ = CompileShader(L"Engine/Resource/Shader/MeshletMS.hlsl", L"ms_6_5");
 
 	// ルートシグネチャの生成
 	CreateRootSignature();

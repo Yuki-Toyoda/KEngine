@@ -3,9 +3,9 @@
 void KLib::DeltaTimer::Start()
 {
 	// 各種項目のリセット
-	nowFlame_ = 0.0f; // フレーム
+	nowFlame_ = 0.0f;  // フレーム
 	isFinish_ = false; // 終了トリガー
-	isActive_ = true; // 有効トリガー
+	isActive_ = true;  // 有効トリガー
 }
 
 void KLib::DeltaTimer::Start(float time)

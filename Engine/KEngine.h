@@ -91,16 +91,16 @@ protected: // メンバ変数
 	ImGuiManager* imGuiManager_ = nullptr;
 
 	// 形状マネージャのインスタンス格納用
-	PrimitiveManager* primitiveManager_ = nullptr;
+	//PrimitiveManager* primitiveManager_ = nullptr;
 
 	// ゲーム終了フラグ
 	bool endGameRequest_ = false;
 
 	// パーティクルマネージャのインスタンス格納用
-	ParticleEmitterManager* particleManager_ = nullptr;
+	//ParticleEmitterManager* particleManager_ = nullptr;
 
 	// 衝突マネージャーのインスタンス格納用
-	CollisionManager* collisionManager_ = nullptr;
+	//CollisionManager* collisionManager_ = nullptr;
 
 	// シーンマネージャーのインスタンス格納用
 	SceneManager* sceneManager_ = nullptr;

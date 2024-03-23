@@ -153,16 +153,6 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 	// 変換成否確認
 	assert(SUCCEEDED(result));
 
-	// バッファにデータを渡す
-	meshletBuffer_->meshlet = meshlets_.data();
-	meshletBuffer_->usedCount = static_cast<UINT>(meshlets_.size());
-	vertexBuffer_->vertex = vertices_.data();
-	vertexBuffer_->usedCount = static_cast<UINT>(vertices_.size());
-	uniqueVertexBuffer_->uniqueVertex = uniqueVertices_.data();
-	uniqueVertexBuffer_->usedCount = static_cast<UINT>(uniqueVertices_.size());
-	primitiveVertexBuffer_->primitve = primitiveIndices_.data();
-	primitiveVertexBuffer_->usedCount = static_cast<UINT>(primitiveIndices_.size());
-
 	// 共通のSRV用Desc
 	D3D12_SHADER_RESOURCE_VIEW_DESC commonDesc{};								   // 汎用設定用
 	commonDesc.Format = DXGI_FORMAT_UNKNOWN;									   // フォーマット形式は不明
