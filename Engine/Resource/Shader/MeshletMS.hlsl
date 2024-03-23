@@ -6,7 +6,7 @@ void main(
     in uint gid  : SV_GroupID,
     in uint gtid : SV_GroupThreadID,
     out vertices VertexOutPut outVerts[128],
-    out indices uint3         outIndices[128]
+    out indices uint32_t3         outIndices[128]
 )
 {
     // Meshlet取得
@@ -31,12 +31,10 @@ void main(
     if (gtid < meshlet.PrimCount)
     {
         // プリミティブ情報のインデックス情報を取得
-        uint packedIndices = PrimitiveIndices[meshlet.PrimOffset + gtid];
+        uint32_t3 packedIndices = PrimitiveIndices[meshlet.PrimOffset + gtid];
         
         // 出力するプリミティブを求める
-        outIndices[gtid] = uint3(packedIndices        & 0xFF,
-                                (packedIndices >> 8 ) & 0xFF,
-                                (packedIndices >> 16) & 0xFF);
+        outIndices[gtid] = packedIndices;
     }
 
 }

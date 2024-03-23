@@ -492,9 +492,6 @@
     <None Include="Externals\imgui\.gitignore">
       <Filter>Externals\ImGui</Filter>
     </None>
-    <None Include="Engine\Resource\Shader\Object3D.hlsli">
-      <Filter>Engine\Resource\Shader</Filter>
-    </None>
     <None Include="Engine\Resource\Shader\Meshlet.hlsli" />
   </ItemGroup>
   <ItemGroup>
@@ -643,15 +640,7 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Engine\Resource\Shader\Object3D.PS.hlsl">
-      <Filter>Engine\Resource\Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="Engine\Resource\Shader\Object3D.VS.hlsl">
-      <Filter>Engine\Resource\Shader</Filter>
-    </FxCompile>
     <FxCompile Include="Engine\Resource\Shader\MeshletMS.hlsl" />
     <FxCompile Include="Engine\Resource\Shader\MeshletPS.hlsl" />
-    <FxCompile Include="Engine\Resource\Shader\MeshletTestMS.hlsl" />
-    <FxCompile Include="Engine\Resource\Shader\MeshletTestPS.hlsl" />
   </ItemGroup>
 </Project>

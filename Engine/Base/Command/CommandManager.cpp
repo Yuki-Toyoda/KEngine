@@ -332,7 +332,6 @@ void CommandManager::CreateBuffers()
 	generalCBuffer_->Resource = std::move(CreateBuffer(sizeof(GeneralData)));								  // バッファの生成
 	result = generalCBuffer_->Resource->Map(0, nullptr, reinterpret_cast<void**>(&generalCBuffer_->Data)); // 生成したバッファのマッピングを行う
 	generalCBuffer_->View = generalCBuffer_->Resource->GetGPUVirtualAddress();					  // GPU上のアドレスの取得
-	//generalCBuffer_->Data->DrawMeshlets = true;
 
 	// マッピングに失敗した場合
 	if (FAILED(result)) {

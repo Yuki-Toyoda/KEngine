@@ -1,34 +1,36 @@
+struct ConstantData
+{
+    float4x4 WorldViewProj;
+};
+
 struct VertexData
 {
-    float4 pos;
-    float4 color;
+    float32_t4 pos;
+    float32_t4 color;
 };
 
 struct Meshlet
 {
-    uint VertCount;
-    uint VertOffset;
-    uint PrimCount;
-    uint PrimOffset;
+    uint32_t VertCount;
+    uint32_t VertOffset;
+    uint32_t PrimCount;
+    uint32_t PrimOffset;
 };
 
 struct VertexOutPut
 {
-    float4 pos : SV_Position;
+    float4 pos : SV_POSITION0;
     float4 color : COLOR0;
 };
 
-cbuffer GeneralData : register(b0)
-{
-    matrix WorldViewProj;
-};
+ConstantBuffer<ConstantData> ConstantData : register(b0);
 
 float4 TransformPosition(float4 v)
 {
-    return mul(v, WorldViewProj);
+    return mul(v, ConstantData.WorldViewProj);
 }
 
 StructuredBuffer<Meshlet>    Meshlets         : register(t0);
 StructuredBuffer<VertexData> Vertices         : register(t1);
-StructuredBuffer<uint>       VertexIndices    : register(t2);
-StructuredBuffer<uint>       PrimitiveIndices : register(t3);
+StructuredBuffer<uint32_t>   VertexIndices    : register(t2);
+StructuredBuffer<uint32_t3>  PrimitiveIndices : register(t3);

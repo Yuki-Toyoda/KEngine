@@ -36,7 +36,6 @@ struct MeshletBuffer {
 	Microsoft::WRL::ComPtr<ID3D12Resource> Resource;	  // リソース
 	D3D12_GPU_DESCRIPTOR_HANDLE			   View;		  // GPU上のアドレス
 	DirectX::Meshlet*					   meshlet;		  // メッシュレットのデータ
-	UINT								   usedCount = 0; // バッファの使用数
 };
 
 /// <summary>
@@ -46,7 +45,6 @@ struct VertexBuffer {
 	Microsoft::WRL::ComPtr<ID3D12Resource> Resource;	  // リソース
 	D3D12_GPU_DESCRIPTOR_HANDLE			   View;		  // GPU上のアドレス
 	VertexData*							   vertex;		  // メッシュレットのデータ
-	UINT								   usedCount = 0; // バッファの使用数
 };
 
 /// <summary>
@@ -56,7 +54,6 @@ struct UniqueVertexBuffer {
 	Microsoft::WRL::ComPtr<ID3D12Resource> Resource;	  // リソース
 	D3D12_GPU_DESCRIPTOR_HANDLE			   View;		  // GPU上のアドレス
 	uint8_t*							   uniqueVertex;  // メッシュレットのデータ
-	UINT								   usedCount = 0; // バッファの使用数
 };
 
 /// <summary>
@@ -66,7 +63,6 @@ struct PrimitiveIndexBuffer {
 	Microsoft::WRL::ComPtr<ID3D12Resource> Resource;	  // リソース
 	D3D12_GPU_DESCRIPTOR_HANDLE			   View;		  // GPU上のアドレス
 	DirectX::MeshletTriangle*			   primitve;      // メッシュレットのデータ
-	UINT								   usedCount = 0; // バッファの使用数
 };
 
 /// <summary>
@@ -201,7 +197,7 @@ public: // パブリックなメンバ変数
 	// 固有頂点バッファ
 	std::unique_ptr<UniqueVertexBuffer> uniqueVertexBuffer_;
 	// プリミティブ頂点バッファ
-	std::unique_ptr<PrimitiveIndexBuffer> primitiveVertexBuffer_;
+	std::unique_ptr<PrimitiveIndexBuffer> primitiveIndexBuffer_;
 
 	// 描画中心座標
 	WorldTransform* transform_ = nullptr;

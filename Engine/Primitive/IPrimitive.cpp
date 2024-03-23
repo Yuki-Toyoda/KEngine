@@ -37,13 +37,18 @@ void IPrimitive::Draw()
 	if (!isActive_)
 		return;
 
+	/*std::memcpy(meshletBuffer_->meshlet, meshlets_.data(), sizeof(meshlets_[0]) * meshlets_.size());
+	std::memcpy(vertexBuffer_->vertex, vertices_.data(), sizeof(vertices_[0]) * vertices_.size());
+	std::memcpy(uniqueVertexBuffer_->uniqueVertex, uniqueVertices_.data(), sizeof(uniqueVertices_[0]) * uniqueVertices_.size());
+	std::memcpy(primitiveIndexBuffer_->primitve, primitiveIndices_.data(), sizeof(primitiveIndices_[0]) * primitiveIndices_.size());*/
+
 	// コマンドリストの取得
 	ID3D12GraphicsCommandList6* cmdList = cmdManager_->GetRenderCommandList();
 
 	cmdList->SetGraphicsRootDescriptorTable(1, meshletBuffer_->View);
 	cmdList->SetGraphicsRootDescriptorTable(2, vertexBuffer_->View);
 	cmdList->SetGraphicsRootDescriptorTable(3, uniqueVertexBuffer_->View);
-	cmdList->SetGraphicsRootDescriptorTable(4, primitiveVertexBuffer_->View);
+	cmdList->SetGraphicsRootDescriptorTable(4, primitiveIndexBuffer_->View);
 
 	// メッシュシェーダーを実行
 	cmdList->DispatchMesh(GetMeshletCount(), 1, 1);
