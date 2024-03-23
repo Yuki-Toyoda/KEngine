@@ -204,7 +204,11 @@ int CommandManager::createTextureResource(const DirectX::ScratchImage& image)
 
 void CommandManager::DisplayImGui()
 {
-	
+	for (int i = 0; i < mesh_->GetMeshletCount(); i++) {
+		std::string s = "VertCount" + std::to_string(i);
+		int v = mesh_->meshletBuffer_->meshlet[i].VertCount;
+		ImGui::DragInt(s.c_str(), &v);
+	}
 }
 
 void CommandManager::InitializeDXC()
@@ -343,7 +347,7 @@ void CommandManager::CreateBuffers()
 	// コマンドマネージャーをセット
 	mesh_->SetCommandManager(this);
 	// メッシュのロード
-	mesh_->LoadFile("./Engine/Resource/Samples/Sphere", "Sphere.obj");
+	mesh_->LoadFile("./Engine/Resource/Samples/Box", "Box.obj");
 
 	// テクスチャデータ
 	textureBuffer_ = std::make_unique<TextureBuffer>();
