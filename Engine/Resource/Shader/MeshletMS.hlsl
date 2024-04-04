@@ -3,8 +3,8 @@
 [NumThreads(128, 1, 1)]
 [OutputTopology("triangle")]
 void main(
-    in uint gid  : SV_GroupID,
-    in uint gtid : SV_GroupThreadID,
+    in uint32_t gid  : SV_GroupID,
+    in uint32_t gtid : SV_GroupThreadID,
     out vertices VertexOutPut outVerts[128],
     out indices uint32_t3         outIndices[128]
 )
@@ -18,7 +18,7 @@ void main(
     if (gtid < meshlet.VertCount)
     {   
         // 頂点インデックスの取得
-        uint vertexIndex = VertexIndices[meshlet.VertOffset + gtid];
+        uint32_t vertexIndex = VertexIndices[meshlet.VertOffset + gtid];
         
         // 取得したインデックスから頂点座標を求める
         VertexData vertex = Vertices[vertexIndex];

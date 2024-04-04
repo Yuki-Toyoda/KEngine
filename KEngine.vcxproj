@@ -241,6 +241,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Utility\Animation\AnimationKey.h" />
     <ClInclude Include="Engine\Utility\Animation\AnimationManager.h" />
     <ClInclude Include="Engine\Utility\Easing\Easing.h" />
+    <ClInclude Include="Engine\Utility\IndexList\Index.h" />
+    <ClInclude Include="Engine\Utility\IndexList\IndexList.h" />
     <ClInclude Include="Engine\Utility\KLib.h" />
     <ClInclude Include="Engine\Utility\Lerp\Lerp.h" />
     <ClInclude Include="Engine\Utility\Observer\Observer.h" />

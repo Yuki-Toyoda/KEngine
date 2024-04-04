@@ -139,6 +139,10 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 	for (size_t i = 0; i < verticesIndices.size(); i += 3)
 		std::swap(verticesIndices[i], verticesIndices[i + 2]); // 0番目と2番目の要素を入れ替え、反転させる
 
+	// 出力後の固有頂点保存用
+	std::vector<uint8_t> uniqueVertcies;
+	std::vector<DirectX::MeshletTriangle> primitiveIndices;
+
 	// メッシュレットの変換成否確認用
 	HRESULT result = S_FALSE;
 	// 読み込んだモデルデータをメッシュレットに変換する
@@ -147,11 +151,30 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 		positions.data(), positions.size(),
 		nullptr,
 		meshlets_,
-		uniqueVertices_,
-		primitiveIndices_
+		uniqueVertcies,
+		primitiveIndices
 	);
 	// 変換成否確認
 	assert(SUCCEEDED(result));
+
+	// 配列内の値を変換
+	for (size_t i = 0; i < uniqueVertcies.size(); i++) {
+		// 固有頂点を取得
+		uint32_t newVertex = uniqueVertcies[static_cast<int>(i)];
+		// 任意の形式に変換
+		uniqueVertices_.push_back(newVertex);
+	}
+
+	// 配列内の値を変換
+	for (size_t i = 0; i < primitiveIndices.size(); i++) {
+		// 固有頂点を取得
+		PackedTriangle newPrimitive;
+		newPrimitive.i0 = primitiveIndices[static_cast<int>(i)].i0;
+		newPrimitive.i1 = primitiveIndices[static_cast<int>(i)].i1;
+		newPrimitive.i2 = primitiveIndices[static_cast<int>(i)].i2;
+		// 任意の形式に変換
+		primitiveIndices_.push_back(newPrimitive);
+	}
 
 	// 共通のSRV用Desc
 	D3D12_SHADER_RESOURCE_VIEW_DESC commonDesc{};								   // 汎用設定用
@@ -190,11 +213,11 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 	}
 
 	// 固有頂点バッファ
-	uniqueVertexBuffer_->Resource = std::move(CreateBuffer((sizeof(uint8_t) * uniqueVertices_.size())));
+	uniqueVertexBuffer_->Resource = std::move(CreateBuffer((sizeof(uint32_t) * uniqueVertices_.size())));
 	result = uniqueVertexBuffer_->Resource->Map(0, nullptr, reinterpret_cast<void**>(&uniqueVertexBuffer_->uniqueVertex));
 	D3D12_SHADER_RESOURCE_VIEW_DESC uniqueVertexDesc = { commonDesc };
 	uniqueVertexDesc.Buffer.NumElements = static_cast<UINT>(uniqueVertices_.size());
-	uniqueVertexDesc.Buffer.StructureByteStride = sizeof(uint8_t);
+	uniqueVertexDesc.Buffer.StructureByteStride = sizeof(uint32_t);
 	uniqueVertexBuffer_->View = cmdManager_->GetSRV()->GetGPUHandle(cmdManager_->GetSRV()->GetUsedCount());
 	cmdManager_->GetDevice()->CreateShaderResourceView(uniqueVertexBuffer_->Resource.Get(), &uniqueVertexDesc, cmdManager_->GetSRV()->GetCPUHandle(cmdManager_->GetSRV()->GetUsedCount()));
 	cmdManager_->GetSRV()->AddUsedCount();
@@ -204,11 +227,11 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 	}
 
 	// プリミティブインデックスバッファ
-	primitiveIndexBuffer_->Resource = std::move(CreateBuffer((sizeof(DirectX::MeshletTriangle) * primitiveIndices_.size())));
+	primitiveIndexBuffer_->Resource = std::move(CreateBuffer((sizeof(PackedTriangle) * primitiveIndices_.size())));
 	result = primitiveIndexBuffer_->Resource->Map(0, nullptr, reinterpret_cast<void**>(&primitiveIndexBuffer_->primitve));
 	D3D12_SHADER_RESOURCE_VIEW_DESC primitiveIndexDesc = { commonDesc };
 	primitiveIndexDesc.Buffer.NumElements = static_cast<UINT>(primitiveIndices_.size());
-	primitiveIndexDesc.Buffer.StructureByteStride = sizeof(DirectX::MeshletTriangle);
+	primitiveIndexDesc.Buffer.StructureByteStride = sizeof(PackedTriangle);
 	primitiveIndexBuffer_->View = cmdManager_->GetSRV()->GetGPUHandle(cmdManager_->GetSRV()->GetUsedCount());
 	cmdManager_->GetDevice()->CreateShaderResourceView(primitiveIndexBuffer_->Resource.Get(), &primitiveIndexDesc, cmdManager_->GetSRV()->GetCPUHandle(cmdManager_->GetSRV()->GetUsedCount()));
 	cmdManager_->GetSRV()->AddUsedCount();
@@ -224,10 +247,10 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 	vertexBuffer_->vertex = new VertexData[vertices_.size()]; // 頂点データの型に合わせて適切なメモリ割り当てを行う
 
 	// 固有頂点バッファのメモリ割り当て
-	uniqueVertexBuffer_->uniqueVertex = new uint8_t[uniqueVertices_.size()]; // 固有頂点データの型に合わせて適切なメモリ割り当てを行う
+	uniqueVertexBuffer_->uniqueVertex = new uint32_t[uniqueVertices_.size()]; // 固有頂点データの型に合わせて適切なメモリ割り当てを行う
 
 	// プリミティブインデックスバッファのメモリ割り当て
-	primitiveIndexBuffer_->primitve = new DirectX::MeshletTriangle[primitiveIndices_.size()]; // プリミティブインデックスの型に合わせて適切なメモリ割り当てを行う
+	primitiveIndexBuffer_->primitve = new PackedTriangle[primitiveIndices_.size()]; // プリミティブインデックスの型に合わせて適切なメモリ割り当てを行う
 
 	// メッシュレットバッファへのデータコピー
 	std::memcpy(meshletBuffer_->meshlet, meshlets_.data(), sizeof(DirectX::Meshlet)* meshlets_.size());
@@ -236,10 +259,10 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 	std::memcpy(vertexBuffer_->vertex, vertices_.data(), sizeof(VertexData)* vertices_.size());
 
 	// 固有頂点バッファへのデータコピー
-	std::memcpy(uniqueVertexBuffer_->uniqueVertex, uniqueVertices_.data(), sizeof(uint8_t)* uniqueVertices_.size());
+	std::memcpy(uniqueVertexBuffer_->uniqueVertex, uniqueVertices_.data(), sizeof(uint32_t)* uniqueVertices_.size());
 
 	// プリミティブインデックスバッファへのデータコピー
-	std::memcpy(primitiveIndexBuffer_->primitve, primitiveIndices_.data(), sizeof(DirectX::MeshletTriangle)* primitiveIndices_.size());
+	std::memcpy(primitiveIndexBuffer_->primitve, primitiveIndices_.data(), sizeof(PackedTriangle)* primitiveIndices_.size());
 }
 
 void Mesh::LoadMaterial(const std::string& filePath, const std::string& fileName)

@@ -481,6 +481,8 @@
     <ClInclude Include="Engine\Utility\DataSegment\DataSegment.h">
       <Filter>App\Utility\DataSegment</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Utility\IndexList\Index.h" />
+    <ClInclude Include="Engine\Utility\IndexList\IndexList.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">

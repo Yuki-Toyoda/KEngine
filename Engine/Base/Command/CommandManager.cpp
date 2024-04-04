@@ -309,15 +309,7 @@ void CommandManager::CreateRootSignature()
 
 	// 使わないリソースを解放
 	signatureBlob->Release();
-
-	////シェーダーバイナリからRootSignatureの部分をフェッチ
-	//result = D3DGetBlobPart(meshShaderBlob_->GetBufferPointer(), meshShaderBlob_->GetBufferSize(), D3D_BLOB_ROOT_SIGNATURE, 0, &signatureBlob_);
-	//// フェッチ出来たか確認
-	//assert(SUCCEEDED(result));
-
-	//// 取得したバイナリを元にルートシグネチャを生成
-	//result = device_->CreateRootSignature(0, signatureBlob_->GetBufferPointer(), signatureBlob_->GetBufferSize(), IID_PPV_ARGS(&rootSignature_)); // 生成
-	//assert(SUCCEEDED(result));																													  // 生成確認
+																												  // 生成確認
 }
 
 void CommandManager::Finalize()
