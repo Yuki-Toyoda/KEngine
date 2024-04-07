@@ -58,7 +58,7 @@ void CommandManager::DrawCall()
 		// コマンドリストにルートシグネチャの設定
 		cmdList->SetGraphicsRootSignature(rootSignature_.Get());
 		// 形状を設定する
-		//cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		
 		// PSOを取得、コマンドリストにセット
 		cmdList->SetPipelineState(commands_[i]->GetPSOState());
@@ -324,10 +324,10 @@ void CommandManager::CreateBuffers()
 	HRESULT result = S_FALSE;
 
 	// 汎用データバッファ生成
-	generalCBuffer_ = std::make_unique<GeneralCBuffer>();										  // バッファの生成
-	generalCBuffer_->Resource = std::move(CreateBuffer(sizeof(GeneralData)));								  // バッファの生成
+	generalCBuffer_ = std::make_unique<GeneralCBuffer>();												   // バッファの生成
+	generalCBuffer_->Resource = std::move(CreateBuffer(sizeof(GeneralData)));							   // バッファの生成
 	result = generalCBuffer_->Resource->Map(0, nullptr, reinterpret_cast<void**>(&generalCBuffer_->Data)); // 生成したバッファのマッピングを行う
-	generalCBuffer_->View = generalCBuffer_->Resource->GetGPUVirtualAddress();					  // GPU上のアドレスの取得
+	generalCBuffer_->View = generalCBuffer_->Resource->GetGPUVirtualAddress();							   // GPU上のアドレスの取得
 
 	// マッピングに失敗した場合
 	if (FAILED(result)) {
@@ -340,9 +340,6 @@ void CommandManager::CreateBuffers()
 	mesh_->SetCommandManager(this);
 	// メッシュのロード
 	mesh_->LoadFile("./Engine/Resource/Samples/Box", "Box.obj");
-
-	// テクスチャデータ
-	textureBuffer_ = std::make_unique<TextureBuffer>();
 
 }
 
@@ -441,14 +438,14 @@ void CommandManager::UploadTextureData(const DirectX::ScratchImage& mipImages)
 	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
 	srvDesc.Texture2D.MipLevels = UINT(metadata.mipLevels);
 
-	// SRVを作成するDescriptorHeapの場所を決める（ImGuiとStructuredBufferたちが先頭を使っているので + ）
-	D3D12_CPU_DESCRIPTOR_HANDLE textureSRVHandleCPU = srv_->GetCPUHandle(textureBuffer_->UsedCount + srv_->GetUsedCount());
-	// 初めてのテクスチャ生成ならviewを保存
-	if (textureBuffer_->UsedCount == 0) {
-		textureBuffer_->View = srv_->GetGPUHandle(textureBuffer_->UsedCount + srv_->GetUsedCount());
-	}
-	// SRVの生成
-	device_->CreateShaderResourceView(textureBuffer_->Resource[textureBuffer_->UsedCount].Get(), &srvDesc, textureSRVHandleCPU);
+	//// SRVを作成するDescriptorHeapの場所を決める（ImGuiとStructuredBufferたちが先頭を使っているので + ）
+	//D3D12_CPU_DESCRIPTOR_HANDLE textureSRVHandleCPU = srv_->GetCPUHandle(textureBuffer_->UsedCount + srv_->GetUsedCount());
+	//// 初めてのテクスチャ生成ならviewを保存
+	//if (textureBuffer_->UsedCount == 0) {
+	//	textureBuffer_->View = srv_->GetGPUHandle(textureBuffer_->UsedCount + srv_->GetUsedCount());
+	//}
+	//// SRVの生成
+	//device_->CreateShaderResourceView(textureBuffer_->Resource[textureBuffer_->UsedCount].Get(), &srvDesc, textureSRVHandleCPU);
 }
 
 IDxcBlob* CommandManager::CompileShader(const std::wstring& filePath, const wchar_t* profile)

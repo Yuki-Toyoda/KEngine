@@ -1,6 +1,6 @@
-#include "BaseDescriptorHeap.h"
+#include "IDescriptorHeap.h"
 
-D3D12_CPU_DESCRIPTOR_HANDLE BaseDescriptorHeap::GetCPUHandle(uint32_t index)
+D3D12_CPU_DESCRIPTOR_HANDLE IDescriptorHeap::GetCPUHandle(uint32_t index)
 {
 	// ヒープの中から最初のCPUハンドルを取得
 	D3D12_CPU_DESCRIPTOR_HANDLE handleCPU = heap_->GetCPUDescriptorHandleForHeapStart();
@@ -10,7 +10,7 @@ D3D12_CPU_DESCRIPTOR_HANDLE BaseDescriptorHeap::GetCPUHandle(uint32_t index)
 	return handleCPU;
 }
 
-D3D12_GPU_DESCRIPTOR_HANDLE BaseDescriptorHeap::GetGPUHandle(uint32_t index)
+D3D12_GPU_DESCRIPTOR_HANDLE IDescriptorHeap::GetGPUHandle(uint32_t index)
 {
 	// ヒープの中から最初のCPUハンドルを取得
 	D3D12_GPU_DESCRIPTOR_HANDLE handleGPU = heap_->GetGPUDescriptorHandleForHeapStart();
@@ -20,7 +20,7 @@ D3D12_GPU_DESCRIPTOR_HANDLE BaseDescriptorHeap::GetGPUHandle(uint32_t index)
 	return handleGPU;
 }
 
-ID3D12DescriptorHeap* BaseDescriptorHeap::CreateDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE heapType, UINT numDescriptors, bool shaderVisible)
+ID3D12DescriptorHeap* IDescriptorHeap::CreateDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE heapType, UINT numDescriptors, bool shaderVisible)
 {
 	// 結果確認用
 	HRESULT result = S_FALSE;
@@ -41,7 +41,7 @@ ID3D12DescriptorHeap* BaseDescriptorHeap::CreateDescriptorHeap(D3D12_DESCRIPTOR_
 	return descriptorHeap;
 }
 
-D3D12_CPU_DESCRIPTOR_HANDLE BaseDescriptorHeap::GetDescriptorInclementSize(const D3D12_CPU_DESCRIPTOR_HANDLE& other, int offsetInDescriptors, UINT descriptorIncrementSize) const
+D3D12_CPU_DESCRIPTOR_HANDLE IDescriptorHeap::GetDescriptorInclementSize(const D3D12_CPU_DESCRIPTOR_HANDLE& other, int offsetInDescriptors, UINT descriptorIncrementSize) const
 {
 	// ディスクリプタハンドルを取得
 	D3D12_CPU_DESCRIPTOR_HANDLE handle;

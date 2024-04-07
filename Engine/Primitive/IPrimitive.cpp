@@ -37,6 +37,18 @@ void IPrimitive::Draw()
 	if (!isActive_)
 		return;
 
+	// メッシュレットバッファのメモリ割り当て
+	meshletBuffer_->meshlet = new DirectX::Meshlet[meshlets_.size()]; // メッシュレットの型に合わせて適切なメモリ割り当てを行う
+
+	// 頂点バッファのメモリ割り当て
+	vertexBuffer_->vertex = new VertexData[vertices_.size()]; // 頂点データの型に合わせて適切なメモリ割り当てを行う
+
+	// 固有頂点バッファのメモリ割り当て
+	uniqueVertexBuffer_->uniqueVertex = new uint32_t[uniqueVertices_.size()]; // 固有頂点データの型に合わせて適切なメモリ割り当てを行う
+
+	// プリミティブインデックスバッファのメモリ割り当て
+	primitiveIndexBuffer_->primitve = new PackedTriangle[primitiveIndices_.size()]; // プリミティブインデックスの型に合わせて適切なメモリ割り当てを行う
+
 	// メッシュレットバッファへのデータコピー
 	std::memcpy(meshletBuffer_->meshlet, meshlets_.data(), sizeof(DirectX::Meshlet) * meshlets_.size());
 
@@ -44,10 +56,10 @@ void IPrimitive::Draw()
 	std::memcpy(vertexBuffer_->vertex, vertices_.data(), sizeof(VertexData) * vertices_.size());
 
 	// 固有頂点バッファへのデータコピー
-	std::memcpy(uniqueVertexBuffer_->uniqueVertex, uniqueVertices_.data(), sizeof(uint8_t) * uniqueVertices_.size());
+	std::memcpy(uniqueVertexBuffer_->uniqueVertex, uniqueVertices_.data(), sizeof(uint32_t) * uniqueVertices_.size());
 
 	// プリミティブインデックスバッファへのデータコピー
-	std::memcpy(primitiveIndexBuffer_->primitve, primitiveIndices_.data(), sizeof(DirectX::MeshletTriangle) * primitiveIndices_.size());
+	std::memcpy(primitiveIndexBuffer_->primitve, primitiveIndices_.data(), sizeof(PackedTriangle) * primitiveIndices_.size());
 
 	// コマンドリストの取得
 	ID3D12GraphicsCommandList6* cmdList = cmdManager_->GetRenderCommandList();

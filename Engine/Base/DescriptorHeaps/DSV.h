@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "BaseDescriptorHeap.h"
+#include "IDescriptorHeap.h"
 
 // 1クラスの前方宣言
 class SRV;
@@ -8,7 +8,7 @@ class SRV;
 /// <summary>
 /// 深度ステンシルビュークラス
 /// </summary>
-class DSV : public BaseDescriptorHeap
+class DSV : public IDescriptorHeap
 {
 public: // メンバ関数
 

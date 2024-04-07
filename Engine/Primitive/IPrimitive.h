@@ -7,6 +7,7 @@
 #include "../Resource/Material/Material.h"
 #include "../Utility/Observer/Observer.h"
 #include "../../Externals/DirectXMesh/DirectXMesh.h"
+#include "../Utility/IndexList/IndexList.h"
 #include <wrl.h>
 #include <d3d12.h>
 
@@ -43,6 +44,7 @@ struct PackedTriangle {
 /// </summary>
 struct MeshletBuffer {
 	Microsoft::WRL::ComPtr<ID3D12Resource> Resource;	  // リソース
+	Index								   index;		  // SRV上の配列番号
 	D3D12_GPU_DESCRIPTOR_HANDLE			   View;		  // GPU上のアドレス
 	DirectX::Meshlet*					   meshlet;		  // メッシュレットのデータ
 };
@@ -52,6 +54,7 @@ struct MeshletBuffer {
 /// </summary>
 struct VertexBuffer {
 	Microsoft::WRL::ComPtr<ID3D12Resource> Resource;	  // リソース
+	Index								   index;		  // SRV上の配列番号
 	D3D12_GPU_DESCRIPTOR_HANDLE			   View;		  // GPU上のアドレス
 	VertexData*							   vertex;		  // メッシュレットのデータ
 };
@@ -61,6 +64,7 @@ struct VertexBuffer {
 /// </summary>
 struct UniqueVertexBuffer {
 	Microsoft::WRL::ComPtr<ID3D12Resource> Resource;	  // リソース
+	Index								   index;		  // SRV上の配列番号
 	D3D12_GPU_DESCRIPTOR_HANDLE			   View;		  // GPU上のアドレス
 	uint32_t*							   uniqueVertex;  // メッシュレットのデータ
 };
@@ -70,25 +74,9 @@ struct UniqueVertexBuffer {
 /// </summary>
 struct PrimitiveIndexBuffer {
 	Microsoft::WRL::ComPtr<ID3D12Resource> Resource;	  // リソース
+	Index								   index;		  // SRV上の配列番号
 	D3D12_GPU_DESCRIPTOR_HANDLE			   View;		  // GPU上のアドレス
 	PackedTriangle*						   primitve;      // メッシュレットのデータ
-};
-
-/// <summary>
-///  行列バッファ構造体
-/// </summary>
-struct MatrixBuffer {
-	Microsoft::WRL::ComPtr<ID3D12Resource> Resource;  // バッファリソース
-	D3D12_GPU_VIRTUAL_ADDRESS View{};				  // GPU上のハンドルを格納
-	Matrix4x4* mat;							          // 行列本体
-
-	// WorldTransformを=演算子で代入できるようにオーバーロード
-	MatrixBuffer& operator=(const WorldTransform& transform) {
-		// ワールド行列を取得
-		*mat = transform.GetMatWorld();
-		// 自身のポインタを返す
-		return *this;
-	}
 };
 
 /// <summary>

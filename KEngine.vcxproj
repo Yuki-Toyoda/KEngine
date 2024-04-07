@@ -107,7 +107,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Base\Command\ICommand.cpp" />
     <ClCompile Include="Engine\Base\Command\CommandManager.cpp" />
     <ClCompile Include="Engine\Base\Command\MainCommand.cpp" />
-    <ClCompile Include="Engine\Base\DescriptorHeaps\BaseDescriptorHeap.cpp" />
+    <ClCompile Include="Engine\Base\DescriptorHeaps\IDescriptorHeap.cpp" />
     <ClCompile Include="Engine\Base\DescriptorHeaps\DSV.cpp" />
     <ClCompile Include="Engine\Base\DescriptorHeaps\RTV.cpp" />
     <ClCompile Include="Engine\Base\DescriptorHeaps\SRV.cpp" />
@@ -179,7 +179,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Base\Command\ICommand.h" />
     <ClInclude Include="Engine\Base\Command\CommandManager.h" />
     <ClInclude Include="Engine\Base\Command\MainCommand.h" />
-    <ClInclude Include="Engine\Base\DescriptorHeaps\BaseDescriptorHeap.h" />
+    <ClInclude Include="Engine\Base\DescriptorHeaps\IDescriptorHeap.h" />
     <ClInclude Include="Engine\Base\DescriptorHeaps\DSV.h" />
     <ClInclude Include="Engine\Base\DescriptorHeaps\RTV.h" />
     <ClInclude Include="Engine\Base\DescriptorHeaps\SRV.h" />

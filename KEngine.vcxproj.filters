@@ -29,7 +29,7 @@
     <ClCompile Include="Engine\Base\DescriptorHeaps\RTV.cpp">
       <Filter>Engine\Base\DescriptorHeaps</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Base\DescriptorHeaps\BaseDescriptorHeap.cpp">
+    <ClCompile Include="Engine\Base\DescriptorHeaps\IDescriptorHeap.cpp">
       <Filter>Engine\Base\DescriptorHeaps</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Base\DescriptorHeaps\SRV.cpp">
@@ -292,7 +292,7 @@
     <ClInclude Include="Engine\Base\DescriptorHeaps\RTV.h">
       <Filter>Engine\Base\DescriptorHeaps</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Base\DescriptorHeaps\BaseDescriptorHeap.h">
+    <ClInclude Include="Engine\Base\DescriptorHeaps\IDescriptorHeap.h">
       <Filter>Engine\Base\DescriptorHeaps</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Base\DescriptorHeaps\SRV.h">

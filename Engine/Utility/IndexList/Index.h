@@ -85,6 +85,9 @@ public: // 演算子オーバーロード
 			// 引数のインデックスからインデックスの値を取得し、元のインデックスをリセット
 			i_ = std::exchange(other.i_, -1);
 		}
+
+		// 代入されたIndexクラスを返す
+		return *this;
 	}
 
 private: // メンバ変数

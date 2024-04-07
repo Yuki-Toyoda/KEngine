@@ -1,11 +1,11 @@
 #pragma once
 #include <vector>
-#include "BaseDescriptorHeap.h"
+#include "IDescriptorHeap.h"
 
 /// <summary>
 /// レンダーターゲットビュークラス
 /// </summary>
-class RTV : public BaseDescriptorHeap
+class RTV : public IDescriptorHeap
 {
 public: // メンバ関数
 

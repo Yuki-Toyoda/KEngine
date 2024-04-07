@@ -2,11 +2,12 @@
 #include <stdint.h>
 #include <cassert>
 #include "../Device/DirectXDevice.h"
+#include "../../Utility/IndexList/IndexList.h"
 
 /// <summary>
 /// ディスクリプタヒープの基底クラス
 /// </summary>
-class BaseDescriptorHeap
+class IDescriptorHeap
 {
 public: // アクセッサ等
 	/// <summary>

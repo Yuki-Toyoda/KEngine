@@ -73,6 +73,27 @@ public: // メンバ関数
 	}
 
 	/// <summary>
+	/// 配列リストの使用数ゲッター
+	/// </summary>
+	/// <returns>配列リストの使用数</returns>
+	int GetUsedCount() {
+		// リスト内の使用数カウント用
+		int usedCount = 0;
+
+		// 使用済みインデックスを検索する
+		for (int i = 0; i < kSize_; i++) {
+			// 使用済みのインデックスを発見した場合
+			if (array_[i]) {
+				// 使用数加算
+				usedCount++;
+			}
+		}
+
+		// 使用数を返す
+		return usedCount;
+	}
+
+	/// <summary>
 	/// デバッグGUI表示関数
 	/// </summary>
 	/// <param name="name">表示名</param>
