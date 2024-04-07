@@ -45,7 +45,7 @@ void CommandManager::Init(ID3D12Device2* device)
 void CommandManager::DrawCall()
 {
 	// 結果確認用
-	HRESULT result = S_FALSE;
+	//HRESULT result = S_FALSE;
 
 	// コマンドリストの取得
 	ID3D12GraphicsCommandList* cmdList = commandList_.Get();
@@ -68,47 +68,13 @@ void CommandManager::DrawCall()
 
 		// 描画処理
 		mesh_->Draw();
-
-		// メイン描画コマンドの場合処理を一旦抜ける
-		if (i == (int)commands_.size() - 1) {
-			break;
-		}
-
-		// 描画後処理
-		commands_[i]->PostDraw(commandList_.Get());
-
-		// GPUにコマンドリストの命令を実行するよう指示する
-		ID3D12CommandList* commandLists[] = { commandList_.Get() };
-		commandQueue_->ExecuteCommandLists(1, commandLists);
-
-		// GPUの処理がここまでたどり着いた時にFenceに指定した値を代入するようSignalを送る
-		commandQueue_->Signal(fence_.Get(), ++fenceVal_);
-		// FenceのSignal値が指定した値かどうかを確認する
-		if (fence_->GetCompletedValue() != fenceVal_) {
-			// FenceのSignalを待つためのイベントを生成
-			HANDLE fenceEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
-			// イベントが生成出来ているか確認
-			assert(fenceEvent != nullptr);
-			// 指定したSignal値にたどり着いていないため、待機するイベントを設定
-			fence_->SetEventOnCompletion(fenceVal_, fenceEvent);
-			// イベント終了まで待機
-			WaitForSingleObject(fenceEvent, INFINITE);
-			// 終了したら閉じる
-			CloseHandle(fenceEvent);
-		}
-		result;
-		// 次のコマンドリストを準備
-		result = commandAllocator_->Reset();
-		assert(SUCCEEDED(result));
-		result = commandList_->Reset(commandAllocator_.Get(), nullptr);
-		assert(SUCCEEDED(result));
 	}
 }
 
 void CommandManager::PostDraw()
 {
 	// 描画後処理
-	commands_[(int)commands_.size() - 1]->PostDraw(commandList_.Get());
+	commands_[0]->PostDraw(commandList_.Get());
 	// GPUにコマンドリストの命令を実行するよう指示する
 	ID3D12CommandList* commandLists[] = { commandList_.Get() };
 	commandQueue_->ExecuteCommandLists(1, commandLists);
@@ -339,7 +305,7 @@ void CommandManager::CreateBuffers()
 	// コマンドマネージャーをセット
 	mesh_->SetCommandManager(this);
 	// メッシュのロード
-	mesh_->LoadFile("./Engine/Resource/Samples/Box", "Box.obj");
+	mesh_->LoadFile("./Engine/Resource/Samples/Sphere", "Sphere.obj");
 
 }
 

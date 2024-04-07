@@ -76,32 +76,7 @@ void IPrimitive::Draw()
 
 void IPrimitive::DisplayImGui()
 {
-	// メッシュ名を設定
-	std::string meshName = name_ + " - Mesh";
-	if (ImGui::TreeNode(meshName.c_str())) {
-		// 頂点情報の表示
-		if (ImGui::TreeNode("vertex")) {
-			// 頂点をリストで表示する
-			ImGui::BeginChild(ImGui::GetID((void*)0), ImVec2(0, 100), ImGuiWindowFlags_NoTitleBar);
-			for (UINT i = 0; i < vertices_.size(); i++) {
-				std::string name = "vertex" + std::to_string(i);
-				ImGui::DragFloat3(name.c_str(), &vertices_[i].position.x, 0.05f);
-			}
-			ImGui::EndChild();
-			ImGui::TreePop();
-		}
-		
-		// 表示状態の設定
-		ImGui::Checkbox("isActive", &isActive_);
-		// マテリアルのuvトランスフォームを表示
-		material_.uvTransform_.DisplayImGui("uvTransform");
-		ImGui::Checkbox("isUI", &isUI_);
-		if (commonColor != nullptr) {
-			ImGui::ColorPicker4("Color", &commonColor->x);
-		}
-
-		ImGui::TreePop();
-	}
+	
 }
 
 ID3D12Resource* IPrimitive::CreateBuffer(size_t size)
