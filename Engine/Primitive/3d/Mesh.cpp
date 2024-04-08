@@ -240,18 +240,6 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 		assert(false);
 	}
 
-	// メッシュレットバッファのメモリ割り当て
-	meshletBuffer_->meshlet = new DirectX::Meshlet[meshlets_.size()]; // メッシュレットの型に合わせて適切なメモリ割り当てを行う
-
-	// 頂点バッファのメモリ割り当て
-	vertexBuffer_->vertex = new VertexData[vertices_.size()]; // 頂点データの型に合わせて適切なメモリ割り当てを行う
-
-	// 固有頂点バッファのメモリ割り当て
-	uniqueVertexBuffer_->uniqueVertex = new uint32_t[uniqueVertices_.size()]; // 固有頂点データの型に合わせて適切なメモリ割り当てを行う
-
-	// プリミティブインデックスバッファのメモリ割り当て
-	primitiveIndexBuffer_->primitve = new PackedTriangle[primitiveIndices_.size()]; // プリミティブインデックスの型に合わせて適切なメモリ割り当てを行う
-
 	// メッシュレットバッファへのデータコピー
 	std::memcpy(meshletBuffer_->meshlet, meshlets_.data(), sizeof(DirectX::Meshlet)* meshlets_.size());
 

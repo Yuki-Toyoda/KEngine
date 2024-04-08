@@ -175,6 +175,30 @@ void CommandManager::DisplayImGui()
 		int v = mesh_->meshletBuffer_->meshlet[i].VertCount;
 		ImGui::DragInt(s.c_str(), &v);
 	}
+
+	ImGui::NewLine();
+
+	for (int i = 0; i < mesh_->GetMeshletCount(); i++) {
+		std::string s = "VertOffset" + std::to_string(i);
+		int v = mesh_->meshletBuffer_->meshlet[i].VertOffset;
+		ImGui::DragInt(s.c_str(), &v);
+	}
+
+	ImGui::NewLine();
+
+	for (int i = 0; i < mesh_->GetMeshletCount(); i++) {
+		std::string s = "PrimCount" + std::to_string(i);
+		int v = mesh_->meshletBuffer_->meshlet[i].PrimCount;
+		ImGui::DragInt(s.c_str(), &v);
+	}
+
+	ImGui::NewLine();
+
+	for (int i = 0; i < mesh_->GetMeshletCount(); i++) {
+		std::string s = "PrimOffset" + std::to_string(i);
+		int v = mesh_->meshletBuffer_->meshlet[i].PrimOffset;
+		ImGui::DragInt(s.c_str(), &v);
+	}
 }
 
 void CommandManager::InitializeDXC()
