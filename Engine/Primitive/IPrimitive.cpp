@@ -58,8 +58,9 @@ void IPrimitive::Draw()
 	cmdList->SetGraphicsRootDescriptorTable(3, uniqueVertexBuffer_->View);
 	cmdList->SetGraphicsRootDescriptorTable(4, primitiveIndexBuffer_->View);
 
-	// メッシュシェーダーを実行
+	// メッシュレットのプリミティブ数分メッシュシェーダーを実行
 	cmdList->DispatchMesh(GetMeshletCount(), 1, 1);
+	
 }
 
 void IPrimitive::DisplayImGui()
@@ -111,4 +112,9 @@ int IPrimitive::GetIndexCount() const
 int IPrimitive::GetMeshletCount() const
 {
 	return static_cast<int>(meshlets_.size());
+}
+
+int IPrimitive::GetPrimitiveCount(const int& i) const
+{
+	return static_cast<int>(meshlets_[i].PrimCount);
 }

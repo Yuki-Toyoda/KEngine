@@ -168,6 +168,12 @@ public: // アクセッサ等
 	/// </summary>
 	/// <returns>メッシュレット数</returns>
 	virtual int GetMeshletCount() const;
+	/// <summary>
+	/// 指定したメッシュレットのプリミティブ数ゲッター
+	/// </summary>
+	/// <param name="i">プリミティブ数を取得するメッシュレット</param>
+	/// <returns>プリミティブ数</returns>
+	virtual int GetPrimitiveCount(const int& i) const;
 
 public: // パブリックなメンバ変数
 
