@@ -139,6 +139,7 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 	for (size_t i = 0; i < verticesIndices.size(); i += 3)
 		std::swap(verticesIndices[i], verticesIndices[i + 2]); // 0番目と2番目の要素を入れ替え、反転させる
 
+
 	// 出力後の固有頂点保存用
 	std::vector<uint8_t> uniqueVertcies;
 	std::vector<DirectX::MeshletTriangle> primitiveIndices;
