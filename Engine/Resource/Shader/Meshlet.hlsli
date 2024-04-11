@@ -40,5 +40,5 @@ float4 TransformPosition(float4 v)
 
 StructuredBuffer<Meshlet>    Meshlets         : register(t0);
 StructuredBuffer<VertexData> Vertices         : register(t1);
-ByteAddressBuffer   VertexIndices    : register(t2);
+StructuredBuffer<uint32_t>   VertexIndices    : register(t2);
 StructuredBuffer<PackedTriangle> PrimitiveIndices : register(t3);
