@@ -58,7 +58,7 @@ void CommandManager::DrawCall()
 		// コマンドリストにルートシグネチャの設定
 		cmdList->SetGraphicsRootSignature(rootSignature_.Get());
 		// 形状を設定する
-		cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		//cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		
 		// PSOを取得、コマンドリストにセット
 		cmdList->SetPipelineState(commands_[i]->GetPSOState());
@@ -329,7 +329,7 @@ void CommandManager::CreateBuffers()
 	// コマンドマネージャーをセット
 	mesh_->SetCommandManager(this);
 	// メッシュのロード
-	mesh_->LoadFile("./Engine/Resource/Samples/Box", "Box.obj");
+	mesh_->LoadFile("./Engine/Resource/Samples/Sphere", "Sphere.obj");
 
 }
 

@@ -433,7 +433,9 @@
     <ClCompile Include="DirectXMeshValidate.cpp" />
     <ClCompile Include="DirectXMeshVBReader.cpp" />
     <ClCompile Include="DirectXMeshVBWriter.cpp" />
+    <ClInclude Include="FlexibleVertexFormat.h" />
     <CLInclude Include="scoped.h" />
+    <ClInclude Include="WaveFrontReader.h" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>

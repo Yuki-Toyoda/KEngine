@@ -58,5 +58,30 @@ private: // プライベートなメンバ関数
 	/// /// <param name="fileName">マテリアル名</param>
 	void LoadMaterial(const std::string& filePath, const std::string& fileName);
 
+	// ハッシュ値と頂点のインデックス情報の関連付け用マップ
+	using VertexCache = std::unordered_multimap<uint32_t, uint32_t>;
+
+	uint32_t AddVertex(uint32_t hash, const VertexData* pVertex, VertexCache& cache)
+	{
+		auto f = cache.equal_range(hash);
+
+		for (auto it = f.first; it != f.second; ++it)
+		{
+			auto& tv = vertices_[it->second];
+
+			if (0 == memcmp(pVertex, &tv, sizeof(VertexData)))
+			{
+				return it->second;
+			}
+		}
+
+		auto index = static_cast<uint32_t>(vertices_.size());
+		vertices_.push_back(*pVertex);
+
+		VertexCache::value_type entry(hash, index);
+		cache.insert(entry);
+		return index;
+	}
+
 };
 

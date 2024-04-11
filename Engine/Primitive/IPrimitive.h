@@ -27,7 +27,8 @@ struct Vertex {
 /// </summary>
 struct VertexData {
 	DirectX::XMFLOAT4 position;
-	DirectX::XMFLOAT4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
+	DirectX::XMFLOAT2 texCoord;
+	DirectX::XMFLOAT3 normal;
 };
 
 /// <summary>
@@ -235,6 +236,7 @@ public: // パブリックなメンバ変数
 
 	// UIとして使用するか
 	bool isUI_ = false;
+
 };
 
 /// <summary>

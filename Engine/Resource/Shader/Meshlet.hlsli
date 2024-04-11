@@ -6,7 +6,8 @@ struct ConstantData
 struct VertexData
 {
     float32_t4 pos;
-    float32_t4 color;
+    float32_t2 texCoord;
+    float32_t3 normal;
 };
 
 struct Meshlet
@@ -15,6 +16,13 @@ struct Meshlet
     uint32_t VertOffset;
     uint32_t PrimCount;
     uint32_t PrimOffset;
+};
+
+struct PackedTriangle
+{
+    uint32_t i0;
+    uint32_t i1;
+    uint32_t i2;
 };
 
 struct VertexOutPut
@@ -32,5 +40,5 @@ float4 TransformPosition(float4 v)
 
 StructuredBuffer<Meshlet>    Meshlets         : register(t0);
 StructuredBuffer<VertexData> Vertices         : register(t1);
-StructuredBuffer<uint32_t>   VertexIndices    : register(t2);
-StructuredBuffer<uint32_t3>  PrimitiveIndices : register(t3);
+ByteAddressBuffer   VertexIndices    : register(t2);
+StructuredBuffer<PackedTriangle> PrimitiveIndices : register(t3);

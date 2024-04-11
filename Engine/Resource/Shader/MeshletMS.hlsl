@@ -25,13 +25,20 @@ void main(
         
         // 出力する頂点座標を求める
         outVerts[gtid].pos = TransformPosition(vertex.pos);
+        
         // 出力する頂点色を求める
-        outVerts[gtid].color = vertex.color;
+        outVerts[gtid].color = float4(
+            float(gtid & 1),
+            float(gtid & 3) / 4,
+            float(gtid & 7) / 8,
+            1.0f);
     }
     if (gtid < meshlet.PrimCount)
     {
         // プリミティブ情報のインデックス情報を取得
-        uint32_t3 packedIndices = PrimitiveIndices[meshlet.PrimOffset + gtid];
+        uint32_t3 packedIndices = uint32_t3(PrimitiveIndices[meshlet.PrimOffset + gtid].i0,
+                                            PrimitiveIndices[meshlet.PrimOffset + gtid].i1,
+                                            PrimitiveIndices[meshlet.PrimOffset + gtid].i2);
         
         // 出力するプリミティブを求める
         outIndices[gtid] = packedIndices;

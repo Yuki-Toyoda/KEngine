@@ -22,7 +22,7 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 {
 	// フルパスのフルパスの合成
 	std::string fullPath = filePath + "/" + fileName;
-
+	
 	// バッファリソースの生成
 	meshletBuffer_ = std::make_unique<MeshletBuffer>();				  // メッシュレットバッファ
 	vertexBuffer_ = std::make_unique<VertexBuffer>();				  // 頂点バッファ
@@ -36,6 +36,9 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 	std::vector<DirectX::XMFLOAT3> positions; // 位置
 	std::vector<DirectX::XMFLOAT2> texcoords; // テクスチャ座標
 	std::vector<DirectX::XMFLOAT3> normals;	  // 法線
+
+	// キャッシュ保存用
+	VertexCache vertexCache;
 
 	// 頂点位置のインデックス情報格納用配列
 	std::vector<uint32_t> verticesIndices;
@@ -77,6 +80,9 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 		}
 		// 頂点とインデックス情報を登録
 		else if (identifier == "f") {
+			// 面のインデックス情報格納用配列
+			uint32_t faceIndex[3];
+
 			// 面は三角形限定であり、その他は対応していない
 			for (int32_t faceVertex = 0; faceVertex < 3; faceVertex++) {
 				std::string vertexDefinition; // 頂点インデックス情報取得用
@@ -85,40 +91,127 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 				// 頂点要素へのインデックスは 位置 / UV / 法線 の順で登録されている
 				// そのため、分解してIndexを取得する
 				std::istringstream v(vertexDefinition); // 1頂点分のデータを取得
-				std::string elements[3]; // 0 : 位置, 1 : UV, 2 : 法線
+				uint32_t elements[3]; // 0 : 位置, 1 : UV, 2 : 法線
 				for (int32_t i = 0; i < 3; i++) {
-					std::getline(v, elements[i], '/'); // それぞれの要素を取得
+					std::string index;
+					std::getline(v, index, '/'); // それぞれの要素を取得
+					elements[i] = std::stoi(index);
 				}
 
-				// 頂点インデックスの位置情報のみを格納
-				verticesIndices.push_back((std::stoi(elements[0]) - 1));
+				// 代入用の変数定義
+				VertexData vertex;
 
-				// 実際に頂点を追加する前に追加する頂点が新しいデータかどうかチェック
-				int indexInfo = key[std::stoi(elements[0])][std::stoi(elements[1])][std::stoi(elements[2])]; // インデックス情報を取得
-				// 既存のパターンだった場合、既存のインデックス情報を取得、インデックスに追加
-				if (indexInfo > 0 && indexInfo < vertices_.size())
-					indexes_.push_back(static_cast<uint32_t> (indexInfo - 1)); // パターンが見つかった場合のインデックス
-				// 新しいパターンの場合は新しく頂点を追加、インデックスも追加
+				/// インデックス情報を取得する
+				uint32_t vertexIndex = 0;
+				// インデックス値が0の場合エラー
+				if (!elements[0]) {
+					Debug::Log("index = 0");
+					// 処理を停止させる
+					assert(false);
+				}
+				else if (elements[0] < 0) {
+					// インデックス値が0以下の際、相対的なインデックス値を求める
+					vertexIndex = uint32_t(ptrdiff_t(positions.size()) + elements[0]);
+				}
 				else {
-					VertexData newVertex; // 新しい頂点の構造体を宣言
-					newVertex.position = { positions[std::stoi(elements[0]) - 1].x, positions[std::stoi(elements[0]) - 1].y, positions[std::stoi(elements[0]) - 1].z, 1.0f }; // 頂点
-					//newVertex.texCoord = texcoords[std::stoi(elements[1]) - 1]; // テクスチャ座標
-					//newVertex.normal = normals[std::stoi(elements[2]) - 1];		// 法線
-
-					// 左手座標系に変換
-					newVertex.position.x *= -1.0f;						// 頂点の向きを変換
-					//newVertex.texCoord.y = 1.0f - newVertex.texCoord.y; // テクスチャ座標を反転
-					//newVertex.normal.x *= -1.0f;						// 法線の向きを反転
-
-					// 配列に追加
-					vertices_.push_back(newVertex);
-
-					// インデックスを登録
-					indexes_.push_back(static_cast<uint32_t> (vertices_.size() - 1));
-
-					// 既存パターンであることを示すために現在のインデックス情報を既存インデックス情報マップに追加
-					key[std::stoi(elements[0])][std::stoi(elements[1])][std::stoi(elements[2])] = static_cast<int>(vertices_.size());
+					// OBJのフォーマットの都合上、インデックス値は1から始まるので-1する
+					vertexIndex = uint32_t(elements[0] - 1);
 				}
+
+				// インデックスが頂点数を超えていた時点でエラー
+				if (vertexIndex >= positions.size()) {
+					assert(false);
+				}
+
+				// 頂点位置を取得
+				vertex.position = { positions[vertexIndex].x, positions[vertexIndex].y, positions[vertexIndex].z, 1.0f };
+
+				/// テクスチャ座標のインデックス情報を取得する
+				uint32_t coordIndex = 0;
+				// インデックス値が0の場合エラー
+				if (!elements[1]) {
+					Debug::Log("index = 0");
+					// 処理を停止させる
+					assert(false);
+				}
+				else if (elements[1] < 0) {
+					// インデックス値が0以下の際、相対的なインデックス値を求める
+					coordIndex = uint32_t(ptrdiff_t(texcoords.size()) + elements[1]);
+				}
+				else {
+					// OBJのフォーマットの都合上、インデックス値は1から始まるので-1する
+					coordIndex = uint32_t(elements[1] - 1);
+				}
+
+				// インデックスがテクスチャ座標数を超えていた時点でエラー
+				if (coordIndex >= texcoords.size()) {
+					assert(false);
+				}
+
+				// テクスチャ座標を取得
+				vertex.texCoord = texcoords[coordIndex];
+
+				/// 法線のインデックス情報を取得する
+				uint32_t normIndex = 0;
+				// インデックス値が0の場合エラー
+				if (!elements[2]) {
+					Debug::Log("index = 0");
+					// 処理を停止させる
+					assert(false);
+				}
+				else if (elements[2] < 0) {
+					// インデックス値が0以下の際、相対的なインデックス値を求める
+					normIndex = uint32_t(ptrdiff_t(normals.size()) + elements[2]);
+				}
+				else {
+					// OBJのフォーマットの都合上、インデックス値は1から始まるので-1する
+					normIndex = uint32_t(elements[2] - 1);
+				}
+
+				// インデックスが法線数を超えていた時点でエラー
+				if (normIndex >= normals.size()) {
+					assert(false);
+				}
+
+				// テクスチャ座標を取得
+				vertex.normal = normals[normIndex];
+
+				// ハッシュ値と頂点のインデックス情報の関連付け用マップ
+				using VertexCache = std::unordered_multimap<uint32_t, uint32_t>;
+				
+				// インデックス情報の取得
+				const uint32_t vertIndex = AddVertex(vertexIndex, &vertex, vertexCache);
+				// インデックス情報を追加出来なかった場合エラー
+				if (vertIndex == uint32_t(-1)) {
+					Debug::Log("AddVertex Failed");
+					assert(false);
+				}
+
+				// インデックスの最大値求める
+				constexpr uint32_t maxIndex = (sizeof(uint32_t) == 2) ? UINT16_MAX : UINT32_MAX;
+				// 求めたインデックスが最大値を超過していた場合エラー
+				if (vertIndex >= maxIndex)
+				{
+					Debug::Log("index >= maxIndex");
+					assert(false);
+				}
+
+				// 面のインデックス取得
+				faceIndex[faceVertex] = vertIndex;
+
+				// 読み込んでいる面が3以下の場合はループを一度抜ける
+				if (faceVertex != 2) {
+					continue;
+				}
+
+				// Convert polygons to triangles
+				uint32_t i0 = faceIndex[0];
+				uint32_t i1 = faceIndex[1];
+				uint32_t i2 = faceIndex[2];
+
+				indexes_.push_back(static_cast<uint32_t>(i0));
+				indexes_.push_back(static_cast<uint32_t>(i2));
+				indexes_.push_back(static_cast<uint32_t>(i1));
 			}
 		}
 		// マテリアル情報読み込み
@@ -131,25 +224,23 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 		}
 	}
 
-	// 左手座標系に変換するため、インデックス情報を反転させる
-	for (size_t i = 0; i < indexes_.size(); i += 3)
-		std::swap(indexes_[i], indexes_[i + 2]); // 0番目と2番目の要素を入れ替え、反転させる
-
-	// 左手座標系に変換するため、インデックス情報を反転させる
-	for (size_t i = 0; i < verticesIndices.size(); i += 3)
-		std::swap(verticesIndices[i], verticesIndices[i + 2]); // 0番目と2番目の要素を入れ替え、反転させる
-
-
 	// 出力後の固有頂点保存用
 	std::vector<uint8_t> uniqueVertcies;
 	std::vector<DirectX::MeshletTriangle> primitiveIndices;
+
+	// 頂点座標格納用配列の作成
+	auto vertPos = std::make_unique<DirectX::XMFLOAT3[]>(vertices_.size());
+	// 頂点座標を取得
+	for (size_t j = 0; j < vertices_.size(); j++) {
+		vertPos[j] = { vertices_[j].position.x, vertices_[j].position.y, vertices_[j].position.z };
+	}
 
 	// メッシュレットの変換成否確認用
 	HRESULT result = S_FALSE;
 	// 読み込んだモデルデータをメッシュレットに変換する
 	result = DirectX::ComputeMeshlets(
-		verticesIndices.data(), verticesIndices.size() / 3,
-		positions.data(), positions.size(),
+		indexes_.data(), indexes_.size() / 3,
+		vertPos.get(), vertices_.size(),
 		nullptr,
 		meshlets_,
 		uniqueVertcies,
@@ -214,11 +305,11 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 	}
 
 	// 固有頂点バッファ
-	uniqueVertexBuffer_->Resource = std::move(CreateBuffer(((sizeof(uint32_t) + 0xff) & ~0xff) * uniqueVertices_.size()));
+	uniqueVertexBuffer_->Resource = std::move(CreateBuffer(((sizeof(uint32_t) + 0xff) & ~0xff) * indexes_.size()));
 	result = uniqueVertexBuffer_->Resource->Map(0, nullptr, reinterpret_cast<void**>(&uniqueVertexBuffer_->uniqueVertex));
 	uniqueVertexBuffer_->index = cmdManager_->GetSRV()->UseEmpty();
 	D3D12_SHADER_RESOURCE_VIEW_DESC uniqueVertexDesc = { commonDesc };
-	uniqueVertexDesc.Buffer.NumElements = static_cast<UINT>(uniqueVertices_.size());
+	uniqueVertexDesc.Buffer.NumElements = static_cast<UINT>(indexes_.size());
 	uniqueVertexDesc.Buffer.StructureByteStride = sizeof(uint32_t);
 	uniqueVertexBuffer_->View = cmdManager_->GetSRV()->GetGPUHandle(uniqueVertexBuffer_->index);
 	cmdManager_->GetDevice()->CreateShaderResourceView(uniqueVertexBuffer_->Resource.Get(), &uniqueVertexDesc, cmdManager_->GetSRV()->GetCPUHandle(uniqueVertexBuffer_->index));
@@ -248,7 +339,7 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 	std::memcpy(vertexBuffer_->vertex, vertices_.data(), sizeof(VertexData)* vertices_.size());
 
 	// 固有頂点バッファへのデータコピー
-	std::memcpy(uniqueVertexBuffer_->uniqueVertex, uniqueVertices_.data(), sizeof(uint32_t)* uniqueVertices_.size());
+	std::memcpy(uniqueVertexBuffer_->uniqueVertex, indexes_.data(), sizeof(uint32_t)* indexes_.size());
 
 	// プリミティブインデックスバッファへのデータコピー
 	std::memcpy(primitiveIndexBuffer_->primitve, primitiveIndices_.data(), sizeof(PackedTriangle)* primitiveIndices_.size());
