@@ -44,7 +44,7 @@ void IPrimitive::Draw()
 	std::memcpy(vertexBuffer_->vertex, vertices_.data(), sizeof(VertexData) * vertices_.size());
 
 	// 固有頂点バッファへのデータコピー
-	std::memcpy(uniqueVertexBuffer_->uniqueVertex, indexes_.data(), sizeof(uint8_t) * indexes_.size());
+	std::memcpy(uniqueVertexBuffer_->uniqueVertex, uniqueVertices_.data(), sizeof(uint8_t) * uniqueVertices_.size());
 
 	// プリミティブインデックスバッファへのデータコピー
 	std::memcpy(primitiveIndexBuffer_->primitve, primitiveIndices_.data(), sizeof(DirectX::MeshletTriangle) * primitiveIndices_.size());
