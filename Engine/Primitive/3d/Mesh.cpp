@@ -80,138 +80,43 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 		}
 		// 頂点とインデックス情報を登録
 		else if (identifier == "f") {
-			// 面のインデックス情報格納用配列
-			uint32_t faceIndex[3];
+			// 面は三角形限定。その他は未対応
+			// 3頂点ループ
+			for (int32_t faceVertex = 0; faceVertex < 3; ++faceVertex) {
+				std::string vertexDefinition;
+				s >> vertexDefinition;
 
-			// 面は三角形限定であり、その他は対応していない
-			for (int32_t faceVertex = 0; faceVertex < 3; faceVertex++) {
-				std::string vertexDefinition; // 頂点インデックス情報取得用
-				s >> vertexDefinition; // 現在の行の文字列を取得
-
-				// 頂点要素へのインデックスは 位置 / UV / 法線 の順で登録されている
-				// そのため、分解してIndexを取得する
-				std::istringstream v(vertexDefinition); // 1頂点分のデータを取得
-				uint32_t elements[3]; // 0 : 位置, 1 : UV, 2 : 法線
-				for (int32_t i = 0; i < 3; i++) {
-					std::string index;
-					std::getline(v, index, '/'); // それぞれの要素を取得
-					elements[i] = std::stoi(index);
+				// 頂点の要素へのIndexは「位置/UV/法線」で格納されているので、分解してIndexを取得する
+				std::istringstream v(vertexDefinition);	// 1頂点分のデータ
+				std::string elements[3];	// 0 → 位置 : 1 → UV : 2 → 法線
+				for (int32_t i = 0; i < 3; ++i) {
+					std::getline(v, elements[i], '/');
 				}
-
-				// 代入用の変数定義
-				VertexData vertex;
-
-				/// インデックス情報を取得する
-				uint32_t vertexIndex = 0;
-				// インデックス値が0の場合エラー
-				if (!elements[0]) {
-					Debug::Log("index = 0");
-					// 処理を停止させる
-					assert(false);
+				// 次の処理に移る前に、これが新しいパターンの頂点かチェック
+				int value = key[std::stoi(elements[0])][std::stoi(elements[1])][std::stoi(elements[2])];
+				// 既存のパターンだった場合 -> 既存の頂点のインデックスを求めてからインデックスに追加
+				if (value > 0 && value < vertices_.size()) {
+					indexes_.push_back(static_cast<uint32_t>(value - 1)); // パターンが見つかった場合のインデックス
 				}
-				else if (elements[0] < 0) {
-					// インデックス値が0以下の際、相対的なインデックス値を求める
-					vertexIndex = uint32_t(ptrdiff_t(positions.size()) + elements[0]);
-				}
+				// 新しいパターンの場合 -> 新しく頂点を追加し、インデックスに追加
 				else {
-					// OBJのフォーマットの都合上、インデックス値は1から始まるので-1する
-					vertexIndex = uint32_t(elements[0] - 1);
+					// 新しい頂点を生成
+					VertexData newVertex;
+					newVertex.position = { positions[std::stoi(elements[0]) - 1].x, positions[std::stoi(elements[0]) - 1].y, positions[std::stoi(elements[0]) - 1].z, 1.0f };
+					newVertex.texCoord = texcoords[std::stoi(elements[1]) - 1];
+					newVertex.normal = normals[std::stoi(elements[2]) - 1];
+					// 左手座標系なので座標を変換
+					newVertex.position.x *= -1.0f;
+					newVertex.texCoord.y = 1.0f - newVertex.texCoord.y;
+					newVertex.normal.x *= -1.0f;
+					// 頂点追加
+					vertices_.push_back(newVertex);
+					// インデックスを登録
+					indexes_.push_back(static_cast<uint32_t>(vertices_.size() - 1));
+
+					// 既存のパターンであることを指すために追加
+					key[std::stoi(elements[0])][std::stoi(elements[1])][std::stoi(elements[2])] = static_cast<int>(vertices_.size());
 				}
-
-				// インデックスが頂点数を超えていた時点でエラー
-				if (vertexIndex >= positions.size()) {
-					assert(false);
-				}
-
-				// 頂点位置を取得
-				vertex.position = { positions[vertexIndex].x, positions[vertexIndex].y, positions[vertexIndex].z, 1.0f };
-
-				/// テクスチャ座標のインデックス情報を取得する
-				uint32_t coordIndex = 0;
-				// インデックス値が0の場合エラー
-				if (!elements[1]) {
-					Debug::Log("index = 0");
-					// 処理を停止させる
-					assert(false);
-				}
-				else if (elements[1] < 0) {
-					// インデックス値が0以下の際、相対的なインデックス値を求める
-					coordIndex = uint32_t(ptrdiff_t(texcoords.size()) + elements[1]);
-				}
-				else {
-					// OBJのフォーマットの都合上、インデックス値は1から始まるので-1する
-					coordIndex = uint32_t(elements[1] - 1);
-				}
-
-				// インデックスがテクスチャ座標数を超えていた時点でエラー
-				if (coordIndex >= texcoords.size()) {
-					assert(false);
-				}
-
-				// テクスチャ座標を取得
-				vertex.texCoord = texcoords[coordIndex];
-
-				/// 法線のインデックス情報を取得する
-				uint32_t normIndex = 0;
-				// インデックス値が0の場合エラー
-				if (!elements[2]) {
-					Debug::Log("index = 0");
-					// 処理を停止させる
-					assert(false);
-				}
-				else if (elements[2] < 0) {
-					// インデックス値が0以下の際、相対的なインデックス値を求める
-					normIndex = uint32_t(ptrdiff_t(normals.size()) + elements[2]);
-				}
-				else {
-					// OBJのフォーマットの都合上、インデックス値は1から始まるので-1する
-					normIndex = uint32_t(elements[2] - 1);
-				}
-
-				// インデックスが法線数を超えていた時点でエラー
-				if (normIndex >= normals.size()) {
-					assert(false);
-				}
-
-				// テクスチャ座標を取得
-				vertex.normal = normals[normIndex];
-
-				// ハッシュ値と頂点のインデックス情報の関連付け用マップ
-				using VertexCache = std::unordered_multimap<uint32_t, uint32_t>;
-				
-				// インデックス情報の取得
-				const uint32_t vertIndex = AddVertex(vertexIndex, &vertex, vertexCache);
-				// インデックス情報を追加出来なかった場合エラー
-				if (vertIndex == uint32_t(-1)) {
-					Debug::Log("AddVertex Failed");
-					assert(false);
-				}
-
-				// インデックスの最大値求める
-				constexpr uint32_t maxIndex = (sizeof(uint32_t) == 2) ? UINT16_MAX : UINT32_MAX;
-				// 求めたインデックスが最大値を超過していた場合エラー
-				if (vertIndex >= maxIndex)
-				{
-					Debug::Log("index >= maxIndex");
-					assert(false);
-				}
-
-				// 面のインデックス取得
-				faceIndex[faceVertex] = vertIndex;
-
-				// 読み込んでいる面が3以下の場合はループを一度抜ける
-				if (faceVertex != 2) {
-					continue;
-				}
-
-				// Convert polygons to triangles
-				uint32_t i0 = faceIndex[0];
-				uint32_t i1 = faceIndex[1];
-				uint32_t i2 = faceIndex[2];
-
-				indexes_.push_back(static_cast<uint32_t>(i0));
-				indexes_.push_back(static_cast<uint32_t>(i2));
-				indexes_.push_back(static_cast<uint32_t>(i1));
 			}
 		}
 		// マテリアル情報読み込み

@@ -15,15 +15,7 @@ uint32_t GetVertexIndex(Meshlet m, uint localIndex)
 {
     localIndex = m.VertOffset + localIndex;
 
-    // Byte address must be 4-byte aligned.
-    uint wordOffset = (localIndex & 0x1);
-    uint byteOffset = (localIndex / 2) * 4;
-
-        // Grab the pair of 16-bit indices, shift & mask off proper 16-bits.
-    uint indexPair = UniqueVertexIndices.Load(byteOffset);
-    uint index = (indexPair >> (wordOffset * 16)) & 0xffff;
-
-    return index;
+    return UniqueVertexIndices.Load(localIndex * 4);
 }
 
 [NumThreads(128, 1, 1)]
@@ -31,8 +23,8 @@ uint32_t GetVertexIndex(Meshlet m, uint localIndex)
 void main(
     in uint32_t gid  : SV_GroupID,
     in uint32_t gtid : SV_GroupThreadID,
-    out vertices VertexOutPut outVerts[128],
-    out indices uint32_t3     outIndices[128]
+    out vertices VertexOutPut outVerts[256],
+    out indices uint32_t3     outIndices[256]
 )
 {
     // Meshlet取得
