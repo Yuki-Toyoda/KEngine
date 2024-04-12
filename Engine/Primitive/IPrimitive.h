@@ -67,7 +67,7 @@ struct UniqueVertexBuffer {
 	Microsoft::WRL::ComPtr<ID3D12Resource> Resource;	  // リソース
 	Index								   index;		  // SRV上の配列番号
 	D3D12_GPU_DESCRIPTOR_HANDLE			   View;		  // GPU上のアドレス
-	uint32_t*							   uniqueVertex;  // メッシュレットのデータ
+	uint8_t*							   uniqueVertex;  // メッシュレットのデータ
 };
 
 /// <summary>
@@ -77,7 +77,7 @@ struct PrimitiveIndexBuffer {
 	Microsoft::WRL::ComPtr<ID3D12Resource> Resource;	  // リソース
 	Index								   index;		  // SRV上の配列番号
 	D3D12_GPU_DESCRIPTOR_HANDLE			   View;		  // GPU上のアドレス
-	PackedTriangle*						   primitve;      // メッシュレットのデータ
+	DirectX::MeshletTriangle*			   primitve;      // メッシュレットのデータ
 };
 
 /// <summary>
@@ -191,8 +191,8 @@ public: // パブリックなメンバ変数
 	std::vector<VertexData> vertices_;
 	// メッシュレット変換出力後情報配列群
 	std::vector<DirectX::Meshlet>		  meshlets_;
-	std::vector<uint32_t>				  uniqueVertices_;
-	std::vector<PackedTriangle>			  primitiveIndices_;
+	std::vector<uint8_t>				  uniqueVertices_;
+	std::vector<DirectX::MeshletTriangle> primitiveIndices_;
 
 	// メッシュレットバッファ
 	std::unique_ptr<MeshletBuffer> meshletBuffer_;

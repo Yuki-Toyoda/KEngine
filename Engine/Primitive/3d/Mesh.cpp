@@ -224,10 +224,6 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 		}
 	}
 
-	// 出力後の固有頂点保存用
-	std::vector<uint8_t> uniqueVertcies;
-	std::vector<DirectX::MeshletTriangle> primitiveIndices;
-
 	// 頂点座標格納用配列の作成
 	auto vertPos = std::make_unique<DirectX::XMFLOAT3[]>(vertices_.size());
 	// 頂点座標を取得
@@ -243,30 +239,11 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 		vertPos.get(), vertices_.size(),
 		nullptr,
 		meshlets_,
-		uniqueVertcies,
-		primitiveIndices
+		uniqueVertices_,
+		primitiveIndices_
 	);
 	// 変換成否確認
 	assert(SUCCEEDED(result));
-
-	// 配列内の値を変換
-	for (size_t i = 0; i < uniqueVertcies.size(); i++) {
-		// 固有頂点を取得
-		uint32_t newVertex = uniqueVertcies[static_cast<int>(i)];
-		// 任意の形式に変換
-		uniqueVertices_.push_back(newVertex);
-	}
-
-	// 配列内の値を変換
-	for (size_t i = 0; i < primitiveIndices.size(); i++) {
-		// 固有頂点を取得
-		PackedTriangle newPrimitive;
-		newPrimitive.i0 = primitiveIndices[static_cast<int>(i)].i0;
-		newPrimitive.i1 = primitiveIndices[static_cast<int>(i)].i1;
-		newPrimitive.i2 = primitiveIndices[static_cast<int>(i)].i2;
-		// 任意の形式に変換
-		primitiveIndices_.push_back(newPrimitive);
-	}
 
 	// 共通のSRV用Desc
 	D3D12_SHADER_RESOURCE_VIEW_DESC commonDesc{};								   // 汎用設定用
@@ -319,12 +296,12 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 	}
 
 	// プリミティブインデックスバッファ
-	primitiveIndexBuffer_->Resource = std::move(CreateBuffer(((sizeof(PackedTriangle) + 0xff) & ~0xff) * primitiveIndices_.size()));
+	primitiveIndexBuffer_->Resource = std::move(CreateBuffer(((sizeof(uint32_t) + 0xff) & ~0xff) * primitiveIndices_.size()));
 	result = primitiveIndexBuffer_->Resource->Map(0, nullptr, reinterpret_cast<void**>(&primitiveIndexBuffer_->primitve));
 	primitiveIndexBuffer_->index = cmdManager_->GetSRV()->UseEmpty();
 	D3D12_SHADER_RESOURCE_VIEW_DESC primitiveIndexDesc = { commonDesc };
 	primitiveIndexDesc.Buffer.NumElements = static_cast<UINT>(primitiveIndices_.size());
-	primitiveIndexDesc.Buffer.StructureByteStride = sizeof(PackedTriangle);
+	primitiveIndexDesc.Buffer.StructureByteStride = sizeof(uint32_t);
 	primitiveIndexBuffer_->View = cmdManager_->GetSRV()->GetGPUHandle(primitiveIndexBuffer_->index);
 	cmdManager_->GetDevice()->CreateShaderResourceView(primitiveIndexBuffer_->Resource.Get(), &primitiveIndexDesc, cmdManager_->GetSRV()->GetCPUHandle(primitiveIndexBuffer_->index));
 	// マッピングに失敗した場合
@@ -339,10 +316,10 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 	std::memcpy(vertexBuffer_->vertex, vertices_.data(), sizeof(VertexData)* vertices_.size());
 
 	// 固有頂点バッファへのデータコピー
-	std::memcpy(uniqueVertexBuffer_->uniqueVertex, indexes_.data(), sizeof(uint32_t)* indexes_.size());
+	std::memcpy(uniqueVertexBuffer_->uniqueVertex, indexes_.data(), sizeof(uint8_t)* indexes_.size());
 
 	// プリミティブインデックスバッファへのデータコピー
-	std::memcpy(primitiveIndexBuffer_->primitve, primitiveIndices_.data(), sizeof(PackedTriangle)* primitiveIndices_.size());
+	std::memcpy(primitiveIndexBuffer_->primitve, primitiveIndices_.data(), sizeof(DirectX::MeshletTriangle)* primitiveIndices_.size());
 }
 
 void Mesh::LoadMaterial(const std::string& filePath, const std::string& fileName)

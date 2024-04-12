@@ -1,12 +1,38 @@
 #include "Meshlet.hlsli"
 
+uint32_t3 UnpackPrimitive(uint primitive)
+{
+    // Unpacks a 10 bits per index triangle from a 32-bit uint.
+    return uint32_t3(primitive & 0x3FF, (primitive >> 10) & 0x3FF, (primitive >> 20) & 0x3FF);
+}
+
+uint32_t3 GetPrimitive(Meshlet m, uint index)
+{
+    return UnpackPrimitive(PrimitiveIndices[m.PrimOffset + index]);
+}
+
+uint32_t GetVertexIndex(Meshlet m, uint localIndex)
+{
+    localIndex = m.VertOffset + localIndex;
+
+    // Byte address must be 4-byte aligned.
+    uint wordOffset = (localIndex & 0x1);
+    uint byteOffset = (localIndex / 2) * 4;
+
+        // Grab the pair of 16-bit indices, shift & mask off proper 16-bits.
+    uint indexPair = UniqueVertexIndices.Load(byteOffset);
+    uint index = (indexPair >> (wordOffset * 16)) & 0xffff;
+
+    return index;
+}
+
 [NumThreads(128, 1, 1)]
 [OutputTopology("triangle")]
 void main(
     in uint32_t gid  : SV_GroupID,
     in uint32_t gtid : SV_GroupThreadID,
     out vertices VertexOutPut outVerts[128],
-    out indices uint32_t3         outIndices[128]
+    out indices uint32_t3     outIndices[128]
 )
 {
     // Meshlet取得
@@ -18,7 +44,7 @@ void main(
     if (gtid < meshlet.VertCount)
     {   
         // 頂点インデックスの取得
-        uint32_t vertexIndex = VertexIndices[meshlet.VertOffset + gtid];
+        uint32_t vertexIndex = GetVertexIndex(meshlet, gtid);
         
         // 取得したインデックスから頂点座標を求める
         VertexData vertex = Vertices[vertexIndex];
@@ -36,9 +62,7 @@ void main(
     if (gtid < meshlet.PrimCount)
     {
         // プリミティブ情報のインデックス情報を取得
-        uint32_t3 packedIndices = uint32_t3(PrimitiveIndices[meshlet.PrimOffset + gtid].i0,
-                                            PrimitiveIndices[meshlet.PrimOffset + gtid].i1,
-                                            PrimitiveIndices[meshlet.PrimOffset + gtid].i2);
+        uint32_t3 packedIndices = GetPrimitive(meshlet, gtid);
         
         // 出力するプリミティブを求める
         outIndices[gtid] = packedIndices;

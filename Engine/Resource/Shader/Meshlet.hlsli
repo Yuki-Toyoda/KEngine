@@ -18,13 +18,6 @@ struct Meshlet
     uint32_t PrimOffset;
 };
 
-struct PackedTriangle
-{
-    uint32_t i0;
-    uint32_t i1;
-    uint32_t i2;
-};
-
 struct VertexOutPut
 {
     float4 pos : SV_POSITION0;
@@ -38,7 +31,7 @@ float4 TransformPosition(float4 v)
     return mul(v, ConstantData.WorldViewProj);
 }
 
-StructuredBuffer<Meshlet>    Meshlets         : register(t0);
-StructuredBuffer<VertexData> Vertices         : register(t1);
-StructuredBuffer<uint32_t>   VertexIndices    : register(t2);
-StructuredBuffer<PackedTriangle> PrimitiveIndices : register(t3);
+StructuredBuffer<Meshlet>    Meshlets            : register(t0);
+StructuredBuffer<VertexData> Vertices            : register(t1);
+ByteAddressBuffer            UniqueVertexIndices : register(t2);
+StructuredBuffer<uint32_t>   PrimitiveIndices    : register(t3);
