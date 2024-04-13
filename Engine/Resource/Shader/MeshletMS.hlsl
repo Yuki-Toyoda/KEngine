@@ -46,9 +46,9 @@ void main(
         
         // 出力する頂点色を求める
         outVerts[gtid].color = float4(
-            float(gtid & 1),
-            float(gtid & 3) / 4,
-            float(gtid & 7) / 8,
+            float(gid & 1),
+            float(gid & 3) / 4,
+            float(gid & 7) / 8,
             1.0f);
     }
     if (gtid < meshlet.PrimCount)
