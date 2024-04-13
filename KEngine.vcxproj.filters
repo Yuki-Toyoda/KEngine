@@ -227,6 +227,9 @@
     <ClCompile Include="Engine\Utility\DataSegment\DataSegment.cpp">
       <Filter>App\Utility\DataSegment</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Base\RootSignature\IRootSignature.cpp" />
+    <ClCompile Include="Engine\Base\RootSignature\ModelRootSignature.cpp" />
+    <ClCompile Include="Engine\Base\RootSignature\RootSignatureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -483,6 +486,9 @@
     </ClInclude>
     <ClInclude Include="Engine\Utility\IndexList\Index.h" />
     <ClInclude Include="Engine\Utility\IndexList\IndexList.h" />
+    <ClInclude Include="Engine\Base\RootSignature\IRootSignature.h" />
+    <ClInclude Include="Engine\Base\RootSignature\ModelRootSignature.h" />
+    <ClInclude Include="Engine\Base\RootSignature\RootSignatureManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">

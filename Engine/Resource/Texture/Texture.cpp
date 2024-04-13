@@ -7,7 +7,8 @@ Texture::Texture(CommandManager* manager, const std::string filePath)
 	// テクスチャ情報のロード
 	Load(filePath);
 	// インデックス情報の取得
-	index_ = manager->createTextureResource(mipImages_);
+	manager;
+	//index_ = manager->createTextureResource(mipImages_);
 }
 
 void Texture::Load(const std::string& filePath)

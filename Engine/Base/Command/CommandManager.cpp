@@ -158,16 +158,6 @@ void CommandManager::SetDrawData()
 	
 }
 
-int CommandManager::createTextureResource(const DirectX::ScratchImage& image)
-{
-	// バッファにテクスチャのメタデータを追加
-	textureBuffer_->Resource.push_back(std::move(CreateTextureBuffer(image.GetMetadata())));
-	// テクスチャをアップロード
-	UploadTextureData(image);
-	// テクスチャバッファの番号を返す
-	return textureBuffer_->UsedCount++;
-}
-
 void CommandManager::DisplayImGui()
 {
 	for (int i = 0; i < mesh_->GetMeshletCount(); i++) {
@@ -381,9 +371,7 @@ ID3D12Resource* CommandManager::CreateTextureBuffer(const DirectX::TexMetadata& 
 
 	// 2. 利用するHeapの設定。非常に特殊な運用。
 	D3D12_HEAP_PROPERTIES heapProperties{};
-	heapProperties.Type = D3D12_HEAP_TYPE_CUSTOM; // 細かい設定を行う
-	heapProperties.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_WRITE_BACK; // WriteBackポリシーでCPUアクセス可能
-	heapProperties.MemoryPoolPreference = D3D12_MEMORY_POOL_L0; // プロセッサの近くに配置
+	heapProperties.Type = D3D12_HEAP_TYPE_DEFAULT; // デフォルト設定
 
 	// 3. Resourceを生成する
 	ID3D12Resource* Resource = nullptr;
@@ -391,120 +379,45 @@ ID3D12Resource* CommandManager::CreateTextureBuffer(const DirectX::TexMetadata& 
 		&heapProperties,					// Heapの設定
 		D3D12_HEAP_FLAG_NONE,				// Heapの特殊な設定。特になし。
 		&resourceDesc,						// Resourceの設定
-		D3D12_RESOURCE_STATE_GENERIC_READ,	// 初回のResourceState。Textureは基本読むだけ
-		nullptr,							// Clear最適地。使わないでnullptr
+		D3D12_RESOURCE_STATE_COPY_DEST,		// データ転送される設定
+		nullptr,							// Clear最適値。使わないでnullptr
 		IID_PPV_ARGS(&Resource)				// 作成するResourceポインタへのポインタ
 	);
 	assert(SUCCEEDED(result));
 	return Resource;
 }
 
-void CommandManager::UploadTextureData(const DirectX::ScratchImage& mipImages)
+[[nodiscard]]
+ID3D12Resource* CommandManager::UploadTextureData(ID3D12Resource* texture, const DirectX::ScratchImage& mipImages)
 {
-	// 結果確認用
-	HRESULT result = S_FALSE;
+	// 読み込みデータ格納用のサブリソース配列
+	std::vector<D3D12_SUBRESOURCE_DATA> subresources;
 
-	// Meta情報を取得
-	const DirectX::TexMetadata& metadata = mipImages.GetMetadata();
-	// 全MipMapについて
-	for (size_t mipLevel = 0; mipLevel < metadata.mipLevels; ++mipLevel) {
-		// MipMapLevelを指定して各Imageを取得
-		const DirectX::Image* img = mipImages.GetImage(mipLevel, 0, 0);
-		// Textureに転送
-		result = textureBuffer_->Resource[textureBuffer_->UsedCount]->WriteToSubresource(
-			UINT(mipLevel),
-			nullptr,
-			img->pixels,
-			UINT(img->rowPitch),
-			UINT(img->slicePitch)
-		);
-		assert(SUCCEEDED(result));
-	}
+	// PrepareUploadを利用し、読み込んだデータで配列を生成
+	DirectX::PrepareUpload(
+		device_,
+		mipImages.GetImages(),
+		mipImages.GetImageCount(),
+		mipImages.GetMetadata(),
+		subresources);
 
-	// metaDataを元にSRVの設定
-	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
-	srvDesc.Format = metadata.format;
-	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
-	srvDesc.Texture2D.MipLevels = UINT(metadata.mipLevels);
+	// サブリソース数を元にコピー元リソースに必要なサイズを計算
+	uint64_t intermediateSize = GetRequiredIntermediateSize(texture, 0, UINT(subresources.size()));
+	// リソース生成
+	ID3D12Resource* intermediateResource = CreateBuffer(intermediateSize);
+	// intermediateResourceにサブリソースのデータを書き込み、テクスチャに転送するコマンドを積む
+	UpdateSubresources(commandList_.Get(), texture, intermediateResource, 0, 0, UINT(subresources.size()), subresources.data());
 
-	//// SRVを作成するDescriptorHeapの場所を決める（ImGuiとStructuredBufferたちが先頭を使っているので + ）
-	//D3D12_CPU_DESCRIPTOR_HANDLE textureSRVHandleCPU = srv_->GetCPUHandle(textureBuffer_->UsedCount + srv_->GetUsedCount());
-	//// 初めてのテクスチャ生成ならviewを保存
-	//if (textureBuffer_->UsedCount == 0) {
-	//	textureBuffer_->View = srv_->GetGPUHandle(textureBuffer_->UsedCount + srv_->GetUsedCount());
-	//}
-	//// SRVの生成
-	//device_->CreateShaderResourceView(textureBuffer_->Resource[textureBuffer_->UsedCount].Get(), &srvDesc, textureSRVHandleCPU);
-}
+	// 転送した後、利用できるようにリソースのステートを変更する
+	D3D12_RESOURCE_BARRIER barrier{};
+	barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+	barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
+	barrier.Transition.pResource = texture;
+	barrier.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
+	barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_GENERIC_READ;
+	// リソースのステートを変更
+	commandList_->ResourceBarrier(1, &barrier);
 
-IDxcBlob* CommandManager::CompileShader(const std::wstring& filePath, const wchar_t* profile)
-{
-	// 結果確認用
-	HRESULT result = S_FALSE;
-
-	// シェーダーコンパイルの開始をログに出す
-	Debug::Log(Debug::ConvertString(std::format(L"Begin CompileShader, path:{}, profile{}\n", filePath, profile)));
-
-	// HLSLファイルを読み込む
-	IDxcBlobEncoding* shaderSource = nullptr;
-	result = dxc_->dxcUtils_->LoadFile(filePath.c_str(), nullptr, &shaderSource);
-	// 読み込み出来ているかを確認する
-	assert(SUCCEEDED(result));
-
-	// 読み込んだファイルの内容の設定を行う
-	DxcBuffer shaderSourceBuffer;
-	shaderSourceBuffer.Ptr = shaderSource->GetBufferPointer();
-	shaderSourceBuffer.Size = shaderSource->GetBufferSize();
-	// UTF-8形式の文字コードとして設定する
-	shaderSourceBuffer.Encoding = DXC_CP_UTF8;
-
-	// コンパイルオプションの設定を行う
-	LPCWSTR arguments[] = {
-		filePath.c_str(), // コンパイル対象のhlslファイル名
-		L"-E", L"main", // エントリーポイントの指定 基本的にmain以外にはしない
-		L"-T", profile, // shaderProfileの設定
-		L"-Zi", L"-Qembed_debug", // デバック用の情報埋め込み
-		L"-Od", // 最適化を外す
-		L"-Zpr", // メモリレイアウトは行優先
-	};
-
-	// 実際にシェーダーのコンパイルを行う
-	IDxcResult* shaderResult = nullptr;
-	result = dxc_->dxcCompiler_->Compile(
-		&shaderSourceBuffer,             // 読み込んだファイル
-		arguments,                       // コンパイルオプション
-		_countof(arguments),             // コンパイルオプションの数
-		dxc_->dxcIncludeHandler_.Get(),  // include が含まれた諸々
-		IID_PPV_ARGS(&shaderResult)      // コンパイル結果
-	);
-
-	// ここで吐くエラーはコンパイルエラーではなく、dxcが起動できないなどの致命的なもの
-	assert(SUCCEEDED(result));
-
-	// 警告やエラーが出た場合にはログに出して停止させる
-	IDxcBlobUtf8* shaderError = nullptr;
-	shaderResult->GetOutput(DXC_OUT_ERRORS, IID_PPV_ARGS(&shaderError), nullptr);
-	if (shaderError != nullptr && shaderError->GetStringLength() != 0) {
-		// ログに警告、エラー情報を出力する
-		Debug::Log(shaderError->GetStringPointer());
-		// 警告やエラーが出ている場合停止させる
-		assert(false);
-	}
-
-	// コンパイル結果から実行用のバイナリ部分を取得する
-	IDxcBlob* shaderBlob = nullptr;
-	result = shaderResult->GetOutput(DXC_OUT_OBJECT, IID_PPV_ARGS(&shaderBlob), nullptr);
-	// 取得出来たか確認する
-	assert(SUCCEEDED(result));
-
-	// 成功したことをログに出力
-	Debug::Log(Debug::ConvertString(std::format(L"Compile Succeeded, path:{}, profile{}\n", filePath, profile)));
-
-	// 使わないリソースの解放を行う
-	shaderSource->Release();
-	shaderResult->Release();
-
-	// 実行用のバイナリを返す
-	return shaderBlob;
+	// 生成したintermediateResourceを返す
+	return intermediateResource;
 }

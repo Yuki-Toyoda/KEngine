@@ -165,12 +165,15 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Utility\Line\Line.cpp" />
     <ClCompile Include="Game\Game.cpp" />
     <ClCompile Include="Engine\KEngine.cpp" />
+    <ClCompile Include="Engine\Base\RootSignature\IRootSignature.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\GameObject\Samples\SampleSphere\SampleSphere.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Engine\Scene\SceneFactory.cpp" />
+    <ClCompile Include="Engine\Base\RootSignature\ModelRootSignature.cpp" />
+    <ClCompile Include="Engine\Base\RootSignature\RootSignatureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Utility\DataSegment\DataSegment.h" />
@@ -264,6 +267,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Engine\KEngine.h" />
     <ClInclude Include="Engine\Scene\SceneFactory.h" />
+    <ClInclude Include="Engine\Base\RootSignature\IRootSignature.h" />
+    <ClInclude Include="Engine\Base\RootSignature\ModelRootSignature.h" />
+    <ClInclude Include="Engine\Base\RootSignature\RootSignatureManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Meshlet.hlsli">

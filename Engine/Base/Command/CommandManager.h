@@ -141,13 +141,6 @@ public: // アクセッサ等
 public: // その他関数
 
 	/// <summary>
-	/// テクスチャリソース生成関数
-	/// </summary>
-	/// <param name="image">テクスチャデータ</param>
-	/// <returns>テクスチャリソース</returns>
-	int createTextureResource(const DirectX::ScratchImage& image);
-
-	/// <summary>
 	/// ImGuiを表示させる関数
 	/// </summary>
 	void DisplayImGui();
@@ -180,21 +173,11 @@ private: // プライベートなメンバ関数
 	ID3D12Resource* CreateTextureBuffer(const DirectX::TexMetadata& metaData);
 
 	/// <summary>
-	/// テクスチャのアップロード関数
+	/// 読み込み済みテクスチャデータをGPUにアップロードする関数
 	/// </summary>
+	/// <param name="texture">テクスチャリソース</param>
 	/// <param name="mipImages">ミップマップ付きテクスチャ</param>
-	void UploadTextureData(const DirectX::ScratchImage& mipImages);
-
-	/// <summary>
-	/// シェーダーのコンパイルを行う関数
-	/// </summary>
-	/// <param name="filePath">compilerするSharderファイルへのパス</param>
-	/// <param name="profile">compilerに使用するprofile</param>
-	/// <param name="dxcUtils">dxcUtils</param>
-	/// <param name="dxcCompiler">dxcCompiler</param>
-	/// <param name="includeHandler">includeHandler</param>
-	/// <returns>コンパイル済みシェーダーのバイナリオブジェクト</returns>
-	IDxcBlob* CompileShader(const std::wstring& filePath, const wchar_t* profile);
+	ID3D12Resource* UploadTextureData(ID3D12Resource* texture, const DirectX::ScratchImage& mipImages);
 
 private: // メンバ変数
 
