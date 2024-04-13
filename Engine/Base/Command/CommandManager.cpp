@@ -329,7 +329,7 @@ void CommandManager::CreateBuffers()
 	// コマンドマネージャーをセット
 	mesh_->SetCommandManager(this);
 	// メッシュのロード
-	mesh_->LoadFile("./Engine/Resource/Samples/Sphere", "Sphere.obj");
+	mesh_->LoadFile("./Engine/Resource/Samples/Leeme", "Leeme.obj");
 
 }
 
