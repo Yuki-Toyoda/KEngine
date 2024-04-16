@@ -2,29 +2,32 @@
 
 uint32_t3 UnpackPrimitive(uint primitive)
 {
-    // Unpacks a 10 bits per index triangle from a 32-bit uint.
+    // 10ビットごとにプリミティブのインデックスを読み取る
     return uint32_t3(primitive & 0x3FF, (primitive >> 10) & 0x3FF, (primitive >> 20) & 0x3FF);
 }
 
 uint32_t3 GetPrimitive(Meshlet m, uint index)
 {
+    // 面情報取得
     return UnpackPrimitive(PrimitiveIndices[m.PrimOffset + index]);
 }
 
 uint32_t GetVertexIndex(Meshlet m, uint localIndex)
 {
+    // 頂点のインデックスを求める
     localIndex = m.VertOffset + localIndex;
 
+    // 4バイトずつで読み込む
     return UniqueVertexIndices.Load(localIndex * 4);
 }
 
-[NumThreads(128, 1, 1)]
-[OutputTopology("triangle")]
+[NumThreads(128, 1, 1)]      // スレッド数最大128
+[OutputTopology("triangle")] // 出力形状は三角形
 void main(
     in uint32_t gid  : SV_GroupID,
     in uint32_t gtid : SV_GroupThreadID,
-    out vertices VertexOutPut outVerts[256],
-    out indices uint32_t3     outIndices[256]
+    out vertices VertexOutPut outVerts[128],
+    out indices uint32_t3     outIndices[128]
 )
 {
     // Meshlet取得
@@ -43,13 +46,23 @@ void main(
         
         // 出力する頂点座標を求める
         outVerts[gtid].pos = TransformPosition(vertex.pos);
+        outVerts[gtid].texCoord = vertex.texCoord;
         
         // 出力する頂点色を求める
-        outVerts[gtid].color = float4(
+        if (ConstantData.DrawMeshlets)
+        {
+            // メッシュレットごとに描画する
+            outVerts[gtid].color = float4(
             float(gid & 1),
             float(gid & 3) / 4,
             float(gid & 7) / 8,
             1.0f);
+        }
+        else
+        {
+            // 頂点色は白
+            outVerts[gtid].color = float4(1.0f, 1.0f, 1.0f, 1.0f);
+        }
     }
     if (gtid < meshlet.PrimCount)
     {

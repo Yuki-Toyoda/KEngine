@@ -160,35 +160,7 @@ void CommandManager::SetDrawData()
 
 void CommandManager::DisplayImGui()
 {
-	for (int i = 0; i < mesh_->GetMeshletCount(); i++) {
-		std::string s = "VertCount" + std::to_string(i);
-		int v = mesh_->meshletBuffer_->meshlet[i].VertCount;
-		ImGui::DragInt(s.c_str(), &v);
-	}
-
-	ImGui::NewLine();
-
-	for (int i = 0; i < mesh_->GetMeshletCount(); i++) {
-		std::string s = "VertOffset" + std::to_string(i);
-		int v = mesh_->meshletBuffer_->meshlet[i].VertOffset;
-		ImGui::DragInt(s.c_str(), &v);
-	}
-
-	ImGui::NewLine();
-
-	for (int i = 0; i < mesh_->GetMeshletCount(); i++) {
-		std::string s = "PrimCount" + std::to_string(i);
-		int v = mesh_->meshletBuffer_->meshlet[i].PrimCount;
-		ImGui::DragInt(s.c_str(), &v);
-	}
-
-	ImGui::NewLine();
-
-	for (int i = 0; i < mesh_->GetMeshletCount(); i++) {
-		std::string s = "PrimOffset" + std::to_string(i);
-		int v = mesh_->meshletBuffer_->meshlet[i].PrimOffset;
-		ImGui::DragInt(s.c_str(), &v);
-	}
+	
 }
 
 void CommandManager::InitializeDXC()
@@ -220,7 +192,7 @@ void CommandManager::CreateRootSignature()
 	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature{};           // 設定用インスタンス生成
 	descriptionRootSignature.Flags = D3D12_ROOT_SIGNATURE_FLAG_NONE; // フラッグはなし
 	// ルートパラメータ生成
-	D3D12_ROOT_PARAMETER rootParameters[5] = {};
+	D3D12_ROOT_PARAMETER rootParameters[6] = {};
 
 	// 配列用のRangeDesc
 	D3D12_DESCRIPTOR_RANGE descRange[1] = {};    // DescriptorRangeを作成
@@ -271,6 +243,32 @@ void CommandManager::CreateRootSignature()
 	rootParameters[4].DescriptorTable.pDescriptorRanges = primitiveIndexRangeDesc;             // ディスクリプタのレンジを設定
 	rootParameters[4].DescriptorTable.NumDescriptorRanges = _countof(primitiveIndexRangeDesc); // テーブルのサイズを設定
 
+	// テクスチャ
+	D3D12_DESCRIPTOR_RANGE textureDesc[1] = { descRange[0] };					   // DescriptorRangeを作成
+	textureDesc[0].BaseShaderRegister = 4;										   // レジスタ番号は2
+	textureDesc[0].NumDescriptors = 256;										   // 最大数を定義
+	rootParameters[5].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;  // DescriptorTabelを使う
+	rootParameters[5].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;		       // ピクセルシェーダーで使う
+	rootParameters[5].DescriptorTable.pDescriptorRanges = textureDesc;			   // Tabelの中身の配列を指定
+	rootParameters[5].DescriptorTable.NumDescriptorRanges = _countof(textureDesc); // Tableで利用する数
+
+	// サンプラー
+	D3D12_STATIC_SAMPLER_DESC staticSamplers[1] = {};
+
+	// RootSignatureにサンプラーを登録
+	descriptionRootSignature.pStaticSamplers = staticSamplers;
+	descriptionRootSignature.NumStaticSamplers = _countof(staticSamplers);
+
+	// Samplerの設定
+	staticSamplers[0].Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR; // バイオリニアフィルタ
+	staticSamplers[0].AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP; // 0~1の範囲外をリピート
+	staticSamplers[0].AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+	staticSamplers[0].AddressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+	staticSamplers[0].ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER; // 比較しない
+	staticSamplers[0].MaxLOD = D3D12_FLOAT32_MAX; // ありったけのMipmapを使う
+	staticSamplers[0].ShaderRegister = 0; // レジスタ番号は0
+	staticSamplers[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; // PixelShaderで使う
+
 	// シリアライズを行う
 	ID3DBlob* signatureBlob = nullptr; // シリアライズ後のバイナリオブジェクト
 	ID3DBlob* errorBlob = nullptr;     // エラーログを出すためのバイナリオブジェクト
@@ -319,7 +317,7 @@ void CommandManager::CreateBuffers()
 	// コマンドマネージャーをセット
 	mesh_->SetCommandManager(this);
 	// メッシュのロード
-	mesh_->LoadFile("./Engine/Resource/Samples/Leeme", "Leeme.obj");
+	mesh_->LoadFile("./Engine/Resource/Samples/Box", "Box.obj");
 
 }
 
@@ -354,7 +352,7 @@ ID3D12Resource* CommandManager::CreateBuffer(size_t size)
 	return Resource;
 }
 
-ID3D12Resource* CommandManager::CreateTextureBuffer(const DirectX::TexMetadata& metaData)
+ID3D12Resource* CommandManager::CreateTextureResource(const DirectX::TexMetadata& metaData)
 {
 	// 結果確認用
 	HRESULT result = S_FALSE;

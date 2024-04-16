@@ -28,8 +28,8 @@ private: // サブクラス
 	/// 汎用データ
 	/// </summary>
 	struct GeneralData {
-		Matrix4x4 WorldViewProj; // 射影変換行列
-		//uint32_t  DrawMeshlets;  // メッシュレット描画フラグ
+		Matrix4x4 WorldViewProj;		 // 射影変換行列
+		uint32_t  DrawMeshlets = false;  // メッシュレット描画フラグ
 	};
 
 	/// <summary>
@@ -165,13 +165,13 @@ private: // プライベートなメンバ関数
 	/// <param name="size"バッファサイズ></param>
 	/// <returns>バッファ本体</returns>
 	ID3D12Resource* CreateBuffer(size_t size);
+
 	/// <summary>
-	/// 任意のサイズのバッファ生成関数(テクスチャ用)
+	/// テクスチャ用リソースを生成する関数
 	/// </summary>
 	/// <param name="metaData">テクスチャデータ</param>
-	/// <returns>バッファ本体</returns>
-	ID3D12Resource* CreateTextureBuffer(const DirectX::TexMetadata& metaData);
-
+	/// <returns>リソース</returns>
+	ID3D12Resource* CreateTextureResource(const DirectX::TexMetadata& metaData);
 	/// <summary>
 	/// 読み込み済みテクスチャデータをGPUにアップロードする関数
 	/// </summary>
@@ -220,10 +220,6 @@ private: // メンバ変数
 
 	// 汎用定数バッファデータ
 	std::unique_ptr<GeneralCBuffer> generalCBuffer_;
-
-	// テクスチャバッファ
-	std::unique_ptr<TextureBuffer> textureBuffer_; // 本体
-	const UINT kMaxTexture = 128;				   // テクスチャ最大数
 
 	// デフォルトテクスチャ
 	Texture* defaultTexture_ = nullptr;

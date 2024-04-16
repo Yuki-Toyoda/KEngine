@@ -1,6 +1,7 @@
 struct ConstantData
 {
     float4x4 WorldViewProj;
+    uint32_t DrawMeshlets;
 };
 
 struct VertexData
@@ -20,8 +21,9 @@ struct Meshlet
 
 struct VertexOutPut
 {
-    float4 pos : SV_POSITION0;
-    float4 color : COLOR0;
+    float32_t4 pos      : SV_POSITION0;
+    float32_t2 texCoord : TEXCOORD0;
+    float32_t4 color    : COLOR0;
 };
 
 ConstantBuffer<ConstantData> ConstantData : register(b0);
@@ -35,3 +37,6 @@ StructuredBuffer<Meshlet>    Meshlets            : register(t0);
 StructuredBuffer<VertexData> Vertices            : register(t1);
 ByteAddressBuffer            UniqueVertexIndices : register(t2);
 StructuredBuffer<uint32_t>   PrimitiveIndices    : register(t3);
+
+Texture2D<float32_t4>        gTexture            : register(t4);
+SamplerState                 gSampler            : register(s0);
