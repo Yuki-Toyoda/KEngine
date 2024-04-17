@@ -37,6 +37,3 @@ StructuredBuffer<Meshlet>    Meshlets            : register(t0);
 StructuredBuffer<VertexData> Vertices            : register(t1);
 ByteAddressBuffer            UniqueVertexIndices : register(t2);
 StructuredBuffer<uint32_t>   PrimitiveIndices    : register(t3);
-
-Texture2D<float32_t4>        gTexture            : register(t4);
-SamplerState                 gSampler            : register(s0);

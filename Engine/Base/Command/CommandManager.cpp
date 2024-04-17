@@ -56,7 +56,7 @@ void CommandManager::DrawCall()
 		commands_[i]->PreDraw(cmdList);
 
 		// コマンドリストにルートシグネチャの設定
-		cmdList->SetGraphicsRootSignature(rootSignature_.Get());
+		cmdList->SetGraphicsRootSignature(rootSignature_.get()->GetRootSignature());
 		// 形状を設定する
 		//cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		
@@ -125,7 +125,7 @@ void CommandManager::SetHeaps(RTV* rtv, SRV* srv, DSV* dsv)
 	// 全ての描画コマンドの初期化
 	for (int i = 0; i < commands_.size(); i++) {
 		commands_[i]->SetDescriptorHeap(rtv_, srv_, dsv_);			    // ヒープをセット
-		commands_[i]->Init(device_, dxc_.get(), rootSignature_.Get()); // 初期化
+		commands_[i]->Init(device_, dxc_.get(), rootSignature_.get()->GetRootSignature()); // 初期化
 	}
 
 	// バッファを生成
@@ -185,109 +185,19 @@ void CommandManager::InitializeDXC()
 
 void CommandManager::CreateRootSignature()
 {
-	// 結果確認用
-	HRESULT result = S_FALSE;
+	//// ルートシグネチャマネージャのインスタンス取得
+	//rtsManager_ = RootSignatureManager::GetInstance();
+
+	//// デバイスを渡す
+	//rtsManager_->SetDevice(device_);
+	//// ルートシグネチャマネージャの初期化
+	//rtsManager_->Init();
 
 	// ルートシグネチャ生成
-	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature{};           // 設定用インスタンス生成
-	descriptionRootSignature.Flags = D3D12_ROOT_SIGNATURE_FLAG_NONE; // フラッグはなし
-	// ルートパラメータ生成
-	D3D12_ROOT_PARAMETER rootParameters[6] = {};
-
-	// 配列用のRangeDesc
-	D3D12_DESCRIPTOR_RANGE descRange[1] = {};    // DescriptorRangeを作成
-	descRange[0].BaseShaderRegister = 0;         // 0から始まる
-	descRange[0].NumDescriptors = 1;             // 数は1つ
-	descRange[0].RegisterSpace = 0;
-	descRange[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV; // SRVを使う
-	descRange[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; // Offsetを自動計算
-
-	// RootSignatureにrootParametersを登録
-	descriptionRootSignature.pParameters = rootParameters;                    // ルートパラメータ配列へのポインタ
-	descriptionRootSignature.NumParameters = _countof(rootParameters);         // 配列の長さ
-
-	// 汎用データ
-	rootParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;  // CBVを使う
-	rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL; // PixelとVertexで使う
-	rootParameters[0].Descriptor.ShaderRegister = 0;                   // レジスタ番号0とバインド
-
-	// メッシュレットデータ
-	D3D12_DESCRIPTOR_RANGE meshletRangeDesc[1] = { descRange[0] };						// 設定用構造体を取得
-	meshletRangeDesc[0].BaseShaderRegister = 0;											// シェーダーのレジスタ番号にバインド
-	rootParameters[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;		// SRVを使う
-	rootParameters[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;					// PixelとVertexで使う
-	rootParameters[1].DescriptorTable.pDescriptorRanges = meshletRangeDesc;             // ディスクリプタのレンジを設定
-	rootParameters[1].DescriptorTable.NumDescriptorRanges = _countof(meshletRangeDesc); // テーブルのサイズを設定
-
-	// 頂点データ
-	D3D12_DESCRIPTOR_RANGE vertexRangeDesc[1] = { descRange[0] };						// 設定用構造体を取得
-	vertexRangeDesc[0].BaseShaderRegister = 1;											// シェーダーのレジスタ番号にバインド
-	rootParameters[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;		// SRVを使う
-	rootParameters[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;					// PixelとVertexで使う
-	rootParameters[2].DescriptorTable.pDescriptorRanges = vertexRangeDesc;              // ディスクリプタのレンジを設定
-	rootParameters[2].DescriptorTable.NumDescriptorRanges = _countof(vertexRangeDesc);  // テーブルのサイズを設定
-	
-	// 固有頂点データ
-	D3D12_DESCRIPTOR_RANGE uniqueVertexRangeDesc[1] = { descRange[0] };						 // 設定用構造体を取得
-	uniqueVertexRangeDesc[0].BaseShaderRegister = 2;										 // シェーダーのレジスタ番号にバインド
-	rootParameters[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;			 // SRVを使う
-	rootParameters[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;						 // PixelとVertexで使う
-	rootParameters[3].DescriptorTable.pDescriptorRanges = uniqueVertexRangeDesc;             // ディスクリプタのレンジを設定
-	rootParameters[3].DescriptorTable.NumDescriptorRanges = _countof(uniqueVertexRangeDesc); // テーブルのサイズを設定
-
-	// プリミティブ頂点データ
-	D3D12_DESCRIPTOR_RANGE primitiveIndexRangeDesc[1] = { descRange[0] };					   // 設定用構造体を取得
-	primitiveIndexRangeDesc[0].BaseShaderRegister = 3;										   // シェーダーのレジスタ番号にバインド
-	rootParameters[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;			   // SRVを使う
-	rootParameters[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;						   // PixelとVertexで使う
-	rootParameters[4].DescriptorTable.pDescriptorRanges = primitiveIndexRangeDesc;             // ディスクリプタのレンジを設定
-	rootParameters[4].DescriptorTable.NumDescriptorRanges = _countof(primitiveIndexRangeDesc); // テーブルのサイズを設定
-
-	// テクスチャ
-	D3D12_DESCRIPTOR_RANGE textureDesc[1] = { descRange[0] };					   // DescriptorRangeを作成
-	textureDesc[0].BaseShaderRegister = 4;										   // レジスタ番号は2
-	textureDesc[0].NumDescriptors = 256;										   // 最大数を定義
-	rootParameters[5].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;  // DescriptorTabelを使う
-	rootParameters[5].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;		       // ピクセルシェーダーで使う
-	rootParameters[5].DescriptorTable.pDescriptorRanges = textureDesc;			   // Tabelの中身の配列を指定
-	rootParameters[5].DescriptorTable.NumDescriptorRanges = _countof(textureDesc); // Tableで利用する数
-
-	// サンプラー
-	D3D12_STATIC_SAMPLER_DESC staticSamplers[1] = {};
-
-	// RootSignatureにサンプラーを登録
-	descriptionRootSignature.pStaticSamplers = staticSamplers;
-	descriptionRootSignature.NumStaticSamplers = _countof(staticSamplers);
-
-	// Samplerの設定
-	staticSamplers[0].Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR; // バイオリニアフィルタ
-	staticSamplers[0].AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP; // 0~1の範囲外をリピート
-	staticSamplers[0].AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
-	staticSamplers[0].AddressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
-	staticSamplers[0].ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER; // 比較しない
-	staticSamplers[0].MaxLOD = D3D12_FLOAT32_MAX; // ありったけのMipmapを使う
-	staticSamplers[0].ShaderRegister = 0; // レジスタ番号は0
-	staticSamplers[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; // PixelShaderで使う
-
-	// シリアライズを行う
-	ID3DBlob* signatureBlob = nullptr; // シリアライズ後のバイナリオブジェクト
-	ID3DBlob* errorBlob = nullptr;     // エラーログを出すためのバイナリオブジェクト
-	// ルートシグネチャ用にシリアライズ
-	result = D3D12SerializeRootSignature(&descriptionRootSignature, D3D_ROOT_SIGNATURE_VERSION_1, &signatureBlob, &errorBlob);
-	// 生成に失敗した場合
-	if (FAILED(result)) {
-		// ログを出力
-		Debug::Log(reinterpret_cast<char*>(errorBlob->GetBufferPointer()));
-		// 停止
-		assert(false);
-	}
-	// バイナリを元にルートシグネチャを生成
-	result = device_->CreateRootSignature(0, signatureBlob->GetBufferPointer(), signatureBlob->GetBufferSize(), IID_PPV_ARGS(&rootSignature_)); // 生成
-	assert(SUCCEEDED(result));                                                                                                                  // 生成確認
-
-	// 使わないリソースを解放
-	signatureBlob->Release();
-																												  // 生成確認
+	rootSignature_ = std::make_unique<ModelRootSignature>();
+	rootSignature_->SetDevice(device_);
+	rootSignature_->Init();
+	rootSignature_->CreateRootSignature();
 }
 
 void CommandManager::Finalize()

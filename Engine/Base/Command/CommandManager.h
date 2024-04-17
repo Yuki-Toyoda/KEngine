@@ -9,6 +9,7 @@
 #include "../../Math/Vector4.h"
 #include "../../Math/Matrix4x4.h"
 #include "../../GameObject/WorldTransform.h"
+#include "../RootSignature/ModelRootSignature.h"
 
 #include <wrl.h>
 #include <dxcapi.h>
@@ -207,25 +208,15 @@ private: // メンバ変数
 	// DXCコンパイラ
 	std::unique_ptr<DXC> dxc_;
 
-	// シェーダーバイナリからRootSignature部分を保持するバイナリオブジェクト
-	Microsoft::WRL::ComPtr<ID3DBlob> signatureBlob_;
-	// ルートシグネチャ
-	// 以下はテーブル番号
-	// 0 ... 汎用定数バッファ
-	// 1 ... メッシュレットバッファ
-	// 2 ... 頂点バッファ
-	// 3 ... 固有頂点インデックスバッファ
-	// 4 ... プリミティブ頂点バッファ
-	Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature_;
+	// ルートシグネチャマネージャ
+	//Microsoft::WRL::ComPtr<ID3D12RootSignature>	rootSignature_;
+	std::unique_ptr<ModelRootSignature> rootSignature_;
 
 	// 汎用定数バッファデータ
 	std::unique_ptr<GeneralCBuffer> generalCBuffer_;
 
 	// デフォルトテクスチャ
 	Texture* defaultTexture_ = nullptr;
-
-	// バイナリオブジェクト格納用
-	Microsoft::WRL::ComPtr<IDxcBlob> meshShaderBlob_;
 
 	// テスト用メッシュ
 	Mesh* mesh_ = nullptr;
