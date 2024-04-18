@@ -49,13 +49,17 @@ void main(
         outVerts[gtid].texCoord = vertex.texCoord;
         
         // 出力する頂点色を求める
-        if (ConstantData.DrawMeshlets)
+        if (ConstantData.DrawMeshlets == true)
         {
+            float unit = 3.0f / 128.0f;
+            
+            unit = unit * gid;
+            
             // メッシュレットごとに描画する
             outVerts[gtid].color = float4(
-            float(gid & 1),
-            float(gid & 3) / 4,
-            float(gid & 7) / 8,
+            unit,
+            unit,
+            unit,
             1.0f);
         }
         else

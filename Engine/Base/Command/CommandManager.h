@@ -9,7 +9,7 @@
 #include "../../Math/Vector4.h"
 #include "../../Math/Matrix4x4.h"
 #include "../../GameObject/WorldTransform.h"
-#include "../RootSignature/ModelRootSignature.h"
+#include "../RootSignature/RootSignatureManager.h"
 
 #include <wrl.h>
 #include <dxcapi.h>
@@ -30,7 +30,7 @@ private: // サブクラス
 	/// </summary>
 	struct GeneralData {
 		Matrix4x4 WorldViewProj;		 // 射影変換行列
-		uint32_t  DrawMeshlets = false;  // メッシュレット描画フラグ
+		uint32_t  DrawMeshlets;			 // メッシュレット描画フラグ
 	};
 
 	/// <summary>
@@ -209,8 +209,7 @@ private: // メンバ変数
 	std::unique_ptr<DXC> dxc_;
 
 	// ルートシグネチャマネージャ
-	//Microsoft::WRL::ComPtr<ID3D12RootSignature>	rootSignature_;
-	std::unique_ptr<ModelRootSignature> rootSignature_;
+	RootSignatureManager* rtsManager_ = nullptr;
 
 	// 汎用定数バッファデータ
 	std::unique_ptr<GeneralCBuffer> generalCBuffer_;

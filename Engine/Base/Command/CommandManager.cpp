@@ -56,7 +56,7 @@ void CommandManager::DrawCall()
 		commands_[i]->PreDraw(cmdList);
 
 		// コマンドリストにルートシグネチャの設定
-		cmdList->SetGraphicsRootSignature(rootSignature_.get()->GetRootSignature());
+		cmdList->SetGraphicsRootSignature(rtsManager_->GetRootSignature(i));
 		// 形状を設定する
 		//cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		
@@ -125,7 +125,7 @@ void CommandManager::SetHeaps(RTV* rtv, SRV* srv, DSV* dsv)
 	// 全ての描画コマンドの初期化
 	for (int i = 0; i < commands_.size(); i++) {
 		commands_[i]->SetDescriptorHeap(rtv_, srv_, dsv_);			    // ヒープをセット
-		commands_[i]->Init(device_, dxc_.get(), rootSignature_.get()->GetRootSignature()); // 初期化
+		commands_[i]->Init(device_, dxc_.get(), rtsManager_->GetRootSignature(i)); // 初期化
 	}
 
 	// バッファを生成
@@ -194,10 +194,9 @@ void CommandManager::CreateRootSignature()
 	//rtsManager_->Init();
 
 	// ルートシグネチャ生成
-	rootSignature_ = std::make_unique<ModelRootSignature>();
-	rootSignature_->SetDevice(device_);
-	rootSignature_->Init();
-	rootSignature_->CreateRootSignature();
+	rtsManager_ = RootSignatureManager::GetInstance();
+	rtsManager_->SetDevice(device_);
+	rtsManager_->Init();
 }
 
 void CommandManager::Finalize()
@@ -216,6 +215,7 @@ void CommandManager::CreateBuffers()
 	generalCBuffer_->Resource = std::move(CreateBuffer(sizeof(GeneralData)));							   // バッファの生成
 	result = generalCBuffer_->Resource->Map(0, nullptr, reinterpret_cast<void**>(&generalCBuffer_->Data)); // 生成したバッファのマッピングを行う
 	generalCBuffer_->View = generalCBuffer_->Resource->GetGPUVirtualAddress();							   // GPU上のアドレスの取得
+	generalCBuffer_->Data->DrawMeshlets = true;
 
 	// マッピングに失敗した場合
 	if (FAILED(result)) {
@@ -227,7 +227,7 @@ void CommandManager::CreateBuffers()
 	// コマンドマネージャーをセット
 	mesh_->SetCommandManager(this);
 	// メッシュのロード
-	mesh_->LoadFile("./Engine/Resource/Samples/Box", "Box.obj");
+	mesh_->LoadFile("./Engine/Resource/Samples/Sphere", "Sphere.obj");
 
 }
 
