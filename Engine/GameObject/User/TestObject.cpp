@@ -6,7 +6,7 @@
 void TestObject::Init()
 {
 	// メッシュ追加関数
-	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Box", "Box.obj");
+	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Box_glTF", "glTFBox.gltf");
 
 	/// ~スプライトの追加関数~
 	//AddSprite("TestSprite", { 0.0f, 0.0f }, { 1280.0f, 720.0f }, TextureManager::Load("./Resources", "Title.png"));

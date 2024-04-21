@@ -2,10 +2,6 @@
 #include "../../Resource/Texture/TextureManager.h"
 #include "MeshManager.h"
 
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
-
 #include <map>
 #include <fstream>
 #include <sstream>
@@ -53,6 +49,23 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 			// テクスチャ座標系がないメッシュは非対応
 			assert(mesh->HasTextureCoords(0));
 
+			// 頂点数分ループ
+			for (uint32_t vertexIndex = 0; vertexIndex < mesh->mNumVertices; vertexIndex++) {
+				// インデックス情報を元に情報を取得する
+				aiVector3D& position = mesh->mVertices[vertexIndex];		 // 頂点座標取得
+				aiVector3D& normal = mesh->mNormals[vertexIndex];			 // 法線取得
+				aiVector3D& texcoord = mesh->mTextureCoords[0][vertexIndex]; // テクスチャ座標取得
+
+				// 新規頂点データを追加
+				Vertex newVertex;
+				newVertex.position = { -position.x, position.y, position.z }; // 頂点座標追加
+				newVertex.texCoord = { texcoord.x, texcoord.y };			  // テクスチャ座標追加
+				newVertex.normal = { -normal.x, normal.y, normal.z };		  // 法線追加
+
+				// 頂点データを追加
+				vertices_.push_back(newVertex);
+			}
+
 			// 面情報を解析する
 			for (uint32_t faceIndex = 0; faceIndex < mesh->mNumFaces; faceIndex++) {
 				// 面を取得する
@@ -65,27 +78,11 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 				for (uint32_t element = 0; element < face.mNumIndices; element++) {
 					// 頂点インデックスを取得
 					uint32_t vertexIndex = face.mIndices[element];
-					// インデックス情報を元に情報を取得する
-					aiVector3D& position = mesh->mVertices[vertexIndex];		 // 頂点座標取得
-					aiVector3D& normal	 = mesh->mNormals[vertexIndex];			 // 法線取得
-					aiVector3D& texcoord = mesh->mTextureCoords[0][vertexIndex]; // テクスチャ座標取得
-
-					// 左手座標系に変換
-					position.x *= -1.0f;			// 頂点の向きを変換
-					normal.x   *= -1.0f;			// 法線の向きを反転
-
-					// 新規頂点データを追加
-					Vertex newVertex;
-					newVertex.position = { position.x, position.y, position.z }; // 頂点座標追加
-					newVertex.texCoord = { texcoord.x, texcoord.y };			 // テクスチャ座標追加
-					newVertex.normal   = { normal.x, normal.y, normal.z };		 // 法線追加
-
-					// 頂点データを追加
-					vertices_.push_back(newVertex);
-
+					
 					// インデックス情報も追加
 					indexes_.push_back(vertexIndex);
 				}
+
 			}
 		}
 
@@ -104,11 +101,6 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 				texture_ = TextureManager::Load(filePath, textureFilePath.C_Str());
 			}
 		}
-
-		// 左手座標系に変換するため、インデックス情報を反転させる
-		for (size_t i = 0; i < indexes_.size(); i += 3)
-			std::swap(indexes_[i], indexes_[i + 2]); // 0番目と2番目の要素を入れ替え、反転させる
-
 
 		// 今回読み込んだモデルのフルパスと各種情報を保存
 		meshManaer->AddInfo(fullPath, vertices_, indexes_);
@@ -145,4 +137,47 @@ void Mesh::LoadMaterial(const std::string& filePath, const std::string& fileName
 			texture_ = TextureManager::Load(filePath, textureName);
 		}
 	}
+}
+
+Mesh::Node Mesh::ReadNode(aiNode* node)
+{
+	// ノード読み込み結果確認用
+	Node result;
+
+	// ローカル行列を取得
+	aiMatrix4x4 aiLocalMatrix = node->mTransformation; // ノードのlocalMatrixを取得
+	aiLocalMatrix.Transpose();						   // 列ベクトル形式を行ベクトル形式に変換
+
+	// 他の要素を同様に変換する
+	result.localMatrix.m[0][0] = aiLocalMatrix[0][0];
+	result.localMatrix.m[0][1] = aiLocalMatrix[0][1];
+	result.localMatrix.m[0][2] = aiLocalMatrix[0][2];
+	result.localMatrix.m[0][3] = aiLocalMatrix[0][3];
+	result.localMatrix.m[1][0] = aiLocalMatrix[1][0];
+	result.localMatrix.m[1][1] = aiLocalMatrix[1][1];
+	result.localMatrix.m[1][2] = aiLocalMatrix[1][2];
+	result.localMatrix.m[1][3] = aiLocalMatrix[1][3];
+	result.localMatrix.m[2][0] = aiLocalMatrix[2][0];
+	result.localMatrix.m[2][1] = aiLocalMatrix[2][1];
+	result.localMatrix.m[2][2] = aiLocalMatrix[2][2];
+	result.localMatrix.m[2][3] = aiLocalMatrix[2][3];
+	result.localMatrix.m[3][0] = aiLocalMatrix[3][0];
+	result.localMatrix.m[3][1] = aiLocalMatrix[3][1];
+	result.localMatrix.m[3][2] = aiLocalMatrix[3][2];
+	result.localMatrix.m[3][3] = aiLocalMatrix[3][3];
+
+	// Node名を取得
+	result.name = node->mName.C_Str();
+	
+	// 子ノード分配列スペースを確保
+	result.children.resize(node->mNumChildren);
+
+	// 子ノード数分ループ
+	for (uint32_t childIndex = 0; childIndex < node->mNumChildren; childIndex++) {
+		// 再帰的にノードを読み込み、階層構造を作る
+		result.children[childIndex] = ReadNode(node->mChildren[childIndex]);
+	}
+
+	// 読み込んだNode情報を返す
+	return result;
 }
