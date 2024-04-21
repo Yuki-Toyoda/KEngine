@@ -1,72 +1,74 @@
 #pragma once
-#include <vector>
 #include "IDescriptorHeap.h"
 
+struct RTVInfo : public HeapInfo {
+
+	// RTVの設定用構造体
+	D3D12_RENDER_TARGET_VIEW_DESC desc{};
+
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	RTVInfo() = default;
+
+	/// <summary>
+	/// ムーブコンストラクタ
+	/// </summary>
+	/// <param name="other">他のRTV情報</param>
+	RTVInfo(RTVInfo&& other) noexcept : HeapInfo(std::move(other)) {
+		desc = std::exchange(other.desc, {});
+	}
+
+	/// <summary>
+	/// 代入演算子オーバーロード
+	/// </summary>
+	/// <param name="other">他のRTV情報</param>
+	/// <returns>代入後のデータ</returns>
+	RTVInfo& operator=(RTVInfo&& other) noexcept {
+		if (this != &other) {
+			// 継承元のオーバーロードを使用する
+			HeapInfo::operator=(std::move(other));
+			// 引数をメンバ変数に代入
+			desc = std::exchange(other.desc, {});
+		}
+		// 代入後のデータを返す
+		return *this;
+	}
+
+	// IndexListのバグを防ぐためコピー操作を禁止する
+	RTVInfo(const RTVInfo&) = delete;
+	RTVInfo& operator=(const RTVInfo&) = delete;
+};
+
 /// <summary>
-/// レンダーターゲットビュークラス
+/// RTVヒープクラス
 /// </summary>
 class RTV : public IDescriptorHeap
 {
+public: // コンストラクタ等
+
+	// デフォルトコンストラクタ削除
+	RTV() = delete;
+
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	/// <param name="device">デバイス本体</param>
+	RTV(ID3D12Device2* device);
+
 public: // メンバ関数
 
 	/// <summary>
 	/// 初期化関数
 	/// </summary>
-	/// <param name="hwnd">ウィンドウハンドル</param>
-	/// <param name="device">使用中のデバイス</param>
-	/// <param name="width">画面横幅</param>
-	/// <param name="height">画面縦幅</param>
-	/// <param name="queue">コマンドキュー</param>
-	void Init(HWND hwnd, DirectXDevice* device, int32_t width, int32_t height, ID3D12CommandQueue* queue);
+	void Init();
 
 	/// <summary>
-	/// レンダーターゲットビューをクリアする関数
+	/// RTV生成、およびヒープへの登録をする関数
 	/// </summary>
-	/// <param name="cmdList">コマンドリスト</param>
-	void ClearRenderTargetView(ID3D12GraphicsCommandList* cmdList);
+	/// <param name="resource">登録するリソース</param>
+	/// <returns>生成、登録したRTV情報</returns>
+	RTVInfo CreateRenderTargetView(ID3D12Resource* resource);
 
-public: // アクセッサ等
-
-	/// <summary>
-	/// RTVの設定ゲッター
-	/// </summary>
-	/// <returns>RTVの設定</returns>
-	D3D12_RENDER_TARGET_VIEW_DESC GetRTVDesc()const { return rtvDesc_; }
-
-	/// <summary>
-	/// スワップチューンゲッター
-	/// </summary>
-	/// <returns>スワップチューン</returns>
-	IDXGISwapChain4* GetSwapChain()const { return swapChain_.Get(); }
-	/// <summary>
-	/// スワップチューン設定ゲッター
-	/// </summary>
-	/// <returns>スワップチューン設定</returns>
-	DXGI_SWAP_CHAIN_DESC1 GetSwapChainDesc()const { return swapChainDesc_; }
-
-	/// <summary>
-	/// 書き込み予定バッファのインデックスゲッター
-	/// </summary>
-	/// <returns>書き込み予定バッファのインデックス</returns>
-	UINT GetBackBufferIndex()const { return swapChain_->GetCurrentBackBufferIndex(); }
-
-	/// <summary>
-	/// 書き込み予定バッファの本体ゲッター
-	/// </summary>
-	/// <returns></returns>
-	ID3D12Resource* GetBackBuffer()const { return backBuffers_[swapChain_->GetCurrentBackBufferIndex()].Get(); }
-
-private: // メンバ関数
-
-	// スワップチューン
-	Microsoft::WRL::ComPtr<IDXGISwapChain4> swapChain_;
-	// スワップチューンの設定
-	DXGI_SWAP_CHAIN_DESC1 swapChainDesc_;
-
-	// バッファ配列
-	std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> backBuffers_;
-
-	// RTVの設定
-	D3D12_RENDER_TARGET_VIEW_DESC rtvDesc_;
 };
 

@@ -47,15 +47,6 @@
     <ClCompile Include="Engine\Primitive\IPrimitive.cpp">
       <Filter>Engine\Primitive</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Base\Command\ICommand.cpp">
-      <Filter>Engine\Base\Command</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Base\Command\MainCommand.cpp">
-      <Filter>Engine\Base\Command</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Base\Command\CommandManager.cpp">
-      <Filter>Engine\Base\Command</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Resource\Texture\Texture.cpp">
       <Filter>Engine\Resource\Texture</Filter>
     </ClCompile>
@@ -230,6 +221,12 @@
     <ClCompile Include="Engine\Base\RootSignature\IRootSignature.cpp" />
     <ClCompile Include="Engine\Base\RootSignature\ModelRootSignature.cpp" />
     <ClCompile Include="Engine\Base\RootSignature\RootSignatureManager.cpp" />
+    <ClCompile Include="Engine\Base\Buffer\BufferManager.cpp" />
+    <ClCompile Include="Engine\Utility\IndexList\IndexList.cpp" />
+    <ClCompile Include="Engine\Base\DescriptorHeaps\HeapManager.cpp" />
+    <ClCompile Include="Engine\Base\Resource\Rendering\BackBuffer.cpp" />
+    <ClCompile Include="Engine\Base\Resource\Rendering\TextureResource.cpp" />
+    <ClCompile Include="Engine\Base\Resource\Rendering\DepthStencil.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -312,18 +309,6 @@
     </ClInclude>
     <ClInclude Include="Engine\Primitive\IPrimitive.h">
       <Filter>Engine\Primitive</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Base\Command\ICommand.h">
-      <Filter>Engine\Base\Command</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Base\ResourceStruct.h">
-      <Filter>Engine\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Base\Command\MainCommand.h">
-      <Filter>Engine\Base\Command</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Base\Command\CommandManager.h">
-      <Filter>Engine\Base\Command</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Resource\Texture\Texture.h">
       <Filter>Engine\Resource\Texture</Filter>
@@ -489,6 +474,19 @@
     <ClInclude Include="Engine\Base\RootSignature\IRootSignature.h" />
     <ClInclude Include="Engine\Base\RootSignature\ModelRootSignature.h" />
     <ClInclude Include="Engine\Base\RootSignature\RootSignatureManager.h" />
+    <ClInclude Include="Engine\Base\Buffer\BufferManager.h" />
+    <ClInclude Include="Engine\Base\Buffer\BufferStructs.h" />
+    <ClInclude Include="Engine\Base\Resource\IResource.h" />
+    <ClInclude Include="Engine\Base\DescriptorHeaps\HeapManager.h" />
+    <ClInclude Include="Engine\Base\Config\Config.h" />
+    <ClInclude Include="Engine\Base\Resource\Data\ConstantBuffer.h" />
+    <ClInclude Include="Engine\Base\Resource\Data\IDataResource.h" />
+    <ClInclude Include="Engine\Base\Resource\Data\StructuredBuffer.h" />
+    <ClInclude Include="Engine\Utility\Counter\Counter.h" />
+    <ClInclude Include="Engine\Base\Resource\Rendering\IRenderingResource.h" />
+    <ClInclude Include="Engine\Base\Resource\Rendering\BackBuffer.h" />
+    <ClInclude Include="Engine\Base\Resource\Rendering\TextureResource.h" />
+    <ClInclude Include="Engine\Base\Resource\Rendering\DepthStencil.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">

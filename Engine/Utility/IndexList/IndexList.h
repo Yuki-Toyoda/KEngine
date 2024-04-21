@@ -18,11 +18,15 @@ public: // コンストラクタ等
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	/// <param name="size">初期化する配列サイズ</param>
-	IndexList(int size) : kSize_(size) {
-		// 引数のサイズを元に使用状態配列をリサイズする
-		array_.resize(kSize_, false);
-	}
+	/// <param name="size">配列の初期サイズ</param>
+	IndexList(int size);
+
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	/// <param name="size">配列の初期サイズ</param>
+	/// <param name="offset">オフセット</param>
+	IndexList(int size, int offset);
 
 	/// <summary>
 	/// デストラクタ
@@ -35,42 +39,13 @@ public: // メンバ関数
 	/// 空きがあるか確認する関数
 	/// </summary>
 	/// <returns>配列内に空きがあるか</returns>
-	bool CheckEmpty() {
-		// 未使用のインデックスを検索する
-		for (int i = 0; i < kSize_; i++) {
-			// 未使用のインデックスがある場合
-			if (!array_[i]) {
-				// trueを返す
-				return true;
-			}
-		}
-
-		// 空きがない場合falseを返す
-		return false;
-	}
+	bool CheckEmpty();
 
 	/// <summary>
 	/// 空き番号を使用する関数
 	/// </summary>
 	/// <returns>インデックス</returns>
-	Index UseEmpty() {
-		// 未使用のインデックスを検索する
-		for (int i = 0; i < kSize_; i++) {
-			// 未使用のインデックスを発見した場合
-			if (!array_[i]) {
-				// 使用したことを記録する
-				array_[i] = true;
-				// インデックスクラスを返す
-				return Index(
-					[&](int i) {UnUse(i); }, i
-				);
-			}
-		}
-
-		// 未使用のインデックスがない場合配列外参照としてエラーを返す
-		assert(false);
-		return Index(nullptr, -1);
-	}
+	Index UseEmpty();
 
 	/// <summary>
 	/// 配列リストの使用数ゲッター
@@ -127,18 +102,17 @@ private: // プライベートなメンバ関数
 	/// 引数で指定されたインデックスの使用状態をfalseにする
 	/// </summary>
 	/// <param name="index">使用状態をfalseにするインデックス</param>
-	void UnUse(int index) {
-		// 指定されたインデックスの使用状態を変更
-		array_[index] = false;
-	}
+	void UnUse(int index);
 
 private: // メンバ変数
 
 	// 配列サイズ定数
 	const int kSize_;
 
+	// 配列内のオフセット管理用
+	int offset_ = 0;
+
 	// 使用状態記録用配列
 	std::vector<bool> array_;
 
 };
-

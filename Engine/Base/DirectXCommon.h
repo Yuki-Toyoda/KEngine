@@ -6,10 +6,10 @@
 #include "WinApp.h"
 #include "../Debug/Debug.h"
 #include "Device/DirectXDevice.h"
-#include "DescriptorHeaps/RTV.h"
-#include "DescriptorHeaps/SRV.h"
-#include "DescriptorHeaps/DSV.h"
-#include "Command/CommandManager.h"
+#include "DescriptorHeaps/HeapManager.h"
+
+#include "Resource/Rendering/BackBuffer.h"
+#include "Resource/Rendering/DepthStencil.h"
 
 /// <summary>
 /// DirectX汎用クラス

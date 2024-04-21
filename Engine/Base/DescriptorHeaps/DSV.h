@@ -2,46 +2,78 @@
 #include <vector>
 #include "IDescriptorHeap.h"
 
-// 1クラスの前方宣言
-class SRV;
+/// <summary>
+/// DSV情報構造体
+/// </summary>
+struct DSVInfo : public HeapInfo {
+
+	// DSVの設定用構造体
+	D3D12_DEPTH_STENCIL_VIEW_DESC desc{};
+
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	DSVInfo() = default;
+
+	/// <summary>
+	/// ムーブコンストラクタ
+	/// </summary>
+	/// <param name="other">他のDSV情報</param>
+	DSVInfo(DSVInfo&& other) noexcept : HeapInfo(std::move(other)) {
+		// 引数をメンバ変数に代入
+		desc = std::exchange(other.desc, {});
+	}
+
+	/// <summary>
+	/// 代入演算子オーバーロード
+	/// </summary>
+	/// <param name="other">他のDSV情報</param>
+	/// <returns>代入後のデータ</returns>
+	DSVInfo& operator=(DSVInfo&& other) noexcept {
+		if (this != &other) {
+			// 継承元のオーバーロードを使用する
+			HeapInfo::operator=(std::move(other));
+			// 引数をメンバ変数に代入
+			desc = std::exchange(other.desc, {});
+		}
+		// 代入後のデータを返す
+		return *this;
+	}
+
+	// IndexListのバグを防ぐためコピー操作を禁止する
+	DSVInfo(const DSVInfo&) = delete;
+	DSVInfo& operator=(const DSVInfo&) = delete;
+};
 
 /// <summary>
-/// 深度ステンシルビュークラス
+/// DSVヒープクラス
 /// </summary>
 class DSV : public IDescriptorHeap
 {
+public: // コンストラクタ等
+
+	// デフォルトコンストラクタ削除
+	DSV() = delete;
+
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	/// <param name="device">デバイス本体</param>
+	DSV(ID3D12Device2* device);
+
 public: // メンバ関数
 
 	/// <summary>
 	/// 初期化関数
 	/// </summary>
-	/// <param name="device">DirextX12のデバイス</param>
-	/// <param name="width">画面横幅</param>
-	/// <param name="height">画面縦幅</param>
-	void Init(ID3D12Device* device, int32_t width, int32_t height);
+	void Init();
 
 	/// <summary>
-	/// 深度クリア関数
+	/// DSVの生成、およびヒープへの登録をする関数
 	/// </summary>
-	/// <param name="index">クリアするインデックス</param>
-	/// <param name="cmdList">コマンドリスト</param>
-	void ClearDepth(UINT index, ID3D12GraphicsCommandList* cmdList);
-
-public: // アクセッサ等
-
-private: // プライベートなメンバ関数
-
-	/// <summary>
-	/// 前後関係保持用のリソース生成関数
-	/// </summary>
-	/// <param name="width">画面横幅</param>
-	/// <param name="height">画面縦幅</param>
-	void CreateDepthStencilResource(int32_t width, int32_t height);
-
-private: // メンバ変数
-
-	// 深度ステンシルビューリソース
-	Microsoft::WRL::ComPtr<ID3D12Resource> depthStencilResource_;
+	/// <param name="resource">登録するリソース</param>
+	/// <returns>生成、登録したDSV情報</returns>
+	DSVInfo CreateDepthStencilView(ID3D12Resource* resource);
 
 };
 

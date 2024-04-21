@@ -97,6 +97,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Base\Resource\Rendering\DepthStencil.cpp" />
+    <ClCompile Include="Engine\Base\Resource\Rendering\BackBuffer.cpp" />
+    <ClCompile Include="Engine\Base\Buffer\BufferManager.cpp" />
     <ClCompile Include="Engine\Utility\DataSegment\DataSegment.cpp" />
     <ClCompile Include="Engine\Math\Matrix4x4.cpp" />
     <ClCompile Include="Engine\Math\Vector2.cpp" />
@@ -104,9 +107,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Math\Vector4.cpp" />
     <ClCompile Include="Engine\Primitive\2d\BillboardPlane.cpp" />
     <ClCompile Include="Engine\Audio\Audio.cpp" />
-    <ClCompile Include="Engine\Base\Command\ICommand.cpp" />
-    <ClCompile Include="Engine\Base\Command\CommandManager.cpp" />
-    <ClCompile Include="Engine\Base\Command\MainCommand.cpp" />
     <ClCompile Include="Engine\Base\DescriptorHeaps\IDescriptorHeap.cpp" />
     <ClCompile Include="Engine\Base\DescriptorHeaps\DSV.cpp" />
     <ClCompile Include="Engine\Base\DescriptorHeaps\RTV.cpp" />
@@ -152,6 +152,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Utility\Animation\Animation.cpp" />
     <ClCompile Include="Engine\Utility\Animation\AnimationManager.cpp" />
     <ClCompile Include="Engine\Utility\Easing\Easing.cpp" />
+    <ClCompile Include="Engine\Utility\IndexList\IndexList.cpp" />
     <ClCompile Include="Engine\Utility\Observer\Observer.cpp" />
     <ClCompile Include="Engine\Utility\Timer\DeltaTimer.cpp" />
     <ClCompile Include="Externals\imgui\imgui.cpp" />
@@ -166,6 +167,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\Game.cpp" />
     <ClCompile Include="Engine\KEngine.cpp" />
     <ClCompile Include="Engine\Base\RootSignature\IRootSignature.cpp" />
+    <ClCompile Include="Engine\Base\DescriptorHeaps\HeapManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\GameObject\Samples\SampleSphere\SampleSphere.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -174,14 +176,22 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Scene\SceneFactory.cpp" />
     <ClCompile Include="Engine\Base\RootSignature\ModelRootSignature.cpp" />
     <ClCompile Include="Engine\Base\RootSignature\RootSignatureManager.cpp" />
+    <ClCompile Include="Engine\Base\Resource\Rendering\TextureResource.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Base\Resource\Rendering\DepthStencil.h" />
+    <ClInclude Include="Engine\Base\Resource\Rendering\BackBuffer.h" />
+    <ClInclude Include="Engine\Base\Buffer\BufferManager.h" />
+    <ClInclude Include="Engine\Base\Buffer\BufferStructs.h" />
+    <ClInclude Include="Engine\Base\Config\Config.h" />
+    <ClInclude Include="Engine\Base\Resource\Data\ConstantBuffer.h" />
+    <ClInclude Include="Engine\Base\Resource\Data\IDataResource.h" />
+    <ClInclude Include="Engine\Base\Resource\Data\StructuredBuffer.h" />
+    <ClInclude Include="Engine\Base\Resource\Rendering\IRenderingResource.h" />
+    <ClInclude Include="Engine\Utility\Counter\Counter.h" />
     <ClInclude Include="Engine\Utility\DataSegment\DataSegment.h" />
     <ClInclude Include="Engine\Primitive\2d\BillboardPlane.h" />
     <ClInclude Include="Engine\Audio\Audio.h" />
-    <ClInclude Include="Engine\Base\Command\ICommand.h" />
-    <ClInclude Include="Engine\Base\Command\CommandManager.h" />
-    <ClInclude Include="Engine\Base\Command\MainCommand.h" />
     <ClInclude Include="Engine\Base\DescriptorHeaps\IDescriptorHeap.h" />
     <ClInclude Include="Engine\Base\DescriptorHeaps\DSV.h" />
     <ClInclude Include="Engine\Base\DescriptorHeaps\RTV.h" />
@@ -189,7 +199,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Base\Device\DirectXDevice.h" />
     <ClInclude Include="Engine\Base\DirectXCommon.h" />
     <ClInclude Include="Engine\Base\PSO\PSO.h" />
-    <ClInclude Include="Engine\Base\ResourceStruct.h" />
     <ClInclude Include="Engine\Base\SafeDelete.h" />
     <ClInclude Include="Engine\Base\WinApp.h" />
     <ClInclude Include="Engine\Collider\Collider.h" />
@@ -270,6 +279,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Base\RootSignature\IRootSignature.h" />
     <ClInclude Include="Engine\Base\RootSignature\ModelRootSignature.h" />
     <ClInclude Include="Engine\Base\RootSignature\RootSignatureManager.h" />
+    <ClInclude Include="Engine\Base\Resource\IResource.h" />
+    <ClInclude Include="Engine\Base\DescriptorHeaps\HeapManager.h" />
+    <ClInclude Include="Engine\Base\Resource\Rendering\TextureResource.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Meshlet.hlsli">

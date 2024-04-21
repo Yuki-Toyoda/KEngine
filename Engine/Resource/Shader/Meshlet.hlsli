@@ -1,6 +1,7 @@
 struct ConstantData
 {
     float4x4 WorldViewProj;
+    float4x4 ViewProj2D;
     uint32_t DrawMeshlets;
 };
 

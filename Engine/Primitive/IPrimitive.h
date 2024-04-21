@@ -14,14 +14,6 @@
 // クラスの前方宣言
 class CommandManager;
 
-// 頂点構造体
-struct Vertex {
-	Vector3 position;							// 座標
-	Vector2 texCoord;							// uv座標
-	Vector3 normal;								// 法線
-	Vector4 color = { 1.0f, 1.0f, 1.0f, 1.0f }; // 色
-};
-
 /// <summary>
 /// 頂点データ構造体
 /// </summary>

@@ -1,5 +1,14 @@
 #include "IDescriptorHeap.h"
 
+IDescriptorHeap::IDescriptorHeap(ID3D12Device2* device, D3D12_DESCRIPTOR_HEAP_TYPE heapType, uint32_t size)
+	: IDescriptorHeap(device, heapType, size, size){}
+
+IDescriptorHeap::IDescriptorHeap(ID3D12Device2* device, D3D12_DESCRIPTOR_HEAP_TYPE heapType, uint32_t descSize, uint32_t indexSize)
+	: device_(device),
+	  kDescriptorSize_(device->GetDescriptorHandleIncrementSize(heapType)),
+	  kSize_(descSize),
+	  indexList_(indexSize){}
+
 D3D12_CPU_DESCRIPTOR_HANDLE IDescriptorHeap::GetCPUHandle(uint32_t index)
 {
 	// ヒープの中から最初のCPUハンドルを取得
@@ -46,10 +55,12 @@ D3D12_CPU_DESCRIPTOR_HANDLE IDescriptorHeap::GetDescriptorInclementSize(const D3
 	// ディスクリプタハンドルを取得
 	D3D12_CPU_DESCRIPTOR_HANDLE handle;
 	// オフセットが0以下であれば最初のハンドルを返す
-	if (offsetInDescriptors <= 0)
+	if (offsetInDescriptors <= 0) {
 		handle = other;
-	else // それ以外の場合は増加分を取得しそれを返す
+	}
+	else { // それ以外の場合は増加分を取得しそれを返す
 		handle.ptr = other.ptr + (offsetInDescriptors * descriptorIncrementSize);
+	} 
 
 	// 取得したハンドルを返す
 	return handle;
