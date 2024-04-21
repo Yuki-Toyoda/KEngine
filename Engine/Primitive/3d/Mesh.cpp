@@ -13,10 +13,10 @@ void Mesh::LoadFile(const std::string& filePath, const std::string& fileName)
 	indexes_.clear();  // インデックス情報
 
 	// objを読み込む
-	LoadObj(filePath, fileName);
+	LoadModel(filePath, fileName);
 }
 
-void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
+void Mesh::LoadModel(const std::string& filePath, const std::string& fileName)
 {
 	// フルパスの合成
 	std::string fullPath = filePath + "/" + fileName;
@@ -102,47 +102,18 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 			}
 		}
 
+		// シーンのRootNodeを読み、シーン全体の階層構造を作る
+		transform_->rootNode_ = ReadNode(scene->mRootNode);
+
 		// 今回読み込んだモデルのフルパスと各種情報を保存
 		meshManaer->AddInfo(fullPath, vertices_, indexes_);
 	}
 }
 
-void Mesh::LoadMaterial(const std::string& filePath, const std::string& fileName)
-{
-	// フルパスの合成
-	std::string fullPath = filePath + "/" + fileName;
-	// ファイルを開く
-	std::ifstream file(fullPath); // ファイルを開く
-	// 開けなかった場合を止める
-	assert(file.is_open());
-
-	// ファイルから読んだ１行を格納するもの
-	std::string line;
-
-	// ファイルから1行ずつ読み込む
-	while (std::getline(file, line)) {
-		// 先端の識別子の値を格納する変数
-		std::string identifier;
-		// ファイルの１行を取得
-		std::istringstream s(line);
-		// 先頭の識別子を読む
-		s >> identifier;
-
-		// テクスチャの読み込み
-		if (identifier == "map_Kd") {
-			// テクスチャ名取得
-			std::string textureName; // テクスチャ情報格納用
-			s >> textureName;		 // テクスチャ名取得
-			// テクスチャ読み込み
-			texture_ = TextureManager::Load(filePath, textureName);
-		}
-	}
-}
-
-Mesh::Node Mesh::ReadNode(aiNode* node)
+WorldTransform::Node Mesh::ReadNode(aiNode* node)
 {
 	// ノード読み込み結果確認用
-	Node result;
+	WorldTransform::Node result;
 
 	// ローカル行列を取得
 	aiMatrix4x4 aiLocalMatrix = node->mTransformation; // ノードのlocalMatrixを取得

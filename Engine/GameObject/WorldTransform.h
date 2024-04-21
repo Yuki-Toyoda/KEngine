@@ -1,5 +1,9 @@
 #pragma once
 #include <string>
+#include <vector>
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
 #include "../../Externals/imgui/ImGui.h"
 #include "../math/Math.h"
 
@@ -7,6 +11,17 @@
 /// ワールド座標計算クラス
 /// </summary>
 class WorldTransform {
+public: // サブクラス
+
+	/// <summary>
+	/// ノード構造体
+	/// </summary>
+	struct Node {
+		Matrix4x4 localMatrix;		// NodeのLocalMatrix
+		std::string name;			// ノード名
+		std::vector<Node> children; // 子供のノード
+	};
+
 public: // パブリックメンバ変数
 	// 拡縮
 	Vector3 scale_;
@@ -60,6 +75,11 @@ public: // パブリックメンバ関数
 	/// </summary>
 	/// <param name="id">ツリーノード名</param>
 	void DisplayImGuiWithTreeNode(const std::string& id);
+
+public: // パブリックなメンバ変数
+
+	// 親ノード
+	Node rootNode_;
 
 private: // メンバ変数
 

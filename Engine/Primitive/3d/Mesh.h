@@ -1,26 +1,11 @@
 #pragma once
 #include "../BasePrimitive.h"
 
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
-
 /// <summary>
 /// 3Dモデル
 /// </summary>
 class Mesh final : public BasePrimitive
 {
-public: // サブクラス
-
-	/// <summary>
-	/// ノード構造体
-	/// </summary>
-	struct Node {
-		Matrix4x4 localMatrix;		// NodeのLocalMatrix
-		std::string name;			// ノード名
-		std::vector<Node> children; // 子供のノード
-	};
-
 public: // メンバ関数
 
 	/// <summary>
@@ -64,28 +49,16 @@ private: // プライベートなメンバ関数
 	/// </summary>
 	/// <param name="filePath">モデルまでのディレクトリ</param>
 	/// <param name="fileName">モデル名</param>
-	void LoadObj(const std::string& filePath, const std::string& filename);
-
-
-
-	/// <summary>
-	/// マテリアル読み込み関数
-	/// </summary>
-	/// <param name="filePath">マテリアルまでのディレクトリ</param>
-	/// /// <param name="fileName">マテリアル名</param>
-	void LoadMaterial(const std::string& filePath, const std::string& fileName);
+	void LoadModel(const std::string& filePath, const std::string& filename);
 
 	/// <summary>
 	/// assimpNodeからNode情報を読み取る関数
 	/// </summary>
 	/// <param name="node">ノード情報</param>
 	/// <returns>ノード構造体</returns>
-	Node ReadNode(aiNode* node);
+	WorldTransform::Node ReadNode(aiNode* node);
 
 private: // メンバ変数
-
-	// 親ノード
-	Node rootNode_;
 
 };
 
