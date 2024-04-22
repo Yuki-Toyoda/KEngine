@@ -82,7 +82,6 @@ void Mesh::LoadModel(const std::string& filePath, const std::string& fileName)
 					// インデックス情報も追加
 					indexes_.push_back(vertexIndex);
 				}
-
 			}
 		}
 
@@ -100,6 +99,12 @@ void Mesh::LoadModel(const std::string& filePath, const std::string& fileName)
 				// マテリアル読み込み
 				texture_ = TextureManager::Load(filePath, textureFilePath.C_Str());
 			}
+		}
+
+		// アニメーションを１つでも所持している場合
+		if (scene->mNumAnimations != 0) {
+			// 全アニメーションをロード
+			LoadAnimations(*scene);
 		}
 
 		// シーンのRootNodeを読み、シーン全体の階層構造を作る
@@ -149,6 +154,88 @@ WorldTransform::Node Mesh::ReadNode(aiNode* node)
 		result.children[childIndex] = ReadNode(node->mChildren[childIndex]);
 	}
 
+	// ノードを所持している状態にする
+	result.hasNode = true;
+
 	// 読み込んだNode情報を返す
 	return result;
 }
+
+void Mesh::LoadAnimations(const aiScene& scene)
+{
+	// 読み取り結果格納用配列
+	std::vector<Animation> animations;
+
+	// 全アニメーション分ループ
+	for (uint32_t animationCount = 0; animationCount < scene.mNumAnimations; animationCount++) {
+		// アニメーション生成
+		Animation animation;
+		// 最初のアニメーションのみを読み取る
+		aiAnimation* animationAssimp = scene.mAnimations[animationCount];
+		// 時間の単位を秒に変換
+		animation.duration = float(animationAssimp->mDuration / animationAssimp->mTicksPerSecond);
+
+		// assimpでは個々のNodeAnimationをchannelと呼んでいるので、channelを回してNodeAnimationの情報を取ってくる
+		for (uint32_t channelIndex = 0; channelIndex < animationAssimp->mNumChannels; channelIndex++) {
+			// ノードアニメーションを取得
+			aiNodeAnim* nodeAnimationAssimp = animationAssimp->mChannels[channelIndex];
+			// ノードアニメーションを任意の構造体の形式に変換
+			NodeAnimation& nodeAnimation = animation.nodeAnimations[nodeAnimationAssimp->mNodeName.C_Str()];
+
+			// 位置座標のキー数分ループ
+			for (uint32_t keyIndex = 0; keyIndex < nodeAnimationAssimp->mNumPositionKeys; keyIndex++) {
+				// 位置座標のキー情報を取得する
+				aiVectorKey& keyAssimp = nodeAnimationAssimp->mPositionKeys[keyIndex];
+				// 位置座標のキーフレーム
+				keyFrameVector3 keyFrame;
+
+				// キーフレーム秒数を取得する
+				keyFrame.time = float(keyAssimp.mTime / animationAssimp->mTicksPerSecond);
+				// キーフレーム値を取得(右手から左手座標系に変換する)
+				keyFrame.value = { -keyAssimp.mValue.x, keyAssimp.mValue.y, keyAssimp.mValue.z };
+
+				// ノードアニメーション配列に値を追加
+				nodeAnimation.translate.keyFrames.push_back(keyFrame);
+			}
+
+			// 回転のキー数分ループ
+			for (uint32_t keyIndex = 0; keyIndex < nodeAnimationAssimp->mNumRotationKeys; keyIndex++) {
+				// 回転のキー情報を取得する
+				aiQuatKey& keyAssimp = nodeAnimationAssimp->mRotationKeys[keyIndex];
+				// 回転のキーフレーム
+				KeyFrameQuaternion keyFrame;
+
+				// キーフレーム秒数を取得する
+				keyFrame.time = float(keyAssimp.mTime / animationAssimp->mTicksPerSecond);
+				// キーフレーム値を取得(右手から左手座標系に変換する)
+				keyFrame.value = { keyAssimp.mValue.x, keyAssimp.mValue.y, keyAssimp.mValue.z, keyAssimp.mValue.w };
+
+				// ノードアニメーション配列に値を追加
+				nodeAnimation.rotate.keyFrames.push_back(keyFrame);
+			}
+
+			// 拡縮のキー数分ループ
+			for (uint32_t keyIndex = 0; keyIndex < nodeAnimationAssimp->mNumScalingKeys; keyIndex++) {
+				// 拡縮のキー情報を取得する
+				aiVectorKey& keyAssimp = nodeAnimationAssimp->mScalingKeys[keyIndex];
+				// 拡縮のキーフレーム
+				keyFrameVector3 keyFrame;
+
+				// キーフレーム秒数を取得する
+				keyFrame.time = float(keyAssimp.mTime / animationAssimp->mTicksPerSecond);
+				// キーフレーム値を取得(右手から左手座標系に変換する)
+				keyFrame.value = { keyAssimp.mValue.x, keyAssimp.mValue.y, keyAssimp.mValue.z };
+
+				// ノードアニメーション配列に値を追加
+				nodeAnimation.scale.keyFrames.push_back(keyFrame);
+			}
+		}
+
+		// 解析を完了し次第、配列に追加する
+		animations.push_back(animation);
+	}
+
+	// ワールドトランスフォームにアニメーションを渡す
+	transform_->animations_ = animations;
+}
+

@@ -6,7 +6,7 @@
 /// <summary>
 /// アニメーションクラス
 /// </summary>
-class Animation
+class MyAnimation
 {
 
 public: // メンバ関数
@@ -157,7 +157,7 @@ public: // メンバ変数
 };
 
 template<typename T>
-inline void Animation::AddAnimationKeys(const std::string keyName, T* value)
+inline void MyAnimation::AddAnimationKeys(const std::string keyName, T* value)
 {
 	// アニメーションキー配列を新しく追加する処理
 	for (auto& keys : animationKeys_) {
@@ -177,7 +177,7 @@ inline void Animation::AddAnimationKeys(const std::string keyName, T* value)
 }
 
 template<typename T>
-inline void Animation::AddAnimationKeys(const std::string keyName)
+inline void MyAnimation::AddAnimationKeys(const std::string keyName)
 {
 	// アニメーションキー配列を新しく追加する処理
 	for (auto& keys : animationKeys_) {

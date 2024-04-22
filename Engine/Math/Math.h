@@ -467,6 +467,13 @@ public:	// メンバ関数
 	static Quaternion Normalize(const Quaternion& q);
 
 	/// <summary>
+	/// クォータニオンの内積
+	/// </summary>
+	/// <param name="q1">クォータニオン1</param>
+	/// <param name="q2">クォータニオン2</param>
+	/// <returns>内積</returns>
+	static float Dot(const Quaternion& q1, const Quaternion& q2);
+	/// <summary>
 	/// 逆クォータニオン生成関数
 	/// </summary>
 	/// <param name="q">逆にするクォータニオン</param>
@@ -494,4 +501,13 @@ public:	// メンバ関数
 	/// <param name="q">返還するクォータニオン</param>
 	/// <returns>行列</returns>
 	static Matrix4x4 QuaternionToMatrix(const Quaternion& q);
+
+	/// <summary>
+	/// 球面補間関数(Quaternion)
+	/// </summary>
+	/// <param name="t">現在のt</param>
+	/// <param name="start">開始角度</param>
+	/// <param name="end">終端角度</param>
+	/// <returns>補完されたQuaternion</returns>
+	static Quaternion Slerp(float t, const Quaternion& start, const Quaternion& end);
 };

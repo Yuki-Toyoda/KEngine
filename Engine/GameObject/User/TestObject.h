@@ -51,6 +51,6 @@ private: // プライベートなメンバ変数
 	KLib::DeltaTimer timer_;
 
 	// アニメーションの管理用
-	Animation* animation_ = nullptr;
+	MyAnimation* animation_ = nullptr;
 };
 

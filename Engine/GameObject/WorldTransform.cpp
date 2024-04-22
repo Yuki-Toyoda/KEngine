@@ -95,7 +95,15 @@ const WorldTransform* WorldTransform::GetParent()
 Matrix4x4 WorldTransform::GetMatWorld() const
 {
 	// 結果格納用
-	Matrix4x4 result = Math::MakeAffineMatrix(scale_, rotate_, translate_);
+	Matrix4x4 result;
+
+	// ローカル行列がセットされている場合計算を行う
+	if (localMat_ != nullptr) {
+		result = *localMat_ * Math::MakeAffineMatrix(scale_, rotate_, translate_);
+	}
+	else {
+		result = Math::MakeAffineMatrix(scale_, rotate_, translate_);
+	}
 
 	// ワールド行列セット中はそれを使う
 	if (worldMat_ != nullptr) {

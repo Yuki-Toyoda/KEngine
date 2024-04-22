@@ -81,7 +81,7 @@ public: // パブリックなメンバ変数
 	WorldTransform armTransform_L_;
 
 	// 敵アニメーション
-	Animation* enemyAnim_;
+	MyAnimation* enemyAnim_;
 
 	// 死亡トリガー
 	bool isDead_ = false;

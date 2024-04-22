@@ -15,7 +15,52 @@
 	"nodes":[
 		{
 			"mesh":0,
-			"name":"\u7acb\u65b9\u4f53"
+			"name":"Box"
+		}
+	],
+	"animations":[
+		{
+			"channels":[
+				{
+					"sampler":0,
+					"target":{
+						"node":0,
+						"path":"translation"
+					}
+				},
+				{
+					"sampler":1,
+					"target":{
+						"node":0,
+						"path":"rotation"
+					}
+				},
+				{
+					"sampler":2,
+					"target":{
+						"node":0,
+						"path":"scale"
+					}
+				}
+			],
+			"name":"Rotate",
+			"samplers":[
+				{
+					"input":4,
+					"interpolation":"LINEAR",
+					"output":5
+				},
+				{
+					"input":4,
+					"interpolation":"LINEAR",
+					"output":6
+				},
+				{
+					"input":4,
+					"interpolation":"LINEAR",
+					"output":7
+				}
+			]
 		}
 	],
 	"materials":[
@@ -33,7 +78,7 @@
 	],
 	"meshes":[
 		{
-			"name":"\u7acb\u65b9\u4f53",
+			"name":"\u7acb\u65b9\u4f53.002",
 			"primitives":[
 				{
 					"attributes":{
@@ -94,6 +139,36 @@
 			"componentType":5123,
 			"count":36,
 			"type":"SCALAR"
+		},
+		{
+			"bufferView":4,
+			"componentType":5126,
+			"count":121,
+			"max":[
+				2
+			],
+			"min":[
+				0
+			],
+			"type":"SCALAR"
+		},
+		{
+			"bufferView":5,
+			"componentType":5126,
+			"count":121,
+			"type":"VEC3"
+		},
+		{
+			"bufferView":6,
+			"componentType":5126,
+			"count":121,
+			"type":"VEC4"
+		},
+		{
+			"bufferView":7,
+			"componentType":5126,
+			"count":121,
+			"type":"VEC3"
 		}
 	],
 	"bufferViews":[
@@ -120,6 +195,26 @@
 			"byteLength":72,
 			"byteOffset":768,
 			"target":34963
+		},
+		{
+			"buffer":0,
+			"byteLength":484,
+			"byteOffset":840
+		},
+		{
+			"buffer":0,
+			"byteLength":1452,
+			"byteOffset":1324
+		},
+		{
+			"buffer":0,
+			"byteLength":1936,
+			"byteOffset":2776
+		},
+		{
+			"buffer":0,
+			"byteLength":1452,
+			"byteOffset":4712
 		}
 	],
 	"samplers":[
@@ -130,7 +225,7 @@
 	],
 	"buffers":[
 		{
-			"byteLength":840,
+			"byteLength":6164,
 			"uri":"glTFBox.bin"
 		}
 	]

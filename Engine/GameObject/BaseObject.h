@@ -69,6 +69,9 @@ public: // メンバ関数
 	// (ユーザー呼び出し禁止)更新後関数
 	void PostUpdate();
 
+	// (ユーザー呼び出し禁止)アニメーション更新関数
+	void AnimUpdate();
+
 	/// <summary>
 	/// 初期化関数
 	/// </summary>
@@ -206,6 +209,9 @@ public: // パブリックなメンバ変数
 
 	// ワールドトランスフォーム
 	WorldTransform transform_;
+
+	// アニメーション用ローカル行列
+	Matrix4x4 localMat_;
 
 	// メッシュリスト
 	std::vector<BasePrimitive*> meshes_;
