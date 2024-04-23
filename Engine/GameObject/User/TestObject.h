@@ -2,6 +2,7 @@
 #include "../BaseObject.h"
 #include "../../Utility/Animation/AnimationManager.h"
 #include "../../Utility/Line/Line.h"
+#include "../../Audio/Audio.h"
 
 /// <summary>
 /// テストオブジェクト
@@ -49,6 +50,8 @@ private: // プライベートなメンバ変数
 	std::unique_ptr<Line> line_;
 
 	KLib::DeltaTimer timer_;
+
+	uint32_t sound_ = 0u;
 
 	// アニメーションの管理用
 	MyAnimation* animation_ = nullptr;

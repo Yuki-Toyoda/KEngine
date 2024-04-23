@@ -7,6 +7,15 @@
 #include <wrl.h>
 #include <xaudio2.h>
 
+#include <mfapi.h>
+#include <mfidl.h>
+#include <mfreadwrite.h>
+
+#pragma comment(lib, "Mf.lib")
+#pragma comment(lib, "mfplat.lib")
+#pragma comment(lib, "Mfreadwrite.lib")
+#pragma comment(lib, "mfuuid.lib")
+
 /// <summary>
 /// 音再生クラス
 /// </summary>
@@ -110,6 +119,13 @@ public: // メンバ関数
 	/// <param name="filename">WAVファイル名</param>
 	/// <returns>サウンドデータハンドル</returns>
 	uint32_t LoadWave(const std::string& fileName);
+
+	/// <summary>
+	/// MP3ファイルの読み込み
+	/// </summary>
+	/// <param name="fileName"></param>
+	/// <returns></returns>
+	uint32_t LoadMP3(const std::string& fileName);
 
 	/// <summary>
 	/// サウンドデータの解放
