@@ -13,7 +13,7 @@ void TestObject::Init()
 	// ループ有効
 	transform_.animations_[0].isLoop = true;
 
-	sound_ = Audio::GetInstance()->LoadMP3("./Resources/Alarm01.mp3");
+	sound_ = Audio::GetInstance()->LoadWave("./Resources/Alarm01.mp3");
 
 	/// ~スプライトの追加関数~
 	//AddSprite("TestSprite", { 0.0f, 0.0f }, { 1280.0f, 720.0f }, TextureManager::Load("./Resources", "Title.png"));

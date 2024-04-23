@@ -118,6 +118,10 @@ public: // パブリックなメンバ変数
 	// 敵
 	Enemy* enemy_ = nullptr;
 
+	// 効果音群
+	uint32_t SwingSword_ = 0u; // 素振り音
+	uint32_t RotateSlash_ = 0u; // 回転切り音
+
 private: // メンバ変数
 
 	// 身体のトランスフォーム

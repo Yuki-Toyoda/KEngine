@@ -11,6 +11,9 @@ void EnemyBullet::Init()
 
 	// 球のコライダー追加
 	AddColliderSphere("Bullet", &transform_.translate_, &transform_.scale_.x);
+
+	// 効果音読み込み
+	counterSound_ = Audio::GetInstance()->LoadWave("./Resources/Audio/SE/Counter.mp3");
 }
 
 void EnemyBullet::Update()
@@ -41,6 +44,9 @@ void EnemyBullet::OnCollisionEnter(Collider* collider)
 		Enemy* e = GameObjectManager::GetInstance()->GetGameObject<Enemy>("Enemy");
 		SetVelocity(false, e->GetRallyCount());
 		isReturn_ = true;
+
+		// 素振りの効果音の再生
+		Audio::GetInstance()->PlayWave(counterSound_);
 
 		ParticleEmitterManager::GetInstance()->CreateEmitter<IParticleEmitter, IParticle>("test", 10, 5, transform_.translate_, 0.1f, 0.15f, TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png"));
 	}

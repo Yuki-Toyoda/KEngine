@@ -42,6 +42,10 @@ void RotatingSlash::Update()
 			!(player_->preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A)) {
 			// アニメーション進捗が6割りを超えていれば
 			if (player_->playerAnim_->GetAnimationProgress() >= 0.6f) {
+				
+				// 素振りの効果音の再生
+				Audio::GetInstance()->PlayWave(player_->RotateSlash_);
+
 				// 攻撃中でない
 				player_->isAttacking_ = true;
 
@@ -74,6 +78,9 @@ void RotatingSlash::Update()
 			!(player_->preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A)) {
 			// 攻撃中でない
 			player_->isAttacking_ = true;
+
+			// 素振りの効果音の再生
+			Audio::GetInstance()->PlayWave(player_->RotateSlash_);
 
 			// プレイヤーのアニメーションの変更
 			player_->playerAnim_->ChangeParameter("Player_RotaingSlash", true);

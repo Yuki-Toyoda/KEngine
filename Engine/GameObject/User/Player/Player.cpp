@@ -135,6 +135,10 @@ void Player::Init()
 	AddSprite("Fade", {0.0f, 0.0f}, {1280.0f ,720.0f}, TextureManager::Load("white2x2.png"));
 	// フェードスプライトの色設定
 	sprites_[8]->color_ = { 0.0f, 0.0f, 0.0f, 1.0f };
+
+	// 効果音読み込み
+	SwingSword_ = Audio::GetInstance()->LoadWave("./Resources/Audio/SE/SwingSword.mp3");
+	RotateSlash_ = Audio::GetInstance()->LoadWave("./Resources/Audio/SE/RotateSlash.mp3");
 }
 
 void Player::Update()

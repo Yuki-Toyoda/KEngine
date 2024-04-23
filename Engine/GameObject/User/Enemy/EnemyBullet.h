@@ -79,5 +79,8 @@ private: // メンバ変数
 	const WorldTransform* player_ = nullptr;
 	// 敵の座標
 	const WorldTransform* enemy_ = nullptr;
+
+	// 効果音群
+	uint32_t counterSound_ = 0u;
 };
 

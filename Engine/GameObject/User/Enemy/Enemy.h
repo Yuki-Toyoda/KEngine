@@ -89,6 +89,9 @@ public: // パブリックなメンバ変数
 	// プレイヤー
 	Player* player_ = nullptr;
 
+	// 効果音群
+	uint32_t damageSound_ = 0u; // ダメージ音
+
 private: // メンバ変数
 
 	// アニメーションマネージャ

@@ -19,6 +19,9 @@ void Attack::Init()
 
 	// 線の座標を戻す
 	player_->attackLine_->position_ = { -0.7f, 0.0f, 0.0f };
+
+	// 素振りの効果音の再生
+	Audio::GetInstance()->PlayWave(player_->SwingSword_);
 }
 
 void Attack::Update()

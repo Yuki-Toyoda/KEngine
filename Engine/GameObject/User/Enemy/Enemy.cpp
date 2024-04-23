@@ -82,6 +82,8 @@ void Enemy::Init()
 	// 行動変更タイマーリセット
 	stateChangeTimer_.Start(kStateChangeCoolTime_);
 
+	// 効果音読み込み
+	damageSound_ = Audio::GetInstance()->LoadWave("./Resources/Audio/SE/SwordDamage.mp3");
 }
 
 void Enemy::Update()
@@ -296,6 +298,9 @@ void Enemy::OnCollision(Collider* collider)
 				enemyAnim_->isLoop_ = false;
 				enemyAnim_->ChangeParameter("Enemy_Damage", true);
 				ParticleEmitterManager::GetInstance()->CreateEmitter<IParticleEmitter, IParticle>("test", 5, 5, transform_.translate_, 0.1f, 0.15f, TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png"));
+
+				// ダメージ効果音の再生
+				Audio::GetInstance()->PlayWave(damageSound_);
 			}
 		}
 	}
