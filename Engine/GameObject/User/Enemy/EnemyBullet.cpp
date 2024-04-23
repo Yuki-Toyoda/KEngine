@@ -7,7 +7,10 @@
 void EnemyBullet::Init()
 {
 	// メッシュを追加
-	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Sphere", "Sphere.obj");
+	AddMesh(&transform_, color_, "./Resources/MagicSphere", "MagicSphere.gltf");
+
+	// アニメーション再生
+	transform_.animations_[0].isPlay = true;
 
 	// 球のコライダー追加
 	AddColliderSphere("Bullet", &transform_.translate_, &transform_.scale_.x);
@@ -18,6 +21,13 @@ void EnemyBullet::Init()
 
 void EnemyBullet::Update()
 {
+	// 0番目のアニメーションが終了している場合、次のアニメーションを再生する
+	if (transform_.animations_[0].animationTime >= transform_.animations_[0].duration) {
+		transform_.animations_[1].isPlay = true;
+		transform_.animations_[1].isLoop = true;
+		transform_.animations_[0].isPlay = false;
+	}
+
 	// 弾を移動させる
 	transform_.translate_ = transform_.translate_ + velocity_;
 

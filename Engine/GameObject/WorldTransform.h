@@ -48,8 +48,8 @@ struct NodeAnimation {
 struct Animation {
 	float duration;										 // アニメーション全体の尺
 	float animationTime = 0.0f;							 // 再生中アニメーションの秒数
-	bool isPlay;										 // アニメーション再生トリガー
-	bool isLoop;										 // アニメーションのループトリガー
+	bool isPlay = false;								 // アニメーション再生トリガー
+	bool isLoop = false;								 // アニメーションのループトリガー
 	std::map<std::string, NodeAnimation> nodeAnimations; // ノードアニメーション配列
 
 	// 3次元ベクトル計算関数
