@@ -15,7 +15,12 @@
 	"nodes":[
 		{
 			"mesh":0,
-			"name":"Sphere"
+			"name":"Sphere",
+			"scale":[
+				0,
+				0,
+				0
+			]
 		}
 	],
 	"animations":[
@@ -102,6 +107,49 @@
 					"input":10,
 					"interpolation":"LINEAR",
 					"output":12
+				}
+			]
+		},
+		{
+			"channels":[
+				{
+					"sampler":0,
+					"target":{
+						"node":0,
+						"path":"translation"
+					}
+				},
+				{
+					"sampler":1,
+					"target":{
+						"node":0,
+						"path":"rotation"
+					}
+				},
+				{
+					"sampler":2,
+					"target":{
+						"node":0,
+						"path":"scale"
+					}
+				}
+			],
+			"name":"03_HIt",
+			"samplers":[
+				{
+					"input":8,
+					"interpolation":"LINEAR",
+					"output":13
+				},
+				{
+					"input":10,
+					"interpolation":"LINEAR",
+					"output":14
+				},
+				{
+					"input":10,
+					"interpolation":"LINEAR",
+					"output":15
 				}
 			]
 		}
@@ -254,6 +302,24 @@
 			"componentType":5126,
 			"count":60,
 			"type":"VEC3"
+		},
+		{
+			"bufferView":13,
+			"componentType":5126,
+			"count":30,
+			"type":"VEC3"
+		},
+		{
+			"bufferView":14,
+			"componentType":5126,
+			"count":60,
+			"type":"VEC4"
+		},
+		{
+			"bufferView":15,
+			"componentType":5126,
+			"count":60,
+			"type":"VEC3"
 		}
 	],
 	"bufferViews":[
@@ -325,6 +391,21 @@
 			"buffer":0,
 			"byteLength":720,
 			"byteOffset":27528
+		},
+		{
+			"buffer":0,
+			"byteLength":360,
+			"byteOffset":28248
+		},
+		{
+			"buffer":0,
+			"byteLength":960,
+			"byteOffset":28608
+		},
+		{
+			"buffer":0,
+			"byteLength":720,
+			"byteOffset":29568
 		}
 	],
 	"samplers":[
@@ -335,7 +416,7 @@
 	],
 	"buffers":[
 		{
-			"byteLength":28248,
+			"byteLength":30288,
 			"uri":"MagicSphere.bin"
 		}
 	]
