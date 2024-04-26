@@ -119,7 +119,7 @@ private: // メンバ変数
 	std::unique_ptr<ConstantBuffer<CommonData>> commonBuffer_;
 
 	// ワールドトランスフォーム情報配列
-	std::vector<std::unique_ptr<ConstantBuffer<GetWorldTransform>>>
+	std::vector<std::unique_ptr<ConstantBuffer<WorldTransform>>> worldTransforms_;
 
 	// メッシュレット情報配列
 	std::vector<std::unique_ptr<StructuredBuffer<DirectX::Meshlet>>> meshletsBuffers_;
