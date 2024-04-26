@@ -6,14 +6,12 @@
 void TestObject::Init()
 {
 	// メッシュ追加関数
-	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Box_glTF", "glTFBox.gltf");
+	AddMesh(&transform_, color_, "./Resources/Player", "C_Body.gltf");
 
 	// アニメーション再生
 	transform_.animations_[0].isPlay = true;
 	// ループ有効
 	transform_.animations_[0].isLoop = true;
-
-	sound_ = Audio::GetInstance()->LoadWave("./Resources/Alarm01.mp3");
 
 	/// ~スプライトの追加関数~
 	//AddSprite("TestSprite", { 0.0f, 0.0f }, { 1280.0f, 720.0f }, TextureManager::Load("./Resources", "Title.png"));
@@ -65,10 +63,6 @@ void TestObject::DisplayImGui()
 	ImGui::DragFloat("anim0 - animTime", &transform_.animations_[0].animationTime);
 
 	ImGui::DragFloat("TransitionTime", &testTransitionTime_, 0.01f, 0.0f);
-
-	if (ImGui::Button("Play Sound")) {
-		Audio::GetInstance()->PlayWave(sound_);
-	}
 
 	// 読み込むパラメータを変更
 	if (ImGui::Button("ChangeParam")) {
