@@ -17,10 +17,10 @@ void TextureResource::Init(DirectXDevice* device, HeapManager* heaps, std::strin
 	height_ = static_cast<int>(metadata.height); // 縦幅
 
 	// Reourceの設定
-	desc_.Width			   = UINT(metadata.width);						   // 解像度横幅
-	desc_.Height		   = UINT(metadata.height);						   // 解像度縦幅
-	desc_.MipLevels		   = UINT(metadata.mipLevels);					   // ミップレベル
-	desc_.DepthOrArraySize = UINT(metadata.arraySize);					   // 配列サイズ
+	desc_.Width			   = UINT16(metadata.width);						   // 解像度横幅
+	desc_.Height		   = UINT16(metadata.height);						   // 解像度縦幅
+	desc_.MipLevels		   = UINT16(metadata.mipLevels);					   // ミップレベル
+	desc_.DepthOrArraySize = UINT16(metadata.arraySize);					   // 配列サイズ
 	desc_.Format		   = metadata.format;							   // フォーマット設定
 	desc_.SampleDesc.Count = 1;											   // カウント設定
 	desc_.Dimension		   = D3D12_RESOURCE_DIMENSION(metadata.dimension); // ディメンション設定

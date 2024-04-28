@@ -1,5 +1,6 @@
 #pragma once
 #include "../IResource.h"
+#include "../../Config/Config.h"
 
 /// <summary>
 /// レンダリング用リソース基底クラス
@@ -55,8 +56,8 @@ public: // アクセッサ等
 public: // パブリックなメンバ変数
 
 	// 画面解像度
-	int width_	= 1280; // 横幅
-	int height_ = 720;	// 縦幅
+	int width_	= KEngine::Config::Window::KWindowWidth;  // 横幅
+	int height_ = KEngine::Config::Window::KWindowHeight; // 縦幅
 
 	// リソースの設定用構造体
 	D3D12_RESOURCE_DESC desc_;

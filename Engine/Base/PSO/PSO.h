@@ -1,19 +1,7 @@
 #pragma once
 #include "../Device/DirectXDevice.h"
 #include "../../Debug/Debug.h"
-
-#include <cassert>
-#include <string>
-#include <dxcapi.h>
-
-/// <summary>
-/// DXC構造体
-/// </summary>
-struct DXC {
-	Microsoft::WRL::ComPtr<IDxcUtils> dxcUtils_;				   // dxcUtils
-	Microsoft::WRL::ComPtr<IDxcCompiler3> dxcCompiler_;			   // dxcコンパイラ
-	Microsoft::WRL::ComPtr<IDxcIncludeHandler> dxcIncludeHandler_; // InludeHandler
-};
+#include "../DXC/DXC.h"
 
 /// <summary>
 /// パイプラインステートオブジェクトクラス
@@ -24,23 +12,70 @@ public: // メンバ関数
 	/// <summary>
 	/// 初期化関数
 	/// </summary>
-	/// <param name="device">デバイス</param>
-	/// <param name="signature">ルートシグネチャ</param>
-	/// <param name="dxc">dxc構造体</param>
-	/// <param name="ms">使用するメッシュシェーダまでのファイルパス</param>
-	/// <param name="ps">使用するピクセルシェーダまでのファイルパス</param>
-	/// <param name="blendType">ブレンド設定</param>
-	/// <param name="isWriteDSV">深度を描画するか</param>
-	void Init(
-		ID3D12Device2* device,
-		ID3D12RootSignature* signature,
-		DXC* dxc,
-		std::wstring ms,
-		std::wstring ps,
-		int blendType,
-		bool isWriteDSV);
+	/// <param name="signature">RootSignature</param>
+	/// <param name="dxc">DirectXシェーダーコンパイラ</param>
+	PSO& Init(ID3D12RootSignature* signature, DXC* dxc);
 
-protected: // プライベートなメンバ関数
+	/// <summary>
+	/// ブレンド設定セット関数
+	/// </summary>
+	/// <param name="state">ブレンド設定</param>
+	/// <returns>PSO自身</returns>
+	PSO& SetBlendState(int state);
+
+	/// <summary>
+	/// ラスタライザ設定セット関数
+	/// </summary>
+	/// <param name="cullMode">カリングモード</param>
+	/// <param name="fillMode">形状のフィルモード</param>
+	/// <returns>PSO自身</returns>
+	PSO& SetRasterizerState(
+		D3D12_CULL_MODE cullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_BACK,
+		D3D12_FILL_MODE fillMode = D3D12_FILL_MODE::D3D12_FILL_MODE_SOLID);
+
+	/// <summary>
+	/// メッシュシェーダーセット関数
+	/// </summary>
+	/// <param name="filePath">メッシュシェーダーまでのファイルパス</param>
+	/// <returns>PSO自身</returns>
+	PSO& SetMeshShader(std::string filePath);
+
+	/// <summary>
+	/// ピクセルシェーダーセット関数
+	/// </summary>
+	/// <param name="filePath">ピクセルシェーダーまでのファイルパス</param>
+	/// <returns>PSO自身</returns>
+	PSO& SetPixelShader(std::string filePath);
+
+	/// <summary>
+	/// DSV設定セット関数
+	/// </summary>
+	/// <param name="writeDSV">深度情報を書き込むか</param>
+	/// <returns>PSO自身</returns>
+	PSO& SetDepthStencilState(bool writeDSV);
+
+	/// <summary>
+	/// DSVフォーマットセット関数
+	/// </summary>
+	/// <param name="format">DSVのフォーマット</param>
+	/// <returns>DSVのフォーマット</returns>
+	PSO& SetDSVFormat(DXGI_FORMAT format);
+
+	/// <summary>
+	/// PSO作成関数
+	/// </summary>
+	/// <param name="device">デバイス</param>
+	void Build(ID3D12Device2* device);
+
+public: // アクセッサ等
+
+	/// <summary>
+	/// PSOゲッター
+	/// </summary>
+	/// <returns>PSO</returns>
+	ID3D12PipelineState* GetState() { return state_.Get(); }
+
+private: // プライベートなメンバ関数
 
 	/// <summary>
 	/// ブレンド設定を行う関数
@@ -59,44 +94,13 @@ protected: // プライベートなメンバ関数
 	/// <returns>深度ステンシルビュー設定</returns>
 	D3D12_DEPTH_STENCIL_DESC SettingDepthStencilState(bool isWriteDSV = false);
 
-	/// <summary>
-	/// 頂点シェーダ生成関数
-	/// </summary>
-	/// <param name="dxc">HLSLコード変換用</param>
-	/// <param name="vs">頂点シェーダまでのファイルパス</param>
-	/// <returns>頂点シェーダのバイナリオブジェクト</returns>
-	IDxcBlob* CreateVertexShader(DXC* dxc, std::wstring vs);
-	/// <summary>
-	/// メッシュシェーダ生成関数
-	/// </summary>
-	/// <param name="dxc">HLSLコード変換用</param>
-	/// <param name="ms">メッシュシェーダまでのファイルパス</param>
-	/// <returns>メッシュシェーダのバイナリオブジェクト</returns>
-	IDxcBlob* CreateMeshShader(DXC* dxc, std::wstring ms);
-	/// <summary>
-	/// ピクセルシェーダ生成関数
-	/// </summary>
-	/// <param name="dxc">HLSLコード変換用</param>
-	/// <param name="ps">ピクセルシェーダまでのファイルパス</param>
-	/// <returns>ピクセルシェーダのバイナリオブジェクト</returns>
-	IDxcBlob* CreatePixelShader(DXC* dxc, std::wstring ps);
-
-	/// <summary>
-	/// シェーダーのコンパイルを行う関数
-	/// </summary>
-	/// <param name="filePath">compilerするSharderファイルへのパス</param>
-	/// <param name="profile">compilerに使用するprofile</param>
-	/// <param name="dxcUtils">dxcUtils</param>
-	/// <param name="dxcCompiler">dxcCompiler</param>
-	/// <param name="includeHandler">includeHandler</param>
-	/// <returns>コンパイル済みシェーダーのバイナリオブジェクト</returns>
-	IDxcBlob* CompileShader(const std::wstring& filePath, const wchar_t* profile, DXC* dxc);
-
-public: // パブリックなメンバ変数
+private: // メンバ変数
 	// パイプラインステートオブジェクトの状態
 	Microsoft::WRL::ComPtr<ID3D12PipelineState> state_;
+	// PSOの設定用構造体
+	D3DX12_MESH_SHADER_PIPELINE_STATE_DESC desc_{};
 
-	// バイナリオブジェクト格納用
-	Microsoft::WRL::ComPtr<IDxcBlob> meshShaderBlob_;
+	// シェーダーコンパイラ
+	DXC* dxc_ = nullptr;
 };
 

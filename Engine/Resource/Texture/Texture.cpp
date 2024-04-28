@@ -1,6 +1,5 @@
 #include "Texture.h"
 #include "../../Base/DirectXCommon.h"
-#include "../../Base/Command/CommandManager.h"
 
 Texture::Texture(CommandManager* manager, const std::string filePath)
 {

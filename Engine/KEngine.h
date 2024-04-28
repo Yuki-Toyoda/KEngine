@@ -16,12 +16,12 @@
 /// <summary>
 /// フレームワーク
 /// </summary>
-class KEngine
+class KEngineFrameWork
 {
 public: // 仮想デストラクタ
 
 	// 仮想デストラクタ
-	virtual ~KEngine() = default;
+	virtual ~KEngineFrameWork() = default;
 
 public: // メンバ関数
 
@@ -104,19 +104,5 @@ protected: // メンバ変数
 
 	// シーンマネージャーのインスタンス格納用
 	SceneManager* sceneManager_ = nullptr;
-
-	// メモリリークチェック用構造体
-	struct D3DResourceLeakChecker {
-		~D3DResourceLeakChecker() {
-			// リソースリークチェック
-			Microsoft::WRL::ComPtr<IDXGIDebug1> debug;
-			if (SUCCEEDED(DXGIGetDebugInterface1(0, IID_PPV_ARGS(&debug)))) {
-				debug->ReportLiveObjects(DXGI_DEBUG_ALL, DXGI_DEBUG_RLO_ALL);
-				debug->ReportLiveObjects(DXGI_DEBUG_APP, DXGI_DEBUG_RLO_ALL);
-				debug->ReportLiveObjects(DXGI_DEBUG_D3D12, DXGI_DEBUG_RLO_ALL);
-			}
-		}
-	};
-	std::unique_ptr<D3DResourceLeakChecker> memoryLeakChecker_;
 };
 

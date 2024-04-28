@@ -11,6 +11,8 @@
 #include "Resource/Rendering/BackBuffer.h"
 #include "Resource/Rendering/DepthStencil.h"
 
+#include "../Base/Renderer/RendererManager.h"
+
 /// <summary>
 /// DirectX汎用クラス
 /// </summary>
@@ -28,10 +30,7 @@ public: // メンバ関数
 	/// 初期化処理
 	/// </summary>
 	/// <param name="win">ウィンドウズアプリケーションクラス</param>
-	/// <param name="backBufferWidth">ウィンドウ横幅</param>
-	/// <param name="backBufferHeight">ウィンドウ縦幅</param>
-	void Init(WinApp* win, 
-		int32_t backBufferWidth = WinApp::kWindowWidth, int32_t backBufferHeight = WinApp::kwindowHeight);
+	void Init(WinApp* win);
 
 	/// <summary>
 	/// 描画
@@ -46,32 +45,42 @@ public: // メンバ関数
 public: // アクセッサ等
 
 	/// <summary>
+	/// DirectXデバイスゲッター
+	/// </summary>
+	/// <returns>DirectXデバイス</returns>
+	DirectXDevice* GetDirectXDevice() const { return dxDevice_.get(); }
+
+	/// <summary>
 	/// デバイスゲッター
 	/// </summary>
 	/// <returns>デバイス</returns>
-	ID3D12Device2* GetDevice() { return device_; }
+	ID3D12Device2* GetDevice() const { return device_; }
 
 	/// <summary>
-	/// 描画コマンドマネージャーゲッター
+	/// ヒープマネージャーゲッター
 	/// </summary>
-	/// <returns>描画コマンドマネージャー</returns>
-	CommandManager* GetCommandManager() { return commandManager_.get(); }
+	/// <returns>ヒープマネージャー</returns>
+	HeapManager* GetHeaps() const { return heaps_.get(); }
+
+public: // ImGui用アクセッサ
 
 	/// <summary>
-	/// (ImGui用)バッファ数ゲッター
+	/// バッファ数ゲッター
 	/// </summary>
 	/// <returns>バッファ数</returns>
-	UINT GetBufferCount() { return rtv_->GetSwapChainDesc().BufferCount; }
+	UINT GetBufferCount() { return swapChainDesc_.BufferCount; }
+
 	/// <summary>
-	/// (ImGui用)フォーマット形式ゲッター
+	/// フォーマットゲッター
 	/// </summary>
-	/// <returns>フォーマット形式</returns>
-	DXGI_FORMAT GetFormat() { return rtv_->GetRTVDesc().Format; }
+	/// <returns>フォーマット</returns>
+	DXGI_FORMAT GetFormat() { return DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; }
+
 	/// <summary>
-	/// (ImGui用)SRVヒープゲッター
+	/// SRVゲッター
 	/// </summary>
 	/// <returns>SRVヒープ</returns>
-	ID3D12DescriptorHeap* GetSRVHeap() { return srv_->GetDescriptorHeap(); }
+	SRV* GetSRV() { return heaps_->srv(); }
 
 private: // メンバ関数
 
@@ -102,17 +111,21 @@ private: // メンバ変数
 	std::unique_ptr<DirectXDevice> dxDevice_;
 	ID3D12Device2* device_ = nullptr;
 
-	// 各種ヒープ
-	std::unique_ptr<RTV> rtv_; // レンダーターゲットビュー
-	std::unique_ptr<SRV> srv_; // シェーダーリソースビュー
-	std::unique_ptr<DSV> dsv_; // 深度ステンシルビュー
+	// ヒープマネージャー
+	std::unique_ptr<HeapManager> heaps_;
 
-	// 描画コマンドマネージャー
-	std::unique_ptr<CommandManager> commandManager_;
+	// スワップチューン
+	Microsoft::WRL::ComPtr<IDXGISwapChain4> swapChain_;
+	// スワップチューン設定用構造体
+	DXGI_SWAP_CHAIN_DESC1 swapChainDesc_;
 
-	// ウィンドウ幅
-	int32_t backBufferWidth_ = 0;  // 横
-	int32_t backBufferHeight_ = 0; // 縦
+	// バッファ配列
+	std::vector<BackBuffer> backBuffers_;
+	// バックバッファDSVリソース
+	DepthStencil depthStencil_;
+
+	// 描画マネージャー
+	std::unique_ptr<RendererManager> rendererManager_;
 
 };
 

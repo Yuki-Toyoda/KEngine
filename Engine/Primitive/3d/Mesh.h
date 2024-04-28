@@ -61,7 +61,7 @@ private: // プライベートなメンバ関数
 	// ハッシュ値と頂点のインデックス情報の関連付け用マップ
 	using VertexCache = std::unordered_multimap<uint32_t, uint32_t>;
 
-	uint32_t AddVertex(uint32_t hash, const VertexData* pVertex, VertexCache& cache)
+	uint32_t AddVertex(uint32_t hash, const Vertex* pVertex, VertexCache& cache)
 	{
 		auto f = cache.equal_range(hash);
 
@@ -69,7 +69,7 @@ private: // プライベートなメンバ関数
 		{
 			auto& tv = vertices_[it->second];
 
-			if (0 == memcmp(pVertex, &tv, sizeof(VertexData)))
+			if (0 == memcmp(pVertex, &tv, sizeof(Vertex)))
 			{
 				return it->second;
 			}

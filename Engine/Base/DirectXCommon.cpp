@@ -4,6 +4,9 @@
 #pragma comment(lib, "dxcompiler.lib")
 #pragma comment(lib, "d3dCompiler.lib")
 
+using namespace Microsoft::WRL;
+using namespace KEngine;
+
 DirectXCommon* DirectXCommon::GetInstance() {
 	// クラスのインスタンスを取得
 	static DirectXCommon instance;
@@ -11,57 +14,71 @@ DirectXCommon* DirectXCommon::GetInstance() {
 	return &instance;
 }
 
-void DirectXCommon::Init(WinApp* win,
-	int32_t backBufferWidth, int32_t backBufferHeight) {
+void DirectXCommon::Init(WinApp* win)
+{
+	// 結果確認用
+	HRESULT result = S_FALSE;
 
 	// 引数のNULLチェックを行う
 	assert(win);
 
 	// 引数の値をメンバ変数に代入
 	winApp_ = win;
-	backBufferWidth_ = backBufferWidth;
-	backBufferHeight_ = backBufferHeight;
 
 	// デバイスの生成
-	dxDevice_ = std::make_unique<DirectXDevice>(); // インスタンス生成
+	dxDevice_ = std::make_unique<DirectXDevice>(); // 生成
 	dxDevice_->Init();							   // 初期化
-	device_ = dxDevice_->GetDevice();			   // デバイスを渡す
+	device_ = dxDevice_->GetDevice();			   // デバイスをメンバ変数に代入
 
-	// コマンドマネージャー生成
-	commandManager_ = std::make_unique<CommandManager>(); // インスタンス生成
-	commandManager_->Init(device_); // 初期化
+	// HeapManagerの生成
+	heaps_ = std::make_unique<HeapManager>();
 
-	// 各種ヒープの生成
-	rtv_ = std::make_unique<RTV>();																							 // インスタンス生成
-	rtv_->Init(winApp_->GetHwnd(), dxDevice_.get(), backBufferWidth_, backBufferHeight_, commandManager_->GetQueue()); // 初期化
-	srv_ = std::make_unique<SRV>();																						     // インスタンス生成
-	srv_->Init(dxDevice_->GetDevice());																				 // 初期化
-	dsv_ = std::make_unique<DSV>();																						     // インスタンス生成
-	dsv_->Init(dxDevice_->GetDevice(), backBufferWidth_, backBufferHeight_);											 // 初期化
+	// 描画レンダラーマネージャー初期化
+	rendererManager_ = std::make_unique<RendererManager>();
+	rendererManager_->Init(dxDevice_.get(), heaps_->srv());
 
-	// コマンドマネージャーにヒープをセット
-	commandManager_->SetHeaps(rtv_.get(), srv_.get(), dsv_.get());
+	// スワップチューンの生成
+	swapChainDesc_.Width			= Config::Window::KWindowWidth;    // 画面の横幅
+	swapChainDesc_.Height			= Config::Window::KWindowHeight;   // 画面の縦幅
+	swapChainDesc_.Format			= DXGI_FORMAT_R8G8B8A8_UNORM;	   // 色の形式
+	swapChainDesc_.SampleDesc.Count = 1;							   // マルチサンプルしない
+	swapChainDesc_.BufferUsage		= DXGI_USAGE_RENDER_TARGET_OUTPUT; // 描画ターゲットとする
+	swapChainDesc_.BufferCount		= 2;							   // ダブルバッファ
+	swapChainDesc_.SwapEffect		= DXGI_SWAP_EFFECT_FLIP_DISCARD;   // モニターに描画した時点で中身を廃棄する
 
-	// FPS初期化
+	// コマンドキューやウィンドウハンドルや設定を渡して生成する
+	ComPtr<IDXGISwapChain1> swapChain1;																				  // スワップチューン用構造体を生成
+	result = dxDevice_->GetDXGIFactory()->CreateSwapChainForHwnd(
+		rendererManager_->GetCommand()->Queue(), winApp_->GetHwnd(), &swapChainDesc_, nullptr, nullptr, &swapChain1); // スワップチューンを生成
+	assert(SUCCEEDED(result));																						  // 生成確認
+	// SwapChain4に変換、メンバ変数に代入
+	swapChain1->QueryInterface(IID_PPV_ARGS(&swapChain_));
+
+	// バックバッファの生成
+	for (int i = 0; i < 2; i++) {
+		// バックバッファの生成、配列に追加
+		backBuffers_.push_back(BackBuffer(swapChain_.Get(), i));
+		// 生成したバッファの初期化
+		backBuffers_.back().Init(dxDevice_.get(), heaps_.get());
+	}
+
+	// DSVリソースの生成
+	depthStencil_.Init(dxDevice_.get(), heaps_.get());
+
+	// FPS固定を初期化
 	InitializeFixFPS();
-
 }
-
 
 void DirectXCommon::Draw()
 {
-	// ドローコール
-	commandManager_->DrawCall();
-}
+	// 描画処理を行う
+	rendererManager_->DrawCall();
 
-void DirectXCommon::PostDraw() {
+	// GPUとOSに画面の交換を行うように指示する
+	swapChain_->Present(0, 0);
 
-	// 描画後処理
-	commandManager_->PostDraw();
 	// FPSの固定
 	UpdateFixFPS();
-	// 描画数リセット
-	commandManager_->Reset();
 }
 
 void DirectXCommon::InitializeFixFPS()

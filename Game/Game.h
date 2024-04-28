@@ -9,7 +9,7 @@
 /// <summary>
 /// ゲームクラス
 /// </summary>
-class Game : public KEngine
+class Game : public KEngineFrameWork
 {
 public: // メンバ関数
 

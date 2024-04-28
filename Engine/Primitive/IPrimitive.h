@@ -17,7 +17,7 @@ class CommandManager;
 /// <summary>
 /// 頂点データ構造体
 /// </summary>
-struct VertexData {
+struct Vertex {
 	DirectX::XMFLOAT4 position;
 	DirectX::XMFLOAT2 texCoord;
 	DirectX::XMFLOAT3 normal;
@@ -49,7 +49,7 @@ struct VertexBuffer {
 	Microsoft::WRL::ComPtr<ID3D12Resource> Resource;	  // リソース
 	Index								   index;		  // SRV上の配列番号
 	D3D12_GPU_DESCRIPTOR_HANDLE			   View;		  // GPU上のアドレス
-	VertexData*							   vertex;		  // メッシュレットのデータ
+	Vertex*							   vertex;		  // メッシュレットのデータ
 };
 
 /// <summary>
@@ -180,7 +180,7 @@ public: // パブリックなメンバ変数
 	std::vector<uint32_t> indexes_;
 
 	// 頂点座標配列
-	std::vector<VertexData> vertices_;
+	std::vector<Vertex> vertices_;
 	// メッシュレット変換出力後情報配列群
 	std::vector<DirectX::Meshlet>		  meshlets_;
 	std::vector<uint8_t>				  uniqueVertices_;

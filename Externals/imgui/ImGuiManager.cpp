@@ -20,13 +20,16 @@ void ImGuiManager::Intialize(WinApp* win, DirectXCommon* dxCommon)
 	ImGui::StyleColorsDark();
 	// プラットフォームとレンダラーのバックエンドを設定する
 	ImGui_ImplWin32_Init(win->GetHwnd());
-	ImGui_ImplDX12_Init(
+    // SRV上に情報登録、インデックスの取得
+    srvInfo_ = dxCommon->GetSRV()->CreateImGuiSpace();
+    // ImGuiの初期化
+    ImGui_ImplDX12_Init(
 		dxCommon_->GetDevice(),
         static_cast<int>(dxCommon_->GetBufferCount()),
 		dxCommon_->GetFormat(),
-        dxCommon_->GetSRVHeap(),
-        dxCommon_->GetSRVHeap()->GetCPUDescriptorHandleForHeapStart(),
-        dxCommon_->GetSRVHeap()->GetGPUDescriptorHandleForHeapStart());
+        dxCommon_->GetSRV()->GetDescriptorHeap(),
+        srvInfo_.cpuView_,
+        srvInfo_.gpuView_);
 }
 
 void ImGuiManager::Finalize()
@@ -49,12 +52,4 @@ void ImGuiManager::End()
 {
 	// 描画前準備
 	ImGui::Render();
-}
-
-void ImGuiManager::Draw()
-{
-    // コマンドリストを取得
-	ID3D12GraphicsCommandList* commandList = dxCommon_->GetCommandManager()->GetRenderCommandList();
-	// 描画コマンドを発行
-	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), commandList);
 }

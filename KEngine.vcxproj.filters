@@ -221,12 +221,14 @@
     <ClCompile Include="Engine\Base\RootSignature\IRootSignature.cpp" />
     <ClCompile Include="Engine\Base\RootSignature\ModelRootSignature.cpp" />
     <ClCompile Include="Engine\Base\RootSignature\RootSignatureManager.cpp" />
-    <ClCompile Include="Engine\Base\Buffer\BufferManager.cpp" />
     <ClCompile Include="Engine\Utility\IndexList\IndexList.cpp" />
     <ClCompile Include="Engine\Base\DescriptorHeaps\HeapManager.cpp" />
     <ClCompile Include="Engine\Base\Resource\Rendering\BackBuffer.cpp" />
     <ClCompile Include="Engine\Base\Resource\Rendering\TextureResource.cpp" />
     <ClCompile Include="Engine\Base\Resource\Rendering\DepthStencil.cpp" />
+    <ClCompile Include="Engine\Base\Renderer\NormalRenderer.cpp" />
+    <ClCompile Include="Engine\Base\DXC\DXC.cpp" />
+    <ClCompile Include="Engine\Base\Renderer\RendererManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -474,7 +476,6 @@
     <ClInclude Include="Engine\Base\RootSignature\IRootSignature.h" />
     <ClInclude Include="Engine\Base\RootSignature\ModelRootSignature.h" />
     <ClInclude Include="Engine\Base\RootSignature\RootSignatureManager.h" />
-    <ClInclude Include="Engine\Base\Buffer\BufferManager.h" />
     <ClInclude Include="Engine\Base\Buffer\BufferStructs.h" />
     <ClInclude Include="Engine\Base\Resource\IResource.h" />
     <ClInclude Include="Engine\Base\DescriptorHeaps\HeapManager.h" />
@@ -487,6 +488,11 @@
     <ClInclude Include="Engine\Base\Resource\Rendering\BackBuffer.h" />
     <ClInclude Include="Engine\Base\Resource\Rendering\TextureResource.h" />
     <ClInclude Include="Engine\Base\Resource\Rendering\DepthStencil.h" />
+    <ClInclude Include="Engine\Base\Command.h" />
+    <ClInclude Include="Engine\Base\Renderer\IRenderer.h" />
+    <ClInclude Include="Engine\Base\Renderer\NormalRenderer.h" />
+    <ClInclude Include="Engine\Base\DXC\DXC.h" />
+    <ClInclude Include="Engine\Base\Renderer\RendererManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">

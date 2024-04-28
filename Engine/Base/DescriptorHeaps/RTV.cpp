@@ -25,7 +25,7 @@ RTVInfo RTV::CreateRenderTargetView(ID3D12Resource* resource)
 	info.SetView(this);
 
 	// RTVの生成を行う
-	device_->CreateRenderTargetView(resource, &info.desc, &info.cpuView_);
+	device_->CreateRenderTargetView(resource, &info.desc, info.cpuView_);
 
 	// 生成後、情報構造体を返す
 	return info;

@@ -1,8 +1,7 @@
 #include "KEngine.h"
 
-void KEngine::Init()
+void KEngineFrameWork::Init()
 {
-	memoryLeakChecker_ = std::make_unique<D3DResourceLeakChecker>();
 
 	// COMの初期化
 	CoInitializeEx(0, COINIT_MULTITHREADED);
@@ -49,13 +48,13 @@ void KEngine::Init()
 	sceneManager_ = SceneManager::GetInstance();
 }
 
-void KEngine::PostInit()
+void KEngineFrameWork::PostInit()
 {
 	// シーンマネージャーの初期化
 	sceneManager_->Init();
 }
 
-void KEngine::Update()
+void KEngineFrameWork::Update()
 {
 	// ゲームが終了するメッセージを受けとったら
 	if (winApp_->ProcessMessage()) {
@@ -80,11 +79,11 @@ void KEngine::Update()
 
 #ifdef _DEBUG // デバッグ時のみ
 	// DirectX汎用クラスのImGuiを描画
-	dxCommon_->GetCommandManager()->DisplayImGui();
+	//dxCommon_->GetCommandManager()->DisplayImGui();
 #endif // _DEBUG
 }
 
-void KEngine::PostUpdate()
+void KEngineFrameWork::PostUpdate()
 {
 	// 衝突判定検証
 	//collisionManager_->CheckAllCollision();
@@ -96,22 +95,19 @@ void KEngine::PostUpdate()
 	imGuiManager_->End();
 }
 
-void KEngine::PreFinalize()
+void KEngineFrameWork::PreFinalize()
 {
 	// 衝突マネージャーリストクリア
 	//collisionManager_->ListClear();
 }
 
-void KEngine::Finalize()
+void KEngineFrameWork::Finalize()
 {	
 	//// 全パーティクル削除
 	//particleManager_->Init();
 
 	//// 読み込み形状を削除
-	//primitiveManager_->Init();
-
-	// コマンドマネージャーの終了処理
-	dxCommon_->GetCommandManager()->Finalize();
+	//primitiveManager_->Init();	
 
 	// 音解放処理
 	audio_->Finalize();
@@ -124,11 +120,9 @@ void KEngine::Finalize()
 
 	// COM終了
 	CoUninitialize();
-
-	
 }
 
-void KEngine::Run()
+void KEngineFrameWork::Run()
 {
 	// ゲームの初期化を行う
 	Init();

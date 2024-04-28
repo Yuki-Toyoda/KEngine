@@ -41,7 +41,7 @@ void IPrimitive::Draw()
 	std::memcpy(meshletBuffer_->meshlet, meshlets_.data(), sizeof(DirectX::Meshlet) * meshlets_.size());
 
 	// 頂点バッファへのデータコピー
-	std::memcpy(vertexBuffer_->vertex, vertices_.data(), sizeof(VertexData) * vertices_.size());
+	std::memcpy(vertexBuffer_->vertex, vertices_.data(), sizeof(Vertex) * vertices_.size());
 
 	// 固有頂点バッファへのデータコピー
 	std::memcpy(uniqueVertexBuffer_->uniqueVertex, uniqueVertices_.data(), sizeof(uint8_t) * uniqueVertices_.size());

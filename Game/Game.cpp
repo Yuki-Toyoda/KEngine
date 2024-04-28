@@ -3,7 +3,7 @@
 void Game::Init()
 {
 	// 基底クラスの初期化を呼び出す
-	KEngine::Init();
+	KEngineFrameWork::Init();
 
 	//// アニメーションマネージャの初期化
 	//animManager_ = AnimationManager::GetInstance();
@@ -29,7 +29,7 @@ void Game::Init()
 void Game::Update()
 {
 	// 基底クラスの更新を呼び出す
-	KEngine::Update();
+	KEngineFrameWork::Update();
 
 	// オブジェクトマネージャー更新
 	gameObjectManager_->Update();
@@ -70,5 +70,5 @@ void Game::Finalize()
 	//animManager_->Init();
 
 	// 基底クラスの終了後処理を呼び出す
-	KEngine::Finalize();
+	KEngineFrameWork::Finalize();
 }

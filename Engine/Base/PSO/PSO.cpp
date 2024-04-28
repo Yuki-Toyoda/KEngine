@@ -1,49 +1,125 @@
 #include "PSO.h"
 
-void PSO::Init(ID3D12Device2* device, ID3D12RootSignature* signature, DXC* dxc, std::wstring ms, std::wstring ps, int blendType, bool isWriteDSV)
+PSO& PSO::Init(ID3D12RootSignature* signature, DXC* dxc)
+{
+	// ルートシグネチャをセット
+	desc_.pRootSignature = signature;
+	// DXCもセットする
+	dxc_ = dxc;
+
+	// デフォルトのパラメーターをセットする
+	desc_.pRootSignature		= signature;							  // ルートシグネチャのセット
+	desc_.BlendState			= SettingBlendState(0);					  // ブレンド設定
+	desc_.RasterizerState		= SettingRasterizerDesc();				  // ラスタライザ設定
+	desc_.DepthStencilState		= SettingDepthStencilState(0);			  // DSVの設定を行う
+	desc_.DSVFormat				= DXGI_FORMAT_D24_UNORM_S8_UINT;		  // DSVのフォーマット設定
+	desc_.NumRenderTargets		= 1;									  // 書き込むRTVの数
+	desc_.RTVFormats[0]			= DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;		  // RTVのフォーマット設定
+	desc_.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE; // 出力形状設定
+	desc_.SampleDesc.Count		= 1;									  // サンプラー数
+	desc_.SampleMask			= D3D12_DEFAULT_SAMPLE_MASK;			  // マスク設定
+
+	// PSO自身を返す
+	return *this;
+}
+
+PSO& PSO::SetBlendState(int state)
+{
+	// ブレンドステートの設定を行う
+	D3D12_BLEND_DESC blendDesc{};
+	
+	// ブレンド設定を行う
+	blendDesc = SettingBlendState(state);
+
+	// ブレンド設定をセット
+	desc_.BlendState = blendDesc;
+
+	// PSO自身を返す
+	return *this;
+}
+
+PSO& PSO::SetRasterizerState(D3D12_CULL_MODE cullMode, D3D12_FILL_MODE fillMode)
+{
+	// ラスタライザステートの設定を行う
+	D3D12_RASTERIZER_DESC rasterrizerDesc{};
+	// 背面カリング
+	rasterrizerDesc.CullMode = cullMode;
+
+	// 三角形の中を塗りつぶす
+	rasterrizerDesc.FillMode = fillMode;
+
+	// ラスタライザ設定をセット
+	desc_.RasterizerState = rasterrizerDesc;
+
+	// PSO自身を返す
+	return *this;
+}
+
+PSO& PSO::SetMeshShader(std::string filePath)
+{
+	// シェーダーコンパイルを行う
+	IDxcBlob* blob = nullptr;											   // コンパイル結果確認用
+	blob = dxc_->CompileShader(Debug::ConvertString(filePath), L"ms_6_5"); // シェーダーコンパイルを行う
+	assert(blob != nullptr);											   // コンパイル成否確認
+
+	// シェーダーをセット
+	desc_.MS = { blob->GetBufferPointer(), blob->GetBufferSize() };
+
+	// PSO自身を返す
+	return *this;
+}
+
+PSO& PSO::SetPixelShader(std::string filePath)
+{
+	// シェーダーコンパイルを行う
+	IDxcBlob* blob = nullptr;											   // コンパイル結果確認用
+	blob = dxc_->CompileShader(Debug::ConvertString(filePath), L"ps_6_5"); // シェーダーコンパイルを行う
+	assert(blob != nullptr);											   // コンパイル成否確認
+
+	// シェーダーをセット
+	desc_.PS = { blob->GetBufferPointer(), blob->GetBufferSize() };
+
+	// PSO自身を返す
+	return *this;
+}
+
+PSO& PSO::SetDepthStencilState(bool writeDSV)
+{
+	// DSVの設定を行う
+	D3D12_DEPTH_STENCIL_DESC depthStencilDesc{};
+	// DSVの設定を行う
+	depthStencilDesc = SettingDepthStencilState(writeDSV);
+
+	// DSVの設定をセット
+	desc_.DepthStencilState = depthStencilDesc;
+
+	// PSO自身を返す
+	return *this;
+}
+
+PSO& PSO::SetDSVFormat(DXGI_FORMAT format)
+{
+	// フォーマットをセット
+	desc_.DSVFormat = format;
+	// PSO自身を返す
+	return *this;
+}
+
+void PSO::Build(ID3D12Device2* device)
 {
 	// 結果確認用
 	HRESULT result = S_FALSE;
 
-	// シェーダー用のバイナリオブジェクト生成
-	meshShaderBlob_ = CreateMeshShader(dxc, ms);							 // 頂点シェーダー
-	Microsoft::WRL::ComPtr<IDxcBlob> pixelBlob = CreatePixelShader(dxc, ps); // ピクセルシェーダー
-
-	// パイプラインステートの設定を行う
-	D3DX12_MESH_SHADER_PIPELINE_STATE_DESC graphicPipelineStateDesc{}; // パイプラインステート設定用構造体
-	graphicPipelineStateDesc.pRootSignature = signature; // RootSignature取得
-	graphicPipelineStateDesc.BlendState = SettingBlendState(blendType); // ブレンド設定
-	graphicPipelineStateDesc.RasterizerState = SettingRasterizerDesc(); // ラスタライザ設定
-	graphicPipelineStateDesc.DepthStencilState = SettingDepthStencilState(isWriteDSV); // 深度ステンシルビュー設定
-	graphicPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT; // フォーマット設定
-	// シェーダーの取得
-	graphicPipelineStateDesc.MS = { meshShaderBlob_->GetBufferPointer(), meshShaderBlob_->GetBufferSize() }; // メッシュシェーダー
-	graphicPipelineStateDesc.PS = { pixelBlob->GetBufferPointer(), pixelBlob->GetBufferSize() };			 // ピクセルシェーダー
-
-	// 書き込むRTVの情報
-	graphicPipelineStateDesc.NumRenderTargets = 1;
-	graphicPipelineStateDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
-
-	// 利用するトポロジーのタイプ
-	graphicPipelineStateDesc.PrimitiveTopologyType =
-		D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE; // 3角形
-
-	// どのように画面に色を打ち込むかの設定
-	graphicPipelineStateDesc.SampleDesc.Count = 1;
-	graphicPipelineStateDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
-
-	// パイプラインの型を変更
-	auto PSOStream = CD3DX12_PIPELINE_MESH_STATE_STREAM(graphicPipelineStateDesc);
-
-	// パイプラインの設定を対応したものに変換する
+	// PSOの型を指定形式に変換
+	auto PSOStream = CD3DX12_PIPELINE_MESH_STATE_STREAM(desc_);
+	// PSOの設定を対応したものに変換する
 	D3D12_PIPELINE_STATE_STREAM_DESC streamDesc;
 	streamDesc.pPipelineStateSubobjectStream = &PSOStream;
 	streamDesc.SizeInBytes = sizeof(PSOStream);
 
 	// 設定を元に実際に生成を行う
-	result = device->CreatePipelineState(&streamDesc,
-		IID_PPV_ARGS(&state_));
-	// 生成出来ているかを確認する
+	result = device->CreatePipelineState(&streamDesc, IID_PPV_ARGS(&state_));
+	// 生成成否確認
 	assert(SUCCEEDED(result));
 }
 
@@ -125,112 +201,4 @@ D3D12_DEPTH_STENCIL_DESC PSO::SettingDepthStencilState(bool isWriteDSV)
 
 	// 設定を返す
 	return depthStencilDesc;
-}
-
-IDxcBlob* PSO::CreateVertexShader(DXC* dxc, std::wstring vs)
-{
-	// 生成シェーダー格納用
-	IDxcBlob* shaderBlob = nullptr;
-
-	// 引数パスのシェーダーをコンパイルする
-	shaderBlob = CompileShader(vs.c_str(), L"vs_6_0", dxc);
-	assert(shaderBlob != nullptr); // コンパイル確認
-
-	// 生成したシェーダーを返す
-	return shaderBlob;
-}
-
-IDxcBlob* PSO::CreateMeshShader(DXC* dxc, std::wstring ms)
-{
-	// 生成シェーダー格納用
-	IDxcBlob* shaderBlob = nullptr;
-	// 引数パスのシェーダーをコンパイルする
-	shaderBlob = CompileShader(ms.c_str(), L"ms_6_5", dxc);
-	assert(shaderBlob != nullptr); // コンパイル確認
-
-	// 生成したシェーダーを返す
-	return shaderBlob;
-}
-
-IDxcBlob* PSO::CreatePixelShader(DXC* dxc, std::wstring ps)
-{
-	// 生成シェーダー格納用
-	IDxcBlob* shaderBlob = nullptr;
-	// 引数パスのシェーダーをコンパイルする
-	shaderBlob = CompileShader(ps.c_str(), L"ps_6_5", dxc);
-	assert(shaderBlob != nullptr); // コンパイル確認
-
-	// 生成したシェーダーを返す
-	return shaderBlob;
-}
-
-IDxcBlob* PSO::CompileShader(const std::wstring& filePath, const wchar_t* profile, DXC* dxc)
-{
-	// 結果確認用
-	HRESULT result = S_FALSE;
-
-	// シェーダーコンパイルの開始をログに出す
-	Debug::Log(Debug::ConvertString(std::format(L"Begin CompileShader, path:{}, profile{}\n", filePath, profile)));
-
-	// HLSLファイルを読み込む
-	IDxcBlobEncoding* shaderSource = nullptr;
-	result = dxc->dxcUtils_->LoadFile(filePath.c_str(), nullptr, &shaderSource);
-	// 読み込み出来ているかを確認する
-	assert(SUCCEEDED(result));
-
-	// 読み込んだファイルの内容の設定を行う
-	DxcBuffer shaderSourceBuffer;
-	shaderSourceBuffer.Ptr = shaderSource->GetBufferPointer();
-	shaderSourceBuffer.Size = shaderSource->GetBufferSize();
-	// UTF-8形式の文字コードとして設定する
-	shaderSourceBuffer.Encoding = DXC_CP_UTF8;
-
-	// コンパイルオプションの設定を行う
-	LPCWSTR arguments[] = {
-		filePath.c_str(), // コンパイル対象のhlslファイル名
-		L"-E", L"main", // エントリーポイントの指定 基本的にmain以外にはしない
-		L"-T", profile, // shaderProfileの設定
-		L"-Zi", L"-Qembed_debug", // デバック用の情報埋め込み
-		L"-Od", // 最適化を外す
-		L"-Zpr", // メモリレイアウトは行優先
-	};
-
-	// 実際にシェーダーのコンパイルを行う
-	IDxcResult* shaderResult = nullptr;
-	result = dxc->dxcCompiler_->Compile(
-		&shaderSourceBuffer,             // 読み込んだファイル
-		arguments,                       // コンパイルオプション
-		_countof(arguments),             // コンパイルオプションの数
-		dxc->dxcIncludeHandler_.Get(),   // include が含まれた諸々
-		IID_PPV_ARGS(&shaderResult)      // コンパイル結果
-	);
-
-	// ここで吐くエラーはコンパイルエラーではなく、dxcが起動できないなどの致命的なもの
-	assert(SUCCEEDED(result));
-
-	// 警告やエラーが出た場合にはログに出して停止させる
-	IDxcBlobUtf8* shaderError = nullptr;
-	shaderResult->GetOutput(DXC_OUT_ERRORS, IID_PPV_ARGS(&shaderError), nullptr);
-	if (shaderError != nullptr && shaderError->GetStringLength() != 0) {
-		// ログに警告、エラー情報を出力する
-		Debug::Log(shaderError->GetStringPointer());
-		// 警告やエラーが出ている場合停止させる
-		assert(false);
-	}
-
-	// コンパイル結果から実行用のバイナリ部分を取得する
-	IDxcBlob* shaderBlob = nullptr;
-	result = shaderResult->GetOutput(DXC_OUT_OBJECT, IID_PPV_ARGS(&shaderBlob), nullptr);
-	// 取得出来たか確認する
-	assert(SUCCEEDED(result));
-
-	// 成功したことをログに出力
-	Debug::Log(Debug::ConvertString(std::format(L"Compile Succeeded, path:{}, profile{}\n", filePath, profile)));
-
-	// 使わないリソースの解放を行う
-	shaderSource->Release();
-	shaderResult->Release();
-
-	// 実行用のバイナリを返す
-	return shaderBlob;
 }

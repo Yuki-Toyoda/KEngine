@@ -6,7 +6,7 @@
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// ゲームクラスの生成
-	KEngine* game = new Game();
+	KEngineFrameWork* game = new Game();
 
 	// エンジン実行
 	game->Run();

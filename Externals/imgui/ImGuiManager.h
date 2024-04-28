@@ -7,6 +7,8 @@
 #include "imgui_impl_win32.h"
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
+#include "../../Engine/Base/DescriptorHeaps/SRV.h"
+
 // クラスの前方宣言
 class WinApp;
 class DirectXCommon;
@@ -44,11 +46,6 @@ public: // メンバ関数
 	/// </summary>
 	void End();
 
-	/// <summary>
-	/// 描画
-	/// </summary>
-	void Draw();
-
 private: // コンストラクタ等
 
 	// コンストラクタと代入演算子無効
@@ -60,5 +57,8 @@ private: // コンストラクタ等
 private: // メンバ変数
 	// DirectX基盤インスタンス（借りてくる）
 	DirectXCommon* dxCommon_ = nullptr;
+
+    // SRV上の登録情報
+    SRVInfo srvInfo_;
 };
 

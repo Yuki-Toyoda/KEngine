@@ -1,7 +1,6 @@
 #include "Mesh.h"
 #include "../../Resource/Texture/TextureManager.h"
 #include "MeshManager.h"
-#include "../../Base/Command/CommandManager.h"
 #include "../../Base/DescriptorHeaps/SRV.h"
 
 #include <map>
@@ -100,7 +99,7 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 					indexes_.push_back(static_cast<uint32_t> (indexInfo - 1)); // パターンが見つかった場合のインデックス
 				// 新しいパターンの場合は新しく頂点を追加、インデックスも追加
 				else {
-					VertexData newVertex; // 新しい頂点の構造体を宣言
+					Vertex newVertex; // 新しい頂点の構造体を宣言
 					newVertex.position = { positions[std::stoi(elements[0]) - 1].x, positions[std::stoi(elements[0]) - 1].y, positions[std::stoi(elements[0]) - 1].z, 1.0f }; // 頂点
 					newVertex.texCoord = texcoords[std::stoi(elements[1]) - 1]; // テクスチャ座標
 					newVertex.normal = normals[std::stoi(elements[2]) - 1];		// 法線
@@ -157,81 +156,6 @@ void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
 	// 変換成否確認
 	assert(SUCCEEDED(result));
 
-	// 共通のSRV用Desc
-	D3D12_SHADER_RESOURCE_VIEW_DESC commonDesc{};								   // 汎用設定用
-	commonDesc.Format = DXGI_FORMAT_UNKNOWN;									   // フォーマット形式は不明
-	commonDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING; // シェーダーからテクスチャにアクセスする際の値指定 
-	commonDesc.ViewDimension = D3D12_SRV_DIMENSION_BUFFER;						   // SRVのバッファであることを指定
-	commonDesc.Buffer.FirstElement = 0;											   // 最初の番号を指定
-	commonDesc.Buffer.Flags = D3D12_BUFFER_SRV_FLAG_NONE;						   // フラッグ設定
-
-	// メッシュレットバッファ
-	meshletBuffer_->Resource = std::move(CreateBuffer(((sizeof(DirectX::Meshlet) + 0xff) & ~0xff) * meshlets_.size()));
-	result = meshletBuffer_->Resource->Map(0, nullptr, reinterpret_cast<void**>(&meshletBuffer_->meshlet));
-	meshletBuffer_->index = cmdManager_->GetSRV()->UseEmpty();
-	D3D12_SHADER_RESOURCE_VIEW_DESC meshletDesc = { commonDesc };
-	meshletDesc.Buffer.NumElements = static_cast<UINT>(meshlets_.size());
-	meshletDesc.Buffer.StructureByteStride = sizeof(DirectX::Meshlet);
-	meshletBuffer_->View = cmdManager_->GetSRV()->GetGPUHandle(meshletBuffer_->index);
-	cmdManager_->GetDevice()->CreateShaderResourceView(meshletBuffer_->Resource.Get(), &meshletDesc, cmdManager_->GetSRV()->GetCPUHandle(meshletBuffer_->index));
-	// マッピングに失敗した場合
-	if (FAILED(result)) {
-		assert(false);
-	}
-
-	// 頂点バッファ
-	vertexBuffer_->Resource = std::move(CreateBuffer(((sizeof(VertexData) + 0xff) & ~0xff) * vertices_.size()));
-	result = vertexBuffer_->Resource->Map(0, nullptr, reinterpret_cast<void**>(&vertexBuffer_->vertex));
-	vertexBuffer_->index = cmdManager_->GetSRV()->UseEmpty();
-	D3D12_SHADER_RESOURCE_VIEW_DESC vertexDesc = { commonDesc };
-	vertexDesc.Buffer.NumElements = static_cast<UINT>(vertices_.size());
-	vertexDesc.Buffer.StructureByteStride = sizeof(VertexData);
-	vertexBuffer_->View = cmdManager_->GetSRV()->GetGPUHandle(vertexBuffer_->index);
-	cmdManager_->GetDevice()->CreateShaderResourceView(vertexBuffer_->Resource.Get(), &vertexDesc, cmdManager_->GetSRV()->GetCPUHandle(vertexBuffer_->index));
-	// マッピングに失敗した場合
-	if (FAILED(result)) {
-		assert(false);
-	}
-
-	// 固有頂点バッファ
-	uniqueVertexBuffer_->Resource = std::move(CreateBuffer((sizeof(uint32_t) * uniqueVertices_.size())));
-	result = uniqueVertexBuffer_->Resource->Map(0, nullptr, reinterpret_cast<void**>(&uniqueVertexBuffer_->uniqueVertex));
-	uniqueVertexBuffer_->index = cmdManager_->GetSRV()->UseEmpty();
-	D3D12_SHADER_RESOURCE_VIEW_DESC uniqueVertexDesc = { commonDesc };
-	uniqueVertexDesc.Buffer.NumElements = static_cast<UINT>(uniqueVertices_.size());
-	uniqueVertexDesc.Buffer.StructureByteStride = sizeof(uint32_t);
-	uniqueVertexBuffer_->View = cmdManager_->GetSRV()->GetGPUHandle(uniqueVertexBuffer_->index);
-	cmdManager_->GetDevice()->CreateShaderResourceView(uniqueVertexBuffer_->Resource.Get(), &uniqueVertexDesc, cmdManager_->GetSRV()->GetCPUHandle(uniqueVertexBuffer_->index));
-	// マッピングに失敗した場合
-	if (FAILED(result)) {
-		assert(false);
-	}
-
-	// プリミティブインデックスバッファ
-	primitiveIndexBuffer_->Resource = std::move(CreateBuffer(((sizeof(uint32_t) + 0xff) & ~0xff) * primitiveIndices_.size()));
-	result = primitiveIndexBuffer_->Resource->Map(0, nullptr, reinterpret_cast<void**>(&primitiveIndexBuffer_->primitve));
-	primitiveIndexBuffer_->index = cmdManager_->GetSRV()->UseEmpty();
-	D3D12_SHADER_RESOURCE_VIEW_DESC primitiveIndexDesc = { commonDesc };
-	primitiveIndexDesc.Buffer.NumElements = static_cast<UINT>(primitiveIndices_.size());
-	primitiveIndexDesc.Buffer.StructureByteStride = sizeof(uint32_t);
-	primitiveIndexBuffer_->View = cmdManager_->GetSRV()->GetGPUHandle(primitiveIndexBuffer_->index);
-	cmdManager_->GetDevice()->CreateShaderResourceView(primitiveIndexBuffer_->Resource.Get(), &primitiveIndexDesc, cmdManager_->GetSRV()->GetCPUHandle(primitiveIndexBuffer_->index));
-	// マッピングに失敗した場合
-	if (FAILED(result)) {
-		assert(false);
-	}
-
-	// メッシュレットバッファへのデータコピー
-	std::memcpy(meshletBuffer_->meshlet, meshlets_.data(), sizeof(DirectX::Meshlet)* meshlets_.size());
-
-	// 頂点バッファへのデータコピー
-	std::memcpy(vertexBuffer_->vertex, vertices_.data(), sizeof(VertexData)* vertices_.size());
-
-	// 固有頂点バッファへのデータコピー
-	std::memcpy(uniqueVertexBuffer_->uniqueVertex, uniqueVertices_.data(), sizeof(uint8_t)* uniqueVertices_.size());
-
-	// プリミティブインデックスバッファへのデータコピー
-	std::memcpy(primitiveIndexBuffer_->primitve, primitiveIndices_.data(), sizeof(DirectX::MeshletTriangle)* primitiveIndices_.size());
 }
 
 void Mesh::LoadMaterial(const std::string& filePath, const std::string& fileName)

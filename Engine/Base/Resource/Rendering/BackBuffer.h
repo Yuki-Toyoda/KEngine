@@ -4,7 +4,7 @@
 /// <summary>
 /// バックバッファリソースクラス
 /// </summary>
-class BackBuffer : IRenderingResource
+class BackBuffer : public IRenderingResource
 {
 public: // コンストラクタ等
 
