@@ -2,6 +2,7 @@
 #include <Windows.h>
 #include <vector>
 #include <chrono>
+#include <thread>
 
 #include "WinApp.h"
 #include "../Debug/Debug.h"
