@@ -2,6 +2,7 @@
 #include <functional>
 #include <chrono>
 #include <string>
+#include <algorithm>
 
 #include "../../../Externals/imgui/imgui.h"
 
