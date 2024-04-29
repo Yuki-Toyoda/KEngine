@@ -6,6 +6,10 @@
 
 void Camera::Init()
 {
+	// 定数バッファ生成
+	cameraDataBuffer_.Init(DirectXCommon::GetInstance()->GetDirectXDevice());
+	// 
+
 	// 入力取得
 	input_ = Input::GetInstance();
 
@@ -21,9 +25,6 @@ void Camera::Init()
 	// 行列に単位行列を書き込んでおく
 	viewMatrix_ = Matrix4x4::kIdentity;
 
-	// ビュープロジェクション行列の書き込み先を指定
-	SetDataTarget();
-
 }
 
 void Camera::Update()
@@ -35,10 +36,8 @@ void Camera::Update()
 		Matrix4x4 projectionMatrix = Matrix4x4::MakePerspectiveFov(fov_, float(WinApp::kWindowWidth) / float(WinApp::kwindowHeight), 0.1f, 100.0f); // プロジェクション行列の生成
 		viewProjectionMatrix_ = viewMatrix_ * projectionMatrix; // 実際に計算
 
-		// アドレスに
-		*wDataTarget_ = cameraMatrix;
-		*vDataTarget_ = viewMatrix_;
-		*vpDataTarget_ = viewProjectionMatrix_;
+		// バッファのデータにビュープロジェクション行列をセット
+		cameraDataBuffer_.data_->WorldViewProj = viewProjectionMatrix_;
 	}
 
 	// デバッグカメラだった場合はキー入力でカメラを移動させる
@@ -136,14 +135,9 @@ void Camera::UseThisCamera() {
 	// このカメラを使用する
 	isUseThisCamera_ = true;
 
+	// メインカメラをセット
+	DirectXCommon::GetInstance()->SetMainCamera(this);
+
 	// 使用中のカメラをゲームオブジェクトマネージャに登録する
 	GameObjectManager::GetInstance()->SetUseCamera(this);
-}
-
-void Camera::SetDataTarget()
-{
-	// 行列を書き込むためのアドレスを取得
-	wDataTarget_ = DirectXCommon::GetInstance()->GetCommandManager()->GetWorldMatrixAddress();	   // ワールド行列
-	vDataTarget_ = DirectXCommon::GetInstance()->GetCommandManager()->GetViewMatrixAddress();	   // ビュー行列
-	vpDataTarget_ = DirectXCommon::GetInstance()->GetCommandManager()->GetViewProjectionAddress(); // ビュープロジェクション行列
 }

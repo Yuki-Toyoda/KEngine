@@ -1,6 +1,8 @@
 #pragma once
 #include "../BaseObject.h"
 #include "../../Input/Input.h"
+#include "../../Base/Buffer/BufferStructs.h"
+#include "../../Base/Resource/Data/ConstantBuffer.h"
 
 /// <summary>
 /// カメラ
@@ -56,19 +58,15 @@ public: // その他関数
 	/// </summary>
 	void UseThisCamera();
 
-private: // メンバ関数
-
-	/// <summary>
-	///	データの書き込み先の指定関数
-	/// </summary>
-	void SetDataTarget();
-
 public: // パブリックなメンバ変数
 
 	// 視野角
 	float fov_;
 
 protected: // メンバ変数
+
+	// 定数バッファデータ
+	ConstantBuffer<CommonData> cameraDataBuffer_;
 
 	// 入力検知用
 	Input* input_;
@@ -80,11 +78,6 @@ protected: // メンバ変数
 	Matrix4x4 viewMatrix_;
 	// カメラ用ビュープロジェクション行列
 	Matrix4x4 viewProjectionMatrix_;
-
-	// コマンドマネージャーに送るためのポインタ群
-	Matrix4x4* wDataTarget_ = nullptr;  // ワールド行列
-	Matrix4x4* vDataTarget_ = nullptr;	// ビュー行列
-	Matrix4x4* vpDataTarget_ = nullptr; // ビュープロジェクション行列
 
 };
 

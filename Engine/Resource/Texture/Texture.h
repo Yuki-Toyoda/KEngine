@@ -9,7 +9,7 @@
 
 // クラスの前方宣言
 class DirectXCommon;
-class CommandManager;
+class TextureResource;
 
 /// <summary>
 /// テクスチャ
@@ -21,44 +21,46 @@ public: // メンバ関数
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	/// <param name="manager">描画コマンドマネージャー</param>
-	/// <param name="filePath">テクスチャまでのファイルパス</param>
-	Texture(CommandManager* manager, const std::string filePath);
+	Texture() = default;
+
+	/// <summary>
+	/// テクスチャリソースを直接代入するコンストラクタ
+	/// </summary>
+	/// <param name="resource">代入するテクスチャリソース</param>
+	Texture(const TextureResource& resource);
+
 	// デストラクタ
 	~Texture() = default;
 
 public: // アクセッサ等
+
 	/// <summary>
 	/// インデックス情報ゲッター
 	/// </summary>
 	/// <returns>コマンドマネージャー上でのインデックス情報(定数値)</returns>
 	int GetIndex() const { return index_; }
-	/// <summary>
-	/// インデックス情報セッター
-	/// </summary>
-	/// <param name="index">設定するインデックス</param>
-	void SetIndex(int index) { index_ = index; }
 
 	/// <summary>
 	/// テクスチャサイズゲッター
 	/// </summary>
 	/// <returns>テクスチャサイズ</returns>
-	const Vector2 GetTextureSize() const { return { (float)mipImages_.GetImages()->width, (float)mipImages_.GetImages()->height }; }
+	const Vector2 GetTextureSize() const { return size_; }
 
-private: // プライベートなメンバ関数
+public: // 演算子オーバーロード
 
 	/// <summary>
-	/// テクスチャのロード関数
+	/// =演算子オーバーロード
 	/// </summary>
-	/// <param name="filePath">テクスチャまでのファイルパス</param>
-	void Load(const std::string& filePath);
+	/// <param name="resource">代入するリソース</param>
+	/// <returns>テクスチャ</returns>
+	Texture& operator=(const TextureResource& resource);
 
 private: // メンバ変数
 
 	// SRV上のインデックス
-	int index_;
+	int index_ = -1;
 
-	// ミップマップ付きのテクスチャ
-	DirectX::ScratchImage mipImages_;
+	// テクスチャ解像度
+	Vector2 size_;
 };
 

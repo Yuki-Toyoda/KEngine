@@ -113,9 +113,6 @@
     <ClCompile Include="Engine\Scene\User\SampleScene.cpp">
       <Filter>App\Scene\User</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\GameObject\Samples\SampleSprite\SampleSprite.cpp">
-      <Filter>App\GameObject\Samples\Sprite</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Particle\IParticleEmitter.cpp">
       <Filter>Engine\Particle</Filter>
     </ClCompile>
@@ -130,9 +127,6 @@
     </ClCompile>
     <ClCompile Include="Engine\Utility\Animation\Animation.cpp">
       <Filter>App\Utility\Animation</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject\Samples\SampleSphere\SampleSphere.cpp">
-      <Filter>App\GameObject\Samples\Sphere</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\User\TestObject\TestObject.cpp">
       <Filter>App\GameObject\User\TestObject</Filter>
@@ -417,9 +411,6 @@
     <ClInclude Include="Engine\Utility\Animation\AnimationKeys.h">
       <Filter>App\Utility\Animation</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\GameObject\Samples\SampleSprite\SampleSprite.h">
-      <Filter>App\GameObject\Samples\Sprite</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Particle\IParticleEmitter.h">
       <Filter>Engine\Particle</Filter>
     </ClInclude>
@@ -434,9 +425,6 @@
     </ClInclude>
     <ClInclude Include="Engine\Utility\Animation\Animation.h">
       <Filter>App\Utility\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameObject\Samples\SampleSphere\SampleSphere.h">
-      <Filter>App\GameObject\Samples\Sphere</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\User\TestObject\TestObject.h">
       <Filter>App\GameObject\User\TestObject</Filter>
@@ -611,12 +599,6 @@
     </Filter>
     <Filter Include="App\GameObject\Samples\SkyDome">
       <UniqueIdentifier>{8065e286-0718-421c-ba52-72d1062819ab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="App\GameObject\Samples\Sprite">
-      <UniqueIdentifier>{cfbc2871-68a2-4a09-a052-431c3e871e78}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="App\GameObject\Samples\Sphere">
-      <UniqueIdentifier>{e2052d27-98b3-431d-8362-043ed86199a5}</UniqueIdentifier>
     </Filter>
     <Filter Include="App\GameObject\User">
       <UniqueIdentifier>{e4d282eb-c22f-46f5-a5d1-e5fa5125b0e2}</UniqueIdentifier>

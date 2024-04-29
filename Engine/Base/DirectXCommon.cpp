@@ -4,6 +4,8 @@
 #pragma comment(lib, "dxcompiler.lib")
 #pragma comment(lib, "d3dCompiler.lib")
 
+#include "../GameObject/Core/Camera.h"
+
 using namespace Microsoft::WRL;
 using namespace KEngine;
 
@@ -31,7 +33,7 @@ void DirectXCommon::Init(WinApp* win)
 	device_ = dxDevice_->GetDevice();			   // デバイスをメンバ変数に代入
 
 	// HeapManagerの生成
-	heaps_ = std::make_unique<HeapManager>();
+	heaps_ = std::make_unique<HeapManager>(dxDevice_.get());
 
 	// 描画レンダラーマネージャー初期化
 	rendererManager_ = std::make_unique<RendererManager>();
@@ -79,6 +81,11 @@ void DirectXCommon::Draw()
 
 	// FPSの固定
 	UpdateFixFPS();
+}
+
+void DirectXCommon::SetMainCamera(const Camera* camera)
+{
+	rendererManager_->SetTarget(camera->)
 }
 
 void DirectXCommon::InitializeFixFPS()

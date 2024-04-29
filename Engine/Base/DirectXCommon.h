@@ -13,6 +13,9 @@
 
 #include "../Base/Renderer/RendererManager.h"
 
+// クラスの前方宣言
+class Camera;
+
 /// <summary>
 /// DirectX汎用クラス
 /// </summary>
@@ -37,11 +40,6 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
-	/// <summary>
-	/// 描画後処理
-	/// </summary>
-	void PostDraw();
-
 public: // アクセッサ等
 
 	/// <summary>
@@ -61,6 +59,12 @@ public: // アクセッサ等
 	/// </summary>
 	/// <returns>ヒープマネージャー</returns>
 	HeapManager* GetHeaps() const { return heaps_.get(); }
+
+	/// <summary>
+	/// メインカメラセッター
+	/// </summary>
+	/// <param name="camera">カメラ</param>
+	void SetMainCamera(const Camera* camera);
 
 public: // ImGui用アクセッサ
 

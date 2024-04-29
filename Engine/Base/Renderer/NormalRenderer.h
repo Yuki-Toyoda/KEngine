@@ -9,6 +9,17 @@
 /// </summary>
 class NormalRenderer
 {
+public: // サブクラス
+
+	/// <summary>
+	/// 描画ターゲット構造体
+	/// </summary>
+	struct Target {
+		D3D12_GPU_VIRTUAL_ADDRESS view_;		// カメラデータのGPU上のアドレス
+		BackBuffer*				  backBuffer_;  // バックバッファリソース
+		DepthStencil*			  depthBuffer_; // DSVバッファリソース
+	};
+
 public: // コンストラクタ等
 
 	/// <summary>
@@ -37,16 +48,21 @@ public: // メンバ関数
 	/// <param name="list">コマンドリスト</param>
 	void DrawCall(ID3D12GraphicsCommandList6* list);
 
+public: // アクセッサ等
+
+	/// <summary>
+	/// 描画ターゲット追加関数
+	/// </summary>
+	/// <param name="target">描画ターゲット</param>
+	void SetTarget(const Target& target) { target_ = target; }
+
 private: // メンバ変数
 
 	// パイプラインステートオブジェクト
 	PSO pso_;
 
-	// バックバッファ
-	BackBuffer* backBuffer_;
-
-	// DSVリソース
-	DepthStencil* depthBuffer_;
+	// 描画ターゲット
+	Target target_;
 
 };
 

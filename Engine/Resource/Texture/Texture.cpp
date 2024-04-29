@@ -1,29 +1,19 @@
 #include "Texture.h"
-#include "../../Base/DirectXCommon.h"
+#include "../../Base/Resource/Rendering/TextureResource.h"
 
-Texture::Texture(CommandManager* manager, const std::string filePath)
+Texture::Texture(const TextureResource& resource)
 {
-	// テクスチャ情報のロード
-	Load(filePath);
-	// インデックス情報の取得
-	manager;
-	//index_ = manager->createTextureResource(mipImages_);
+	// テクスチャリソースをそのまま代入
+	*this = resource;
 }
 
-void Texture::Load(const std::string& filePath)
+Texture& Texture::operator=(const TextureResource& resource)
 {
-	// 結果確認用
-	HRESULT result = S_FALSE;
-
-	// テクスチャファイルを読み込み
-	DirectX::ScratchImage image{};										   // テクスチャ格納用
-	std::wstring filePathW = Debug::ConvertString(filePath);			   // wString形式に変換
-	result = DirectX::LoadFromWICFile(
-		filePathW.c_str(), DirectX::WIC_FLAGS_FORCE_SRGB, nullptr, image); // テクスチャをCPUで読み込む
-	assert(SUCCEEDED(result));											   // 読み込み確認
-
-	// ミップマップ生成
-	result = DirectX::GenerateMipMaps(
-		image.GetImages(), image.GetImageCount(), image.GetMetadata(), DirectX::TEX_FILTER_SRGB, 0, mipImages_); // 生成
-	assert(SUCCEEDED(result));																					 // 生成確認
+	// リソースから各種情報を取得
+	index_ = resource.GetSRVIndex();	// インデックス
+	size_  = resource.GetTextureSize(); // テクスチャ解像度
+	
+	// テクスチャを返す
+	return *this;
 }
+

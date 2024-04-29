@@ -52,12 +52,6 @@ void Game::Draw()
 
 	// 描画
 	dxCommon_->Draw();
-
-	// ImGui描画
-	imGuiManager_->Draw();
-
-	// 描画終了
-	dxCommon_->PostDraw();
 }
 
 void Game::Finalize()

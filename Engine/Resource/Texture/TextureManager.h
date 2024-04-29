@@ -5,6 +5,7 @@
 #include <wrl.h>
 
 #include "Texture.h"
+#include "../../Base/Resource/Rendering/TextureResource.h"
 
 /// <summary>
 /// テクスチャマネージャー
@@ -19,6 +20,16 @@ private:  // コンストラクタ等
 	TextureManager(const TextureManager&) = delete;
 	const TextureManager& operator=(const TextureManager&) = delete;
 
+private: // サブクラス
+
+	/// <summary>
+	/// テクスチャ構造体
+	/// </summary>
+	struct TextureStruct {
+		Texture			tex;		  // テクスチャ
+		TextureResource texResource_; // テクスチャリソース
+	};
+
 public: // 静的なメンバ関数
 
 	/// <summary>
@@ -32,7 +43,7 @@ public: // 静的なメンバ関数
 	/// </summary>
 	/// <param name="fileName">Resources内のファイル名</param>
 	/// <returns>テクスチャ</returns>
-	static Texture* Load(std::string fileName);
+	static Texture Load(std::string fileName);
 
 	/// <summary>
 	/// テクスチャロード関数
@@ -40,7 +51,7 @@ public: // 静的なメンバ関数
 	/// <param name="directoryPath">テクスチャまでのディレクトリパス</param>
 	/// <param name="fileName">ファイル名</param>
 	/// <returns>テクスチャ</returns>
-	static Texture* Load(std::string directoryPath, std::string fileName);
+	static Texture Load(std::string directoryPath, std::string fileName);
 
 public: // メンバ関数
 
@@ -56,7 +67,7 @@ private: // 読み込み関数群
 	/// </summary>
 	/// <param name="fileName">Resources内のファイル名</param>
 	/// <returns>テクスチャ</returns>
-	Texture* LoadTexture(std::string fileName);
+	Texture LoadTexture(std::string fileName);
 
 	/// <summary>
 	/// テクスチャロード関数
@@ -64,7 +75,7 @@ private: // 読み込み関数群
 	/// <param name="directoryPath">テクスチャまでのディレクトリパス</param>
 	/// <param name="fileName">ファイル名</param>
 	/// <returns>テクスチャ</returns>
-	Texture* LoadTexture(std::string directoryPath, std::string fileName);
+	Texture LoadTexture(std::string directoryPath, std::string fileName);
 
 private: // メンバ変数
 
@@ -72,7 +83,7 @@ private: // メンバ変数
 	DirectXCommon* dxCommon_;
 
 	// テクスチャコンテナ
-	std::map<std::string, std::unique_ptr<Texture>> textures_;
+	std::map<std::string, TextureStruct> textures_;
 
 };
 

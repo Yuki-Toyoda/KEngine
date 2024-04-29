@@ -1,5 +1,4 @@
 #include "IPrimitive.h"
-#include "../Base/Command/CommandManager.h"
 #include "../GameObject/WorldTransform.h"
 
 IPrimitive::IPrimitive(CommandManager* manager)
@@ -37,66 +36,35 @@ void IPrimitive::Draw()
 	if (!isActive_)
 		return;
 
-	// メッシュレットバッファへのデータコピー
-	std::memcpy(meshletBuffer_->meshlet, meshlets_.data(), sizeof(DirectX::Meshlet) * meshlets_.size());
+	//// メッシュレットバッファへのデータコピー
+	//std::memcpy(meshletBuffer_->meshlet, meshlets_.data(), sizeof(DirectX::Meshlet) * meshlets_.size());
 
-	// 頂点バッファへのデータコピー
-	std::memcpy(vertexBuffer_->vertex, vertices_.data(), sizeof(Vertex) * vertices_.size());
+	//// 頂点バッファへのデータコピー
+	//std::memcpy(vertexBuffer_->vertex, vertices_.data(), sizeof(Vertex) * vertices_.size());
 
-	// 固有頂点バッファへのデータコピー
-	std::memcpy(uniqueVertexBuffer_->uniqueVertex, uniqueVertices_.data(), sizeof(uint8_t) * uniqueVertices_.size());
+	//// 固有頂点バッファへのデータコピー
+	//std::memcpy(uniqueVertexBuffer_->uniqueVertex, uniqueVertices_.data(), sizeof(uint8_t) * uniqueVertices_.size());
 
-	// プリミティブインデックスバッファへのデータコピー
-	std::memcpy(primitiveIndexBuffer_->primitve, primitiveIndices_.data(), sizeof(DirectX::MeshletTriangle) * primitiveIndices_.size());
+	//// プリミティブインデックスバッファへのデータコピー
+	//std::memcpy(primitiveIndexBuffer_->primitve, primitiveIndices_.data(), sizeof(DirectX::MeshletTriangle) * primitiveIndices_.size());
 
-	// コマンドリストの取得
-	ID3D12GraphicsCommandList6* cmdList = cmdManager_->GetRenderCommandList();
+	//// コマンドリストの取得
+	//ID3D12GraphicsCommandList6* cmdList = cmdManager_->GetRenderCommandList();
 
-	// コマンドリストにテーブルをセット
-	cmdList->SetGraphicsRootDescriptorTable(1, meshletBuffer_->View);
-	cmdList->SetGraphicsRootDescriptorTable(2, vertexBuffer_->View);
-	cmdList->SetGraphicsRootDescriptorTable(3, uniqueVertexBuffer_->View);
-	cmdList->SetGraphicsRootDescriptorTable(4, primitiveIndexBuffer_->View);
+	//// コマンドリストにテーブルをセット
+	//cmdList->SetGraphicsRootDescriptorTable(1, meshletBuffer_->View);
+	//cmdList->SetGraphicsRootDescriptorTable(2, vertexBuffer_->View);
+	//cmdList->SetGraphicsRootDescriptorTable(3, uniqueVertexBuffer_->View);
+	//cmdList->SetGraphicsRootDescriptorTable(4, primitiveIndexBuffer_->View);
 
-	// メッシュレットのプリミティブ数分メッシュシェーダーを実行
-	cmdList->DispatchMesh(GetMeshletCount(), 1, 1);
+	//// メッシュレットのプリミティブ数分メッシュシェーダーを実行
+	//cmdList->DispatchMesh(GetMeshletCount(), 1, 1);
 	
 }
 
 void IPrimitive::DisplayImGui()
 {
 	
-}
-
-ID3D12Resource* IPrimitive::CreateBuffer(size_t size)
-{
-	// 結果確認用
-	HRESULT result = S_FALSE;
-
-	// 返すリソース
-	ID3D12Resource* resource = nullptr;
-
-	// 頂点リソース用のヒープの設定
-	D3D12_HEAP_PROPERTIES uploadHeapProperties{};
-	uploadHeapProperties.Type = D3D12_HEAP_TYPE_UPLOAD;	// UploadHeapを使う
-	// 頂点リソースの設定
-	D3D12_RESOURCE_DESC resourceDesc{};
-	// バッファリソース。テクスチャの場合はまた別の設定をする
-	resourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	resourceDesc.Width = size; // リソースのサイズ
-	// バッファの場合はこれらは1にする決まり
-	resourceDesc.Height = 1;
-	resourceDesc.DepthOrArraySize = 1;
-	resourceDesc.MipLevels = 1;
-	resourceDesc.SampleDesc.Count = 1;
-	// バッファの場合はこれにする決まり
-	resourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
-	// 実際に頂点リソースを作る
-	result = cmdManager_->GetDevice()->CreateCommittedResource(&uploadHeapProperties, D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&resource));
-	assert(SUCCEEDED(result));
-
-	// 生成したバッファリソースを返す
-	return resource;
 }
 
 int IPrimitive::GetVertexCount() const
