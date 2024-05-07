@@ -136,9 +136,6 @@ void Camera::UseThisCamera() {
 	// このカメラを使用する
 	isUseThisCamera_ = true;
 
-	// メインカメラをセット
-	DirectXCommon::GetInstance()->SetMainCamera(this);
-
 	// 使用中のカメラをゲームオブジェクトマネージャに登録する
 	GameObjectManager::GetInstance()->SetUseCamera(this);
 }

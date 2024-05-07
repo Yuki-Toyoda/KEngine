@@ -182,6 +182,9 @@ public: // アクセッサ等
 
 private: // メンバ変数
 
+	// directX汎用クラス
+	DirectXCommon* dxCommon_ = nullptr;
+
 	// オブジェクトリスト
 	std::list<std::unique_ptr<BaseObject>> objects_;
 

@@ -34,9 +34,9 @@ ID3D12DescriptorHeap* IDescriptorHeap::CreateDescriptorHeap(D3D12_DESCRIPTOR_HEA
 	// 結果確認用
 	HRESULT result = S_FALSE;
 
-	ID3D12DescriptorHeap* descriptorHeap = nullptr; // インスタンス生成
-	D3D12_DESCRIPTOR_HEAP_DESC descriptorHeapDesc{}; // 設定
-	descriptorHeapDesc.Type = heapType; // 種類設定
+	ID3D12DescriptorHeap* descriptorHeap = nullptr;		// インスタンス生成
+	D3D12_DESCRIPTOR_HEAP_DESC descriptorHeapDesc{};	// 設定
+	descriptorHeapDesc.Type = heapType;					// 種類設定
 	descriptorHeapDesc.NumDescriptors = numDescriptors; // ヒープ番号取得
 	// フラッグの設定取得
 	descriptorHeapDesc.Flags = shaderVisible ? D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE : D3D12_DESCRIPTOR_HEAP_FLAG_NONE;

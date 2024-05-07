@@ -55,11 +55,11 @@ void NormalRenderer::DrawCall(ID3D12GraphicsCommandList6* list)
 	// コマンドリストにシザー矩形を設定
 	list->RSSetScissorRects(1, &scissorRect);
 
-	// コマンドリストにPSOを設定
-	list->SetPipelineState(pso_.GetState());
-
 	// カメラデータのアドレスを渡す
 	list->SetGraphicsRootConstantBufferView(0, target_.view_);
+
+	// コマンドリストにPSOを設定
+	list->SetPipelineState(pso_.GetState());
 
 	// ImGuiを描画
 	ImGui::Render();

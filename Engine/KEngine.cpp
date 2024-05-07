@@ -2,7 +2,6 @@
 
 void KEngineFrameWork::Init()
 {
-
 	// COMの初期化
 	CoInitializeEx(0, COINIT_MULTITHREADED);
 
@@ -91,9 +90,6 @@ void KEngineFrameWork::PostUpdate()
 
 	// 形状マネージャ更新
 	//primitiveManager_->Update();
-
-	// ImGui受付終了
-	imGuiManager_->End();
 }
 
 void KEngineFrameWork::PreFinalize()

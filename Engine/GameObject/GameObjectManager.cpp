@@ -1,5 +1,6 @@
 #include "GameObjectManager.h"
 #include "Core/Camera.h"
+#include "../Base/DirectXCommon.h"
 
 GameObjectManager* GameObjectManager::GetInstance()
 {
@@ -9,6 +10,9 @@ GameObjectManager* GameObjectManager::GetInstance()
 
 void GameObjectManager::Init()
 {
+	// DirectX汎用クラスを取得
+	dxCommon_ = DirectXCommon::GetInstance();
+
 	// 全オブジェクトを破壊
 	for (std::unique_ptr<BaseObject>& object : objects_)
 		object->Destroy();
@@ -45,6 +49,9 @@ void GameObjectManager::Update()
 		object->Update();	  // 更新
 		object->PostUpdate(); // 更新後処理
 	}
+
+	// メインカメラを毎フレームセットする
+	dxCommon_->SetMainCamera(mainCamera_);
 
 	// デバッグ時のみImGuiを描画
 #ifdef _DEBUG
