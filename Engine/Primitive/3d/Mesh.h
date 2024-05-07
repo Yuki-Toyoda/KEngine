@@ -27,7 +27,7 @@ public: // メンバ関数
 	/// </summary>
 	/// <param name="filePath">モデルまでのディレクトリ</param>
 	/// <param name="fileName">モデル名</param>
-	void LoadFile(const std::string& filePath, const std::string& fileName);
+	void LoadModelFile(const std::string& filePath, const std::string& fileName);
 
 public: // アクセッサ等
 
@@ -49,7 +49,7 @@ private: // プライベートなメンバ関数
 	/// </summary>
 	/// <param name="filePath">モデルまでのディレクトリ</param>
 	/// <param name="fileName">モデル名</param>
-	void LoadObj(const std::string& filePath, const std::string& filename);
+	void LoadModel(const std::string& filePath, const std::string& filename);
 
 	/// <summary>
 	/// マテリアル読み込み関数
@@ -57,31 +57,6 @@ private: // プライベートなメンバ関数
 	/// <param name="filePath">マテリアルまでのディレクトリ</param>
 	/// /// <param name="fileName">マテリアル名</param>
 	void LoadMaterial(const std::string& filePath, const std::string& fileName);
-
-	// ハッシュ値と頂点のインデックス情報の関連付け用マップ
-	using VertexCache = std::unordered_multimap<uint32_t, uint32_t>;
-
-	uint32_t AddVertex(uint32_t hash, const Vertex* pVertex, VertexCache& cache)
-	{
-		auto f = cache.equal_range(hash);
-
-		for (auto it = f.first; it != f.second; ++it)
-		{
-			auto& tv = vertices_[it->second];
-
-			if (0 == memcmp(pVertex, &tv, sizeof(Vertex)))
-			{
-				return it->second;
-			}
-		}
-
-		auto index = static_cast<uint32_t>(vertices_.size());
-		vertices_.push_back(*pVertex);
-
-		VertexCache::value_type entry(hash, index);
-		cache.insert(entry);
-		return index;
-	}
 
 };
 

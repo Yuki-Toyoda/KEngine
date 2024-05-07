@@ -23,7 +23,7 @@ void Line::Init(const std::string& name, const Vector3& position, const Vector2&
 	// 新しいメッシュのインスタンスを生成
 	mesh_ = PrimitiveManager::GetInstance()->CreateInstance<Mesh>();
 	mesh_->name_ = name_;
-	mesh_->LoadFile("./Engine/Resource/Samples/Box", "Box.obj");
+	mesh_->LoadModelFile("./Engine/Resource/Samples/Box", "Box.obj");
 	mesh_->transform_ = &transform_;
 	mesh_->commonColor = &color_;
 	mesh_->material_.enableLighting_ = true;

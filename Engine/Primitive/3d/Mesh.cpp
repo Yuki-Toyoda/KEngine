@@ -7,125 +7,75 @@
 #include <fstream>
 #include <sstream>
 
-void Mesh::LoadFile(const std::string& filePath, const std::string& fileName)
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+
+void Mesh::LoadModelFile(const std::string& filePath, const std::string& fileName)
 {
 	// 頂点情報とインデックス情報をクリア
 	vertices_.clear(); // 頂点情報
 	indexes_.clear();  // インデックス情報
 
 	// objを読み込む
-	LoadObj(filePath, fileName);
+	LoadModel(filePath, fileName);
 }
 
-void Mesh::LoadObj(const std::string& filePath, const std::string& fileName)
+void Mesh::LoadModel(const std::string& filePath, const std::string& fileName)
 {
 	// フルパスのフルパスの合成
 	std::string fullPath = filePath + "/" + fileName;
-	
-	// バッファリソースの生成
-	meshletBuffer_ = std::make_unique<MeshletBuffer>();				  // メッシュレットバッファ
-	vertexBuffer_ = std::make_unique<VertexBuffer>();				  // 頂点バッファ
-	uniqueVertexBuffer_ = std::make_unique<UniqueVertexBuffer>();	  // 固有頂点バッファ
-	primitiveIndexBuffer_ = std::make_unique<PrimitiveIndexBuffer>(); // プリミティブ頂点バッファ
 
-	// インデックス情報を登録するための3次元配列
-	std::map<int, std::map<int, std::map<int, int>>> key;
+	// assimpを読むためのimporterを定義
+	Assimp::Importer importer;
+	// importerでファイルを読み込む
+	const aiScene* scene = importer.ReadFile(fullPath.c_str(), aiProcess_FlipWindingOrder | aiProcess_FlipUVs);
+	// メッシュを持っていないモデルの場合停止させる
+	assert(scene->HasMeshes());
 
-	// 頂点情報の格納ための変数生成
-	std::vector<DirectX::XMFLOAT3> positions; // 位置
-	std::vector<DirectX::XMFLOAT2> texcoords; // テクスチャ座標
-	std::vector<DirectX::XMFLOAT3> normals;	  // 法線
+	// 全メッシュを解析する
+	for (uint32_t meshIndex = 0; meshIndex < scene->mNumMeshes; meshIndex++) {
+		// メッシュを取得
+		aiMesh* mesh = scene->mMeshes[meshIndex];
 
-	// キャッシュ保存用
-	VertexCache vertexCache;
+		// 法線がないメッシュは非対応
+		assert(mesh->HasNormals());
+		// テクスチャ座標系がないメッシュは非対応
+		assert(mesh->HasTextureCoords(0));
 
-	// 頂点位置のインデックス情報格納用配列
-	std::vector<uint32_t> verticesIndices;
+		// 頂点数分ループ
+		for (uint32_t vertexIndex = 0; vertexIndex < mesh->mNumVertices; vertexIndex++) {
+			// インデックス情報を元に情報を取得する
+			aiVector3D& position = mesh->mVertices[vertexIndex];		 // 頂点座標取得
+			aiVector3D& normal = mesh->mNormals[vertexIndex];			 // 法線取得
+			aiVector3D& texcoord = mesh->mTextureCoords[0][vertexIndex]; // テクスチャ座標取得
 
-	// ファイルを開く
-	std::ifstream file(fullPath); // ファイルを開く
-	// 開けなかった場合を止める
-	assert(file.is_open());
+			// 新規頂点データを追加
+			Vertex newVertex;
+			newVertex.position = { -position.x, position.y, position.z, 1.0f }; // 頂点座標追加
+			newVertex.texCoord = { texcoord.x, texcoord.y };					// テクスチャ座標追加
+			newVertex.normal = { -normal.x, normal.y, normal.z };				// 法線追加
 
-	// ファイルから読んだ１行を格納するもの
-	std::string line;
-
-	// ファイルから1行ずつ読み込む
-	while (std::getline(file, line)) {
-		// 先端の識別子の値を格納する変数
-		std::string identifier;
-		// ファイルの１行を取得
-		std::istringstream s(line);
-		// 先頭の識別子を読む
-		s >> identifier;
-
-		// 頂点データ登録
-		if (identifier == "v") {
-			DirectX::XMFLOAT3 position;					 // 読み込み情報格納用
-			s >> position.x >> position.y >> position.z; // その行から情報を読み込み
-			positions.push_back(position);				 // 読み込んだ情報を配列を格納
+			// 頂点データを追加
+			vertices_.push_back(newVertex);
 		}
-		// テクスチャ座標登録
-		else if (identifier == "vt") {
-			DirectX::XMFLOAT2 texcoord;	   // 読み込み情報格納用
-			s >> texcoord.x >> texcoord.y; // その行から情報を読み込み
-			texcoords.push_back(texcoord); // 読み込んだ情報を配列を格納
-		}
-		// 法線登録
-		else if (identifier == "vn") {
-			DirectX::XMFLOAT3 normal;			   // 読み込み情報格納用
-			s >> normal.x >> normal.y >> normal.z; // その行から情報を読み込み
-			normals.push_back(normal);			   // 読み込んだ情報を配列を格納
-		}
-		// 頂点とインデックス情報を登録
-		else if (identifier == "f") {
-			// 面は三角形限定であり、その他は対応していない
-			for (int32_t faceVertex = 0; faceVertex < 3; faceVertex++) {
-				std::string vertexDefinition; // 頂点インデックス情報取得用
-				s >> vertexDefinition; // 現在の行の文字列を取得
 
-				// 頂点要素へのインデックスは 位置 / UV / 法線 の順で登録されている
-				// そのため、分解してIndexを取得する
-				std::istringstream v(vertexDefinition); // 1頂点分のデータを取得
-				std::string elements[3]; // 0 : 位置, 1 : UV, 2 : 法線
-				for (int32_t i = 0; i < 3; i++) {
-					std::getline(v, elements[i], '/'); // それぞれの要素を取得
-				}
+		// 面情報を解析する
+		for (uint32_t faceIndex = 0; faceIndex < mesh->mNumFaces; faceIndex++) {
+			// 面を取得する
+			aiFace& face = mesh->mFaces[faceIndex];
 
-				// 実際に頂点を追加する前に追加する頂点が新しいデータかどうかチェック
-				int indexInfo = key[std::stoi(elements[0])][std::stoi(elements[1])][std::stoi(elements[2])]; // インデックス情報を取得
-				// 既存のパターンだった場合、既存のインデックス情報を取得、インデックスに追加
-				if (indexInfo > 0 && indexInfo < vertices_.size())
-					indexes_.push_back(static_cast<uint32_t> (indexInfo - 1)); // パターンが見つかった場合のインデックス
-				// 新しいパターンの場合は新しく頂点を追加、インデックスも追加
-				else {
-					Vertex newVertex; // 新しい頂点の構造体を宣言
-					newVertex.position = { positions[std::stoi(elements[0]) - 1].x, positions[std::stoi(elements[0]) - 1].y, positions[std::stoi(elements[0]) - 1].z, 1.0f }; // 頂点
-					newVertex.texCoord = texcoords[std::stoi(elements[1]) - 1]; // テクスチャ座標
-					newVertex.normal = normals[std::stoi(elements[2]) - 1];		// 法線
+			// 三角形以外だった場合
+			assert(face.mNumIndices == 3);
 
-					// 左手座標系に変換
-					newVertex.position.x *= -1.0f;						// 頂点の向きを変換
-					newVertex.texCoord.y = 1.0f - newVertex.texCoord.y; // テクスチャ座標を反転
-					newVertex.normal.x *= -1.0f;						// 法線の向きを反転
+			// 全インデックス数分loop
+			for (uint32_t element = 0; element < face.mNumIndices; element++) {
+				// 頂点インデックスを取得
+				uint32_t vertexIndex = face.mIndices[element];
 
-					// 頂点を追加
-					vertices_.push_back(newVertex);
-					// インデックスを登録
-					indexes_.push_back(static_cast<uint32_t> (vertices_.size() - 1));
-
-					// 既存パターンであることを示すために現在のインデックス情報を既存インデックス情報マップに追加
-					key[std::stoi(elements[0])][std::stoi(elements[1])][std::stoi(elements[2])] = static_cast<int>(vertices_.size());
-				}
+				// インデックス情報も追加
+				indexes_.push_back(vertexIndex);
 			}
-		}
-		// マテリアル情報読み込み
-		else if (identifier == "mtllib") {
-			// マテリアル名を取得
-			std::string materialFileName; // マテリアル名格納用
-			s >> materialFileName;		  // マテリアル名取得
-			// マテリアル読み込み
-			LoadMaterial(filePath, materialFileName);
 		}
 	}
 

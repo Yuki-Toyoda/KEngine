@@ -34,30 +34,7 @@ void IPrimitive::Draw()
 	if (!isActive_)
 		return;
 
-	//// メッシュレットバッファへのデータコピー
-	//std::memcpy(meshletBuffer_->meshlet, meshlets_.data(), sizeof(DirectX::Meshlet) * meshlets_.size());
 
-	//// 頂点バッファへのデータコピー
-	//std::memcpy(vertexBuffer_->vertex, vertices_.data(), sizeof(Vertex) * vertices_.size());
-
-	//// 固有頂点バッファへのデータコピー
-	//std::memcpy(uniqueVertexBuffer_->uniqueVertex, uniqueVertices_.data(), sizeof(uint8_t) * uniqueVertices_.size());
-
-	//// プリミティブインデックスバッファへのデータコピー
-	//std::memcpy(primitiveIndexBuffer_->primitve, primitiveIndices_.data(), sizeof(DirectX::MeshletTriangle) * primitiveIndices_.size());
-
-	//// コマンドリストの取得
-	//ID3D12GraphicsCommandList6* cmdList = cmdManager_->GetRenderCommandList();
-
-	//// コマンドリストにテーブルをセット
-	//cmdList->SetGraphicsRootDescriptorTable(1, meshletBuffer_->View);
-	//cmdList->SetGraphicsRootDescriptorTable(2, vertexBuffer_->View);
-	//cmdList->SetGraphicsRootDescriptorTable(3, uniqueVertexBuffer_->View);
-	//cmdList->SetGraphicsRootDescriptorTable(4, primitiveIndexBuffer_->View);
-
-	//// メッシュレットのプリミティブ数分メッシュシェーダーを実行
-	//cmdList->DispatchMesh(GetMeshletCount(), 1, 1);
-	
 }
 
 void IPrimitive::DisplayImGui()

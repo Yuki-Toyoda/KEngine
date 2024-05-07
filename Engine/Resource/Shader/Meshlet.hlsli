@@ -4,6 +4,11 @@ struct ConstantData
     uint32_t DrawMeshlets;
 };
 
+struct WorldTransform
+{
+    float32_t4x4 wvp;
+};
+
 struct VertexData
 {
     float32_t4 pos;
@@ -26,7 +31,8 @@ struct VertexOutPut
     float32_t4 color    : COLOR0;
 };
 
-ConstantBuffer<ConstantData> ConstantData : register(b0);
+ConstantBuffer<ConstantData> ConstantData        : register(b0);
+ConstantBuffer<WorldTransform> Transform         : register(b1);
 
 float4 TransformPosition(float4 v)
 {

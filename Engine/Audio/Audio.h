@@ -1,3 +1,4 @@
+
 #pragma once
 #include <array>
 #include <cstdint>
@@ -6,6 +7,15 @@
 #include <unordered_map>
 #include <wrl.h>
 #include <xaudio2.h>
+
+#include <mfapi.h>
+#include <mfidl.h>
+#include <mfreadwrite.h>
+
+#pragma comment(lib, "Mf.lib")
+#pragma comment(lib, "mfplat.lib")
+#pragma comment(lib, "Mfreadwrite.lib")
+#pragma comment(lib, "mfuuid.lib")
 
 /// <summary>
 /// 音再生クラス
@@ -74,7 +84,7 @@ public: // サブクラス
 		STDMETHOD_(void, OnLoopEnd)(THIS_ void* pBufferContext) { pBufferContext; };
 		// ボイスの実行エラー時
 		STDMETHOD_(void, OnVoiceError)(THIS_ void* pBufferContext, HRESULT Error) {
-			pBufferContext; 
+			pBufferContext;
 			Error;
 		};
 	};
@@ -166,4 +176,3 @@ private: // メンバ変数
 	XAudio2VoiceCallback voiceCallback_;
 
 };
-

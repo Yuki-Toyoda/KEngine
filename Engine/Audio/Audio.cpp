@@ -6,6 +6,8 @@
 
 #pragma comment(lib, "xaudio2.lib")
 
+#include "../Debug/Debug.h"
+
 Audio* Audio::GetInstance()
 {
 	static Audio instance;
@@ -21,6 +23,9 @@ void Audio::Init(const std::string& directoryPath)
 	// 結果確認用
 	HRESULT result = S_FALSE;
 	IXAudio2MasteringVoice* masterVoice;
+
+	// MeadiaFoundactionの初期化
+	MFStartup(MF_VERSION, MFSTARTUP_NOSOCKET);
 
 	// XAudioエンジンのインスタンスを生成
 	result = XAudio2Create(&xAudio2_, 0, XAUDIO2_DEFAULT_PROCESSOR);
@@ -43,13 +48,17 @@ void Audio::Finalize()
 	for (auto& soundData : soundDatas_) {
 		Unload(&soundData);
 	}
+
+	MFShutdown();
 }
 
 uint32_t Audio::LoadWave(const std::string& fileName)
 {
 	// 最大音声数を超過していた場合はエラー
 	assert(indexSoundData_ < kMaxAudioData);
+	// 返還用インスタンスの生成
 	uint32_t handle = indexSoundData_;
+
 	// 読み込み済みサウンドデータを検索
 	auto it = std::find_if(soundDatas_.begin(), soundDatas_.end(), [&](const auto& soundData) {
 		return soundData.name_ == fileName;
@@ -65,68 +74,72 @@ uint32_t Audio::LoadWave(const std::string& fileName)
 	if (2 < fileName.size()) {
 		currentRelative = (fileName[0] == '.') && (fileName[1] == '/');
 	}
-	std::string fullpath = currentRelative ? fileName : directoryPath_ + fileName;
+	std::string path = currentRelative ? fileName : directoryPath_ + fileName;
+	// wstring形式に返還
+	std::wstring fullpath = Debug::ConvertString(path);
 
-	// ファイル入力ストリームのインスタンス
-	std::ifstream file;
-	// .wavファイルをバイナリモードで開く
-	file.open(fullpath, std::ios_base::binary);
-	// ファイルオープン失敗を検出する
-	assert(file.is_open());
+	// ソースリーダーを生成する
+	IMFSourceReader* pMFSourceReader{ nullptr };
+	// フルパスからデータ読み込み
+	MFCreateSourceReaderFromURL(fullpath.c_str(), NULL, &pMFSourceReader);
 
-	// RIFFヘッダーの読み込み
-	RiffHeader riff;
-	file.read((char*)&riff, sizeof(riff));
-	// ファイルがRIFFかチェック
-	if (strncmp(riff.chunk.id, "RIFF", 4) != 0) {
-		assert(0);
+	// 読み込むファイルの種類を特定
+	IMFMediaType* pMFMediaType{ nullptr };
+	MFCreateMediaType(&pMFMediaType);
+	pMFMediaType->SetGUID(MF_MT_MAJOR_TYPE, MFMediaType_Audio);
+	pMFMediaType->SetGUID(MF_MT_SUBTYPE, MFAudioFormat_PCM);
+	pMFSourceReader->SetCurrentMediaType(static_cast<DWORD>(MF_SOURCE_READER_FIRST_AUDIO_STREAM), nullptr, pMFMediaType);
+
+	pMFMediaType->Release();
+	pMFMediaType = nullptr;
+	pMFSourceReader->GetCurrentMediaType(static_cast<DWORD>(MF_SOURCE_READER_FIRST_AUDIO_STREAM), &pMFMediaType);
+
+	WAVEFORMATEX* waveFormat{ nullptr };
+	MFCreateWaveFormatExFromMFMediaType(pMFMediaType, &waveFormat, nullptr);
+
+	std::vector<BYTE> mediaData;
+	while (true)
+	{
+		IMFSample* pMFSample{ nullptr };
+		DWORD dwStreamFlags{ 0 };
+		pMFSourceReader->ReadSample(static_cast<DWORD>(MF_SOURCE_READER_FIRST_AUDIO_STREAM), 0, nullptr, &dwStreamFlags, nullptr, &pMFSample);
+
+		if (dwStreamFlags & MF_SOURCE_READERF_ENDOFSTREAM)
+		{
+			break;
+		}
+
+		IMFMediaBuffer* pMFMediaBuffer{ nullptr };
+		pMFSample->ConvertToContiguousBuffer(&pMFMediaBuffer);
+
+		BYTE* pBuffer{ nullptr };
+		DWORD cbCurrentLength{ 0 };
+		pMFMediaBuffer->Lock(&pBuffer, nullptr, &cbCurrentLength);
+
+		mediaData.resize(mediaData.size() + cbCurrentLength);
+		memcpy(mediaData.data() + mediaData.size() - cbCurrentLength, pBuffer, cbCurrentLength);
+
+		pMFMediaBuffer->Unlock();
+
+		pMFMediaBuffer->Release();
+		pMFSample->Release();
 	}
-	// タイプがWAVEかチェック
-	if (strncmp(riff.type, "WAVE", 4) != 0) {
-		assert(0);
-	}
-
-	// Formatチャンクの読み込み
-	FormatChunk format = {};
-	// チャンクヘッダーの確認
-	file.read((char*)&format, sizeof(ChunkHeader));
-	if (strncmp(format.chunk.id, "fmt ", 4) != 0) {
-		assert(0);
-	}
-	// チャンク本体の読み込み
-	assert(format.chunk.size <= sizeof(format.fmt));
-	file.read((char*)&format.fmt, format.chunk.size);
-
-	// Dataチャンクの読み込み
-	ChunkHeader data;
-	file.read((char*)&data, sizeof(data));
-	// JUNKチャンクか Broadcast Wave Formatを検出した場合。
-	while (_strnicmp(data.id, "junk", 4) == 0 || _strnicmp(data.id, "bext", 4) == 0) {
-		// 読み取り位置をJUNKチャンクの終わりまで進める
-		file.seekg(data.size, std::ios_base::cur);
-		// 再読み込み
-		file.read((char*)&data, sizeof(data));
-	}
-	if (_strnicmp(data.id, "data", 4) != 0) {
-		assert(0);
-	}
-
-	// Dataチャンクのデータ部（波形データ）の読み込み
-	char* pBuffer = new char[data.size];
-	file.read(pBuffer, data.size);
-
-	// Waveファイルを閉じる
-	file.close();
 
 	// 書き込むサウンドデータの参照
 	SoundData& soundData = soundDatas_.at(handle);
 
-	soundData.wfex = format.fmt;
-	soundData.pBuffer = reinterpret_cast<BYTE*>(pBuffer);
-	soundData.bufferSize = data.size;
+	BYTE* pBuffer = new BYTE[mediaData.size()];
+	memcpy(pBuffer, mediaData.data(), mediaData.size());
+
+	soundData.wfex = *waveFormat;
+	soundData.pBuffer = pBuffer;
+	soundData.bufferSize = static_cast<unsigned int>(mediaData.size());
 	soundData.name_ = fileName;
 
 	indexSoundData_++;
+
+	pMFMediaType->Release();
+	pMFSourceReader->Release();
 
 	return handle;
 }

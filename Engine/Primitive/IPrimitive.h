@@ -11,6 +11,9 @@
 #include <wrl.h>
 #include <d3d12.h>
 
+#include "../Base/Resource/Data/ConstantBuffer.h"
+#include "../Base/Resource/Data/StructuredBuffer.h"
+
 /// <summary>
 /// 頂点データ構造体
 /// </summary>
@@ -18,55 +21,6 @@ struct Vertex {
 	DirectX::XMFLOAT4 position;
 	DirectX::XMFLOAT2 texCoord;
 	DirectX::XMFLOAT3 normal;
-};
-
-/// <summary>
-/// パックされた三角形構造体
-/// </summary>
-struct PackedTriangle {
-	uint32_t i0;
-	uint32_t i1;
-	uint32_t i2;
-};
-
-/// <summary>
-/// メッシュレットバッファ構造体
-/// </summary>
-struct MeshletBuffer {
-	Microsoft::WRL::ComPtr<ID3D12Resource> Resource;	  // リソース
-	Index								   index;		  // SRV上の配列番号
-	D3D12_GPU_DESCRIPTOR_HANDLE			   View;		  // GPU上のアドレス
-	DirectX::Meshlet*					   meshlet;		  // メッシュレットのデータ
-};
-
-/// <summary>
-/// 頂点バッファ構造体
-/// </summary>
-struct VertexBuffer {
-	Microsoft::WRL::ComPtr<ID3D12Resource> Resource;	  // リソース
-	Index								   index;		  // SRV上の配列番号
-	D3D12_GPU_DESCRIPTOR_HANDLE			   View;		  // GPU上のアドレス
-	Vertex*							   vertex;		  // メッシュレットのデータ
-};
-
-/// <summary>
-/// 固有頂点バッファ構造体
-/// </summary>
-struct UniqueVertexBuffer {
-	Microsoft::WRL::ComPtr<ID3D12Resource> Resource;	  // リソース
-	Index								   index;		  // SRV上の配列番号
-	D3D12_GPU_DESCRIPTOR_HANDLE			   View;		  // GPU上のアドレス
-	uint8_t*							   uniqueVertex;  // メッシュレットのデータ
-};
-
-/// <summary>
-/// プリミティブ頂点バッファ構造体
-/// </summary>
-struct PrimitiveIndexBuffer {
-	Microsoft::WRL::ComPtr<ID3D12Resource> Resource;	  // リソース
-	Index								   index;		  // SRV上の配列番号
-	D3D12_GPU_DESCRIPTOR_HANDLE			   View;		  // GPU上のアドレス
-	DirectX::MeshletTriangle*			   primitve;      // メッシュレットのデータ
 };
 
 /// <summary>
@@ -166,14 +120,7 @@ public: // パブリックなメンバ変数
 	std::vector<uint8_t>				  uniqueVertices_;
 	std::vector<DirectX::MeshletTriangle> primitiveIndices_;
 
-	// メッシュレットバッファ
-	std::unique_ptr<MeshletBuffer> meshletBuffer_;
-	// 頂点バッファ
-	std::unique_ptr<VertexBuffer> vertexBuffer_;
-	// 固有頂点バッファ
-	std::unique_ptr<UniqueVertexBuffer> uniqueVertexBuffer_;
-	// プリミティブ頂点バッファ
-	std::unique_ptr<PrimitiveIndexBuffer> primitiveIndexBuffer_;
+	std::unique_ptr<ConstantBuffer<>>
 
 	// 描画中心座標
 	WorldTransform* transform_ = nullptr;
