@@ -51,7 +51,7 @@ public: // メンバ関数
 	template <IsBasePrimitive SelectPrimitive>
 	inline SelectPrimitive* CreateInstance() {
 		// 形状のインスタンス
-		std::unique_ptr<SelectPrimitive> newPrimitive = std::make_unique<SelectPrimitive>(commandManager_);
+		std::unique_ptr<SelectPrimitive> newPrimitive = std::make_unique<SelectPrimitive>();
 		newPrimitive->ResizeVertices();
 		newPrimitive->ResizeIndexes();
 
@@ -66,9 +66,6 @@ public: // メンバ関数
 	}
 
 private: // メンバ変数
-
-	// コマンドマネージャー
-	CommandManager* commandManager_ = nullptr;
 
 	// 描画形状リスト
 	std::list<std::unique_ptr<IPrimitive>> primitives_;

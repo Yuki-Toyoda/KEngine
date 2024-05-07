@@ -13,12 +13,11 @@
  =============================================*/
 
 /// <summary>
-/// 共通で参照するデータ構造体
+///	カメラデータ構造体
 /// </summary>
-struct CommonData {
+struct CameraData {
 	Matrix4x4 WorldViewProj;		 // 射影変換行列
-	Matrix4x4 ViewProjection2D;		 // 2D用ViewProjection
-	uint32_t  DrawMeshlets;			 // メッシュレット描画フラグ
+	uint32_t  DrawMeshlets = false;	 // メッシュレット描画フラグ
 };
 
 /// <summary>

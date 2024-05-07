@@ -1,10 +1,8 @@
 #include "IPrimitive.h"
 #include "../GameObject/WorldTransform.h"
 
-IPrimitive::IPrimitive(CommandManager* manager)
+IPrimitive::IPrimitive()
 {
-	// 基底クラスでは使用しない
-	manager;
 }
 
 void IPrimitive::ResizeVertices()

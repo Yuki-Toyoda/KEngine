@@ -13,10 +13,11 @@ void KEngineFrameWork::Init()
 
 	// DirectX汎用クラスのインスタンスを取得
 	dxCommon_ = DirectXCommon::GetInstance();
-	// テクスチャマネージャ初期化
-	TextureManager::GetInstance()->Init();
 	// DirectXの初期化
 	dxCommon_->Init(winApp_);
+
+	// テクスチャマネージャ初期化
+	TextureManager::GetInstance()->Init();
 
 	// 入力の初期化
 	input_ = Input::GetInstance();

@@ -39,7 +39,8 @@ Index IndexList::UseEmpty()
 			array_[i] = true;
 			// インデックスクラスを返す
 			return Index(
-				[&](int i) {UnUse(i); }, i + offset_
+				[this, i]() { UnUse(i); },
+				i + offset_
 			);
 		}
 	}
@@ -52,5 +53,5 @@ Index IndexList::UseEmpty()
 void IndexList::UnUse(int index)
 {
 	// 指定されたインデックスの使用状態を変更
-	array_[index] = false;
+	array_.at(index) = false;
 }

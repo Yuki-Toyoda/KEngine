@@ -32,6 +32,11 @@ void DirectXCommon::Init(WinApp* win)
 	dxDevice_->Init();							   // 初期化
 	device_ = dxDevice_->GetDevice();			   // デバイスをメンバ変数に代入
 
+	// ルートシグネチャマネージャの生成、および初期化
+	rtsManger_ = RootSignatureManager::GetInstance();
+	rtsManger_->SetDevice(device_);
+	rtsManger_->Init();
+
 	// HeapManagerの生成
 	heaps_ = std::make_unique<HeapManager>(dxDevice_.get());
 
@@ -83,9 +88,10 @@ void DirectXCommon::Draw()
 	UpdateFixFPS();
 }
 
-void DirectXCommon::SetMainCamera(const Camera* camera)
+void DirectXCommon::SetMainCamera(Camera* camera)
 {
-	rendererManager_->SetTarget(camera->)
+	// 描画マネージャーに描画ターゲットセット
+	rendererManager_->SetTarget(camera->GetBufferView(), &backBuffers_[swapChain_->GetCurrentBackBufferIndex()], &depthStencil_);
 }
 
 void DirectXCommon::InitializeFixFPS()

@@ -11,9 +11,6 @@
 #include <wrl.h>
 #include <d3d12.h>
 
-// クラスの前方宣言
-class CommandManager;
-
 /// <summary>
 /// 頂点データ構造体
 /// </summary>
@@ -104,8 +101,7 @@ public: // メンバ関数
 	/// <summary>
 	/// (呼び出し禁止)コンストラクタ
 	/// </summary>
-	/// <param name="manager">マネージャー</param>
-	IPrimitive(CommandManager* manager);
+	IPrimitive();
 
 	/// <summary>
 	/// 仮想デストラクタ
@@ -131,20 +127,7 @@ public: // メンバ関数
 	/// </summary>
 	virtual void DisplayImGui();
 
-	/// <summary>
-	/// 任意サイズのバッファ生成関数
-	/// </summary>
-	/// <param name="size"バッファサイズ></param>
-	/// <returns>バッファ本体</returns>
-	ID3D12Resource* CreateBuffer(size_t size);
-
 public: // アクセッサ等
-
-	/// <summary>
-	/// コマンドマネージャーセッター
-	/// </summary>
-	/// <param name="manager">コマンドマネージャー</param>
-	void SetCommandManager(CommandManager* manager) { cmdManager_ = manager; }
 
 	/// <summary>
 	/// 頂点数ゲッター
@@ -169,9 +152,6 @@ public: // アクセッサ等
 	virtual int GetPrimitiveCount(const int& i) const;
 
 public: // パブリックなメンバ変数
-
-	// コマンドマネージャー
-	CommandManager* cmdManager_ = nullptr;
 
 	// 形状名称
 	std::string name_ = "primitive";

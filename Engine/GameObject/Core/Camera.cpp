@@ -8,7 +8,8 @@ void Camera::Init()
 {
 	// 定数バッファ生成
 	cameraDataBuffer_.Init(DirectXCommon::GetInstance()->GetDirectXDevice());
-	// 
+
+	cameraDataBuffer_.data_->DrawMeshlets = false;
 
 	// 入力取得
 	input_ = Input::GetInstance();

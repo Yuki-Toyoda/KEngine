@@ -22,7 +22,7 @@ public: // コンストラクタ等
 	/// </summary>
 	/// <param name="f">解放用関数</param>
 	/// <param name="value">数値</param>
-	Index(std::function<void(int)> f, int value) {
+	Index(std::function<void()> f, int value) {
 		// 解放用関数ポインタ代入
 		func_ = f;
 		// インデックスを引数から代入
@@ -34,7 +34,7 @@ public: // コンストラクタ等
 	/// </summary>
 	~Index() {
 		// 関数ポインタが設定されている場合関数実行
-		if (func_) { func_(i_); }
+		if (func_) { func_(); }
 	}
 
 public: // アクセッサ等
@@ -95,5 +95,5 @@ private: // メンバ変数
 	// インデックス
 	int i_ = -1;
 	// 解放用関数ポインタ
-	std::function<void(int)> func_ = nullptr;
+	std::function<void()> func_ = nullptr;
 };

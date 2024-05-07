@@ -51,6 +51,12 @@ public: // アクセッサ等
 	/// <returns>ビュープロジェクション行列</returns>
 	Matrix4x4 GetViewProjectionMatrix() { return viewProjectionMatrix_; };
 
+	/// <summary>
+	/// カメラデータまでのアドレスゲッター
+	/// </summary>
+	/// <returns>カメラデータまでのアドレス</returns>
+	D3D12_GPU_VIRTUAL_ADDRESS GetBufferView() { return cameraDataBuffer_.GetGPUView(); }
+
 public: // その他関数
 
 	/// <summary>
@@ -66,7 +72,7 @@ public: // パブリックなメンバ変数
 protected: // メンバ変数
 
 	// 定数バッファデータ
-	ConstantBuffer<CommonData> cameraDataBuffer_;
+	ConstantBuffer<CameraData> cameraDataBuffer_;
 
 	// 入力検知用
 	Input* input_;

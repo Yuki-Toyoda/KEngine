@@ -3,6 +3,9 @@
 
 void NormalRenderer::Init(DirectXDevice* device, ID3D12RootSignature* signature, DXC* dxc)
 {
+	// ルートシグネチャ取得
+	rootSignature_ = signature;
+
 	// 通常描画用PSO初期化
 	pso_.Init(signature, dxc)
 		.SetMeshShader("Engine/Resource/Shader/MeshletMS.hlsl")
@@ -17,6 +20,9 @@ void NormalRenderer::DrawCall(ID3D12GraphicsCommandList6* list)
 
 	// 描画先のRTVとDSVをセットする
 	list->OMSetRenderTargets(1, &target_.backBuffer_->rtvInfo_.cpuView_, false, &target_.depthBuffer_->dsvInfo_.cpuView_);
+
+	// ルートシグネチャのセット
+	list->SetGraphicsRootSignature(rootSignature_);
 
 	// リソースバリアをセットする
 	D3D12_RESOURCE_STATES beforeBarrier = target_.backBuffer_->GetBarrier();

@@ -1,7 +1,7 @@
 #include "DSV.h"
 
 DSV::DSV(ID3D12Device2* device) :
-	IDescriptorHeap(device, D3D12_DESCRIPTOR_HEAP_TYPE_DSV, kSize_, 2){}
+	IDescriptorHeap(device, D3D12_DESCRIPTOR_HEAP_TYPE_DSV, 1){}
 
 void DSV::Init()
 {
@@ -12,7 +12,7 @@ void DSV::Init()
 DSVInfo DSV::CreateDepthStencilView(ID3D12Resource* resource)
 {
 	// 返還用
-	DSVInfo info;
+	DSVInfo info{};
 
 	// 各種設定を行う
 	info.desc.Format	    = DXGI_FORMAT_D24_UNORM_S8_UINT; // フォーマット設定

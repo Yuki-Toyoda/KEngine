@@ -7,6 +7,7 @@
 #include "WinApp.h"
 #include "../Debug/Debug.h"
 #include "Device/DirectXDevice.h"
+#include "RootSignature/RootSignatureManager.h"
 #include "DescriptorHeaps/HeapManager.h"
 
 #include "Resource/Rendering/BackBuffer.h"
@@ -65,7 +66,7 @@ public: // アクセッサ等
 	/// メインカメラセッター
 	/// </summary>
 	/// <param name="camera">カメラ</param>
-	void SetMainCamera(const Camera* camera);
+	void SetMainCamera(Camera* camera);
 
 public: // ImGui用アクセッサ
 
@@ -115,6 +116,9 @@ private: // メンバ変数
 	// デバイス
 	std::unique_ptr<DirectXDevice> dxDevice_;
 	ID3D12Device2* device_ = nullptr;
+
+	// ルートシグネチャマネージャ
+	RootSignatureManager* rtsManger_ = nullptr;
 
 	// ヒープマネージャー
 	std::unique_ptr<HeapManager> heaps_;

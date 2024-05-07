@@ -7,7 +7,7 @@
 /// <summary>
 /// 通常描画用レンダラークラス
 /// </summary>
-class NormalRenderer
+class NormalRenderer : public IRenderer
 {
 public: // サブクラス
 

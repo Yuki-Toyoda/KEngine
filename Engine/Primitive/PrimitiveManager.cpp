@@ -11,9 +11,6 @@ PrimitiveManager* PrimitiveManager::GetInstance()
 
 void PrimitiveManager::Init()
 {
-	// コマンドマネージャーの取得
-	commandManager_ = DirectXCommon::GetInstance()->GetCommandManager();
-
 	// 全登録形状を削除
 	primitives_.remove_if([](std::unique_ptr<IPrimitive>& primitive) {
 		primitive;
@@ -36,9 +33,6 @@ void PrimitiveManager::Update()
 
 		return false;
 	});
-
-	// レイヤー番号で昇順にソート
-	//primitives_.sort([](std::unique_ptr<IPrimitive>& primitive1, std::unique_ptr<IPrimitive>& primitive2) {return primitive1->layerNo_ > primitive2->layerNo_; });
 }
 
 void PrimitiveManager::Draw()
