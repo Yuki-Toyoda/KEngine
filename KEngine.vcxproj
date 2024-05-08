@@ -104,6 +104,21 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\GameObject\User\Enemy\Enemy.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\EnemyBullet.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\State\EnemyDead.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\State\EnemyDown.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\State\EnemyRoot.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\State\EnemyShot.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Floor\Floor.cpp" />
+    <ClCompile Include="Engine\GameObject\User\FollowCamera\FollowCamera.cpp" />
+    <ClCompile Include="Engine\GameObject\User\LockOn\LockOn.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Player\Player.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Player\State\Attack.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Player\State\Damage.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Player\State\Root.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Player\State\RotatingSlash.cpp" />
+    <ClCompile Include="Engine\GameObject\User\TitleSceneManager\TitleManager.cpp" />
     <ClCompile Include="Engine\Lighting\Light\DirectionalLight.cpp" />
     <ClCompile Include="Engine\Base\DXC\DXC.cpp" />
     <ClCompile Include="Engine\Base\Resource\Rendering\DepthStencil.cpp" />
@@ -181,6 +196,25 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Base\Renderer\RendererManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\GameObject\User\Enemy\Enemy.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\EnemyBullet.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyDead.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyDown.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyRoot.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyShot.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyStateList.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\State\IEnemyState.h" />
+    <ClInclude Include="Engine\GameObject\User\Floor\Floor.h" />
+    <ClInclude Include="Engine\GameObject\User\FollowCamera\FollowCamera.h" />
+    <ClInclude Include="Engine\GameObject\User\LockOn\LockOn.h" />
+    <ClInclude Include="Engine\GameObject\User\Player\Player.h" />
+    <ClInclude Include="Engine\GameObject\User\Player\State\Attack.h" />
+    <ClInclude Include="Engine\GameObject\User\Player\State\Damage.h" />
+    <ClInclude Include="Engine\GameObject\User\Player\State\IState.h" />
+    <ClInclude Include="Engine\GameObject\User\Player\State\Root.h" />
+    <ClInclude Include="Engine\GameObject\User\Player\State\RotatingSlash.h" />
+    <ClInclude Include="Engine\GameObject\User\Player\State\StateList.h" />
+    <ClInclude Include="Engine\GameObject\User\TitleSceneManager\TitleManager.h" />
     <ClInclude Include="Engine\Lighting\Light\DirectionalLight.h" />
     <ClInclude Include="Engine\Base\DXC\DXC.h" />
     <ClInclude Include="Engine\Base\Command.h" />
@@ -258,6 +292,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Utility\KLib.h" />
     <ClInclude Include="Engine\Utility\Lerp\Lerp.h" />
     <ClInclude Include="Engine\Utility\Observer\Observer.h" />
+    <ClInclude Include="Engine\Utility\Random\Random.h" />
     <ClInclude Include="Engine\Utility\Timer\DeltaTimer.h" />
     <ClInclude Include="Externals\imgui\imconfig.h" />
     <ClInclude Include="Externals\imgui\imgui.h" />
