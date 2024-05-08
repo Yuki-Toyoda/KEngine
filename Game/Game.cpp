@@ -6,8 +6,8 @@ void Game::Init()
 	KEngineFrameWork::Init();
 
 	//// アニメーションマネージャの初期化
-	//animManager_ = AnimationManager::GetInstance();
-	//animManager_->Init();
+	animManager_ = AnimationManager::GetInstance();
+	animManager_->Init();
 
 	// オブジェクトマネージャーの初期化
 	gameObjectManager_ = GameObjectManager::GetInstance();
@@ -41,8 +41,8 @@ void Game::Update()
 	//particleManager_->DisplayImGui();
 
 	// アニメーションマネージャ更新
-	/*animManager_->Update();
-	animManager_->DisplayImGui();*/
+	animManager_->Update();
+	animManager_->DisplayImGui();
 }
 
 void Game::Draw()
@@ -57,8 +57,8 @@ void Game::Finalize()
 	gameObjectManager_->Init();
 	//// 読み込みスプライト削除
 	//spriteManager_->Init();
-	//// 全アニメーション削除
-	//animManager_->Init();
+	// 全アニメーション削除
+	animManager_->Init();
 
 	// 基底クラスの終了後処理を呼び出す
 	KEngineFrameWork::Finalize();

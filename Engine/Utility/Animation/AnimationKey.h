@@ -82,9 +82,17 @@ inline AnimationKey<T>::AnimationKey(const std::string& animationName, const std
 		// int型の値で初期化を行う
 		value_ = 0;
 	}
+	else if constexpr (std::is_same_v<T, Vector2>) {
+		// Vector2型の値で初期化を行う
+		value_ = Vector2();
+	}
+	else if constexpr (std::is_same_v<T, Vector3>) {
+		// Vector3型の値で初期化を行う
+		value_ = Vector3();
+	}
 	else {
 		// float型の値で全ての要素を初期化
-		value_ = T();
+		value_ = { 0.0f };
 	}
 
 	// アニメーション名の取得
@@ -126,16 +134,21 @@ inline void AnimationKey<T>::DisplayImGui()
 	// スライダーの表示
 	if constexpr (std::is_same_v<T, WorldTransform>) {
 		value_.DisplayImGui(keyName);
-	}else if constexpr (std::is_same_v<T, int32_t>) {
-		
+	}
+	else if constexpr (std::is_same_v<T, int32_t>) {
+
 		ImGui::DragInt(keyName.c_str(), &value_, 1.0f, 0);
-	}else if constexpr (std::is_same_v<T, int>) {
+	}
+	else if constexpr (std::is_same_v<T, int>) {
 		ImGui::DragInt(keyName.c_str(), &value_, 1.0f);
-	}else if constexpr (std::is_same_v<T, float>) {
+	}
+	else if constexpr (std::is_same_v<T, float>) {
 		ImGui::DragFloat(keyName.c_str(), &value_, 0.01f);
-	}else if constexpr (std::is_same_v<T, Vector2>) {
+	}
+	else if constexpr (std::is_same_v<T, Vector2>) {
 		ImGui::DragFloat2(keyName.c_str(), &value_.x, 0.01f);
-	}else if constexpr (std::is_same_v<T, Vector3>) {
+	}
+	else if constexpr (std::is_same_v<T, Vector3>) {
 		ImGui::DragFloat3(keyName.c_str(), &value_.x, 0.01f);
 	}
 	else {

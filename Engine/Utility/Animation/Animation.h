@@ -16,7 +16,7 @@ public: // メンバ関数
 	/// </summary>
 	/// <param keyName="keyName">アニメーション名</param>
 	void Init(const std::string& name);
-	
+
 	/// <summary>
 	/// 初期化関数
 	/// </summary>
@@ -35,9 +35,17 @@ public: // メンバ関数
 	void Play();
 
 	/// <summary>
+	/// 再生関数
+	/// </summary>
+	/// <param name="trantionTime">遷移秒数</param>
+	void Play(const float& trantionTime);
+
+	/// <summary>
 	/// 停止関数
 	/// </summary>
 	void Stop();
+
+public: // アクセッサ等
 
 	/// <summary>
 	/// アニメーションキー配列を追加する関数
@@ -56,8 +64,6 @@ public: // メンバ関数
 	template<typename T>
 	void AddAnimationKeys(const std::string keyName);
 
-public: // アクセッサ等
-
 	/// <summary>
 	/// アニメーションの再生状態ゲッター
 	/// </summary>
@@ -73,6 +79,15 @@ public: // アクセッサ等
 	void ChangeParameter(const std::string name, bool isChange = false);
 
 	/// <summary>
+	/// <para>アニメーション再生時に読み込むパラメータを変更する関数</para>
+	/// <para>変更したパラメータが同名のキー情報を持っている必要アリ</para>
+	/// </summary>
+	/// <param name="name">読み込むパラメータ名</param>
+	/// <param name="transitionTime">アニメーション補間にかかる秒数</param>
+	/// <param name="isChange">実行時にそのパラメータへの強制的な遷移を行うか</param>
+	void ChangeParameter(const std::string name, const float& transitionTime, bool isChange = false);
+
+	/// <summary>
 	/// 読み込み中パラメータゲッター
 	/// </summary>
 	const std::string GetReadingParameterName() { return parameterName_; }
@@ -82,6 +97,12 @@ public: // アクセッサ等
 	/// </summary>
 	/// <returns>アニメーション全体の進捗</returns>
 	float GetAnimationProgress();
+
+	/// <summary>
+	/// アニメーション再生速度セッター
+	/// </summary>
+	/// <param name="animSpeed"></param>
+	void SetAnimationSpeed(const float& animSpeed);
 
 public: // その他関数群
 
@@ -120,6 +141,7 @@ public: // メンバ変数
 
 	// ImGui用変数
 	int imGuiSelectKey_; // 選択中キー
+	float imGuiAnimSpeed_ = 1.0f; // アニメーション再生速度
 
 	// ループトリガー
 	bool isLoop_ = false;
@@ -146,7 +168,7 @@ inline void Animation::AddAnimationKeys(const std::string keyName, T* value)
 				// 追加を行わず処理を抜ける
 				return;
 			}
-		}, keys);
+			}, keys);
 	}
 
 	// 同名キー配列が見つからなかった場合、キーの追加処理を行う
@@ -157,16 +179,31 @@ inline void Animation::AddAnimationKeys(const std::string keyName, T* value)
 template<typename T>
 inline void Animation::AddAnimationKeys(const std::string keyName)
 {
+	// 同名キーを見つけたか
+	bool isFound = false;
+
 	// アニメーションキー配列を新しく追加する処理
 	for (auto& keys : animationKeys_) {
 		// 格納しているキー名と同一のキーがあった場合にはこのキーの追加は行わない
-		std::visit([keyName](auto& key) {
+		std::visit([keyName, &isFound](auto& key) {
 			// 同一キー名を発見した場合
 			if (key.keysName_ == keyName) {
-				// 追加を行わず処理を抜ける
-				return;
+				// 同名キーを見つけた場合フラグをTrue
+				isFound = true;
 			}
 			}, keys);
+
+		// 同名キーを見つけた場合
+		if (isFound) {
+			// ループを抜ける
+			break;
+		}
+	}
+
+	// 同名キーを見つけた場合
+	if (isFound) {
+		// 早期リターン
+		return;
 	}
 
 	// 同名キー配列が見つからなかった場合、キーの追加処理を行う

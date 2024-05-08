@@ -45,7 +45,7 @@ public: // メンバ関数
 	/// </summary>
 	/// <param name="name">生成するパラメータ名</param>
 	void CreateAnimationParameter(const std::string name);
-	
+
 	/// <summary>
 	/// 引数で指定したアニメーションに新しくキー配列を追加する関数
 	/// </summary>

@@ -14,7 +14,7 @@ void AnimationManager::Update()
 			return true;
 		}
 		return false;
-	});
+		});
 
 	// 全てのアニメーションを更新する
 	for (std::unique_ptr<Animation>& a : animations_) {
@@ -63,7 +63,7 @@ void AnimationManager::DisplayImGui()
 				// 表示アニメーション切り替え
 				if (ImGui::MenuItem(parameters_[i].name_.c_str())) {
 					imGuiSelectAnimation_ = i;
-				}	
+				}
 			}
 			ImGui::EndMenu();
 		}
@@ -107,15 +107,6 @@ void AnimationManager::CreateAnimationParameter(const std::string name)
 
 Animation* AnimationManager::CreateAnimation(const std::string& name, const std::string& parameterName)
 {
-	// 保存されているパラメーター内に同名のアニメーションが存在しない場合はパラメーターとして追加する
-	for (std::unique_ptr<Animation>& a : animations_) {
-		// 同名のアニメーションが見つかった場合
-		if (a->name_ == name) {
-			// 作成は行わず、そのアニメーションを返す
-			return a.get();
-		}
-	}
-
 	// 新しいアニメーションを生成
 	std::unique_ptr<Animation> newAnimation = std::make_unique<Animation>();
 	// 生成したアニメーションの初期化

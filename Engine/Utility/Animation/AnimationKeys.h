@@ -42,6 +42,12 @@ public: // メンバ関数
 	void Play(const int32_t& keyIndex);
 
 	/// <summary>
+	///	アニメーション再生関数
+	/// </summary>
+	/// <param name="transitionTime">前のアニメーションからの補間秒数</param>
+	void Play(const float& transitionTime);
+
+	/// <summary>
 	/// ImGuiの表示関数
 	/// </summary>
 	void DisplayImGui();
@@ -57,7 +63,7 @@ public: // アクセッサ等
 	/// アニメーションフレーム数の取得
 	/// </summary>
 	/// <returns>アニメーション全体のフレーム数</returns>
-	int32_t GetAnimationFrameCount() { 
+	int32_t GetAnimationFrameCount() {
 		if (keys_.size() != 0) {
 			return keys_.back().playFrame_;
 		}
@@ -70,6 +76,12 @@ public: // アクセッサ等
 	/// </summary>
 	/// <returns>アニメーション進捗</returns>
 	float GetKeysProgress() { return animTimer_.GetProgress(); }
+
+	/// <summary>
+	/// アニメーション再生速度セッター
+	/// </summary>
+	/// <param name="animSpeed">再生速度</param>
+	void SetAnimSpeed(const float& animSpeed);
 
 private: // プライベートなメンバ関数
 
@@ -116,6 +128,13 @@ public: // メンバ変数
 	int32_t keyCount_ = 0;
 	// 再生中キー
 	int32_t playingKey_ = 0;
+
+	// アニメーション変更時のパラメータ保持用
+	T prevParameter_;
+	// アニメーション間の補間にかかる秒数
+	float transitionTime_ = 0.0f;
+	// アニメーション間の遷移を行っているか
+	bool isTransitionning_ = false;
 
 	// 線形補間を行うキーの取得
 	AnimationKey<T> prevKey_; // 前フレーム用
@@ -186,8 +205,16 @@ inline void AnimationKeys<T>::Update()
 
 	// 再生中か、キーのサイズが2以上の時
 	if (isPlay_ && keys_.size() >= 2 && animateObject_ != nullptr) {
-		// 再生中フレームで遷移させる
-		*animateObject_ = KLib::Lerp<T>(prevKey_.value_, nextKey_.value_, nextKey_.ease_(lerpTimer_.GetProgress()));
+
+		if (!isTransitionning_) {
+			// 再生中フレームで遷移させる
+			*animateObject_ = KLib::Lerp<T>(prevKey_.value_, nextKey_.value_, nextKey_.ease_(lerpTimer_.GetProgress()));
+		}
+		else {
+			// 再生中フレームで遷移させる
+			*animateObject_ = KLib::Lerp<T>(prevKey_.value_, nextKey_.value_, KLib::EaseInOutQuad(lerpTimer_.GetProgress()));
+		}
+
 
 		// 各種タイマー更新
 		lerpTimer_.Update(); // 線形補間
@@ -208,6 +235,106 @@ inline void AnimationKeys<T>::Update()
 			}
 		}
 	}
+}
+
+template<typename T>
+inline void AnimationKeys<T>::Play(const int32_t& keyIndex) {
+
+	// キーの情報を読み取る
+	if (animateObject_ != nullptr) {
+		ApplyItem();
+	}
+
+	// そもそもアニメーションのキー数が2以下だった場合再生すらしない
+	if (keys_.size() < 2) {
+		isEnd_ = true;
+		isPlay_ = false;
+		return;
+	}
+
+	// この関数を使用した場合補間を行わない
+	isTransitionning_ = false;
+
+	// 再生中キーを指定したキーに変更
+	playingKey_ = keyIndex;
+
+	// アニメーションの最終フレームを超過していた場合1フレーム前までさかのぼる
+	if (playingKey_ >= keys_.size()) {
+		// 最終フレームの１つ前のフレームに設定
+		playingKey_ = (int)keys_.size() - 2;
+	}
+
+	// リストからイテレータで値を取得
+	auto pKeyIt = std::next(keys_.begin(), playingKey_);
+	auto nKeyIt = std::next(keys_.begin(), playingKey_ + 1);
+
+	// 現在のキーで値を設定
+	prevKey_ = *pKeyIt;
+	nextKey_ = *nKeyIt;
+
+	// 次のフレームとの差分を求める
+	int difFrame = nextKey_.playFrame_ - prevKey_.playFrame_;
+
+	// 遷移時間タイマーを (1フレームの時間 * 差分フレーム) で開始
+	lerpTimer_.Start((1.0f / 60.0f) * difFrame);
+	// アニメーション時間タイマーを(1フレームの時間 * 最終フレーム) で開始
+	animTimer_.Start((1.0f / 60.0f) * keys_.back().playFrame_);
+
+	// 再生開始
+	isPlay_ = true;
+	// 再生中
+	isEnd_ = false;
+
+}
+
+template<typename T>
+inline void AnimationKeys<T>::Play(const float& transitionTime)
+{
+	// キーの情報を読み取る
+	if (animateObject_ != nullptr) {
+		ApplyItem();
+	}
+
+	// そもそもアニメーションのキー数が2以下だった場合再生すらしない
+	if (keys_.size() < 2) {
+		isEnd_ = true;
+		isPlay_ = false;
+		return;
+	}
+
+	// 再生中キーを指定したキーに変更
+	playingKey_ = 0;
+
+	// アニメーションの最終フレームを超過していた場合1フレーム前までさかのぼる
+	if (playingKey_ >= keys_.size()) {
+		// 最終フレームの１つ前のフレームに設定
+		playingKey_ = (int)keys_.size() - 2;
+	}
+
+	// アニメーション中のパラメータの現在の状態を取得
+	if (animateObject_ != nullptr) {
+		prevParameter_ = *animateObject_;
+	}
+	// 補間秒数の取得
+	transitionTime_ = transitionTime;
+	// 補間を開始する
+	isTransitionning_ = true;
+
+	// リストからイテレータで値を取得
+	auto nKeyIt = std::next(keys_.begin(), playingKey_);
+
+	// 現在のキーで値を設定
+	prevKey_.value_ = prevParameter_;
+	nextKey_ = *nKeyIt;
+
+	// 遷移時間タイマーを指定された遷移秒数で開始
+	lerpTimer_.Start(transitionTime_);
+
+	// 再生開始
+	isPlay_ = true;
+	// 再生中
+	isEnd_ = false;
+
 }
 
 template<typename T>
@@ -240,50 +367,11 @@ inline void AnimationKeys<T>::DisplayImGui()
 }
 
 template<typename T>
-inline void AnimationKeys<T>::Play(const int32_t& keyIndex){
-	
-	// キーの情報を読み取る
-	if (animateObject_ != nullptr) {
-		ApplyItem();
-	}
-
-	// そもそもアニメーションのキー数が2以下だった場合再生すらしない
-	if (keys_.size() < 2) { 
-		isEnd_ = true;
-		isPlay_ = false;
-		return;
-	}
-	
-	// 再生中キーを指定したキーに変更
-	playingKey_ = keyIndex;
-	
-	// アニメーションの最終フレームを超過していた場合1フレーム前までさかのぼる
-	if (playingKey_ >= keys_.size()) {
-		// 最終フレームの１つ前のフレームに設定
-		playingKey_ = (int)keys_.size() - 2;
-	}
-
-	// リストからイテレータで値を取得
-	auto pKeyIt = std::next(keys_.begin(), playingKey_);
-	auto nKeyIt = std::next(keys_.begin(), playingKey_ + 1);
- 
-	// 現在のキーで値を設定
-	prevKey_ = *pKeyIt;
-	nextKey_ = *nKeyIt;
-
-	// 次のフレームとの差分を求める
-	int difFrame = nextKey_.playFrame_ - prevKey_.playFrame_;
-
-	// 遷移時間タイマーを (1フレームの時間 * 差分フレーム) で開始
-	lerpTimer_.Start(std::clamp(ImGui::GetIO().DeltaTime, 0.f, 0.1f) * difFrame);
-	// アニメーション時間タイマーを(1フレームの時間 * 最終フレーム) で開始
-	animTimer_.Start(std::clamp(ImGui::GetIO().DeltaTime, 0.f, 0.1f) * keys_.back().playFrame_);
-
-	// 再生開始
-	isPlay_ = true;
-	// 再生中
-	isEnd_ = false;
-
+inline void AnimationKeys<T>::SetAnimSpeed(const float& animSpeed)
+{
+	// 各種タイマーの再生速度を設定
+	lerpTimer_.SetTimerSpeed(animSpeed);
+	animTimer_.SetTimerSpeed(animSpeed);
 }
 
 template<typename T>
@@ -301,8 +389,18 @@ inline void AnimationKeys<T>::AddKey(int32_t keyIndex)
 template<typename T>
 inline void AnimationKeys<T>::NextKey()
 {
-	// 次のキーへ
-	playingKey_++;
+	// 遷移が行われていないなら
+	if (!isTransitionning_) {
+		// 次のキーへ
+		playingKey_++;
+	}
+	else {
+		// 遷移を無効にする
+		isTransitionning_ = false;
+
+		// アニメーション時間タイマーを(1フレームの時間 * 最終フレーム) で開始
+		animTimer_.Start((1.0f / 60.0f) * keys_.back().playFrame_);
+	}
 
 	// リストからイテレータで値を取得
 	auto pKeyIt = std::next(keys_.begin(), playingKey_);
@@ -317,7 +415,7 @@ inline void AnimationKeys<T>::NextKey()
 		int difFrame = nextKey_.playFrame_ - prevKey_.playFrame_;
 
 		// 遷移時間タイマーを (1フレームの時間 * 差分フレーム) で開始
-		lerpTimer_.Start(std::clamp(ImGui::GetIO().DeltaTime, 0.f, 0.1f) * difFrame);
+		lerpTimer_.Start((1.0f / 60.0f) * difFrame);
 	}
 }
 
@@ -376,7 +474,7 @@ inline void AnimationKeys<T>::ApplyItem()
 	// キー総数の取得
 	std::string keyName = keysName_ + " : KeyCount";
 	keyCount_ = GlobalVariables::GetInstance()->GetIntValue(name_, keyName);
-	
+
 	// キー配列を一度クリアする
 	keys_.clear();
 

@@ -27,10 +27,10 @@ void Animation::Update()
 
 	// 配列内の全てのキーを更新する
 	for (auto& keys : animationKeys_) {
-		std::visit([](auto& key) { 
+		std::visit([](auto& key) {
 			// キーを更新
-			key.Update(); 
-		}, keys);
+			key.Update();
+			}, keys);
 	}
 
 	// 配列内の全てのキーが終了しているかを確認
@@ -40,8 +40,8 @@ void Animation::Update()
 				// この時点で全てのキーは終了していない
 				isAllKeyEnd_ = false;
 			}
-		}, keys);
-		
+			}, keys);
+
 		// 全てのキーが終了していない時点でループを抜ける
 		if (!isAllKeyEnd_) {
 			break;
@@ -57,7 +57,7 @@ void Animation::Update()
 				std::visit([](auto& key) {
 					// 最初のフレームからキーを再生
 					key.Play(0);
-				}, keys);
+					}, keys);
 			}
 		}
 		else {
@@ -75,7 +75,23 @@ void Animation::Play()
 		std::visit([](auto& key) {
 			// 最初のフレームからキーを再生
 			key.Play(0);
-		}, keys);
+			}, keys);
+	}
+
+	// アニメーションは終了していない
+	isEnd_ = false;
+	// 全てのキーは終了していない
+	isAllKeyEnd_ = false;
+}
+
+void Animation::Play(const float& trantionTime)
+{
+	// 全てのキーを
+	for (auto& keys : animationKeys_) {
+		std::visit([&trantionTime](auto& key) {
+			// 最初のフレームからキーを再生
+			key.Play(trantionTime);
+			}, keys);
 	}
 
 	// アニメーションは終了していない
@@ -97,7 +113,6 @@ void Animation::Stop()
 
 bool Animation::GetIsPlay()
 {
-
 	// 値返還用
 	bool isPlay = false;
 
@@ -109,7 +124,7 @@ bool Animation::GetIsPlay()
 				isPlay = true;
 			}
 
-		}, keys);
+			}, keys);
 	}
 
 	// 再生中でない
@@ -118,8 +133,9 @@ bool Animation::GetIsPlay()
 
 void Animation::ChangeParameter(const std::string name, bool isChange)
 {
+	// パラメータ名の取得
 	parameterName_ = name;
-
+	// アニメーションは終了していない
 	isEnd_ = false;
 
 	// 全キー配列の読み込みパラメータを変更する
@@ -136,6 +152,27 @@ void Animation::ChangeParameter(const std::string name, bool isChange)
 		if (GetIsPlay()) {
 			Play();
 		}
+	}
+}
+
+void Animation::ChangeParameter(const std::string name, const float& transitionTime, bool isChange)
+{
+	// パラメータ名の取得
+	parameterName_ = name;
+	// アニメーションは終了していない
+	isEnd_ = false;
+
+	// 全キー配列の読み込みパラメータを変更する
+	for (auto& keys : animationKeys_) {
+		std::visit([&](auto& key) {
+			// 読み込みパラメータ名変更
+			key.name_ = parameterName_;
+			}, keys);
+	}
+
+	// 強制遷移を行うのであればキーの最初から再生
+	if (isChange) {
+		Play(transitionTime);
 	}
 }
 
@@ -159,10 +196,21 @@ float Animation::GetAnimationProgress()
 	return progress;
 }
 
+void Animation::SetAnimationSpeed(const float& animSpeed)
+{
+	// 全キー配列の再生速度を変更する
+	for (auto& keys : animationKeys_) {
+		std::visit([&animSpeed](auto& key) {
+			// 再生速度を変更
+			key.SetAnimSpeed(animSpeed);
+			}, keys);
+	}
+}
+
 void Animation::DisplayImGui()
 {
 	if (ImGui::TreeNode(name_.c_str())) {
-		
+
 		// 再生中ならストップを可能に
 		if (GetIsPlay()) {
 			// ボタンを押したら再生停止
@@ -181,7 +229,7 @@ void Animation::DisplayImGui()
 		std::string display;
 
 		// 再生状態の表示
-		if(GetIsPlay()) {
+		if (GetIsPlay()) {
 			display = "PlayState : Playing";
 		}
 		else {
@@ -199,6 +247,13 @@ void Animation::DisplayImGui()
 		// アニメーションの進捗
 		float progress = GetAnimationProgress();
 		ImGui::Text("Progress : %4.2f", progress);
+
+		// タイマーのImGuiを表示
+		ImGui::DragFloat("AnimSpeed", &imGuiAnimSpeed_, 0.05f, 0.05f, 10.0f);
+		// ボタンを押すとアニメーション再生速度を指定された値でセット
+		if (ImGui::Button("SetAnimSpeed")) {
+			SetAnimationSpeed(imGuiAnimSpeed_);
+		}
 
 		ImGui::TreePop();
 	}
@@ -225,7 +280,7 @@ void Animation::DisplayParameterImGui()
 						if (ImGui::MenuItem(key.keysName_.c_str())) {
 							imGuiSelectKey_ = (int)index;
 						}
-					}, keys);
+						}, keys);
 
 					// 選択中インデックスインクリメント
 					index++;
@@ -278,6 +333,3 @@ void Animation::SaveAnimation()
 	// 調整項目クラスに登録された値を外部ファイルに書き出す
 	GlobalVariables::GetInstance()->SaveFile(name_);
 }
-
-
-
