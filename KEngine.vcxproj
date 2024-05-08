@@ -104,6 +104,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Lighting\Light\DirectionalLight.cpp" />
     <ClCompile Include="Engine\Base\DXC\DXC.cpp" />
     <ClCompile Include="Engine\Base\Resource\Rendering\DepthStencil.cpp" />
     <ClCompile Include="Engine\Base\Resource\Rendering\BackBuffer.cpp" />
@@ -180,6 +181,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Base\Renderer\RendererManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Lighting\Light\DirectionalLight.h" />
     <ClInclude Include="Engine\Base\DXC\DXC.h" />
     <ClInclude Include="Engine\Base\Command.h" />
     <ClInclude Include="Engine\Base\Resource\Rendering\DepthStencil.h" />
@@ -279,6 +281,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Base\Renderer\IRenderer.h" />
     <ClInclude Include="Engine\Base\Renderer\NormalRenderer.h" />
     <ClInclude Include="Engine\Base\Renderer\RendererManager.h" />
+    <ClInclude Include="Engine\Lighting\Light\ILight.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Meshlet.hlsli">

@@ -16,6 +16,7 @@ public: // サブクラス
 	/// </summary>
 	struct MaterialData {
 		Vector4 color;
+		int32_t enableLighting;
 	};
 
 

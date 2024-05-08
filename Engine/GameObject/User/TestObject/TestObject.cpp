@@ -56,6 +56,7 @@ void TestObject::DisplayImGui()
 	transform_.DisplayImGui();
 
 	ImGui::DragFloat4("MaterialColor", &meshes_[0]->material_->color_.x);
+	ImGui::Checkbox("EnableLighting", &meshes_[0]->material_->enableLighting_);
 
 	if (ImGui::Button("Delete This")) {
 		Destroy();

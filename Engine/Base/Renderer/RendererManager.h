@@ -2,6 +2,7 @@
 #include "../Command.h"
 #include "../RootSignature/RootSignatureManager.h"
 #include "../../Primitive/PrimitiveManager.h"
+#include "../../Lighting/Light/DirectionalLight.h"
 #include "NormalRenderer.h"
 
 // クラスの前方宣言
@@ -54,6 +55,12 @@ public: // アクセッサ等
 	/// <returns>コマンド管理クラス</returns>
 	Command* GetCommand() { return &command_; }
 
+	/// <summary>
+	/// 平行光源ゲッター
+	/// </summary>
+	/// <returns>平行光源本体</returns>
+	DirectionalLight* GetDirectionalLight() { return light_.get(); }
+
 private: // メンバ変数
 
 	// コマンド管理用
@@ -67,6 +74,10 @@ private: // メンバ変数
 
 	// 形状マネージャ
 	PrimitiveManager* primitiveManager_ = nullptr;
+
+	// 平行光源
+	// ! 今は仮置き、じきにライト用の管理マネージャを作成する
+	std::unique_ptr<DirectionalLight> light_;
 
 	// 通常描画レンダラー
 	NormalRenderer normalRenderer_;

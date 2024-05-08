@@ -6,6 +6,7 @@
 
 // クラスの前方宣言
 class PrimitiveManager;
+class DirectionalLight;
 
 /// <summary>
 /// 通常描画用レンダラークラス
@@ -44,7 +45,8 @@ public: // メンバ関数
 	/// <param name="signature">ルートシグネチャ</param>
 	/// <param name="dxc">DirectXシェーダーコンパイラ</param>
 	/// <param name="pm">形状マネージャ</param>
-	void Init(DirectXDevice* device, ID3D12RootSignature* signature, DXC* dxc, PrimitiveManager* pm);
+	/// <param name="lt">平行光源</param>
+	void Init(DirectXDevice* device, ID3D12RootSignature* signature, DXC* dxc, PrimitiveManager* pm, DirectionalLight* lt);
 
 	/// <summary>
 	/// 描画命令関数
@@ -70,6 +72,9 @@ private: // メンバ変数
 
 	// 形状マネージャ
 	PrimitiveManager* primitiveManager_ = nullptr;
+
+	// 平行光源取得用
+	DirectionalLight* light_ = nullptr;
 
 };
 

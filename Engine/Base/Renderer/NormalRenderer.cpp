@@ -1,8 +1,9 @@
 #include "NormalRenderer.h"
 #include "../../../Externals/imgui/ImGuiManager.h"
 #include "../../Primitive/PrimitiveManager.h"
+#include "../../Lighting/Light/DirectionalLight.h"
 
-void NormalRenderer::Init(DirectXDevice* device, ID3D12RootSignature* signature, DXC* dxc, PrimitiveManager* pm)
+void NormalRenderer::Init(DirectXDevice* device, ID3D12RootSignature* signature, DXC* dxc, PrimitiveManager* pm, DirectionalLight* lt)
 {
 	// ルートシグネチャ取得
 	rootSignature_ = signature;
@@ -15,6 +16,9 @@ void NormalRenderer::Init(DirectXDevice* device, ID3D12RootSignature* signature,
 
 	// 形状マネージャのインスタンス取得
 	primitiveManager_ = pm;
+
+	// 平行光源の取得
+	light_ = lt;
 }
 
 void NormalRenderer::DrawCall(ID3D12GraphicsCommandList6* list)
@@ -62,8 +66,9 @@ void NormalRenderer::DrawCall(ID3D12GraphicsCommandList6* list)
 	// コマンドリストにPSOを設定
 	list->SetPipelineState(pso_.GetState());
 
-	// カメラデータのアドレスを渡す
-	list->SetGraphicsRootConstantBufferView(0, target_.view_);
+	// 共通データのアドレスを渡す
+	list->SetGraphicsRootConstantBufferView(0, target_.view_);  // カメラデータ
+	list->SetGraphicsRootConstantBufferView(1, light_->view()); // 平行光源データ
 
 	// 登録されている形状全てを描画
 	primitiveManager_->Draw(list);

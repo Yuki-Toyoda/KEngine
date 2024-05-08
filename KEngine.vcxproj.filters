@@ -223,6 +223,7 @@
     <ClCompile Include="Engine\Base\Renderer\NormalRenderer.cpp" />
     <ClCompile Include="Engine\Base\DXC\DXC.cpp" />
     <ClCompile Include="Engine\Base\Renderer\RendererManager.cpp" />
+    <ClCompile Include="Engine\Lighting\Light\DirectionalLight.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -481,6 +482,8 @@
     <ClInclude Include="Engine\Base\Renderer\NormalRenderer.h" />
     <ClInclude Include="Engine\Base\DXC\DXC.h" />
     <ClInclude Include="Engine\Base\Renderer\RendererManager.h" />
+    <ClInclude Include="Engine\Lighting\Light\ILight.h" />
+    <ClInclude Include="Engine\Lighting\Light\DirectionalLight.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
