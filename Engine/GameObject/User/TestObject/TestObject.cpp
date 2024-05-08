@@ -11,9 +11,9 @@ void TestObject::Init()
 	/// ~スプライトの追加関数~
 	//AddSprite("TestSprite", { 0.0f, 0.0f }, { 512.0f, 512.0f }, TextureManager::Load("./Engine/Resource/Samples/Box", "uvChecker.png"));
 
-	//// OBB生成
-	//AddColliderOBB("Test", &transform_.scale_, &transform_.rotate_, &transform_.translate_);
-	////AddColliderAABB("Test", &transform_.translate_, &transform_.scale_);
+	// OBB生成
+	AddColliderOBB("Test", &transform_.scale_, &transform_.rotate_, &transform_.translate_);
+	//AddColliderAABB("Test", &transform_.translate_, &transform_.scale_);
 
 	//// アニメーションのパラメータ作成
 	//AnimationManager::GetInstance()->CreateAnimationParameter("Test");
@@ -78,7 +78,7 @@ void TestObject::DisplayImGui()
 void TestObject::OnCollisionEnter(Collider* collider)
 {
 	collider;
-	color_ = { 1.0f, 0.0f, 0.0f, 1.0f };
+	meshes_[0]->material_->color_ = { 1.0f, 0.0f, 0.0f, 1.0f };
 
 	//ParticleEmitterManager::GetInstance()->CreateEmitter<IParticleEmitter, IParticle>("test", 100, 5, transform_.translate_, 15.0f, 0.1f, TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png"));
 }
@@ -86,7 +86,7 @@ void TestObject::OnCollisionEnter(Collider* collider)
 void TestObject::OnCollisionExit(Collider* collider)
 {
 	collider;
-	color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
+	meshes_[0]->material_->color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
 	
 	//ParticleEmitterManager::GetInstance()->CreateEmitter<IParticleEmitter, IParticle>("test", 100, 5, transform_.translate_, 15.0f, 0.1f, TextureManager::Load("./Engine/Resource/Samples/Box", "uvChecker.png"));
 }

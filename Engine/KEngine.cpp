@@ -37,8 +37,8 @@ void KEngineFrameWork::Init()
 	auto& io = ImGui::GetIO();
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
-	//// 衝突マネージャーの初期化
-	//collisionManager_ = CollisionManager::GetInstance();
+	// 衝突マネージャーの初期化
+	collisionManager_ = CollisionManager::GetInstance();
 
 	// シーンマネージャーのインスタンス取得
 	sceneManager_ = SceneManager::GetInstance();
@@ -65,30 +65,25 @@ void KEngineFrameWork::Update()
 	input_->Update();
 
 	// 衝突判定リストクリア
-	//collisionManager_->ListClear();
+	collisionManager_->ListClear();
 
 	// グローバル変数の更新
 	GlobalVariables::GetInstance()->Update();
 
 	// シーンマネージャー更新
 	sceneManager_->Update();
-
-#ifdef _DEBUG // デバッグ時のみ
-	// DirectX汎用クラスのImGuiを描画
-	//dxCommon_->GetCommandManager()->DisplayImGui();
-#endif // _DEBUG
 }
 
 void KEngineFrameWork::PostUpdate()
 {
 	// 衝突判定検証
-	//collisionManager_->CheckAllCollision();
+	collisionManager_->CheckAllCollision();
 }
 
 void KEngineFrameWork::PreFinalize()
 {
 	// 衝突マネージャーリストクリア
-	//collisionManager_->ListClear();
+	collisionManager_->ListClear();
 }
 
 void KEngineFrameWork::Finalize()

@@ -100,7 +100,7 @@ protected: // メンバ変数
 	//ParticleEmitterManager* particleManager_ = nullptr;
 
 	// 衝突マネージャーのインスタンス格納用
-	//CollisionManager* collisionManager_ = nullptr;
+	CollisionManager* collisionManager_ = nullptr;
 
 	// シーンマネージャーのインスタンス格納用
 	SceneManager* sceneManager_ = nullptr;
