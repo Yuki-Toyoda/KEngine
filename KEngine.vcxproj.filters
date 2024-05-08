@@ -212,18 +212,42 @@
     <ClCompile Include="Engine\Utility\DataSegment\DataSegment.cpp">
       <Filter>App\Utility\DataSegment</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Base\RootSignature\IRootSignature.cpp" />
-    <ClCompile Include="Engine\Base\RootSignature\ModelRootSignature.cpp" />
-    <ClCompile Include="Engine\Base\RootSignature\RootSignatureManager.cpp" />
-    <ClCompile Include="Engine\Utility\IndexList\IndexList.cpp" />
-    <ClCompile Include="Engine\Base\DescriptorHeaps\HeapManager.cpp" />
-    <ClCompile Include="Engine\Base\Resource\Rendering\BackBuffer.cpp" />
-    <ClCompile Include="Engine\Base\Resource\Rendering\TextureResource.cpp" />
-    <ClCompile Include="Engine\Base\Resource\Rendering\DepthStencil.cpp" />
-    <ClCompile Include="Engine\Base\Renderer\NormalRenderer.cpp" />
-    <ClCompile Include="Engine\Base\DXC\DXC.cpp" />
-    <ClCompile Include="Engine\Base\Renderer\RendererManager.cpp" />
-    <ClCompile Include="Engine\Lighting\Light\DirectionalLight.cpp" />
+    <ClCompile Include="Engine\Base\DescriptorHeaps\HeapManager.cpp">
+      <Filter>Engine\Base\DescriptorHeaps</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Base\DXC\DXC.cpp">
+      <Filter>Engine\Base\DXC</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Base\Renderer\NormalRenderer.cpp">
+      <Filter>Engine\Base\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Base\Renderer\RendererManager.cpp">
+      <Filter>Engine\Base\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Base\Resource\Rendering\TextureResource.cpp">
+      <Filter>Engine\Base\Resource\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Base\Resource\Rendering\DepthStencil.cpp">
+      <Filter>Engine\Base\Resource\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Base\Resource\Rendering\BackBuffer.cpp">
+      <Filter>Engine\Base\Resource\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Base\RootSignature\ModelRootSignature.cpp">
+      <Filter>Engine\Base\RootSignature</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Base\RootSignature\RootSignatureManager.cpp">
+      <Filter>Engine\Base\RootSignature</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Base\RootSignature\IRootSignature.cpp">
+      <Filter>Engine\Base\RootSignature</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Utility\IndexList\IndexList.cpp">
+      <Filter>App\Utility\IndexList</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Lighting\Light\DirectionalLight.cpp">
+      <Filter>Engine\Lighting\Light</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -460,30 +484,78 @@
     <ClInclude Include="Engine\Utility\DataSegment\DataSegment.h">
       <Filter>App\Utility\DataSegment</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Utility\IndexList\Index.h" />
-    <ClInclude Include="Engine\Utility\IndexList\IndexList.h" />
-    <ClInclude Include="Engine\Base\RootSignature\IRootSignature.h" />
-    <ClInclude Include="Engine\Base\RootSignature\ModelRootSignature.h" />
-    <ClInclude Include="Engine\Base\RootSignature\RootSignatureManager.h" />
-    <ClInclude Include="Engine\Base\Buffer\BufferStructs.h" />
-    <ClInclude Include="Engine\Base\Resource\IResource.h" />
-    <ClInclude Include="Engine\Base\DescriptorHeaps\HeapManager.h" />
-    <ClInclude Include="Engine\Base\Config\Config.h" />
-    <ClInclude Include="Engine\Base\Resource\Data\ConstantBuffer.h" />
-    <ClInclude Include="Engine\Base\Resource\Data\IDataResource.h" />
-    <ClInclude Include="Engine\Base\Resource\Data\StructuredBuffer.h" />
-    <ClInclude Include="Engine\Utility\Counter\Counter.h" />
-    <ClInclude Include="Engine\Base\Resource\Rendering\IRenderingResource.h" />
-    <ClInclude Include="Engine\Base\Resource\Rendering\BackBuffer.h" />
-    <ClInclude Include="Engine\Base\Resource\Rendering\TextureResource.h" />
-    <ClInclude Include="Engine\Base\Resource\Rendering\DepthStencil.h" />
-    <ClInclude Include="Engine\Base\Command.h" />
-    <ClInclude Include="Engine\Base\Renderer\IRenderer.h" />
-    <ClInclude Include="Engine\Base\Renderer\NormalRenderer.h" />
-    <ClInclude Include="Engine\Base\DXC\DXC.h" />
-    <ClInclude Include="Engine\Base\Renderer\RendererManager.h" />
-    <ClInclude Include="Engine\Lighting\Light\ILight.h" />
-    <ClInclude Include="Engine\Lighting\Light\DirectionalLight.h" />
+    <ClInclude Include="Engine\Base\Config\Config.h">
+      <Filter>Engine\Base\Config</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\Command.h">
+      <Filter>Engine\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\DescriptorHeaps\HeapManager.h">
+      <Filter>Engine\Base\DescriptorHeaps</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\DXC\DXC.h">
+      <Filter>Engine\Base\DXC</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\Renderer\NormalRenderer.h">
+      <Filter>Engine\Base\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\Renderer\IRenderer.h">
+      <Filter>Engine\Base\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\Renderer\RendererManager.h">
+      <Filter>Engine\Base\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\Buffer\BufferStructs.h">
+      <Filter>Engine\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\Resource\IResource.h">
+      <Filter>Engine\Base\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\Resource\Data\ConstantBuffer.h">
+      <Filter>Engine\Base\Resource\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\Resource\Data\IDataResource.h">
+      <Filter>Engine\Base\Resource\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\Resource\Data\StructuredBuffer.h">
+      <Filter>Engine\Base\Resource\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\Resource\Rendering\IRenderingResource.h">
+      <Filter>Engine\Base\Resource\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\Resource\Rendering\TextureResource.h">
+      <Filter>Engine\Base\Resource\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\Resource\Rendering\DepthStencil.h">
+      <Filter>Engine\Base\Resource\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\Resource\Rendering\BackBuffer.h">
+      <Filter>Engine\Base\Resource\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\RootSignature\ModelRootSignature.h">
+      <Filter>Engine\Base\RootSignature</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\RootSignature\RootSignatureManager.h">
+      <Filter>Engine\Base\RootSignature</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\RootSignature\IRootSignature.h">
+      <Filter>Engine\Base\RootSignature</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Utility\IndexList\IndexList.h">
+      <Filter>App\Utility\IndexList</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Utility\IndexList\Index.h">
+      <Filter>App\Utility\IndexList</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Utility\Counter\Counter.h">
+      <Filter>App\Utility\Counter</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Lighting\Light\DirectionalLight.h">
+      <Filter>Engine\Lighting\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Lighting\Light\ILight.h">
+      <Filter>Engine\Lighting\Light</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -495,7 +567,9 @@
     <None Include="Externals\imgui\.gitignore">
       <Filter>Externals\ImGui</Filter>
     </None>
-    <None Include="Engine\Resource\Shader\Meshlet.hlsli" />
+    <None Include="Engine\Resource\Shader\Meshlet.hlsli">
+      <Filter>Engine\Resource\Shader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -515,9 +589,6 @@
     </Filter>
     <Filter Include="Engine\Base\PSO">
       <UniqueIdentifier>{66b5ba43-5908-4908-85e4-3696756ae501}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Base\Command">
-      <UniqueIdentifier>{827fb3a2-eba9-4bf6-aee3-bca0159d7145}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\Collider">
       <UniqueIdentifier>{3d74ac5f-3244-4942-8648-980e216271a0}</UniqueIdentifier>
@@ -630,6 +701,39 @@
     <Filter Include="App\Utility\DataSegment">
       <UniqueIdentifier>{9e357208-003e-40e1-b204-427750b773bc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Base\Config">
+      <UniqueIdentifier>{7461f27d-5bf0-4b83-be24-ebf8d4b255b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Base\DXC">
+      <UniqueIdentifier>{5f86f586-f855-440b-b5d0-50a357f86cf2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Base\Renderer">
+      <UniqueIdentifier>{ec25fbde-bc1b-441c-ac64-8e5e6d6898e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Base\Resource">
+      <UniqueIdentifier>{a8f83edd-0004-4579-ba63-b548c6133736}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Base\Resource\Data">
+      <UniqueIdentifier>{011a1bf2-57e2-4bab-b104-18b2dbe3ecce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Base\Resource\Rendering">
+      <UniqueIdentifier>{1d67c21f-9006-4090-9b39-155bc82f9784}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Base\RootSignature">
+      <UniqueIdentifier>{ebdf12b0-c571-49c7-8ce0-8c7e6a7e0efd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Utility\IndexList">
+      <UniqueIdentifier>{50378334-9141-4942-9677-47f44c1ca8a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Utility\Counter">
+      <UniqueIdentifier>{b911f9a4-fabc-4627-97f0-b449a317fc64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Lighting">
+      <UniqueIdentifier>{80ac618a-745d-4ebf-89a9-a75f81615d36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Lighting\Light">
+      <UniqueIdentifier>{7880eb9d-02d6-4256-bdc1-469aadf597ad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Externals\imgui\LICENSE.txt">
@@ -637,7 +741,11 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Engine\Resource\Shader\MeshletMS.hlsl" />
-    <FxCompile Include="Engine\Resource\Shader\MeshletPS.hlsl" />
+    <FxCompile Include="Engine\Resource\Shader\MeshletPS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\MeshletMS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
