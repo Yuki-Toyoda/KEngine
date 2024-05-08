@@ -2,6 +2,7 @@
 #include <string>
 #include "../../GameObject/IObject.h"
 #include "../../Primitive/PrimitiveManager.h"
+#include "../../Resource/Texture/TextureManager.h"
 
 /// <summary>
 /// 線描画用クラス
@@ -23,7 +24,7 @@ public: // メンバ関数
 	/// <param name="position">線の開始座標</param>
 	/// <param name="thickness">線の太さ</param>
 	/// <param name="length">線の長さ</param>
-	void Init(const std::string& name, const Vector3& position, const Vector2& thickness, const float& length, Texture* texture);
+	void Init(const std::string& name, const Vector3& position, const Vector2& thickness, const float& length, Texture texture = TextureManager::GetInstance()->GetDefaultTexture());
 
 	/// <summary>
 	/// 更新関数
