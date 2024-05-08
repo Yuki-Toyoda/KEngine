@@ -1,6 +1,6 @@
 #pragma once
 #include <list>
-#include "BaseObject.h"
+#include "IObject.h"
 
 // クラスの前方宣言
 class Camera;
@@ -44,7 +44,7 @@ public: // メンバ関数
 	/// <param name="tag">タグ名</param>
 	/// <returns>生成したオブジェクトのインスタンス</returns>
 	template<IsBaseObject SelectObject>
-	inline SelectObject* CreateInstance(std::string name, BaseObject::Tag tag) {
+	inline SelectObject* CreateInstance(std::string name, IObject::Tag tag) {
 		// オブジェクトを生成
 		std::unique_ptr<SelectObject> newObject = std::make_unique<SelectObject>(); // インスタンスを生成
 		newObject->PreInitialize(name, tag);									    // 初期化
@@ -54,7 +54,7 @@ public: // メンバ関数
 		int sameNameCount = 0;
 
 		// 全オブジェクトから同名のオブジェクトがないか探す
-		for (std::unique_ptr<BaseObject>& object : objects_) {
+		for (std::unique_ptr<IObject>& object : objects_) {
 			// オブジェクト名を取得
 			std::string objectName = object->GetObjectName();
 			// オブジェクト名の末尾に数字が含まれている場合は末尾の文字を削除
@@ -101,7 +101,7 @@ public: // アクセッサ等
 		SelectObject* result;
 
 		// 全オブジェクトから同名のオブジェクトがないか探す
-		for (std::unique_ptr<BaseObject>& object : objects_) {
+		for (std::unique_ptr<IObject>& object : objects_) {
 			// 同名オブジェクトを見つけた場合
 			if (object->GetObjectName() == name) {
 				// そのオブジェクトを選択型に返還
@@ -127,7 +127,7 @@ public: // アクセッサ等
 		std::vector<SelectObject*> result;
 
 		// 全オブジェクトから同名のオブジェクトがないか探す
-		for (std::unique_ptr<BaseObject>& object : objects_) {
+		for (std::unique_ptr<IObject>& object : objects_) {
 			// そのオブジェクトを選択型に返還
 			SelectObject* o = dynamic_cast<SelectObject*>(object.get());
 			// 結果がnullptr以外だったらそれを配列に追加
@@ -150,7 +150,7 @@ public: // アクセッサ等
 		std::list<SelectObject*> result;
 
 		// 全オブジェクトから同名のオブジェクトがないか探す
-		for (std::unique_ptr<BaseObject>& object : objects_) {
+		for (std::unique_ptr<IObject>& object : objects_) {
 			// そのオブジェクトを選択型に返還
 			SelectObject* o = dynamic_cast<SelectObject*>(object.get());
 			// 結果がnullptr以外だったらそれを配列に追加
@@ -178,7 +178,7 @@ public: // アクセッサ等
 	/// </summary>
 	/// <param name="index">取得する番号</param>
 	/// <returns>インデックスのゲームオブジェクト</returns>
-	BaseObject* GetGameObject(int index);
+	IObject* GetGameObject(int index);
 
 private: // メンバ変数
 
@@ -186,7 +186,7 @@ private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 
 	// オブジェクトリスト
-	std::list<std::unique_ptr<BaseObject>> objects_;
+	std::list<std::unique_ptr<IObject>> objects_;
 
 	// 使用中のカメラ
 	Camera* mainCamera_ = nullptr;

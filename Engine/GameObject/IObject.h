@@ -42,7 +42,7 @@ private: // メンバ変数
 /// <summary>
 /// 全オブジェクトの基底クラス
 /// </summary>
-class BaseObject
+class IObject
 {
 public: // サブクラス
 
@@ -61,9 +61,9 @@ public: // サブクラス
 public: // メンバ関数
 
 	// コンストラクタ
-	BaseObject() = default;
+	IObject() = default;
 	// 仮想デストラクタ
-	virtual ~BaseObject();
+	virtual ~IObject();
 
 	// (ユーザー呼び出し禁止)共通初期化関数
 	void PreInitialize(std::string name, Tag tag);
@@ -241,5 +241,5 @@ protected: // 継承メンバ変数
 /// BaseObjectを継承したクラスを選択できるテンプレート
 /// </summary>
 template <class SelectObject>
-concept IsBaseObject = std::is_base_of<BaseObject, SelectObject>::value;
+concept IsBaseObject = std::is_base_of<IObject, SelectObject>::value;
 

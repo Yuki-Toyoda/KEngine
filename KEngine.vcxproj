@@ -126,7 +126,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Collider\Collider.cpp" />
     <ClCompile Include="Engine\Collider\CollisionManager.cpp" />
     <ClCompile Include="Engine\Debug\Debug.cpp" />
-    <ClCompile Include="Engine\GameObject\BaseObject.cpp" />
+    <ClCompile Include="Engine\GameObject\IObject.cpp" />
     <ClCompile Include="Engine\GameObject\Core\Camera.cpp" />
     <ClCompile Include="Engine\GameObject\GameObjectManager.cpp" />
     <ClCompile Include="Engine\GameObject\Samples\SampleSkyDome\SkyDome.cpp" />
@@ -213,7 +213,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Collider\Shape\OBB.h" />
     <ClInclude Include="Engine\Collider\Shape\Sphere.h" />
     <ClInclude Include="Engine\Debug\Debug.h" />
-    <ClInclude Include="Engine\GameObject\BaseObject.h" />
+    <ClInclude Include="Engine\GameObject\IObject.h" />
     <ClInclude Include="Engine\GameObject\Core\Camera.h" />
     <ClInclude Include="Engine\GameObject\GameObjectManager.h" />
     <ClInclude Include="Engine\GameObject\ObjectList.h" />

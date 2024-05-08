@@ -6,7 +6,7 @@ void GameScene::Init(){
 
 	// スカイドーム生成
 	SkyDome* skyDome = nullptr;
-	skyDome = gameObjectManager_->CreateInstance<SkyDome>("SkyDome", BaseObject::TagNone);
+	skyDome = gameObjectManager_->CreateInstance<SkyDome>("SkyDome", IObject::TagNone);
 
 }
 

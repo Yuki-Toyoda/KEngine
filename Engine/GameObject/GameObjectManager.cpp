@@ -14,10 +14,10 @@ void GameObjectManager::Init()
 	dxCommon_ = DirectXCommon::GetInstance();
 
 	// 全オブジェクトを破壊
-	for (std::unique_ptr<BaseObject>& object : objects_)
+	for (std::unique_ptr<IObject>& object : objects_)
 		object->Destroy();
 	// 破壊フラグの立ったオブジェクトを削除
-	objects_.remove_if([](std::unique_ptr<BaseObject>& object) {
+	objects_.remove_if([](std::unique_ptr<IObject>& object) {
 		if (object->GetIsDestroy()) {
 			return true;
 		}
@@ -36,7 +36,7 @@ void GameObjectManager::Init()
 void GameObjectManager::Update()
 {
 	// 破壊フラグの立ったオブジェクトを削除
-	objects_.remove_if([](std::unique_ptr<BaseObject>& object) {
+	objects_.remove_if([](std::unique_ptr<IObject>& object) {
 		if (object->GetIsDestroy()) {
 			return true;
 		}
@@ -44,7 +44,7 @@ void GameObjectManager::Update()
 	});
 
 	// 全オブジェクトを更新
-	for (std::unique_ptr<BaseObject>& object : objects_) {
+	for (std::unique_ptr<IObject>& object : objects_) {
 		object->PreUpdate();  // 共通更新を呼び出す
 		object->Update();	  // 更新
 		object->PostUpdate(); // 更新後処理
@@ -84,13 +84,13 @@ void GameObjectManager::Update()
 
 }
 
-BaseObject* GameObjectManager::GetGameObject(int index)
+IObject* GameObjectManager::GetGameObject(int index)
 {
 	// カウント用
 	int count = 0;
 
 	// オブジェクトリスト内のオブジェクト番号と一致するオブジェクトを探す
-	for (std::unique_ptr<BaseObject>& object : objects_) {
+	for (std::unique_ptr<IObject>& object : objects_) {
 		if (count == index) // 引数と一致した場合
 			return object.get(); // そのオブジェクトを返す
 		count++; // 一致していなかった場合カウントをインクリメント

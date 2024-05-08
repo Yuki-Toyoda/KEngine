@@ -1,10 +1,10 @@
 #pragma once
-#include "../../BaseObject.h"
+#include "../../IObject.h"
 
 /// <summary>
 /// 天球サンプル
 /// </summary>
-class SkyDome : public BaseObject
+class SkyDome : public IObject
 {
 public: // メンバ関数
 

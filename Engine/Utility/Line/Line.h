@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "../../GameObject/BaseObject.h"
+#include "../../GameObject/IObject.h"
 #include "../../Primitive/PrimitiveManager.h"
 
 /// <summary>
@@ -41,7 +41,7 @@ public: // メンバ関数
 	/// </summary>
 	/// <param name="name">コライダー名</param>
 	/// <param name="object">コライダーがコールバックを行う対象のオブジェクト</param>
-	void AddCollider(const std::string& name, BaseObject* object);
+	void AddCollider(const std::string& name, IObject* object);
 
 	/// <summary>
 	/// 親子関係セッター。(使い方はワールドトランスフォームと一緒)

@@ -1,5 +1,5 @@
 #pragma once
-#include "../BaseObject.h"
+#include "../IObject.h"
 #include "../../Input/Input.h"
 #include "../../Base/Buffer/BufferStructs.h"
 #include "../../Base/Resource/Data/ConstantBuffer.h"
@@ -7,7 +7,7 @@
 /// <summary>
 /// カメラ
 /// </summary>
-class Camera : public BaseObject
+class Camera : public IObject
 {
 public: // メンバ関数
 

@@ -5,9 +5,9 @@
 void SampleScene::Init()
 {
 	// オブジェクトの生成
-	gameObjectManager_->CreateInstance<Camera>("Camera", BaseObject::TagCamera);
-	gameObjectManager_->CreateInstance<TestObject>("Test", BaseObject::TagNone);
-	gameObjectManager_->CreateInstance<TestObject>("Test", BaseObject::TagNone);
+	gameObjectManager_->CreateInstance<Camera>("Camera", IObject::TagCamera);
+	gameObjectManager_->CreateInstance<TestObject>("Test", IObject::TagNone);
+	gameObjectManager_->CreateInstance<TestObject>("Test", IObject::TagNone);
 
 }
 

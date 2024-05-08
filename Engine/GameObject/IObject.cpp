@@ -1,6 +1,6 @@
-#include "BaseObject.h"
+#include "IObject.h"
 
-BaseObject::~BaseObject()
+IObject::~IObject()
 {
 	// 全形状を削除
 	for (IPrimitive* primitive : meshes_)
@@ -10,7 +10,7 @@ BaseObject::~BaseObject()
 		sprite->Destroy();
 }
 
-void BaseObject::PreInitialize(std::string name, Tag tag)
+void IObject::PreInitialize(std::string name, Tag tag)
 {
 	// インスタンス取得
 	collisionManager_ = CollisionManager::GetInstance(); // 衝突判定マネージャ
@@ -39,7 +39,7 @@ void BaseObject::PreInitialize(std::string name, Tag tag)
 	Init();
 }
 
-void BaseObject::PreUpdate()
+void IObject::PreUpdate()
 {
 	// 回転角のリセット
 	if (transform_.rotate_.x >= (float)std::numbers::pi * 2.0f) {
@@ -75,7 +75,7 @@ void BaseObject::PreUpdate()
 	}
 }
 
-void BaseObject::PostUpdate()
+void IObject::PostUpdate()
 {
 	// 有効化されているコライダーを登録
 	for (std::unique_ptr<Collider>& collider : colliders_) {
@@ -85,7 +85,7 @@ void BaseObject::PostUpdate()
 	}
 }
 
-void BaseObject::DisplayImGui()
+void IObject::DisplayImGui()
 {
 	// 表示状態の切り替え
 	ImGui::Checkbox("isActive", &isActive_);
@@ -93,38 +93,9 @@ void BaseObject::DisplayImGui()
 	// トランスフォーム内の情報を表示
 	transform_.DisplayImGui();
 
-	//// メッシュ情報があれば
-	//if (meshes_.size() > 0) {
-	//	ImGui::Text("Meshes");
-	//	ImGui::BeginChild("Meshes", ImVec2(0, 300), ImGuiWindowFlags_NoTitleBar);
-	//	for (IPrimitive* p : meshes_) {
-	//		p->DisplayImGui();
-	//	}
-	//	ImGui::EndChild();
-	//}
-
-	//// スプライト情報があれば
-	//if (sprites_.size() > 0) {
-	//	ImGui::Text("Sprites");
-	//	ImGui::BeginChild("Sprites", ImVec2(0, 300), ImGuiWindowFlags_NoTitleBar);
-	//	for (Sprite* s : sprites_) {
-	//		s->DisplayImGui();
-	//	}
-	//	ImGui::EndChild();
-	//}
-
-	//// スプライト情報があれば
-	//if (colliders_.size() > 0) {
-	//	ImGui::Text("Colliders");
-	//	ImGui::BeginChild("Colliders", ImVec2(0, 300), ImGuiWindowFlags_NoTitleBar);
-	//	for (std::unique_ptr<Collider>& c : colliders_) {
-	//		c->DisplayImGui();
-	//	}
-	//	ImGui::EndChild();
-	//}
 }
 
-void BaseObject::AddMesh(WorldTransform* wt, Vector4& color, const std::string& path, const std::string& fileName, bool enableLighting)
+void IObject::AddMesh(WorldTransform* wt, Vector4& color, const std::string& path, const std::string& fileName, bool enableLighting)
 {
 	// 形状マネージャのインスタンスが取得されていない場合ここで取得
 	if (primitiveManager_ == nullptr)
@@ -136,14 +107,13 @@ void BaseObject::AddMesh(WorldTransform* wt, Vector4& color, const std::string& 
 	newMesh->transform_ = wt;								   // ワールドトランスフォームを与える
 	newMesh->LoadModelFile(path, fileName);					   // モデルを読み込み
 	newMesh->commonColor = &color;							   // 色を設定
-	//newMesh->material_.enableLighting_ = enableLighting;	   // ライティングの有効設定
+	newMesh->material_->enableLighting_ = enableLighting;	   // ライティングの有効設定
 	newMesh->layerNo_ = 1;
-	enableLighting;
 	// メッシュリストに生成メッシュを追加
 	meshes_.push_back(newMesh);
 }
 
-void BaseObject::AddSprite(const std::string& name, const Vector2& position, const Vector2& size, Texture* texture)
+void IObject::AddSprite(const std::string& name, const Vector2& position, const Vector2& size, Texture* texture)
 {
 	// 新しいインスタンスの追加
 	Sprite* newSprite = SpriteManager::GetInstance()->Create(name, position, size, texture);
@@ -151,7 +121,7 @@ void BaseObject::AddSprite(const std::string& name, const Vector2& position, con
 	sprites_.push_back(newSprite);
 }
 
-void BaseObject::AddColliderSphere(const std::string& name, Vector3* center, float* radius, bool enable)
+void IObject::AddColliderSphere(const std::string& name, Vector3* center, float* radius, bool enable)
 {
 	// 新しいコライダーを生成する
 	std::unique_ptr<Collider> newCollider = std::make_unique<Collider>();
@@ -168,7 +138,7 @@ void BaseObject::AddColliderSphere(const std::string& name, Vector3* center, flo
 	colliders_.push_back(std::move(newCollider));
 }
 
-void BaseObject::AddColliderAABB(const std::string& name, Vector3* center, Vector3* size, bool enable)
+void IObject::AddColliderAABB(const std::string& name, Vector3* center, Vector3* size, bool enable)
 {
 	// 新しいコライダーを生成する
 	std::unique_ptr<Collider> newCollider = std::make_unique<Collider>();
@@ -185,7 +155,7 @@ void BaseObject::AddColliderAABB(const std::string& name, Vector3* center, Vecto
 	colliders_.push_back(std::move(newCollider));
 }
 
-void BaseObject::AddColliderOBB(const std::string& name, Vector3* scale, Vector3* rotate, Vector3* translate, bool enable)
+void IObject::AddColliderOBB(const std::string& name, Vector3* scale, Vector3* rotate, Vector3* translate, bool enable)
 {
 	// 新しいコライダーを生成する
 	std::unique_ptr<Collider> newCollider = std::make_unique<Collider>();
@@ -202,7 +172,7 @@ void BaseObject::AddColliderOBB(const std::string& name, Vector3* scale, Vector3
 	colliders_.push_back(std::move(newCollider));
 }
 
-void BaseObject::DeleteCollider(const std::string& name)
+void IObject::DeleteCollider(const std::string& name)
 {
 	// 全てのコライダーから一致するコライダーを検索
 	colliders_.remove_if([name](std::unique_ptr<Collider>& collider) {

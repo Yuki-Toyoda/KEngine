@@ -6,7 +6,7 @@
 #include "ShapeList.h"
 
 // クラスの前方宣言
-class BaseObject;
+class IObject;
 
 /// <summary>
 /// 衝突判定用オブジェクト
@@ -50,12 +50,12 @@ public: // アクセッサ等
 	/// このコライダーを持つゲームオブジェクトゲッター
 	/// </summary>
 	/// <returns>ゲームオブジェクト</returns>
-	BaseObject* GetGameObject() { return gameObject_; }
+	IObject* GetGameObject() { return gameObject_; }
 	/// <summary>
 	/// このコライダーを持つゲームオブジェクトのセッター
 	/// </summary>
 	/// <param name="gameObject">ゲームオブジェクト</param>
-	void SetGameObject(BaseObject* gameObject) { gameObject_ = gameObject; }
+	void SetGameObject(IObject* gameObject) { gameObject_ = gameObject; }
 
 	/// <summary>
 	/// 現在フレーム触れているオブジェクトを全て取得する関数
@@ -129,7 +129,7 @@ private: // メンバ変数
 	std::unique_ptr<BaseShape> colliderShape_;
 
 	// このコライダーを持つゲームオブジェクト
-	BaseObject* gameObject_;
+	IObject* gameObject_;
 
 	// 現在フレームで衝突したコライダー達
 	std::list<Collider*> nowCollisionObjects_;

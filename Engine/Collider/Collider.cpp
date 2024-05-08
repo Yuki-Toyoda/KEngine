@@ -1,5 +1,5 @@
 #include "Collider.h"
-#include "../GameObject/BaseObject.h"
+#include "../GameObject/IObject.h"
 
 void Collider::Init(const std::string& name, std::unique_ptr<BaseShape> shape)
 {

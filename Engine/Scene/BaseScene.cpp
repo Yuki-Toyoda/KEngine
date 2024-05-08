@@ -8,7 +8,7 @@ void BaseScene::PreInitialize()
 	gameObjectManager_ = GameObjectManager::GetInstance();
 	
 	// カメラを生成
-	camera_ = gameObjectManager_->CreateInstance<Camera>("DebugCamera", BaseObject::TagCamera);
+	camera_ = gameObjectManager_->CreateInstance<Camera>("DebugCamera", IObject::TagCamera);
 	// このカメラを使う
 	camera_->UseThisCamera();
 }

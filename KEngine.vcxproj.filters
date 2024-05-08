@@ -62,7 +62,7 @@
     <ClCompile Include="Engine\Scene\BaseScene.cpp">
       <Filter>App\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\GameObject\BaseObject.cpp">
+    <ClCompile Include="Engine\GameObject\IObject.cpp">
       <Filter>App\GameObject</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Primitive\PrimitiveManager.cpp">
@@ -325,7 +325,7 @@
     <ClInclude Include="Engine\Scene\BaseScene.h">
       <Filter>App\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\GameObject\BaseObject.h">
+    <ClInclude Include="Engine\GameObject\IObject.h">
       <Filter>App\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Primitive\PrimitiveManager.h">

@@ -1,6 +1,6 @@
 #include "CollisionManager.h"
 #include <algorithm>
-#include "../GameObject/BaseObject.h"
+#include "../GameObject/IObject.h"
 
 CollisionManager* CollisionManager::GetInstance()
 {
@@ -71,7 +71,7 @@ bool CollisionManager::CheckCollisionPair(Collider* colliderA, Collider* collide
 		colliderA->GetGameObject()->GetIsDestroy() || colliderB->GetGameObject()->GetIsDestroy() ||
 		!colliderA->GetIsActive() || !colliderB->GetIsActive() || 
 		(colliderA->GetGameObject()->GetObjectTag() == colliderB->GetGameObject()->GetObjectTag() && 
-			(colliderA->GetGameObject()->GetObjectTag() == BaseObject::TagNone && colliderB->GetGameObject()->GetObjectTag() == BaseObject::TagNone))) {
+			(colliderA->GetGameObject()->GetObjectTag() == IObject::TagNone && colliderB->GetGameObject()->GetObjectTag() == IObject::TagNone))) {
 		return false;
 	}
 

@@ -1,10 +1,10 @@
 #pragma once
-#include "../../BaseObject.h"
+#include "../../IObject.h"
 
 /// <summary>
 /// テストオブジェクト
 /// </summary>
-class TestObject : public BaseObject
+class TestObject : public IObject
 {
 	/// <summary>
 	/// 初期化関数

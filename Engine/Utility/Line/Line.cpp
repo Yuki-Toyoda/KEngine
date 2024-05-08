@@ -91,7 +91,7 @@ void Line::DisplayImGui()
 	}
 }
 
-void Line::AddCollider(const std::string& name, BaseObject* object)
+void Line::AddCollider(const std::string& name, IObject* object)
 {
 	if (transform_.GetParent() != nullptr) {
 		object->AddColliderOBB(name, &transform_.scale_, &transform_.rotate_, &worldPos_);
