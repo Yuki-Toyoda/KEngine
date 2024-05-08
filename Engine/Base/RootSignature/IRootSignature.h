@@ -99,7 +99,7 @@ protected: // メンバ変数
 	// 配列用設定用構造体配列
 	std::list<D3D12_DESCRIPTOR_RANGE> descriptorRangeDescs_;
 	// サンプラー設定酔う構造体配列
-	std::vector<D3D12_STATIC_SAMPLER_DESC> samplerDescs_;
+	std::vector<D3D12_STATIC_SAMPLER_DESC> samplers_;
 	// ルートシグネチャ設定用構造体
 	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature_;
 };

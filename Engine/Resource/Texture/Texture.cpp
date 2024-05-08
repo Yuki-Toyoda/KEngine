@@ -10,8 +10,8 @@ Texture::Texture(const TextureResource& resource)
 Texture& Texture::operator=(const TextureResource& resource)
 {
 	// リソースから各種情報を取得
-	index_ = resource.GetSRVIndex();	// インデックス
-	size_  = resource.GetTextureSize(); // テクスチャ解像度
+	view_ = resource.GetTextureAddress(); // GPU上のアドレス
+	size_ = resource.GetTextureSize();    // テクスチャ解像度
 	
 	// テクスチャを返す
 	return *this;

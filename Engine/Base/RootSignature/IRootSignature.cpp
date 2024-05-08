@@ -58,7 +58,7 @@ void IRootSignature::CreateSampler(const int ShaderRegisterCount, const D3D12_SH
 	newSampler.ShaderRegister = ShaderRegisterCount;
 	newSampler.ShaderVisibility = static_cast<D3D12_SHADER_VISIBILITY>(visibility); // 基本的にPixelShaderで使う
 	// 登録
-	samplerDescs_.push_back(newSampler);
+	samplers_.push_back(newSampler);
 }
 
 void IRootSignature::CreateRootSignature()
@@ -70,6 +70,8 @@ void IRootSignature::CreateRootSignature()
 	descriptionRootSignature_.Flags = D3D12_ROOT_SIGNATURE_FLAG_NONE;					 // フラッグはなし
 	descriptionRootSignature_.pParameters = rootParameters_.data();						 // 設定用構造体にrootParameterを登録
 	descriptionRootSignature_.NumParameters = static_cast<UINT>(rootParameters_.size()); // サイズはパラメータ数
+	descriptionRootSignature_.pStaticSamplers = samplers_.data();						 // サンプラーのデータ登録
+	descriptionRootSignature_.NumStaticSamplers = static_cast<UINT>(samplers_.size());	 // サイズをサンプラー分確保
 
 	// シリアライズを行う
 	ID3DBlob* signatureBlob = nullptr; // シリアライズ後のバイナリオブジェクト

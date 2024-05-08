@@ -23,6 +23,9 @@ void TextureManager::Init()
 {
 	// DirectX12汎用クラスのインスタンス取得
 	dxCommon_ = DirectXCommon::GetInstance();
+
+	// デフォルトテクスチャの読み込み
+	defaultTex_ = Load("white2x2.png");
 }
 
 Texture TextureManager::LoadTexture(std::string fileName)

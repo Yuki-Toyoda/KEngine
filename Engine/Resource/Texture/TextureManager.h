@@ -60,6 +60,14 @@ public: // メンバ関数
 	/// </summary>
 	void Init();
 
+public: // アクセッサ等
+
+	/// <summary>
+	/// テクスチャが無い場合のテクスチャゲッター
+	/// </summary>
+	/// <returns>デフォルトテクスチャ</returns>
+	Texture GetDefaultTexture() { return defaultTex_; }
+
 private: // 読み込み関数群
 
 	/// <summary>
@@ -84,6 +92,9 @@ private: // メンバ変数
 
 	// テクスチャコンテナ
 	std::map<std::string, TextureStruct> textures_;
+
+	// デフォルトテクスチャ
+	Texture defaultTex_;
 
 };
 

@@ -1,4 +1,5 @@
 #include "ModelRootSignature.h"
+#include "../Config/Config.h"
 
 void ModelRootSignature::Init()
 {
@@ -16,6 +17,8 @@ void ModelRootSignature::Init()
 	CreateDescriptorTableParameter(2, D3D12_SHADER_VISIBILITY_ALL);
 	// プリミティブ頂点用パラメータ生成
 	CreateDescriptorTableParameter(3, D3D12_SHADER_VISIBILITY_ALL);
+	// テクスチャデータ用パラメータ
+	CreateDescriptorTableParameter(4, D3D12_SHADER_VISIBILITY_ALL);
 
 	// サンプラー生成
 	CreateSampler(0);

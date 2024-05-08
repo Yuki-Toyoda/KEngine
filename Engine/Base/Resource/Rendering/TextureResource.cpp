@@ -21,9 +21,9 @@ void TextureResource::Init(DirectXDevice* device, HeapManager* heaps, std::strin
 	desc_.Height		   = UINT16(metadata.height);						   // 解像度縦幅
 	desc_.MipLevels		   = UINT16(metadata.mipLevels);					   // ミップレベル
 	desc_.DepthOrArraySize = UINT16(metadata.arraySize);					   // 配列サイズ
-	desc_.Format		   = metadata.format;							   // フォーマット設定
-	desc_.SampleDesc.Count = 1;											   // カウント設定
-	desc_.Dimension		   = D3D12_RESOURCE_DIMENSION(metadata.dimension); // ディメンション設定
+	desc_.Format		   = metadata.format;								   // フォーマット設定
+	desc_.SampleDesc.Count = 1;												   // カウント設定
+	desc_.Dimension		   = D3D12_RESOURCE_DIMENSION(metadata.dimension);	   // ディメンション設定
 
 	// 利用するヒープの設定
 	properties_.Type				 = D3D12_HEAP_TYPE_CUSTOM;			   // 細かい設定を行う

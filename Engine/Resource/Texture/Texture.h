@@ -35,10 +35,10 @@ public: // メンバ関数
 public: // アクセッサ等
 
 	/// <summary>
-	/// インデックス情報ゲッター
+	/// GPU上のアドレスゲッター
 	/// </summary>
-	/// <returns>コマンドマネージャー上でのインデックス情報(定数値)</returns>
-	int GetIndex() const { return index_; }
+	/// <returns>GPU上のアドレス</returns>
+	D3D12_GPU_DESCRIPTOR_HANDLE GetView_() { return view_; }
 
 	/// <summary>
 	/// テクスチャサイズゲッター
@@ -57,8 +57,8 @@ public: // 演算子オーバーロード
 
 private: // メンバ変数
 
-	// SRV上のインデックス
-	int index_ = -1;
+	// GPU上のアドレス
+	D3D12_GPU_DESCRIPTOR_HANDLE view_;
 
 	// テクスチャ解像度
 	Vector2 size_;

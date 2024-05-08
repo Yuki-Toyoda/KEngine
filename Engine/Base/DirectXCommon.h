@@ -13,7 +13,7 @@
 #include "Resource/Rendering/BackBuffer.h"
 #include "Resource/Rendering/DepthStencil.h"
 
-#include "../Base/Renderer/RendererManager.h"
+#include "Renderer/RendererManager.h"
 
 // クラスの前方宣言
 class Camera;

@@ -79,6 +79,27 @@ void Mesh::LoadModel(const std::string& filePath, const std::string& fileName)
 		}
 	}
 
+	// マテリアルの解析を行う
+	for (uint32_t materialIndex = 0; materialIndex < scene->mNumMaterials; materialIndex++) {
+		// マテリアル情報をシーンから取得する
+		aiMaterial* material = scene->mMaterials[materialIndex];
+
+		if (material->GetTextureCount(aiTextureType_DIFFUSE) != 0) {
+			// テクスチャまでのファイルパス格納用
+			aiString textureFilePath;
+			// テクスチャファイルのパスを取得
+			material->GetTexture(aiTextureType_DIFFUSE, 0, &textureFilePath);
+
+			// テクスチャの読み込み
+			material_->tex_ = TextureManager::Load(filePath, textureFilePath.C_Str());
+		}
+		else { // テクスチャがない場合
+			// デフォルトテクスチャ取得
+			material_->tex_ = TextureManager::GetInstance()->GetDefaultTexture();
+		}
+	}
+
+
 	// 頂点座標格納用配列の作成
 	auto vertPos = std::make_unique<DirectX::XMFLOAT3[]>(vertices_.size());
 	// 頂点座標を取得
