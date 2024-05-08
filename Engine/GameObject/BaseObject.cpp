@@ -77,7 +77,7 @@ void BaseObject::PreUpdate()
 
 void BaseObject::PostUpdate()
 {
-	// 有効かされているコライダーを登録
+	// 有効化されているコライダーを登録
 	for (std::unique_ptr<Collider>& collider : colliders_) {
 		if (collider->GetIsActive()) {
 			collisionManager_->RegisterCollider(collider.get());
@@ -93,35 +93,35 @@ void BaseObject::DisplayImGui()
 	// トランスフォーム内の情報を表示
 	transform_.DisplayImGui();
 
-	// メッシュ情報があれば
-	if (meshes_.size() > 0) {
-		ImGui::Text("Meshes");
-		ImGui::BeginChild("Meshes", ImVec2(0, 300), ImGuiWindowFlags_NoTitleBar);
-		for (IPrimitive* p : meshes_) {
-			p->DisplayImGui();
-		}
-		ImGui::EndChild();
-	}
+	//// メッシュ情報があれば
+	//if (meshes_.size() > 0) {
+	//	ImGui::Text("Meshes");
+	//	ImGui::BeginChild("Meshes", ImVec2(0, 300), ImGuiWindowFlags_NoTitleBar);
+	//	for (IPrimitive* p : meshes_) {
+	//		p->DisplayImGui();
+	//	}
+	//	ImGui::EndChild();
+	//}
 
-	// スプライト情報があれば
-	if (sprites_.size() > 0) {
-		ImGui::Text("Sprites");
-		ImGui::BeginChild("Sprites", ImVec2(0, 300), ImGuiWindowFlags_NoTitleBar);
-		for (Sprite* s : sprites_) {
-			s->DisplayImGui();
-		}
-		ImGui::EndChild();
-	}
+	//// スプライト情報があれば
+	//if (sprites_.size() > 0) {
+	//	ImGui::Text("Sprites");
+	//	ImGui::BeginChild("Sprites", ImVec2(0, 300), ImGuiWindowFlags_NoTitleBar);
+	//	for (Sprite* s : sprites_) {
+	//		s->DisplayImGui();
+	//	}
+	//	ImGui::EndChild();
+	//}
 
-	// スプライト情報があれば
-	if (colliders_.size() > 0) {
-		ImGui::Text("Colliders");
-		ImGui::BeginChild("Colliders", ImVec2(0, 300), ImGuiWindowFlags_NoTitleBar);
-		for (std::unique_ptr<Collider>& c : colliders_) {
-			c->DisplayImGui();
-		}
-		ImGui::EndChild();
-	}
+	//// スプライト情報があれば
+	//if (colliders_.size() > 0) {
+	//	ImGui::Text("Colliders");
+	//	ImGui::BeginChild("Colliders", ImVec2(0, 300), ImGuiWindowFlags_NoTitleBar);
+	//	for (std::unique_ptr<Collider>& c : colliders_) {
+	//		c->DisplayImGui();
+	//	}
+	//	ImGui::EndChild();
+	//}
 }
 
 void BaseObject::AddMesh(WorldTransform* wt, Vector4& color, const std::string& path, const std::string& fileName, bool enableLighting)
@@ -130,23 +130,17 @@ void BaseObject::AddMesh(WorldTransform* wt, Vector4& color, const std::string& 
 	if (primitiveManager_ == nullptr)
 		primitiveManager_ = PrimitiveManager::GetInstance();
 
-	wt;
-	color;
-	path;
-	fileName;
-	enableLighting;
+	// メッシュのインスタンスを生成
+	Mesh* newMesh = primitiveManager_->CreateInstance<Mesh>(); // インスタンス生成
+	newMesh->name_ = fileName;								   // メッシュ名をファイル名に
+	newMesh->transform_ = wt;								   // ワールドトランスフォームを与える
+	newMesh->LoadModelFile(path, fileName);					   // モデルを読み込み
+	newMesh->commonColor = &color;							   // 色を設定
+	newMesh->material_.enableLighting_ = enableLighting;	   // ライティングの有効設定
+	newMesh->layerNo_ = 1;
 
-	//// メッシュのインスタンスを生成
-	//DMesh* newMesh = primitiveManager_->CreateInstance<DMesh>(); // インスタンス生成
-	//newMesh->name_ = fileName;								   // 1メッシュ名をファイル名に
-	//newMesh->LoadFile(path, fileName);						   // モデルを読み込み
-	//newMesh->transform_ = wt;								   // ワールドトランスフォームを与える
-	//newMesh->commonColor = &color;							   // 色を設定
-	//newMesh->material_.enableLighting_ = enableLighting;	   // ライティングの有効設定
-	//newMesh->layerNo_ = 1;
-
-	//// メッシュリストに生成メッシュを追加
-	//meshes_.push_back(newMesh);
+	// メッシュリストに生成メッシュを追加
+	meshes_.push_back(newMesh);
 }
 
 void BaseObject::AddSprite(const std::string& name, const Vector2& position, const Vector2& size, Texture* texture)

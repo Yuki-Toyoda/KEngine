@@ -1,7 +1,8 @@
 #include "NormalRenderer.h"
 #include "../../../Externals/imgui/ImGuiManager.h"
+#include "../../Primitive/PrimitiveManager.h"
 
-void NormalRenderer::Init(DirectXDevice* device, ID3D12RootSignature* signature, DXC* dxc)
+void NormalRenderer::Init(DirectXDevice* device, ID3D12RootSignature* signature, DXC* dxc, PrimitiveManager* pm)
 {
 	// ルートシグネチャ取得
 	rootSignature_ = signature;
@@ -11,6 +12,9 @@ void NormalRenderer::Init(DirectXDevice* device, ID3D12RootSignature* signature,
 		.SetMeshShader("Engine/Resource/Shader/MeshletMS.hlsl")
 		.SetPixelShader("Engine/Resource/Shader/MeshletPS.hlsl")
 		.Build(device->GetDevice());
+
+	// 形状マネージャのインスタンス取得
+	primitiveManager_ = pm;
 }
 
 void NormalRenderer::DrawCall(ID3D12GraphicsCommandList6* list)
@@ -55,11 +59,14 @@ void NormalRenderer::DrawCall(ID3D12GraphicsCommandList6* list)
 	// コマンドリストにシザー矩形を設定
 	list->RSSetScissorRects(1, &scissorRect);
 
+	// コマンドリストにPSOを設定
+	list->SetPipelineState(pso_.GetState());
+
 	// カメラデータのアドレスを渡す
 	list->SetGraphicsRootConstantBufferView(0, target_.view_);
 
-	// コマンドリストにPSOを設定
-	list->SetPipelineState(pso_.GetState());
+	// 登録されている形状全てを描画
+	primitiveManager_->Draw(list);
 
 	// ImGuiを描画
 	ImGui::Render();

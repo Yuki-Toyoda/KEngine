@@ -6,7 +6,7 @@ struct ConstantData
 
 struct WorldTransform
 {
-    float32_t4x4 wvp;
+    float32_t4x4 world;
 };
 
 struct VertexData
@@ -36,7 +36,7 @@ ConstantBuffer<WorldTransform> Transform         : register(b1);
 
 float4 TransformPosition(float4 v)
 {
-    return mul(v, ConstantData.WorldViewProj);
+    return mul(mul(v, Transform.world), ConstantData.WorldViewProj);
 }
 
 StructuredBuffer<Meshlet>    Meshlets            : register(t0);

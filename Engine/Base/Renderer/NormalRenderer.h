@@ -4,6 +4,9 @@
 #include "../Resource/Rendering/DepthStencil.h"
 #include "../DXC/DXC.h"
 
+// クラスの前方宣言
+class PrimitiveManager;
+
 /// <summary>
 /// 通常描画用レンダラークラス
 /// </summary>
@@ -40,7 +43,8 @@ public: // メンバ関数
 	/// <param name="device">デバイス</param>
 	/// <param name="signature">ルートシグネチャ</param>
 	/// <param name="dxc">DirectXシェーダーコンパイラ</param>
-	void Init(DirectXDevice* device, ID3D12RootSignature* signature, DXC* dxc);
+	/// <param name="pm">形状マネージャ</param>
+	void Init(DirectXDevice* device, ID3D12RootSignature* signature, DXC* dxc, PrimitiveManager* pm);
 
 	/// <summary>
 	/// 描画命令関数
@@ -63,6 +67,9 @@ private: // メンバ変数
 
 	// 描画ターゲット
 	Target target_;
+
+	// 形状マネージャ
+	PrimitiveManager* primitiveManager_ = nullptr;
 
 };
 

@@ -1,7 +1,5 @@
 #pragma once
 #include "../../BaseObject.h"
-#include "../../../Utility/Animation/AnimationManager.h"
-#include "../../../Utility/Line/Line.h"
 
 /// <summary>
 /// テストオブジェクト
@@ -39,17 +37,17 @@ public: // その他関数
 
 private: // プライベートなメンバ変数
 
-	// テスト用変数達
-	float testFloatValue_ = 0.0f;
-	Vector2 testVector2Value_ = {0.0f, 0.0f};
-	Vector3 testVector3Value_ = { 0.0f, 0.0f, 0.0f };
+	//// テスト用変数達
+	//float testFloatValue_ = 0.0f;
+	//Vector2 testVector2Value_ = {0.0f, 0.0f};
+	//Vector3 testVector3Value_ = { 0.0f, 0.0f, 0.0f };
 
-	// 線だ！！！
-	std::unique_ptr<Line> line_;
+	//// 線だ！！！
+	//std::unique_ptr<Line> line_;
 
 	KLib::DeltaTimer timer_;
 
-	// アニメーションの管理用
-	Animation* animation_ = nullptr;
+	//// アニメーションの管理用
+	//Animation* animation_ = nullptr;
 };
 

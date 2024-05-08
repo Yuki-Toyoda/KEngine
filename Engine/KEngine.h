@@ -91,7 +91,7 @@ protected: // メンバ変数
 	ImGuiManager* imGuiManager_ = nullptr;
 
 	// 形状マネージャのインスタンス格納用
-	//PrimitiveManager* primitiveManager_ = nullptr;
+	PrimitiveManager* primitiveManager_ = nullptr;
 
 	// ゲーム終了フラグ
 	bool endGameRequest_ = false;

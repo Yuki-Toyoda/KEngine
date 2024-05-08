@@ -8,8 +8,8 @@ void Camera::Init()
 {
 	// 定数バッファ生成
 	cameraDataBuffer_.Init(DirectXCommon::GetInstance()->GetDirectXDevice());
-
-	cameraDataBuffer_.data_->DrawMeshlets = false;
+	// データに値を代入
+	cameraDataBuffer_.data_->DrawMeshlets = isDrawMeshlets_;
 
 	// 入力取得
 	input_ = Input::GetInstance();
@@ -39,6 +39,7 @@ void Camera::Update()
 
 		// バッファのデータにビュープロジェクション行列をセット
 		cameraDataBuffer_.data_->WorldViewProj = viewProjectionMatrix_;
+		cameraDataBuffer_.data_->DrawMeshlets = isDrawMeshlets_;
 	}
 
 	// デバッグカメラだった場合はキー入力でカメラを移動させる
@@ -114,6 +115,9 @@ void Camera::DisplayImGui()
 	transform_.DisplayImGui();
 	// 視野角の調整
 	ImGui::SliderFloat("FOV", &fov_, 0.45f, 1.2f);
+
+	// メッシュレット描画フラグの切り替え
+	ImGui::Checkbox("DrawMeshlets", &isDrawMeshlets_);
 
 	// ボタンを押すとこのカメラを使用する
 	if (!isUseThisCamera_) {

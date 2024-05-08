@@ -11,7 +11,7 @@ PSO& PSO::Init(ID3D12RootSignature* signature, DXC* dxc)
 	desc_.pRootSignature		= signature;							  // ルートシグネチャのセット
 	desc_.BlendState			= SettingBlendState(0);					  // ブレンド設定
 	desc_.RasterizerState		= SettingRasterizerDesc();				  // ラスタライザ設定
-	desc_.DepthStencilState		= SettingDepthStencilState(0);			  // DSVの設定を行う
+	desc_.DepthStencilState		= SettingDepthStencilState(1);			  // DSVの設定を行う
 	desc_.DSVFormat				= DXGI_FORMAT_D24_UNORM_S8_UINT;		  // DSVのフォーマット設定
 	desc_.NumRenderTargets		= 1;									  // 書き込むRTVの数
 	desc_.RTVFormats[0]			= DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;		  // RTVのフォーマット設定

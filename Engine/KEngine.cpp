@@ -37,10 +37,6 @@ void KEngineFrameWork::Init()
 	auto& io = ImGui::GetIO();
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
-	//// 形状マネージャの初期化
-	//primitiveManager_ = PrimitiveManager::GetInstance();
-	//primitiveManager_->Init();
-
 	//// 衝突マネージャーの初期化
 	//collisionManager_ = CollisionManager::GetInstance();
 
@@ -87,9 +83,6 @@ void KEngineFrameWork::PostUpdate()
 {
 	// 衝突判定検証
 	//collisionManager_->CheckAllCollision();
-
-	// 形状マネージャ更新
-	//primitiveManager_->Update();
 }
 
 void KEngineFrameWork::PreFinalize()
@@ -102,9 +95,6 @@ void KEngineFrameWork::Finalize()
 {	
 	//// 全パーティクル削除
 	//particleManager_->Init();
-
-	//// 読み込み形状を削除
-	//primitiveManager_->Init();	
 
 	// 音解放処理
 	audio_->Finalize();

@@ -1,6 +1,7 @@
 #pragma once
 #include "../Command.h"
 #include "../RootSignature/RootSignatureManager.h"
+#include "../../Primitive/PrimitiveManager.h"
 #include "NormalRenderer.h"
 
 // クラスの前方宣言
@@ -63,6 +64,9 @@ private: // メンバ変数
 
 	// SRV
 	SRV* srv_;
+
+	// 形状マネージャ
+	PrimitiveManager* primitiveManager_ = nullptr;
 
 	// 通常描画レンダラー
 	NormalRenderer normalRenderer_;

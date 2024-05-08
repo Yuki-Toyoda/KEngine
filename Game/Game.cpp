@@ -47,9 +47,6 @@ void Game::Update()
 
 void Game::Draw()
 {
-	// 形状マネージャ描画
-	/*primitiveManager_->Draw();*/
-
 	// 描画
 	dxCommon_->Draw();
 }

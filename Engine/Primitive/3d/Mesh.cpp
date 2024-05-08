@@ -1,7 +1,7 @@
 #include "Mesh.h"
 #include "../../Resource/Texture/TextureManager.h"
 #include "MeshManager.h"
-#include "../../Base/DescriptorHeaps/SRV.h"
+#include "../../Base/DirectXCommon.h"
 
 #include <map>
 #include <fstream>
@@ -79,12 +79,6 @@ void Mesh::LoadModel(const std::string& filePath, const std::string& fileName)
 		}
 	}
 
-	// 最後にインデックスを反転させる（左手座標系に修正するため）
-	for (size_t i = 0; i < indexes_.size(); i += 3) {
-		// 0番目と2番目の要素を入れ替える
-		std::swap(indexes_[i], indexes_[i + 2]);
-	}
-
 	// 頂点座標格納用配列の作成
 	auto vertPos = std::make_unique<DirectX::XMFLOAT3[]>(vertices_.size());
 	// 頂点座標を取得
@@ -105,6 +99,32 @@ void Mesh::LoadModel(const std::string& filePath, const std::string& fileName)
 	);
 	// 変換成否確認
 	assert(SUCCEEDED(result));
+
+	// バッファ生成のためにデバイスとSRVを取得する
+	DirectXDevice* device = DirectXCommon::GetInstance()->GetDirectXDevice();
+	SRV* srv = DirectXCommon::GetInstance()->GetSRV();
+
+	/// データ読み込みが完了した時点で各バッファを指定サイズで生成する
+	// トランスフォーム用バッファの生成
+	transformBuffer_ = std::make_unique<ConstantBuffer<Matrix4x4>>(); // 生成
+	transformBuffer_->Init(device);									  // 初期化
+	*transformBuffer_->data_ = transform_->GetMatWorld();			  // データの代入
+	// メッシュレット用バッファの生成
+	meshletBuffer_ = std::make_unique<StructuredBuffer<DirectX::Meshlet>>(static_cast<int32_t>(meshlets_.size())); // 生成
+	meshletBuffer_->Init(device, srv);																			   // 初期化
+	std::memcpy(meshletBuffer_->data_, meshlets_.data(), sizeof(DirectX::Meshlet) * meshlets_.size());			   // データコピー
+	// 頂点用バッファの生成
+	vertexBuffer_ = std::make_unique<StructuredBuffer<Vertex>>(static_cast<int32_t>(vertices_.size())); // 生成
+	vertexBuffer_->Init(device, srv);																	// 初期化
+	std::memcpy(vertexBuffer_->data_, vertices_.data(), sizeof(Vertex) * vertices_.size());			    // データコピー
+	// 固有頂点インデックス用バッファの生成
+	uniqueVertexIndicesBuffer_ = std::make_unique<StructuredBuffer<uint32_t>>(static_cast<int32_t>(uniqueVertices_.size()));   // 生成
+	uniqueVertexIndicesBuffer_->Init(device, srv);																			   // 初期化
+	std::memcpy(uniqueVertexIndicesBuffer_->data_, uniqueVertices_.data(), sizeof(uint8_t) * uniqueVertices_.size());		   // データコピー
+	// プリミティブインデックス用バッファの生成
+	primitiveIndicesBuffer_ = std::make_unique<StructuredBuffer<uint32_t>>(static_cast<int32_t>(primitiveIndices_.size()));				// 生成
+	primitiveIndicesBuffer_->Init(device, srv);																							// 初期化
+	std::memcpy(primitiveIndicesBuffer_->data_, primitiveIndices_.data(), sizeof(DirectX::MeshletTriangle) * primitiveIndices_.size());	// データコピー
 
 }
 

@@ -74,7 +74,8 @@ public: // メンバ関数
 	/// <summary>
 	/// 描画関数
 	/// </summary>
-	virtual void Draw();
+	/// <param name="cmdList">コマンドリスト</param>
+	virtual void Draw(ID3D12GraphicsCommandList6* cmdList);
 
 	/// <summary>
 	/// ImGui表示関数
@@ -120,12 +121,15 @@ public: // パブリックなメンバ変数
 	std::vector<uint8_t>				  uniqueVertices_;
 	std::vector<DirectX::MeshletTriangle> primitiveIndices_;
 
-	std::unique_ptr<ConstantBuffer<>>
-
 	// 描画中心座標
 	WorldTransform* transform_ = nullptr;
 
-	Matrix4x4 matWorld_;
+	// データバッファ群
+	std::unique_ptr<ConstantBuffer<Matrix4x4>>			transformBuffer_;			// ワールドトランスフォーム
+	std::unique_ptr<StructuredBuffer<DirectX::Meshlet>> meshletBuffer_;				// メッシュレット
+	std::unique_ptr<StructuredBuffer<Vertex>>			vertexBuffer_;				// 頂点
+	std::unique_ptr<StructuredBuffer<uint32_t>>			uniqueVertexIndicesBuffer_; // 固有頂点インデックス
+	std::unique_ptr<StructuredBuffer<uint32_t>>			primitiveIndicesBuffer_;	// プリミティブインデックス
 
 	// マテリアル
 	Material material_;

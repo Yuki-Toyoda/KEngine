@@ -41,7 +41,8 @@ public: // メンバ関数
 	/// <summary>
 	/// 描画関数
 	/// </summary>
-	void Draw();
+	/// <param name="cmdList">コマンドリスト</param>
+	void Draw(ID3D12GraphicsCommandList6* cmdList);
 
 	/// <summary>
 	/// 形状のインスタンスを生成しリストに登録する関数

@@ -51,15 +51,11 @@ void main(
         // 出力する頂点色を求める
         if (ConstantData.DrawMeshlets == true)
         {
-            float unit = 3.0f / 128.0f;
-            
-            unit = unit * gid;
-            
-            // メッシュレットごとに描画する
+           // 出力する頂点色を求める
             outVerts[gtid].color = float4(
-            unit,
-            unit,
-            unit,
+            float(gid & 1),
+            float(gid & 3) / 4,
+            float(gid & 7) / 8,
             1.0f);
         }
         else

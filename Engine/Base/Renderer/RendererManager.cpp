@@ -8,8 +8,12 @@ void RendererManager::Init(DirectXDevice* device, SRV* srv)
 	// コマンド管理クラスの初期化
 	command_.Init(device);
 
+	// 形状マネージャの生成と初期化
+	primitiveManager_ = PrimitiveManager::GetInstance(); // 生成
+	primitiveManager_->Init();							 // 初期化
+
 	// 通常描画レンダラーを初期化
-	normalRenderer_.Init(device, RootSignatureManager::GetInstance()->GetRootSignature(0), &dxc_);
+	normalRenderer_.Init(device, RootSignatureManager::GetInstance()->GetRootSignature(0), &dxc_, primitiveManager_);
 }
 
 void RendererManager::DrawCall()

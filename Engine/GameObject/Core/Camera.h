@@ -80,6 +80,9 @@ protected: // メンバ変数
 	// カメラ使用トリガー
 	bool isUseThisCamera_;
 
+	// カメラのメッシュレット表示切り替えトリガー
+	bool isDrawMeshlets_ = false;
+
 	// ビュー行列
 	Matrix4x4 viewMatrix_;
 	// カメラ用ビュープロジェクション行列
