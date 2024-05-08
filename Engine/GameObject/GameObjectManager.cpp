@@ -68,9 +68,16 @@ void GameObjectManager::Update()
 		ImGui::Text("No Objects!");
 	ImGui::EndChild();
 	
+	// 選択されているImGuiのインデックスがオブジェクト配列のサイズを超過している場合
+	if (imGuiSelectObjects_ > objects_.size()) {
+		// 選択インデックスをサイズ内に限定する
+		imGuiSelectObjects_ = static_cast<int32_t>(objects_.size() - 1);
+	}
+
 	// オブジェクトが1つでもある場合は変数で指定されたオブジェクトの情報を表示
-	if (objects_.size() > 0)
+	if (objects_.size() > 0) {
 		GetGameObject(imGuiSelectObjects_)->DisplayImGui();
+	}
 
 	ImGui::End();
 #endif // _DEBUG

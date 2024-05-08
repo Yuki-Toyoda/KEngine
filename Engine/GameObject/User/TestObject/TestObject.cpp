@@ -55,6 +55,12 @@ void TestObject::DisplayImGui()
 
 	transform_.DisplayImGui();
 
+	ImGui::DragFloat4("MaterialColor", &meshes_[0]->material_->color_.x);
+
+	if (ImGui::Button("Delete This")) {
+		Destroy();
+	}
+
 	//animation_->DisplayImGui();
 
 	// 読み込むパラメータを変更

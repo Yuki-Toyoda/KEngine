@@ -9,6 +9,11 @@ struct WorldTransform
     float32_t4x4 world;
 };
 
+struct Material
+{
+    float32_t4 color;
+};
+
 struct VertexData
 {
     float32_t4 pos;
@@ -33,6 +38,7 @@ struct VertexOutPut
 
 ConstantBuffer<ConstantData> ConstantData        : register(b0);
 ConstantBuffer<WorldTransform> Transform         : register(b1);
+ConstantBuffer<Material> material                : register(b2);
 
 float4 TransformPosition(float4 v)
 {
@@ -43,3 +49,6 @@ StructuredBuffer<Meshlet>    Meshlets            : register(t0);
 StructuredBuffer<VertexData> Vertices            : register(t1);
 ByteAddressBuffer            UniqueVertexIndices : register(t2);
 StructuredBuffer<uint32_t>   PrimitiveIndices    : register(t3);
+
+//Texture2D<float32_t4> gTexture : register(t0);
+//SamplerState gSampler : register(s0);

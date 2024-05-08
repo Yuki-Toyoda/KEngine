@@ -20,14 +20,16 @@ void Line::Init(const std::string& name, const Vector3& position, const Vector2&
 	transform_.translate_ = position_;
 	transform_.scale_ = Vector3{ thickness_.x, thickness_.y, length_ };
 
+	texture;
+
 	// 新しいメッシュのインスタンスを生成
 	mesh_ = PrimitiveManager::GetInstance()->CreateInstance<Mesh>();
 	mesh_->name_ = name_;
 	mesh_->LoadModelFile("./Engine/Resource/Samples/Box", "Box.obj");
 	mesh_->transform_ = &transform_;
 	mesh_->commonColor = &color_;
-	mesh_->material_.enableLighting_ = true;
-	mesh_->texture_ = texture;
+	//mesh_->material_.enableLighting_ = true;
+	//mesh_->texture_ = texture;
 }
 
 void Line::Update()

@@ -60,8 +60,8 @@ void main(
         }
         else
         {
-            // 頂点色は白
-            outVerts[gtid].color = float4(1.0f, 1.0f, 1.0f, 1.0f);
+            // 頂点色はマテリアルから取得
+            outVerts[gtid].color = material.color;
         }
     }
     if (gtid < meshlet.PrimCount)

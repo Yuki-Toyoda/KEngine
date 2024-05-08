@@ -48,6 +48,26 @@ public: // メンバ関数
 	void CreateDescriptorTableParameter(const int ShaderRegisterCount, const D3D12_SHADER_VISIBILITY visibility, const D3D12_DESCRIPTOR_RANGE_TYPE type = D3D12_DESCRIPTOR_RANGE_TYPE_SRV, const int numDescriptor = 1);
 
 	/// <summary>
+	/// サンプラー追加関数
+	/// </summary>
+	/// <param name="ShaderRegisterCount">hlsl上の登録番号</param>
+	/// <param name="visibility">頂点シェーダーかピクセルシェーダーどちらで使うか</param>
+	/// <param name="filter">フィルター（default:バイオリニアフィルタ）</param>
+	/// <param name="func">比較関数（default:比較しない）</param>
+	/// <param name="addressU">範囲外をどうするかの設定</param>
+	/// <param name="addressV">範囲外をどうするかの設定</param>
+	/// <param name="addressW">範囲外をどうするかの設定</param>
+	void CreateSampler(
+		const int ShaderRegisterCount,
+		const D3D12_SHADER_VISIBILITY visibility = D3D12_SHADER_VISIBILITY_PIXEL,
+		D3D12_FILTER filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR,					// フィルター（default:バイオリニアフィルタ）
+		D3D12_COMPARISON_FUNC func = D3D12_COMPARISON_FUNC_NEVER,				// 比較関数（default:比較しない）
+		D3D12_TEXTURE_ADDRESS_MODE addressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP,	// 範囲外をどうするかの設定
+		D3D12_TEXTURE_ADDRESS_MODE addressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP,	// 範囲外をどうするかの設定
+		D3D12_TEXTURE_ADDRESS_MODE addressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP	// 範囲外をどうするかの設定)
+	);
+
+	/// <summary>
 	/// ルートシグネチャ生成関数
 	/// </summary>
 	void CreateRootSignature();
@@ -78,6 +98,8 @@ protected: // メンバ変数
 	std::vector<D3D12_ROOT_PARAMETER> rootParameters_;
 	// 配列用設定用構造体配列
 	std::list<D3D12_DESCRIPTOR_RANGE> descriptorRangeDescs_;
+	// サンプラー設定酔う構造体配列
+	std::vector<D3D12_STATIC_SAMPLER_DESC> samplerDescs_;
 	// ルートシグネチャ設定用構造体
 	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature_;
 };

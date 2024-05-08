@@ -1,16 +1,23 @@
 #pragma once
 #include "../../GameObject/WorldTransform.h"
+#include "../../Math/Vector4.h"
+#include "../../Base/Resource/Data/ConstantBuffer.h"
 
-// 描画状態列挙子クラス
-enum class fillMode : bool {
-	Fill,	  // 埋め立て
-	WireFrame // ワイヤーフレーム
-};
 /// <summary>
 /// マテリアルクラス
 /// </summary>
 class Material final
 {
+public: // サブクラス
+
+	/// <summary>
+	/// マテリアルデータ構造体
+	/// </summary>
+	struct MaterialData {
+		Vector4 color;
+	};
+
+
 public: // メンバ関数
 
 	// コンストラクタ
@@ -18,20 +25,26 @@ public: // メンバ関数
 	// デストラクタ
 	~Material() = default;
 
+	/// <summary>
+	/// マテリアルのアップロード
+	/// </summary>
+	void UploadMaterial();
+
 public: // アクセッサ等
 
 	/// <summary>
-	/// インデックス情報ゲッター
+	/// マテリアルのバッファアドレスゲッター
 	/// </summary>
-	/// <returns>コマンドマネージャー上でのインデックス情報(定数値)</returns>
-	int GetIndex() const { return index_; }
-	/// <summary>
-	/// インデックス情報セッター
-	/// </summary>
-	/// <param name="index">設定するインデックス</param>
-	void SetIndex(int index) { index_ = index; }
+	/// <returns>マテリアルのバッファアドレス</returns>
+	D3D12_GPU_VIRTUAL_ADDRESS GetBufferAddress() { return materialBuffer_.get()->GetGPUView(); }
 
 public: // パブリックなメンバ変数
+
+	// マテリアル用バッファ
+	std::unique_ptr<ConstantBuffer<MaterialData>> materialBuffer_;
+
+	// カラー色
+	Vector4 color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
 
 	// uvトランスフォーム
 	WorldTransform uvTransform_;
@@ -39,12 +52,5 @@ public: // パブリックなメンバ変数
 	// ライティングを行うか
 	bool enableLighting_ = false;
 
-	// 形状描画設定
-	fillMode fillMode_ = fillMode::Fill;
-
-private: // メンバ変数
-
-	// コマンドマネージャー上でのインデックス情報
-	int index_;
 };
 

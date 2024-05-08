@@ -136,9 +136,9 @@ void BaseObject::AddMesh(WorldTransform* wt, Vector4& color, const std::string& 
 	newMesh->transform_ = wt;								   // ワールドトランスフォームを与える
 	newMesh->LoadModelFile(path, fileName);					   // モデルを読み込み
 	newMesh->commonColor = &color;							   // 色を設定
-	newMesh->material_.enableLighting_ = enableLighting;	   // ライティングの有効設定
+	//newMesh->material_.enableLighting_ = enableLighting;	   // ライティングの有効設定
 	newMesh->layerNo_ = 1;
-
+	enableLighting;
 	// メッシュリストに生成メッシュを追加
 	meshes_.push_back(newMesh);
 }

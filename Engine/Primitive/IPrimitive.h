@@ -132,9 +132,7 @@ public: // パブリックなメンバ変数
 	std::unique_ptr<StructuredBuffer<uint32_t>>			primitiveIndicesBuffer_;	// プリミティブインデックス
 
 	// マテリアル
-	Material material_;
-	// 使用するテクスチャ
-	Texture* texture_ = nullptr;
+	std::unique_ptr<Material> material_;
 
 	// 全頂点カラー
 	// ここに情報が入っている場合全頂点の色にこの色を適用する

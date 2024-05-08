@@ -34,10 +34,12 @@ void Sprite::Init(const std::string& name, const Vector2 position, const Vector2
 	plane_->name_ = name;	    // 名称設定
 	translate_ = position;			// 初期座標
 	scale_ = size;					// 大きさ
-	plane_->texture_ = texture; // テクスチャ
-	texSize_ = plane_->texture_->GetTextureSize();
+	//plane_->texture_ = texture; // テクスチャ
+	//texSize_ = plane_->texture_->GetTextureSize();
 	plane_->commonColor = &color_;
 	plane_->primitiveType_ = IPrimitive::kModelSprite;
+
+	texture;
 
 	// 形状にワールドトランスフォームを渡す
 	plane_->transform_ = &transform_;
@@ -87,7 +89,7 @@ void Sprite::DisplayImGui()
 		ImGui::ColorPicker4("Color", &color_.x);
 
 		if (ImGui::TreeNode("UVTransform")) {
-			plane_->material_.uvTransform_.DisplayImGui("uvTransform");
+			//plane_->material_.uvTransform_.DisplayImGui("uvTransform");
 			ImGui::TreePop();
 		}
 

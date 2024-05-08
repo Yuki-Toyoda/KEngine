@@ -4,7 +4,8 @@
 
 IPrimitive::IPrimitive()
 {
-	
+	// マテリアルを先に生成
+	material_ = std::make_unique<Material>();
 }
 
 void IPrimitive::ResizeVertices()
@@ -35,12 +36,16 @@ void IPrimitive::Draw(ID3D12GraphicsCommandList6* cmdList)
 	// 変化する可能性のあるデータをコピー
 	*transformBuffer_->data_ = transform_->GetMatWorld();
 
+	// マテリアルのアップロード
+	material_->UploadMaterial();
+
 	// コマンドリストに各種バッファのアドレスをセット
 	cmdList->SetGraphicsRootConstantBufferView(1, transformBuffer_->GetGPUView());		  // ワールドトランスフォーム
-	cmdList->SetGraphicsRootDescriptorTable(2, meshletBuffer_->GetGPUView());			  // メッシュレット情報
-	cmdList->SetGraphicsRootDescriptorTable(3, vertexBuffer_->GetGPUView());			  // 頂点情報
-	cmdList->SetGraphicsRootDescriptorTable(4, uniqueVertexIndicesBuffer_->GetGPUView()); // 固有頂点インデックス
-	cmdList->SetGraphicsRootDescriptorTable(5, primitiveIndicesBuffer_->GetGPUView());	  // プリミティブインデックス
+	cmdList->SetGraphicsRootConstantBufferView(2, material_->GetBufferAddress());		  // マテリアル
+	cmdList->SetGraphicsRootDescriptorTable(3, meshletBuffer_->GetGPUView());			  // メッシュレット情報
+	cmdList->SetGraphicsRootDescriptorTable(4, vertexBuffer_->GetGPUView());			  // 頂点情報
+	cmdList->SetGraphicsRootDescriptorTable(5, uniqueVertexIndicesBuffer_->GetGPUView()); // 固有頂点インデックス
+	cmdList->SetGraphicsRootDescriptorTable(6, primitiveIndicesBuffer_->GetGPUView());	  // プリミティブインデックス
 
 	// メッシュレットのプリミティブ数分メッシュシェーダーを実行
 	cmdList->DispatchMesh(GetMeshletCount(), 1, 1);
