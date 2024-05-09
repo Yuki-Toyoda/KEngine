@@ -99,6 +99,14 @@ void Mesh::LoadModel(const std::string& filePath, const std::string& fileName)
 		}
 	}
 
+	// アニメーションを１つでも所持している場合
+	if (scene->mNumAnimations != 0) {
+		// 全アニメーションをロード
+		LoadAnimations(*scene);
+	}
+
+	// シーンのRootNodeを読み、シーン全体の階層構造を作る
+	transform_->rootNode_ = ReadNode(scene->mRootNode);
 
 	// 頂点座標格納用配列の作成
 	auto vertPos = std::make_unique<DirectX::XMFLOAT3[]>(vertices_.size());
@@ -149,34 +157,128 @@ void Mesh::LoadModel(const std::string& filePath, const std::string& fileName)
 
 }
 
-void Mesh::LoadMaterial(const std::string& filePath, const std::string& fileName)
+WorldTransform::Node Mesh::ReadNode(aiNode* node)
 {
-	// フルパスの合成
-	std::string fullPath = filePath + "/" + fileName;
-	// ファイルを開く
-	std::ifstream file(fullPath); // ファイルを開く
-	// 開けなかった場合を止める
-	assert(file.is_open());
+	// ノード読み込み結果確認用
+	WorldTransform::Node result;
 
-	// ファイルから読んだ１行を格納するもの
-	std::string line;
+	// ローカル行列を取得
+	aiMatrix4x4 aiLocalMatrix = node->mTransformation; // ノードのlocalMatrixを取得
+	aiLocalMatrix.Transpose();						   // 列ベクトル形式を行ベクトル形式に変換
 
-	// ファイルから1行ずつ読み込む
-	while (std::getline(file, line)) {
-		// 先端の識別子の値を格納する変数
-		std::string identifier;
-		// ファイルの１行を取得
-		std::istringstream s(line);
-		// 先頭の識別子を読む
-		s >> identifier;
+	// 他の要素を同様に変換する
+	result.localMatrix.m[0][0] = aiLocalMatrix[0][0];
+	result.localMatrix.m[0][1] = aiLocalMatrix[0][1];
+	result.localMatrix.m[0][2] = aiLocalMatrix[0][2];
+	result.localMatrix.m[0][3] = aiLocalMatrix[0][3];
+	result.localMatrix.m[1][0] = aiLocalMatrix[1][0];
+	result.localMatrix.m[1][1] = aiLocalMatrix[1][1];
+	result.localMatrix.m[1][2] = aiLocalMatrix[1][2];
+	result.localMatrix.m[1][3] = aiLocalMatrix[1][3];
+	result.localMatrix.m[2][0] = aiLocalMatrix[2][0];
+	result.localMatrix.m[2][1] = aiLocalMatrix[2][1];
+	result.localMatrix.m[2][2] = aiLocalMatrix[2][2];
+	result.localMatrix.m[2][3] = aiLocalMatrix[2][3];
+	result.localMatrix.m[3][0] = aiLocalMatrix[3][0];
+	result.localMatrix.m[3][1] = aiLocalMatrix[3][1];
+	result.localMatrix.m[3][2] = aiLocalMatrix[3][2];
+	result.localMatrix.m[3][3] = aiLocalMatrix[3][3];
 
-		// テクスチャの読み込み
-		if (identifier == "map_Kd") {
-			// テクスチャ名取得
-			std::string textureName; // テクスチャ情報格納用
-			s >> textureName;		 // テクスチャ名取得
-			// テクスチャ読み込み
-			//texture_ = TextureManager::Load(filePath, textureName);
-		}
+	// Node名を取得
+	result.name = node->mName.C_Str();
+
+	// 子ノード分配列スペースを確保
+	result.children.resize(node->mNumChildren);
+
+	// 子ノード数分ループ
+	for (uint32_t childIndex = 0; childIndex < node->mNumChildren; childIndex++) {
+		// 再帰的にノードを読み込み、階層構造を作る
+		result.children[childIndex] = ReadNode(node->mChildren[childIndex]);
 	}
+
+	// ノードを所持している状態にする
+	result.hasNode = true;
+
+	// 読み込んだNode情報を返す
+	return result;
 }
+
+
+void Mesh::LoadAnimations(const aiScene& scene)
+{
+	// 読み取り結果格納用配列
+	std::vector<Animation> animations;
+
+	// 全アニメーション分ループ
+	for (uint32_t animationCount = 0; animationCount < scene.mNumAnimations; animationCount++) {
+		// アニメーション生成
+		Animation animation;
+		// 最初のアニメーションのみを読み取る
+		aiAnimation* animationAssimp = scene.mAnimations[animationCount];
+		// 時間の単位を秒に変換
+		animation.duration = float(animationAssimp->mDuration / animationAssimp->mTicksPerSecond);
+
+		// assimpでは個々のNodeAnimationをchannelと呼んでいるので、channelを回してNodeAnimationの情報を取ってくる
+		for (uint32_t channelIndex = 0; channelIndex < animationAssimp->mNumChannels; channelIndex++) {
+			// ノードアニメーションを取得
+			aiNodeAnim* nodeAnimationAssimp = animationAssimp->mChannels[channelIndex];
+			// ノードアニメーションを任意の構造体の形式に変換
+			NodeAnimation& nodeAnimation = animation.nodeAnimations[nodeAnimationAssimp->mNodeName.C_Str()];
+
+			// 位置座標のキー数分ループ
+			for (uint32_t keyIndex = 0; keyIndex < nodeAnimationAssimp->mNumPositionKeys; keyIndex++) {
+				// 位置座標のキー情報を取得する
+				aiVectorKey& keyAssimp = nodeAnimationAssimp->mPositionKeys[keyIndex];
+				// 位置座標のキーフレーム
+				keyFrameVector3 keyFrame;
+
+				// キーフレーム秒数を取得する
+				keyFrame.time = float(keyAssimp.mTime / animationAssimp->mTicksPerSecond);
+				// キーフレーム値を取得(右手から左手座標系に変換する)
+				keyFrame.value = { -keyAssimp.mValue.x, keyAssimp.mValue.y, keyAssimp.mValue.z };
+
+				// ノードアニメーション配列に値を追加
+				nodeAnimation.translate.keyFrames.push_back(keyFrame);
+			}
+
+			// 回転のキー数分ループ
+			for (uint32_t keyIndex = 0; keyIndex < nodeAnimationAssimp->mNumRotationKeys; keyIndex++) {
+				// 回転のキー情報を取得する
+				aiQuatKey& keyAssimp = nodeAnimationAssimp->mRotationKeys[keyIndex];
+				// 回転のキーフレーム
+				KeyFrameQuaternion keyFrame;
+
+				// キーフレーム秒数を取得する
+				keyFrame.time = float(keyAssimp.mTime / animationAssimp->mTicksPerSecond);
+				// キーフレーム値を取得(右手から左手座標系に変換する)
+				keyFrame.value = { keyAssimp.mValue.x, keyAssimp.mValue.y, keyAssimp.mValue.z, keyAssimp.mValue.w };
+
+				// ノードアニメーション配列に値を追加
+				nodeAnimation.rotate.keyFrames.push_back(keyFrame);
+			}
+
+			// 拡縮のキー数分ループ
+			for (uint32_t keyIndex = 0; keyIndex < nodeAnimationAssimp->mNumScalingKeys; keyIndex++) {
+				// 拡縮のキー情報を取得する
+				aiVectorKey& keyAssimp = nodeAnimationAssimp->mScalingKeys[keyIndex];
+				// 拡縮のキーフレーム
+				keyFrameVector3 keyFrame;
+
+				// キーフレーム秒数を取得する
+				keyFrame.time = float(keyAssimp.mTime / animationAssimp->mTicksPerSecond);
+				// キーフレーム値を取得(右手から左手座標系に変換する)
+				keyFrame.value = { keyAssimp.mValue.x, keyAssimp.mValue.y, keyAssimp.mValue.z };
+
+				// ノードアニメーション配列に値を追加
+				nodeAnimation.scale.keyFrames.push_back(keyFrame);
+			}
+		}
+
+		// 解析を完了し次第、配列に追加する
+		animations.push_back(animation);
+	}
+
+	// ワールドトランスフォームにアニメーションを渡す
+	transform_->animations_ = animations;
+}
+

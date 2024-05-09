@@ -37,7 +37,7 @@ public: // アクセッサ
 	/// 解像度を返す関数
 	/// </summary>
 	/// <returns></returns>
-	Vector2 GetTextureSize() const { { static_cast<float>(width_), static_cast<float>(height_) }; }
+	Vector2 GetTextureSize() const { { static_cast<float>(width_), static_cast<float>(height_); }; }
 
 public: // パブリックなメンバ変数
 

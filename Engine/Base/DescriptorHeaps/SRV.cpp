@@ -84,6 +84,54 @@ SRVInfo SRV::RegisterTexture(ID3D12Resource* resource, const DirectX::ScratchIma
 	return info;
 }
 
+SRVInfo SRV::RegisterRenderResource(ID3D12Resource* resource, const int width, const int height)
+{
+	// 結果確認用
+	HRESULT result = S_FALSE;
+
+	// 返還用
+	SRVInfo info;
+
+	// レンダーリソース関連のあれこれを求める
+	const UINT pixelCount = width * height;	// 画素数を求める
+	const UINT rowPitch	  = sizeof(UINT) * width; // 画像横一列分のサイズを求める
+	const UINT depthPitch = rowPitch * height;	  // 画像サイズを求める
+	
+	// 画像の保存用の配列を生成する
+	UINT* img = new UINT[pixelCount];
+	// 全体を緑色で初期化する
+	for (UINT i = 0; i < pixelCount; i++) {
+		img[i] = 0xFF00FF00;
+	}
+
+	// TextureBufferに転送する
+	result = resource->WriteToSubresource(
+		0, 
+		nullptr, 
+		img, 
+		rowPitch, 
+		depthPitch);
+	// 転送成否確認
+	assert(SUCCEEDED(result));
+
+	// SRVの設定
+	info.desc_.Format				   = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;			// フォーマット設定
+	info.desc_.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING; // シェーダーから読み取る
+	info.desc_.ViewDimension		   = D3D12_SRV_DIMENSION_TEXTURE2D;			   // テクスチャとして扱う
+	info.desc_.Texture2D.MipLevels	   = 1;										   // ミップレベル指定
+
+	// SRVの空きインデックスを取得する
+	info.index_ = texIndexList_.UseEmpty();
+	// アドレスを取得
+	info.SetView(this);
+
+	// SRVの生成を行う
+	device_->CreateShaderResourceView(resource, &info.desc_, info.cpuView_);
+
+	// 情報構造体を返す
+	return info;
+}
+
 SRVInfo SRV::CreateImGuiSpace()
 {
 	// 返還用

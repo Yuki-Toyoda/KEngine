@@ -3,6 +3,7 @@
 #include "../../Input/Input.h"
 #include "../../Base/Buffer/BufferStructs.h"
 #include "../../Base/Resource/Data/ConstantBuffer.h"
+#include "../../Base/Resource/Rendering/RenderResource.h"
 
 /// <summary>
 /// カメラ

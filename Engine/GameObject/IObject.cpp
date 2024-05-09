@@ -85,6 +85,37 @@ void IObject::PostUpdate()
 	}
 }
 
+void IObject::AnimUpdate()
+{
+	// 全アニメーション分ループ
+	for (int i = 0; i < transform_.animations_.size(); i++) {
+		// 再生中のアニメーションがある場合
+		if (transform_.animations_[i].isPlay) {
+			// 60FPS固定でアニメーションの秒数加算
+			transform_.animations_[i].animationTime += 1.0f / 60.0f;
+
+			// ループ再生を行う場合
+			if (transform_.animations_[i].isLoop) {
+				// 最終秒数に到達していた場合、最初の秒数に戻す
+				transform_.animations_[i].animationTime = std::fmod(transform_.animations_[i].animationTime, transform_.animations_[i].duration);
+			}
+
+			// rootNodeのアニメーションを取得
+			NodeAnimation& rootNodeAnimation = transform_.animations_[i].nodeAnimations[transform_.rootNode_.name];
+			// 各要素の値を取得
+			Vector3    translate = Animation::CalculateValue(rootNodeAnimation.translate.keyFrames, transform_.animations_[i].animationTime); // 位置座標
+			Quaternion rotate = Animation::CalculateValue(rootNodeAnimation.rotate.keyFrames, transform_.animations_[i].animationTime);	  // 回転
+			Vector3    scale = Animation::CalculateValue(rootNodeAnimation.scale.keyFrames, transform_.animations_[i].animationTime);	  // 拡縮
+
+			// ローカル行列を求める
+			localMat_ = Quaternion::MakeAffineMatrix(scale, rotate, translate);
+
+			// ローカル行列をセット
+			transform_.SetLocalMat(localMat_);
+		}
+	}
+}
+
 void IObject::DisplayImGui()
 {
 	// 表示状態の切り替え

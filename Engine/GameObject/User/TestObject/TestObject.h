@@ -2,7 +2,7 @@
 #include "../../IObject.h"
 
 // クラスの前方宣言
-class Animation;
+class MyAnimation;
 
 /// <summary>
 /// テストオブジェクト
@@ -51,6 +51,6 @@ private: // プライベートなメンバ変数
 	KLib::DeltaTimer timer_;
 
 	// アニメーションの管理用
-	Animation* animation_ = nullptr;
+	MyAnimation* animation_ = nullptr;
 };
 

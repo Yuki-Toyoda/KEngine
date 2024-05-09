@@ -248,6 +248,10 @@
     <ClCompile Include="Engine\Lighting\Light\DirectionalLight.cpp">
       <Filter>Engine\Lighting\Light</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Base\Resource\Rendering\RenderResource.cpp" />
+    <ClCompile Include="Engine\Base\RootSignature\PostProcessRootSignature.cpp" />
+    <ClCompile Include="Engine\Base\Renderer\PPRenderer.cpp" />
+    <ClCompile Include="Engine\Utility\Lerp\Lerp.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\State\EnemyDead.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\State\EnemyDown.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\State\EnemyRoot.cpp" />
@@ -571,6 +575,9 @@
     <ClInclude Include="Engine\Lighting\Light\ILight.h">
       <Filter>Engine\Lighting\Light</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Base\Resource\Rendering\RenderResource.h" />
+    <ClInclude Include="Engine\Base\RootSignature\PostProcessRootSignature.h" />
+    <ClInclude Include="Engine\Base\Renderer\PPRenderer.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyDead.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyDown.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyRoot.h" />
@@ -605,6 +612,7 @@
     <None Include="Engine\Resource\Shader\Meshlet.hlsli">
       <Filter>Engine\Resource\Shader</Filter>
     </None>
+    <None Include="Engine\Resource\Shader\PostProcess\PassThrough.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -782,5 +790,7 @@
     <FxCompile Include="Engine\Resource\Shader\MeshletMS.hlsl">
       <Filter>Engine\Resource\Shader</Filter>
     </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\PostProcess\PassThroughVS.hlsl" />
+    <FxCompile Include="Engine\Resource\Shader\PostProcess\PostProcessPS.hlsl" />
   </ItemGroup>
 </Project>
