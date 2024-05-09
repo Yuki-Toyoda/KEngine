@@ -92,7 +92,7 @@ public: // パブリックなメンバ変数
 	float targetAngle_ = 0.0f;
 
 	// キャラクターアニメーション
-	Animation* playerAnim_;
+	MyAnimation* playerAnim_;
 
 	// 攻撃判定用線
 	std::unique_ptr <Line> attackLine_;
@@ -165,6 +165,6 @@ private: // メンバ変数
 	bool isGameStart_ = false;
 
 	// タイトルアニメーション
-	Animation* titleAnim_ = nullptr;
+	MyAnimation* titleAnim_ = nullptr;
 
 };

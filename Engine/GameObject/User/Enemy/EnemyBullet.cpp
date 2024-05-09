@@ -10,7 +10,7 @@ void EnemyBullet::Init()
 	AddMesh(&transform_, color_, "./Resources/MagicSphere", "MagicSphere.gltf");
 
 	// アニメーション再生
-	//transform_.animations_[0].isPlay = true;
+	transform_.animations_[0].isPlay = true;
 
 	// 球のコライダー追加
 	AddColliderSphere("Bullet", &transform_.translate_, &transform_.scale_.x);
@@ -22,18 +22,18 @@ void EnemyBullet::Init()
 void EnemyBullet::Update()
 {
 	// 0番目のアニメーションが終了している場合、次のアニメーションを再生する
-	/*if (transform_.animations_[0].animationTime >= transform_.animations_[0].duration && !transform_.animations_[2].isPlay) {
+	if (transform_.animations_[0].animationTime >= transform_.animations_[0].duration && !transform_.animations_[2].isPlay) {
 		transform_.animations_[1].isPlay = true;
 		transform_.animations_[1].isLoop = true;
 		transform_.animations_[0].isPlay = false;
-	}*/
+	}
 
 	// ヒット時アニメーション再生終了時
-	/*if (transform_.animations_[2].animationTime >= transform_.animations_[2].duration && transform_.animations_[2].isPlay) {
+	if (transform_.animations_[2].animationTime >= transform_.animations_[2].duration && transform_.animations_[2].isPlay) {
 		transform_.animations_[1].isPlay = true;
 		transform_.animations_[2].animationTime = 0.0f;
 		transform_.animations_[2].isPlay = false;
-	}*/
+	}
 
 	// 弾を移動させる
 	transform_.translate_ = transform_.translate_ + velocity_;
@@ -65,11 +65,11 @@ void EnemyBullet::OnCollisionEnter(Collider* collider)
 		// 素振りの効果音の再生
 		Audio::GetInstance()->PlayWave(counterSound_);
 
-		/*transform_.animations_[1].isPlay = false;
+		transform_.animations_[1].isPlay = false;
 		transform_.animations_[2].animationTime = 0.0f;
 		transform_.animations_[2].isPlay = true;
 
-		ParticleEmitterManager::GetInstance()->CreateEmitter<IParticleEmitter, IParticle>("test", 10, 5, transform_.translate_, 0.1f, 0.15f, TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png"));*/
+		/*ParticleEmitterManager::GetInstance()->CreateEmitter<IParticleEmitter, IParticle>("test", 10, 5, transform_.translate_, 0.1f, 0.15f, TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png")); */
 	}
 
 	// ボスと衝突したら
@@ -78,11 +78,11 @@ void EnemyBullet::OnCollisionEnter(Collider* collider)
 		SetVelocity(true, e->GetRallyCount());
 		isReturn_ = false;
 
-		/*transform_.animations_[1].isPlay = false;
+		transform_.animations_[1].isPlay = false;
 		transform_.animations_[2].animationTime = 0.0f;
 		transform_.animations_[2].isPlay = true;
 
-		ParticleEmitterManager::GetInstance()->CreateEmitter<IParticleEmitter, IParticle>("test", 10, 5, transform_.translate_, 0.1f, 0.15f, TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png"));*/
+		/*ParticleEmitterManager::GetInstance()->CreateEmitter<IParticleEmitter, IParticle>("test", 10, 5, transform_.translate_, 0.1f, 0.15f, TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png")); */
 	}
 
 	// プレイヤー、または床と衝突したら
