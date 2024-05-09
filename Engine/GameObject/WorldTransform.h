@@ -4,7 +4,6 @@
 #include "../Math/Vector3.h"
 #include "../Math/Matrix4x4.h"
 #include "../Math/Quaternion.h"
-#include "../Utility/Observer/Observer.h"
 
 /// <summary>
 /// ワールド座標計算クラス
@@ -65,8 +64,6 @@ public: // パブリックメンバ関数
 	void DisplayImGuiWithTreeNode(const std::string& id);
 
 private: // メンバ変数
-
-	KLib::Observer<Vector3> test;
 
 	// 親子関係
 	const WorldTransform* parent_;
