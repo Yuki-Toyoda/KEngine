@@ -4,6 +4,7 @@
 #include "../../Primitive/PrimitiveManager.h"
 #include "../../Lighting/Light/DirectionalLight.h"
 #include "NormalRenderer.h"
+#include "PPRenderer.h"
 
 // クラスの前方宣言
 class Camera;
@@ -42,12 +43,20 @@ public: // メンバ関数
 public: // アクセッサ等
 
 	/// <summary>
-	/// 描画ターゲット追加関数
+	/// (通常描画用)描画ターゲット追加関数
 	/// </summary>
 	/// <param name="view">カメラデータまでのアドレス</param>
 	/// <param name="backBuffer">BackBufferリソース</param>
 	/// <param name="depth">DSVバッファリソース</param>
 	void SetTarget(const D3D12_GPU_VIRTUAL_ADDRESS& view, BackBuffer* backBuffer, DepthStencil* depthBuffer) { normalRenderer_.SetTarget({ view, backBuffer, depthBuffer }); }
+	
+	/*/// <summary>
+	/// (ポストプロセス用)描画ターゲット追加関数
+	/// </summary>
+	/// <param name="renderer">ポストプロセスを掛けた結果を格納するリソース</param>
+	/// <param name="texture">ポストプロセスを掛けるテクスチャ</param>
+	/// <param name="depthBuffer">深度リソース</param>
+	void SetTarget(RenderResource* renderer, BackBuffer* texture, DepthStencil* depthBuffer) { ppRenderer_.SetTarget({ renderer, texture, depthBuffer }); }*/
 
 	/// <summary>
 	/// コマンド管理クラスゲッター
@@ -81,6 +90,9 @@ private: // メンバ変数
 
 	// 通常描画レンダラー
 	NormalRenderer normalRenderer_;
+
+	//// ポストプロセス描画レンダラー
+	//PPRenderer ppRenderer_;
 
 };
 

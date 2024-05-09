@@ -1,17 +1,29 @@
 #pragma once
-#include "Vector3.h"
+
+// クラスの前方宣言
+class Vector3;
 
 /// <summary>
 /// クォータニオン
 /// </summary>
-struct Quaternion {
-	float x;
-	float y;
-	float z;
-	float w;
+class Quaternion final {
+public: // メンバ関数
 
-	inline Vector3& vec() { return *reinterpret_cast<Vector3*>(&x); }
-	inline const Vector3& vec() const { return *reinterpret_cast<const Vector3*>(&x); }
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	Quaternion();
+
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	/// <param name="v">オイラー角</param>
+	Quaternion(const Vector3& v);
+
+public: // 演算子オーバーロード
+
+	inline Vector3& vec();
+	inline const Vector3& vec() const;
 
 	/// <summary>
 	/// 演算子のオーバーロード(+)
@@ -42,4 +54,12 @@ struct Quaternion {
 	/// <returns>除算</returns>
 	Quaternion operator/ (const Quaternion q) const;
 
+public: // メンバ変数
+
+	// 実部
+	float x;
+	float y;
+	float z;
+	// 虚部
+	float w;
 };

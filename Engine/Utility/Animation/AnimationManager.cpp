@@ -9,7 +9,7 @@ void AnimationManager::Init()
 void AnimationManager::Update()
 {
 	// 終了したアニメーションを削除
-	animations_.remove_if([](std::unique_ptr<Animation>& animation) {
+	animations_.remove_if([](std::unique_ptr<MyAnimation>& animation) {
 		if (animation->isDestruction_) {
 			return true;
 		}
@@ -17,7 +17,7 @@ void AnimationManager::Update()
 		});
 
 	// 全てのアニメーションを更新する
-	for (std::unique_ptr<Animation>& a : animations_) {
+	for (std::unique_ptr<MyAnimation>& a : animations_) {
 		a->Update();
 	}
 }
@@ -44,7 +44,7 @@ void AnimationManager::DisplayImGui()
 				}
 				if (ImGui::MenuItem("SaveALL")) {
 					// 全てのアニメーションの保存を行う
-					for (Animation& a : parameters_) {
+					for (MyAnimation& a : parameters_) {
 						a.SaveAnimation();
 					}
 				}
@@ -88,7 +88,7 @@ void AnimationManager::DisplayImGui()
 void AnimationManager::CreateAnimationParameter(const std::string name)
 {
 	// 保存されているパラメーター内に同名のアニメーションが存在しない場合はパラメーターとして追加する
-	for (Animation& a : parameters_) {
+	for (MyAnimation& a : parameters_) {
 		// 同名のパラメーターが見つかった場合
 		if (a.name_ == name) {
 			// 処理を抜ける
@@ -97,7 +97,7 @@ void AnimationManager::CreateAnimationParameter(const std::string name)
 	}
 
 	// 新しいアニメーションを生成
-	Animation newAnim;
+	MyAnimation newAnim;
 	// 生成したアニメーションを初期化する
 	newAnim.Init(name);
 
@@ -105,15 +105,15 @@ void AnimationManager::CreateAnimationParameter(const std::string name)
 	parameters_.push_back(newAnim);
 }
 
-Animation* AnimationManager::CreateAnimation(const std::string& name, const std::string& parameterName)
+MyAnimation* AnimationManager::CreateAnimation(const std::string& name, const std::string& parameterName)
 {
 	// 新しいアニメーションを生成
-	std::unique_ptr<Animation> newAnimation = std::make_unique<Animation>();
+	std::unique_ptr<MyAnimation> newAnimation = std::make_unique<MyAnimation>();
 	// 生成したアニメーションの初期化
 	newAnimation->Init(name, parameterName);
 
 	// 返還用インスタンス生成
-	Animation* returnAnimation = newAnimation.get();
+	MyAnimation* returnAnimation = newAnimation.get();
 
 	// 生成したアニメーションを配列に追加
 	animations_.push_back(std::move(newAnimation));

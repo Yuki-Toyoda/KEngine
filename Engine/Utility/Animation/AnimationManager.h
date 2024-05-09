@@ -61,15 +61,15 @@ public: // メンバ関数
 	/// <param name="name">作成するアニメーション名</param>
 	/// <param name="parameterName">アニメーション再生時に読み込むパラメータ名</param>
 	/// <returns>アニメーション本体</returns>
-	Animation* CreateAnimation(const std::string& name, const std::string& parameterName);
+	MyAnimation* CreateAnimation(const std::string& name, const std::string& parameterName);
 
 private: // メンバ変数
 
 	// アニメーション配列
-	std::list<std::unique_ptr<Animation>> animations_;
+	std::list<std::unique_ptr<MyAnimation>> animations_;
 
 	// パラメーター格納用
-	std::vector<Animation> parameters_;
+	std::vector<MyAnimation> parameters_;
 
 	// imGui用変数
 	int imGuiSelectAnimation_ = 0; // 選択中アニメーション
@@ -80,7 +80,7 @@ template<typename T>
 inline void AnimationManager::AddSelectAnimationKeys(const std::string& animationName, const std::string& keyName)
 {
 	// 全てのパラメーターから一致するパラメーターを探す
-	for (Animation& a : parameters_) {
+	for (MyAnimation& a : parameters_) {
 		// 一致しているパラメーターを発見した場合それにキーを追加
 		if (a.name_ == animationName) {
 			a.AddAnimationKeys<T>(keyName);

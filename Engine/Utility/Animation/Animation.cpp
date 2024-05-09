@@ -1,6 +1,6 @@
 #include "Animation.h"
 
-void Animation::Init(const std::string& name)
+void MyAnimation::Init(const std::string& name)
 {
 	// アニメーション名の取得
 	name_ = name;
@@ -9,7 +9,7 @@ void Animation::Init(const std::string& name)
 	animationKeys_.clear();
 }
 
-void Animation::Init(const std::string& name, const std::string& parameterName)
+void MyAnimation::Init(const std::string& name, const std::string& parameterName)
 {
 	// アニメーション名の取得
 	name_ = name;
@@ -20,7 +20,7 @@ void Animation::Init(const std::string& name, const std::string& parameterName)
 	animationKeys_.clear();
 }
 
-void Animation::Update()
+void MyAnimation::Update()
 {
 	// 一度全てのキーは終了している状態に
 	isAllKeyEnd_ = true;
@@ -68,7 +68,7 @@ void Animation::Update()
 
 }
 
-void Animation::Play()
+void MyAnimation::Play()
 {
 	// 全てのキーを
 	for (auto& keys : animationKeys_) {
@@ -84,7 +84,7 @@ void Animation::Play()
 	isAllKeyEnd_ = false;
 }
 
-void Animation::Play(const float& trantionTime)
+void MyAnimation::Play(const float& trantionTime)
 {
 	// 全てのキーを
 	for (auto& keys : animationKeys_) {
@@ -100,7 +100,7 @@ void Animation::Play(const float& trantionTime)
 	isAllKeyEnd_ = false;
 }
 
-void Animation::Stop()
+void MyAnimation::Stop()
 {
 	// 全てのキーを
 	for (auto& keys : animationKeys_) {
@@ -111,7 +111,7 @@ void Animation::Stop()
 	}
 }
 
-bool Animation::GetIsPlay()
+bool MyAnimation::GetIsPlay()
 {
 	// 値返還用
 	bool isPlay = false;
@@ -131,7 +131,7 @@ bool Animation::GetIsPlay()
 	return isPlay;
 }
 
-void Animation::ChangeParameter(const std::string name, bool isChange)
+void MyAnimation::ChangeParameter(const std::string name, bool isChange)
 {
 	// パラメータ名の取得
 	parameterName_ = name;
@@ -155,7 +155,7 @@ void Animation::ChangeParameter(const std::string name, bool isChange)
 	}
 }
 
-void Animation::ChangeParameter(const std::string name, const float& transitionTime, bool isChange)
+void MyAnimation::ChangeParameter(const std::string name, const float& transitionTime, bool isChange)
 {
 	// パラメータ名の取得
 	parameterName_ = name;
@@ -176,7 +176,7 @@ void Animation::ChangeParameter(const std::string name, const float& transitionT
 	}
 }
 
-float Animation::GetAnimationProgress()
+float MyAnimation::GetAnimationProgress()
 {
 	// フレーム最大数
 	int32_t maxFrameCount = 0;
@@ -196,7 +196,7 @@ float Animation::GetAnimationProgress()
 	return progress;
 }
 
-void Animation::SetAnimationSpeed(const float& animSpeed)
+void MyAnimation::SetAnimationSpeed(const float& animSpeed)
 {
 	// 全キー配列の再生速度を変更する
 	for (auto& keys : animationKeys_) {
@@ -207,7 +207,7 @@ void Animation::SetAnimationSpeed(const float& animSpeed)
 	}
 }
 
-void Animation::DisplayImGui()
+void MyAnimation::DisplayImGui()
 {
 	if (ImGui::TreeNode(name_.c_str())) {
 
@@ -259,7 +259,7 @@ void Animation::DisplayImGui()
 	}
 }
 
-void Animation::DisplayParameterImGui()
+void MyAnimation::DisplayParameterImGui()
 {
 	// アニメーション名
 	std::string name = "Now SelectAnimation : " + name_;
@@ -328,7 +328,7 @@ void Animation::DisplayParameterImGui()
 	}
 }
 
-void Animation::SaveAnimation()
+void MyAnimation::SaveAnimation()
 {
 	// 調整項目クラスに登録された値を外部ファイルに書き出す
 	GlobalVariables::GetInstance()->SaveFile(name_);

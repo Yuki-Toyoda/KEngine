@@ -105,6 +105,15 @@ public: // メンバ関数
 	SRVInfo RegisterTexture(ID3D12Resource* resource, const DirectX::ScratchImage& mipImages);
 
 	/// <summary>
+	/// レンダーリソースをSRVに登録する関数
+	/// </summary>
+	/// <param name="resource">登録するリソース</param>
+	/// <param name="width">最大画素数横幅</param>
+	/// <param name="height">最大画素縦幅</param>
+	/// <returns>レンダーリソースまでのアドレス</returns>
+	SRVInfo RegisterRenderResource(ID3D12Resource* resource, const int width, const int height);
+
+	/// <summary>
 	/// ImGui用のスペースをSRV上に確保する関数
 	/// </summary>
 	/// <returns>ImGuiの登録情報までのアドレス</returns>

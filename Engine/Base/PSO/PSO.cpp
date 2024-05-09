@@ -23,6 +23,29 @@ PSO& PSO::Init(ID3D12RootSignature* signature, DXC* dxc)
 	return *this;
 }
 
+PSO& PSO::VertInit(ID3D12RootSignature* signature, DXC* dxc)
+{
+	// ルートシグネチャをセット
+	vertDesc_.pRootSignature = signature;
+	// DXCもセットする
+	dxc_ = dxc;
+
+	// デフォルトのパラメーターをセットする
+	vertDesc_.pRootSignature = signature;									  // ルートシグネチャのセット
+	vertDesc_.BlendState = SettingBlendState(0);							  // ブレンド設定
+	vertDesc_.RasterizerState = SettingRasterizerDesc();					  // ラスタライザ設定
+	vertDesc_.DepthStencilState = SettingDepthStencilState(1);				  // DSVの設定を行う
+	vertDesc_.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;					  // DSVのフォーマット設定
+	vertDesc_.NumRenderTargets = 1;											  // 書き込むRTVの数
+	vertDesc_.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;				  // RTVのフォーマット設定
+	vertDesc_.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE; // 出力形状設定
+	vertDesc_.SampleDesc.Count = 1;											  // サンプラー数
+	vertDesc_.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;						  // マスク設定
+
+	// PSO自身を返す
+	return *this;
+}
+
 PSO& PSO::SetBlendState(int state)
 {
 	// ブレンドステートの設定を行う
@@ -83,6 +106,34 @@ PSO& PSO::SetPixelShader(std::string filePath)
 	return *this;
 }
 
+PSO& PSO::SetVertexShader(std::string filePath)
+{
+	// シェーダーコンパイルを行う
+	IDxcBlob* blob = nullptr;											   // コンパイル結果確認用
+	blob = dxc_->CompileShader(Debug::ConvertString(filePath), L"vs_6_0"); // シェーダーコンパイルを行う
+	assert(blob != nullptr);											   // コンパイル成否確認
+
+	// シェーダーをセット
+	vertDesc_.VS = { blob->GetBufferPointer(), blob->GetBufferSize() };
+
+	// PSO自身を返す
+	return *this;
+}
+
+PSO& PSO::SetVertPixelShader(std::string filePath)
+{
+	// シェーダーコンパイルを行う
+	IDxcBlob* blob = nullptr;											   // コンパイル結果確認用
+	blob = dxc_->CompileShader(Debug::ConvertString(filePath), L"ps_6_0"); // シェーダーコンパイルを行う
+	assert(blob != nullptr);											   // コンパイル成否確認
+
+	// シェーダーをセット
+	vertDesc_.PS = { blob->GetBufferPointer(), blob->GetBufferSize() };
+
+	// PSO自身を返す
+	return *this;
+}
+
 PSO& PSO::SetDepthStencilState(bool writeDSV)
 {
 	// DSVの設定を行う
@@ -119,6 +170,17 @@ void PSO::Build(ID3D12Device2* device)
 
 	// 設定を元に実際に生成を行う
 	result = device->CreatePipelineState(&streamDesc, IID_PPV_ARGS(&state_));
+	// 生成成否確認
+	assert(SUCCEEDED(result));
+}
+
+void PSO::VertBuild(ID3D12Device2* device)
+{
+	// 結果確認用
+	HRESULT result = S_FALSE;
+
+	// 設定を元に実際に生成を行う
+	result = device->CreateGraphicsPipelineState(&vertDesc_, IID_PPV_ARGS(&state_));
 	// 生成成否確認
 	assert(SUCCEEDED(result));
 }

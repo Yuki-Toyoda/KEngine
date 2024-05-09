@@ -39,4 +39,17 @@ void RenderResource::Init(DirectXDevice* device, HeapManager* heaps)
 		&clearColor_,			 // クリア最適値
 		IID_PPV_ARGS(&resource_) // 作成するResourceへのポインタ
 	);
+	// 生成成否確認
+	assert(SUCCEEDED(result));
+
+	// RTVに登録
+	rtvInfo_ = heaps->rtv()->CreateRenderTargetView(resource_.Get());
+	// SRVに登録
+	srvInfo_ = heaps->srv()->RegisterRenderResource(resource_.Get(), width_, height_);
+}
+
+void RenderResource::Clear(ID3D12GraphicsCommandList6* list)
+{
+	// RTVをクリア
+	list->ClearRenderTargetView(rtvInfo_.cpuView_, clearColor_.Color, 0, nullptr);
 }
