@@ -65,6 +65,8 @@ public: // パブリックメンバ関数
 
 private: // メンバ変数
 
+	Quaternion q_;
+
 	// 親子関係
 	const WorldTransform* parent_;
 

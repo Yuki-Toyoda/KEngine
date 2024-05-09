@@ -12,7 +12,7 @@ public: // メンバ関数
 	/// コンストラクタに関しては形状基底クラスのを使用
 	/// </summary>
 	using IPrimitive::IPrimitive;
-
+	
 	/// <summary>
 	/// (呼び出し禁止)頂点配列を形状の頂点数にリサイズする関数
 	/// </summary>
@@ -57,6 +57,5 @@ private: // プライベートなメンバ関数
 	/// <param name="filePath">マテリアルまでのディレクトリ</param>
 	/// /// <param name="fileName">マテリアル名</param>
 	void LoadMaterial(const std::string& filePath, const std::string& fileName);
-
 };
 
