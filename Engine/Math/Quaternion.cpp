@@ -21,6 +21,15 @@ Quaternion::Quaternion(const Vector3& v)
 	w = 0.0f;
 }
 
+Quaternion::Quaternion(float x, float y, float z, float w) noexcept
+{
+	// 乗法単位元
+	this->x = x;
+	this->y = y;
+	this->z = z;
+	this->w = w;
+}
+
 inline Vector3& Quaternion::vec()
 {
 	return *reinterpret_cast<Vector3*>(&x);
@@ -242,5 +251,22 @@ Quaternion Quaternion::Slerp(float t, const Quaternion& start, const Quaternion&
 		result = (start * (std::sin(theta * (1.0f - t)) * sinTheta)) + (end * (std::sin(theta * t) * sinTheta));
 	}
 	// 結果を返す
+	return result;
+}
+
+Matrix4x4 Quaternion::MakeAffineMatrix(const Vector3& scale, const Quaternion& rotate, const Vector3& translate)
+{
+	// 単位行列生成
+	Matrix4x4 result = Matrix4x4();
+
+	// 計算処理
+	Matrix4x4 tempScaleMatrix = Matrix4x4::MakeScale(scale);
+	Matrix4x4 tempRotateMatrix = QuaternionToMatrix(rotate);
+	Matrix4x4 tempTranslateMatrix = Matrix4x4::MakeTranslate(translate);
+
+	// 計算した行列を合成する
+	result = tempScaleMatrix * tempRotateMatrix * tempTranslateMatrix;
+
+	// 生成した行列の返還
 	return result;
 }

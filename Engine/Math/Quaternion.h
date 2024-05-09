@@ -21,6 +21,15 @@ public: // メンバ関数
 	/// <param name="v">オイラー角</param>
 	Quaternion(const Vector3& v);
 
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	/// <param name="x">x軸初期値</param>
+	/// <param name="y">y軸初期値</param>
+	/// <param name="z">z軸初期値</param>
+	/// <param name="w">虚部初期値</param>
+	Quaternion(float x, float y, float z, float w) noexcept;
+
 public: // 演算子オーバーロード
 
 	inline Vector3& vec();
@@ -121,6 +130,15 @@ public: // 静的なメンバ関数
 	/// <param name="end">終端角度</param>
 	/// <returns>補完されたQuaternion</returns>
 	static Quaternion Slerp(float t, const Quaternion& start, const Quaternion& end);
+
+	/// <summary>
+	/// アフィン変換行列生成関数
+	/// </summary>
+	/// <param name="scale">拡縮</param>
+	/// <param name="rotate">回転</param>
+	/// <param name="translate">位置座標</param>
+	/// <returns></returns>
+	static Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Quaternion& rotate, const Vector3& translate);
 
 public: // メンバ変数
 
