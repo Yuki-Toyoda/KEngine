@@ -21,6 +21,10 @@ void ModelRootSignature::Init()
 	CreateDescriptorTableParameter(3, D3D12_SHADER_VISIBILITY_ALL);
 	// テクスチャデータ用パラメータ
 	CreateDescriptorTableParameter(4, D3D12_SHADER_VISIBILITY_ALL);
+	// マトリックスパレット用パラメータ
+	CreateDescriptorTableParameter(5, D3D12_SHADER_VISIBILITY_ALL);
+	// インフルエンス用パラメータ
+	CreateDescriptorTableParameter(6, D3D12_SHADER_VISIBILITY_ALL);
 
 	// サンプラー生成
 	CreateSampler(0);

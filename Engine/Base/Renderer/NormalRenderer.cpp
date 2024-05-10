@@ -10,8 +10,8 @@ void NormalRenderer::Init(DirectXDevice* device, ID3D12RootSignature* signature,
 
 	// 通常描画用PSO初期化
 	pso_.Init(signature, dxc)
-		.SetMeshShader("Engine/Resource/Shader/MeshletMS.hlsl")
-		.SetPixelShader("Engine/Resource/Shader/MeshletPS.hlsl")
+		.SetMeshShader("Engine/Resource/Shader/SkinMeshlet/MeshletSkinMS.hlsl")
+		.SetPixelShader("Engine/Resource/Shader/SkinMeshlet/MeshletSkinPS.hlsl")
 		.Build(device->GetDevice());
 
 	// 形状マネージャのインスタンス取得

@@ -7,6 +7,7 @@
 #include "../Math/Quaternion.h"
 #include <vector>
 #include <map>
+#include <optional>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
@@ -116,6 +117,15 @@ struct Animation {
 };
 
 /// <summary>
+/// クォータニオンを使用するトランスフォーム
+/// </summary>
+struct QuarternionTransform {
+	Vector3    scale;
+	Quaternion rotate;
+	Vector3    translate;
+};
+
+/// <summary>
 /// ワールド座標計算クラス
 /// </summary>
 class WorldTransform {
@@ -125,10 +135,33 @@ public: // サブクラス
 	/// ノード構造体
 	/// </summary>
 	struct Node {
-		Matrix4x4 localMatrix;		// NodeのLocalMatrix
-		std::string name;			// ノード名
-		std::vector<Node> children; // 子供のノード
-		bool hasNode = false;		// ノードを所持しているか
+		QuarternionTransform transform; // 当該ノード座標
+		Matrix4x4 localMatrix;			// NodeのLocalMatrix
+		std::string name;				// ノード名
+		std::vector<Node> children;		// 子供のノード
+		bool hasNode = false;			// ノードを所持しているか
+	};
+
+	/// <summary>
+	/// ジョイント構造体
+	/// </summary>
+	struct Joint {
+		QuarternionTransform   transform;		   // 当該ジョイント座標
+		Matrix4x4			   localMatrix;		   // ローカル行列
+		Matrix4x4			   skeltonSpaceMatrix; // SkeltonSpaceでの変換行列
+		std::string			   name;			   // ジョイント名	
+		std::vector<int32_t>   children;		   // 子ジョイント
+		int32_t				   index;			   // 自身のインデックス
+		std::optional<int32_t> parent;			   // 親ジョイントのインデックス
+	};
+
+	/// <summary>
+	/// スケルトン構造体
+	/// </summary>
+	struct Skelton {
+		int32_t						   root = 0; // 親ジョイントのインデックス
+		std::map<std::string, int32_t> jointMap; // ジョイント名検索用
+		std::vector<Joint>			   joints;	 // ジョイント配列
 	};
 
 public: // パブリックメンバ変数
@@ -186,6 +219,36 @@ public: // パブリックメンバ関数
 	/// <param name="id">ツリーノード名</param>
 	void DisplayImGuiWithTreeNode(const std::string& id);
 
+	/// <summary>
+	/// ジョイント生成関数
+	/// </summary>
+	/// <param name="node">ジョイントを生成するノード</param>
+	/// <param name="parent">ペアレント</param>
+	/// <param name="joints">ジョイント配列</param>
+	/// <returns>ジョイント</returns>
+	int32_t CreateJoint(const Node& node, const std::optional<int32_t>& parent, std::vector<Joint>& joints);
+
+	/// <summary>
+	/// スケルトン生成関数
+	/// </summary>
+	/// <param name="rootNode">親ノード</param>
+	/// <returns>スケルトン</returns>
+	Skelton CreateSkelton(const Node& rootNode);
+
+	/// <summary>
+	///	スケルトン更新関数
+	/// </summary>
+	/// <param name="skelton"></param>
+	void SkeltonUpdate(Skelton& skelton);
+
+	/// <summary>
+	/// アニメーション適用関数
+	/// </summary>
+	/// <param name="skelton">適用するスケルトン</param>
+	/// <param name="anim">アニメーション</param>
+	/// <param name="animationTime">アニメーション秒数</param>
+	void ApplyAnimation(Skelton& skelton, const Animation& anim, float animationTime);
+
 public: // パブリックなメンバ変数
 
 	// 親ノード
@@ -193,6 +256,9 @@ public: // パブリックなメンバ変数
 
 	// アニメーション配列
 	std::vector<Animation> animations_;
+
+	// 骨、ボーン
+	Skelton skelton_;
 
 private: // メンバ変数
 

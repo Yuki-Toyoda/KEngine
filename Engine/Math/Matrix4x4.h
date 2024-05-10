@@ -135,6 +135,12 @@ public: // メンバ関数
 	const Matrix4x4& Inverse();
 
 	/// <summary>
+	/// 転置行列生成
+	/// </summary>
+	/// <returns>転置行列</returns>
+	const Matrix4x4& Transpose();
+
+	/// <summary>
 	/// 正射影行列生成
 	/// </summary>
 	/// <param name="left">画面左</param>
@@ -174,6 +180,12 @@ public: // 静的なメンバ関数
 	/// 単位行列
 	/// </summary>
 	static const Matrix4x4 kIdentity;
+
+	/// <summary>
+	/// 単位行列生成関数
+	/// </summary>
+	/// <returns>単位行列</returns>
+	static Matrix4x4 MakeIndentity();
 
 	/// <summary>
 	/// 拡大縮小行列
@@ -230,6 +242,13 @@ public: // 静的なメンバ関数
 	/// <param name="mat">変換する行列</param>
 	/// <returns>逆行列</returns>
 	static Matrix4x4 MakeInverse(Matrix4x4 mat);
+
+	/// <summary>
+	/// 転置行列
+	/// </summary>
+	/// <param name="mat">変換する行列</param>
+	/// <returns>転置行列</returns>
+	static Matrix4x4 MakeTranspose(const Matrix4x4& mat);
 
 	/// <summary>
 	/// 正射影行列生成

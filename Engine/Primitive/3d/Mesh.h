@@ -1,11 +1,59 @@
 #pragma once
 #include "../IPrimitive.h"
+#include <array>
+#include <span>
+#include "../../Base/Resource/Data/StructuredBuffer.h"
 
 /// <summary>
 /// 3Dモデル
 /// </summary>
 class Mesh final : public IPrimitive
 {
+public: // サブクラス
+
+	/// <summary>
+	/// 頂点のウェイトデータ
+	/// </summary>
+	struct VertexWeightData {
+		float weight;		  // ウェイト
+		uint32_t vertexIndex; // 頂点インデックス
+	};
+
+	/// <summary>
+	/// ジョイントのウェイトデータ
+	/// </summary>
+	struct JointWeightData {
+		Matrix4x4 inverseBindPoseMatrix;
+		std::vector<VertexWeightData> vertexWeights;
+	};
+
+	// 頂点が影響を受けるジョイントの最大数
+	static const uint32_t kNumMaxInfluence = 4;
+	/// <summary>
+	/// ウェイトが頂点に対して影響を受けるパラメーター用構造体
+	/// </summary>
+	struct VertexInfluence {
+		std::array<float, kNumMaxInfluence> weights;
+		std::array<int32_t, kNumMaxInfluence> jointIndices;
+	};
+
+	/// <summary>
+	/// マトリックスのパレット
+	/// </summary>
+	struct WellForGPU {
+		Matrix4x4 skeltonSpaceMatrix;
+		Matrix4x4 skeltonSpaceTransposeMatrix;
+	};
+
+	/// <summary>
+	/// スキンクラスター構造体
+	/// </summary>
+	struct SkinCluster {
+		std::vector<Matrix4x4> inverseBindPoseMatrices;
+		std::unique_ptr<StructuredBuffer<VertexInfluence>> influencedBuffer_;
+		std::unique_ptr<StructuredBuffer<WellForGPU>> PalletteBuffer_;
+	};
+
 public: // メンバ関数
 
 	/// <summary>
@@ -29,6 +77,12 @@ public: // メンバ関数
 	/// <param name="fileName">モデル名</param>
 	void LoadModelFile(const std::string& filePath, const std::string& fileName);
 
+	/// <summary>
+	/// 描画関数
+	/// </summary>
+	/// <param name="cmdList">コマンドリスト</param>
+	void Draw(ID3D12GraphicsCommandList6* cmdList) override;
+
 public: // アクセッサ等
 
 	/// <summary>
@@ -51,6 +105,8 @@ private: // プライベートなメンバ関数
 	/// <param name="fileName">モデル名</param>
 	void LoadModel(const std::string& filePath, const std::string& filename);
 
+public: // アニメーション関連関数
+
 	/// <summary>
 	/// assimpNodeからNode情報を読み取る関数
 	/// </summary>
@@ -59,9 +115,34 @@ private: // プライベートなメンバ関数
 	WorldTransform::Node ReadNode(aiNode* node);
 
 	/// <summary>
+	/// スキンクラスター生成関数
+	/// </summary>
+	/// <param name="skelton">スケルトン</param>
+	/// <returns>スキンクラスター</returns>
+	SkinCluster CreateSkinCluster(const WorldTransform::Skelton& skelton);
+
+	/// <summary>
+	/// スキンクラスターの更新関数
+	/// </summary>
+	/// <param name="skinCluster">スキンクラスター</param>
+	/// <param name="skelton">スケルトン</param>
+	void SkinClusterUpdate(SkinCluster& skinCluster, const WorldTransform::Skelton& skelton);
+
+	/// <summary>
 	/// 全アニメーションロード関数
 	/// </summary>
 	/// <param name="scene">アニメーションをロードするシーン</param>
 	void LoadAnimations(const aiScene& scene);
+
+public: // パブリックなメンバ変数
+
+	// スキンクラスター
+	SkinCluster skinCluster_;
+
+private: // メンバ変数
+
+	// スキンクラスター用データ
+	std::map<std::string, JointWeightData> skinClusterData;
+
 };
 

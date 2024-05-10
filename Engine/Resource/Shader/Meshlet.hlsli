@@ -4,6 +4,13 @@ struct ConstantData
     uint32_t     DrawMeshlets;
 };
 
+struct DirectionalLight
+{
+    float32_t4 color;
+    float32_t3 direction;
+    float32_t intensity;
+};
+
 struct WorldTransform
 {
     float32_t4x4 world;
@@ -28,13 +35,6 @@ struct Meshlet
     uint32_t VertOffset;
     uint32_t PrimCount;
     uint32_t PrimOffset;
-};
-
-struct DirectionalLight
-{
-    float32_t4   color;
-    float32_t3   direction;
-    float32_t    intensity;
 };
 
 struct VertexOutPut

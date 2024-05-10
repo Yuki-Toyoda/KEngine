@@ -472,6 +472,22 @@ const Matrix4x4& Matrix4x4::Inverse()
 	return *this;
 }
 
+const Matrix4x4& Matrix4x4::Transpose()
+{
+	// 単位行列生成
+	Identity();
+
+	// 計算処理
+	for (int y = 0; y < 4; y++) {
+		for (int x = 0; x < 4; x++) {
+			this->m[y][x] = m[x][y];
+		}
+	}
+
+	// 結果を返す
+	return *this;
+}
+
 const Matrix4x4& Matrix4x4::OrthGraphic(const float& left, const float& top, const float& right, const float& bottom, const float& nearClip, const float& farClip)
 {
 	// 単位行列生成
@@ -521,6 +537,11 @@ const Matrix4x4& Matrix4x4::Viewport(float left, float top, float width, float h
 
 	// 生成した行列の返還
 	return *this;
+}
+
+Matrix4x4 Matrix4x4::MakeIndentity()
+{
+	return Matrix4x4();
 }
 
 Matrix4x4 Matrix4x4::MakeScale(const Vector3& scale)
@@ -614,6 +635,18 @@ Matrix4x4 Matrix4x4::MakeInverse(Matrix4x4 mat)
 
 	// 行列生成
 	result.Inverse();
+
+	// 生成結果を返す
+	return result;
+}
+
+Matrix4x4 Matrix4x4::MakeTranspose(const Matrix4x4& mat)
+{
+	// 結果格納用
+	Matrix4x4 result = mat;
+
+	// 行列生成
+	result.Transpose();
 
 	// 生成結果を返す
 	return result;

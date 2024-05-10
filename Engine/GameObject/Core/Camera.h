@@ -68,7 +68,7 @@ public: // その他関数
 public: // パブリックなメンバ変数
 
 	// 視野角
-	float fov_;
+	float fov_ = 0.45f;
 
 protected: // メンバ変数
 
@@ -76,10 +76,10 @@ protected: // メンバ変数
 	ConstantBuffer<CameraData> cameraDataBuffer_;
 
 	// 入力検知用
-	Input* input_;
+	Input* input_ = nullptr;
 
 	// カメラ使用トリガー
-	bool isUseThisCamera_;
+	bool isUseThisCamera_ = false;
 
 	// カメラのメッシュレット表示切り替えトリガー
 	bool isDrawMeshlets_ = false;
