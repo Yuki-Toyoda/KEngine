@@ -476,11 +476,13 @@ const Matrix4x4& Matrix4x4::Transpose()
 {
 	// 単位行列生成
 	Identity();
+	float tmp = 0.0f;
 
-	// 計算処理
-	for (int y = 0; y < 4; y++) {
-		for (int x = 0; x < 4; x++) {
-			this->m[y][x] = m[x][y];
+	for (int y = 0; y < 3; y++) {
+		for (int x = y + 1; x < 4; x++) {
+			tmp = this->m[y][x];
+			this->m[y][x] = this->m[x][y];
+			this->m[x][y] = tmp;
 		}
 	}
 

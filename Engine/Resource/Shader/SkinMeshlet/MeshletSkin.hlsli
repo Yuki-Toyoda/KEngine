@@ -29,6 +29,13 @@ struct VertexData
     float32_t3 normal;
 };
 
+struct SkinVertexData
+{
+    VertexData vertex;
+    float32_t4 weight;
+    int32_t4 jointIndex;
+};
+
 struct Meshlet
 {
     uint32_t VertCount;
@@ -68,16 +75,15 @@ ConstantBuffer<DirectionalLight> light        : register(b1);
 ConstantBuffer<WorldTransform>   Transform    : register(b2);
 ConstantBuffer<Material>         material     : register(b3);
 
-StructuredBuffer<Meshlet>    Meshlets            : register(t0);
-StructuredBuffer<VertexData> Vertices            : register(t1);
-ByteAddressBuffer            UniqueVertexIndices : register(t2);
-StructuredBuffer<uint32_t>   PrimitiveIndices    : register(t3);
+StructuredBuffer<Meshlet>        Meshlets            : register(t0);
+StructuredBuffer<SkinVertexData> Vertices            : register(t1);
+ByteAddressBuffer                UniqueVertexIndices : register(t2);
+StructuredBuffer<uint32_t>       PrimitiveIndices    : register(t3);
 
 Texture2D<float32_t4> gTexture : register(t4);
 SamplerState gSampler : register(s0);
 
 StructuredBuffer<Well>      gMatrixPalette : register(t5);
-StructuredBuffer<Influence> gInfluence     : register(t6);
 
 float4 TransformPosition(float4 v)
 {

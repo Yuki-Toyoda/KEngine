@@ -33,12 +33,17 @@ void Mesh::Draw(ID3D12GraphicsCommandList6* cmdList)
 	cmdList->SetGraphicsRootConstantBufferView(2, transformBuffer_->GetGPUView());		  // ワールドトランスフォーム
 	cmdList->SetGraphicsRootConstantBufferView(3, material_->GetBufferAddress());		  // マテリアル
 	cmdList->SetGraphicsRootDescriptorTable(4, meshletBuffer_->GetGPUView());			  // メッシュレット情報
-	cmdList->SetGraphicsRootDescriptorTable(5, vertexBuffer_->GetGPUView());			  // 頂点情報
+	// スキンアニメーション用頂点バッファが存在する場合
+	if (vertexSkinBuffer_ != nullptr) {
+		cmdList->SetGraphicsRootDescriptorTable(5, vertexSkinBuffer_->GetGPUView());	  // スキンアニメーション用頂点情報
+	}
+	else {
+		cmdList->SetGraphicsRootDescriptorTable(5, vertexBuffer_->GetGPUView());		  // 頂点情報
+	}
 	cmdList->SetGraphicsRootDescriptorTable(6, uniqueVertexIndicesBuffer_->GetGPUView()); // 固有頂点インデックス
 	cmdList->SetGraphicsRootDescriptorTable(7, primitiveIndicesBuffer_->GetGPUView());	  // プリミティブインデックス
 	cmdList->SetGraphicsRootDescriptorTable(8, material_->GetTexAddress());				  // テクスチャデータ
-	cmdList->SetGraphicsRootDescriptorTable(9, skinCluster_.PalletteBuffer_->GetGPUView());				  // テクスチャデータ
-	cmdList->SetGraphicsRootDescriptorTable(10, skinCluster_.influencedBuffer_->GetGPUView());				  // テクスチャデータ
+	cmdList->SetGraphicsRootDescriptorTable(9, skinCluster_.PalletteBuffer_->GetGPUView());	// テクスチャデータ
 
 	// メッシュレットのプリミティブ数分メッシュシェーダーを実行
 	cmdList->DispatchMesh(GetMeshletCount(), 1, 1);
@@ -70,14 +75,24 @@ void Mesh::LoadModel(const std::string& filePath, const std::string& fileName)
 		for (uint32_t vertexIndex = 0; vertexIndex < mesh->mNumVertices; vertexIndex++) {
 			// インデックス情報を元に情報を取得する
 			aiVector3D& position = mesh->mVertices[vertexIndex];		 // 頂点座標取得
-			aiVector3D& normal = mesh->mNormals[vertexIndex];			 // 法線取得
 			aiVector3D& texcoord = mesh->mTextureCoords[0][vertexIndex]; // テクスチャ座標取得
+			aiVector3D& normal	 = mesh->mNormals[vertexIndex];			 // 法線取得
 
 			// 新規頂点データを追加
 			Vertex newVertex;
 			newVertex.position = { -position.x, position.y, position.z, 1.0f }; // 頂点座標追加
 			newVertex.texCoord = { texcoord.x, texcoord.y };					// テクスチャ座標追加
 			newVertex.normal = { -normal.x, normal.y, normal.z };				// 法線追加
+
+			// アニメーションを１つでも所持している場合
+			if (scene->mNumAnimations != 0) {
+				// スキンアニメーション用の頂点データも追加する
+				VertexSkin newSkinVertex;
+				newSkinVertex.vertex = newVertex;
+
+				// スキンアニメーション用の頂点データを追加
+				skinVertices_.push_back(newSkinVertex);
+			}
 
 			// 頂点データを追加
 			vertices_.push_back(newVertex);
@@ -123,7 +138,7 @@ void Mesh::LoadModel(const std::string& filePath, const std::string& fileName)
 			Matrix4x4 bindPoseMatrix = Quaternion::MakeAffineMatrix(
 				Vector3(scale.x, scale.y, scale.z),
 				Quaternion(rotate.x, -rotate.y, -rotate.z, rotate.w),
-				Vector3(translate.x, translate.y, translate.z)
+				Vector3(-translate.x, translate.y, translate.z)
 			);
 			// 求めたアフィン変換行列の逆行列を求める
 			jointWeightData.inverseBindPoseMatrix = Matrix4x4::MakeInverse(bindPoseMatrix);
@@ -159,17 +174,6 @@ void Mesh::LoadModel(const std::string& filePath, const std::string& fileName)
 	// シーンのRootNodeを読み、シーン全体の階層構造を作る
 	transform_->rootNode_ = ReadNode(scene->mRootNode);
 
-	// アニメーションを１つでも所持している場合
-	if (scene->mNumAnimations != 0) {
-		// 全アニメーションをロード
-		LoadAnimations(*scene);
-
-		// アニメーションがある場合はこれらを生成する
-		transform_->skelton_ = transform_->CreateSkelton(transform_->rootNode_); // スケルトン
-		skinCluster_ = CreateSkinCluster(transform_->skelton_);					 // スキンクラスター
-
-	}
-
 	// 頂点座標格納用配列の作成
 	auto vertPos = std::make_unique<DirectX::XMFLOAT3[]>(vertices_.size());
 	// 頂点座標を取得
@@ -204,10 +208,27 @@ void Mesh::LoadModel(const std::string& filePath, const std::string& fileName)
 	meshletBuffer_ = std::make_unique<StructuredBuffer<DirectX::Meshlet>>(static_cast<int32_t>(meshlets_.size())); // 生成
 	meshletBuffer_->Init(device, srv);																			   // 初期化
 	std::memcpy(meshletBuffer_->data_, meshlets_.data(), sizeof(DirectX::Meshlet) * meshlets_.size());			   // データコピー
-	// 頂点用バッファの生成
-	vertexBuffer_ = std::make_unique<StructuredBuffer<Vertex>>(static_cast<int32_t>(vertices_.size())); // 生成
-	vertexBuffer_->Init(device, srv);																	// 初期化
-	std::memcpy(vertexBuffer_->data_, vertices_.data(), sizeof(Vertex) * vertices_.size());			    // データコピー
+	
+	// アニメーションを１つでも所持している場合
+	if (scene->mNumAnimations != 0) {
+		// 全アニメーションをロード
+		LoadAnimations(*scene);
+
+		// アニメーションがある場合はこれらを生成する
+		transform_->skelton_ = transform_->CreateSkelton(transform_->rootNode_); // スケルトン
+		skinCluster_ = CreateSkinCluster(transform_->skelton_);					 // スキンクラスター
+
+		// スキンアニメーション頂点用バッファの生成
+		vertexSkinBuffer_ = std::make_unique<StructuredBuffer<VertexSkin>>(static_cast<int32_t>(skinVertices_.size())); // 生成
+		vertexSkinBuffer_->Init(device, srv);																			// 初期化
+		std::memcpy(vertexSkinBuffer_->data_, skinVertices_.data(), sizeof(VertexSkin)* skinVertices_.size());			// データコピー
+	}
+	else {
+		// 頂点用バッファの生成
+		vertexBuffer_ = std::make_unique<StructuredBuffer<Vertex>>(static_cast<int32_t>(vertices_.size())); // 生成
+		vertexBuffer_->Init(device, srv);																	// 初期化
+		std::memcpy(vertexBuffer_->data_, vertices_.data(), sizeof(Vertex)* vertices_.size());			    // データコピー
+	}
 	// 固有頂点インデックス用バッファの生成
 	uniqueVertexIndicesBuffer_ = std::make_unique<StructuredBuffer<uint32_t>>(static_cast<int32_t>(uniqueVertices_.size()));   // 生成
 	uniqueVertexIndicesBuffer_->Init(device, srv);																			   // 初期化
@@ -271,8 +292,8 @@ Mesh::SkinCluster Mesh::CreateSkinCluster(const WorldTransform::Skelton& skelton
 	skinCluster.PalletteBuffer_->Init(device, srv);
 
 	// Inflenceの生成
-	skinCluster.influencedBuffer_ = std::make_unique<StructuredBuffer<VertexInfluence>>(static_cast<uint32_t>(vertices_.size()));
-	skinCluster.influencedBuffer_->Init(device, srv);
+	/*skinCluster.influencedBuffer_ = std::make_unique<StructuredBuffer<VertexInfluence>>(static_cast<uint32_t>(vertices_.size()));
+	skinCluster.influencedBuffer_->Init(device, srv);*/
 
 	// バインドポーズ逆行列を格納する場所を確保する
 	skinCluster.inverseBindPoseMatrices.resize(skelton.joints.size());
@@ -294,13 +315,14 @@ Mesh::SkinCluster Mesh::CreateSkinCluster(const WorldTransform::Skelton& skelton
 		skinCluster.inverseBindPoseMatrices[(*it).second] = jointWeight.second.inverseBindPoseMatrix;
 		for (const auto& vertexWeight : jointWeight.second.vertexWeights) {
 			// 現在のインフルエンスを取得
-			auto& currentInfluence = skinCluster.influencedBuffer_->data_[vertexWeight.vertexIndex];
+			auto& currentInfluence = skinVertices_[vertexWeight.vertexIndex];
 			for (uint32_t index = 0; index < kNumMaxInfluence; index++) {
 				// weight == 0の場合空いているため、そこに代入する
 				if (currentInfluence.weights[index] == 0.0f) {
 					// データを代入
 					currentInfluence.weights[index] = vertexWeight.weight;
 					currentInfluence.jointIndices[index] = (*it).second;
+
 					// 処理を抜ける
 					break;
 				}
@@ -372,7 +394,7 @@ void Mesh::LoadAnimations(const aiScene& scene)
 				// キーフレーム秒数を取得する
 				keyFrame.time = float(keyAssimp.mTime / animationAssimp->mTicksPerSecond);
 				// キーフレーム値を取得(右手から左手座標系に変換する)
-				keyFrame.value = { keyAssimp.mValue.x, keyAssimp.mValue.y, keyAssimp.mValue.z, keyAssimp.mValue.w };
+				keyFrame.value = { keyAssimp.mValue.x, -keyAssimp.mValue.y, -keyAssimp.mValue.z, keyAssimp.mValue.w };
 
 				// ノードアニメーション配列に値を追加
 				nodeAnimation.rotate.keyFrames.push_back(keyFrame);

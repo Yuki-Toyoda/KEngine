@@ -11,6 +11,18 @@ class Mesh final : public IPrimitive
 {
 public: // サブクラス
 
+	// 頂点が影響を受けるジョイントの最大数
+	static const uint32_t kNumMaxInfluence = 4;
+
+	/// <summary>
+	/// スキンアニメーション用頂点構造体
+	/// </summary>
+	struct VertexSkin {
+		Vertex vertex;
+		std::array<float, kNumMaxInfluence> weights{};
+		std::array<int32_t, kNumMaxInfluence> jointIndices{};
+	};
+
 	/// <summary>
 	/// 頂点のウェイトデータ
 	/// </summary>
@@ -27,8 +39,6 @@ public: // サブクラス
 		std::vector<VertexWeightData> vertexWeights;
 	};
 
-	// 頂点が影響を受けるジョイントの最大数
-	static const uint32_t kNumMaxInfluence = 4;
 	/// <summary>
 	/// ウェイトが頂点に対して影響を受けるパラメーター用構造体
 	/// </summary>
@@ -50,7 +60,7 @@ public: // サブクラス
 	/// </summary>
 	struct SkinCluster {
 		std::vector<Matrix4x4> inverseBindPoseMatrices;
-		std::unique_ptr<StructuredBuffer<VertexInfluence>> influencedBuffer_;
+		//std::unique_ptr<StructuredBuffer<VertexInfluence>> influencedBuffer_;
 		std::unique_ptr<StructuredBuffer<WellForGPU>> PalletteBuffer_;
 	};
 
@@ -140,6 +150,11 @@ public: // パブリックなメンバ変数
 	SkinCluster skinCluster_;
 
 private: // メンバ変数
+
+	// スキンアニメーション用頂点配列
+	std::vector<VertexSkin> skinVertices_;
+	// スキンアニメーション用頂点バッファ
+	std::unique_ptr<StructuredBuffer<VertexSkin>> vertexSkinBuffer_;
 
 	// スキンクラスター用データ
 	std::map<std::string, JointWeightData> skinClusterData;

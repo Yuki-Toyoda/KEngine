@@ -24,7 +24,7 @@ void ModelRootSignature::Init()
 	// マトリックスパレット用パラメータ
 	CreateDescriptorTableParameter(5, D3D12_SHADER_VISIBILITY_ALL);
 	// インフルエンス用パラメータ
-	CreateDescriptorTableParameter(6, D3D12_SHADER_VISIBILITY_ALL);
+	//CreateDescriptorTableParameter(6, D3D12_SHADER_VISIBILITY_ALL);
 
 	// サンプラー生成
 	CreateSampler(0);
