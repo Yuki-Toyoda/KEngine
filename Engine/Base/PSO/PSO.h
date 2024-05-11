@@ -119,7 +119,7 @@ private: // プライベートなメンバ関数
 	/// </summary>
 	/// <param name="isWriteDSV">Depthを書き込むか</param>
 	/// <returns>深度ステンシルビュー設定</returns>
-	D3D12_DEPTH_STENCIL_DESC SettingDepthStencilState(bool isWriteDSV = false);
+	D3D12_DEPTH_STENCIL_DESC SettingDepthStencilState(bool isWriteDSV = true);
 
 private: // メンバ変数
 	// パイプラインステートオブジェクトの状態

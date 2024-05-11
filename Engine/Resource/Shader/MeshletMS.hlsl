@@ -47,7 +47,7 @@ void main(
         // 出力する頂点座標を求める
         outVerts[gtid].pos      = TransformPosition(vertex.pos);
         outVerts[gtid].texCoord = vertex.texCoord;
-        outVerts[gtid].normal   = vertex.normal;
+        outVerts[gtid].normal   = normalize(vertex.normal);
         
         // 出力する頂点色を求める
         if (ConstantData.DrawMeshlets == true)

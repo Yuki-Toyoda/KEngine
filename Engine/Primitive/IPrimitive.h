@@ -158,6 +158,9 @@ public: // パブリックなメンバ変数
 	// UIとして使用するか
 	bool isUI_ = false;
 
+	// スキンアニメーションを行うか
+	bool isAnimated_ = false;
+
 };
 
 /// <summary>

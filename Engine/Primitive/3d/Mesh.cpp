@@ -21,6 +21,34 @@ void Mesh::LoadModelFile(const std::string& filePath, const std::string& fileNam
 	LoadModel(filePath, fileName);
 }
 
+void Mesh::Draw(ID3D12GraphicsCommandList6* cmdList)
+{
+	// 変化する可能性のあるデータをコピー
+	*transformBuffer_->data_ = transform_->GetMatWorld();
+
+	// マテリアルのアップロード
+	material_->UploadMaterial();
+
+	// コマンドリストに各種バッファのアドレスをセット
+	cmdList->SetGraphicsRootConstantBufferView(2, transformBuffer_->GetGPUView());		  // ワールドトランスフォーム
+	cmdList->SetGraphicsRootConstantBufferView(3, material_->GetBufferAddress());		  // マテリアル
+	cmdList->SetGraphicsRootDescriptorTable(4, meshletBuffer_->GetGPUView());			  // メッシュレット情報
+	// スキンアニメーション用頂点バッファが存在する場合
+	if (vertexSkinBuffer_ != nullptr) {
+		cmdList->SetGraphicsRootDescriptorTable(5, vertexSkinBuffer_->GetGPUView());	  // スキンアニメーション用頂点情報
+		cmdList->SetGraphicsRootDescriptorTable(9, skinCluster_.PalletteBuffer_->GetGPUView());	// テクスチャデータ
+	}
+	else {
+		cmdList->SetGraphicsRootDescriptorTable(5, vertexBuffer_->GetGPUView());		  // 頂点情報
+	}
+	cmdList->SetGraphicsRootDescriptorTable(6, uniqueVertexIndicesBuffer_->GetGPUView()); // 固有頂点インデックス
+	cmdList->SetGraphicsRootDescriptorTable(7, primitiveIndicesBuffer_->GetGPUView());	  // プリミティブインデックス
+	cmdList->SetGraphicsRootDescriptorTable(8, material_->GetTexAddress());				  // テクスチャデータ
+
+	// メッシュレットのプリミティブ数分メッシュシェーダーを実行
+	cmdList->DispatchMesh(GetMeshletCount(), 1, 1);
+}
+
 void Mesh::LoadModel(const std::string& filePath, const std::string& fileName)
 {
 	// フルパスのフルパスの合成
@@ -43,18 +71,28 @@ void Mesh::LoadModel(const std::string& filePath, const std::string& fileName)
 		// テクスチャ座標系がないメッシュは非対応
 		assert(mesh->HasTextureCoords(0));
 
-		// 頂点数分ループ
+		// 頂点情報を解析する
 		for (uint32_t vertexIndex = 0; vertexIndex < mesh->mNumVertices; vertexIndex++) {
 			// インデックス情報を元に情報を取得する
 			aiVector3D& position = mesh->mVertices[vertexIndex];		 // 頂点座標取得
-			aiVector3D& normal = mesh->mNormals[vertexIndex];			 // 法線取得
 			aiVector3D& texcoord = mesh->mTextureCoords[0][vertexIndex]; // テクスチャ座標取得
+			aiVector3D& normal	 = mesh->mNormals[vertexIndex];			 // 法線取得
 
 			// 新規頂点データを追加
 			Vertex newVertex;
 			newVertex.position = { -position.x, position.y, position.z, 1.0f }; // 頂点座標追加
 			newVertex.texCoord = { texcoord.x, texcoord.y };					// テクスチャ座標追加
 			newVertex.normal = { -normal.x, normal.y, normal.z };				// 法線追加
+
+			// アニメーションを１つでも所持している場合
+			if (scene->mNumAnimations != 0) {
+				// スキンアニメーション用の頂点データも追加する
+				VertexSkin newSkinVertex;
+				newSkinVertex.vertex = newVertex;
+
+				// スキンアニメーション用の頂点データを追加
+				skinVertices_.push_back(newSkinVertex);
+			}
 
 			// 頂点データを追加
 			vertices_.push_back(newVertex);
@@ -77,6 +115,40 @@ void Mesh::LoadModel(const std::string& filePath, const std::string& fileName)
 				indexes_.push_back(vertexIndex);
 			}
 		}
+
+		// ボーン情報を解析する
+		for (uint32_t boneIndex = 0; boneIndex < mesh->mNumBones; boneIndex++) {
+			// ボーンを取得
+			aiBone* bone = mesh->mBones[boneIndex];
+			// ジョイント名取得
+			std::string jointName = bone->mName.C_Str();
+			// そのジョイント名のスキンクラスター用データを取得
+			JointWeightData& jointWeightData = skinClusterData[jointName];
+
+			// バインドポーズ保存用の4x4行列をAssimpから取得
+			aiMatrix4x4 bindPoseMatrixAssimp = bone->mOffsetMatrix.Inverse();
+			// 保存用変数を定義
+			aiVector3D scale, translate;
+			aiQuaternion rotate;
+
+			// バインドポーズ行列からSRTを抽出
+			bindPoseMatrixAssimp.Decompose(scale, rotate, translate);
+
+			// 抽出したSRTからアフィン変換行列の生成
+			Matrix4x4 bindPoseMatrix = Quaternion::MakeAffineMatrix(
+				Vector3(scale.x, scale.y, scale.z),
+				Quaternion(rotate.x, -rotate.y, -rotate.z, rotate.w),
+				Vector3(-translate.x, translate.y, translate.z)
+			);
+			// 求めたアフィン変換行列の逆行列を求める
+			jointWeightData.inverseBindPoseMatrix = Matrix4x4::MakeInverse(bindPoseMatrix);
+
+			// ウェイト情報を解析する
+			for (uint32_t weightIndex = 0; weightIndex < bone->mNumWeights; weightIndex++) {
+				// ウェイト情報を追加
+				jointWeightData.vertexWeights.push_back({ bone->mWeights[weightIndex].mWeight, bone->mWeights[weightIndex].mVertexId });
+			}
+		}
 	}
 
 	// マテリアルの解析を行う
@@ -97,12 +169,6 @@ void Mesh::LoadModel(const std::string& filePath, const std::string& fileName)
 			// デフォルトテクスチャ取得
 			material_->tex_ = TextureManager::GetInstance()->GetDefaultTexture();
 		}
-	}
-
-	// アニメーションを１つでも所持している場合
-	if (scene->mNumAnimations != 0) {
-		// 全アニメーションをロード
-		LoadAnimations(*scene);
 	}
 
 	// シーンのRootNodeを読み、シーン全体の階層構造を作る
@@ -142,10 +208,30 @@ void Mesh::LoadModel(const std::string& filePath, const std::string& fileName)
 	meshletBuffer_ = std::make_unique<StructuredBuffer<DirectX::Meshlet>>(static_cast<int32_t>(meshlets_.size())); // 生成
 	meshletBuffer_->Init(device, srv);																			   // 初期化
 	std::memcpy(meshletBuffer_->data_, meshlets_.data(), sizeof(DirectX::Meshlet) * meshlets_.size());			   // データコピー
-	// 頂点用バッファの生成
-	vertexBuffer_ = std::make_unique<StructuredBuffer<Vertex>>(static_cast<int32_t>(vertices_.size())); // 生成
-	vertexBuffer_->Init(device, srv);																	// 初期化
-	std::memcpy(vertexBuffer_->data_, vertices_.data(), sizeof(Vertex) * vertices_.size());			    // データコピー
+	
+	// アニメーションを１つでも所持している場合
+	if (scene->mNumAnimations != 0) {
+		// 全アニメーションをロード
+		LoadAnimations(*scene);
+
+		// アニメーションがある場合はこれらを生成する
+		transform_->skelton_ = transform_->CreateSkelton(transform_->rootNode_); // スケルトン
+		skinCluster_ = CreateSkinCluster(transform_->skelton_);					 // スキンクラスター
+
+		// スキンアニメーション頂点用バッファの生成
+		vertexSkinBuffer_ = std::make_unique<StructuredBuffer<VertexSkin>>(static_cast<int32_t>(skinVertices_.size())); // 生成
+		vertexSkinBuffer_->Init(device, srv);																			// 初期化
+		std::memcpy(vertexSkinBuffer_->data_, skinVertices_.data(), sizeof(VertexSkin)* skinVertices_.size());			// データコピー
+
+		// アニメーションをするメッシュであることを伝える
+		isAnimated_ = true;
+	}
+	else {
+		// 頂点用バッファの生成
+		vertexBuffer_ = std::make_unique<StructuredBuffer<Vertex>>(static_cast<int32_t>(vertices_.size())); // 生成
+		vertexBuffer_->Init(device, srv);																	// 初期化
+		std::memcpy(vertexBuffer_->data_, vertices_.data(), sizeof(Vertex)* vertices_.size());			    // データコピー
+	}
 	// 固有頂点インデックス用バッファの生成
 	uniqueVertexIndicesBuffer_ = std::make_unique<StructuredBuffer<uint32_t>>(static_cast<int32_t>(uniqueVertices_.size()));   // 生成
 	uniqueVertexIndicesBuffer_->Init(device, srv);																			   // 初期化
@@ -162,27 +248,18 @@ WorldTransform::Node Mesh::ReadNode(aiNode* node)
 	// ノード読み込み結果確認用
 	WorldTransform::Node result;
 
-	// ローカル行列を取得
-	aiMatrix4x4 aiLocalMatrix = node->mTransformation; // ノードのlocalMatrixを取得
-	aiLocalMatrix.Transpose();						   // 列ベクトル形式を行ベクトル形式に変換
+	// ノードの位置情報格納用
+	aiVector3D	 scale, translate;
+	aiQuaternion rotate;
 
-	// 他の要素を同様に変換する
-	result.localMatrix.m[0][0] = aiLocalMatrix[0][0];
-	result.localMatrix.m[0][1] = aiLocalMatrix[0][1];
-	result.localMatrix.m[0][2] = aiLocalMatrix[0][2];
-	result.localMatrix.m[0][3] = aiLocalMatrix[0][3];
-	result.localMatrix.m[1][0] = aiLocalMatrix[1][0];
-	result.localMatrix.m[1][1] = aiLocalMatrix[1][1];
-	result.localMatrix.m[1][2] = aiLocalMatrix[1][2];
-	result.localMatrix.m[1][3] = aiLocalMatrix[1][3];
-	result.localMatrix.m[2][0] = aiLocalMatrix[2][0];
-	result.localMatrix.m[2][1] = aiLocalMatrix[2][1];
-	result.localMatrix.m[2][2] = aiLocalMatrix[2][2];
-	result.localMatrix.m[2][3] = aiLocalMatrix[2][3];
-	result.localMatrix.m[3][0] = aiLocalMatrix[3][0];
-	result.localMatrix.m[3][1] = aiLocalMatrix[3][1];
-	result.localMatrix.m[3][2] = aiLocalMatrix[3][2];
-	result.localMatrix.m[3][3] = aiLocalMatrix[3][3];
+	// assimp の行列からSRTを抽出する関数を利用
+	node->mTransformation.Decompose(scale, rotate, translate);
+	// 抽出した要素を代入
+	result.transform.scale = { scale.x, scale.y, scale.z };					 // 拡縮
+	result.transform.rotate = { rotate.x, -rotate.y, -rotate.z, rotate.w };  // 回転
+	result.transform.translate = { -translate.x, translate.y, translate.z }; // 位置
+	// ローカル行列を求める
+	result.localMatrix = Quaternion::MakeAffineMatrix(result.transform.scale, result.transform.rotate, result.transform.translate);
 
 	// Node名を取得
 	result.name = node->mName.C_Str();
@@ -203,6 +280,75 @@ WorldTransform::Node Mesh::ReadNode(aiNode* node)
 	return result;
 }
 
+
+Mesh::SkinCluster Mesh::CreateSkinCluster(const WorldTransform::Skelton& skelton)
+{
+	// 返還用
+	SkinCluster skinCluster;
+	
+	// バッファ生成のためにデバイスとSRVを取得する
+	DirectXDevice* device = DirectXCommon::GetInstance()->GetDirectXDevice();
+	SRV* srv = DirectXCommon::GetInstance()->GetSRV();
+
+	// MatrixPaletteの生成
+	skinCluster.PalletteBuffer_ = std::make_unique<StructuredBuffer<WellForGPU>>(static_cast<uint32_t>(skelton.joints.size()));
+	skinCluster.PalletteBuffer_->Init(device, srv);
+
+	// Inflenceの生成
+	/*skinCluster.influencedBuffer_ = std::make_unique<StructuredBuffer<VertexInfluence>>(static_cast<uint32_t>(vertices_.size()));
+	skinCluster.influencedBuffer_->Init(device, srv);*/
+
+	// バインドポーズ逆行列を格納する場所を確保する
+	skinCluster.inverseBindPoseMatrices.resize(skelton.joints.size());
+	// 生成した場所を単位行列で埋める
+	std::generate(skinCluster.inverseBindPoseMatrices.begin(), skinCluster.inverseBindPoseMatrices.end(), Matrix4x4::MakeIndentity);
+
+	// Modelのスキンクラスター情報を解析する
+	for (const auto& jointWeight : skinClusterData) {
+		// ジョイント名でマップ内を捜索
+		auto it = skelton.jointMap.find(jointWeight.first);
+
+		// マップ内当該ジョイントが存在しない場合
+		if (it == skelton.jointMap.end()) {
+			// 次へ
+			continue;
+		}
+
+		// イテレータのsecondにはジョイントのインデックスが入っているため、該当インデックスに行列を代入
+		skinCluster.inverseBindPoseMatrices[(*it).second] = jointWeight.second.inverseBindPoseMatrix;
+		for (const auto& vertexWeight : jointWeight.second.vertexWeights) {
+			// 現在のインフルエンスを取得
+			auto& currentInfluence = skinVertices_[vertexWeight.vertexIndex];
+			for (uint32_t index = 0; index < kNumMaxInfluence; index++) {
+				// weight == 0の場合空いているため、そこに代入する
+				if (currentInfluence.weights[index] == 0.0f) {
+					// データを代入
+					currentInfluence.weights[index] = vertexWeight.weight;
+					currentInfluence.jointIndices[index] = (*it).second;
+
+					// 処理を抜ける
+					break;
+				}
+			}
+		}
+	}
+
+	// 生成したスキンクラスターを返す
+	return skinCluster;
+}
+
+void Mesh::SkinClusterUpdate(SkinCluster& skinCluster, const WorldTransform::Skelton& skelton)
+{
+	// 全ジョイント数分ループ
+	for (size_t jointIndex = 0; jointIndex < skelton.joints.size(); jointIndex++) {
+		// インデックスが行列数を超過していた場合停止させる
+		assert(jointIndex < skinCluster.inverseBindPoseMatrices.size());
+		skinCluster.PalletteBuffer_->data_[jointIndex].skeltonSpaceMatrix =
+			skinCluster.inverseBindPoseMatrices[jointIndex] * skelton.joints[jointIndex].skeltonSpaceMatrix;
+		skinCluster.PalletteBuffer_->data_[jointIndex].skeltonSpaceTransposeMatrix =
+			Matrix4x4::MakeTranspose(Matrix4x4::MakeInverse(skinCluster.PalletteBuffer_->data_[jointIndex].skeltonSpaceMatrix));
+	}
+}
 
 void Mesh::LoadAnimations(const aiScene& scene)
 {
@@ -251,7 +397,7 @@ void Mesh::LoadAnimations(const aiScene& scene)
 				// キーフレーム秒数を取得する
 				keyFrame.time = float(keyAssimp.mTime / animationAssimp->mTicksPerSecond);
 				// キーフレーム値を取得(右手から左手座標系に変換する)
-				keyFrame.value = { keyAssimp.mValue.x, keyAssimp.mValue.y, keyAssimp.mValue.z, keyAssimp.mValue.w };
+				keyFrame.value = { keyAssimp.mValue.x, -keyAssimp.mValue.y, -keyAssimp.mValue.z, keyAssimp.mValue.w };
 
 				// ノードアニメーション配列に値を追加
 				nodeAnimation.rotate.keyFrames.push_back(keyFrame);

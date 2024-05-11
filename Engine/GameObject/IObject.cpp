@@ -100,18 +100,16 @@ void IObject::AnimUpdate()
 				transform_.animations_[i].animationTime = std::fmod(transform_.animations_[i].animationTime, transform_.animations_[i].duration);
 			}
 
-			// rootNodeのアニメーションを取得
-			NodeAnimation& rootNodeAnimation = transform_.animations_[i].nodeAnimations[transform_.rootNode_.name];
-			// 各要素の値を取得
-			Vector3    translate = Animation::CalculateValue(rootNodeAnimation.translate.keyFrames, transform_.animations_[i].animationTime); // 位置座標
-			Quaternion rotate = Animation::CalculateValue(rootNodeAnimation.rotate.keyFrames, transform_.animations_[i].animationTime);	  // 回転
-			Vector3    scale = Animation::CalculateValue(rootNodeAnimation.scale.keyFrames, transform_.animations_[i].animationTime);	  // 拡縮
+			// スケルトンにアニメーションを適用
+			transform_.ApplyAnimation(transform_.skelton_, transform_.animations_[i], transform_.animations_[i].animationTime);
+			// スケルトン更新
+			transform_.SkeltonUpdate(transform_.skelton_);
 
-			// ローカル行列を求める
-			localMat_ = Quaternion::MakeAffineMatrix(scale, rotate, translate);
-
-			// ローカル行列をセット
-			transform_.SetLocalMat(localMat_);
+			// メッシュが１つでもあれば
+			if (meshes_.size() > 0) {
+				// スキンクラスターの更新
+				meshes_[0]->SkinClusterUpdate(meshes_[0]->skinCluster_, transform_.skelton_);
+			}
 		}
 	}
 }

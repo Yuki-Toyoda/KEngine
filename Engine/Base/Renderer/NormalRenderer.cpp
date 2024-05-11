@@ -3,15 +3,25 @@
 #include "../../Primitive/PrimitiveManager.h"
 #include "../../Lighting/Light/DirectionalLight.h"
 
-void NormalRenderer::Init(DirectXDevice* device, ID3D12RootSignature* signature, DXC* dxc, PrimitiveManager* pm, DirectionalLight* lt)
+void NormalRenderer::Init(DirectXDevice* device, DXC* dxc, PrimitiveManager* pm, DirectionalLight* lt)
 {
+	// ルートシグネチャマネージャの取得
+	RootSignatureManager* rtsManager = RootSignatureManager::GetInstance();
+
 	// ルートシグネチャ取得
-	rootSignature_ = signature;
+	standardRootSignature_ = rtsManager->GetRootSignature(0); // 通常
+	skinRootSignature_	   = rtsManager->GetRootSignature(1); // スキンアニメーション
 
 	// 通常描画用PSO初期化
-	pso_.Init(signature, dxc)
+	standardPSO_.Init(standardRootSignature_, dxc)
 		.SetMeshShader("Engine/Resource/Shader/MeshletMS.hlsl")
 		.SetPixelShader("Engine/Resource/Shader/MeshletPS.hlsl")
+		.Build(device->GetDevice());
+
+	// スキンアニメーション描画用PSO初期化
+	skinModelPSO_.Init(skinRootSignature_, dxc)
+		.SetMeshShader("Engine/Resource/Shader/SkinMeshlet/MeshletSkinMS.hlsl")
+		.SetPixelShader("Engine/Resource/Shader/SkinMeshlet/MeshletSkinPS.hlsl")
 		.Build(device->GetDevice());
 
 	// 形状マネージャのインスタンス取得
@@ -23,14 +33,14 @@ void NormalRenderer::Init(DirectXDevice* device, ID3D12RootSignature* signature,
 
 void NormalRenderer::DrawCall(ID3D12GraphicsCommandList6* list)
 {
+	// 形状マネージャの更新
+	primitiveManager_->Update();
+
 	// ImGuiの受付終了
 	ImGui::EndFrame();
 
 	// 描画先のRTVとDSVをセットする
 	list->OMSetRenderTargets(1, &target_.backBuffer_->rtvInfo_.cpuView_, false, &target_.depthBuffer_->dsvInfo_.cpuView_);
-
-	// ルートシグネチャのセット
-	list->SetGraphicsRootSignature(rootSignature_);
 
 	// リソースバリアをセットする
 	D3D12_RESOURCE_STATES beforeBarrier = target_.backBuffer_->GetBarrier();
@@ -63,15 +73,41 @@ void NormalRenderer::DrawCall(ID3D12GraphicsCommandList6* list)
 	// コマンドリストにシザー矩形を設定
 	list->RSSetScissorRects(1, &scissorRect);
 
-	// コマンドリストにPSOを設定
-	list->SetPipelineState(pso_.GetState());
+	// コマンドリストに通常描画ルートシグネチャを設定
+	list->SetGraphicsRootSignature(standardRootSignature_);
 
-	// 共通データのアドレスを渡す
-	list->SetGraphicsRootConstantBufferView(0, target_.view_);  // カメラデータ
-	list->SetGraphicsRootConstantBufferView(1, light_->view()); // 平行光源データ
+	// コマンドリストに通常描画PSOを設定
+	list->SetPipelineState(standardPSO_.GetState());
 
-	// 登録されている形状全てを描画
-	primitiveManager_->Draw(list);
+	// リスト取得
+	const auto& p = primitiveManager_->GetPrimitives();
+	// 全形状を描画
+	for (const auto& primitive : p) {
+		// 形状を描画するなら
+		if (primitive->isActive_) {
+			if (primitive->isAnimated_) {
+				// コマンドリストにスキンアニメーション描画ルートシグネチャを設定
+				list->SetGraphicsRootSignature(skinRootSignature_);
+				// コマンドリストにスキンアニメーション描画PSOを設定
+				list->SetPipelineState(skinModelPSO_.GetState());
+				// 共通データのアドレスを渡す
+				list->SetGraphicsRootConstantBufferView(0, target_.view_);  // カメラデータ
+				list->SetGraphicsRootConstantBufferView(1, light_->view()); // 平行光源データ
+			}
+			else {
+				// コマンドリストに通常描画ルートシグネチャを設定
+				list->SetGraphicsRootSignature(standardRootSignature_);
+				// コマンドリストに通常描画PSOを設定
+				list->SetPipelineState(standardPSO_.GetState());
+				// 共通データのアドレスを渡す
+				list->SetGraphicsRootConstantBufferView(0, target_.view_);  // カメラデータ
+				list->SetGraphicsRootConstantBufferView(1, light_->view()); // 平行光源データ
+			}
+
+			// 描画処理を実行
+			primitive->Draw(list);
+		}
+	}
 
 	// ImGuiを描画
 	ImGui::Render();

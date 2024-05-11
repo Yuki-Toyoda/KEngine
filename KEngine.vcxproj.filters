@@ -248,6 +248,21 @@
     <ClCompile Include="Engine\Lighting\Light\DirectionalLight.cpp">
       <Filter>Engine\Lighting\Light</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Base\RootSignature\SkinModelRootSignature.cpp">
+      <Filter>Engine\Base\RootSignature</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\Samples\SampleSkinAnim\SampleAnim.cpp">
+      <Filter>App\GameObject\Samples\SampleSkinAnim</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Base\RootSignature\PostProcessRootSignature.cpp">
+      <Filter>Engine\Base\RootSignature</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Base\Renderer\PPRenderer.cpp">
+      <Filter>Engine\Base\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Base\Resource\Rendering\RenderResource.cpp">
+      <Filter>Engine\Base\Resource\Rendering</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\Base\Resource\Rendering\RenderResource.cpp" />
     <ClCompile Include="Engine\Base\RootSignature\PostProcessRootSignature.cpp" />
     <ClCompile Include="Engine\Base\Renderer\PPRenderer.cpp" />
@@ -575,6 +590,21 @@
     <ClInclude Include="Engine\Lighting\Light\ILight.h">
       <Filter>Engine\Lighting\Light</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Base\RootSignature\SkinModelRootSignature.h">
+      <Filter>Engine\Base\RootSignature</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\Samples\SampleSkinAnim\SampleAnim.h">
+      <Filter>App\GameObject\Samples\SampleSkinAnim</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\RootSignature\PostProcessRootSignature.h">
+      <Filter>Engine\Base\RootSignature</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\Renderer\PPRenderer.h">
+      <Filter>Engine\Base\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\Resource\Rendering\RenderResource.h">
+      <Filter>Engine\Base\Resource\Rendering</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\Base\Resource\Rendering\RenderResource.h" />
     <ClInclude Include="Engine\Base\RootSignature\PostProcessRootSignature.h" />
     <ClInclude Include="Engine\Base\Renderer\PPRenderer.h" />
@@ -612,7 +642,12 @@
     <None Include="Engine\Resource\Shader\Meshlet.hlsli">
       <Filter>Engine\Resource\Shader</Filter>
     </None>
-    <None Include="Engine\Resource\Shader\PostProcess\PassThrough.hlsli" />
+    <None Include="Engine\Resource\Shader\SkinMeshlet\MeshletSkin.hlsli">
+      <Filter>Engine\Resource\Shader</Filter>
+    </None>
+    <None Include="Engine\Resource\Shader\PostProcess\PassThrough.hlsli">
+      <Filter>Engine\Resource\Shader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -777,6 +812,9 @@
     <Filter Include="Engine\Lighting\Light">
       <UniqueIdentifier>{7880eb9d-02d6-4256-bdc1-469aadf597ad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="App\GameObject\Samples\SampleSkinAnim">
+      <UniqueIdentifier>{cb6ba954-25d6-4a66-9c44-e37c00631c88}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Externals\imgui\LICENSE.txt">
@@ -790,7 +828,17 @@
     <FxCompile Include="Engine\Resource\Shader\MeshletMS.hlsl">
       <Filter>Engine\Resource\Shader</Filter>
     </FxCompile>
-    <FxCompile Include="Engine\Resource\Shader\PostProcess\PassThroughVS.hlsl" />
-    <FxCompile Include="Engine\Resource\Shader\PostProcess\PostProcessPS.hlsl" />
+    <FxCompile Include="Engine\Resource\Shader\SkinMeshlet\MeshletSkinMS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\SkinMeshlet\MeshletSkinPS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\PostProcess\PassThroughVS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\PostProcess\PostProcessPS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

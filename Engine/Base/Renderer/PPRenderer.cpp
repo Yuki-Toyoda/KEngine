@@ -3,7 +3,7 @@
 void PPRenderer::Init(DirectXDevice* device, ID3D12RootSignature* signature, DXC* dxc)
 {
 	// ルートシグネチャ取得
-	rootSignature_ = signature;
+	//rootSignature_ = signature;
 
 	// 通常描画用PSO初期化
 	pso_.VertInit(signature, dxc)
@@ -17,7 +17,7 @@ void PPRenderer::DrawCall(ID3D12GraphicsCommandList6* list)
 	// textureの方に書き込む
 	list->OMSetRenderTargets(1, &target_.texture->rtvInfo_.cpuView_, false, nullptr);
 	// RootSignatureとPSOをセット
-	list->SetGraphicsRootSignature(rootSignature_);
+	//list->SetGraphicsRootSignature(rootSignature_);
 	list->SetPipelineState(pso_.GetState());
 
 	// データを登録

@@ -42,11 +42,10 @@ public: // メンバ関数
 	/// 初期化関数
 	/// </summary>
 	/// <param name="device">デバイス</param>
-	/// <param name="signature">ルートシグネチャ</param>
 	/// <param name="dxc">DirectXシェーダーコンパイラ</param>
 	/// <param name="pm">形状マネージャ</param>
 	/// <param name="lt">平行光源</param>
-	void Init(DirectXDevice* device, ID3D12RootSignature* signature, DXC* dxc, PrimitiveManager* pm, DirectionalLight* lt);
+	void Init(DirectXDevice* device, DXC* dxc, PrimitiveManager* pm, DirectionalLight* lt);
 
 	/// <summary>
 	/// 描画命令関数
@@ -64,8 +63,13 @@ public: // アクセッサ等
 
 private: // メンバ変数
 
-	// パイプラインステートオブジェクト
-	PSO pso_;
+	// PSO群
+	PSO standardPSO_;  // 通常描画
+	PSO skinModelPSO_; // スキンアニメーション描画
+
+	// ルートシグネチャ群
+	ID3D12RootSignature* standardRootSignature_ = nullptr; // 通常描画用
+	ID3D12RootSignature* skinRootSignature_ = nullptr;	   // スキンアニメーション用
 
 	// 描画ターゲット
 	Target target_;
