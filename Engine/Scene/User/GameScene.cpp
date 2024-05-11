@@ -37,6 +37,10 @@ void GameScene::Init(){
 	lockOn->SetCamera(camera);
 	camera->SetLockOn(lockOn);
 	player_->lockOn_ = lockOn;
+
+	// ナビィ生成
+	Fairy* fairy = nullptr;
+	fairy = gameObjectManager_->CreateInstance<Fairy>("Fairy", IObject::TagPlayer);
 }
 
 void GameScene::Update()

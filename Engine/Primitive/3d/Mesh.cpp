@@ -164,6 +164,8 @@ void Mesh::LoadModel(const std::string& filePath, const std::string& fileName)
 
 			// テクスチャの読み込み
 			material_->tex_ = TextureManager::Load(filePath, textureFilePath.C_Str());
+
+			break;
 		}
 		else { // テクスチャがない場合
 			// デフォルトテクスチャ取得
