@@ -15,7 +15,7 @@ float32_t4 main(VertexOutPut input) : SV_TARGET
     if (material.enableLighting)
     {
         // ライティングの計算を行う
-        float32_t NdotL = dot(normalize(input.normal), -normalize(light.direction));
+        float32_t NdotL = dot(input.normal, -normalize(light.direction));
         float32_t cos   = pow(NdotL * 0.5f + 0.5f, 2.0f);
         
         // 出力する色の要素を求める

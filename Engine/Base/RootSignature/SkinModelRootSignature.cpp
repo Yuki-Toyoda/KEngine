@@ -1,7 +1,6 @@
-#include "ModelRootSignature.h"
-#include "../Config/Config.h"
+#include "SkinModelRootSignature.h"
 
-void ModelRootSignature::Init()
+void SkinModelRootSignature::Init()
 {
 	// 汎用データ用パラメータ生成
 	CreateCBVParameter(0, D3D12_SHADER_VISIBILITY_ALL);
@@ -21,6 +20,8 @@ void ModelRootSignature::Init()
 	CreateDescriptorTableParameter(3, D3D12_SHADER_VISIBILITY_ALL);
 	// テクスチャデータ用パラメータ
 	CreateDescriptorTableParameter(4, D3D12_SHADER_VISIBILITY_ALL);
+	// マトリックスパレット用パラメータ
+	CreateDescriptorTableParameter(5, D3D12_SHADER_VISIBILITY_ALL);
 
 	// サンプラー生成
 	CreateSampler(0);

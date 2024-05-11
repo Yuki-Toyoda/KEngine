@@ -21,10 +21,5 @@ public: // コンストラクタ等
 	/// </summary>
 	~IRenderer() = default;
 
-protected: // メンバ変数
-
-	// 描画に使用するRootSignature
-	ID3D12RootSignature* rootSignature_ = nullptr;
-
 };
 

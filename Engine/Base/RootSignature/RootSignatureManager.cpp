@@ -1,12 +1,13 @@
 #include "RootSignatureManager.h"
 #include "ModelRootSignature.h"
+#include "SkinModelRootSignature.h"
 #include "PostProcessRootSignature.h"
 
 void RootSignatureManager::Init()
 {
 	// 各ルートシグネチャの生成
 	CreateRootSignature<ModelRootSignature>();		 // モデル用
-	CreateRootSignature<PostProcessRootSignature>(); // ポストプロセス用
+	CreateRootSignature<SkinModelRootSignature>();   // スキンアニメーションモデル用
 }
 
 ID3D12RootSignature* RootSignatureManager::GetRootSignature(const int32_t& index)

@@ -6,7 +6,7 @@
 void TestObject::Init()
 {
 	// メッシュ追加関数
-	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Human", "walk.glTF");
+	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Box", "Box.obj");
 
 	/// ~スプライトの追加関数~
 	//AddSprite("TestSprite", { 0.0f, 0.0f }, { 512.0f, 512.0f }, TextureManager::Load("./Engine/Resource/Samples/Box", "uvChecker.png"));
@@ -36,8 +36,8 @@ void TestObject::Init()
 	line_->Init("TestLine", transform_.translate_, {0.35f, 0.35f}, 3.0f, TextureManager::Load("./Engine/Resource/Samples/Box", "uvChecker.png"));
 	line_->AddCollider("Line", this);*/
 
-	transform_.animations_[0].isLoop = true;
-	transform_.animations_[0].isPlay = true;
+	/*transform_.animations_[0].isLoop = true;
+	transform_.animations_[0].isPlay = true;*/
 }
 
 void TestObject::Update()

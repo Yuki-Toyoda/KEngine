@@ -26,7 +26,13 @@ void PrimitiveManager::Init()
 
 void PrimitiveManager::Update()
 {
-	
+	// 登録形状がNullだった場合その要素を削除
+	primitives_.remove_if([](std::unique_ptr<IPrimitive>& primitive) {
+		if (primitive->isDestroy_ || !primitive.get())
+			return true;
+
+		return false;
+		});
 }
 
 void PrimitiveManager::Draw(ID3D12GraphicsCommandList6* cmdList)

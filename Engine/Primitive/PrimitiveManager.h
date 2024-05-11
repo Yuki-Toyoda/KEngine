@@ -66,6 +66,14 @@ public: // メンバ関数
 		return returnPrimitive;
 	}
 
+public: // アクセッサ等
+
+	/// <summary>
+	/// 描画リストゲッター
+	/// </summary>
+	/// <returns>描画リスト</returns>
+	const std::list<std::unique_ptr<IPrimitive>>& GetPrimitives() const { return primitives_; }
+
 private: // メンバ変数
 
 	// 描画形状リスト

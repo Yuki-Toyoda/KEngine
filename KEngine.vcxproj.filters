@@ -252,6 +252,8 @@
     <ClCompile Include="Engine\Base\RootSignature\PostProcessRootSignature.cpp" />
     <ClCompile Include="Engine\Base\Renderer\PPRenderer.cpp" />
     <ClCompile Include="Engine\Utility\Lerp\Lerp.cpp" />
+    <ClCompile Include="Engine\Base\RootSignature\SkinModelRootSignature.cpp" />
+    <ClCompile Include="Engine\GameObject\Samples\SampleSkinAnim\SampleAnim.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -563,6 +565,8 @@
     <ClInclude Include="Engine\Base\Resource\Rendering\RenderResource.h" />
     <ClInclude Include="Engine\Base\RootSignature\PostProcessRootSignature.h" />
     <ClInclude Include="Engine\Base\Renderer\PPRenderer.h" />
+    <ClInclude Include="Engine\Base\RootSignature\SkinModelRootSignature.h" />
+    <ClInclude Include="Engine\GameObject\Samples\SampleSkinAnim\SampleAnim.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">

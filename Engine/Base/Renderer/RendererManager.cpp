@@ -17,7 +17,7 @@ void RendererManager::Init(DirectXDevice* device, SRV* srv)
 	light_->Init();											  // 初期化
 
 	// 通常描画レンダラーを初期化
-	normalRenderer_.Init(device, RootSignatureManager::GetInstance()->GetRootSignature(0), &dxc_, primitiveManager_, light_.get());
+	normalRenderer_.Init(device, &dxc_, primitiveManager_, light_.get());
 }
 
 void RendererManager::DrawCall()

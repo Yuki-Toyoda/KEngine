@@ -36,6 +36,7 @@ void Mesh::Draw(ID3D12GraphicsCommandList6* cmdList)
 	// スキンアニメーション用頂点バッファが存在する場合
 	if (vertexSkinBuffer_ != nullptr) {
 		cmdList->SetGraphicsRootDescriptorTable(5, vertexSkinBuffer_->GetGPUView());	  // スキンアニメーション用頂点情報
+		cmdList->SetGraphicsRootDescriptorTable(9, skinCluster_.PalletteBuffer_->GetGPUView());	// テクスチャデータ
 	}
 	else {
 		cmdList->SetGraphicsRootDescriptorTable(5, vertexBuffer_->GetGPUView());		  // 頂点情報
@@ -43,7 +44,6 @@ void Mesh::Draw(ID3D12GraphicsCommandList6* cmdList)
 	cmdList->SetGraphicsRootDescriptorTable(6, uniqueVertexIndicesBuffer_->GetGPUView()); // 固有頂点インデックス
 	cmdList->SetGraphicsRootDescriptorTable(7, primitiveIndicesBuffer_->GetGPUView());	  // プリミティブインデックス
 	cmdList->SetGraphicsRootDescriptorTable(8, material_->GetTexAddress());				  // テクスチャデータ
-	cmdList->SetGraphicsRootDescriptorTable(9, skinCluster_.PalletteBuffer_->GetGPUView());	// テクスチャデータ
 
 	// メッシュレットのプリミティブ数分メッシュシェーダーを実行
 	cmdList->DispatchMesh(GetMeshletCount(), 1, 1);
@@ -222,6 +222,9 @@ void Mesh::LoadModel(const std::string& filePath, const std::string& fileName)
 		vertexSkinBuffer_ = std::make_unique<StructuredBuffer<VertexSkin>>(static_cast<int32_t>(skinVertices_.size())); // 生成
 		vertexSkinBuffer_->Init(device, srv);																			// 初期化
 		std::memcpy(vertexSkinBuffer_->data_, skinVertices_.data(), sizeof(VertexSkin)* skinVertices_.size());			// データコピー
+
+		// アニメーションをするメッシュであることを伝える
+		isAnimated_ = true;
 	}
 	else {
 		// 頂点用バッファの生成
