@@ -41,6 +41,8 @@ void GameScene::Init(){
 	// ナビィ生成
 	Fairy* fairy = nullptr;
 	fairy = gameObjectManager_->CreateInstance<Fairy>("Fairy", IObject::TagPlayer);
+	fairy->SetTarget(&player_->transform_);
+	fairy->SetPlayer(player_);
 }
 
 void GameScene::Update()
