@@ -1,9 +1,8 @@
 #include "RTV.h"
+#include "../Config/Config.h"
 
 RTV::RTV(ID3D12Device2* device) :
-	IDescriptorHeap(device, D3D12_DESCRIPTOR_HEAP_TYPE_RTV, 2)
-{
-}
+	IDescriptorHeap(device, D3D12_DESCRIPTOR_HEAP_TYPE_RTV, KEngine::Config::Rendering::kMaxMultiRendering + 2){}
 
 void RTV::Init(){
 	// ヒープ生成

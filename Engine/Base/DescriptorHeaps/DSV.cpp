@@ -1,7 +1,8 @@
 #include "DSV.h"
+#include "../Config/Config.h"
 
 DSV::DSV(ID3D12Device2* device) :
-	IDescriptorHeap(device, D3D12_DESCRIPTOR_HEAP_TYPE_DSV, 1){}
+	IDescriptorHeap(device, D3D12_DESCRIPTOR_HEAP_TYPE_DSV, KEngine::Config::Rendering::kMaxMultiRendering + 1){}
 
 void DSV::Init()
 {

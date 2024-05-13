@@ -19,12 +19,3 @@ struct CameraData {
 	Matrix4x4 WorldViewProj;		 // 射影変換行列
 	uint32_t  DrawMeshlets = false;	 // メッシュレット描画フラグ
 };
-
-/// <summary>
-/// 頂点データ構造体
-/// </summary>
-struct VertexData {
-	DirectX::XMFLOAT4 position; // 頂点座標
-	DirectX::XMFLOAT2 texCoord;	// テクスチャ座標
-	DirectX::XMFLOAT3 normal;   // 法線
-};

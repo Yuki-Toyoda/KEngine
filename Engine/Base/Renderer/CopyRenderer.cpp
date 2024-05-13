@@ -7,4 +7,5 @@ void CopyRenderer::Init()
 
 void CopyRenderer::Execute(ID3D12GraphicsCommandList6* cmdList)
 {
+	cmdList;
 }

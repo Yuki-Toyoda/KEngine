@@ -63,6 +63,12 @@ public: // アクセッサ等
 	HeapManager* GetHeaps() const { return heaps_.get(); }
 
 	/// <summary>
+	/// 描画マネージャーゲッター
+	/// </summary>
+	/// <returns>描画マネージャー</returns>
+	RendererManager* GetRendererManager() { return rendererManager_.get(); }
+
+	/// <summary>
 	/// メインカメラセッター
 	/// </summary>
 	/// <param name="camera">カメラ</param>

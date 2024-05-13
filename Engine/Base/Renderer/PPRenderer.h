@@ -45,13 +45,18 @@ public: // メンバ関数
 	/// <param name="list">コマンドリスト</param>
 	void DrawCall(ID3D12GraphicsCommandList6* list);
 
+	/// <summary>
+	/// レンダラーリセット関数
+	/// </summary>
+	void Reset();
+
 public: // アクセッサ等
 
 	/// <summary>
 	/// 描画ターゲット追加関数
 	/// </summary>
 	/// <param name="target">描画ターゲット</param>
-	void SetTarget(const Target& target) { target_ = target; }
+	void AddTarget(const Target& target) { targets_.push_back(target); }
 
 private: // メンバ変数
 
@@ -62,7 +67,7 @@ private: // メンバ変数
 	PSO pso_;
 
 	// 描画ターゲット
-	Target target_;
+	std::vector<Target> targets_;
 
 };
 
