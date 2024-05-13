@@ -56,7 +56,8 @@ public: // アクセッサ等
 	/// <param name="renderer">ポストプロセスを掛けた結果を格納するリソース</param>
 	/// <param name="texture">ポストプロセスを掛けるテクスチャ</param>
 	/// <param name="depthBuffer">深度リソース</param>
-	void AddTarget(RenderResource* renderer, BackBuffer* texture, DepthStencil* depthBuffer) { ppRenderer_.AddTarget({ renderer, texture, depthBuffer }); }
+	/// <param name="view">ポストプロセスパラメーターまでのアドレス</param>
+	void AddTarget(RenderResource* renderer, BackBuffer* texture, DepthStencil* depthBuffer, const D3D12_GPU_VIRTUAL_ADDRESS& view) { ppRenderer_.AddTarget({ renderer, texture, depthBuffer, view }); }
 
 	/// <summary>
 	/// コマンド管理クラスゲッター

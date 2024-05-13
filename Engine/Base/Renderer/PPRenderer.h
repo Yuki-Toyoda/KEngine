@@ -13,9 +13,10 @@ public: // サブクラス
 
 	// 通常描画のターゲット構造体
 	struct Target {
-		RenderResource* render;		// ポストプロセスを掛けた結果を格納するリソース
-		BackBuffer* texture;		// ポストプロセスを掛けるテクスチャ
-		DepthStencil* depth;		// デプスのリソース
+		RenderResource* render;			 // ポストプロセスを掛けた結果を格納するリソース
+		BackBuffer* texture;			 // ポストプロセスを掛けるテクスチャ
+		DepthStencil* depth;			 // デプスのリソース
+		D3D12_GPU_VIRTUAL_ADDRESS view_; // ポストプロセスパラメーターまでのアドレス
 	};
 
 public: // コンストラクタ等

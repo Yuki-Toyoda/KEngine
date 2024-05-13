@@ -3,7 +3,6 @@
 
 void PPRenderer::Init(DirectXDevice* device, DXC* dxc)
 {
-
 	// ルートシグネチャの取得
 	rootSignature_ = RootSignatureManager::GetInstance()->GetRootSignature(2);
 
@@ -11,7 +10,7 @@ void PPRenderer::Init(DirectXDevice* device, DXC* dxc)
 	pso_.VertInit(rootSignature_, dxc)
 		.SetDepthStencilState(false)
 		.SetVertexShader("Engine/Resource/Shader/PostProcess/PassThroughVS.hlsl")
-		.SetVertPixelShader("Engine/Resource/Shader/PostProcess/PostProcessPS.hlsl")
+		.SetVertPixelShader("Engine/Resource/Shader/PostProcess/GrayScalePS.hlsl")
 		.VertBuild(device->GetDevice());
 }
 
@@ -26,7 +25,7 @@ void PPRenderer::DrawCall(ID3D12GraphicsCommandList6* list)
 		list->SetPipelineState(pso_.GetState());
 
 		// データを登録
-		//list->SetGraphicsRootConstantBufferView(0, );
+		list->SetGraphicsRootConstantBufferView(0, it->view_);
 		list->SetGraphicsRootDescriptorTable(1, it->render->srvInfo_.gpuView_);
 		//list->SetGraphicsRootDescriptorTable(2, it->depth->srvInfo.gpuView);
 
