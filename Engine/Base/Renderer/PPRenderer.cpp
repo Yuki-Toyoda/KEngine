@@ -10,7 +10,7 @@ void PPRenderer::Init(DirectXDevice* device, DXC* dxc)
 	pso_.VertInit(rootSignature_, dxc)
 		.SetDepthStencilState(false)
 		.SetVertexShader("Engine/Resource/Shader/PostProcess/PassThroughVS.hlsl")
-		.SetVertPixelShader("Engine/Resource/Shader/PostProcess/GrayScalePS.hlsl")
+		.SetVertPixelShader("Engine/Resource/Shader/PostProcess/VignettePS.hlsl")
 		.VertBuild(device->GetDevice());
 }
 

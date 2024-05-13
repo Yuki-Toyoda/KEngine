@@ -38,7 +38,7 @@ void EnemyDead::Update()
 	}
 
 	// カメラのポストプロセスの強さをだんだん上げてく
-	camera_->postProcessIntensity_ = KLib::Lerp<float>(0.0f, 1.0f, KLib::EaseInQuad(enemy_->enemyAnim_->GetAnimationProgress()));
+	//camera_->postProcessIntensity_ = KLib::Lerp<float>(0.0f, 1.0f, KLib::EaseInQuad(enemy_->enemyAnim_->GetAnimationProgress()));
 
 	// アニメーションが終了していたら
 	if (enemy_->enemyAnim_->isEnd_) {

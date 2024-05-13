@@ -84,6 +84,8 @@ public: // パブリックなメンバ変数
 
 	// 追従カメラ格納用
 	FollowCamera* followCamera_ = nullptr;
+	// ロックオン時のビネットエフェクト用
+	float focusVignette_ = 0.0f;
 
 	// ロックオンクラス
 	LockOn* lockOn_ = nullptr;
