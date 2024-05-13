@@ -25,10 +25,14 @@ void RendererManager::DrawCall()
 	// ライトを更新しておく
 	light_->Update();
 
+#ifdef _DEBUG
+
 	// 平行光源用のImGuiを表示
 	ImGui::Begin("Light");
 	light_->DisplayImGui();
 	ImGui::End();
+
+#endif // _DEBUG
 
 	// リストをポインタ化して取得
 	ID3D12GraphicsCommandList6* list = command_.List();
