@@ -1,6 +1,9 @@
 #pragma once
 #include "IEnemyState.h"
 
+// クラスの前方宣言
+class Camera;
+
 /// <summary>
 /// 敵の死亡アニメーションの状態
 /// </summary>
@@ -24,6 +27,9 @@ public: // メンバ関数
 	void DisplayImGui() override;
 
 private: // メンバ変数
+
+	// 死亡演出用カメラ
+	Camera* camera_ = nullptr;
 
 };
 

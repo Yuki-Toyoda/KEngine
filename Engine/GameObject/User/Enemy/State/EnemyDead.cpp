@@ -22,11 +22,11 @@ void EnemyDead::Init()
 	p->canMove_ = false;
 
 	// カメラ移動
-	Camera* c = GameObjectManager::GetInstance()->CreateInstance<Camera>("StagingCamera", IObject::TagCamera);
-	c->transform_.translate_ = { -2.777f, 0.3f, -6.4f };
-	c->transform_.rotate_ = { -0.285f, 0.55f, 0.0f };
-	c->fov_ = 0.6f;
-	c->UseThisCamera();
+	camera_ = GameObjectManager::GetInstance()->CreateInstance<Camera>("StagingCamera", IObject::TagCamera);
+	camera_->transform_.translate_ = { -2.777f, 0.3f, -6.4f };
+	camera_->transform_.rotate_ = { -0.285f, 0.55f, 0.0f };
+	camera_->fov_ = 0.6f;
+	camera_->UseThisCamera();
 }
 
 void EnemyDead::Update()
@@ -37,9 +37,12 @@ void EnemyDead::Update()
 		enemy_->meshes_[i]->material_->color_ = enemy_->GetColor();
 	}
 
+	// カメラのポストプロセスの強さをだんだん上げてく
+	camera_->postProcessIntensity_ = KLib::Lerp<float>(0.0f, 1.0f, KLib::EaseInQuad(enemy_->enemyAnim_->GetAnimationProgress()));
+
 	// アニメーションが終了していたら
 	if (enemy_->enemyAnim_->isEnd_) {
-
+		
 		// 死亡している
 		enemy_->isDead_ = true;
 

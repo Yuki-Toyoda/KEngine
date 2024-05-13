@@ -98,6 +98,9 @@ public: // パブリックなメンバ変数
 	// 視野角
 	float fov_ = 0.45f;
 
+	// ポストプロセスをかける際の強さ
+	float postProcessIntensity_ = 0.0f;
+
 protected: // メンバ変数
 
 	// 描画管理マネージャ
@@ -122,9 +125,6 @@ protected: // メンバ変数
 
 	// カメラのメッシュレット表示切り替えトリガー
 	bool isDrawMeshlets_ = false;
-
-	// ポストプロセスをかける際の強さ
-	float postProcessIntensity_ = 0.0f;
 
 	// ビュー行列
 	Matrix4x4 viewMatrix_;
