@@ -5,7 +5,7 @@ float32_t3 GrayScale(float32_t3 color)
     return dot(color, float32_t3(0.2125f, 0.7154f, 0.0721f));
 }
 
-float32_t4 main(PSInput input) : SV_TARGET
+float32_t4 main(VertexOutput input) : SV_TARGET
 {
 	// 最終結果
     float32_t4 output;

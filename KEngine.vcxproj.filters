@@ -263,6 +263,7 @@
     <ClCompile Include="Engine\Base\Resource\Rendering\RenderResource.cpp">
       <Filter>Engine\Base\Resource\Rendering</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Base\Renderer\CopyRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -586,6 +587,7 @@
     <ClInclude Include="Engine\Base\Resource\Rendering\RenderResource.h">
       <Filter>Engine\Base\Resource\Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Base\Renderer\CopyRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">

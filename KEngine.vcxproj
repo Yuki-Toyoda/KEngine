@@ -105,6 +105,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Base\Renderer\CopyRenderer.cpp" />
     <ClCompile Include="Engine\Base\Resource\Rendering\RenderResource.cpp" />
     <ClCompile Include="Engine\Lighting\Light\DirectionalLight.cpp" />
     <ClCompile Include="Engine\Base\DXC\DXC.cpp" />
@@ -187,6 +188,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\GameObject\Samples\SampleSkinAnim\SampleAnim.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Base\Renderer\CopyRenderer.h" />
     <ClInclude Include="Engine\Base\Resource\Rendering\RenderResource.h" />
     <ClInclude Include="Engine\Lighting\Light\DirectionalLight.h" />
     <ClInclude Include="Engine\Base\DXC\DXC.h" />

@@ -1,12 +1,13 @@
 #include "PPRenderer.h"
 
-void PPRenderer::Init(DirectXDevice* device, ID3D12RootSignature* signature, DXC* dxc)
+void PPRenderer::Init(DirectXDevice* device, DXC* dxc)
 {
-	// ルートシグネチャ取得
-	//rootSignature_ = signature;
+
+	// ルートシグネチャの取得
+	rootSignature_ = RootSignatureManager::GetInstance()->GetRootSignature(2);
 
 	// 通常描画用PSO初期化
-	pso_.VertInit(signature, dxc)
+	pso_.VertInit(rootSignature_, dxc)
 		.SetVertexShader("Engine/Resource/Shader/PostProcess/PassThroughVS.hlsl")
 		.SetVertPixelShader("Engine/Resource/Shader/PostProcess/PostProcessPS.hlsl")
 		.VertBuild(device->GetDevice());
@@ -17,7 +18,7 @@ void PPRenderer::DrawCall(ID3D12GraphicsCommandList6* list)
 	// textureの方に書き込む
 	list->OMSetRenderTargets(1, &target_.texture->rtvInfo_.cpuView_, false, nullptr);
 	// RootSignatureとPSOをセット
-	//list->SetGraphicsRootSignature(rootSignature_);
+	list->SetGraphicsRootSignature(rootSignature_);
 	list->SetPipelineState(pso_.GetState());
 
 	// データを登録
@@ -27,9 +28,9 @@ void PPRenderer::DrawCall(ID3D12GraphicsCommandList6* list)
 
 	// リソースバリアをセット
 	D3D12_RESOURCE_STATES beforeBarrier = target_.texture->GetBarrier();
-	target_.render->ChangeResourceBarrier(D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, list);	// 加工する画像
-	target_.texture->ChangeResourceBarrier(D3D12_RESOURCE_STATE_RENDER_TARGET, list);	// 書き込み対象
-	target_.depth->ChangeResourceBarrier(D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, list);	// 深度マップ
+	target_.render->ChangeResourceBarrier(D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, list); // 加工する画像
+	target_.texture->ChangeResourceBarrier(D3D12_RESOURCE_STATE_RENDER_TARGET, list);	     // 書き込み対象
+	target_.depth->ChangeResourceBarrier(D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, list);	 // 深度マップ
 	// 全画面クリア
 	target_.texture->Clear(list);
 

@@ -36,9 +36,8 @@ public: // メンバ関数
 	/// 初期化関数
 	/// </summary>
 	/// <param name="device">デバイス</param>
-	/// <param name="signature">ルートシグネチャ</param>
 	/// <param name="dxc">DirectXシェーダーコンパイラ</param>
-	void Init(DirectXDevice* device, ID3D12RootSignature* signature, DXC* dxc);
+	void Init(DirectXDevice* device, DXC* dxc);
 
 	/// <summary>
 	/// 描画命令関数
@@ -55,6 +54,9 @@ public: // アクセッサ等
 	void SetTarget(const Target& target) { target_ = target; }
 
 private: // メンバ変数
+
+	// ルートシグネチャ群
+	ID3D12RootSignature* rootSignature_ = nullptr;
 
 	// パイプラインステートオブジェクト
 	PSO pso_;

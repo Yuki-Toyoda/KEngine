@@ -63,13 +63,13 @@ public: // アクセッサ等
 
 private: // メンバ変数
 
-	// PSO群
-	PSO standardPSO_;  // 通常描画
-	PSO skinModelPSO_; // スキンアニメーション描画
-
 	// ルートシグネチャ群
 	ID3D12RootSignature* standardRootSignature_ = nullptr; // 通常描画用
 	ID3D12RootSignature* skinRootSignature_ = nullptr;	   // スキンアニメーション用
+
+	// PSO群
+	PSO standardPSO_;  // 通常描画
+	PSO skinModelPSO_; // スキンアニメーション描画
 
 	// 描画ターゲット
 	Target target_;
