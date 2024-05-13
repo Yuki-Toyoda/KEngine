@@ -2,14 +2,34 @@
 #include <vector>
 #include "../../Base/WinApp.h"
 #include "../../Base/DirectXCommon.h"
+#include "../../Base/Renderer/RendererManager.h"
 #include "../GameObjectManager.h"
+#include "../../Base/DescriptorHeaps/HeapManager.h"
+#include "../../Resource/Texture/Texture.h"
 
 void Camera::Init()
 {
+	// 描画マネージャーの取得
+	rendererManager_ = DirectXCommon::GetInstance()->GetRendererManager();
+
+	// デバイスとヒープの取得
+	DirectXDevice* device = DirectXCommon::GetInstance()->GetDirectXDevice(); // デバイス
+	HeapManager* heaps    = DirectXCommon::GetInstance()->GetHeaps();		   // ヒープ
+
 	// 定数バッファ生成
-	cameraDataBuffer_.Init(DirectXCommon::GetInstance()->GetDirectXDevice());
+	cameraDataBuffer_.Init(device);
 	// データに値を代入
 	cameraDataBuffer_.data_->DrawMeshlets = isDrawMeshlets_;
+
+	// ポストプロセスの強さバッファ
+	postProcessIntensityBuffer_.Init(device);
+	// データに値を代入
+	*postProcessIntensityBuffer_.data_ = postProcessIntensity_;
+
+	// 各リソース初期化
+	renderResource_.Init(device, heaps);  // レンダリングを行うリソース
+	textureResource_.Init(device, heaps); // レンダリング語の結果を保存するリソース
+	depthStencil_.Init(device, heaps);	  // DSVリソース
 
 	// 入力取得
 	input_ = Input::GetInstance();
@@ -40,6 +60,13 @@ void Camera::Update()
 		// バッファのデータにビュープロジェクション行列をセット
 		cameraDataBuffer_.data_->WorldViewProj = viewProjectionMatrix_;
 		cameraDataBuffer_.data_->DrawMeshlets = isDrawMeshlets_;
+
+		// バッファのデータにポストプロセスの強さをセット
+		*postProcessIntensityBuffer_.data_ = postProcessIntensity_;
+
+		// 描画マネージャーに描画ターゲットをセット
+		rendererManager_->AddTarget(cameraDataBuffer_.GetGPUView(), &renderResource_, &depthStencil_);
+		rendererManager_->AddTarget(&renderResource_, &textureResource_, &depthStencil_, GetPostProcessIntensityBufferView());
 	}
 
 	// デバッグカメラだった場合はキー入力でカメラを移動させる
@@ -119,6 +146,9 @@ void Camera::DisplayImGui()
 	// メッシュレット描画フラグの切り替え
 	ImGui::Checkbox("DrawMeshlets", &isDrawMeshlets_);
 
+	// ポストプロセスの強さパラメーター設定
+	ImGui::DragFloat("PostProcess - Intensity", &postProcessIntensity_, 0.01f, 0.0f);
+
 	// ボタンを押すとこのカメラを使用する
 	if (!isUseThisCamera_) {
 		if (ImGui::Button("UseThisCamera"))
@@ -129,6 +159,12 @@ void Camera::DisplayImGui()
 	}
 }
 
+
+Texture Camera::GetRenderTexture()
+{
+	// レンダリング後の結果をテクスチャとして返す
+	return textureResource_;
+}
 
 void Camera::UseThisCamera() {
 	// 配列

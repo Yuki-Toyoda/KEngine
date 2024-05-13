@@ -53,26 +53,31 @@ public: // メンバ関数
 	/// <param name="list">コマンドリスト</param>
 	void DrawCall(ID3D12GraphicsCommandList6* list);
 
+	/// <summary>
+	/// レンダラーリセット関数
+	/// </summary>
+	void Reset();
+
 public: // アクセッサ等
 
 	/// <summary>
 	/// 描画ターゲット追加関数
 	/// </summary>
 	/// <param name="target">描画ターゲット</param>
-	void SetTarget(const Target& target) { target_ = target; }
+	void AddTarget(const Target& target) { targets_.push_back(target); }
 
 private: // メンバ変数
-
-	// PSO群
-	PSO standardPSO_;  // 通常描画
-	PSO skinModelPSO_; // スキンアニメーション描画
 
 	// ルートシグネチャ群
 	ID3D12RootSignature* standardRootSignature_ = nullptr; // 通常描画用
 	ID3D12RootSignature* skinRootSignature_ = nullptr;	   // スキンアニメーション用
 
+	// PSO群
+	PSO standardPSO_;  // 通常描画
+	PSO skinModelPSO_; // スキンアニメーション描画
+
 	// 描画ターゲット
-	Target target_;
+	std::vector<Target> targets_;
 
 	// 形状マネージャ
 	PrimitiveManager* primitiveManager_ = nullptr;

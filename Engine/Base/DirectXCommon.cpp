@@ -91,7 +91,9 @@ void DirectXCommon::Draw()
 void DirectXCommon::SetMainCamera(Camera* camera)
 {
 	// 描画マネージャーに描画ターゲットセット
-	rendererManager_->SetTarget(camera->GetBufferView(), &backBuffers_[swapChain_->GetCurrentBackBufferIndex()], &depthStencil_);
+	rendererManager_->AddTarget(camera->GetCameraDataBufferView(), camera->GetRendererResource(), &depthStencil_);
+	// ポストプロセスマネージャに描画ターゲットセット
+	rendererManager_->AddTarget(camera->GetRendererResource(), &backBuffers_[swapChain_->GetCurrentBackBufferIndex()], camera->GetDepthStencil(), camera->GetPostProcessIntensityBufferView());
 }
 
 void DirectXCommon::InitializeFixFPS()

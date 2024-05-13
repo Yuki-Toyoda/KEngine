@@ -4,6 +4,10 @@
 #include "../../Base/Buffer/BufferStructs.h"
 #include "../../Base/Resource/Data/ConstantBuffer.h"
 #include "../../Base/Resource/Rendering/RenderResource.h"
+#include "../../Base/Resource/Rendering/DepthStencil.h"
+
+// クラスの前方宣言
+class RendererManager;
 
 /// <summary>
 /// カメラ
@@ -53,10 +57,34 @@ public: // アクセッサ等
 	Matrix4x4 GetViewProjectionMatrix() { return viewProjectionMatrix_; };
 
 	/// <summary>
+	/// レンダリング後のテクスチャゲッター
+	/// </summary>
+	/// <returns>レンダリング後のテクスチャ</returns>
+	Texture GetRenderTexture();
+
+	/// <summary>
 	/// カメラデータまでのアドレスゲッター
 	/// </summary>
 	/// <returns>カメラデータまでのアドレス</returns>
-	D3D12_GPU_VIRTUAL_ADDRESS GetBufferView() { return cameraDataBuffer_.GetGPUView(); }
+	D3D12_GPU_VIRTUAL_ADDRESS GetCameraDataBufferView() { return cameraDataBuffer_.GetGPUView(); }
+
+	/// <summary>
+	/// ポストプロセスのパラメータデータまでのアドレスゲッター
+	/// </summary>
+	/// <returns>ポストプロセスデータまでのアドレス</returns>
+	D3D12_GPU_VIRTUAL_ADDRESS GetPostProcessIntensityBufferView() { return postProcessIntensityBuffer_.GetGPUView(); }
+
+	/// <summary>
+	/// レンダリング予定リソースのゲッター
+	/// </summary>
+	/// <returns>レンダリング予定リソース</returns>
+	RenderResource* GetRendererResource() { return &renderResource_; }
+
+	/// <summary>
+	/// DSVリソースゲッター
+	/// </summary>
+	/// <returns>深度マップ</returns>
+	DepthStencil* GetDepthStencil() { return &depthStencil_; }
 
 public: // その他関数
 
@@ -72,8 +100,19 @@ public: // パブリックなメンバ変数
 
 protected: // メンバ変数
 
+	// 描画管理マネージャ
+	RendererManager* rendererManager_ = nullptr;
+
 	// 定数バッファデータ
-	ConstantBuffer<CameraData> cameraDataBuffer_;
+	ConstantBuffer<CameraData> cameraDataBuffer_;			// カメラデータ
+	ConstantBuffer<float>	   postProcessIntensityBuffer_; // ポストプロセスの強さ
+
+	// レンダリングを行うリソース
+	RenderResource renderResource_;
+	// レンダリング後の結果を保存するリソース
+	RenderResource textureResource_;
+	// DSVリソース
+	DepthStencil depthStencil_;
 
 	// 入力検知用
 	Input* input_ = nullptr;
@@ -83,6 +122,9 @@ protected: // メンバ変数
 
 	// カメラのメッシュレット表示切り替えトリガー
 	bool isDrawMeshlets_ = false;
+
+	// ポストプロセスをかける際の強さ
+	float postProcessIntensity_ = 0.0f;
 
 	// ビュー行列
 	Matrix4x4 viewMatrix_;

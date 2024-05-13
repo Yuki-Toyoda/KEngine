@@ -48,15 +48,16 @@ public: // アクセッサ等
 	/// <param name="view">カメラデータまでのアドレス</param>
 	/// <param name="backBuffer">BackBufferリソース</param>
 	/// <param name="depth">DSVバッファリソース</param>
-	void SetTarget(const D3D12_GPU_VIRTUAL_ADDRESS& view, BackBuffer* backBuffer, DepthStencil* depthBuffer) { normalRenderer_.SetTarget({ view, backBuffer, depthBuffer }); }
+	void AddTarget(const D3D12_GPU_VIRTUAL_ADDRESS& view, BackBuffer* backBuffer, DepthStencil* depthBuffer) { normalRenderer_.AddTarget({ view, backBuffer, depthBuffer }); }
 	
-	/*/// <summary>
+	/// <summary>
 	/// (ポストプロセス用)描画ターゲット追加関数
 	/// </summary>
 	/// <param name="renderer">ポストプロセスを掛けた結果を格納するリソース</param>
 	/// <param name="texture">ポストプロセスを掛けるテクスチャ</param>
 	/// <param name="depthBuffer">深度リソース</param>
-	void SetTarget(RenderResource* renderer, BackBuffer* texture, DepthStencil* depthBuffer) { ppRenderer_.SetTarget({ renderer, texture, depthBuffer }); }*/
+	/// <param name="view">ポストプロセスパラメーターまでのアドレス</param>
+	void AddTarget(RenderResource* renderer, BackBuffer* texture, DepthStencil* depthBuffer, const D3D12_GPU_VIRTUAL_ADDRESS& view) { ppRenderer_.AddTarget({ renderer, texture, depthBuffer, view }); }
 
 	/// <summary>
 	/// コマンド管理クラスゲッター
@@ -91,8 +92,8 @@ private: // メンバ変数
 	// 通常描画レンダラー
 	NormalRenderer normalRenderer_;
 
-	//// ポストプロセス描画レンダラー
-	//PPRenderer ppRenderer_;
+	// ポストプロセス描画レンダラー
+	PPRenderer ppRenderer_;
 
 };
 

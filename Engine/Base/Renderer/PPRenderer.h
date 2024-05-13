@@ -13,9 +13,10 @@ public: // サブクラス
 
 	// 通常描画のターゲット構造体
 	struct Target {
-		RenderResource* render;		// ポストプロセスを掛けた結果を格納するリソース
-		BackBuffer* texture;		// ポストプロセスを掛けるテクスチャ
-		DepthStencil* depth;		// デプスのリソース
+		RenderResource* render;			 // ポストプロセスを掛けた結果を格納するリソース
+		BackBuffer* texture;			 // ポストプロセスを掛けるテクスチャ
+		DepthStencil* depth;			 // デプスのリソース
+		D3D12_GPU_VIRTUAL_ADDRESS view_; // ポストプロセスパラメーターまでのアドレス
 	};
 
 public: // コンストラクタ等
@@ -36,9 +37,8 @@ public: // メンバ関数
 	/// 初期化関数
 	/// </summary>
 	/// <param name="device">デバイス</param>
-	/// <param name="signature">ルートシグネチャ</param>
 	/// <param name="dxc">DirectXシェーダーコンパイラ</param>
-	void Init(DirectXDevice* device, ID3D12RootSignature* signature, DXC* dxc);
+	void Init(DirectXDevice* device, DXC* dxc);
 
 	/// <summary>
 	/// 描画命令関数
@@ -46,21 +46,29 @@ public: // メンバ関数
 	/// <param name="list">コマンドリスト</param>
 	void DrawCall(ID3D12GraphicsCommandList6* list);
 
+	/// <summary>
+	/// レンダラーリセット関数
+	/// </summary>
+	void Reset();
+
 public: // アクセッサ等
 
 	/// <summary>
 	/// 描画ターゲット追加関数
 	/// </summary>
 	/// <param name="target">描画ターゲット</param>
-	void SetTarget(const Target& target) { target_ = target; }
+	void AddTarget(const Target& target) { targets_.push_back(target); }
 
 private: // メンバ変数
+
+	// ルートシグネチャ群
+	ID3D12RootSignature* rootSignature_ = nullptr;
 
 	// パイプラインステートオブジェクト
 	PSO pso_;
 
 	// 描画ターゲット
-	Target target_;
+	std::vector<Target> targets_;
 
 };
 

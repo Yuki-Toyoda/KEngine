@@ -37,7 +37,13 @@ public: // アクセッサ
 	/// 解像度を返す関数
 	/// </summary>
 	/// <returns></returns>
-	Vector2 GetTextureSize() const { { static_cast<float>(width_), static_cast<float>(height_); }; }
+	Vector2 GetTextureSize() const { return { static_cast<float>(width_), static_cast<float>(height_) }; }
+
+	/// <summary>
+	/// GPU上のアドレスゲッター
+	/// </summary>
+	/// <returns>GPU上のアドレス</returns>
+	D3D12_GPU_DESCRIPTOR_HANDLE GetTextureAddress() const { return srvInfo_.gpuView_; }
 
 public: // パブリックなメンバ変数
 
