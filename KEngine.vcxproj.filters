@@ -263,7 +263,9 @@
     <ClCompile Include="Engine\Base\Resource\Rendering\RenderResource.cpp">
       <Filter>Engine\Base\Resource\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Base\Renderer\CopyRenderer.cpp" />
+    <ClCompile Include="Engine\Base\Renderer\CopyRenderer.cpp">
+      <Filter>Engine\Base\Renderer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -587,7 +589,9 @@
     <ClInclude Include="Engine\Base\Resource\Rendering\RenderResource.h">
       <Filter>Engine\Base\Resource\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Base\Renderer\CopyRenderer.h" />
+    <ClInclude Include="Engine\Base\Renderer\CopyRenderer.h">
+      <Filter>Engine\Base\Renderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -608,7 +612,9 @@
     <None Include="Engine\Resource\Shader\PostProcess\PassThrough.hlsli">
       <Filter>Engine\Resource\Shader</Filter>
     </None>
-    <None Include="Engine\Resource\Shader\PostProcess\GrayScale.hlsli" />
+    <None Include="Engine\Resource\Shader\PostProcess\GrayScale.hlsli">
+      <Filter>Engine\Resource\Shader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -798,6 +804,11 @@
     <FxCompile Include="Engine\Resource\Shader\PostProcess\PassThroughVS.hlsl">
       <Filter>Engine\Resource\Shader</Filter>
     </FxCompile>
-    <FxCompile Include="Engine\Resource\Shader\PostProcess\GrayScalePS.hlsl" />
+    <FxCompile Include="Engine\Resource\Shader\PostProcess\GrayScalePS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\PostProcess\VignettePS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
