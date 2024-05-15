@@ -810,5 +810,6 @@
     <FxCompile Include="Engine\Resource\Shader\PostProcess\VignettePS.hlsl">
       <Filter>Engine\Resource\Shader</Filter>
     </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\PostProcess\SmoothingPS.hlsl" />
   </ItemGroup>
 </Project>
