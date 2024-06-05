@@ -131,7 +131,7 @@ void WorldTransform::SkeltonUpdate(Skelton& skelton)
 			joint.skeltonSpaceMatrix = joint.localMatrix * skelton.joints[*joint.parent].skeltonSpaceMatrix;
 		}
 		else { // 親がいない場合ローカル行列を掛ける
-			joint.skeltonSpaceMatrix* joint.localMatrix;
+			joint.skeltonSpaceMatrix = joint.localMatrix;
 		}
 	}
 }
