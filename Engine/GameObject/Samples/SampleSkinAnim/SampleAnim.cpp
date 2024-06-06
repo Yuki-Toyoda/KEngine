@@ -3,7 +3,7 @@
 void SampleAnim::Init()
 {
 	// メッシュ追加関数
-	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Human", "walk.gltf");
+	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Human/", "walk.gltf");
 
 	//// 拡大率調整
 	//transform_.scale_ = Vector3(0.01f, 0.01f, 0.01f);

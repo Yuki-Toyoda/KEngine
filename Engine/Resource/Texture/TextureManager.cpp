@@ -31,13 +31,13 @@ void TextureManager::Init()
 Texture TextureManager::LoadTexture(std::string fileName)
 {
 	// ロード
-	return Load("./Resources", fileName);
+	return Load("./Resources/", fileName);
 }
 
 Texture TextureManager::LoadTexture(std::string directoryPath, std::string fileName)
 {
 	// フルパスを生成
-	std::string fullPath = directoryPath + "/" + fileName;
+	std::string fullPath = directoryPath + fileName;
 
 	// テクスチャコンテナ内に同名テクスチャが見つからなかった場合読み込む
 	if (!textures_.count(fullPath)) {

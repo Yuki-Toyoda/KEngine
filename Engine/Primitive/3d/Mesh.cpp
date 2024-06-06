@@ -52,7 +52,7 @@ void Mesh::Draw(ID3D12GraphicsCommandList6* cmdList)
 void Mesh::LoadModel(const std::string& filePath, const std::string& fileName)
 {
 	// フルパスのフルパスの合成
-	std::string fullPath = filePath + "/" + fileName;
+	std::string fullPath = filePath + fileName;
 
 	// assimpを読むためのimporterを定義
 	Assimp::Importer importer;
