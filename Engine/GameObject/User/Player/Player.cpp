@@ -208,15 +208,15 @@ void Player::Update()
 			if (!followCamera_->GetEnableZForcus()) {
 				followCamera_->SetTargetAngle(followCamera_->transform_.rotate_.y);
 				// ロックオン中は徐々にビネット解除
-				focusVignette_ = KLib::Lerp<float>(focusVignette_, 0.0f, 0.1f);
+				//focusVignette_ = KLib::Lerp<float>(focusVignette_, 0.0f, 0.1f);
 			}
 			else {
 				// ロックオン中は徐々にビネット
-				focusVignette_ = KLib::Lerp<float>(focusVignette_, 1.0f, 0.1f);
+				//focusVignette_ = KLib::Lerp<float>(focusVignette_, 1.0f, 0.1f);
 			}
 
 			// ビネットをかける
-			followCamera_->postProcessIntensity_ = focusVignette_;
+			//followCamera_->postProcessIntensity_ = focusVignette_;
 
 			if (followCamera_->GetLockOn()->GetIsLockOn()) {
 				// ロックオン対象の座標

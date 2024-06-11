@@ -46,7 +46,7 @@ void Damage::Update()
 		// プレイヤーのHPが0以下の時ゲームオーバー
 		if (player_->hp_ <= 0) {
 			// カメラのポストプロセスの強さをだんだん上げてく
-			//c->postProcessIntensity_ = KLib::Lerp<float>(0.0f, 2.0f, KLib::EaseInQuad(player_->playerAnim_->GetAnimationProgress()));
+			c->postProcessIntensity_ = KLib::Lerp<float>(0.0f, 9.0f, KLib::EaseInQuad(player_->playerAnim_->GetAnimationProgress()));
 			
 			// アニメーションの9割りが終了していた場合、スティックの入力があった場合待機状態へ移行
 			if (player_->playerAnim_->GetAnimationProgress() >= 0.5f && !isDead_) {
