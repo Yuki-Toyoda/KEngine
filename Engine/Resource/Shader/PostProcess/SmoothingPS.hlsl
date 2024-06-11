@@ -6,20 +6,6 @@ Texture2D<float32_t4> gTexture : register(t0);
 Texture2D<float32_t4> gDepth : register(t1);
 SamplerState gSampler : register(s0);
 
-static const float32_t2 kIndex3x3[3][3] =
-{
-    { { -1.0f, -1.0f }, { 0.0f, -1.0f }, { 1.0f, -1.0f } },
-    { { -1.0f, 0.0f }, { 0.0f, 0.0f }, { 1.0f, 0.0f } },
-    { { -1.0f, 1.0f }, { 0.0f, 1.0f }, { 1.0f, 1.0f } }
-};
-
-static const float32_t kKernel3x3[3][3] =
-{
-    { 1.0f / 9.0f, 1.0f / 9.0f, 1.0f / 9.0f },
-    { 1.0f / 9.0f, 1.0f / 9.0f, 1.0f / 9.0f },
-    { 1.0f / 9.0f, 1.0f / 9.0f, 1.0f / 9.0f }
-};
-
 float32_t4 main(VertexOutput input) : SV_TARGET
 {
     // テクスチャ解像度取得
@@ -34,17 +20,25 @@ float32_t4 main(VertexOutput input) : SV_TARGET
     output.rgb = float32_t3(0.0f, 0.0f, 0.0f);
     output.a = 1.0f;
     
-    for (int32_t x = 0; x < 3; x++)
+    // カーネルサイズを調整
+    int kernelHalfWidth = int(gIntensity.intensity);
+    int kernelSize = kernelHalfWidth * 2 + 1;
+    float kernelWeight = 1.0 / (kernelSize * kernelSize);
+    
+    // フィルタリング結果の色
+    float4 color = float4(0, 0, 0, 0);
+
+    // カーネルの各サンプルを加算
+    for (int y = -kernelHalfWidth; y <= kernelHalfWidth; ++y)
     {
-        for (int32_t y = 0; y < 3; y++)
+        for (int x = -kernelHalfWidth; x <= kernelHalfWidth; ++x)
         {
-            // 現在のTexCoord算出
-            float32_t2 texcoord = input.texcoord + kIndex3x3[x][y] * uvStepSize;
-            // 色に 1 / 9 かけて足す
-            float32_t3 fetchColor = gTexture.Sample(gSampler, texcoord).rgb;
-            output.rgb += fetchColor * kKernel3x3[x][y];
+            float2 offset = float2(x, y) * uvStepSize;
+            color += gTexture.Sample(gSampler, input.texcoord + offset) * kernelWeight;
         }
     }
+    
+    output.rgb = color.rgb;
     
     // 出力する
     return output;
