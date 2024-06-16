@@ -17,6 +17,14 @@ void RotatingSlash::Init()
 	// 攻撃中である
 	player_->isAttacking_ = true;
 
+	if (!player_->transform_.animations_[3].isPlay) {
+		player_->transform_.animations_[3].isPlay = true;
+		player_->transform_.animations_[3].animationTime = 0.0f;
+		player_->transform_.animations_[0].isPlay = false;
+		player_->transform_.animations_[1].isPlay = false;
+		player_->transform_.animations_[2].isPlay = false;
+	}
+
 	// 線の座標を戻す
 	player_->attackLine_->position_ = { -1000.0f, 100.0f, 0.0f };
 }
@@ -46,6 +54,15 @@ void RotatingSlash::Update()
 				// 素振りの効果音の再生
 				Audio::GetInstance()->PlayWave(player_->RotateSlash_);
 
+				if (!player_->transform_.animations_[4].isPlay) {
+					player_->transform_.animations_[4].isPlay = true;
+					player_->transform_.animations_[4].animationTime = 0.0f;
+					player_->transform_.animations_[0].isPlay = false;
+					player_->transform_.animations_[1].isPlay = false;
+					player_->transform_.animations_[2].isPlay = false;
+					player_->transform_.animations_[3].isPlay = false;
+				}
+
 				// 攻撃中でない
 				player_->isAttacking_ = true;
 
@@ -61,6 +78,12 @@ void RotatingSlash::Update()
 			else {
 				// 攻撃中でない
 				player_->isAttacking_ = false;
+
+				player_->transform_.animations_[0].isPlay = false;
+				player_->transform_.animations_[1].isPlay = false;
+				player_->transform_.animations_[2].isPlay = false;
+				player_->transform_.animations_[3].isPlay = false;
+				player_->transform_.animations_[4].isPlay = false;
 
 				// プレイヤーのステートを再設定
 				player_->ChangeState(std::make_unique<Root>());
@@ -88,6 +111,15 @@ void RotatingSlash::Update()
 			// アニメーションのループを無効
 			player_->playerAnim_->isLoop_ = false;
 
+			if (!player_->transform_.animations_[4].isPlay) {
+				player_->transform_.animations_[4].isPlay = true;
+				player_->transform_.animations_[4].animationTime = 0.0f;
+				player_->transform_.animations_[0].isPlay = false;
+				player_->transform_.animations_[1].isPlay = false;
+				player_->transform_.animations_[2].isPlay = false;
+				player_->transform_.animations_[3].isPlay = false;
+			}
+
 			// 線の座標を戻す
 			player_->attackLine_->position_ = { -0.7f, 0.0f, 0.0f };
 		}
@@ -99,6 +131,12 @@ void RotatingSlash::Update()
 		if (player_->playerAnim_->isEnd_ == true) {
 			// 攻撃中でない
 			player_->isAttacking_ = false;
+
+			player_->transform_.animations_[0].isPlay = false;
+			player_->transform_.animations_[1].isPlay = false;
+			player_->transform_.animations_[2].isPlay = false;
+			player_->transform_.animations_[3].isPlay = false;
+			player_->transform_.animations_[4].isPlay = false;
 
 			// プレイヤーのステートを再設定
 			player_->ChangeState(std::make_unique<Root>());

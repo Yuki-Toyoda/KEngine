@@ -36,6 +36,13 @@ void Root::Update()
 	// 移動ベクトルが一定の長さになっていれば
 	if (Vector3::Length(move) > deadZone_) {
 		isMoving_ = true;
+		
+		// アニメーションが再生中で無ければ
+		if (!player_->transform_.animations_[1].isPlay) {
+			player_->transform_.animations_[1].isPlay = true;
+			player_->transform_.animations_[1].animationTime = 0.0f;
+			player_->transform_.animations_[0].isPlay = false;
+		}
 	}
 
 	// 移動中であれば
@@ -85,6 +92,12 @@ void Root::Update()
 		// プレイヤーアニメーションを変更
 		if (player_->playerAnim_->GetReadingParameterName() != "Player_Idle") {
 			player_->playerAnim_->ChangeParameter("Player_Idle", 0.15f, true);
+		}
+
+		if (!player_->transform_.animations_[0].isPlay) {
+			player_->transform_.animations_[0].isPlay = true;
+			//player_->transform_.animations_[0].animationTime = 0.0f;
+			player_->transform_.animations_[1].isPlay = false;
 		}
 	}
 

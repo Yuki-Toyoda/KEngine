@@ -91,12 +91,18 @@ void Player::Init()
 	titleAnim_->Play();
 
 	// メッシュの追加を行う
-	AddMesh(&bodyTransform_, color_, "./Resources/Player", "Body.obj");
-	AddMesh(&headTransform_, color_, "./Resources/Player", "Head.obj");
+	AddMesh(&transform_, color_, "./Resources/Player", "Player_Skininng.gltf");
+	/*AddMesh(&headTransform_, color_, "./Resources/Player", "Head.obj");
 	AddMesh(&armTransform_R_, color_, "./Resources/Player", "Arm_R.obj");
 	AddMesh(&armTransform_L_, color_, "./Resources/Player", "Arm_L.obj");
 	AddMesh(&armTransform_L_, color_, "./Resources/Sword", "Sword.obj");
-	AddMesh(&armTransform_R_, color_, "./Resources/Shield", "Shiled.obj");
+	AddMesh(&armTransform_R_, color_, "./Resources/Shield", "Shiled.obj");*/
+
+	// アニメーションのループ
+	transform_.animations_[0].isLoop = true;
+	transform_.animations_[1].isLoop = true;
+	// 再生
+	transform_.animations_[0].isPlay = true;
 
 	// コライダーの追加
 	colliderWorldPos_ = colliderTransform_.GetWorldPos();
@@ -208,15 +214,15 @@ void Player::Update()
 			if (!followCamera_->GetEnableZForcus()) {
 				followCamera_->SetTargetAngle(followCamera_->transform_.rotate_.y);
 				// ロックオン中は徐々にビネット解除
-				//focusVignette_ = KLib::Lerp<float>(focusVignette_, 0.0f, 0.1f);
+				focusVignette_ = KLib::Lerp<float>(focusVignette_, 0.0f, 0.1f);
 			}
 			else {
 				// ロックオン中は徐々にビネット
-				//focusVignette_ = KLib::Lerp<float>(focusVignette_, 1.0f, 0.1f);
+				focusVignette_ = KLib::Lerp<float>(focusVignette_, 1.0f, 0.1f);
 			}
 
 			// ビネットをかける
-			//followCamera_->postProcessIntensity_ = focusVignette_;
+			followCamera_->postProcessIntensity_ = focusVignette_;
 
 			if (followCamera_->GetLockOn()->GetIsLockOn()) {
 				// ロックオン対象の座標

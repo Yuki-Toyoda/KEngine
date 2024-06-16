@@ -20,6 +20,12 @@ void EnemyDead::Init()
 	p->transform_.translate_ = { -0.544f, 0.0f, -4.65f };
 	p->transform_.rotate_.y = 0.28f;
 	p->canMove_ = false;
+	for (int i = 0; i < p->transform_.animations_.size(); i++) {
+		p->transform_.animations_[i].isPlay = false;
+		p->transform_.animations_[i].animationTime = 0.0f;
+	}
+	p->transform_.animations_[0].isPlay = true;
+
 
 	// カメラ移動
 	camera_ = GameObjectManager::GetInstance()->CreateInstance<Camera>("StagingCamera", IObject::TagCamera);

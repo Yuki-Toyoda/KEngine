@@ -17,6 +17,13 @@ void Attack::Init()
 	// 攻撃中である
 	player_->isAttacking_ = true;
 
+	if (!player_->transform_.animations_[2].isPlay) {
+		player_->transform_.animations_[2].isPlay = true;
+		player_->transform_.animations_[2].animationTime = 0.0f;
+		player_->transform_.animations_[0].isPlay = false;
+		player_->transform_.animations_[1].isPlay = false;
+	}
+
 	// 線の座標を戻す
 	player_->attackLine_->position_ = { -0.7f, 0.0f, 0.0f };
 

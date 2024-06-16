@@ -3,11 +3,6 @@
 #include "../../GameObject/SampleList.h"
 
 void GameScene::Init(){
-
-	// スカイドーム生成
-	SkyDome* skyDome = nullptr;
-	skyDome = gameObjectManager_->CreateInstance<SkyDome>("SkyDome", IObject::TagNone);
-
 	// プレイヤー追加
 	player_ = gameObjectManager_->CreateInstance<Player>("Player", IObject::TagPlayer);
 
@@ -43,6 +38,10 @@ void GameScene::Init(){
 	fairy = gameObjectManager_->CreateInstance<Fairy>("Fairy", IObject::TagPlayer);
 	fairy->SetTarget(&player_->transform_);
 	fairy->SetPlayer(player_);
+
+	// スカイドーム生成
+	SkyDome* skyDome = nullptr;
+	skyDome = gameObjectManager_->CreateInstance<SkyDome>("SkyDome", IObject::TagNone);
 }
 
 void GameScene::Update()

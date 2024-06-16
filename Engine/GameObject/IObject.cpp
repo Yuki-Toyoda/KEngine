@@ -99,6 +99,12 @@ void IObject::AnimUpdate()
 				// 最終秒数に到達していた場合、最初の秒数に戻す
 				transform_.animations_[i].animationTime = std::fmod(transform_.animations_[i].animationTime, transform_.animations_[i].duration);
 			}
+			else {
+				if (transform_.animations_[i].animationTime >= transform_.animations_[i].duration) {
+					transform_.animations_[i].isPlay = false;
+					//transform_.animations_[i].animationTime = 0.0f;
+				}
+			}
 
 			// スケルトンにアニメーションを適用
 			transform_.ApplyAnimation(transform_.skelton_, transform_.animations_[i], transform_.animations_[i].animationTime);
