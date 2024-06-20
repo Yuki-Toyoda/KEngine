@@ -46,7 +46,6 @@ void IPrimitive::Draw(ID3D12GraphicsCommandList6* cmdList)
 	cmdList->SetGraphicsRootDescriptorTable(5, vertexBuffer_->GetGPUView());			  // 頂点情報
 	cmdList->SetGraphicsRootDescriptorTable(6, uniqueVertexIndicesBuffer_->GetGPUView()); // 固有頂点インデックス
 	cmdList->SetGraphicsRootDescriptorTable(7, primitiveIndicesBuffer_->GetGPUView());	  // プリミティブインデックス
-	cmdList->SetGraphicsRootDescriptorTable(8, material_->GetTexAddress());				  // テクスチャデータ
 
 	// メッシュレットのプリミティブ数分メッシュシェーダーを実行
 	cmdList->DispatchMesh(GetMeshletCount(), 1, 1);

@@ -36,14 +36,13 @@ void Mesh::Draw(ID3D12GraphicsCommandList6* cmdList)
 	// スキンアニメーション用頂点バッファが存在する場合
 	if (vertexSkinBuffer_ != nullptr) {
 		cmdList->SetGraphicsRootDescriptorTable(5, vertexSkinBuffer_->GetGPUView());	  // スキンアニメーション用頂点情報
-		cmdList->SetGraphicsRootDescriptorTable(9, skinCluster_.PalletteBuffer_->GetGPUView());	// テクスチャデータ
+		cmdList->SetGraphicsRootDescriptorTable(8, skinCluster_.PalletteBuffer_->GetGPUView());	// テクスチャデータ
 	}
 	else {
 		cmdList->SetGraphicsRootDescriptorTable(5, vertexBuffer_->GetGPUView());		  // 頂点情報
 	}
 	cmdList->SetGraphicsRootDescriptorTable(6, uniqueVertexIndicesBuffer_->GetGPUView()); // 固有頂点インデックス
 	cmdList->SetGraphicsRootDescriptorTable(7, primitiveIndicesBuffer_->GetGPUView());	  // プリミティブインデックス
-	cmdList->SetGraphicsRootDescriptorTable(8, material_->GetTexAddress());				  // テクスチャデータ
 
 	// メッシュレットのプリミティブ数分メッシュシェーダーを実行
 	cmdList->DispatchMesh(GetMeshletCount(), 1, 1);

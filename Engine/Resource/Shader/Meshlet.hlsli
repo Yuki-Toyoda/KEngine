@@ -19,8 +19,8 @@ struct WorldTransform
 struct Material
 {
     float32_t4 color;
-    int32_t enableLighting;
-    int32_t textureIndex;
+    int32_t    enableLighting;
+    int32_t    textureIndex;
 };
 
 struct VertexData

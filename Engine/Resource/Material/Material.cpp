@@ -27,4 +27,7 @@ void Material::UploadMaterial()
 	else { // デフォルトテクスチャ番号の取得
 		materialBuffer_->data_->textureIndex = TextureManager::GetInstance()->GetDefaultTexture().GetView_();
 	}
+
+	// テクスチャのインデックスをバッファのオフセット分戻す
+	materialBuffer_->data_->textureIndex -= KEngine::Config::Rendering::kMaxBuffer;
 }

@@ -20,6 +20,7 @@ struct Material
 {
     float32_t4 color;
     uint32_t   enableLighting;
+    int32_t    textureIndex;
 };
 
 struct VertexData
@@ -80,10 +81,10 @@ StructuredBuffer<SkinVertexData> Vertices            : register(t1);
 ByteAddressBuffer                UniqueVertexIndices : register(t2);
 StructuredBuffer<uint32_t>       PrimitiveIndices    : register(t3);
 
-Texture2D<float32_t4> gTexture : register(t4);
-SamplerState gSampler : register(s0);
+StructuredBuffer<Well>      gMatrixPalette : register(t4);
 
-StructuredBuffer<Well>      gMatrixPalette : register(t5);
+Texture2D<float32_t4> gTexture[512] : register(t5);
+SamplerState gSampler : register(s0);
 
 float4 TransformPosition(float4 v)
 {

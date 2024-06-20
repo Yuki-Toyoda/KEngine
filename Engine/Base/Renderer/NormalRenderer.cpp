@@ -2,6 +2,7 @@
 #include "../../../Externals/imgui/ImGuiManager.h"
 #include "../../Primitive/PrimitiveManager.h"
 #include "../../Lighting/Light/DirectionalLight.h"
+#include "../../Base/DirectXCommon.h"
 
 void NormalRenderer::Init(DirectXDevice* device, DXC* dxc, PrimitiveManager* pm, DirectionalLight* lt)
 {
@@ -81,6 +82,9 @@ void NormalRenderer::DrawCall(ID3D12GraphicsCommandList6* list)
 		// コマンドリストに通常描画PSOを設定
 		list->SetPipelineState(standardPSO_.GetState());
 
+		// SRVヒープの取得
+		SRV* s = DirectXCommon::GetInstance()->GetSRV();
+
 		// リスト取得
 		const auto& p = primitiveManager_->GetPrimitives();
 		// 全形状を描画
@@ -93,8 +97,9 @@ void NormalRenderer::DrawCall(ID3D12GraphicsCommandList6* list)
 					// コマンドリストにスキンアニメーション描画PSOを設定
 					list->SetPipelineState(skinModelPSO_.GetState());
 					// 共通データのアドレスを渡す
-					list->SetGraphicsRootConstantBufferView(0, it->view_);  // カメラデータ
-					list->SetGraphicsRootConstantBufferView(1, light_->view()); // 平行光源データ
+					list->SetGraphicsRootConstantBufferView(0, it->view_);		   // カメラデータ
+					list->SetGraphicsRootConstantBufferView(1, light_->view());    // 平行光源データ
+					list->SetGraphicsRootDescriptorTable(9, s->GetFirstTexView()); // テクスチャデータ
 				}
 				else {
 					// コマンドリストに通常描画ルートシグネチャを設定
@@ -102,8 +107,9 @@ void NormalRenderer::DrawCall(ID3D12GraphicsCommandList6* list)
 					// コマンドリストに通常描画PSOを設定
 					list->SetPipelineState(standardPSO_.GetState());
 					// 共通データのアドレスを渡す
-					list->SetGraphicsRootConstantBufferView(0, it->view_);		// カメラデータ
-					list->SetGraphicsRootConstantBufferView(1, light_->view()); // 平行光源データ
+					list->SetGraphicsRootConstantBufferView(0, it->view_);		   // カメラデータ
+					list->SetGraphicsRootConstantBufferView(1, light_->view());	   // 平行光源データ
+					list->SetGraphicsRootDescriptorTable(8, s->GetFirstTexView()); // テクスチャデータ
 				}
 
 				// 描画処理を実行
