@@ -6,7 +6,7 @@ float32_t4 main(VertexOutPut input) : SV_TARGET
     float32_t4 output;
     
     // テクスチャのサンプリングを行う
-    float32_t4 textureColor = gTexture.Sample(gSampler, input.texCoord);
+    float32_t4 textureColor = gTexture[material.textureIndex].Sample(gSampler, input.texCoord);
     
     // テクスチャ色の透明度が0.5以下、マテリアル透明度が0であればそのピクセルを描画しない
     if (textureColor.a <= 0.5f || input.color.a <= 0.0f) { discard; }

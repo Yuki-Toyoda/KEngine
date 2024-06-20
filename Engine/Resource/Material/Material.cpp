@@ -1,5 +1,6 @@
 #include "Material.h"
 #include "../../Base/DirectXCommon.h"
+#include "../../Resource/Texture/TextureManager.h"
 
 Material::Material()
 {
@@ -20,4 +21,10 @@ void Material::UploadMaterial()
 	// マテリアルデータの更新
 	materialBuffer_->data_->color = color_;								// 色
 	materialBuffer_->data_->enableLighting = enableLighting_;			// ライティングトリガー
+	if (tex_.GetView_() != -1) { // テクスチャの取得
+		materialBuffer_->data_->textureIndex = tex_.GetView_();
+	}
+	else { // デフォルトテクスチャ番号の取得
+		materialBuffer_->data_->textureIndex = TextureManager::GetInstance()->GetDefaultTexture().GetView_();
+	}
 }

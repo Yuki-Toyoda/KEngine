@@ -19,7 +19,8 @@ struct WorldTransform
 struct Material
 {
     float32_t4 color;
-    uint32_t   enableLighting;
+    int32_t enableLighting;
+    int32_t textureIndex;
 };
 
 struct VertexData
@@ -55,7 +56,7 @@ StructuredBuffer<VertexData> Vertices            : register(t1);
 ByteAddressBuffer            UniqueVertexIndices : register(t2);
 StructuredBuffer<uint32_t>   PrimitiveIndices    : register(t3);
 
-Texture2D<float32_t4> gTexture : register(t4);
+Texture2D<float32_t4> gTexture[512] : register(t4);
 SamplerState gSampler : register(s0);
 
 float4 TransformPosition(float4 v)

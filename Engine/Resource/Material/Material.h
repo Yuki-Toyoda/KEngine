@@ -17,6 +17,7 @@ public: // サブクラス
 	struct MaterialData {
 		Vector4 color;
 		int32_t enableLighting;
+		int32_t textureIndex;
 	};
 
 
@@ -39,12 +40,6 @@ public: // アクセッサ等
 	/// </summary>
 	/// <returns>マテリアルのバッファアドレス</returns>
 	D3D12_GPU_VIRTUAL_ADDRESS GetBufferAddress() { return materialBuffer_.get()->GetGPUView(); }
-
-	/// <summary>
-	/// テクスチャのアドレスゲッター
-	/// </summary>
-	/// <returns>テクスチャまでのアドレス</returns>
-	D3D12_GPU_DESCRIPTOR_HANDLE GetTexAddress() { return tex_.GetView_(); }
 
 public: // パブリックなメンバ変数
 

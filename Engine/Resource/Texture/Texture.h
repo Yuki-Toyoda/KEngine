@@ -45,7 +45,7 @@ public: // アクセッサ等
 	/// GPU上のアドレスゲッター
 	/// </summary>
 	/// <returns>GPU上のアドレス</returns>
-	D3D12_GPU_DESCRIPTOR_HANDLE GetView_() { return view_; }
+	int GetView_() { return view_; }
 
 	/// <summary>
 	/// テクスチャサイズゲッター
@@ -72,7 +72,7 @@ public: // 演算子オーバーロード
 private: // メンバ変数
 
 	// GPU上のアドレス
-	D3D12_GPU_DESCRIPTOR_HANDLE view_;
+	int view_ = -1;
 
 	// テクスチャ解像度
 	Vector2 size_;

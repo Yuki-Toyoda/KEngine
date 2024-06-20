@@ -20,7 +20,7 @@ void ModelRootSignature::Init()
 	// プリミティブ頂点用パラメータ生成
 	CreateDescriptorTableParameter(3, D3D12_SHADER_VISIBILITY_ALL);
 	// テクスチャデータ用パラメータ
-	CreateDescriptorTableParameter(4, D3D12_SHADER_VISIBILITY_ALL);
+	CreateDescriptorTableParameter(4, D3D12_SHADER_VISIBILITY_ALL, D3D12_DESCRIPTOR_RANGE_TYPE_SRV, KEngine::Config::Rendering::kMaxTexture);
 
 	// サンプラー生成
 	CreateSampler(0);

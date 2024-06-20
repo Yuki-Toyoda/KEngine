@@ -27,7 +27,7 @@ namespace KEngine::Config {
 		static const uint32_t kMaxBuffer  = 10000;
 
 		// テクスチャ読み込み最大数
-		static const uint32_t kMaxTexture = 256;
+		static const uint32_t kMaxTexture = 512;
 	}
 
 }
