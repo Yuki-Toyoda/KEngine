@@ -594,6 +594,7 @@
       <Filter>Engine\Base\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\QuatWorldTransform.h" />
+    <ClInclude Include="Engine\Primitive\Model\Data\Vertex.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
