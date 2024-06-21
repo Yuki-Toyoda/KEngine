@@ -152,24 +152,16 @@ void Mesh::LoadModel(const std::string& filePath, const std::string& fileName)
 
 	// マテリアルの解析を行う
 	for (uint32_t materialIndex = 0; materialIndex < scene->mNumMaterials; materialIndex++) {
-		// マテリアル情報をシーンから取得する
-		aiMaterial* material = scene->mMaterials[materialIndex];
+		if (material_->tex_.GetView_() == -1) {
+			// マテリアル情報をシーンから取得する
+			aiMaterial* material = scene->mMaterials[materialIndex];
 
-		if (material->GetTextureCount(aiTextureType_DIFFUSE) != 0) {
-			// テクスチャまでのファイルパス格納用
-			aiString textureFilePath;
-			// テクスチャファイルのパスを取得
-			material->GetTexture(aiTextureType_DIFFUSE, 0, &textureFilePath);
-
-			// テクスチャの読み込み
-			material_->tex_ = TextureManager::Load(filePath, textureFilePath.C_Str());
-
-			// 当該エンジンはマルチマテリアルにまだ対応していないため、一枚目のテクスチャを読み込んだ時点でループを抜ける
-			break;
+			// マテリアル読み込み
+			material_->LoadMaterial(material, filePath);
 		}
-		else { // テクスチャがない場合
-			// デフォルトテクスチャ取得
-			material_->tex_ = TextureManager::GetInstance()->GetDefaultTexture();
+		else {
+			// 当該エンジンはマルチマテリアル対応をしていないのでテクスチャを読み込んだ時点でbreak
+			break;
 		}
 	}
 

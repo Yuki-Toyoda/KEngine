@@ -4,6 +4,10 @@
 #include "../../Base/Resource/Data/ConstantBuffer.h"
 #include "../../Resource/Texture/Texture.h"
 
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+
 /// <summary>
 /// マテリアルクラス
 /// </summary>
@@ -29,6 +33,13 @@ public: // メンバ関数
 	~Material() = default;
 
 	/// <summary>
+	/// マテリアル情報をassimpから読み込む関数
+	/// </summary>
+	/// <param name="material">assimpから読み込んだマテリアル</param>
+	/// <param name="filePath">テクスチャ読み込みに使用するファイルパス</param>
+	void LoadMaterial(aiMaterial* material, const std::string& filePath);
+
+	/// <summary>
 	/// マテリアルのアップロード
 	/// </summary>
 	void UploadMaterial();
@@ -42,6 +53,9 @@ public: // アクセッサ等
 	D3D12_GPU_VIRTUAL_ADDRESS GetBufferAddress() { return materialBuffer_.get()->GetGPUView(); }
 
 public: // パブリックなメンバ変数
+
+	// マテリアル名
+	std::string name_;
 
 	// マテリアル用バッファ
 	std::unique_ptr<ConstantBuffer<MaterialData>> materialBuffer_;
