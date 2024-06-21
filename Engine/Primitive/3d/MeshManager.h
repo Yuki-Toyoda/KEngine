@@ -34,12 +34,12 @@ public: // メンバ関数
 	/// <param name="fullPath">モデルまでのフルパス</param>
 	/// <param name="vertices">頂点データ配列</param>
 	/// <param name="indexes">インデックスデータ配列</param>
-	void AddInfo(std::string fullPath, std::vector<Vertex> vertices, std::vector<uint32_t> indexes);
+	void AddInfo(std::string fullPath, std::vector<OldVertex> vertices, std::vector<uint32_t> indexes);
 
 public: // パブリックメンバ変数
 
 	// 情報格納用マップ
-	std::map<std::string, std::vector<Vertex>> meshVertexMap_;  // 頂点
+	std::map<std::string, std::vector<OldVertex>> meshVertexMap_;  // 頂点
 	std::map<std::string, std::vector<uint32_t>> meshIndexMap_;	// インデックスデータ
 
 };

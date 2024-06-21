@@ -7,7 +7,7 @@
 /// <summary>
 /// 3Dモデル
 /// </summary>
-class Mesh final : public IPrimitive
+class OldMesh final : public IPrimitive
 {
 public: // サブクラス
 
@@ -18,7 +18,7 @@ public: // サブクラス
 	/// スキンアニメーション用頂点構造体
 	/// </summary>
 	struct VertexSkin {
-		Vertex vertex;
+		OldVertex vertex;
 		std::array<float, kNumMaxInfluence> weights{};
 		std::array<int32_t, kNumMaxInfluence> jointIndices{};
 	};

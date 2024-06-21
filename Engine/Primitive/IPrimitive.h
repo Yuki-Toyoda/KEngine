@@ -17,7 +17,7 @@
 /// <summary>
 /// 頂点データ構造体
 /// </summary>
-struct Vertex {
+struct OldVertex {
 	DirectX::XMFLOAT4 position;
 	DirectX::XMFLOAT2 texCoord;
 	DirectX::XMFLOAT3 normal;
@@ -115,7 +115,7 @@ public: // パブリックなメンバ変数
 	std::vector<uint32_t> indexes_;
 
 	// 頂点座標配列
-	std::vector<Vertex> vertices_;
+	std::vector<OldVertex> vertices_;
 	// メッシュレット変換出力後情報配列群
 	std::vector<DirectX::Meshlet>		  meshlets_;
 	std::vector<uint8_t>				  uniqueVertices_;
@@ -127,7 +127,7 @@ public: // パブリックなメンバ変数
 	// データバッファ群
 	std::unique_ptr<ConstantBuffer<Matrix4x4>>			transformBuffer_;			// ワールドトランスフォーム
 	std::unique_ptr<StructuredBuffer<DirectX::Meshlet>> meshletBuffer_;				// メッシュレット
-	std::unique_ptr<StructuredBuffer<Vertex>>			vertexBuffer_;				// 頂点
+	std::unique_ptr<StructuredBuffer<OldVertex>>			vertexBuffer_;				// 頂点
 	std::unique_ptr<StructuredBuffer<uint32_t>>			uniqueVertexIndicesBuffer_; // 固有頂点インデックス
 	std::unique_ptr<StructuredBuffer<uint32_t>>			primitiveIndicesBuffer_;	// プリミティブインデックス
 

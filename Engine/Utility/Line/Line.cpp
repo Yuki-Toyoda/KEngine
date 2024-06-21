@@ -21,7 +21,7 @@ void Line::Init(const std::string& name, const Vector3& position, const Vector2&
 	transform_.scale_ = Vector3{ thickness_.x, thickness_.y, length_ };
 
 	// 新しいメッシュのインスタンスを生成
-	mesh_ = PrimitiveManager::GetInstance()->CreateInstance<Mesh>();
+	mesh_ = PrimitiveManager::GetInstance()->CreateInstance<OldMesh>();
 	mesh_->name_ = name_;
 	mesh_->transform_ = &transform_;
 	mesh_->LoadModelFile("./Engine/Resource/Samples/Box", "Box.obj");

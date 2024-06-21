@@ -131,7 +131,7 @@ void IObject::AddMesh(WorldTransform* wt, Vector4& color, const std::string& pat
 		primitiveManager_ = PrimitiveManager::GetInstance();
 
 	// メッシュのインスタンスを生成
-	Mesh* newMesh = primitiveManager_->CreateInstance<Mesh>(); // インスタンス生成
+	OldMesh* newMesh = primitiveManager_->CreateInstance<OldMesh>(); // インスタンス生成
 	newMesh->name_ = fileName;								   // メッシュ名をファイル名に
 	newMesh->transform_ = wt;								   // ワールドトランスフォームを与える
 	newMesh->LoadModelFile(path, fileName);					   // モデルを読み込み

@@ -11,7 +11,7 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-void Mesh::LoadModelFile(const std::string& filePath, const std::string& fileName)
+void OldMesh::LoadModelFile(const std::string& filePath, const std::string& fileName)
 {
 	// 頂点情報とインデックス情報をクリア
 	vertices_.clear(); // 頂点情報
@@ -21,7 +21,7 @@ void Mesh::LoadModelFile(const std::string& filePath, const std::string& fileNam
 	LoadModel(filePath, fileName);
 }
 
-void Mesh::Draw(ID3D12GraphicsCommandList6* cmdList)
+void OldMesh::Draw(ID3D12GraphicsCommandList6* cmdList)
 {
 	// 変化する可能性のあるデータをコピー
 	*transformBuffer_->data_ = transform_->GetMatWorld();
@@ -48,7 +48,7 @@ void Mesh::Draw(ID3D12GraphicsCommandList6* cmdList)
 	cmdList->DispatchMesh(GetMeshletCount(), 1, 1);
 }
 
-void Mesh::LoadModel(const std::string& filePath, const std::string& fileName)
+void OldMesh::LoadModel(const std::string& filePath, const std::string& fileName)
 {
 	// フルパスのフルパスの合成
 	std::string fullPath = filePath + "/" + fileName;
@@ -78,7 +78,7 @@ void Mesh::LoadModel(const std::string& filePath, const std::string& fileName)
 			aiVector3D& normal	 = mesh->mNormals[vertexIndex];			 // 法線取得
 
 			// 新規頂点データを追加
-			Vertex newVertex;
+			OldVertex newVertex;
 			newVertex.position = { -position.x, position.y, position.z, 1.0f }; // 頂点座標追加
 			newVertex.texCoord = { texcoord.x, texcoord.y };					// テクスチャ座標追加
 			newVertex.normal = { -normal.x, normal.y, normal.z };				// 法線追加
@@ -222,9 +222,9 @@ void Mesh::LoadModel(const std::string& filePath, const std::string& fileName)
 	}
 	else {
 		// 頂点用バッファの生成
-		vertexBuffer_ = std::make_unique<StructuredBuffer<Vertex>>(static_cast<int32_t>(vertices_.size())); // 生成
+		vertexBuffer_ = std::make_unique<StructuredBuffer<OldVertex>>(static_cast<int32_t>(vertices_.size())); // 生成
 		vertexBuffer_->Init(device, srv);																	// 初期化
-		std::memcpy(vertexBuffer_->data_, vertices_.data(), sizeof(Vertex)* vertices_.size());			    // データコピー
+		std::memcpy(vertexBuffer_->data_, vertices_.data(), sizeof(OldVertex)* vertices_.size());			    // データコピー
 	}
 	// 固有頂点インデックス用バッファの生成
 	uniqueVertexIndicesBuffer_ = std::make_unique<StructuredBuffer<uint32_t>>(static_cast<int32_t>(uniqueVertices_.size()));   // 生成
@@ -237,7 +237,7 @@ void Mesh::LoadModel(const std::string& filePath, const std::string& fileName)
 
 }
 
-WorldTransform::Node Mesh::ReadNode(aiNode* node)
+WorldTransform::Node OldMesh::ReadNode(aiNode* node)
 {
 	// ノード読み込み結果確認用
 	WorldTransform::Node result;
@@ -275,7 +275,7 @@ WorldTransform::Node Mesh::ReadNode(aiNode* node)
 }
 
 
-Mesh::SkinCluster Mesh::CreateSkinCluster(const WorldTransform::Skelton& skelton)
+OldMesh::SkinCluster OldMesh::CreateSkinCluster(const WorldTransform::Skelton& skelton)
 {
 	// 返還用
 	SkinCluster skinCluster;
@@ -331,7 +331,7 @@ Mesh::SkinCluster Mesh::CreateSkinCluster(const WorldTransform::Skelton& skelton
 	return skinCluster;
 }
 
-void Mesh::SkinClusterUpdate(SkinCluster& skinCluster, const WorldTransform::Skelton& skelton)
+void OldMesh::SkinClusterUpdate(SkinCluster& skinCluster, const WorldTransform::Skelton& skelton)
 {
 	// 全ジョイント数分ループ
 	for (size_t jointIndex = 0; jointIndex < skelton.joints.size(); jointIndex++) {
@@ -344,7 +344,7 @@ void Mesh::SkinClusterUpdate(SkinCluster& skinCluster, const WorldTransform::Ske
 	}
 }
 
-void Mesh::LoadAnimations(const aiScene& scene)
+void OldMesh::LoadAnimations(const aiScene& scene)
 {
 	// 読み取り結果格納用配列
 	std::vector<Animation> animations;

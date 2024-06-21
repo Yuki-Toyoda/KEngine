@@ -13,7 +13,7 @@ void MeshManager::ClearMap()
 	meshIndexMap_.clear();
 }
 
-void MeshManager::AddInfo(std::string fullPath, std::vector<Vertex> vertices, std::vector<uint32_t> indexes)
+void MeshManager::AddInfo(std::string fullPath, std::vector<OldVertex> vertices, std::vector<uint32_t> indexes)
 {
 	// それぞれの情報配列に情報追加
 	meshVertexMap_.insert({fullPath, vertices}); // 頂点

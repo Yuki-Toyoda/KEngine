@@ -217,7 +217,7 @@ public: // パブリックなメンバ変数
 	Matrix4x4 localMat_;
 
 	// メッシュリスト
-	std::vector<Mesh*> meshes_;
+	std::vector<OldMesh*> meshes_;
 	// スプライトリスト
 	std::vector<Sprite*> sprites_;
 

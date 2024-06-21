@@ -58,7 +58,7 @@ private: // メンバ変数
 	// 線の色
 	Vector4 color_;
 	// メッシュ
-	Mesh* mesh_;
+	OldMesh* mesh_;
 
 	// 線で使うテクスチャ
 	Texture* texture_;
