@@ -186,6 +186,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Base\Renderer\PPRenderer.cpp" />
     <ClCompile Include="Engine\Base\RootSignature\SkinModelRootSignature.cpp" />
     <ClCompile Include="Engine\GameObject\Samples\SampleSkinAnim\SampleAnim.cpp" />
+    <ClCompile Include="Engine\GameObject\QuatWorldTransform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Base\Renderer\CopyRenderer.h" />
@@ -295,6 +296,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Base\Renderer\PPRenderer.h" />
     <ClInclude Include="Engine\Base\RootSignature\SkinModelRootSignature.h" />
     <ClInclude Include="Engine\GameObject\Samples\SampleSkinAnim\SampleAnim.h" />
+    <ClInclude Include="Engine\GameObject\QuatWorldTransform.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Meshlet.hlsli">

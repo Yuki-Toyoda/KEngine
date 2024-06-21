@@ -254,7 +254,7 @@ Quaternion Quaternion::Slerp(float t, const Quaternion& start, const Quaternion&
 	return result;
 }
 
-Matrix4x4 Quaternion::MakeAffineMatrix(const Vector3& scale, const Quaternion& rotate, const Vector3& translate)
+Matrix4x4 Quaternion::MakeAffine(const Vector3& scale, const Quaternion& rotate, const Vector3& translate)
 {
 	// 単位行列生成
 	Matrix4x4 result = Matrix4x4();

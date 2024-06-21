@@ -266,6 +266,7 @@
     <ClCompile Include="Engine\Base\Renderer\CopyRenderer.cpp">
       <Filter>Engine\Base\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\GameObject\QuatWorldTransform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -592,6 +593,7 @@
     <ClInclude Include="Engine\Base\Renderer\CopyRenderer.h">
       <Filter>Engine\Base\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\GameObject\QuatWorldTransform.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">

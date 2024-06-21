@@ -134,7 +134,7 @@ void Mesh::LoadModel(const std::string& filePath, const std::string& fileName)
 			bindPoseMatrixAssimp.Decompose(scale, rotate, translate);
 
 			// 抽出したSRTからアフィン変換行列の生成
-			Matrix4x4 bindPoseMatrix = Quaternion::MakeAffineMatrix(
+			Matrix4x4 bindPoseMatrix = Quaternion::MakeAffine(
 				Vector3(scale.x, scale.y, scale.z),
 				Quaternion(rotate.x, -rotate.y, -rotate.z, rotate.w),
 				Vector3(-translate.x, translate.y, translate.z)
@@ -253,7 +253,7 @@ WorldTransform::Node Mesh::ReadNode(aiNode* node)
 	result.transform.rotate = { rotate.x, -rotate.y, -rotate.z, rotate.w };  // 回転
 	result.transform.translate = { -translate.x, translate.y, translate.z }; // 位置
 	// ローカル行列を求める
-	result.localMatrix = Quaternion::MakeAffineMatrix(result.transform.scale, result.transform.rotate, result.transform.translate);
+	result.localMatrix = Quaternion::MakeAffine(result.transform.scale, result.transform.rotate, result.transform.translate);
 
 	// Node名を取得
 	result.name = node->mName.C_Str();

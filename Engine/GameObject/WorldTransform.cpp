@@ -125,7 +125,7 @@ void WorldTransform::SkeltonUpdate(Skelton& skelton)
 	// 全ジョイント分ループ
 	for (Joint& joint : skelton.joints) {
 		// ローカル行列作成
-		joint.localMatrix = Quaternion::MakeAffineMatrix(joint.transform.scale, joint.transform.rotate, joint.transform.translate);
+		joint.localMatrix = Quaternion::MakeAffine(joint.transform.scale, joint.transform.rotate, joint.transform.translate);
 		// 親がいた場合
 		if (joint.parent) { // その行列をかけ合わせる
 			joint.skeltonSpaceMatrix = joint.localMatrix * skelton.joints[*joint.parent].skeltonSpaceMatrix;
@@ -160,6 +160,7 @@ void WorldTransform::SetParent(WorldTransform* parent, uint8_t parentType)
 
 const WorldTransform* WorldTransform::GetParent()
 {
+	// 親をそのまま返す
 	return parent_;
 }
 
@@ -168,6 +169,7 @@ Matrix4x4 WorldTransform::GetMatWorld() const
 	// 結果格納用
 	Matrix4x4 result;
 
+	// アフィン変換行列を計算
 	result = Matrix4x4::MakeAffin(scale_, rotate_, translate_);
 
 	// ワールド行列セット中はそれを使う
@@ -184,12 +186,17 @@ Matrix4x4 WorldTransform::GetMatWorld() const
 			if (grandParent) {
 				parentMat = grandParent->GetMatWorld();
 			}
-			if (parentType_ & FLAG_SCALE)
+			if (parentType_ & FLAG_SCALE) { // 拡縮
 				parentMat = parentMat * Matrix4x4::MakeScale(parent_->scale_);
-			if (parentType_ & FLAG_ROTATE)
-				parentMat = parentMat * Matrix4x4::MakeRotate(parent_->rotate_);
-			if (parentType_ & FLAG_TRANSLATE)
+			}
+
+			if (parentType_ & FLAG_ROTATE) { // 回転
+				parentMat = parentMat * Matrix4x4::MakeRotate(parent_->rotate_);;
+			}
+
+			if (parentType_ & FLAG_TRANSLATE) { // 座標
 				parentMat = parentMat * Matrix4x4::MakeTranslate(parent_->translate_);
+			}
 		}
 		else {
 			parentMat = parent_->GetMatWorld();
