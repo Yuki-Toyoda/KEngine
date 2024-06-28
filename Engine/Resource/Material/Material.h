@@ -13,18 +13,6 @@
 /// </summary>
 class Material final
 {
-public: // サブクラス
-
-	/// <summary>
-	/// マテリアルデータ構造体
-	/// </summary>
-	struct MaterialData {
-		Vector4 color;
-		int32_t enableLighting;
-		int32_t textureIndex;
-	};
-
-
 public: // メンバ関数
 
 	// コンストラクタ
@@ -38,11 +26,6 @@ public: // メンバ関数
 	/// <param name="material">assimpから読み込んだマテリアル</param>
 	/// <param name="filePath">テクスチャ読み込みに使用するファイルパス</param>
 	void LoadMaterial(aiMaterial* material, const std::string& filePath);
-
-	/// <summary>
-	/// マテリアルのアップロード
-	/// </summary>
-	void UploadMaterial();
 
 public: // アクセッサ等
 
@@ -74,3 +57,35 @@ public: // パブリックなメンバ変数
 
 };
 
+/// <summary>
+/// マテリアルデータ構造体
+/// </summary>
+struct MaterialData {
+	// uvTransform
+	Matrix4x4 uvTransform_;
+	// マテリアル色
+	Vector4   color_;
+	// ライティング有効トリガー
+	int32_t   enableLighting_;
+	// テクスチャ番号
+	int32_t   textureIndex_;
+
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	MaterialData() = default;
+	/// <summary>
+	/// コピーコンストラクタ
+	/// </summary>
+	/// <param name="mat">コピー対象マテリアル</param>
+	MaterialData(const Material& mat) {
+		*this = mat;
+	}
+
+	/// <summary>
+	/// =演算子オーバーロード
+	/// </summary>
+	/// <param name="mat">他のマテリアル</param>
+	/// <returns>マテリアルデータ</returns>
+	MaterialData& operator=(const Material& mat);
+};

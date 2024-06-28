@@ -267,6 +267,14 @@
       <Filter>Engine\Base\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\QuatWorldTransform.cpp" />
+    <ClCompile Include="Engine\Primitive\Model\Component\Node.cpp" />
+    <ClCompile Include="Engine\Primitive\Model\Component\Joint.cpp" />
+    <ClCompile Include="Engine\Primitive\Model\Component\JointWeight.cpp" />
+    <ClCompile Include="Engine\Primitive\Model\Component\Skelton.cpp" />
+    <ClCompile Include="Engine\Primitive\Model\Component\SkinCluster.cpp" />
+    <ClCompile Include="Engine\Primitive\Model\Component\Mesh.cpp" />
+    <ClCompile Include="Engine\Primitive\Model\ModelData.cpp" />
+    <ClCompile Include="Engine\Primitive\Model\ModelDataManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -594,7 +602,15 @@
       <Filter>Engine\Base\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\QuatWorldTransform.h" />
-    <ClInclude Include="Engine\Primitive\Model\Data\Vertex.h" />
+    <ClInclude Include="Engine\Primitive\Model\Component\Vertex.h" />
+    <ClInclude Include="Engine\Primitive\Model\Component\Node.h" />
+    <ClInclude Include="Engine\Primitive\Model\Component\Joint.h" />
+    <ClInclude Include="Engine\Primitive\Model\Component\JointWeight.h" />
+    <ClInclude Include="Engine\Primitive\Model\Component\Skelton.h" />
+    <ClInclude Include="Engine\Primitive\Model\Component\SkinCluster.h" />
+    <ClInclude Include="Engine\Primitive\Model\Component\Mesh.h" />
+    <ClInclude Include="Engine\Primitive\Model\ModelData.h" />
+    <ClInclude Include="Engine\Primitive\Model\ModelDataManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">

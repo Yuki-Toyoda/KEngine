@@ -45,7 +45,7 @@ public: // アクセッサ等
 	/// GPU上のアドレスゲッター
 	/// </summary>
 	/// <returns>GPU上のアドレス</returns>
-	int GetView_() { return view_; }
+	int GetView() const { return view_; }
 
 	/// <summary>
 	/// テクスチャサイズゲッター

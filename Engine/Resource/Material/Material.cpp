@@ -10,10 +10,6 @@ Material::Material()
 	// マテリアル用バッファ生成
 	materialBuffer_ = std::make_unique<ConstantBuffer<MaterialData>>();		 // 生成
 	materialBuffer_->Init(DirectXCommon::GetInstance()->GetDirectXDevice()); // 初期化
-
-	// データの代入
-	materialBuffer_->data_->color = color_;								// 色
-	materialBuffer_->data_->enableLighting = enableLighting_;			// ライティングトリガー
 }
 
 void Material::LoadMaterial(aiMaterial* material, const std::string& filePath)
@@ -45,18 +41,20 @@ void Material::LoadMaterial(aiMaterial* material, const std::string& filePath)
 
 }
 
-void Material::UploadMaterial()
+MaterialData& MaterialData::operator=(const Material& mat)
 {
-	// マテリアルデータの更新
-	materialBuffer_->data_->color = color_;								// 色
-	materialBuffer_->data_->enableLighting = enableLighting_;			// ライティングトリガー
-	if (tex_.GetView_() != -1) { // テクスチャの取得
-		materialBuffer_->data_->textureIndex = tex_.GetView_();
-	}
-	else { // デフォルトテクスチャ番号の取得
-		materialBuffer_->data_->textureIndex = TextureManager::GetInstance()->GetDefaultTexture().GetView_();
-	}
+	// 各情報の代入を行う
+	uvTransform_	= mat.uvTransform_.GetMatWorld();
+	color_			= mat.color_;
+	enableLighting_ = mat.enableLighting_;
 
-	// テクスチャのインデックスをバッファのオフセット分戻す
-	materialBuffer_->data_->textureIndex -= KEngine::Config::Rendering::kMaxBuffer;
+	// テクスチャインデックスの取得
+	if (mat.tex_.GetView() == -1) {
+		// テクスチャがない場合デフォルトテクスチャ読み込み
+		textureIndex_ = TextureManager::GetInstance()->GetDefaultTexture().GetView();
+	}
+	else {
+		// テクスチャ番号の取得
+		textureIndex_ = mat.tex_.GetView();
+	}
 }

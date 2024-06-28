@@ -27,7 +27,7 @@ void OldMesh::Draw(ID3D12GraphicsCommandList6* cmdList)
 	*transformBuffer_->data_ = transform_->GetMatWorld();
 
 	// マテリアルのアップロード
-	material_->UploadMaterial();
+	//material_->UploadMaterial();
 
 	// コマンドリストに各種バッファのアドレスをセット
 	cmdList->SetGraphicsRootConstantBufferView(2, transformBuffer_->GetGPUView());		  // ワールドトランスフォーム
@@ -152,7 +152,7 @@ void OldMesh::LoadModel(const std::string& filePath, const std::string& fileName
 
 	// マテリアルの解析を行う
 	for (uint32_t materialIndex = 0; materialIndex < scene->mNumMaterials; materialIndex++) {
-		if (material_->tex_.GetView_() == -1) {
+		if (material_->tex_.GetView() == -1) {
 			// マテリアル情報をシーンから取得する
 			aiMaterial* material = scene->mMaterials[materialIndex];
 
