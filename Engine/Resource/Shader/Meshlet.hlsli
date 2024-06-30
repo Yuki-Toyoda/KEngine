@@ -29,6 +29,10 @@ struct VertexData
     float32_t4 pos;
     float32_t2 texCoord;
     float32_t3 normal;
+    float32_t4 color;
+    float32_t4 weight;
+    int32_t4   jointIndex;
+    int32_t    materialIndex;
 };
 
 struct Meshlet
@@ -45,19 +49,20 @@ struct VertexOutPut
     float32_t2 texCoord : TEXCOORD0;
     float32_t3 normal   : NORMAL0;
     float32_t4 color    : COLOR0;
+    int32_t    mIndex   : INDEX0;
 };
 
 ConstantBuffer<ConstantData>     ConstantData : register(b0);
 ConstantBuffer<DirectionalLight> light        : register(b1);
 ConstantBuffer<WorldTransform>   Transform    : register(b2);
-ConstantBuffer<Material>         material     : register(b3);
 
 StructuredBuffer<Meshlet>    Meshlets            : register(t0);
 StructuredBuffer<VertexData> Vertices            : register(t1);
 ByteAddressBuffer            UniqueVertexIndices : register(t2);
 StructuredBuffer<uint32_t>   PrimitiveIndices    : register(t3);
+StructuredBuffer<Material>   materials           : register(t4);
 
-Texture2D<float32_t4> gTexture[512] : register(t4);
+Texture2D<float32_t4> gTexture[512] : register(t5);
 SamplerState gSampler : register(s0);
 
 float4 TransformPosition(float4 v)

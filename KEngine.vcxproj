@@ -193,8 +193,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Primitive\Model\Component\Skelton.cpp" />
     <ClCompile Include="Engine\Primitive\Model\Component\SkinCluster.cpp" />
     <ClCompile Include="Engine\Primitive\Model\Component\Mesh.cpp" />
-    <ClCompile Include="Engine\Primitive\Model\ModelData.cpp" />
-    <ClCompile Include="Engine\Primitive\Model\ModelDataManager.cpp" />
+    <ClCompile Include="Engine\Primitive\Model\Data\ModelData.cpp" />
+    <ClCompile Include="Engine\Primitive\Model\Data\ModelDataManager.cpp" />
+    <ClCompile Include="Engine\Primitive\Model\NormalModel.cpp" />
+    <ClCompile Include="Engine\Primitive\Model\ModelManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Base\Renderer\CopyRenderer.h" />
@@ -312,8 +314,11 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Primitive\Model\Component\Skelton.h" />
     <ClInclude Include="Engine\Primitive\Model\Component\SkinCluster.h" />
     <ClInclude Include="Engine\Primitive\Model\Component\Mesh.h" />
-    <ClInclude Include="Engine\Primitive\Model\ModelData.h" />
-    <ClInclude Include="Engine\Primitive\Model\ModelDataManager.h" />
+    <ClInclude Include="Engine\Primitive\Model\Data\ModelData.h" />
+    <ClInclude Include="Engine\Primitive\Model\Data\ModelDataManager.h" />
+    <ClInclude Include="Engine\Primitive\Model\IModel.h" />
+    <ClInclude Include="Engine\Primitive\Model\NormalModel.h" />
+    <ClInclude Include="Engine\Primitive\Model\ModelManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Meshlet.hlsli">

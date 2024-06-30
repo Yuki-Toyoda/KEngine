@@ -1,12 +1,12 @@
 #include "ModelData.h"
-#include "../../Base/DirectXCommon.h"
+#include "../../../Base/DirectXCommon.h"
 
 void ModelData::Load(const std::string& filePath, const std::string& fileName)
 {
 	// モデル名取得
 	modelName_ = fileName;
 
-	// フルパスのフルパスの合成
+	// フルパスの合成
 	std::string fullPath = filePath + "/" + fileName;
 
 	// assimpを読むためのimporterを定義
