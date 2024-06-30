@@ -1,10 +1,10 @@
 #pragma once
 #include "../../DirectXMesh/DirectXMesh.h"
-#include "../../../Base/Resource/Data/StructuredBuffer.h"
+#include "../../Base/Resource/Data/StructuredBuffer.h"
 
 #include "../Component/Mesh.h"
 #include "../Component/Node.h"
-#include "../../../Resource/Material/Material.h"
+#include "../../Resource/Material/Material.h"
 
 /// <summary>
 /// モデル実体

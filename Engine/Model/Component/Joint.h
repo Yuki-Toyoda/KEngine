@@ -1,5 +1,5 @@
 #pragma once
-#include "../../../GameObject/QuatWorldTransform.h"
+#include "../../GameObject/QuatWorldTransform.h"
 #include "Node.h"
 
 #include <vector>

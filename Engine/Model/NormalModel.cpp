@@ -1,5 +1,5 @@
 #include "NormalModel.h"
-#include "../../Base/DirectXCommon.h"
+#include "../Base/DirectXCommon.h"
 
 void NormalModel::Init(ModelData* modelData)
 {

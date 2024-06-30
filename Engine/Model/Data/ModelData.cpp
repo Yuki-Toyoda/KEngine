@@ -1,5 +1,5 @@
 #include "ModelData.h"
-#include "../../../Base/DirectXCommon.h"
+#include "../../Base/DirectXCommon.h"
 
 void ModelData::Load(const std::string& filePath, const std::string& fileName)
 {

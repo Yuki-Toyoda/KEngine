@@ -1,7 +1,7 @@
 #pragma once
-#include "../../../Math/Vector3.h"
-#include "../../../Math/Matrix4x4.h"
-#include "../../../Math/Quaternion.h"
+#include "../../Math/Vector3.h"
+#include "../../Math/Matrix4x4.h"
+#include "../../Math/Quaternion.h"
 #include <vector>
 
 #include <assimp/Importer.hpp>

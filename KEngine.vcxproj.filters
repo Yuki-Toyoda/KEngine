@@ -267,16 +267,16 @@
       <Filter>Engine\Base\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\QuatWorldTransform.cpp" />
-    <ClCompile Include="Engine\Primitive\Model\Component\Node.cpp" />
-    <ClCompile Include="Engine\Primitive\Model\Component\Joint.cpp" />
-    <ClCompile Include="Engine\Primitive\Model\Component\JointWeight.cpp" />
-    <ClCompile Include="Engine\Primitive\Model\Component\Skelton.cpp" />
-    <ClCompile Include="Engine\Primitive\Model\Component\SkinCluster.cpp" />
-    <ClCompile Include="Engine\Primitive\Model\Component\Mesh.cpp" />
-    <ClCompile Include="Engine\Primitive\Model\Data\ModelData.cpp" />
-    <ClCompile Include="Engine\Primitive\Model\Data\ModelDataManager.cpp" />
-    <ClCompile Include="Engine\Primitive\Model\NormalModel.cpp" />
-    <ClCompile Include="Engine\Primitive\Model\ModelManager.cpp" />
+    <ClCompile Include="Engine\Model\Component\Node.cpp" />
+    <ClCompile Include="Engine\Model\Component\Joint.cpp" />
+    <ClCompile Include="Engine\Model\Component\JointWeight.cpp" />
+    <ClCompile Include="Engine\Model\Component\Skelton.cpp" />
+    <ClCompile Include="Engine\Model\Component\SkinCluster.cpp" />
+    <ClCompile Include="Engine\Model\Component\Mesh.cpp" />
+    <ClCompile Include="Engine\Model\Data\ModelData.cpp" />
+    <ClCompile Include="Engine\Model\Data\ModelDataManager.cpp" />
+    <ClCompile Include="Engine\Model\NormalModel.cpp" />
+    <ClCompile Include="Engine\Model\ModelManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -604,18 +604,18 @@
       <Filter>Engine\Base\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\QuatWorldTransform.h" />
-    <ClInclude Include="Engine\Primitive\Model\Component\Vertex.h" />
-    <ClInclude Include="Engine\Primitive\Model\Component\Node.h" />
-    <ClInclude Include="Engine\Primitive\Model\Component\Joint.h" />
-    <ClInclude Include="Engine\Primitive\Model\Component\JointWeight.h" />
-    <ClInclude Include="Engine\Primitive\Model\Component\Skelton.h" />
-    <ClInclude Include="Engine\Primitive\Model\Component\SkinCluster.h" />
-    <ClInclude Include="Engine\Primitive\Model\Component\Mesh.h" />
-    <ClInclude Include="Engine\Primitive\Model\Data\ModelData.h" />
-    <ClInclude Include="Engine\Primitive\Model\Data\ModelDataManager.h" />
-    <ClInclude Include="Engine\Primitive\Model\IModel.h" />
-    <ClInclude Include="Engine\Primitive\Model\NormalModel.h" />
-    <ClInclude Include="Engine\Primitive\Model\ModelManager.h" />
+    <ClInclude Include="Engine\Model\Component\Vertex.h" />
+    <ClInclude Include="Engine\Model\Component\Node.h" />
+    <ClInclude Include="Engine\Model\Component\Joint.h" />
+    <ClInclude Include="Engine\Model\Component\JointWeight.h" />
+    <ClInclude Include="Engine\Model\Component\Skelton.h" />
+    <ClInclude Include="Engine\Model\Component\SkinCluster.h" />
+    <ClInclude Include="Engine\Model\Component\Mesh.h" />
+    <ClInclude Include="Engine\Model\Data\ModelData.h" />
+    <ClInclude Include="Engine\Model\Data\ModelDataManager.h" />
+    <ClInclude Include="Engine\Model\IModel.h" />
+    <ClInclude Include="Engine\Model\NormalModel.h" />
+    <ClInclude Include="Engine\Model\ModelManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
