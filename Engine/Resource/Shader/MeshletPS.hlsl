@@ -12,7 +12,7 @@ float32_t4 main(VertexOutPut input) : SV_TARGET
     if (textureColor.a <= 0.5f || input.color.a <= 0.0f) { discard; }
     
     // マテリアルでライティングが有効化されている場合
-    if (material.enableLighting)
+    if (materials[input.mIndex].enableLighting)
     {
         // ライティングの計算を行う
         float32_t NdotL = dot(input.normal, -normalize(light.direction));

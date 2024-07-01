@@ -7,6 +7,7 @@
 #include "../../Externals/imgui/imgui.h"
 #include "WorldTransform.h"
 #include "../Primitive/PrimitiveManager.h"
+#include "../Model/ModelManager.h"
 #include "../Sprite/SpriteManager.h"
 #include "../Collider/CollisionManager.h"
 #include "../Utility/KLib.h"
@@ -197,6 +198,15 @@ protected: // プライベートなメンバ関数
 	void AddMesh(WorldTransform* wt, Vector4& color, const std::string& path, const std::string& fileName, bool enableLighting = true);
 
 	/// <summary>
+	/// モデル追加関数
+	/// </summary>
+	/// <param name="wt">ワールドトランスフォーム</param>
+	/// <param name="path">モデルまでのファイルパス</param>
+	/// <param name="fileName">モデル名</param>
+	/// <param name="enableLighting">ライティング有効トリガー</param>
+	void AddModel(WorldTransform wt, const std::string& path, const std::string& fileName, bool enableLighting = true);
+
+	/// <summary>
 	/// スプライト追加関数
 	/// </summary>
 	/// <param name="name">追加するスプライト名</param>
@@ -218,6 +228,8 @@ public: // パブリックなメンバ変数
 
 	// メッシュリスト
 	std::vector<OldMesh*> meshes_;
+	// 通常モデルリスト
+	std::vector<NormalModel*> normalModels_;
 	// スプライトリスト
 	std::vector<Sprite*> sprites_;
 
@@ -225,6 +237,8 @@ protected: // 継承メンバ変数
 
 	// 形状マネージャのインスタンス
 	PrimitiveManager* primitiveManager_ = nullptr;
+	// モデルマネージャーのインスタンス
+	ModelManager*	  modelManager_ = nullptr;
 	// 衝突マネージャーのインスタンス
 	CollisionManager* collisionManager_ = nullptr;
 

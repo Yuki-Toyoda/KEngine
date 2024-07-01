@@ -6,7 +6,7 @@
 void TestObject::Init()
 {
 	// メッシュ追加関数
-	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Box", "Box.obj");
+	AddModel(transform_, "./Engine/Resource/Samples/Box", "Box.obj");
 
 	/// ~スプライトの追加関数~
 	//AddSprite("TestSprite", { 0.0f, 0.0f }, { 512.0f, 512.0f }, TextureManager::Load("./Engine/Resource/Samples/Box", "uvChecker.png"));
@@ -57,8 +57,8 @@ void TestObject::DisplayImGui()
 
 	transform_.DisplayImGui();
 
-	ImGui::DragFloat4("MaterialColor", &meshes_[0]->material_->color_.x);
-	ImGui::Checkbox("EnableLighting", &meshes_[0]->material_->enableLighting_);
+	/*ImGui::DragFloat4("MaterialColor", &meshes_[0]->material_->color_.x);
+	ImGui::Checkbox("EnableLighting", &meshes_[0]->material_->enableLighting_);*/
 
 	if (ImGui::Button("Delete This")) {
 		Destroy();
@@ -82,7 +82,7 @@ void TestObject::DisplayImGui()
 void TestObject::OnCollisionEnter(Collider* collider)
 {
 	collider;
-	meshes_[0]->material_->color_ = { 1.0f, 0.0f, 0.0f, 1.0f };
+	//meshes_[0]->material_->color_ = { 1.0f, 0.0f, 0.0f, 1.0f };
 
 	//ParticleEmitterManager::GetInstance()->CreateEmitter<IParticleEmitter, IParticle>("test", 100, 5, transform_.translate_, 15.0f, 0.1f, TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png"));
 }
@@ -90,7 +90,7 @@ void TestObject::OnCollisionEnter(Collider* collider)
 void TestObject::OnCollisionExit(Collider* collider)
 {
 	collider;
-	meshes_[0]->material_->color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
+	//meshes_[0]->material_->color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
 	
 	//ParticleEmitterManager::GetInstance()->CreateEmitter<IParticleEmitter, IParticle>("test", 100, 5, transform_.translate_, 15.0f, 0.1f, TextureManager::Load("./Engine/Resource/Samples/Box", "uvChecker.png"));
 }

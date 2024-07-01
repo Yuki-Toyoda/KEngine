@@ -53,7 +53,7 @@
     <ClCompile Include="Engine\Resource\Material\Material.cpp">
       <Filter>Engine\Resource\Material</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Primitive\3d\Mesh.cpp">
+    <ClCompile Include="Engine\Primitive\3d\OldMesh.cpp">
       <Filter>Engine\Primitive\3d</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Resource\Texture\TextureManager.cpp">
@@ -366,7 +366,7 @@
     <ClInclude Include="Engine\Resource\Material\Material.h">
       <Filter>Engine\Resource\Material</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Primitive\3d\Mesh.h">
+    <ClInclude Include="Engine\Primitive\3d\OldMesh.h">
       <Filter>Engine\Primitive\3d</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\WorldTransform.h">

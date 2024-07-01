@@ -1,10 +1,11 @@
 #include "NormalRenderer.h"
 #include "../../../Externals/imgui/ImGuiManager.h"
 #include "../../Primitive/PrimitiveManager.h"
+#include "../../Model/ModelManager.h"
 #include "../../Lighting/Light/DirectionalLight.h"
 #include "../../Base/DirectXCommon.h"
 
-void NormalRenderer::Init(DirectXDevice* device, DXC* dxc, PrimitiveManager* pm, DirectionalLight* lt)
+void NormalRenderer::Init(DirectXDevice* device, DXC* dxc, ModelManager* mm, DirectionalLight* lt)
 {
 	// ルートシグネチャマネージャの取得
 	RootSignatureManager* rtsManager = RootSignatureManager::GetInstance();
@@ -26,7 +27,7 @@ void NormalRenderer::Init(DirectXDevice* device, DXC* dxc, PrimitiveManager* pm,
 		.Build(device->GetDevice());
 
 	// 形状マネージャのインスタンス取得
-	primitiveManager_ = pm;
+	modelManager_ = mm;
 
 	// 平行光源の取得
 	light_ = lt;
@@ -35,7 +36,7 @@ void NormalRenderer::Init(DirectXDevice* device, DXC* dxc, PrimitiveManager* pm,
 void NormalRenderer::DrawCall(ID3D12GraphicsCommandList6* list)
 {
 	// 形状マネージャの更新
-	primitiveManager_->Update();
+	modelManager_->Update();
 
 	// ImGuiの受付終了
 	ImGui::EndFrame();
@@ -76,46 +77,20 @@ void NormalRenderer::DrawCall(ID3D12GraphicsCommandList6* list)
 		// コマンドリストにシザー矩形を設定
 		list->RSSetScissorRects(1, &scissorRect);
 
-		// コマンドリストに通常描画ルートシグネチャを設定
-		list->SetGraphicsRootSignature(standardRootSignature_);
-
-		// コマンドリストに通常描画PSOを設定
-		list->SetPipelineState(standardPSO_.GetState());
-
-		// SRVヒープの取得
+		// テクスチャ用にSRVヒープの取得
 		SRV* s = DirectXCommon::GetInstance()->GetSRV();
 
-		// リスト取得
-		const auto& p = primitiveManager_->GetPrimitives();
-		// 全形状を描画
-		for (const auto& primitive : p) {
-			// 形状を描画するなら
-			if (primitive->isActive_) {
-				if (primitive->isAnimated_) {
-					// コマンドリストにスキンアニメーション描画ルートシグネチャを設定
-					list->SetGraphicsRootSignature(skinRootSignature_);
-					// コマンドリストにスキンアニメーション描画PSOを設定
-					list->SetPipelineState(skinModelPSO_.GetState());
-					// 共通データのアドレスを渡す
-					list->SetGraphicsRootConstantBufferView(0, it->view_);		   // カメラデータ
-					list->SetGraphicsRootConstantBufferView(1, light_->view());    // 平行光源データ
-					list->SetGraphicsRootDescriptorTable(9, s->GetFirstTexView()); // テクスチャデータ
-				}
-				else {
-					// コマンドリストに通常描画ルートシグネチャを設定
-					list->SetGraphicsRootSignature(standardRootSignature_);
-					// コマンドリストに通常描画PSOを設定
-					list->SetPipelineState(standardPSO_.GetState());
-					// 共通データのアドレスを渡す
-					list->SetGraphicsRootConstantBufferView(0, it->view_);		   // カメラデータ
-					list->SetGraphicsRootConstantBufferView(1, light_->view());	   // 平行光源データ
-					list->SetGraphicsRootDescriptorTable(8, s->GetFirstTexView()); // テクスチャデータ
-				}
+		// コマンドリストに通常描画ルートシグネチャを設定
+		list->SetGraphicsRootSignature(standardRootSignature_);
+		// コマンドリストに通常描画PSOを設定
+		list->SetPipelineState(standardPSO_.GetState());
+		// 共通データのアドレスを渡す
+		list->SetGraphicsRootConstantBufferView(0, it->view_);		   // カメラデータ
+		list->SetGraphicsRootConstantBufferView(1, light_->view());	   // 平行光源データ
+		list->SetGraphicsRootDescriptorTable(8, s->GetFirstTexView()); // テクスチャデータ
 
-				// 描画処理を実行
-				primitive->Draw(list);
-			}
-		}
+		// 通常モデルの描画を行う
+		modelManager_->NormalModelDraw(list);
 
 		// 最後のイテレータでImGuiを描画する
 		if (it == std::prev(targets_.end())) {

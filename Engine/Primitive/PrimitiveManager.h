@@ -2,7 +2,7 @@
 #include <list>
 #include <memory>
 #include "IPrimitive.h"
-#include "3d/Mesh.h"
+#include "3d/OldMesh.h"
 
 // クラスの前方宣言
 class CommandManager;

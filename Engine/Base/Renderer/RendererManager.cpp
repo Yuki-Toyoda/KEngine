@@ -1,4 +1,5 @@
 #include "RendererManager.h"
+#include "../../Resource/Texture/TextureManager.h"
 
 void RendererManager::Init(DirectXDevice* device, SRV* srv)
 {
@@ -8,17 +9,20 @@ void RendererManager::Init(DirectXDevice* device, SRV* srv)
 	// コマンド管理クラスの初期化
 	command_.Init(device);
 
+	// テクスチャマネージャ初期化
+	TextureManager::GetInstance()->Init();
+
 	// 形状マネージャの生成と初期化
-	primitiveManager_ = PrimitiveManager::GetInstance(); // 生成
-	primitiveManager_->Init();							 // 初期化
+	modelManager_ = ModelManager::GetInstance(); // 生成
+	modelManager_->Init();						 // 初期化
 
 	// ライトの生成を行う
 	light_ = std::make_unique<DirectionalLight>("MainLight"); // 生成
 	light_->Init();											  // 初期化
 
 	// レンダラー達を初期化
-	normalRenderer_.Init(device, &dxc_, primitiveManager_, light_.get()); // 通常描画レンダラー
-	ppRenderer_.Init(device, &dxc_);									  // ポストプロセスレンダラー
+	normalRenderer_.Init(device, &dxc_, modelManager_, light_.get()); // 通常描画レンダラー
+	ppRenderer_.Init(device, &dxc_);								  // ポストプロセスレンダラー
 
 }
 

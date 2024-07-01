@@ -1,7 +1,7 @@
 #pragma once
 #include "../Command.h"
 #include "../RootSignature/RootSignatureManager.h"
-#include "../../Primitive/PrimitiveManager.h"
+#include "../../Model/ModelManager.h"
 #include "../../Lighting/Light/DirectionalLight.h"
 #include "NormalRenderer.h"
 #include "PPRenderer.h"
@@ -83,7 +83,7 @@ private: // メンバ変数
 	SRV* srv_;
 
 	// 形状マネージャ
-	PrimitiveManager* primitiveManager_ = nullptr;
+	ModelManager* modelManager_ = nullptr;
 
 	// 平行光源
 	// ! 今は仮置き、じきにライト用の管理マネージャを作成する

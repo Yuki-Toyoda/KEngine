@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 #include "../../DirectXMesh/DirectXMesh.h"
 #include "../../Base/Resource/Data/StructuredBuffer.h"
 

@@ -33,7 +33,7 @@ public: // アクセッサ等
 	/// マテリアルのバッファアドレスゲッター
 	/// </summary>
 	/// <returns>マテリアルのバッファアドレス</returns>
-	D3D12_GPU_VIRTUAL_ADDRESS GetBufferAddress() { return materialBuffer_.get()->GetGPUView(); }
+	//D3D12_GPU_VIRTUAL_ADDRESS GetBufferAddress() { return materialBuffer_.get()->GetGPUView(); }
 
 public: // パブリックなメンバ変数
 
@@ -41,7 +41,7 @@ public: // パブリックなメンバ変数
 	std::string name_;
 
 	// マテリアル用バッファ
-	std::unique_ptr<ConstantBuffer<MaterialData>> materialBuffer_;
+	//std::unique_ptr<ConstantBuffer<MaterialData>> materialBuffer_;
 
 	// テクスチャ
 	Texture tex_;
@@ -53,7 +53,7 @@ public: // パブリックなメンバ変数
 	WorldTransform uvTransform_;
 
 	// ライティングを行うか
-	bool enableLighting_ = false;
+	bool enableLighting_ = true;
 
 };
 

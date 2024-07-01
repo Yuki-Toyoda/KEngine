@@ -1,4 +1,4 @@
-#include "Mesh.h"
+#include "OldMesh.h"
 #include "../../Resource/Texture/TextureManager.h"
 #include "MeshManager.h"
 #include "../../Base/DirectXCommon.h"
@@ -31,7 +31,7 @@ void OldMesh::Draw(ID3D12GraphicsCommandList6* cmdList)
 
 	// コマンドリストに各種バッファのアドレスをセット
 	cmdList->SetGraphicsRootConstantBufferView(2, transformBuffer_->GetGPUView());		  // ワールドトランスフォーム
-	cmdList->SetGraphicsRootConstantBufferView(3, material_->GetBufferAddress());		  // マテリアル
+	//cmdList->SetGraphicsRootConstantBufferView(3, material_->GetBufferAddress());		  // マテリアル
 	cmdList->SetGraphicsRootDescriptorTable(4, meshletBuffer_->GetGPUView());			  // メッシュレット情報
 	// スキンアニメーション用頂点バッファが存在する場合
 	if (vertexSkinBuffer_ != nullptr) {

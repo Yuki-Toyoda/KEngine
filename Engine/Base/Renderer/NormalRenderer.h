@@ -6,6 +6,7 @@
 
 // クラスの前方宣言
 class PrimitiveManager;
+class ModelManager;
 class DirectionalLight;
 
 /// <summary>
@@ -43,9 +44,9 @@ public: // メンバ関数
 	/// </summary>
 	/// <param name="device">デバイス</param>
 	/// <param name="dxc">DirectXシェーダーコンパイラ</param>
-	/// <param name="pm">形状マネージャ</param>
+	/// <param name="pm">モデルマネージャ</param>
 	/// <param name="lt">平行光源</param>
-	void Init(DirectXDevice* device, DXC* dxc, PrimitiveManager* pm, DirectionalLight* lt);
+	void Init(DirectXDevice* device, DXC* dxc, ModelManager* mm, DirectionalLight* lt);
 
 	/// <summary>
 	/// 描画命令関数
@@ -79,8 +80,8 @@ private: // メンバ変数
 	// 描画ターゲット
 	std::vector<Target> targets_;
 
-	// 形状マネージャ
-	PrimitiveManager* primitiveManager_ = nullptr;
+	// モデルマネージャー
+	ModelManager* modelManager_ = nullptr;
 
 	// 平行光源取得用
 	DirectionalLight* light_ = nullptr;

@@ -142,7 +142,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Particle\IParticleEmitter.cpp" />
     <ClCompile Include="Engine\Particle\ParticleEmitterManager.cpp" />
     <ClCompile Include="Engine\Primitive\2d\Plane.cpp" />
-    <ClCompile Include="Engine\Primitive\3d\Mesh.cpp" />
+    <ClCompile Include="Engine\Primitive\3d\OldMesh.cpp" />
     <ClCompile Include="Engine\Primitive\3d\MeshManager.cpp" />
     <ClCompile Include="Engine\Primitive\IPrimitive.cpp" />
     <ClCompile Include="Engine\Primitive\PrimitiveManager.cpp" />
@@ -253,7 +253,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Particle\IParticleEmitter.h" />
     <ClInclude Include="Engine\Particle\ParticleEmitterManager.h" />
     <ClInclude Include="Engine\Primitive\2d\Plane.h" />
-    <ClInclude Include="Engine\Primitive\3d\Mesh.h" />
+    <ClInclude Include="Engine\Primitive\3d\OldMesh.h" />
     <ClInclude Include="Engine\Primitive\3d\MeshManager.h" />
     <ClInclude Include="Engine\Primitive\IPrimitive.h" />
     <ClInclude Include="Engine\Primitive\PrimitiveManager.h" />

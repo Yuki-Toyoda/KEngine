@@ -11,7 +11,7 @@ void ModelDataManager::LoadNewModel(const std::string& filePath, const std::stri
 	// モデル情報配列にデータが存在するか
 	if (!modelMap_.count(fileName)) { // 存在しない場合
 		// 新規読み込みを行う
-		//modelMap_[fileName] = std::make_unique<ModelData>();
+		modelMap_[fileName] = std::make_unique<ModelData>();
 		modelMap_[fileName]->Load(filePath, fileName);
 	}
 }

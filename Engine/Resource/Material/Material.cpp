@@ -8,8 +8,8 @@ Material::Material()
 	uvTransform_.Init();
 
 	// マテリアル用バッファ生成
-	materialBuffer_ = std::make_unique<ConstantBuffer<MaterialData>>();		 // 生成
-	materialBuffer_->Init(DirectXCommon::GetInstance()->GetDirectXDevice()); // 初期化
+	//materialBuffer_ = std::make_unique<ConstantBuffer<MaterialData>>();		 // 生成
+	//materialBuffer_->Init(DirectXCommon::GetInstance()->GetDirectXDevice()); // 初期化
 }
 
 void Material::LoadMaterial(aiMaterial* material, const std::string& filePath)
@@ -57,4 +57,9 @@ MaterialData& MaterialData::operator=(const Material& mat)
 		// テクスチャ番号の取得
 		textureIndex_ = mat.tex_.GetView();
 	}
+
+	textureIndex_ -= KEngine::Config::Rendering::kMaxBuffer;
+
+	// 代入後の結果を返す
+	return *this;
 }

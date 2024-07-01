@@ -3,11 +3,17 @@
 IObject::~IObject()
 {
 	// 全形状を削除
-	for (IPrimitive* primitive : meshes_)
+	for (IPrimitive* primitive : meshes_) {
 		primitive->isDestroy_ = true;
+	}
+	// 全モデルを削除
+	for (NormalModel* normalModel : normalModels_) {
+		normalModel->isDestroy_ = true;
+	}
 	// 全スプライトを削除
-	for (Sprite* sprite : sprites_)
+	for (Sprite* sprite : sprites_) {
 		sprite->Destroy();
+	}
 }
 
 void IObject::PreInitialize(std::string name, Tag tag)
@@ -140,6 +146,27 @@ void IObject::AddMesh(WorldTransform* wt, Vector4& color, const std::string& pat
 	newMesh->layerNo_ = 1;
 	// メッシュリストに生成メッシュを追加
 	meshes_.push_back(newMesh);
+}
+
+void IObject::AddModel(WorldTransform wt, const std::string& path, const std::string& fileName, bool enableLighting)
+{
+	// モデルマネージャのインスタンスが取得されていない場合ここで取得
+	if (modelManager_ == nullptr) {
+		modelManager_ = ModelManager::GetInstance();
+	}
+
+	// 新規モデルの生成
+	NormalModel* newModel = modelManager_->CreateNormalModel(path, fileName);
+	newModel->transform_.SetParent(&transform_);
+	if (!enableLighting) {
+		// 全マテリアルのライティングを設定
+		for (Material& m : newModel->materials_) {
+			m.enableLighting_ = false;
+		}
+	}
+
+	// モデルリストに生成モデルを追加
+	normalModels_.push_back(newModel);
 }
 
 void IObject::AddSprite(const std::string& name, const Vector2& position, const Vector2& size, Texture* texture)

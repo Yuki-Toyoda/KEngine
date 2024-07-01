@@ -21,26 +21,32 @@ void NormalModel::Init(ModelData* modelData)
 	// マテリアル用のバッファを生成
 	materialsBuffer_ = std::make_unique<StructuredBuffer<MaterialData>>(static_cast<int32_t>(materials_.size())); // 生成
 	materialsBuffer_->Init(device, srv);																		  // 初期化
-	std::memcpy(materialsBuffer_->data_, materials_.data(), sizeof(MaterialData) * materials_.size());			  // データコピー
 }
 
 void NormalModel::Update()
 {
+	// マテリアルデータ変換保持用配列
+	std::vector<MaterialData> materials;
+	// 全マテリアルをマテリアルデータ構造体の変換
+	for (int i = 0; i < materials_.size(); i++) {
+		materials.push_back(materials_[i]);
+	}
+
 	// トランスフォームデータのコピー
 	*transformBuffer_->data_ = transform_.GetMatWorld();
 	// マテリアルデータのコピー
-	std::memcpy(materialsBuffer_->data_, materials_.data(), sizeof(MaterialData) * materials_.size());
+	std::memcpy(materialsBuffer_->data_, materials.data(), sizeof(MaterialData) * materials.size());
 }
 
 void NormalModel::Draw(ID3D12GraphicsCommandList6* cmdList)
 {
 	// 描画用バッファをコマンドリストにセットする
 	cmdList->SetGraphicsRootConstantBufferView(2, transformBuffer_->GetGPUView());					   // トランスフォーム
-	cmdList->SetGraphicsRootDescriptorTable(4,  modelData_->meshletBuffer_->GetGPUView());			   // メッシュレット情報
-	cmdList->SetGraphicsRootDescriptorTable(5,  modelData_->vertexBuffer_->GetGPUView());			   // 頂点情報
-	cmdList->SetGraphicsRootDescriptorTable(6,  modelData_->uniqueVertexIndicesBuffer_->GetGPUView()); // 固有頂点情報
-	cmdList->SetGraphicsRootDescriptorTable(7,  modelData_->primitiveIndicesBuffer_->GetGPUView());	   // プリミティブインデックス情報
-	cmdList->SetGraphicsRootDescriptorTable(8,  materialsBuffer_->GetGPUView());					   // マテリアル
+	cmdList->SetGraphicsRootDescriptorTable(3,  modelData_->meshletBuffer_->GetGPUView());			   // メッシュレット情報
+	cmdList->SetGraphicsRootDescriptorTable(4,  modelData_->vertexBuffer_->GetGPUView());			   // 頂点情報
+	cmdList->SetGraphicsRootDescriptorTable(5,  modelData_->uniqueVertexIndicesBuffer_->GetGPUView()); // 固有頂点情報
+	cmdList->SetGraphicsRootDescriptorTable(6,  modelData_->primitiveIndicesBuffer_->GetGPUView());	   // プリミティブインデックス情報
+	cmdList->SetGraphicsRootDescriptorTable(7,  materialsBuffer_->GetGPUView());					   // マテリアル
 
 	// メッシュレットのプリミティブ数分メッシュシェーダーを実行
 	cmdList->DispatchMesh(modelData_->GetMeshletCount(), 1, 1);

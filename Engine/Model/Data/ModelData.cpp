@@ -79,7 +79,7 @@ void ModelData::Load(const std::string& filePath, const std::string& fileName)
 		materials_.back().LoadMaterial(scene->mMaterials[materialIndex], filePath);
 	}
 	// マテリアルデータの保持
-	for (int i = 0; i < materials.size(); i++) {
+	for (int i = 0; i < materials_.size(); i++) {
 		materials.push_back(materials_[i]);
 	}
 
