@@ -1,6 +1,7 @@
 #pragma once
 #include "Data/ModelDataManager.h"
 #include "NormalModel.h"
+#include "SkiningModel.h"
 #include <list>
 
 /// <summary>
@@ -57,13 +58,34 @@ public: // 通常モデル用関数群
 	/// <summary>
 	/// 通常モデル描画関数
 	/// </summary>
-	/// <param name="cmdList"></param>
+	/// <param name="cmdList">描画に使用するコマンドリスト</param>
 	void NormalModelDraw(ID3D12GraphicsCommandList6* cmdList);
 
 private: // 通常モデル用変数群
 
 	// 通常モデル配列
 	std::list<std::unique_ptr<NormalModel>> normalModels_;
+
+public: // スキニングモデル用関数群
+
+	/// <summary>
+	/// スキニングモデル生成関数
+	/// </summary>
+	/// <param name="filePath">モデルまでのファイルパス</param>
+	/// <param name="fileName">モデル名</param>
+	/// <returns>スキニングモデル</returns>
+	SkiningModel* CreateSkiningModel(const std::string& filePath, const std::string& fileName);
+
+	/// <summary>
+	/// スキニングモデル描画関数
+	/// </summary>
+	/// <param name="cmdList">描画に使用するコマンドリスト</param>
+	void SkiningModelDraw(ID3D12GraphicsCommandList6* cmdList);
+
+private: // スキニングモデル用変数群
+
+	// スキニングモデル配列
+	std::list<std::unique_ptr<SkiningModel>> skiningModels_;
 
 private: // メンバ変数
 

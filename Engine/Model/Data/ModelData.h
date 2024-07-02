@@ -5,6 +5,7 @@
 
 #include "../Component/Mesh.h"
 #include "../Component/Node.h"
+#include "../Animation/SkinAnimationManager.h"
 #include "../../Resource/Material/Material.h"
 
 /// <summary>
@@ -69,6 +70,9 @@ public: // パブリックメンバ変数
 	std::vector<Material>	   materials_;	   // マテリアル
 	std::optional<Skelton>	   skelton_{};	   // スケルトン
 	std::optional<SkinCluster> skinCluster_{}; // スキンクラスター
+
+	// アニメーション管理マネージャ
+	SkinAnimationManager animationManager_{};
 
 	// バッファ変数群
 	std::unique_ptr<StructuredBuffer<DirectX::Meshlet>> meshletBuffer_;				// メッシュレット

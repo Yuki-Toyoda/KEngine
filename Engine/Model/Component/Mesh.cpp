@@ -68,7 +68,7 @@ void Mesh::Load(aiMesh* mesh)
 	}
 
 	// ボーン情報の解析
-	for (uint32_t boneIndex = 0; mesh->mNumBones; boneIndex++) {
+	for (uint32_t boneIndex = 0; boneIndex < mesh->mNumBones; boneIndex++) {
 		// ボーンを取得
 		aiBone* bone = mesh->mBones[boneIndex];
 		// ジョイント名取得

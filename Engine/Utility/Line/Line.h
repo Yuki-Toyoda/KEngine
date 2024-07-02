@@ -57,8 +57,6 @@ private: // メンバ変数
 	WorldTransform transform_;
 	// 線の色
 	Vector4 color_;
-	// メッシュ
-	OldMesh* mesh_;
 
 	// 線で使うテクスチャ
 	Texture* texture_;

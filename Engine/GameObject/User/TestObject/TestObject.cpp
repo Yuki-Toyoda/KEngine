@@ -6,7 +6,7 @@
 void TestObject::Init()
 {
 	// メッシュ追加関数
-	AddModel(transform_, "./Engine/Resource/Samples/TestMultiMesh", "TestMultiMesh.gltf");
+	AddNormalModel(&transform_, "./Engine/Resource/Samples/TestMultiMesh", "TestMultiMesh.gltf");
 
 	/// ~スプライトの追加関数~
 	//AddSprite("TestSprite", { 0.0f, 0.0f }, { 512.0f, 512.0f }, TextureManager::Load("./Engine/Resource/Samples/Box", "uvChecker.png"));

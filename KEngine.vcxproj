@@ -142,8 +142,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Particle\IParticleEmitter.cpp" />
     <ClCompile Include="Engine\Particle\ParticleEmitterManager.cpp" />
     <ClCompile Include="Engine\Primitive\2d\Plane.cpp" />
-    <ClCompile Include="Engine\Primitive\3d\OldMesh.cpp" />
-    <ClCompile Include="Engine\Primitive\3d\MeshManager.cpp" />
     <ClCompile Include="Engine\Primitive\IPrimitive.cpp" />
     <ClCompile Include="Engine\Primitive\PrimitiveManager.cpp" />
     <ClCompile Include="Engine\Resource\Material\Material.cpp" />
@@ -197,6 +195,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Model\Data\ModelDataManager.cpp" />
     <ClCompile Include="Engine\Model\NormalModel.cpp" />
     <ClCompile Include="Engine\Model\ModelManager.cpp" />
+    <ClCompile Include="Engine\Model\SkiningModel.cpp" />
+    <ClCompile Include="Engine\Model\Animation\SkinAnimation.cpp" />
+    <ClCompile Include="Engine\Model\Animation\SkinAnimationManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Base\Renderer\CopyRenderer.h" />
@@ -253,8 +254,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Particle\IParticleEmitter.h" />
     <ClInclude Include="Engine\Particle\ParticleEmitterManager.h" />
     <ClInclude Include="Engine\Primitive\2d\Plane.h" />
-    <ClInclude Include="Engine\Primitive\3d\OldMesh.h" />
-    <ClInclude Include="Engine\Primitive\3d\MeshManager.h" />
     <ClInclude Include="Engine\Primitive\IPrimitive.h" />
     <ClInclude Include="Engine\Primitive\PrimitiveManager.h" />
     <ClInclude Include="Engine\Resource\Material\Material.h" />
@@ -319,6 +318,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Model\IModel.h" />
     <ClInclude Include="Engine\Model\NormalModel.h" />
     <ClInclude Include="Engine\Model\ModelManager.h" />
+    <ClInclude Include="Engine\Model\SkiningModel.h" />
+    <ClInclude Include="Engine\Model\Animation\SkinAnimation.h" />
+    <ClInclude Include="Engine\Model\Animation\SkinAnimationManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Meshlet.hlsli">

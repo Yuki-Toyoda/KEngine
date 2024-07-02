@@ -2,10 +2,6 @@
 
 IObject::~IObject()
 {
-	// 全形状を削除
-	for (IPrimitive* primitive : meshes_) {
-		primitive->isDestroy_ = true;
-	}
 	// 全モデルを削除
 	for (NormalModel* normalModel : normalModels_) {
 		normalModel->isDestroy_ = true;
@@ -27,8 +23,8 @@ void IObject::PreInitialize(std::string name, Tag tag)
 	// ワールドトランスフォームの初期化
 	transform_.Init();
 
-	// メッシュリストクリア
-	meshes_.clear();
+	// モデルリストクリア
+	normalModels_.clear();
 
 	// タグの初期化
 	tag_ = tag;
@@ -68,17 +64,6 @@ void IObject::PreUpdate()
 	if (transform_.rotate_.z <= -(float)std::numbers::pi * 2.0f) {
 		transform_.rotate_.z += (float)std::numbers::pi * 2.0f;
 	}
-
-	if (!isActive_) {
-		for (IPrimitive* m : meshes_) {
-			m->isActive_ = false;
-		}
-	}
-	else {
-		for (IPrimitive* m : meshes_) {
-			m->isActive_ = true;
-		}
-	}
 }
 
 void IObject::PostUpdate()
@@ -87,35 +72,6 @@ void IObject::PostUpdate()
 	for (std::unique_ptr<Collider>& collider : colliders_) {
 		if (collider->GetIsActive()) {
 			collisionManager_->RegisterCollider(collider.get());
-		}
-	}
-}
-
-void IObject::AnimUpdate()
-{
-	// 全アニメーション分ループ
-	for (int i = 0; i < transform_.animations_.size(); i++) {
-		// 再生中のアニメーションがある場合
-		if (transform_.animations_[i].isPlay) {
-			// 60FPS固定でアニメーションの秒数加算
-			transform_.animations_[i].animationTime += 1.0f / 60.0f;
-
-			// ループ再生を行う場合
-			if (transform_.animations_[i].isLoop) {
-				// 最終秒数に到達していた場合、最初の秒数に戻す
-				transform_.animations_[i].animationTime = std::fmod(transform_.animations_[i].animationTime, transform_.animations_[i].duration);
-			}
-
-			// スケルトンにアニメーションを適用
-			transform_.ApplyAnimation(transform_.skelton_, transform_.animations_[i], transform_.animations_[i].animationTime);
-			// スケルトン更新
-			transform_.SkeltonUpdate(transform_.skelton_);
-
-			// メッシュが１つでもあれば
-			if (meshes_.size() > 0) {
-				// スキンクラスターの更新
-				meshes_[0]->SkinClusterUpdate(meshes_[0]->skinCluster_, transform_.skelton_);
-			}
 		}
 	}
 }
@@ -130,25 +86,7 @@ void IObject::DisplayImGui()
 
 }
 
-void IObject::AddMesh(WorldTransform* wt, Vector4& color, const std::string& path, const std::string& fileName, bool enableLighting)
-{
-	// 形状マネージャのインスタンスが取得されていない場合ここで取得
-	if (primitiveManager_ == nullptr)
-		primitiveManager_ = PrimitiveManager::GetInstance();
-
-	// メッシュのインスタンスを生成
-	OldMesh* newMesh = primitiveManager_->CreateInstance<OldMesh>(); // インスタンス生成
-	newMesh->name_ = fileName;								   // メッシュ名をファイル名に
-	newMesh->transform_ = wt;								   // ワールドトランスフォームを与える
-	newMesh->LoadModelFile(path, fileName);					   // モデルを読み込み
-	newMesh->commonColor = &color;							   // 色を設定
-	newMesh->material_->enableLighting_ = enableLighting;	   // ライティングの有効設定
-	newMesh->layerNo_ = 1;
-	// メッシュリストに生成メッシュを追加
-	meshes_.push_back(newMesh);
-}
-
-void IObject::AddModel(WorldTransform wt, const std::string& path, const std::string& fileName, bool enableLighting)
+void IObject::AddNormalModel(WorldTransform* wt, const std::string& path, const std::string& fileName, bool enableLighting)
 {
 	// モデルマネージャのインスタンスが取得されていない場合ここで取得
 	if (modelManager_ == nullptr) {
@@ -157,7 +95,7 @@ void IObject::AddModel(WorldTransform wt, const std::string& path, const std::st
 
 	// 新規モデルの生成
 	NormalModel* newModel = modelManager_->CreateNormalModel(path, fileName);
-	newModel->transform_.SetParent(&transform_);
+	newModel->transform_.SetParent(wt);
 	if (!enableLighting) {
 		// 全マテリアルのライティングを設定
 		for (Material& m : newModel->materials_) {
@@ -167,6 +105,27 @@ void IObject::AddModel(WorldTransform wt, const std::string& path, const std::st
 
 	// モデルリストに生成モデルを追加
 	normalModels_.push_back(newModel);
+}
+
+void IObject::AddSkiningModel(WorldTransform* wt, const std::string& path, const std::string& fileName, bool enableLighting)
+{
+	// モデルマネージャのインスタンスが取得されていない場合ここで取得
+	if (modelManager_ == nullptr) {
+		modelManager_ = ModelManager::GetInstance();
+	}
+
+	// 新規モデルの生成
+	SkiningModel* newModel = modelManager_->CreateSkiningModel(path, fileName);
+	newModel->transform_.SetParent(wt);
+	if (!enableLighting) {
+		// 全マテリアルのライティングを設定
+		for (Material& m : newModel->materials_) {
+			m.enableLighting_ = false;
+		}
+	}
+
+	// モデルリストに生成モデルを追加
+	skiningModels_.push_back(newModel);
 }
 
 void IObject::AddSprite(const std::string& name, const Vector2& position, const Vector2& size, Texture* texture)

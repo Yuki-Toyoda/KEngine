@@ -35,6 +35,9 @@ void ModelData::Load(const std::string& filePath, const std::string& fileName)
 
 		// 生成したスケルトン情報を元にスキンクラスターを生成
 		skinCluster_.emplace(static_cast<uint32_t>(skelton_->joints_.size()));
+
+		// アニメーションの読み込み
+		animationManager_.LoadAnimations(scene);
 	}
 
 	// メッシュの解析

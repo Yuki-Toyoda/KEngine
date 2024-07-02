@@ -53,9 +53,6 @@
     <ClCompile Include="Engine\Resource\Material\Material.cpp">
       <Filter>Engine\Resource\Material</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Primitive\3d\OldMesh.cpp">
-      <Filter>Engine\Primitive\3d</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Resource\Texture\TextureManager.cpp">
       <Filter>Engine\Resource\Texture</Filter>
     </ClCompile>
@@ -82,9 +79,6 @@
     </ClCompile>
     <ClCompile Include="Engine\GameObject\Samples\SampleSkyDome\SkyDome.cpp">
       <Filter>App\GameObject\Samples\SkyDome</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Primitive\3d\MeshManager.cpp">
-      <Filter>Engine\Primitive\3d</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Collider\Collider.cpp">
       <Filter>Engine\Collider</Filter>
@@ -277,6 +271,9 @@
     <ClCompile Include="Engine\Model\Data\ModelDataManager.cpp" />
     <ClCompile Include="Engine\Model\NormalModel.cpp" />
     <ClCompile Include="Engine\Model\ModelManager.cpp" />
+    <ClCompile Include="Engine\Model\SkiningModel.cpp" />
+    <ClCompile Include="Engine\Model\Animation\SkinAnimation.cpp" />
+    <ClCompile Include="Engine\Model\Animation\SkinAnimationManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -366,9 +363,6 @@
     <ClInclude Include="Engine\Resource\Material\Material.h">
       <Filter>Engine\Resource\Material</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Primitive\3d\OldMesh.h">
-      <Filter>Engine\Primitive\3d</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\GameObject\WorldTransform.h">
       <Filter>App\GameObject</Filter>
     </ClInclude>
@@ -404,9 +398,6 @@
     </ClInclude>
     <ClInclude Include="Engine\GameObject\Samples\SampleSkyDome\SkyDome.h">
       <Filter>App\GameObject\Samples\SkyDome</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Primitive\3d\MeshManager.h">
-      <Filter>Engine\Primitive\3d</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Collider\Collider.h">
       <Filter>Engine\Collider</Filter>
@@ -616,6 +607,9 @@
     <ClInclude Include="Engine\Model\IModel.h" />
     <ClInclude Include="Engine\Model\NormalModel.h" />
     <ClInclude Include="Engine\Model\ModelManager.h" />
+    <ClInclude Include="Engine\Model\SkiningModel.h" />
+    <ClInclude Include="Engine\Model\Animation\SkinAnimation.h" />
+    <ClInclude Include="Engine\Model\Animation\SkinAnimationManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">

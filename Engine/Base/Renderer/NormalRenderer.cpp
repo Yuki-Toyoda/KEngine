@@ -92,6 +92,18 @@ void NormalRenderer::DrawCall(ID3D12GraphicsCommandList6* list)
 		// 通常モデルの描画を行う
 		modelManager_->NormalModelDraw(list);
 
+		// コマンドリストにスキニング描画ルートシグネチャを設定
+		list->SetGraphicsRootSignature(skinRootSignature_);
+		// コマンドリストにスキニング描画PSOを設定
+		list->SetPipelineState(skinModelPSO_.GetState());
+		// 共通データのアドレスを渡す
+		list->SetGraphicsRootConstantBufferView(0, it->view_);		   // カメラデータ
+		list->SetGraphicsRootConstantBufferView(1, light_->view());	   // 平行光源データ
+		list->SetGraphicsRootDescriptorTable(9, s->GetFirstTexView()); // テクスチャデータ
+
+		// 通常モデルの描画を行う
+		modelManager_->SkiningModelDraw(list);
+
 		// 最後のイテレータでImGuiを描画する
 		if (it == std::prev(targets_.end())) {
 			// ImGuiを描画
