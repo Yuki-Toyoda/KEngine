@@ -622,7 +622,6 @@
     <ClInclude Include="Engine\Base\Renderer\CopyRenderer.h">
       <Filter>Engine\Base\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Model\Component\Vertex.h" />
     <ClInclude Include="Engine\Model\IModel.h">
       <Filter>Engine\Model</Filter>
     </ClInclude>
@@ -667,6 +666,9 @@
     </ClInclude>
     <ClInclude Include="Engine\Model\Animation\SkinAnimationManager.h">
       <Filter>Engine\Model\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Model\Component\Vertex.h">
+      <Filter>Engine\Model\Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
