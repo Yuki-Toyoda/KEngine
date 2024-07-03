@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="Externals\imgui\ImGuiManager.cpp">
       <Filter>Externals\ImGui</Filter>
     </ClCompile>
@@ -260,20 +259,49 @@
     <ClCompile Include="Engine\Base\Renderer\CopyRenderer.cpp">
       <Filter>Engine\Base\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\GameObject\QuatWorldTransform.cpp" />
-    <ClCompile Include="Engine\Model\Component\Node.cpp" />
-    <ClCompile Include="Engine\Model\Component\Joint.cpp" />
-    <ClCompile Include="Engine\Model\Component\JointWeight.cpp" />
-    <ClCompile Include="Engine\Model\Component\Skelton.cpp" />
-    <ClCompile Include="Engine\Model\Component\SkinCluster.cpp" />
-    <ClCompile Include="Engine\Model\Component\Mesh.cpp" />
-    <ClCompile Include="Engine\Model\Data\ModelData.cpp" />
-    <ClCompile Include="Engine\Model\Data\ModelDataManager.cpp" />
-    <ClCompile Include="Engine\Model\NormalModel.cpp" />
-    <ClCompile Include="Engine\Model\ModelManager.cpp" />
-    <ClCompile Include="Engine\Model\SkiningModel.cpp" />
-    <ClCompile Include="Engine\Model\Animation\SkinAnimation.cpp" />
-    <ClCompile Include="Engine\Model\Animation\SkinAnimationManager.cpp" />
+    <ClCompile Include="Engine\Model\ModelManager.cpp">
+      <Filter>Engine\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Model\NormalModel.cpp">
+      <Filter>Engine\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Model\SkiningModel.cpp">
+      <Filter>Engine\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\QuatWorldTransform.cpp">
+      <Filter>App\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Engine\Model\Component\Joint.cpp">
+      <Filter>Engine\Model\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Model\Component\JointWeight.cpp">
+      <Filter>Engine\Model\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Model\Component\Mesh.cpp">
+      <Filter>Engine\Model\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Model\Component\Node.cpp">
+      <Filter>Engine\Model\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Model\Component\Skelton.cpp">
+      <Filter>Engine\Model\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Model\Component\SkinCluster.cpp">
+      <Filter>Engine\Model\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Model\Data\ModelData.cpp">
+      <Filter>Engine\Model\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Model\Data\ModelDataManager.cpp">
+      <Filter>Engine\Model\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Model\Animation\SkinAnimation.cpp">
+      <Filter>Engine\Model\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Model\Animation\SkinAnimationManager.cpp">
+      <Filter>Engine\Model\Animation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -594,22 +622,52 @@
     <ClInclude Include="Engine\Base\Renderer\CopyRenderer.h">
       <Filter>Engine\Base\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\GameObject\QuatWorldTransform.h" />
     <ClInclude Include="Engine\Model\Component\Vertex.h" />
-    <ClInclude Include="Engine\Model\Component\Node.h" />
-    <ClInclude Include="Engine\Model\Component\Joint.h" />
-    <ClInclude Include="Engine\Model\Component\JointWeight.h" />
-    <ClInclude Include="Engine\Model\Component\Skelton.h" />
-    <ClInclude Include="Engine\Model\Component\SkinCluster.h" />
-    <ClInclude Include="Engine\Model\Component\Mesh.h" />
-    <ClInclude Include="Engine\Model\Data\ModelData.h" />
-    <ClInclude Include="Engine\Model\Data\ModelDataManager.h" />
-    <ClInclude Include="Engine\Model\IModel.h" />
-    <ClInclude Include="Engine\Model\NormalModel.h" />
-    <ClInclude Include="Engine\Model\ModelManager.h" />
-    <ClInclude Include="Engine\Model\SkiningModel.h" />
-    <ClInclude Include="Engine\Model\Animation\SkinAnimation.h" />
-    <ClInclude Include="Engine\Model\Animation\SkinAnimationManager.h" />
+    <ClInclude Include="Engine\Model\IModel.h">
+      <Filter>Engine\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Model\ModelManager.h">
+      <Filter>Engine\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Model\NormalModel.h">
+      <Filter>Engine\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Model\SkiningModel.h">
+      <Filter>Engine\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\QuatWorldTransform.h">
+      <Filter>App\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Model\Component\Joint.h">
+      <Filter>Engine\Model\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Model\Component\JointWeight.h">
+      <Filter>Engine\Model\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Model\Component\Mesh.h">
+      <Filter>Engine\Model\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Model\Component\Node.h">
+      <Filter>Engine\Model\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Model\Component\Skelton.h">
+      <Filter>Engine\Model\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Model\Component\SkinCluster.h">
+      <Filter>Engine\Model\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Model\Data\ModelData.h">
+      <Filter>Engine\Model\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Model\Data\ModelDataManager.h">
+      <Filter>Engine\Model\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Model\Animation\SkinAnimation.h">
+      <Filter>Engine\Model\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Model\Animation\SkinAnimationManager.h">
+      <Filter>Engine\Model\Animation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -800,6 +858,18 @@
     <Filter Include="App\GameObject\Samples\SampleSkinAnim">
       <UniqueIdentifier>{cb6ba954-25d6-4a66-9c44-e37c00631c88}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Model">
+      <UniqueIdentifier>{08017a48-9acf-451d-8bf8-0422d2fac9c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Model\Component">
+      <UniqueIdentifier>{da6445fb-aa0b-4615-8a2c-d3e323a2fcdc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Model\Animation">
+      <UniqueIdentifier>{bb2a4a63-0762-4ba9-8adf-37edfd5705f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Model\Data">
+      <UniqueIdentifier>{e6212f2d-3811-498e-8db5-b53d4aa817f8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Externals\imgui\LICENSE.txt">
@@ -828,6 +898,8 @@
     <FxCompile Include="Engine\Resource\Shader\PostProcess\VignettePS.hlsl">
       <Filter>Engine\Resource\Shader</Filter>
     </FxCompile>
-    <FxCompile Include="Engine\Resource\Shader\PostProcess\SmoothingPS.hlsl" />
+    <FxCompile Include="Engine\Resource\Shader\PostProcess\SmoothingPS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

@@ -1,4 +1,6 @@
 #include "SkinAnimationManager.h"
+#include "../../Debug/Debug.h"
+#include <cassert>
 
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
@@ -30,16 +32,25 @@ void SkinAnimationManager::LoadAnimations(const aiScene* scene)
 
 void SkinAnimationManager::PlayAnimation(const std::string& animName, bool isLoop, float startTime)
 {
-	// アニメーション間の補間がまだできていないので再生段階で再生中アニメーションを停止させる
-	StopAnimation(playingAnimName_);
+	// アニメーションが存在した場合
+	if (animations_.count(animName)) {
+		// アニメーション間の補間がまだできていないので再生段階で再生中アニメーションを停止させる
+		StopAnimation(playingAnimName_);
 
-	// 再生するアニメーション名の取得
-	playingAnimName_ = animName;
+		// 再生するアニメーション名の取得
+		playingAnimName_ = animName;
 
-	// 指定された名称のアニメーションを再生する
-	animations_[animName].Start(startTime);
-	// アニメーションをループさせるか
-	animations_[animName].isLoop_ = isLoop;
+		// 指定された名称のアニメーションを再生する
+		animations_[animName].Start(startTime);
+		// アニメーションをループさせるか
+		animations_[animName].isLoop_ = isLoop;
+	}
+	else {
+		// ログ出力
+		Debug::Log("Play Error - Animation Not Found.\n");
+		// 停止させる
+		assert(false);
+	}
 }
 
 void SkinAnimationManager::StopPlayingAnimation()
