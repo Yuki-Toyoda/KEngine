@@ -302,8 +302,12 @@
     <ClCompile Include="Engine\Model\Animation\SkinAnimationManager.cpp">
       <Filter>Engine\Model\Animation</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\PostProcess\PostProcessor.cpp" />
-    <ClCompile Include="Engine\PostProcess\GrayScale\GrayScale.cpp" />
+    <ClCompile Include="Engine\PostProcess\PostProcessor.cpp">
+      <Filter>Engine\PostProcess</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\PostProcess\GrayScale\GrayScale.cpp">
+      <Filter>Engine\PostProcess\GrayScale</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -672,9 +676,15 @@
     <ClInclude Include="Engine\Model\Component\Vertex.h">
       <Filter>Engine\Model\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\PostProcess\IPostProcess.h" />
-    <ClInclude Include="Engine\PostProcess\PostProcessor.h" />
-    <ClInclude Include="Engine\PostProcess\GrayScale\GrayScale.h" />
+    <ClInclude Include="Engine\PostProcess\IPostProcess.h">
+      <Filter>Engine\PostProcess</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\PostProcess\PostProcessor.h">
+      <Filter>Engine\PostProcess</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\PostProcess\GrayScale\GrayScale.h">
+      <Filter>Engine\PostProcess\GrayScale</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -876,6 +886,12 @@
     </Filter>
     <Filter Include="Engine\Model\Data">
       <UniqueIdentifier>{e6212f2d-3811-498e-8db5-b53d4aa817f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\PostProcess">
+      <UniqueIdentifier>{9877d7d2-7451-43e9-922e-29efbd3c403a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\PostProcess\GrayScale">
+      <UniqueIdentifier>{7747b170-335a-48ef-94fc-284743f3236f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
