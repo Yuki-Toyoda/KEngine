@@ -5,6 +5,7 @@
 #include "IPostProcess.h"
 #include "GrayScale/GrayScale.h"
 #include "Vignette/Vignette.h"
+#include "GaussianFilter/GaussianFilter.h"
 
 #include<fstream>
 
@@ -59,6 +60,7 @@ public: // アクセッサ等
 public: // パブリックメンバ変数
 
 	// ポストプロセス変数群
+	GaussianFilter gaussian_; // ガウシアンフィルター
 	Vignette  vignette_;  // ビネット
 	GrayScale grayScale_; // グレースケール
 

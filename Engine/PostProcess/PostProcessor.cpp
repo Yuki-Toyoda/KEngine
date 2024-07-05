@@ -4,6 +4,7 @@
 void PostProcessor::Init()
 {
 	// ポストプロセス初期化
+	gaussian_.Init(); // ガウシアンフィルター
 	vignette_.Init(); // ビネット
 	grayScale_.Init(); // グレースケール
 
@@ -14,6 +15,7 @@ void PostProcessor::Init()
 void PostProcessor::Update()
 {
 	// ポストプロセスの更新を行う
+	gaussian_.Update(); // ガウシアンフィルター
 	vignette_.Update(); // ビネット
 	grayScale_.Update(); // グレースケール更新
 }
@@ -132,6 +134,7 @@ void PostProcessor::DisplayImGui()
 	// ポストプロセス関連のImGuiを表示
 	if (ImGui::TreeNode("PostProcess")) {
 		// ポストプロセス関連のImGuiを表示
+		gaussian_.DisplayImGui(); // ガウシアンフィルター
 		vignette_.DisplayImGui(); // ビネット
 		grayScale_.DisplayImGui(); // グレースケール
 
@@ -165,6 +168,7 @@ std::vector<IPostProcess*> PostProcessor::GetAllProcess()
 	// 返還用配列
 	std::vector<IPostProcess*> result;
 	// 返還用配列に各ポストプロセスの参照を渡す
+	result.push_back(&gaussian_); // ガウシアンフィルター
 	result.push_back(&vignette_); // ビネット
 	result.push_back(&grayScale_); // グレースケール
 	// 配列を返還する

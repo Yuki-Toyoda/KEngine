@@ -314,7 +314,6 @@
     <FxCompile Include="Engine\Resource\Shader\MeshletMS.hlsl" />
     <FxCompile Include="Engine\Resource\Shader\MeshletPS.hlsl" />
     <FxCompile Include="Engine\Resource\Shader\PostProcess\PassThroughVS.hlsl" />
-    <FxCompile Include="Engine\Resource\Shader\PostProcess\PostProcessPS.hlsl" />
     <FxCompile Include="Engine\Resource\Shader\SkinMeshlet\MeshletSkinMS.hlsl" />
     <FxCompile Include="Engine\Resource\Shader\SkinMeshlet\MeshletSkinPS.hlsl" />
     <ClCompile Include="Engine\Base\Resource\Rendering\RenderResource.cpp" />
@@ -353,8 +352,6 @@
     <ClCompile Include="Engine\Particle\IParticleEmitter.cpp" />
     <ClCompile Include="Engine\Particle\ParticleEmitterManager.cpp" />
     <ClCompile Include="Engine\Primitive\2d\Plane.cpp" />
-    <ClCompile Include="Engine\Primitive\3d\Mesh.cpp" />
-    <ClCompile Include="Engine\Primitive\3d\MeshManager.cpp" />
     <ClCompile Include="Engine\Primitive\IPrimitive.cpp" />
     <ClCompile Include="Engine\Primitive\PrimitiveManager.cpp" />
     <ClCompile Include="Engine\Resource\Material\Material.cpp" />
@@ -396,6 +393,7 @@
     <ClCompile Include="Engine\Base\Renderer\PPRenderer.cpp" />
     <ClCompile Include="Engine\Base\RootSignature\SkinModelRootSignature.cpp" />
     <ClCompile Include="Engine\GameObject\Samples\SampleSkinAnim\SampleAnim.cpp" />
+    <ClCompile Include="Engine\PostProcess\GaussianFilter\GaussianFilter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Utility\Line\Line.h">
@@ -623,8 +621,6 @@
     <ClInclude Include="Engine\Particle\IParticleEmitter.h" />
     <ClInclude Include="Engine\Particle\ParticleEmitterManager.h" />
     <ClInclude Include="Engine\Primitive\2d\Plane.h" />
-    <ClInclude Include="Engine\Primitive\3d\Mesh.h" />
-    <ClInclude Include="Engine\Primitive\3d\MeshManager.h" />
     <ClInclude Include="Engine\Primitive\IPrimitive.h" />
     <ClInclude Include="Engine\Primitive\PrimitiveManager.h" />
     <ClInclude Include="Engine\Resource\Material\Material.h" />
@@ -677,6 +673,7 @@
     <ClInclude Include="Engine\Base\Renderer\PPRenderer.h" />
     <ClInclude Include="Engine\Base\RootSignature\SkinModelRootSignature.h" />
     <ClInclude Include="Engine\GameObject\Samples\SampleSkinAnim\SampleAnim.h" />
+    <ClInclude Include="Engine\PostProcess\GaussianFilter\GaussianFilter.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
