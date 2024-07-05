@@ -37,7 +37,7 @@ void EnemyDead::Update()
 	// 全メッシュ分ループ
 	for (int i = 0; i < enemy_->normalModels_.size(); i++) {
 		// マテリアルに色を適用
-		enemy_->normalModels_[i]->materials_[0].color_ = enemy_->GetColor();
+		enemy_->normalModels_[i]->materials_[1].color_ = enemy_->GetColor();
 	}
 
 	// カメラのポストプロセスの強さをだんだん上げてく
