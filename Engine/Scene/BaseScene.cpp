@@ -8,11 +8,16 @@ void BaseScene::PreInitialize()
 	gameObjectManager_ = GameObjectManager::GetInstance();
 	// モデルデータマネージャーのインスタンス取得
 	modelDataManager_ = ModelDataManager::GetInstance();
+	// モデルマネージャーのインスタンス取得
+	modelManager_ = ModelManager::GetInstance();
 
 	// カメラを生成
 	camera_ = gameObjectManager_->CreateInstance<Camera>("DebugCamera", IObject::TagCamera);
 	// このカメラを使う
 	camera_->UseThisCamera();
+
+	// 読み込み済みモデルクリア
+	modelManager_->Clear();
 
 	// サンプルモデルの読み込み
 	SampleModelLoad();

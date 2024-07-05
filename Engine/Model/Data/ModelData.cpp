@@ -137,8 +137,8 @@ void ModelData::Load(const std::string& filePath, const std::string& fileName)
 	// データコピー
 	std::memcpy(meshletBuffer_->data_, meshlets.data(), sizeof(DirectX::Meshlet) * meshlets.size());
 	std::memcpy(vertexBuffer_->data_, vertices.data(), sizeof(VertexData) * vertices.size());
-	std::memcpy(uniqueVertexIndicesBuffer_->data_, uniqueVertices.data(), sizeof(uint32_t) * uniqueVertices.size());
-	std::memcpy(primitiveIndicesBuffer_->data_, primitiveIndices.data(), sizeof(uint32_t) * primitiveIndices.size());
+	std::memcpy(uniqueVertexIndicesBuffer_->data_, uniqueVertices.data(), sizeof(uint8_t) * uniqueVertices.size());
+	std::memcpy(primitiveIndicesBuffer_->data_, primitiveIndices.data(), sizeof(DirectX::MeshletTriangle) * primitiveIndices.size());
 	std::memcpy(materialsBuffer_->data_, materials.data(), sizeof(MaterialData) * materials.size());
 
 }
