@@ -200,6 +200,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Model\Animation\SkinAnimation.cpp" />
     <ClCompile Include="Engine\Model\Animation\SkinAnimationManager.cpp" />
     <ClCompile Include="Engine\PostProcess\PostProcessor.cpp" />
+    <ClCompile Include="Engine\PostProcess\Vignette\Vignette.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Base\Renderer\CopyRenderer.h" />
@@ -326,6 +327,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\PostProcess\IPostProcess.h" />
     <ClInclude Include="Engine\PostProcess\PostProcessor.h" />
     <ClInclude Include="Engine\PostProcess\GrayScale\GrayScale.h" />
+    <ClInclude Include="Engine\PostProcess\Vignette\Vignette.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Meshlet.hlsli">

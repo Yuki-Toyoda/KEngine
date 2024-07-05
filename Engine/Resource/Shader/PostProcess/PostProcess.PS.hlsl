@@ -18,11 +18,22 @@ Texture2D<float32_t4> gDepth : register(t1);
 SamplerState gSampler : register(s0);
 
 
+struct VignetteData {
+	float32_t intensity;
+};
+ConstantBuffer<VignetteData> vData : register(b1);
+
+float32_t Vignette(float32_t2 texcoord) {
+	float32_t2 center = float2(0.5f, 0.5f);
+    float32_t2 delta = center - texcoord;
+    float vignette = saturate(1.0f - length(delta) * vData.intensity);
+	return vignette;
+}
 struct GrayScaleData {
 	float32_t intensity;
 };
 
-ConstantBuffer<GrayScaleData> gsData : register(b1);
+ConstantBuffer<GrayScaleData> gsData : register(b2);
     
 float32_t3 GrayScale(float32_t3 color)
 {
@@ -38,6 +49,9 @@ float32_t4 main(PSInput input) : SV_TARGET {
 
 	output = gTexture.Sample(gSampler, uv);
 
+
+	float v = Vignette(input.texcoord);
+	output = float32_t4(output.rgb * v, output.a);
 
 	output.rgb = GrayScale(output.rgb);
 

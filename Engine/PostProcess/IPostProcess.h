@@ -73,7 +73,7 @@ public: // 純粋仮想関数
 public: // パブリックメンバ変数
 
 	// ポストプロセス使用フラグ
-	bool use_ = false;
+	bool use_ = true;
 
 	// ルートシグネチャのバインド番号
 	int bindIndex_ = -1;

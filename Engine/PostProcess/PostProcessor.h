@@ -4,6 +4,7 @@
 
 #include "IPostProcess.h"
 #include "GrayScale/GrayScale.h"
+#include "Vignette/Vignette.h"
 
 #include<fstream>
 
@@ -58,6 +59,7 @@ public: // アクセッサ等
 public: // パブリックメンバ変数
 
 	// ポストプロセス変数群
+	Vignette  vignette_;  // ビネット
 	GrayScale grayScale_; // グレースケール
 
 private: // メンバ変数

@@ -308,6 +308,7 @@
     <ClCompile Include="Engine\PostProcess\GrayScale\GrayScale.cpp">
       <Filter>Engine\PostProcess\GrayScale</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\PostProcess\Vignette\Vignette.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -685,6 +686,7 @@
     <ClInclude Include="Engine\PostProcess\GrayScale\GrayScale.h">
       <Filter>Engine\PostProcess\GrayScale</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\PostProcess\Vignette\Vignette.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
