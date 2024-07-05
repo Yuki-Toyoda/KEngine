@@ -309,6 +309,7 @@
       <Filter>Engine\PostProcess\GrayScale</Filter>
     </ClCompile>
     <ClCompile Include="Engine\PostProcess\Vignette\Vignette.cpp" />
+    <ClCompile Include="Engine\PostProcess\GaussianFilter\GaussianFilter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -687,6 +688,7 @@
       <Filter>Engine\PostProcess\GrayScale</Filter>
     </ClInclude>
     <ClInclude Include="Engine\PostProcess\Vignette\Vignette.h" />
+    <ClInclude Include="Engine\PostProcess\GaussianFilter\GaussianFilter.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
