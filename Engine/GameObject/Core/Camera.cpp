@@ -21,15 +21,13 @@ void Camera::Init()
 	// データに値を代入
 	cameraDataBuffer_.data_->DrawMeshlets = isDrawMeshlets_;
 
-	// ポストプロセスの強さバッファ
-	postProcessIntensityBuffer_.Init(device);
-	// データに値を代入
-	*postProcessIntensityBuffer_.data_ = postProcessIntensity_;
-
 	// 各リソース初期化
 	renderResource_.Init(device, heaps);  // レンダリングを行うリソース
 	textureResource_.Init(device, heaps); // レンダリング語の結果を保存するリソース
 	depthStencil_.Init(device, heaps);	  // DSVリソース
+
+	// ポストプロセス初期化
+	ppProcessor_.Init();
 
 	// 入力取得
 	input_ = Input::GetInstance();
@@ -61,12 +59,11 @@ void Camera::Update()
 		cameraDataBuffer_.data_->WorldViewProj = viewProjectionMatrix_;
 		cameraDataBuffer_.data_->DrawMeshlets = isDrawMeshlets_;
 
-		// バッファのデータにポストプロセスの強さをセット
-		*postProcessIntensityBuffer_.data_ = postProcessIntensity_;
+		ppProcessor_.Update();
 
 		// 描画マネージャーに描画ターゲットをセット
 		rendererManager_->AddTarget(cameraDataBuffer_.GetGPUView(), &renderResource_, &depthStencil_);
-		rendererManager_->AddTarget(&renderResource_, &textureResource_, &depthStencil_, GetPostProcessIntensityBufferView());
+		rendererManager_->AddTarget(&renderResource_, &textureResource_, &depthStencil_, &ppProcessor_);
 	}
 
 	// デバッグカメラだった場合はキー入力でカメラを移動させる
@@ -146,9 +143,6 @@ void Camera::DisplayImGui()
 	// メッシュレット描画フラグの切り替え
 	ImGui::Checkbox("DrawMeshlets", &isDrawMeshlets_);
 
-	// ポストプロセスの強さパラメーター設定
-	ImGui::DragFloat("PostProcess - Intensity", &postProcessIntensity_, 0.01f, 0.0f);
-
 	// ボタンを押すとこのカメラを使用する
 	if (!isUseThisCamera_) {
 		if (ImGui::Button("UseThisCamera"))
@@ -157,6 +151,9 @@ void Camera::DisplayImGui()
 	else {
 		ImGui::Text("This Camera Is Used");
 	}
+
+	// ImGuiを表示
+	ppProcessor_.DisplayImGui();
 }
 
 

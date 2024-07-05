@@ -48,6 +48,7 @@ void main(
         outVerts[gtid].pos      = TransformPosition(vertex.pos);
         outVerts[gtid].texCoord = vertex.texCoord;
         outVerts[gtid].normal   = normalize(vertex.normal);
+        outVerts[gtid].mIndex   = vertex.materialIndex;
         
         // 出力する頂点色を求める
         if (ConstantData.DrawMeshlets == true)
@@ -62,7 +63,7 @@ void main(
         else
         {
             // 頂点色はマテリアルから取得
-            outVerts[gtid].color = material.color;
+            outVerts[gtid].color = materials[vertex.materialIndex].color;
         }
     }
     if (gtid < meshlet.PrimCount)

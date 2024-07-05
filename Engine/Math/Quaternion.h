@@ -138,7 +138,7 @@ public: // 静的なメンバ関数
 	/// <param name="rotate">回転</param>
 	/// <param name="translate">位置座標</param>
 	/// <returns></returns>
-	static Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Quaternion& rotate, const Vector3& translate);
+	static Matrix4x4 MakeAffine(const Vector3& scale, const Quaternion& rotate, const Vector3& translate);
 
 public: // メンバ変数
 

@@ -7,6 +7,7 @@
 #include "../../Externals/imgui/imgui.h"
 #include "WorldTransform.h"
 #include "../Primitive/PrimitiveManager.h"
+#include "../Model/ModelManager.h"
 #include "../Sprite/SpriteManager.h"
 #include "../Collider/CollisionManager.h"
 #include "../Utility/KLib.h"
@@ -72,9 +73,6 @@ public: // メンバ関数
 	void PreUpdate();
 	// (ユーザー呼び出し禁止)更新後関数
 	void PostUpdate();
-
-	// (ユーザー呼び出し禁止)アニメーション更新関数
-	void AnimUpdate();
 
 	/// <summary>
 	/// 初期化関数
@@ -188,14 +186,22 @@ public: // その他関数群
 protected: // プライベートなメンバ関数
 
 	/// <summary>
-	/// メッシュ追加関数
+	/// 通常モデル追加関数
 	/// </summary>
-	/// <param name="wt">ワールドトランスフォーム実体</param>
-	/// <param name="color">オブジェクト色</param>
-	/// <param name="path">モデルまでのディレクトリパス</param>
-	/// <param name="fileName">ファイル名</param>
-	/// <param name="enableLighting">ライティングを有効にするか</param>
-	void AddMesh(WorldTransform* wt, Vector4& color, const std::string& path, const std::string& fileName, bool enableLighting = true);
+	/// <param name="wt">ワールドトランスフォーム</param>
+	/// <param name="path">モデルまでのファイルパス</param>
+	/// <param name="fileName">モデル名</param>
+	/// <param name="enableLighting">ライティング有効トリガー</param>
+	void AddNormalModel(WorldTransform* wt, const std::string& path, const std::string& fileName, bool enableLighting = true);
+
+	/// <summary>
+	/// スキニングモデル追加関数
+	/// </summary>
+	/// <param name="wt">ワールドトランスフォーム</param>
+	/// <param name="path">モデルまでのファイルパス</param>
+	/// <param name="fileName">モデル名</param>
+	/// <param name="enableLighting">ライティング有効トリガー</param>
+	void AddSkiningModel(WorldTransform* wt, const std::string& path, const std::string& fileName, bool enableLighting = true);
 
 	/// <summary>
 	/// スプライト追加関数
@@ -217,8 +223,10 @@ public: // パブリックなメンバ変数
 	// アニメーション用ローカル行列
 	Matrix4x4 localMat_;
 
-	// メッシュリスト
-	std::vector<Mesh*> meshes_;
+	// 通常モデルリスト
+	std::vector<NormalModel*> normalModels_;
+	// スキニングモデルリスト
+	std::vector<SkiningModel*> skiningModels_;
 	// スプライトリスト
 	std::vector<Sprite*> sprites_;
 
@@ -226,6 +234,8 @@ protected: // 継承メンバ変数
 
 	// 形状マネージャのインスタンス
 	PrimitiveManager* primitiveManager_ = nullptr;
+	// モデルマネージャーのインスタンス
+	ModelManager*	  modelManager_ = nullptr;
 	// 衝突マネージャーのインスタンス
 	CollisionManager* collisionManager_ = nullptr;
 

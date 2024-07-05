@@ -3,6 +3,7 @@
 #include "../Resource/Rendering/RenderResource.h"
 #include "../Resource/Rendering/DepthStencil.h"
 #include "../DXC/DXC.h"
+#include "../../PostProcess/PostProcessor.h"
 
 /// <summary>
 /// ポストプロセス用レンダラークラス
@@ -13,10 +14,10 @@ public: // サブクラス
 
 	// 通常描画のターゲット構造体
 	struct Target {
-		RenderResource* render;			 // ポストプロセスを掛けた結果を格納するリソース
-		BackBuffer* texture;			 // ポストプロセスを掛けるテクスチャ
-		DepthStencil* depth;			 // デプスのリソース
-		D3D12_GPU_VIRTUAL_ADDRESS view_; // ポストプロセスパラメーターまでのアドレス
+		RenderResource* render;	 // ポストプロセスを掛けた結果を格納するリソース
+		BackBuffer*		texture; // ポストプロセスを掛けるテクスチャ
+		DepthStencil*	depth;	 // デプスのリソース
+		PostProcessor*	pp_;	 // ポストプロセスパラメーターまでのアドレス
 	};
 
 public: // コンストラクタ等
@@ -38,7 +39,7 @@ public: // メンバ関数
 	/// </summary>
 	/// <param name="device">デバイス</param>
 	/// <param name="dxc">DirectXシェーダーコンパイラ</param>
-	void Init(DirectXDevice* device, DXC* dxc);
+	void Init();
 
 	/// <summary>
 	/// 描画命令関数

@@ -79,77 +79,6 @@ void WorldTransform::DisplayImGuiWithTreeNode(const std::string& id)
 	}
 }
 
-int32_t WorldTransform::CreateJoint(const Node& node, const std::optional<int32_t>& parent, std::vector<Joint>& joints)
-{
-	// 結果返還用
-	Joint joint;
-	// 情報取得
-	joint.name		  = node.name;					 // ノード名
-	joint.localMatrix = node.localMatrix;			 // ローカル行列
-	joint.skeltonSpaceMatrix = Matrix4x4::kIdentity; // 行列生成
-	joint.transform   = node.transform;				 // トランスフォーム
-	joint.index		  = int32_t(joints.size());		 // 現在登録されている数をIndexに
-	joint.parent	  = parent;						 // 親を取得
-	// ジョイント配列に追加
-	joints.push_back(joint);
-
-	// 子ノード分ループ
-	for (const Node& child : node.children) {
-		// 子Jointの生成、インデックスの登録
-		int32_t childIndex = CreateJoint(child, joint.index, joints);
-		joints[joint.index].children.push_back(childIndex);
-	}
-
-	// 結果を返す
-	return joint.index;
-}
-
-WorldTransform::Skelton WorldTransform::CreateSkelton(const Node& rootNode)
-{
-	// 結果返還用構造体
-	Skelton skelton;
-	// ジョイント生成
-	skelton.root = CreateJoint(rootNode, {}, skelton.joints);
-
-	// 名前とインデックスのマッピングを行いアクセスしやすくする
-	for (const Joint& joint : skelton.joints) {
-		skelton.jointMap.emplace(joint.name, joint.index);
-	}
-
-	// 結果を返す
-	return skelton;
-}
-
-void WorldTransform::SkeltonUpdate(Skelton& skelton)
-{
-	// 全ジョイント分ループ
-	for (Joint& joint : skelton.joints) {
-		// ローカル行列作成
-		joint.localMatrix = Quaternion::MakeAffineMatrix(joint.transform.scale, joint.transform.rotate, joint.transform.translate);
-		// 親がいた場合
-		if (joint.parent) { // その行列をかけ合わせる
-			joint.skeltonSpaceMatrix = joint.localMatrix * skelton.joints[*joint.parent].skeltonSpaceMatrix;
-		}
-		else { // 親がいない場合ローカル行列を掛ける
-			joint.skeltonSpaceMatrix = joint.localMatrix;
-		}
-	}
-}
-
-void WorldTransform::ApplyAnimation(Skelton& skelton, const Animation& anim, float animationTime)
-{
-	// 全ジョイント分ループ
-	for (Joint& joint : skelton.joints) {
-		// 対象のジョイントのアニメーションがあれば値の適用を行う
-		if (auto it = anim.nodeAnimations.find(joint.name); it != anim.nodeAnimations.end()) {
-			const NodeAnimation& rootNodeAnimation = (*it).second;
-			joint.transform.translate = Animation::CalculateValue(rootNodeAnimation.translate.keyFrames, animationTime);
-			joint.transform.rotate = Animation::CalculateValue(rootNodeAnimation.rotate.keyFrames, animationTime);
-			joint.transform.scale = Animation::CalculateValue(rootNodeAnimation.scale.keyFrames, animationTime);
-		}
-	}
-}
-
 void WorldTransform::SetParent(WorldTransform* parent, uint8_t parentType)
 {
 	// 親子関係をセット
@@ -160,6 +89,7 @@ void WorldTransform::SetParent(WorldTransform* parent, uint8_t parentType)
 
 const WorldTransform* WorldTransform::GetParent()
 {
+	// 親をそのまま返す
 	return parent_;
 }
 
@@ -168,13 +98,8 @@ Matrix4x4 WorldTransform::GetMatWorld() const
 	// 結果格納用
 	Matrix4x4 result;
 
+	// アフィン変換行列を計算
 	result = Matrix4x4::MakeAffin(scale_, rotate_, translate_);
-
-	// ワールド行列セット中はそれを使う
-	if (worldMat_ != nullptr) {
-		result = *worldMat_;
-	}
-
 	// 親がいる場合
 	if (parent_) {
 		Matrix4x4 parentMat = Matrix4x4();
@@ -184,12 +109,17 @@ Matrix4x4 WorldTransform::GetMatWorld() const
 			if (grandParent) {
 				parentMat = grandParent->GetMatWorld();
 			}
-			if (parentType_ & FLAG_SCALE)
+			if (parentType_ & FLAG_SCALE) { // 拡縮
 				parentMat = parentMat * Matrix4x4::MakeScale(parent_->scale_);
-			if (parentType_ & FLAG_ROTATE)
-				parentMat = parentMat * Matrix4x4::MakeRotate(parent_->rotate_);
-			if (parentType_ & FLAG_TRANSLATE)
+			}
+
+			if (parentType_ & FLAG_ROTATE) { // 回転
+				parentMat = parentMat * Matrix4x4::MakeRotate(parent_->rotate_);;
+			}
+
+			if (parentType_ & FLAG_TRANSLATE) { // 座標
 				parentMat = parentMat * Matrix4x4::MakeTranslate(parent_->translate_);
+			}
 		}
 		else {
 			parentMat = parent_->GetMatWorld();

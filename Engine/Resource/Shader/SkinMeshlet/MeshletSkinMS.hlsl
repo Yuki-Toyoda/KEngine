@@ -21,19 +21,19 @@ uint32_t GetVertexIndex(Meshlet m, uint localIndex)
     return UniqueVertexIndices.Load(localIndex * 4);
 }
 
-Skinned Skinning(SkinVertexData v)
+Skinned Skinning(VertexData v)
 {
     Skinned skinned;
-    skinned.position =  mul(v.vertex.pos, gMatrixPalette[v.jointIndex.x].skeltonSpaceMatrix) * v.weight.x;
-    skinned.position += mul(v.vertex.pos, gMatrixPalette[v.jointIndex.y].skeltonSpaceMatrix) * v.weight.y;
-    skinned.position += mul(v.vertex.pos, gMatrixPalette[v.jointIndex.z].skeltonSpaceMatrix) * v.weight.z;
-    skinned.position += mul(v.vertex.pos, gMatrixPalette[v.jointIndex.w].skeltonSpaceMatrix) * v.weight.w;
+    skinned.position =  mul(v.pos, gMatrixPalette[v.jointIndex.x].skeltonSpaceMatrix) * v.weight.x;
+    skinned.position += mul(v.pos, gMatrixPalette[v.jointIndex.y].skeltonSpaceMatrix) * v.weight.y;
+    skinned.position += mul(v.pos, gMatrixPalette[v.jointIndex.z].skeltonSpaceMatrix) * v.weight.z;
+    skinned.position += mul(v.pos, gMatrixPalette[v.jointIndex.w].skeltonSpaceMatrix) * v.weight.w;
     skinned.position.w = 1.0f;
     
-    skinned.normal =  mul(v.vertex.normal, (float32_t3x3) gMatrixPalette[v.jointIndex.x].skeltonSpaceInverseTransposeMatrix) * v.weight.x;
-    skinned.normal += mul(v.vertex.normal, (float32_t3x3) gMatrixPalette[v.jointIndex.y].skeltonSpaceInverseTransposeMatrix) * v.weight.y;
-    skinned.normal += mul(v.vertex.normal, (float32_t3x3) gMatrixPalette[v.jointIndex.z].skeltonSpaceInverseTransposeMatrix) * v.weight.z;
-    skinned.normal += mul(v.vertex.normal, (float32_t3x3) gMatrixPalette[v.jointIndex.w].skeltonSpaceInverseTransposeMatrix) * v.weight.w;
+    skinned.normal =  mul(v.normal, (float32_t3x3)gMatrixPalette[v.jointIndex.x].skeltonSpaceInverseTransposeMatrix) * v.weight.x;
+    skinned.normal += mul(v.normal, (float32_t3x3)gMatrixPalette[v.jointIndex.y].skeltonSpaceInverseTransposeMatrix) * v.weight.y;
+    skinned.normal += mul(v.normal, (float32_t3x3)gMatrixPalette[v.jointIndex.z].skeltonSpaceInverseTransposeMatrix) * v.weight.z;
+    skinned.normal += mul(v.normal, (float32_t3x3)gMatrixPalette[v.jointIndex.w].skeltonSpaceInverseTransposeMatrix) * v.weight.w;
     skinned.normal = normalize(skinned.normal);
     
     return skinned;
@@ -60,15 +60,16 @@ void main(
         uint32_t vertexIndex = GetVertexIndex(meshlet, gtid);
         
         // 取得したインデックスから頂点座標を求める
-        SkinVertexData vertex = Vertices[vertexIndex];
+        VertexData vertex = Vertices[vertexIndex];
         
         // スキニングを行う
         Skinned skinned = Skinning(vertex);
         
         // 出力する頂点座標を求める
         outVerts[gtid].pos      = mul(skinned.position, mul(Transform.world, ConstantData.WorldViewProj));
-        outVerts[gtid].texCoord = vertex.vertex.texCoord;
-        outVerts[gtid].normal = skinned.normal;
+        outVerts[gtid].texCoord = vertex.texCoord;
+        outVerts[gtid].normal   = skinned.normal;
+        outVerts[gtid].mIndex = vertex.materialIndex;
         
         // 出力する頂点色を求める
         if (ConstantData.DrawMeshlets == true)
@@ -83,7 +84,7 @@ void main(
         else
         {
             // 頂点色はマテリアルから取得
-            outVerts[gtid].color = material.color;
+            outVerts[gtid].color = materials[vertex.materialIndex].color;
         }
     }
     if (gtid < meshlet.PrimCount)

@@ -2,7 +2,6 @@
 #include <list>
 #include <memory>
 #include "IPrimitive.h"
-#include "3d/Mesh.h"
 
 // クラスの前方宣言
 class CommandManager;

@@ -47,7 +47,6 @@ void GameObjectManager::Update()
 	for (std::unique_ptr<IObject>& object : objects_) {
 		object->PreUpdate();  // 共通更新を呼び出す
 		object->Update();	  // 更新
-		object->AnimUpdate(); // アニメーション更新
 		object->PostUpdate(); // 更新後処理
 	}
 

@@ -37,16 +37,15 @@ void IPrimitive::Draw(ID3D12GraphicsCommandList6* cmdList)
 	*transformBuffer_->data_ = transform_->GetMatWorld();
 
 	// マテリアルのアップロード
-	material_->UploadMaterial();
+	//material_->UploadMaterial();
 
 	// コマンドリストに各種バッファのアドレスをセット
 	cmdList->SetGraphicsRootConstantBufferView(2, transformBuffer_->GetGPUView());		  // ワールドトランスフォーム
-	cmdList->SetGraphicsRootConstantBufferView(3, material_->GetBufferAddress());		  // マテリアル
+	//cmdList->SetGraphicsRootConstantBufferView(3, material_->GetBufferAddress());		  // マテリアル
 	cmdList->SetGraphicsRootDescriptorTable(4, meshletBuffer_->GetGPUView());			  // メッシュレット情報
 	cmdList->SetGraphicsRootDescriptorTable(5, vertexBuffer_->GetGPUView());			  // 頂点情報
 	cmdList->SetGraphicsRootDescriptorTable(6, uniqueVertexIndicesBuffer_->GetGPUView()); // 固有頂点インデックス
 	cmdList->SetGraphicsRootDescriptorTable(7, primitiveIndicesBuffer_->GetGPUView());	  // プリミティブインデックス
-	cmdList->SetGraphicsRootDescriptorTable(8, material_->GetTexAddress());				  // テクスチャデータ
 
 	// メッシュレットのプリミティブ数分メッシュシェーダーを実行
 	cmdList->DispatchMesh(GetMeshletCount(), 1, 1);

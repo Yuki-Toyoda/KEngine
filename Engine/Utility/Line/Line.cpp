@@ -2,8 +2,7 @@
 
 Line::~Line()
 {
-	// メッシュを破壊する
-	mesh_->isDestroy_ = true;
+	
 }
 
 void Line::Init(const std::string& name, const Vector3& position, const Vector2& thickness, const float& length, Texture texture)
@@ -20,21 +19,11 @@ void Line::Init(const std::string& name, const Vector3& position, const Vector2&
 	transform_.translate_ = position_;
 	transform_.scale_ = Vector3{ thickness_.x, thickness_.y, length_ };
 
-	// 新しいメッシュのインスタンスを生成
-	mesh_ = PrimitiveManager::GetInstance()->CreateInstance<Mesh>();
-	mesh_->name_ = name_;
-	mesh_->transform_ = &transform_;
-	mesh_->LoadModelFile("./Engine/Resource/Samples/Box", "Box.obj");
-	mesh_->commonColor = &color_;
-	mesh_->material_->enableLighting_ = true;
-	mesh_->material_->tex_ = texture;
+	texture;
 }
 
 void Line::Update()
 {
-	// 表示状態切り替え
-	mesh_->isActive_ = isActive_;
-
 	// 回転角のリセット
 	if (rotate_.x >= (float)std::numbers::pi * 2.0f) {
 		rotate_.x -= (float)std::numbers::pi * 2.0f;

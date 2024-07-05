@@ -2,7 +2,9 @@
 
 void IRootSignature::Init()
 {
-	// 基底クラスでは処理を記述しない
+	// パラメータ格納用配列の内容クリア
+	rootParameters_.clear();
+	samplers_.clear();
 }
 
 void IRootSignature::CreateCBVParameter(const int ShaderRegisterCount, const D3D12_SHADER_VISIBILITY visibility)
