@@ -17,11 +17,8 @@ void Attack::Init()
 	// 攻撃中である
 	player_->isAttacking_ = true;
 
-	if (!player_->transform_.animations_[2].isPlay) {
-		player_->transform_.animations_[2].isPlay = true;
-		player_->transform_.animations_[2].animationTime = 0.0f;
-		player_->transform_.animations_[0].isPlay = false;
-		player_->transform_.animations_[1].isPlay = false;
+	if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("03_Attack")) {
+		player_->skiningModels_[0]->animationManager_.PlayAnimation("03_Attack");
 	}
 
 	// 線の座標を戻す

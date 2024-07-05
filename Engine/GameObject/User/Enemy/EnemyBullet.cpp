@@ -7,7 +7,7 @@
 void EnemyBullet::Init()
 {
 	// メッシュを追加
-	AddMesh(&transform_, color_, "./Engine/Resource/Samples/Sphere", "Sphere.obj");
+	AddNormalModel(&transform_, "./Engine/Resource/Samples/Sphere", "Sphere.obj");
 
 	// 球のコライダー追加
 	AddColliderSphere("Bullet", &transform_.translate_, &transform_.scale_.x);

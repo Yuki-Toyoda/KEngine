@@ -91,18 +91,15 @@ void Player::Init()
 	titleAnim_->Play();
 
 	// メッシュの追加を行う
-	AddMesh(&transform_, color_, "./Resources/Player", "Player_Skininng.gltf");
+	AddSkiningModel(&transform_, "./Resources/Player", "Player_Skininng.gltf");
 	/*AddMesh(&headTransform_, color_, "./Resources/Player", "Head.obj");
 	AddMesh(&armTransform_R_, color_, "./Resources/Player", "Arm_R.obj");
 	AddMesh(&armTransform_L_, color_, "./Resources/Player", "Arm_L.obj");
 	AddMesh(&armTransform_L_, color_, "./Resources/Sword", "Sword.obj");
 	AddMesh(&armTransform_R_, color_, "./Resources/Shield", "Shiled.obj");*/
 
-	// アニメーションのループ
-	transform_.animations_[0].isLoop = true;
-	transform_.animations_[1].isLoop = true;
-	// 再生
-	transform_.animations_[0].isPlay = true;
+	// 待機アニメーションの再生
+	skiningModels_[0]->animationManager_.PlayAnimation("01_Idle", true);
 
 	// コライダーの追加
 	colliderWorldPos_ = colliderTransform_.GetWorldPos();
@@ -222,7 +219,7 @@ void Player::Update()
 			}
 
 			// ビネットをかける
-			followCamera_->postProcessIntensity_ = focusVignette_;
+			//followCamera_->postProcessIntensity_ = focusVignette_;
 
 			if (followCamera_->GetLockOn()->GetIsLockOn()) {
 				// ロックオン対象の座標

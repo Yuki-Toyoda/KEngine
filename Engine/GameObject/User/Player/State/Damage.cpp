@@ -32,25 +32,13 @@ void Damage::Init()
 		c->fov_ = 0.6f;
 		c->UseThisCamera();
 
-		if (!player_->transform_.animations_[6].isPlay) {
-			player_->transform_.animations_[6].isPlay = true;
-			player_->transform_.animations_[6].animationTime = 0.0f;
-			player_->transform_.animations_[0].isPlay = false;
-			player_->transform_.animations_[1].isPlay = false;
-			player_->transform_.animations_[2].isPlay = false;
-			player_->transform_.animations_[3].isPlay = false;
-			player_->transform_.animations_[4].isPlay = false;
+		if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("07_Dead")) {
+			player_->skiningModels_[0]->animationManager_.PlayAnimation("07_Dead");
 		}
 	}
 	else {
-		if (!player_->transform_.animations_[5].isPlay) {
-			player_->transform_.animations_[5].isPlay = true;
-			player_->transform_.animations_[5].animationTime = 0.0f;
-			player_->transform_.animations_[0].isPlay = false;
-			player_->transform_.animations_[1].isPlay = false;
-			player_->transform_.animations_[2].isPlay = false;
-			player_->transform_.animations_[3].isPlay = false;
-			player_->transform_.animations_[4].isPlay = false;
+		if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("06_Damage")) {
+			player_->skiningModels_[0]->animationManager_.PlayAnimation("06_Damage");
 		}
 	}
 }

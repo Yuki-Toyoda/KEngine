@@ -69,10 +69,10 @@ void Enemy::Init()
 	enemyAnim_->Play();
 
 	// メッシュを追加
-	AddMesh(&bodyTransform_, color_, "./Resources/Enemy", "Body.obj");
-	AddMesh(&headTransform_, color_, "./Resources/Enemy", "Head.obj");
-	AddMesh(&armTransform_R_, color_, "./Resources/Enemy", "Arm_R.obj");
-	AddMesh(&armTransform_L_, color_, "./Resources/Enemy", "Arm_L.obj");
+	AddNormalModel(&bodyTransform_, "./Resources/Enemy", "Body.obj");
+	AddNormalModel(&headTransform_, "./Resources/Enemy", "Head.obj");
+	AddNormalModel(&armTransform_R_, "./Resources/Enemy", "Arm_R.obj");
+	AddNormalModel(&armTransform_L_, "./Resources/Enemy", "Arm_L.obj");
 
 	// 球のコライダー追加
 	AddColliderSphere("Boss", &worldPos_, &colliderRadius_);
