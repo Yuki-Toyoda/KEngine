@@ -219,7 +219,7 @@ void Player::Update()
 			}
 
 			// ビネットをかける
-			//followCamera_->postProcessIntensity_ = focusVignette_;
+			followCamera_->ppProcessor_.vignette_.intensity_ = focusVignette_;
 
 			if (followCamera_->GetLockOn()->GetIsLockOn()) {
 				// ロックオン対象の座標
