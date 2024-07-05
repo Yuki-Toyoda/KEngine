@@ -57,6 +57,7 @@ void Damage::Update()
 
 			// カメラのポストプロセスの強さをだんだん上げてく
 			c->ppProcessor_.grayScale_.intensity_ = KLib::Lerp<float>(0.0f, 4.0f, KLib::EaseInQuad(player_->playerAnim_->GetAnimationProgress()));
+			c->ppProcessor_.gaussian_.intensity_ = KLib::Lerp<float>(0.0f, 6.0f, KLib::EaseInQuad(player_->playerAnim_->GetAnimationProgress()));
 			
 			// アニメーションの9割りが終了していた場合、スティックの入力があった場合待機状態へ移行
 			if (player_->playerAnim_->GetAnimationProgress() >= 0.5f && !isDead_) {
