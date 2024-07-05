@@ -908,6 +908,5 @@
     <FxCompile Include="Engine\Resource\Shader\PostProcess\SmoothingPS.hlsl">
       <Filter>Engine\Resource\Shader</Filter>
     </FxCompile>
-    <FxCompile Include="Engine\Resource\Shader\PostProcess\PostProcess.PS.hlsl" />
   </ItemGroup>
 </Project>
