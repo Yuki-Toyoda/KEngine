@@ -8,11 +8,16 @@ void BaseScene::PreInitialize()
 	gameObjectManager_ = GameObjectManager::GetInstance();
 	// モデルデータマネージャーのインスタンス取得
 	modelDataManager_ = ModelDataManager::GetInstance();
+	// モデルマネージャーのインスタンス取得
+	modelManager_ = ModelManager::GetInstance();
 
 	// カメラを生成
 	camera_ = gameObjectManager_->CreateInstance<Camera>("DebugCamera", IObject::TagCamera);
 	// このカメラを使う
 	camera_->UseThisCamera();
+
+	// モデルリストクリア
+	modelManager_->Clear();
 
 	// サンプルモデルの読み込み
 	SampleModelLoad();
@@ -25,5 +30,4 @@ void BaseScene::SampleModelLoad()
 	modelDataManager_->LoadNewModel("./Engine/Resource/Samples/SkyDome", "SkyDome.obj");
 	modelDataManager_->LoadNewModel("./Engine/Resource/Samples/TestMultiMesh", "TestMultiMesh.gltf");
 	modelDataManager_->LoadNewModel("./Engine/Resource/Samples/TestMultiMeshAnim", "TestMultiMeshAnim.gltf");
-	modelDataManager_->LoadNewModel("./Engine/Resource/Samples/Human", "walk.gltf");
 }

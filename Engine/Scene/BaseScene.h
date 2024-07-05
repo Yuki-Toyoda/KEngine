@@ -2,6 +2,7 @@
 #include "../Input/Input.h"
 #include "../GameObject/GameObjectManager.h"
 #include "../Model/Data/ModelDataManager.h"
+#include "../Model/ModelManager.h"
 #include "../GameObject/ObjectList.h"
 
 /// <summary>
@@ -53,6 +54,8 @@ protected: // 継承先メンバ変数
 
 	// モデルデータマネージャー
 	ModelDataManager* modelDataManager_ = nullptr;
+	// モデルマネージャー
+	ModelManager* modelManager_ = nullptr;
 
 	// カメラ
 	Camera* camera_ = nullptr;

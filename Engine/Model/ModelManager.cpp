@@ -7,12 +7,16 @@ void ModelManager::Init()
 
 	// モデル配列の内容クリア
 	normalModels_.clear();
+	// スキニングモデル配列の内容クリア
+	skiningModels_.clear();
 }
 
 void ModelManager::Clear()
 {
 	// モデル配列の内容クリア
 	normalModels_.clear();
+	// スキニングモデル配列の内容クリア
+	skiningModels_.clear();
 }
 
 void ModelManager::Update()
