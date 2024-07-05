@@ -5,6 +5,7 @@
 #include "../../Lighting/Light/DirectionalLight.h"
 #include "NormalRenderer.h"
 #include "PPRenderer.h"
+#include "../../PostProcess/PostProcessor.h"
 
 // クラスの前方宣言
 class Camera;
@@ -43,6 +44,12 @@ public: // メンバ関数
 public: // アクセッサ等
 
 	/// <summary>
+	/// DXCゲッター
+	/// </summary>
+	/// <returns>DXC</returns>
+	DXC* GetDXC() { return &dxc_; }
+
+	/// <summary>
 	/// (通常描画用)描画ターゲット追加関数
 	/// </summary>
 	/// <param name="view">カメラデータまでのアドレス</param>
@@ -57,7 +64,7 @@ public: // アクセッサ等
 	/// <param name="texture">ポストプロセスを掛けるテクスチャ</param>
 	/// <param name="depthBuffer">深度リソース</param>
 	/// <param name="view">ポストプロセスパラメーターまでのアドレス</param>
-	void AddTarget(RenderResource* renderer, BackBuffer* texture, DepthStencil* depthBuffer, const D3D12_GPU_VIRTUAL_ADDRESS& view) { ppRenderer_.AddTarget({ renderer, texture, depthBuffer, view }); }
+	void AddTarget(RenderResource* renderer, BackBuffer* texture, DepthStencil* depthBuffer, PostProcessor* pp) { ppRenderer_.AddTarget({ renderer, texture, depthBuffer, pp }); }
 
 	/// <summary>
 	/// コマンド管理クラスゲッター

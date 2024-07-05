@@ -22,7 +22,7 @@ void RendererManager::Init(DirectXDevice* device, SRV* srv)
 
 	// レンダラー達を初期化
 	normalRenderer_.Init(device, &dxc_, modelManager_, light_.get()); // 通常描画レンダラー
-	ppRenderer_.Init(device, &dxc_);								  // ポストプロセスレンダラー
+	ppRenderer_.Init();												  // ポストプロセスレンダラー
 
 }
 

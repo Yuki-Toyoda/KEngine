@@ -1,33 +1,25 @@
 #include "PPRenderer.h"
 #include "../../../Externals/imgui/ImGuiManager.h"
 
-void PPRenderer::Init(DirectXDevice* device, DXC* dxc)
+void PPRenderer::Init()
 {
-	// ルートシグネチャの取得
-	rootSignature_ = RootSignatureManager::GetInstance()->GetRootSignature(2);
-
-	// 通常描画用PSO初期化
-	pso_.VertInit(rootSignature_, dxc)
-		.SetDepthStencilState(false)
-		.SetVertexShader("Engine/Resource/Shader/PostProcess/PassThroughVS.hlsl")
-		.SetVertPixelShader("Engine/Resource/Shader/PostProcess/GaussianFilterPS.hlsl")
-		.VertBuild(device->GetDevice());
+	// 何も無し
 }
 
 void PPRenderer::DrawCall(ID3D12GraphicsCommandList6* list)
 {
 	// 全ターゲット分ループ
 	for (std::vector<Target>::iterator it = targets_.begin(); it != targets_.end(); it++) {
+		// ポストプロセスの事前処理を行う
+		it->pp_->PreCommands(list, it->render);
+
 		// textureの方に書き込む
 		list->OMSetRenderTargets(1, &it->texture->rtvInfo_.cpuView_, false, nullptr);
-		// RootSignatureとPSOをセット
-		list->SetGraphicsRootSignature(rootSignature_);
-		list->SetPipelineState(pso_.GetState());
 
-		// データを登録
-		list->SetGraphicsRootConstantBufferView(0, it->view_);
+		// ポストプロセスのデータをコマンドリストに渡す
+		it->pp_->SetToCommandList(list);
+		// テクスチャの書き込み先
 		list->SetGraphicsRootDescriptorTable(1, it->render->srvInfo_.gpuView_);
-		//list->SetGraphicsRootDescriptorTable(2, it->depth->srvInfo.gpuView);
 
 		// リソースバリアをセット
 		D3D12_RESOURCE_STATES beforeBarrier = it->texture->GetBarrier();

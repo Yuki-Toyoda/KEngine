@@ -302,6 +302,8 @@
     <ClCompile Include="Engine\Model\Animation\SkinAnimationManager.cpp">
       <Filter>Engine\Model\Animation</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\PostProcess\PostProcessor.cpp" />
+    <ClCompile Include="Engine\PostProcess\GrayScale\GrayScale.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -670,6 +672,9 @@
     <ClInclude Include="Engine\Model\Component\Vertex.h">
       <Filter>Engine\Model\Component</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\PostProcess\IPostProcess.h" />
+    <ClInclude Include="Engine\PostProcess\PostProcessor.h" />
+    <ClInclude Include="Engine\PostProcess\GrayScale\GrayScale.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -903,5 +908,6 @@
     <FxCompile Include="Engine\Resource\Shader\PostProcess\SmoothingPS.hlsl">
       <Filter>Engine\Resource\Shader</Filter>
     </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\PostProcess\PostProcess.PS.hlsl" />
   </ItemGroup>
 </Project>

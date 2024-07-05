@@ -6,6 +6,8 @@
 #include "../../Base/Resource/Rendering/RenderResource.h"
 #include "../../Base/Resource/Rendering/DepthStencil.h"
 
+#include "../../PostProcess/PostProcessor.h"
+
 // クラスの前方宣言
 class RendererManager;
 
@@ -69,12 +71,6 @@ public: // アクセッサ等
 	D3D12_GPU_VIRTUAL_ADDRESS GetCameraDataBufferView() { return cameraDataBuffer_.GetGPUView(); }
 
 	/// <summary>
-	/// ポストプロセスのパラメータデータまでのアドレスゲッター
-	/// </summary>
-	/// <returns>ポストプロセスデータまでのアドレス</returns>
-	D3D12_GPU_VIRTUAL_ADDRESS GetPostProcessIntensityBufferView() { return postProcessIntensityBuffer_.GetGPUView(); }
-
-	/// <summary>
 	/// レンダリング予定リソースのゲッター
 	/// </summary>
 	/// <returns>レンダリング予定リソース</returns>
@@ -98,6 +94,9 @@ public: // パブリックなメンバ変数
 	// 視野角
 	float fov_ = 0.45f;
 
+	// ポストプロセス管理マネージャ
+	PostProcessor ppProcessor_;
+
 protected: // メンバ変数
 
 	// 描画管理マネージャ
@@ -105,7 +104,6 @@ protected: // メンバ変数
 
 	// 定数バッファデータ
 	ConstantBuffer<CameraData> cameraDataBuffer_;			// カメラデータ
-	ConstantBuffer<float>	   postProcessIntensityBuffer_; // ポストプロセスの強さ
 
 	// レンダリングを行うリソース
 	RenderResource renderResource_;
@@ -122,9 +120,6 @@ protected: // メンバ変数
 
 	// カメラのメッシュレット表示切り替えトリガー
 	bool isDrawMeshlets_ = false;
-
-	// ポストプロセスをかける際の強さ
-	float postProcessIntensity_ = 0.0f;
 
 	// ビュー行列
 	Matrix4x4 viewMatrix_;
