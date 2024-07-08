@@ -47,9 +47,12 @@ public: // メンバ関数
 	/// <param name="position">初期座標</param>
 	/// <param name="size">大きさ</param>
 	/// <param name="texture">テクスチャ</param>
-	Sprite* Create(const std::string& name, const Vector2 position, const Vector2& size, Texture* texture);
+	Sprite* Create(const std::string& name, const Vector2 position, const Vector2& size, Texture texture);
 
 private: // メンバ変数
+
+	// スプライト用平面モデル
+	std::unique_ptr<ModelData> modelData_;
 
 	// スプライトリスト
 	std::list<std::unique_ptr<Sprite>> sprites_;

@@ -128,7 +128,7 @@ void IObject::AddSkiningModel(WorldTransform* wt, const std::string& path, const
 	skiningModels_.push_back(newModel);
 }
 
-void IObject::AddSprite(const std::string& name, const Vector2& position, const Vector2& size, Texture* texture)
+void IObject::AddSprite(const std::string& name, const Vector2& position, const Vector2& size, Texture texture)
 {
 	// 新しいインスタンスの追加
 	Sprite* newSprite = SpriteManager::GetInstance()->Create(name, position, size, texture);

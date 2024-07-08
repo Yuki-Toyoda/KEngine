@@ -2,6 +2,7 @@
 #include "Data/ModelDataManager.h"
 #include "NormalModel.h"
 #include "SkiningModel.h"
+#include "SpriteModel.h"
 #include <list>
 
 /// <summary>
@@ -86,6 +87,26 @@ private: // スキニングモデル用変数群
 
 	// スキニングモデル配列
 	std::list<std::unique_ptr<SkiningModel>> skiningModels_;
+	
+public: // スプライトモデル用関数群
+
+	/// <summary>
+	/// スプライトモデル生成関数
+	/// </summary>
+	/// <param name="modelData">スプライトに使用するモデル</param>
+	/// <returns>スプライトモデル</returns>
+	SpriteModel* CreateSpriteModel(ModelData* modelData);
+
+	/// <summary>
+	/// スプライトモデル描画関数
+	/// </summary>
+	/// <param name="cmdList">描画に使用するコマンドリスト</param>
+	void SpriteModelDraw(ID3D12GraphicsCommandList6* cmdList);
+
+private: // スキニングモデル用変数群
+
+	// スキニングモデル配列
+	std::list<std::unique_ptr<SpriteModel>> spriteModels_;
 
 private: // メンバ変数
 

@@ -1,7 +1,6 @@
 #pragma once
 #include "../IObject.h"
 #include "../../Input/Input.h"
-#include "../../Base/Buffer/BufferStructs.h"
 #include "../../Base/Resource/Data/ConstantBuffer.h"
 #include "../../Base/Resource/Rendering/RenderResource.h"
 #include "../../Base/Resource/Rendering/DepthStencil.h"
@@ -10,6 +9,15 @@
 
 // クラスの前方宣言
 class RendererManager;
+
+/// <summary>
+///	カメラデータ構造体
+/// </summary>
+struct CameraData {
+	Matrix4x4 WorldViewProj;		 // 射影変換行列
+	Matrix4x4 ViewProjection2D;		 // 2D射影変換行列
+	uint32_t  DrawMeshlets = false;	 // メッシュレット描画フラグ
+};
 
 /// <summary>
 /// カメラ

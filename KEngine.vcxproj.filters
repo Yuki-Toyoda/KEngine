@@ -247,9 +247,6 @@
     <ClCompile Include="Engine\GameObject\Samples\SampleSkinAnim\SampleAnim.cpp">
       <Filter>App\GameObject\Samples\SampleSkinAnim</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Base\RootSignature\PostProcessRootSignature.cpp">
-      <Filter>Engine\Base\RootSignature</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Base\Renderer\PPRenderer.cpp">
       <Filter>Engine\Base\Renderer</Filter>
     </ClCompile>
@@ -310,6 +307,8 @@
     </ClCompile>
     <ClCompile Include="Engine\PostProcess\Vignette\Vignette.cpp" />
     <ClCompile Include="Engine\PostProcess\GaussianFilter\GaussianFilter.cpp" />
+    <ClCompile Include="Engine\Model\SpriteModel.cpp" />
+    <ClCompile Include="Engine\Base\RootSignature\SpriteRootSignature.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -561,9 +560,6 @@
     <ClInclude Include="Engine\Base\Renderer\RendererManager.h">
       <Filter>Engine\Base\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Base\Buffer\BufferStructs.h">
-      <Filter>Engine\Base</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Base\Resource\IResource.h">
       <Filter>Engine\Base\Resource</Filter>
     </ClInclude>
@@ -617,9 +613,6 @@
     </ClInclude>
     <ClInclude Include="Engine\GameObject\Samples\SampleSkinAnim\SampleAnim.h">
       <Filter>App\GameObject\Samples\SampleSkinAnim</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Base\RootSignature\PostProcessRootSignature.h">
-      <Filter>Engine\Base\RootSignature</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Base\Renderer\PPRenderer.h">
       <Filter>Engine\Base\Renderer</Filter>
@@ -689,6 +682,8 @@
     </ClInclude>
     <ClInclude Include="Engine\PostProcess\Vignette\Vignette.h" />
     <ClInclude Include="Engine\PostProcess\GaussianFilter\GaussianFilter.h" />
+    <ClInclude Include="Engine\Model\SpriteModel.h" />
+    <ClInclude Include="Engine\Base\RootSignature\SpriteRootSignature.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -712,6 +707,7 @@
     <None Include="Engine\Resource\Shader\PostProcess\GrayScale.hlsli">
       <Filter>Engine\Resource\Shader</Filter>
     </None>
+    <None Include="Engine\Resource\Shader\SpriteMeshlet\MeshletSprite.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -928,5 +924,7 @@
     <FxCompile Include="Engine\Resource\Shader\PostProcess\SmoothingPS.hlsl">
       <Filter>Engine\Resource\Shader</Filter>
     </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\SpriteMeshlet\MeshletSpriteMS.hlsl" />
+    <FxCompile Include="Engine\Resource\Shader\SpriteMeshlet\MeshletSpritePS.hlsl" />
   </ItemGroup>
 </Project>

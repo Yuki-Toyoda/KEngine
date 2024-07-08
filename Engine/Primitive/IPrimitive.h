@@ -7,7 +7,6 @@
 #include "../Resource/Material/Material.h"
 #include "../Utility/Observer/Observer.h"
 #include "../../Externals/DirectXMesh/DirectXMesh.h"
-#include "../Utility/IndexList/IndexList.h"
 #include <wrl.h>
 #include <d3d12.h>
 
@@ -127,7 +126,7 @@ public: // パブリックなメンバ変数
 	// データバッファ群
 	std::unique_ptr<ConstantBuffer<Matrix4x4>>			transformBuffer_;			// ワールドトランスフォーム
 	std::unique_ptr<StructuredBuffer<DirectX::Meshlet>> meshletBuffer_;				// メッシュレット
-	std::unique_ptr<StructuredBuffer<OldVertex>>			vertexBuffer_;				// 頂点
+	std::unique_ptr<StructuredBuffer<OldVertex>>		vertexBuffer_;				// 頂点
 	std::unique_ptr<StructuredBuffer<uint32_t>>			uniqueVertexIndicesBuffer_; // 固有頂点インデックス
 	std::unique_ptr<StructuredBuffer<uint32_t>>			primitiveIndicesBuffer_;	// プリミティブインデックス
 
@@ -151,9 +150,6 @@ public: // パブリックなメンバ変数
 
 	// ビルボード用行列格納用
 	Matrix4x4 billboardMat_;
-
-	// 描画順
-	int32_t layerNo_ = 0;
 
 	// UIとして使用するか
 	bool isUI_ = false;

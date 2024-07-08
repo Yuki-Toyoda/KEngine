@@ -13,9 +13,9 @@ void Game::Init()
 	gameObjectManager_ = GameObjectManager::GetInstance();
 	gameObjectManager_->Init();
 
-	//// スプライトマネージャの初期化
-	//spriteManager_ = SpriteManager::GetInstance();
-	//spriteManager_->Init();
+	// スプライトマネージャの初期化
+	spriteManager_ = SpriteManager::GetInstance();
+	spriteManager_->Init();
 
 	//// パーティクルマネージャの初期化
 	//particleManager_ = ParticleEmitterManager::GetInstance();
@@ -35,7 +35,8 @@ void Game::Update()
 	gameObjectManager_->Update();
 
 	// スプライトマネージャ更新
-	//spriteManager_->Update();
+	spriteManager_->Update();
+
 	//// パーティクルマネージャ更新
 	//particleManager_->Update();
 	//particleManager_->DisplayImGui();
@@ -55,8 +56,8 @@ void Game::Finalize()
 {
 	// 全オブジェクトを削除
 	gameObjectManager_->Init();
-	//// 読み込みスプライト削除
-	//spriteManager_->Init();
+	// 読み込みスプライト削除
+	spriteManager_->Init();
 	// 全アニメーション削除
 	animManager_->Init();
 

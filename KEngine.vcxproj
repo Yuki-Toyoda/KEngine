@@ -184,7 +184,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Base\Resource\Rendering\TextureResource.cpp" />
     <ClCompile Include="Engine\Base\Renderer\NormalRenderer.cpp" />
     <ClCompile Include="Engine\Base\Renderer\RendererManager.cpp" />
-    <ClCompile Include="Engine\Base\RootSignature\PostProcessRootSignature.cpp" />
     <ClCompile Include="Engine\Base\Renderer\PPRenderer.cpp" />
     <ClCompile Include="Engine\Base\RootSignature\SkinModelRootSignature.cpp" />
     <ClCompile Include="Engine\GameObject\Samples\SampleSkinAnim\SampleAnim.cpp" />
@@ -202,6 +201,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Model\Animation\SkinAnimationManager.cpp" />
     <ClCompile Include="Engine\PostProcess\PostProcessor.cpp" />
     <ClCompile Include="Engine\PostProcess\Vignette\Vignette.cpp" />
+    <ClCompile Include="Engine\Model\SpriteModel.cpp" />
+    <ClCompile Include="Engine\Base\RootSignature\SpriteRootSignature.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Base\Renderer\CopyRenderer.h" />
@@ -211,7 +212,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Base\Command.h" />
     <ClInclude Include="Engine\Base\Resource\Rendering\DepthStencil.h" />
     <ClInclude Include="Engine\Base\Resource\Rendering\BackBuffer.h" />
-    <ClInclude Include="Engine\Base\Buffer\BufferStructs.h" />
     <ClInclude Include="Engine\Base\Config\Config.h" />
     <ClInclude Include="Engine\Base\Resource\Data\ConstantBuffer.h" />
     <ClInclude Include="Engine\Base\Resource\Data\IDataResource.h" />
@@ -306,7 +306,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Base\Renderer\NormalRenderer.h" />
     <ClInclude Include="Engine\Base\Renderer\RendererManager.h" />
     <ClInclude Include="Engine\Lighting\Light\ILight.h" />
-    <ClInclude Include="Engine\Base\RootSignature\PostProcessRootSignature.h" />
     <ClInclude Include="Engine\Base\Renderer\PPRenderer.h" />
     <ClInclude Include="Engine\Base\RootSignature\SkinModelRootSignature.h" />
     <ClInclude Include="Engine\GameObject\Samples\SampleSkinAnim\SampleAnim.h" />
@@ -330,6 +329,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\PostProcess\GrayScale\GrayScale.h" />
     <ClInclude Include="Engine\PostProcess\Vignette\Vignette.h" />
     <ClInclude Include="Engine\PostProcess\GaussianFilter\GaussianFilter.h" />
+    <ClInclude Include="Engine\Model\SpriteModel.h" />
+    <ClInclude Include="Engine\Base\RootSignature\SpriteRootSignature.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Meshlet.hlsli">
@@ -345,6 +346,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>
     <None Include="Engine\Resource\Shader\SkinMeshlet\MeshletSkin.hlsli">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="Engine\Resource\Shader\SpriteMeshlet\MeshletSprite.hlsli">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>
@@ -397,6 +402,14 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="Engine\Resource\Shader\PostProcess\SmoothingPS.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\SpriteMeshlet\MeshletSpriteMS.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\SpriteMeshlet\MeshletSpritePS.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </FxCompile>

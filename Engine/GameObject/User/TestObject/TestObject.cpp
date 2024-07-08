@@ -6,10 +6,10 @@
 void TestObject::Init()
 {
 	// メッシュ追加関数
-	AddNormalModel(&transform_, "./Engine/Resource/Samples/TestMultiMesh", "TestMultiMesh.gltf");
+	AddNormalModel(&transform_, "./Engine/Resource/Samples/Plane", "Plane.obj");
 
-	/// ~スプライトの追加関数~
-	//AddSprite("TestSprite", { 0.0f, 0.0f }, { 512.0f, 512.0f }, TextureManager::Load("./Engine/Resource/Samples/Box", "uvChecker.png"));
+	// ~スプライトの追加関数~
+	AddSprite("TestSprite", { 0.0f, 0.0f }, { 512.0f, 512.0f }, TextureManager::Load("./Engine/Resource/Samples/Box", "uvChecker.png"));
 
 	// OBB生成
 	//AddColliderOBB("Test", &transform_.scale_, &transform_.rotate_, &transform_.translate_);
@@ -57,26 +57,11 @@ void TestObject::DisplayImGui()
 
 	transform_.DisplayImGui();
 
-	/*ImGui::DragFloat4("MaterialColor", &meshes_[0]->material_->color_.x);
-	ImGui::Checkbox("EnableLighting", &meshes_[0]->material_->enableLighting_);*/
-
 	if (ImGui::Button("Delete This")) {
 		Destroy();
 	}
 
-	//animation_->DisplayImGui();
-
-	// 読み込むパラメータを変更
-	if (ImGui::Button("ChangeParam")) {
-		if (animation_->parameterName_ == "Test") {
-			animation_->ChangeParameter("Test2", true);
-		}
-		else {
-			animation_->ChangeParameter("Test");
-		}
-	}
-
-	//line_->DisplayImGui();
+	sprites_[0]->DisplayImGui();
 }
 
 void TestObject::OnCollisionEnter(Collider* collider)

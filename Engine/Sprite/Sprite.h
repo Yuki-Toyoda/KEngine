@@ -1,5 +1,5 @@
 #pragma once
-#include "../Primitive/2d/Plane.h"
+#include "../Model/SpriteModel.h"
 
 /// <summary>
 /// 2Dスプライト
@@ -15,16 +15,18 @@ public: // メンバ関数
 	/// 初期化関数
 	/// </summary>
 	/// <param name="name">スプライト名</param>
-	void Init(const std::string& name);
-
+	/// <param name="modelData">スプライト用モデルデータ</param>
+	void Init(const std::string& name, ModelData* modelData);
+	
 	/// <summary>
 	/// 初期化関数
 	/// </summary>
 	/// <param name="name">スプライト名</param>
+	/// <param name="modelData">スプライトに使用するモデルデータ</param>
 	/// <param name="position">初期座標</param>
 	/// <param name="size">大きさ</param>
 	/// <param name="texture">テクスチャ</param>
-	void Init(const std::string& name, const Vector2 position, const Vector2& size, Texture* texture);
+	void Init(const std::string& name, ModelData* modelData, const Vector2 position, const Vector2& size, Texture texture);
 
 	/// <summary>
 	/// (ユーザー呼び出し禁止) 更新関数
@@ -48,25 +50,17 @@ public: // アクセッサ等
 	/// <returns></returns>
 	bool GetIsDestroy() { return isDestroy_; }
 
-	/// <summary>
-	/// 表示状態セッター
-	/// </summary>
-	/// <param name="isActive">表示するか</param>
-	void SetIsActive(bool isActive) { plane_->isActive_ = isActive; }
-	/// <summary>
-	/// 表示状態ゲッター
-	/// </summary>
-	/// <returns>表示状態</returns>
-	bool GetIsActive() { return plane_->isActive_; }
-
 public: // パブリックなメンバ変数
+
+	// スプライト名
+	std::string name_ = "";
 
 	// 大きさ
 	Vector2 scale_;
 	// 回転
-	float rotate_;
+	float rotate_ = 0.0f;
 	// 座標
-	Vector2 translate_;
+	Vector2 translate_ = { 0.0f, 0.0f };
 
 	// アンカーポイント
 	Vector2 anchorPoint_ = { 0.0f, 0.0f };
@@ -84,8 +78,8 @@ private: // メンバ関数
 	// デストロイトリガー
 	bool isDestroy_ = false;
 
-	// 形状
-	Plane* plane_;
+	// スプライト用モデル
+	SpriteModel* model_;
 
 	// ワールドトランスフォーム
 	WorldTransform transform_;

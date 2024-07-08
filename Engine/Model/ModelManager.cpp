@@ -7,12 +7,16 @@ void ModelManager::Init()
 
 	// モデル配列の内容クリア
 	normalModels_.clear();
+	skiningModels_.clear();
+	spriteModels_.clear();
 }
 
 void ModelManager::Clear()
 {
 	// モデル配列の内容クリア
 	normalModels_.clear();
+	skiningModels_.clear();
+	spriteModels_.clear();
 }
 
 void ModelManager::Update()
@@ -33,13 +37,26 @@ void ModelManager::Update()
 		return false;
 	});
 
+	// 破壊フラグの立ったスキニングモデルを削除
+	spriteModels_.remove_if([](std::unique_ptr<SpriteModel>& model) {
+		if (model->isDestroy_) {
+			return true;
+		}
+		return false;
+	});
+
 	// 全通常モデル更新
 	for (std::unique_ptr<NormalModel>& model : normalModels_) { // 通常モデル
 		model->Update();
 	}
-	
+
 	// 全スキニングモデル更新
 	for (std::unique_ptr<SkiningModel>& model : skiningModels_) { // スキニングモデル
+		model->Update();
+	}
+
+	// 全スプライトモデル更新
+	for (std::unique_ptr<SpriteModel>& model : spriteModels_) { // スプライトモデル
 		model->Update();
 	}
 }
@@ -49,7 +66,7 @@ NormalModel* ModelManager::CreateNormalModel(const std::string& filePath, const 
 	// 新規モデル生成
 	std::unique_ptr<NormalModel> newModel = std::make_unique<NormalModel>(); // 生成
 	newModel->Init(modelDataManager_->GetModelData(filePath, fileName));	 // 初期化
-	
+
 	// インスタンス返還用のモデルを取得
 	NormalModel* returnModel = newModel.get();
 
@@ -64,7 +81,9 @@ void ModelManager::NormalModelDraw(ID3D12GraphicsCommandList6* cmdList)
 {
 	// 全通常モデル描画
 	for (std::unique_ptr<NormalModel>& model : normalModels_) {
-		model->Draw(cmdList);
+		if (model->isActive_){
+			model->Draw(cmdList);
+		}		
 	}
 }
 
@@ -88,6 +107,34 @@ void ModelManager::SkiningModelDraw(ID3D12GraphicsCommandList6* cmdList)
 {
 	// 全スキニングモデル描画
 	for (std::unique_ptr<SkiningModel>& model : skiningModels_) {
-		model->Draw(cmdList);
+		if (model->isActive_) {
+			model->Draw(cmdList);
+		}
+	}
+}
+
+SpriteModel* ModelManager::CreateSpriteModel(ModelData* modelData)
+{
+	// 新規モデル生成
+	std::unique_ptr<SpriteModel> newModel = std::make_unique<SpriteModel>(); // 生成
+	newModel->Init(modelData);												 // 初期化
+
+	// インスタンス返還用のモデルを取得
+	SpriteModel* returnModel = newModel.get();
+
+	// 生成したモデルをリストに追加
+	spriteModels_.push_back(std::move(newModel));
+
+	// 生成したモデルを返す
+	return returnModel;
+}
+
+void ModelManager::SpriteModelDraw(ID3D12GraphicsCommandList6* cmdList)
+{
+	// 全スプライトモデル描画
+	for (std::unique_ptr<SpriteModel>& model : spriteModels_) {
+		if (model->isActive_) {
+			model->Draw(cmdList);
+		}
 	}
 }

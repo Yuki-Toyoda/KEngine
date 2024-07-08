@@ -13,6 +13,7 @@ void NormalRenderer::Init(DirectXDevice* device, DXC* dxc, ModelManager* mm, Dir
 	// ルートシグネチャ取得
 	standardRootSignature_ = rtsManager->GetRootSignature(0); // 通常
 	skinRootSignature_	   = rtsManager->GetRootSignature(1); // スキンアニメーション
+	spriteRootSignature_   = rtsManager->GetRootSignature(2); // スプライト
 
 	// 通常描画用PSO初期化
 	standardPSO_.Init(standardRootSignature_, dxc)
@@ -25,6 +26,13 @@ void NormalRenderer::Init(DirectXDevice* device, DXC* dxc, ModelManager* mm, Dir
 		.SetMeshShader("Engine/Resource/Shader/SkinMeshlet/MeshletSkinMS.hlsl")
 		.SetPixelShader("Engine/Resource/Shader/SkinMeshlet/MeshletSkinPS.hlsl")
 		.Build(device->GetDevice());
+
+	// スキンアニメーション描画用PSO初期化
+	spritePSO_.Init(spriteRootSignature_, dxc)
+		.SetMeshShader("Engine/Resource/Shader/SpriteMeshlet/MeshletSpriteMS.hlsl")
+		.SetPixelShader("Engine/Resource/Shader/SpriteMeshlet/MeshletSpritePS.hlsl")
+		.Build(device->GetDevice());
+
 
 	// 形状マネージャのインスタンス取得
 	modelManager_ = mm;
@@ -103,6 +111,18 @@ void NormalRenderer::DrawCall(ID3D12GraphicsCommandList6* list)
 
 		// 通常モデルの描画を行う
 		modelManager_->SkiningModelDraw(list);
+
+		// コマンドリストにスプライト描画ルートシグネチャを設定
+		list->SetGraphicsRootSignature(spriteRootSignature_);
+		// コマンドリストにスプライト描画PSOを設定
+		list->SetPipelineState(spritePSO_.GetState());
+		// 共通データのアドレスを渡す
+		list->SetGraphicsRootConstantBufferView(0, it->view_);		   // カメラデータ
+		list->SetGraphicsRootConstantBufferView(1, light_->view());	   // 平行光源データ
+		list->SetGraphicsRootDescriptorTable(8, s->GetFirstTexView()); // テクスチャデータ
+
+		// 通常モデルの描画を行う
+		modelManager_->SpriteModelDraw(list);
 
 		// 最後のイテレータでImGuiを描画する
 		if (it == std::prev(targets_.end())) {

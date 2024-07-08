@@ -20,6 +20,7 @@ void Camera::Init()
 	cameraDataBuffer_.Init(device);
 	// データに値を代入
 	cameraDataBuffer_.data_->DrawMeshlets = isDrawMeshlets_;
+	cameraDataBuffer_.data_->ViewProjection2D = Matrix4x4::MakeOrthGraphic(0.0f, 0.0f, (float)WinApp::kWindowWidth, (float)WinApp::kwindowHeight, 0.0f, 100.0f);
 
 	// 各リソース初期化
 	renderResource_.Init(device, heaps);  // レンダリングを行うリソース

@@ -45,6 +45,9 @@ public: // 純粋仮想関数
 
 public: // パブリックメンバ変数
 
+	// 表示トリガー
+	bool isActive_ = true;
+
 	// 破棄用トリガー
 	bool isDestroy_ = false;
 
