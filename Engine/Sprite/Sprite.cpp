@@ -103,8 +103,6 @@ void Sprite::DisplayImGui()
 			ImGui::TreePop();
 		}
 
-		transform_.DisplayImGui();
-
 		ImGui::TreePop();
 	}
 }
