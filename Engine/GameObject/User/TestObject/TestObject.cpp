@@ -12,38 +12,12 @@ void TestObject::Init()
 	AddSprite("TestSprite", { 0.0f, 0.0f }, { 512.0f, 512.0f }, TextureManager::Load("./Engine/Resource/Samples/Box", "uvChecker.png"));
 
 	// OBB生成
-	//AddColliderOBB("Test", &transform_.scale_, &transform_.rotate_, &transform_.translate_);
 	AddColliderAABB("Test", &transform_.translate_, &transform_.scale_);
-
-	//// アニメーションのパラメータ作成
-	//AnimationManager::GetInstance()->CreateAnimationParameter("Test");
-	//AnimationManager::GetInstance()->AddSelectAnimationKeys<Vector3>("Test", "Scale");
-	//AnimationManager::GetInstance()->AddSelectAnimationKeys<Vector3>("Test", "Rotate");
-	//AnimationManager::GetInstance()->AddSelectAnimationKeys<Vector3>("Test", "Translate");
-
-	//AnimationManager::GetInstance()->CreateAnimationParameter("Test2");
-	//AnimationManager::GetInstance()->AddSelectAnimationKeys<Vector3>("Test2", "Scale");
-	//AnimationManager::GetInstance()->AddSelectAnimationKeys<Vector3>("Test2", "Rotate");
-	//AnimationManager::GetInstance()->AddSelectAnimationKeys<Vector3>("Test2", "Translate");
-
-	//// アニメーションの作成
-	//animation_ = AnimationManager::GetInstance()->CreateAnimation("TestAnimation", "Test");
-	//animation_->AddAnimationKeys<Vector3>("Scale", &transform_.scale_);
-	//animation_->AddAnimationKeys<Vector3>("Rotate", &transform_.rotate_);
-	//animation_->AddAnimationKeys<Vector3>("Translate", &transform_.translate_);
-
-	/*line_ = std::make_unique<Line>();
-	line_->Init("TestLine", transform_.translate_, {0.35f, 0.35f}, 3.0f, TextureManager::Load("./Engine/Resource/Samples/Box", "uvChecker.png"));
-	line_->AddCollider("Line", this);*/
-
-	/*transform_.animations_[0].isLoop = true;
-	transform_.animations_[0].isPlay = true;*/
 }
 
 void TestObject::Update()
 {
-	// 線更新
-	//line_->Update();
+	
 }
 
 void TestObject::DisplayImGui()
