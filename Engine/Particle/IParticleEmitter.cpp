@@ -25,6 +25,7 @@ void IParticleEmitter::PreInit(const std::string& name, int32_t maxCount, int32_
 void IParticleEmitter::Init()
 {
 	// 基底クラスでは記述なし
+	model_->material_.enableLighting_ = false;
 }
 
 void IParticleEmitter::PreUpdate()
