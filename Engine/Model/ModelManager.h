@@ -3,6 +3,7 @@
 #include "NormalModel.h"
 #include "SkiningModel.h"
 #include "SpriteModel.h"
+#include "ParticleModel.h"
 #include <list>
 
 /// <summary>
@@ -103,10 +104,32 @@ public: // スプライトモデル用関数群
 	/// <param name="cmdList">描画に使用するコマンドリスト</param>
 	void SpriteModelDraw(ID3D12GraphicsCommandList6* cmdList);
 
+private: // スプライトモデル用変数群
+
+	// スプライトモデル配列
+	std::list<std::unique_ptr<SpriteModel>> spriteModels_;
+
+public: // パーティクルモデル用関数群
+
+	
+	/// <summary>
+	/// パーティクルモデル生成関数
+	/// </summary>
+	/// <param name="modelData">パーティクルに使用するモデル(マルチマテリアル不可)</param>
+	/// <param name="maxDrawCount">最大数</param>
+	/// <returns>パーティクルモデル</returns>
+	ParticleModel* CreateParticleModel(ModelData* modelData, int32_t maxDrawCount);
+
+	/// <summary>
+	/// パーティクルモデル描画関数
+	/// </summary>
+	/// <param name="cmdList">描画に使用するコマンドリスト</param>
+	void ParticleModelDraw(ID3D12GraphicsCommandList6* cmdList);
+
 private: // スキニングモデル用変数群
 
-	// スキニングモデル配列
-	std::list<std::unique_ptr<SpriteModel>> spriteModels_;
+	// パーティクルモデル配列
+	std::list<std::unique_ptr<ParticleModel>> particleModels_;
 
 private: // メンバ変数
 

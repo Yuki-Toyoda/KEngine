@@ -309,6 +309,9 @@
     <ClCompile Include="Engine\PostProcess\GaussianFilter\GaussianFilter.cpp" />
     <ClCompile Include="Engine\Model\SpriteModel.cpp" />
     <ClCompile Include="Engine\Base\RootSignature\SpriteRootSignature.cpp" />
+    <ClCompile Include="Engine\Model\ParticleModel.cpp" />
+    <ClCompile Include="Engine\Base\RootSignature\ParticleRootSignature.cpp" />
+    <ClCompile Include="Engine\GameObject\Samples\SampleParticle\SampleParticle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -684,6 +687,10 @@
     <ClInclude Include="Engine\PostProcess\GaussianFilter\GaussianFilter.h" />
     <ClInclude Include="Engine\Model\SpriteModel.h" />
     <ClInclude Include="Engine\Base\RootSignature\SpriteRootSignature.h" />
+    <ClInclude Include="Engine\Model\ParticleModel.h" />
+    <ClInclude Include="Engine\Base\RootSignature\ParticleRootSignature.h" />
+    <ClInclude Include="Engine\GameObject\Samples\SampleParticle\SampleParticle.h" />
+    <ClInclude Include="Engine\Utility\Random\Random.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -708,6 +715,7 @@
       <Filter>Engine\Resource\Shader</Filter>
     </None>
     <None Include="Engine\Resource\Shader\SpriteMeshlet\MeshletSprite.hlsli" />
+    <None Include="Engine\Resource\Shader\ParticleMeshlet\ParticleMeshlet.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -926,5 +934,8 @@
     </FxCompile>
     <FxCompile Include="Engine\Resource\Shader\SpriteMeshlet\MeshletSpriteMS.hlsl" />
     <FxCompile Include="Engine\Resource\Shader\SpriteMeshlet\MeshletSpritePS.hlsl" />
+    <FxCompile Include="Engine\Resource\Shader\ParticleMeshlet\ParticleMeshletMS.hlsl" />
+    <FxCompile Include="Engine\Resource\Shader\ParticleMeshlet\ParticleMeshletPS.hlsl" />
+    <FxCompile Include="Engine\Resource\Shader\ParticleMeshlet\ParticleMeshletAS.hlsl" />
   </ItemGroup>
 </Project>

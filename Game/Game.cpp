@@ -17,9 +17,9 @@ void Game::Init()
 	spriteManager_ = SpriteManager::GetInstance();
 	spriteManager_->Init();
 
-	//// パーティクルマネージャの初期化
-	//particleManager_ = ParticleEmitterManager::GetInstance();
-	//particleManager_->Init();
+	// パーティクルマネージャの初期化
+	particleManager_ = ParticleEmitterManager::GetInstance();
+	particleManager_->Init();
 
 	// シーンマネージャーにファクトリークラスをセット
 	sceneManager_->SetSceneFactory(std::make_unique<SceneFactory>());
@@ -37,9 +37,9 @@ void Game::Update()
 	// スプライトマネージャ更新
 	spriteManager_->Update();
 
-	//// パーティクルマネージャ更新
-	//particleManager_->Update();
-	//particleManager_->DisplayImGui();
+	// パーティクルマネージャ更新
+	particleManager_->Update();
+	particleManager_->DisplayImGui();
 
 	// アニメーションマネージャ更新
 	animManager_->Update();

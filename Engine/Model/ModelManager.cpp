@@ -9,6 +9,7 @@ void ModelManager::Init()
 	normalModels_.clear();
 	skiningModels_.clear();
 	spriteModels_.clear();
+	particleModels_.clear();
 }
 
 void ModelManager::Clear()
@@ -17,6 +18,7 @@ void ModelManager::Clear()
 	normalModels_.clear();
 	skiningModels_.clear();
 	spriteModels_.clear();
+	particleModels_.clear();
 }
 
 void ModelManager::Update()
@@ -37,8 +39,16 @@ void ModelManager::Update()
 		return false;
 	});
 
-	// 破壊フラグの立ったスキニングモデルを削除
+	// 破壊フラグの立ったスプライトモデルを削除
 	spriteModels_.remove_if([](std::unique_ptr<SpriteModel>& model) {
+		if (model->isDestroy_) {
+			return true;
+		}
+		return false;
+	});
+
+	// 破壊フラグの立ったスプライトモデルを削除
+	particleModels_.remove_if([](std::unique_ptr<ParticleModel>& model) {
 		if (model->isDestroy_) {
 			return true;
 		}
@@ -57,6 +67,11 @@ void ModelManager::Update()
 
 	// 全スプライトモデル更新
 	for (std::unique_ptr<SpriteModel>& model : spriteModels_) { // スプライトモデル
+		model->Update();
+	}
+
+	// 全パーティクルモデル更新
+	for (std::unique_ptr<ParticleModel>& model : particleModels_) { // パーティクルモデル
 		model->Update();
 	}
 }
@@ -133,6 +148,33 @@ void ModelManager::SpriteModelDraw(ID3D12GraphicsCommandList6* cmdList)
 {
 	// 全スプライトモデル描画
 	for (std::unique_ptr<SpriteModel>& model : spriteModels_) {
+		if (model->isActive_) {
+			model->Draw(cmdList);
+		}
+	}
+}
+
+ParticleModel* ModelManager::CreateParticleModel(ModelData* modelData, int32_t maxDrawCount)
+{
+	// 新規モデル生成
+	std::unique_ptr<ParticleModel> newModel = std::make_unique<ParticleModel>(); // 生成
+	newModel->Init(modelData);													 // 初期化
+	newModel->CreateBuffer(maxDrawCount);										 // バッファ生成
+
+	// インスタンス返還用のモデルを取得
+	ParticleModel* returnModel = newModel.get();
+
+	// 生成したモデルをリストに追加
+	particleModels_.push_back(std::move(newModel));
+
+	// 生成したモデルを返す
+	return returnModel;
+}
+
+void ModelManager::ParticleModelDraw(ID3D12GraphicsCommandList6* cmdList)
+{
+	// 全パーティクルモデル描画
+	for (std::unique_ptr<ParticleModel>& model : particleModels_) {
 		if (model->isActive_) {
 			model->Draw(cmdList);
 		}

@@ -10,8 +10,11 @@ void ParticleEmitterManager::Update()
 {
 	// 粒子が終了状態の時リストから除外
 	emitters_.remove_if([](std::unique_ptr<IParticleEmitter>& emitter) {
-		if (emitter->GetIsEnd())
+		if (emitter->GetIsEnd()) {
+			// 粒子用モデルを削除
+			emitter->model_->isDestroy_ = true;
 			return true;
+		}
 
 		return false;
 	});

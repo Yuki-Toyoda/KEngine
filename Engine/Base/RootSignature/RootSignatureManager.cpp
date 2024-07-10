@@ -2,6 +2,7 @@
 #include "ModelRootSignature.h"
 #include "SkinModelRootSignature.h"
 #include "SpriteRootSignature.h"
+#include "ParticleRootSignature.h"
 
 void RootSignatureManager::Init()
 {
@@ -9,6 +10,7 @@ void RootSignatureManager::Init()
 	CreateRootSignature<ModelRootSignature>();		   // モデル用
 	CreateRootSignature<SkinModelRootSignature>();     // スキンアニメーションモデル用
 	CreateRootSignature<SpriteRootSignature>();		   // スプライト用
+	CreateRootSignature<ParticleRootSignature>();	   // パーティクル用
 }
 
 ID3D12RootSignature* RootSignatureManager::GetRootSignature(const int32_t& index)
