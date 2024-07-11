@@ -94,9 +94,6 @@
     <ClCompile Include="Engine\Utility\Easing\Easing.cpp">
       <Filter>App\Utility\Easing</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Primitive\2d\Plane.cpp">
-      <Filter>Engine\Primitive\2d</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Sprite\Sprite.cpp">
       <Filter>App\Sprite</Filter>
     </ClCompile>
@@ -175,9 +172,6 @@
     </ClCompile>
     <ClCompile Include="Engine\GameObject\WorldTransform.cpp">
       <Filter>App\GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Primitive\2d\BillboardPlane.cpp">
-      <Filter>Engine\Primitive\2d</Filter>
     </ClCompile>
     <ClCompile Include="Game\Game.cpp">
       <Filter>Game</Filter>
@@ -327,6 +321,10 @@
     <ClCompile Include="Engine\Base\RootSignature\SpriteRootSignature.cpp">
       <Filter>Engine\Base\RootSignature</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\GameObject\Samples\SampleLevel\SampleLevelObjects.cpp" />
+    <ClCompile Include="Engine\Level\LevelLoader.cpp" />
+    <ClCompile Include="Engine\Primitive\2d\BillboardPlane.cpp" />
+    <ClCompile Include="Engine\Primitive\2d\Plane.cpp" />
     <ClCompile Include="Engine\PostProcess\Vignette\Vignette.cpp" />
     <ClCompile Include="Engine\Base\Renderer\CopyRenderer.cpp" />
     <FxCompile Include="Engine\Resource\Shader\MeshletMS.hlsl" />
@@ -414,6 +412,9 @@
     <ClCompile Include="Engine\PostProcess\GaussianFilter\GaussianFilter.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Utility\Line\Line.h">
+      <Filter>App\Utility\Line</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\Utility\Line\Line.h">
       <Filter>App\Utility\Line</Filter>
     </ClInclude>
@@ -603,6 +604,11 @@
     <ClInclude Include="Engine\Base\RootSignature\SpriteRootSignature.h">
       <Filter>Engine\Base\RootSignature</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\GameObject\Samples\SampleLevel\SampleLevelObjects.h" />
+    <ClInclude Include="Engine\Level\LevelLoader.h" />
+    <ClInclude Include="Engine\Utility\Angle\Angle.h" />
+    <ClInclude Include="Engine\Primitive\2d\BillboardPlane.h" />
+    <ClInclude Include="Engine\Primitive\2d\Plane.h" />
     <ClInclude Include="Engine\PostProcess\Vignette\Vignette.h" />
     <ClInclude Include="Engine\Base\Renderer\CopyRenderer.h" />
     <ClInclude Include="Engine\Base\Resource\Rendering\RenderResource.h" />
