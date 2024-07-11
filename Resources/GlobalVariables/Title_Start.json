@@ -1,0 +1,41 @@
+{
+    "Title_Start": {
+        "Camera_Rotate : KeyCount": 2,
+        "Camera_Rotate key : 0": [
+            -0.15000000596046448,
+            0.32499998807907104,
+            0.0
+        ],
+        "Camera_Rotate key : 0 : EasingParameter": 0,
+        "Camera_Rotate key : 0 : PlayFrame": 0,
+        "Camera_Rotate key : 1": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Camera_Rotate key : 1 : EasingParameter": 3,
+        "Camera_Rotate key : 1 : PlayFrame": 60,
+        "Camera_Translate : KeyCount": 2,
+        "Camera_Translate key : 0": [
+            -1.75,
+            0.9200000166893005,
+            -3.0
+        ],
+        "Camera_Translate key : 0 : EasingParameter": 0,
+        "Camera_Translate key : 0 : PlayFrame": 0,
+        "Camera_Translate key : 1": [
+            0.0,
+            2.0,
+            -10.0
+        ],
+        "Camera_Translate key : 1 : EasingParameter": 3,
+        "Camera_Translate key : 1 : PlayFrame": 60,
+        "Camera_Translate key : 2": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "Camera_Translate key : 2 : EasingParameter": 0,
+        "Camera_Translate key : 2 : PlayFrame": 120
+    }
+}

@@ -10,6 +10,7 @@
 #include "../Sprite/SpriteManager.h"
 #include "../Collider/CollisionManager.h"
 #include "../Utility/KLib.h"
+#include "../Audio/Audio.h"
 
 /// 最小構成
 /*

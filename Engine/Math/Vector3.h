@@ -1,4 +1,5 @@
 #pragma once
+#include <numbers>
 
 // クラスの前方宣言
 class Matrix4x4;

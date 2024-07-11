@@ -107,6 +107,21 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   <ItemGroup>
     <ClCompile Include="Engine\Base\Renderer\CopyRenderer.cpp" />
     <ClCompile Include="Engine\Base\Resource\Rendering\RenderResource.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\Enemy.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\EnemyBullet.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\State\EnemyDead.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\State\EnemyDown.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\State\EnemyRoot.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Enemy\State\EnemyShot.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Floor\Floor.cpp" />
+    <ClCompile Include="Engine\GameObject\User\FollowCamera\FollowCamera.cpp" />
+    <ClCompile Include="Engine\GameObject\User\LockOn\LockOn.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Player\Player.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Player\State\Attack.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Player\State\Damage.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Player\State\Root.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Player\State\RotatingSlash.cpp" />
+    <ClCompile Include="Engine\GameObject\User\TitleSceneManager\TitleManager.cpp" />
     <ClCompile Include="Engine\Lighting\Light\DirectionalLight.cpp" />
     <ClCompile Include="Engine\Base\DXC\DXC.cpp" />
     <ClCompile Include="Engine\Base\Resource\Rendering\DepthStencil.cpp" />
@@ -169,6 +184,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Externals\imgui\imgui_tables.cpp" />
     <ClCompile Include="Externals\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Engine\Utility\Line\Line.cpp" />
+    <ClCompile Include="Engine\GameObject\User\Fairy\Fairy.cpp" />
     <ClCompile Include="Game\Game.cpp" />
     <ClCompile Include="Engine\KEngine.cpp" />
     <ClCompile Include="Engine\Base\RootSignature\IRootSignature.cpp" />
@@ -210,6 +226,25 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   <ItemGroup>
     <ClInclude Include="Engine\Base\Renderer\CopyRenderer.h" />
     <ClInclude Include="Engine\Base\Resource\Rendering\RenderResource.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\Enemy.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\EnemyBullet.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyDead.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyDown.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyRoot.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyShot.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyStateList.h" />
+    <ClInclude Include="Engine\GameObject\User\Enemy\State\IEnemyState.h" />
+    <ClInclude Include="Engine\GameObject\User\Floor\Floor.h" />
+    <ClInclude Include="Engine\GameObject\User\FollowCamera\FollowCamera.h" />
+    <ClInclude Include="Engine\GameObject\User\LockOn\LockOn.h" />
+    <ClInclude Include="Engine\GameObject\User\Player\Player.h" />
+    <ClInclude Include="Engine\GameObject\User\Player\State\Attack.h" />
+    <ClInclude Include="Engine\GameObject\User\Player\State\Damage.h" />
+    <ClInclude Include="Engine\GameObject\User\Player\State\IState.h" />
+    <ClInclude Include="Engine\GameObject\User\Player\State\Root.h" />
+    <ClInclude Include="Engine\GameObject\User\Player\State\RotatingSlash.h" />
+    <ClInclude Include="Engine\GameObject\User\Player\State\StateList.h" />
+    <ClInclude Include="Engine\GameObject\User\TitleSceneManager\TitleManager.h" />
     <ClInclude Include="Engine\Lighting\Light\DirectionalLight.h" />
     <ClInclude Include="Engine\Base\DXC\DXC.h" />
     <ClInclude Include="Engine\Base\Command.h" />
@@ -221,6 +256,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Base\Resource\Data\StructuredBuffer.h" />
     <ClInclude Include="Engine\Base\Resource\Rendering\IRenderingResource.h" />
     <ClInclude Include="Engine\Model\Component\Vertex.h" />
+    <ClInclude Include="Engine\PostProcess\GaussianFilter\GaussianFilter.h" />
     <ClInclude Include="Engine\Utility\Counter\Counter.h" />
     <ClInclude Include="Engine\Utility\DataSegment\DataSegment.h" />
     <ClInclude Include="Engine\Primitive\2d\BillboardPlane.h" />
@@ -297,6 +333,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Externals\imgui\imstb_textedit.h" />
     <ClInclude Include="Externals\imgui\imstb_truetype.h" />
     <ClInclude Include="Engine\Utility\Line\Line.h" />
+    <ClInclude Include="Engine\GameObject\User\Fairy\Fairy.h" />
     <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Engine\KEngine.h" />
     <ClInclude Include="Engine\Scene\SceneFactory.h" />

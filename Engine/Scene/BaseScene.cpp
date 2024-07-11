@@ -31,5 +31,4 @@ void BaseScene::SampleModelLoad()
 	modelDataManager_->LoadNewModel("./Engine/Resource/Samples/SkyDome", "SkyDome.obj");
 	modelDataManager_->LoadNewModel("./Engine/Resource/Samples/TestMultiMesh", "TestMultiMesh.gltf");
 	modelDataManager_->LoadNewModel("./Engine/Resource/Samples/TestMultiMeshAnim", "TestMultiMeshAnim.gltf");
-	modelDataManager_->LoadNewModel("./Engine/Resource/Samples/Human", "walk.gltf");
 }

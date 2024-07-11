@@ -276,8 +276,6 @@ Vector3 Vector3::Normalize() const noexcept
 	return *this / Length();
 }
 
-
-
 float Vector3::Dot(const Vector3& v1, const Vector3& v2)
 {
 	// 内積を求める

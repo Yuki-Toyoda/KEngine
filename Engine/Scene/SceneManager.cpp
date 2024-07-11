@@ -11,7 +11,7 @@ SceneManager* SceneManager::GetInstance()
 void SceneManager::Init()
 {
 	// シーン初期化
-	currentScene_ = sceneFactory_->CreateScene(""); // サンプルシーン生成
+	currentScene_ = sceneFactory_->CreateScene("Game"); // ゲームシーン生成
 	currentScene_->PreInitialize(); // 共通初期化を行う
 	currentScene_->LoadModel(); // モデル読み込みを行う
 	currentScene_->Init(); // 初期化を行う

@@ -53,10 +53,17 @@ public: // メンバ関数
 public: // アクセッサ等
 
 	/// <summary>
-	/// 再生中アニメーションが再生されているかのゲッター
+	/// 配列内のいずれかアニメーションが再生されているかのゲッター
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>再生されているか</returns>
 	bool GetIsPlayingAnimation();
+
+	/// <summary>
+	/// 引数で指定されたアニメーションが再生されているかのゲッター
+	/// </summary>
+	/// <param name="animName">検証するアニメーション名</param>
+	/// <returns>再生されているか</returns>
+	bool GetIsPlayingAnimation(const std::string& animName);
 
 private: // プライベートなメンバ関数
 
