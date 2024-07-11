@@ -193,7 +193,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Model\Component\Joint.cpp" />
     <ClCompile Include="Engine\Model\Component\JointWeight.cpp" />
     <ClCompile Include="Engine\PostProcess\GrayScale\GrayScale.cpp" />
-    <ClCompile Include="Engine\PostProcess\GaussianFilter\GaussianFilter.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\Scene\SceneFactory.cpp" />
     <ClCompile Include="Engine\Base\RootSignature\ModelRootSignature.cpp" />
