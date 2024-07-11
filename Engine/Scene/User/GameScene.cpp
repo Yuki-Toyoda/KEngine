@@ -22,6 +22,10 @@ void GameScene::Init(){
 	camera->UseThisCamera();
 	player_->followCamera_ = camera;
 
+	// スカイドーム生成
+	SkyDome* skyDome = nullptr;
+	skyDome = gameObjectManager_->CreateInstance<SkyDome>("SkyDome", IObject::TagNone);
+
 	// 床生成
 	Floor* floor = nullptr;
 	floor = gameObjectManager_->CreateInstance<Floor>("Floor", IObject::TagFloor);
@@ -47,10 +51,6 @@ void GameScene::Init(){
 	fairy = gameObjectManager_->CreateInstance<Fairy>("Fairy", IObject::TagPlayer);
 	fairy->SetTarget(&player_->transform_);
 	fairy->SetPlayer(player_);
-
-	// スカイドーム生成
-	SkyDome* skyDome = nullptr;
-	skyDome = gameObjectManager_->CreateInstance<SkyDome>("SkyDome", IObject::TagNone);
 }
 
 void GameScene::Update()
