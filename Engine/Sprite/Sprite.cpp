@@ -96,7 +96,7 @@ void Sprite::DisplayImGui()
 		ImGui::DragFloat2("AnchorPoint", &anchorPoint_.x, 0.01f);
 		ImGui::DragFloat2("texBase", &texBase_.x, 1.0f);
 		ImGui::DragFloat2("texSize", &texSize_.x, 1.0f);
-		ImGui::ColorPicker4("Color", &color_.x);
+		ImGui::ColorPicker4("Color", &model_->material_.color_.x);
 
 		if (ImGui::TreeNode("UVTransform")) {
 			model_->material_.uvTransform_.DisplayImGui("uvTransform");

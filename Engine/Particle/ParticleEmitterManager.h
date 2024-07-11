@@ -73,6 +73,9 @@ inline void ParticleEmitterManager::CreateEmitter(const std::string& name, int32
 	newEmitter->SetParticleType<SelectParticle>();
 	// 生成したエミッタを初期化
 	newEmitter->PreInit(name, maxCount, maxGenerateCount, translate, aliveTime, frequency, model);
+	// エミッタ固有の初期化処理の呼び出し
+	newEmitter->Init();
+	
 	// 生成したエミッタをリストに追加する
 	emitters_.push_back(std::move(newEmitter));
 }

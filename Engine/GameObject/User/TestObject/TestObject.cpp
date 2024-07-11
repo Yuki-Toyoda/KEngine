@@ -31,6 +31,8 @@ void TestObject::DisplayImGui()
 
 	transform_.DisplayImGui();
 
+	ImGui::DragFloat4("MaterialColor", &normalModels_[0]->materials_[0].color_.x, 0.01f, 0.0f, 1.0f);
+
 	if (ImGui::Button("Delete This")) {
 		Destroy();
 	}

@@ -88,6 +88,7 @@ float32_t4 main(PSInput input) : SV_TARGET {
 	float32_t2 uv = input.texcoord;
 
 	output = gTexture.Sample(gSampler, uv);
+	output.a = 1.0f;
 
 )";
 
