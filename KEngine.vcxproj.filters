@@ -322,7 +322,6 @@
       <Filter>Engine\Base\RootSignature</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\Samples\SampleLevel\SampleLevelObjects.cpp" />
-    <ClCompile Include="Engine\Level\LevelLoader.cpp" />
     <ClCompile Include="Engine\Primitive\2d\BillboardPlane.cpp" />
     <ClCompile Include="Engine\Primitive\2d\Plane.cpp" />
     <ClCompile Include="Engine\PostProcess\Vignette\Vignette.cpp" />
@@ -405,11 +404,11 @@
     <ClCompile Include="Engine\Base\Resource\Rendering\TextureResource.cpp" />
     <ClCompile Include="Engine\Base\Renderer\NormalRenderer.cpp" />
     <ClCompile Include="Engine\Base\Renderer\RendererManager.cpp" />
-    <ClCompile Include="Engine\Base\RootSignature\PostProcessRootSignature.cpp" />
     <ClCompile Include="Engine\Base\Renderer\PPRenderer.cpp" />
     <ClCompile Include="Engine\Base\RootSignature\SkinModelRootSignature.cpp" />
     <ClCompile Include="Engine\GameObject\Samples\SampleSkinAnim\SampleAnim.cpp" />
     <ClCompile Include="Engine\PostProcess\GaussianFilter\GaussianFilter.cpp" />
+    <ClCompile Include="Engine\Level\LevelLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Utility\Line\Line.h">
@@ -617,7 +616,6 @@
     <ClInclude Include="Engine\Base\Command.h" />
     <ClInclude Include="Engine\Base\Resource\Rendering\DepthStencil.h" />
     <ClInclude Include="Engine\Base\Resource\Rendering\BackBuffer.h" />
-    <ClInclude Include="Engine\Base\Buffer\BufferStructs.h" />
     <ClInclude Include="Engine\Base\Config\Config.h" />
     <ClInclude Include="Engine\Base\Resource\Data\ConstantBuffer.h" />
     <ClInclude Include="Engine\Base\Resource\Data\IDataResource.h" />
@@ -711,7 +709,6 @@
     <ClInclude Include="Engine\Base\Renderer\NormalRenderer.h" />
     <ClInclude Include="Engine\Base\Renderer\RendererManager.h" />
     <ClInclude Include="Engine\Lighting\Light\ILight.h" />
-    <ClInclude Include="Engine\Base\RootSignature\PostProcessRootSignature.h" />
     <ClInclude Include="Engine\Base\Renderer\PPRenderer.h" />
     <ClInclude Include="Engine\Base\RootSignature\SkinModelRootSignature.h" />
     <ClInclude Include="Engine\GameObject\Samples\SampleSkinAnim\SampleAnim.h" />
@@ -797,8 +794,6 @@
     <ClCompile Include="Engine\Particle\IParticleEmitter.cpp" />
     <ClCompile Include="Engine\Particle\ParticleEmitterManager.cpp" />
     <ClCompile Include="Engine\Primitive\2d\Plane.cpp" />
-    <ClCompile Include="Engine\Primitive\3d\Mesh.cpp" />
-    <ClCompile Include="Engine\Primitive\3d\MeshManager.cpp" />
     <ClCompile Include="Engine\Primitive\IPrimitive.cpp" />
     <ClCompile Include="Engine\Primitive\PrimitiveManager.cpp" />
     <ClCompile Include="Engine\Resource\Material\Material.cpp" />
@@ -1116,8 +1111,6 @@
     <ClInclude Include="Engine\Particle\IParticleEmitter.h" />
     <ClInclude Include="Engine\Particle\ParticleEmitterManager.h" />
     <ClInclude Include="Engine\Primitive\2d\Plane.h" />
-    <ClInclude Include="Engine\Primitive\3d\Mesh.h" />
-    <ClInclude Include="Engine\Primitive\3d\MeshManager.h" />
     <ClInclude Include="Engine\Primitive\IPrimitive.h" />
     <ClInclude Include="Engine\Primitive\PrimitiveManager.h" />
     <ClInclude Include="Engine\Resource\Material\Material.h" />

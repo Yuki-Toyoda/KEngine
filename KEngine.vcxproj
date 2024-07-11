@@ -122,6 +122,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\GameObject\User\Player\State\Root.cpp" />
     <ClCompile Include="Engine\GameObject\User\Player\State\RotatingSlash.cpp" />
     <ClCompile Include="Engine\GameObject\User\TitleSceneManager\TitleManager.cpp" />
+    <ClCompile Include="Engine\Level\LevelLoader.cpp" />
     <ClCompile Include="Engine\Lighting\Light\DirectionalLight.cpp" />
     <ClCompile Include="Engine\Base\DXC\DXC.cpp" />
     <ClCompile Include="Engine\Base\Resource\Rendering\DepthStencil.cpp" />
