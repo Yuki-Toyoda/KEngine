@@ -55,6 +55,13 @@ public: // メンバ関数
 	PSO& SetPixelShader(std::string filePath);
 
 	/// <summary>
+	/// タスクシェーダーセット関数
+	/// </summary>
+	/// <param name="filePath">タスクシェーダーまでのファイルパス</param>
+	/// <returns>タスクシェーダー</returns>
+	PSO& SetTaskShader(std::string filePath);
+
+	/// <summary>
 	/// 頂点シェーダーセット関数
 	/// </summary>
 	/// <param name="filePath">頂点シェーダーまでのファイルパス</param>
@@ -72,8 +79,9 @@ public: // メンバ関数
 	/// DSV設定セット関数
 	/// </summary>
 	/// <param name="writeDSV">深度情報を書き込むか</param>
+	/// <param name="enableMask">マスクを有効にするか</param>
 	/// <returns>PSO自身</returns>
-	PSO& SetDepthStencilState(bool writeDSV);
+	PSO& SetDepthStencilState(bool writeDSV, bool enableMask);
 
 	/// <summary>
 	/// DSVフォーマットセット関数
@@ -118,8 +126,9 @@ private: // プライベートなメンバ関数
 	/// 深度ステンシルビュー設定を行う関数
 	/// </summary>
 	/// <param name="isWriteDSV">Depthを書き込むか</param>
+	/// <param name="enableMask">マスクを有効にするか</param>
 	/// <returns>深度ステンシルビュー設定</returns>
-	D3D12_DEPTH_STENCIL_DESC SettingDepthStencilState(bool isWriteDSV = true);
+	D3D12_DEPTH_STENCIL_DESC SettingDepthStencilState(bool isWriteDSV, bool enableMask);
 
 private: // メンバ変数
 	// パイプラインステートオブジェクトの状態

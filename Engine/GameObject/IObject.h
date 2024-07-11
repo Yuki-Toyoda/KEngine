@@ -6,7 +6,6 @@
 #include <numbers>
 #include "../../Externals/imgui/imgui.h"
 #include "WorldTransform.h"
-#include "../Primitive/PrimitiveManager.h"
 #include "../Model/ModelManager.h"
 #include "../Sprite/SpriteManager.h"
 #include "../Collider/CollisionManager.h"
@@ -65,7 +64,7 @@ public: // メンバ関数
 	// コンストラクタ
 	IObject() = default;
 	// 仮想デストラクタ
-	virtual ~IObject();
+	virtual ~IObject() = default;
 
 	// (ユーザー呼び出し禁止)共通初期化関数
 	void PreInitialize(std::string name, Tag tag);
@@ -210,7 +209,7 @@ protected: // プライベートなメンバ関数
 	/// <param name="position">初期座標</param>
 	/// <param name="size">大きさ</param>
 	/// <param name="texture">テクスチャ</param>
-	void AddSprite(const std::string& name, const Vector2& position, const Vector2& size, Texture* texture);
+	void AddSprite(const std::string& name, const Vector2& position, const Vector2& size, Texture texture);
 
 public: // パブリックなメンバ変数
 
@@ -231,9 +230,9 @@ public: // パブリックなメンバ変数
 	std::vector<Sprite*> sprites_;
 
 protected: // 継承メンバ変数
-
-	// 形状マネージャのインスタンス
-	PrimitiveManager* primitiveManager_ = nullptr;
+	
+	// モデルデータマネージャーのインスタンス
+	ModelDataManager* modelDataManager_ = nullptr;
 	// モデルマネージャーのインスタンス
 	ModelManager*	  modelManager_ = nullptr;
 	// 衝突マネージャーのインスタンス

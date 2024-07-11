@@ -5,3 +5,4 @@
 
 #include "Samples/SampleSkyDome/SkyDome.h"
 #include "Samples/SampleSkinAnim/SampleAnim.h"
+#include "Samples/SampleParticle/SampleParticle.h"

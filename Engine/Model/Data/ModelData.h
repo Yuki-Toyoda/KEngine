@@ -64,6 +64,9 @@ public: // パブリックメンバ変数
 	// モデル名
 	std::string modelName_ = "";
 
+	// 頂点データ格納用
+	std::vector<VertexData>	vertices_;
+
 	// モデルデータ配列群
 	std::vector<Mesh>		   meshes_;		   // メッシュ
 	std::vector<Node>		   nodes_;		   // ノード

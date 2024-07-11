@@ -25,8 +25,8 @@ public: // メンバ関数
 	/// <param name="translate">発生座標</param>
 	/// <param name="aliveTime">エミッタの生存時間</param>
 	/// <param name="frequency">粒子生成間隔</param>
-	/// <param name="texture">粒子のテクスチャ</param>
-	void PreInit(const std::string& name, int32_t maxCount, int32_t maxGenerateCount, const Vector3& translate, float aliveTime, float frequency, Texture* texture);
+	/// <param name="model">パーティクルに使用するモデル</param>
+	void PreInit(const std::string& name, int32_t maxCount, int32_t maxGenerateCount, const Vector3& translate, float aliveTime, float frequency, ParticleModel* model);
 
 	/// <summary>
 	/// 初期化関数
@@ -81,6 +81,11 @@ public: // その他関数群
 	/// </summary>
 	virtual void DisplayImGui();
 
+public: // パブリックメンバ変数
+
+	// パーティクルに使用されるモデル
+	ParticleModel* model_ = nullptr;
+
 protected: // メンバ変数
 
 	// パーティクル達
@@ -101,9 +106,6 @@ protected: // メンバ変数
 	KLib::DeltaTimer aliveTimer_;
 	// エミッタの終了トリガー
 	bool isEnd_ = false;
-
-	// 生成する粒子のテクスチャ
-	Texture* texture_;
 
 	// 生成する粒子の型
 	std::function<std::unique_ptr<IParticle>()> type_;

@@ -46,9 +46,9 @@ public: // メンバ関数
 	/// <param name="translate">エミッタの初期座標</param>
 	/// <param name="aliveTime">エミッタの生存時間</param>
 	/// <param name="frequency">粒子の生成間隔</param>
-	/// <param name="texture">粒子のテクスチャ</param>
+	/// <param name="texture">パーティクルに使用するモデル</param>
 	template<IsIParticleEmitter SelectEmitter, IsIParticle SelectParticle>
-	inline void CreateEmitter(const std::string& name, int32_t maxCount, int32_t maxGenerateCount, const Vector3& translate, float aliveTime, float frequency, Texture* texture);
+	inline void CreateEmitter(const std::string& name, int32_t maxCount, int32_t maxGenerateCount, const Vector3& translate, float aliveTime, float frequency, ParticleModel* model);
 
 public: // その他関数群
 
@@ -65,14 +65,17 @@ private: // メンバ変数
 };
 
 template<IsIParticleEmitter SelectEmitter, IsIParticle SelectParticle>
-inline void ParticleEmitterManager::CreateEmitter(const std::string& name, int32_t maxCount, int32_t maxGenerateCount, const Vector3& translate, float aliveTime, float frequency, Texture* texture)
+inline void ParticleEmitterManager::CreateEmitter(const std::string& name, int32_t maxCount, int32_t maxGenerateCount, const Vector3& translate, float aliveTime, float frequency, ParticleModel* model)
 {
 	// 新しいエミッタを生成
 	std::unique_ptr<SelectEmitter> newEmitter = std::make_unique<SelectEmitter>();
 	// エミッタで生成する粒子の型を指定
 	newEmitter->SetParticleType<SelectParticle>();
 	// 生成したエミッタを初期化
-	newEmitter->PreInit(name, maxCount, maxGenerateCount, translate, aliveTime, frequency, texture);
+	newEmitter->PreInit(name, maxCount, maxGenerateCount, translate, aliveTime, frequency, model);
+	// エミッタ固有の初期化処理の呼び出し
+	newEmitter->Init();
+	
 	// 生成したエミッタをリストに追加する
 	emitters_.push_back(std::move(newEmitter));
 }

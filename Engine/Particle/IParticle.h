@@ -2,7 +2,6 @@
 #include "../GameObject/WorldTransform.h"
 #include "../Resource/Texture/TextureManager.h"
 #include "../Primitive/PrimitiveManager.h"
-#include "../Primitive/2d/BillboardPlane.h"
 #include "../Utility/KLib.h"
 
 /// <summary>
@@ -15,10 +14,12 @@ public: // コンストラクタ等
 	// コンストラクタ
 	IParticle() = default;
 	// 仮想デストラクタ
-	virtual ~IParticle();
+	virtual ~IParticle() = default;
 
 public: // メンバ関数
 
+	
+	/// <param name="color">色</param>
 	/// <summary>
 	/// 共通初期化関数
 	/// </summary>
@@ -26,9 +27,9 @@ public: // メンバ関数
 	/// <param name="position">生成座標</param>
 	/// <param name="scale">初期サイズ</param>
 	/// <param name="velocity">速度</param>
-	/// <param name="texture">テクスチャ</param>
+	/// <param name="material">マテリアル</param>
 	/// <param name="color">色</param>
-	void PreInit(float aliveTime, const Vector3& position, const Vector2& scale, const Vector3& velocity, Texture* texture, const Vector4& color);
+	void PreInit(float aliveTime, const Vector3& position, const Vector3& scale, const Vector3& velocity, const Material& material, const Vector4& color);
 
 	/// <summary>
 	/// 初期化関数
@@ -58,28 +59,18 @@ public: // アクセッサ等
 	/// <param name="isEnd">設定する状態</param>
 	void SetIsEnd(bool isEnd) { isEnd_ = isEnd; }
 
-public: // その他関数群
-
-protected: // メンバ変数
-
-	// 平面
-	BillboardPlane* plane_ = nullptr;
+public: // パブリックメンバ変数
 
 	// パーティクル座標
 	WorldTransform transform_;
+
+	// 粒子単体のマテリアル
+	Material material_;
+
+protected: // メンバ変数
+
 	// 速度
 	Vector3 velocity_ = { 0.0f, 0.0f, 0.0f };
-
-	// 大きさ
-	Vector2 scale_ = { 0.0f, 0.0f };
-	// 回転
-	float rotate_ = 0.0f;
-
-	// アンカーポイント
-	Vector2 anchorPoint_ = { 0.5f, 0.5f };
-
-	// 色
-	Vector4 color_;
 
 	// テクスチャ始点
 	Vector2 texBase_ = { 0.0f, 0.0f };
@@ -98,4 +89,3 @@ protected: // メンバ変数
 /// </summary>
 template <class SelectParticle>
 concept IsIParticle = std::is_base_of<IParticle, SelectParticle>::value;
-

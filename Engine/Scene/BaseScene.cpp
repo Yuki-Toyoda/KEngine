@@ -16,7 +16,7 @@ void BaseScene::PreInitialize()
 	// このカメラを使う
 	camera_->UseThisCamera();
 
-	// モデルリストクリア
+	// 読み込み済みモデルクリア
 	modelManager_->Clear();
 
 	// サンプルモデルの読み込み
@@ -27,6 +27,7 @@ void BaseScene::SampleModelLoad()
 {
 	// サンプルモデルの読み込みをここで行う
 	modelDataManager_->LoadNewModel("./Engine/Resource/Samples/Box", "Box.obj");
+	modelDataManager_->LoadNewModel("./Engine/Resource/Samples/Plane", "Plane.obj");
 	modelDataManager_->LoadNewModel("./Engine/Resource/Samples/SkyDome", "SkyDome.obj");
 	modelDataManager_->LoadNewModel("./Engine/Resource/Samples/TestMultiMesh", "TestMultiMesh.gltf");
 	modelDataManager_->LoadNewModel("./Engine/Resource/Samples/TestMultiMeshAnim", "TestMultiMeshAnim.gltf");

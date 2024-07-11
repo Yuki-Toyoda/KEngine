@@ -1,13 +1,6 @@
 #include "IParticle.h"
-#include "../GameObject/GameObjectManager.h"
 
-IParticle::~IParticle()
-{
-	// 粒子用の平面を破壊
-	plane_->isDestroy_ = true;
-}
-
-void IParticle::PreInit(float aliveTime, const Vector3& position, const Vector2& scale, const Vector3& velocity, Texture* texture, const Vector4& color)
+void IParticle::PreInit(float aliveTime, const Vector3& position, const Vector3& scale, const Vector3& velocity, const Material& material, const Vector4& color)
 {
 	// 生存時間設定
 	aliveTimer_.Start(aliveTime);
@@ -18,24 +11,15 @@ void IParticle::PreInit(float aliveTime, const Vector3& position, const Vector2&
 	// 座標設定
 	transform_.translate_ = position;
 	// サイズ設定
-	scale_ = scale;
+	transform_.scale_ = scale;
 
 	// 速度設定
 	velocity_ = velocity;
 
+	// マテリアル取得
+	material_ = material;
 	// 色設定
-	color_ = color;
-	
-	// 平面生成
-	plane_ = PrimitiveManager::GetInstance()->CreateInstance<BillboardPlane>(); // 生成
-	plane_->transform_ = &transform_;											// トランスフォーム設定
-	plane_->commonColor = &color_;												// 色設定
-	//plane_->texture_ = texture;													// テクスチャ設定
-	plane_->primitiveType_ = IPrimitive::kModelParticle;						// 描画タイプ設定
-	plane_->SetMainCamera(GameObjectManager::GetInstance()->GetUseCamera());	// 使用中カメラをセット
-	//texSize_ = plane_->texture_->GetTextureSize();
-
-	texture;
+	material_.color_ = color;
 
 	// 固有初期化を呼び出す
 	Init();
@@ -53,7 +37,7 @@ void IParticle::Update()
 {
 	transform_.translate_ = transform_.translate_ + velocity_;
 
-	color_.w = KLib::Lerp(1.0f, 0.0f, KLib::EaseInOutQuad(aliveTimer_.GetProgress()));
+	material_.color_.w = KLib::Lerp(1.0f, 0.0f, KLib::EaseInOutQuad(aliveTimer_.GetProgress()));
 }
 
 void IParticle::PostUpdate()
@@ -88,11 +72,11 @@ void IParticle::PostUpdate()
 	//// ビルボード行列更新
 	//plane_->UpdateBillboardMat();
 
-	//// タイマー更新
-	//aliveTimer_.Update();
+	// タイマー更新
+	aliveTimer_.Update();
 
-	//// タイマーが終了していたら
-	//if (aliveTimer_.GetIsFinish()) {
-	//	isEnd_ = true;
-	//}
+	// タイマーが終了していたら
+	if (aliveTimer_.GetIsFinish()) {
+		isEnd_ = true;
+	}
 }

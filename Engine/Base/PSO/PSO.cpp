@@ -11,7 +11,7 @@ PSO& PSO::Init(ID3D12RootSignature* signature, DXC* dxc)
 	desc_.pRootSignature		= signature;							  // ルートシグネチャのセット
 	desc_.BlendState			= SettingBlendState(0);					  // ブレンド設定
 	desc_.RasterizerState		= SettingRasterizerDesc();				  // ラスタライザ設定
-	desc_.DepthStencilState		= SettingDepthStencilState(1);			  // DSVの設定を行う
+	desc_.DepthStencilState		= SettingDepthStencilState(1, 1);		  // DSVの設定を行う
 	desc_.DSVFormat				= DXGI_FORMAT_D24_UNORM_S8_UINT;		  // DSVのフォーマット設定
 	desc_.NumRenderTargets		= 1;									  // 書き込むRTVの数
 	desc_.RTVFormats[0]			= DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;		  // RTVのフォーマット設定
@@ -34,7 +34,7 @@ PSO& PSO::VertInit(ID3D12RootSignature* signature, DXC* dxc)
 	vertDesc_.pRootSignature = signature;									  // ルートシグネチャのセット
 	vertDesc_.BlendState = SettingBlendState(0);							  // ブレンド設定
 	vertDesc_.RasterizerState = SettingRasterizerDesc();					  // ラスタライザ設定
-	vertDesc_.DepthStencilState = SettingDepthStencilState(0);				  // DSVの設定を行う
+	vertDesc_.DepthStencilState = SettingDepthStencilState(0, 1);			  // DSVの設定を行う
 	vertDesc_.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;					  // DSVのフォーマット設定
 	vertDesc_.NumRenderTargets = 1;											  // 書き込むRTVの数
 	vertDesc_.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;				  // RTVのフォーマット設定
@@ -106,6 +106,20 @@ PSO& PSO::SetPixelShader(std::string filePath)
 	return *this;
 }
 
+PSO& PSO::SetTaskShader(std::string filePath)
+{
+	// シェーダーコンパイルを行う
+	IDxcBlob* blob = nullptr;											   // コンパイル結果確認用
+	blob = dxc_->CompileShader(Debug::ConvertString(filePath), L"as_6_5"); // シェーダーコンパイルを行う
+	assert(blob != nullptr);											   // コンパイル成否確認
+
+	// シェーダーをセット
+	desc_.AS = { blob->GetBufferPointer(), blob->GetBufferSize() };
+
+	// PSO自身を返す
+	return *this;
+}
+
 PSO& PSO::SetVertexShader(std::string filePath)
 {
 	// シェーダーコンパイルを行う
@@ -134,12 +148,12 @@ PSO& PSO::SetVertPixelShader(std::string filePath)
 	return *this;
 }
 
-PSO& PSO::SetDepthStencilState(bool writeDSV)
+PSO& PSO::SetDepthStencilState(bool writeDSV, bool enableMask)
 {
 	// DSVの設定を行う
 	D3D12_DEPTH_STENCIL_DESC depthStencilDesc{};
 	// DSVの設定を行う
-	depthStencilDesc = SettingDepthStencilState(writeDSV);
+	depthStencilDesc = SettingDepthStencilState(writeDSV, enableMask);
 
 	// DSVの設定をセット
 	desc_.DepthStencilState = depthStencilDesc;
@@ -245,14 +259,20 @@ D3D12_RASTERIZER_DESC PSO::SettingRasterizerDesc()
 	return rasterrizerDesc;
 }
 
-D3D12_DEPTH_STENCIL_DESC PSO::SettingDepthStencilState(bool isWriteDSV)
+D3D12_DEPTH_STENCIL_DESC PSO::SettingDepthStencilState(bool isWriteDSV, bool enableMask)
 {
 	// デプスステンシルビューの設定を行う
 	D3D12_DEPTH_STENCIL_DESC depthStencilDesc{};
 	// 深度の機能を有効
 	depthStencilDesc.DepthEnable = isWriteDSV;
-	// 書き込む
-	depthStencilDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
+	// 書き込み設定
+	if (enableMask) {
+		depthStencilDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
+	}
+	else {
+		depthStencilDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;
+	}
+
 	// 比較関数はlessEqual 近ければ描画
 	depthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
 

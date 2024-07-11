@@ -17,7 +17,6 @@ void ModelData::Load(const std::string& filePath, const std::string& fileName)
 	assert(scene->HasMeshes());
 
 	// メッシュレット生成用情報の一時変数
-	std::vector<VertexData>	  vertices;  // 頂点
 	std::vector<uint32_t>	  indexes;	 // インデックス
 	std::vector<MaterialData> materials; // マテリアル
 
@@ -61,11 +60,11 @@ void ModelData::Load(const std::string& filePath, const std::string& fileName)
 		}
 
 		// 現在読み込み中の頂点数を保持
-		int vertexCount = static_cast<int>(vertices.size());
+		int vertexCount = static_cast<int>(vertices_.size());
 		// 全頂点を配列内に格納する
 		for (int i = 0; i < m.vertices_.size(); i++) {
 			// 頂点情報を配列に追加
-			vertices.push_back(m.vertices_[i]);
+			vertices_.push_back(m.vertices_[i]);
 		}
 		// 全インデックス情報も配列内に格納する
 		for (int i = 0; i < m.indexes_.size(); i++) {
@@ -87,11 +86,11 @@ void ModelData::Load(const std::string& filePath, const std::string& fileName)
 	}
 
 	// 頂点座標格納用配列の生成
-	auto vertPos = std::make_unique<DirectX::XMFLOAT3[]>(vertices.size());
+	auto vertPos = std::make_unique<DirectX::XMFLOAT3[]>(vertices_.size());
 	// 頂点座標の格納
-	for (int i = 0; i < vertices.size(); i++) {
+	for (int i = 0; i < vertices_.size(); i++) {
 		// 各頂点の情報を格納する
-		vertPos[i] = { vertices[i].position_.x, vertices[i].position_.y, vertices[i].position_.z };
+		vertPos[i] = { vertices_[i].position_.x, vertices_[i].position_.y, vertices_[i].position_.z };
 	}
 
 	// メッシュレット生成後の一時変数
@@ -104,7 +103,7 @@ void ModelData::Load(const std::string& filePath, const std::string& fileName)
 	// 読み込んだモデルデータをメッシュレットに変換する
 	result = DirectX::ComputeMeshlets(
 		indexes.data(), indexes.size() / 3,
-		vertPos.get(), vertices.size(),
+		vertPos.get(), vertices_.size(),
 		nullptr,
 		meshlets,
 		uniqueVertices,
@@ -122,7 +121,7 @@ void ModelData::Load(const std::string& filePath, const std::string& fileName)
 
 	// バッファ生成
 	meshletBuffer_			   = std::make_unique<StructuredBuffer<DirectX::Meshlet>>(static_cast<int32_t>(meshlets.size()));
-	vertexBuffer_			   = std::make_unique<StructuredBuffer<VertexData>>(static_cast<int32_t>(vertices.size())); 
+	vertexBuffer_			   = std::make_unique<StructuredBuffer<VertexData>>(static_cast<int32_t>(vertices_.size()));
 	uniqueVertexIndicesBuffer_ = std::make_unique<StructuredBuffer<uint32_t>>(static_cast<int32_t>(uniqueVertices.size()));
 	primitiveIndicesBuffer_    = std::make_unique<StructuredBuffer<uint32_t>>(static_cast<int32_t>(primitiveIndices.size())); 
 	materialsBuffer_		   = std::make_unique<StructuredBuffer<MaterialData>>(static_cast<int32_t>(materials.size()));
@@ -136,7 +135,7 @@ void ModelData::Load(const std::string& filePath, const std::string& fileName)
 
 	// データコピー
 	std::memcpy(meshletBuffer_->data_, meshlets.data(), sizeof(DirectX::Meshlet) * meshlets.size());
-	std::memcpy(vertexBuffer_->data_, vertices.data(), sizeof(VertexData) * vertices.size());
+	std::memcpy(vertexBuffer_->data_, vertices_.data(), sizeof(VertexData) * vertices_.size());
 	std::memcpy(uniqueVertexIndicesBuffer_->data_, uniqueVertices.data(), sizeof(uint8_t) * uniqueVertices.size());
 	std::memcpy(primitiveIndicesBuffer_->data_, primitiveIndices.data(), sizeof(DirectX::MeshletTriangle) * primitiveIndices.size());
 	std::memcpy(materialsBuffer_->data_, materials.data(), sizeof(MaterialData) * materials.size());

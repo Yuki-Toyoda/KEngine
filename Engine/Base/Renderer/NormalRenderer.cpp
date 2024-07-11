@@ -13,7 +13,9 @@ void NormalRenderer::Init(DirectXDevice* device, DXC* dxc, ModelManager* mm, Dir
 	// ルートシグネチャ取得
 	standardRootSignature_ = rtsManager->GetRootSignature(0); // 通常
 	skinRootSignature_	   = rtsManager->GetRootSignature(1); // スキンアニメーション
-
+	spriteRootSignature_   = rtsManager->GetRootSignature(2); // スプライト
+	particleRootSignature_ = rtsManager->GetRootSignature(3); // パーティクル
+	
 	// 通常描画用PSO初期化
 	standardPSO_.Init(standardRootSignature_, dxc)
 		.SetMeshShader("Engine/Resource/Shader/MeshletMS.hlsl")
@@ -24,6 +26,21 @@ void NormalRenderer::Init(DirectXDevice* device, DXC* dxc, ModelManager* mm, Dir
 	skinModelPSO_.Init(skinRootSignature_, dxc)
 		.SetMeshShader("Engine/Resource/Shader/SkinMeshlet/MeshletSkinMS.hlsl")
 		.SetPixelShader("Engine/Resource/Shader/SkinMeshlet/MeshletSkinPS.hlsl")
+		.Build(device->GetDevice());
+
+	// パーティクル描画用PSO初期化
+	particlePSO_.Init(particleRootSignature_, dxc)
+		.SetBlendState(1)
+		.SetDepthStencilState(true, false)
+		.SetTaskShader("Engine/Resource/Shader/ParticleMeshlet/ParticleMeshletAS.hlsl")
+		.SetMeshShader("Engine/Resource/Shader/ParticleMeshlet/ParticleMeshletMS.hlsl")
+		.SetPixelShader("Engine/Resource/Shader/ParticleMeshlet/ParticleMeshletPS.hlsl")
+		.Build(device->GetDevice());
+
+	// スプライト描画用PSO初期化
+	spritePSO_.Init(spriteRootSignature_, dxc)
+		.SetMeshShader("Engine/Resource/Shader/SpriteMeshlet/MeshletSpriteMS.hlsl")
+		.SetPixelShader("Engine/Resource/Shader/SpriteMeshlet/MeshletSpritePS.hlsl")
 		.Build(device->GetDevice());
 
 	// 形状マネージャのインスタンス取得
@@ -101,8 +118,32 @@ void NormalRenderer::DrawCall(ID3D12GraphicsCommandList6* list)
 		list->SetGraphicsRootConstantBufferView(1, light_->view());	   // 平行光源データ
 		list->SetGraphicsRootDescriptorTable(9, s->GetFirstTexView()); // テクスチャデータ
 
-		// 通常モデルの描画を行う
+		//スキニングモデルの描画を行う
 		modelManager_->SkiningModelDraw(list);
+
+		// コマンドリストにパーティクル描画ルートシグネチャを設定
+		list->SetGraphicsRootSignature(particleRootSignature_);
+		// コマンドリストにパーティクル描画PSOを設定
+		list->SetPipelineState(particlePSO_.GetState());
+		// 共通データのアドレスを渡す
+		list->SetGraphicsRootConstantBufferView(0, it->view_);		   // カメラデータ
+		list->SetGraphicsRootConstantBufferView(1, light_->view());	   // 平行光源データ
+		list->SetGraphicsRootDescriptorTable(9, s->GetFirstTexView()); // テクスチャデータ
+
+		// パーティクルモデルの描画を行う
+		modelManager_->ParticleModelDraw(list);
+
+		// コマンドリストにスプライト描画ルートシグネチャを設定
+		list->SetGraphicsRootSignature(spriteRootSignature_);
+		// コマンドリストにスプライト描画PSOを設定
+		list->SetPipelineState(spritePSO_.GetState());
+		// 共通データのアドレスを渡す
+		list->SetGraphicsRootConstantBufferView(0, it->view_);		   // カメラデータ
+		list->SetGraphicsRootConstantBufferView(1, light_->view());	   // 平行光源データ
+		list->SetGraphicsRootDescriptorTable(8, s->GetFirstTexView()); // テクスチャデータ
+
+		// スプライトモデルの描画を行う
+		modelManager_->SpriteModelDraw(list);
 
 		// 最後のイテレータでImGuiを描画する
 		if (it == std::prev(targets_.end())) {

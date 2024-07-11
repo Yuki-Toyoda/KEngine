@@ -2,6 +2,7 @@
 #include "../Engine/Scene/SceneManager.h"
 #include "../Engine/GameObject/GameObjectManager.h"
 #include "../Engine/Sprite/SpriteManager.h"
+#include "../Engine/Particle/ParticleEmitterManager.h"
 #include "../Engine/Utility/Animation/AnimationManager.h"
 #include "../Engine/KEngine.h"
 #include "../Engine/Scene/SceneFactory.h"
@@ -38,11 +39,14 @@ private: // メンバ変数
 	// オブジェクトマネージャーのインスタンス格納用
 	GameObjectManager* gameObjectManager_ = nullptr;
 
-	// アニメーションマネージャのインスタンス格納用
-	AnimationManager* animManager_ = nullptr;
-
 	// スプライトマネージャのインスタンス格納用
 	SpriteManager* spriteManager_ = nullptr;
+
+	// パーティクルマネージャー
+	ParticleEmitterManager* particleManager_ = nullptr;
+
+	// アニメーションマネージャのインスタンス格納用
+	AnimationManager* animManager_ = nullptr;
 
 };
 

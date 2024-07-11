@@ -19,6 +19,19 @@ void GameObjectManager::Init()
 	// 破壊フラグの立ったオブジェクトを削除
 	objects_.remove_if([](std::unique_ptr<IObject>& object) {
 		if (object->GetIsDestroy()) {
+			// 全通常モデルを削除
+			for (NormalModel* normalModel : object->normalModels_) {
+				normalModel->isDestroy_ = true;
+			}
+			// 全スキニングモデルを削除
+			for (SkiningModel* skiningModel : object->skiningModels_) {
+				skiningModel->isDestroy_ = true;
+			}
+			// 全スプライトを削除
+			for (Sprite* sprite : object->sprites_) {
+				sprite->Destroy();
+			}
+
 			return true;
 		}
 		return false;
@@ -38,6 +51,19 @@ void GameObjectManager::Update()
 	// 破壊フラグの立ったオブジェクトを削除
 	objects_.remove_if([](std::unique_ptr<IObject>& object) {
 		if (object->GetIsDestroy()) {
+			// 全通常モデルを削除
+			for (NormalModel* normalModel : object->normalModels_) {
+				normalModel->isDestroy_ = true;
+			}
+			// 全スキニングモデルを削除
+			for (SkiningModel* skiningModel : object->skiningModels_) {
+				skiningModel->isDestroy_ = true;
+			}
+			// 全スプライトを削除
+			for (Sprite* sprite : object->sprites_) {
+				sprite->Destroy();
+			}
+
 			return true;
 		}
 		return false;

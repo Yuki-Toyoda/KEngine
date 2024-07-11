@@ -2,9 +2,9 @@
 #include "IRootSignature.h"
 
 /// <summary>
-/// ポストプロセス用ルートシグネチャ
+/// スプライト用ルートシグネチャ
 /// </summary>
-class PostProcessRootSignature : public IRootSignature
+class SpriteRootSignature : public IRootSignature
 {
 public: // メンバ関数
 
@@ -12,6 +12,5 @@ public: // メンバ関数
 	/// 初期化関数
 	/// </summary>
 	void Init() override;
-
 };
 

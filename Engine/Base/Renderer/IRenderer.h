@@ -1,5 +1,4 @@
 #pragma once
-#include "../Buffer/BufferStructs.h"
 #include "../RootSignature/RootSignatureManager.h"
 #include "../PSO/PSO.h"
 #include "../Resource/Data/StructuredBuffer.h"

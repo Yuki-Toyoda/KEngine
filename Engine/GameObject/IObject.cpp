@@ -1,20 +1,10 @@
 #include "IObject.h"
 
-IObject::~IObject()
-{
-	// 全モデルを削除
-	for (NormalModel* normalModel : normalModels_) {
-		normalModel->isDestroy_ = true;
-	}
-	// 全スプライトを削除
-	for (Sprite* sprite : sprites_) {
-		sprite->Destroy();
-	}
-}
-
 void IObject::PreInitialize(std::string name, Tag tag)
 {
 	// インスタンス取得
+	modelDataManager_ = ModelDataManager::GetInstance(); // モデルデータマネージャー
+	modelManager_	  = ModelManager::GetInstance();	 // モデルマネージャー
 	collisionManager_ = CollisionManager::GetInstance(); // 衝突判定マネージャ
 
 	// 非表示
@@ -25,6 +15,7 @@ void IObject::PreInitialize(std::string name, Tag tag)
 
 	// モデルリストクリア
 	normalModels_.clear();
+	skiningModels_.clear();
 
 	// タグの初期化
 	tag_ = tag;
@@ -104,7 +95,7 @@ void IObject::AddNormalModel(WorldTransform* wt, const std::string& path, const 
 	}
 
 	// モデルリストに生成モデルを追加
-	normalModels_.push_back(newModel);
+	normalModels_.push_back(std::move(newModel));
 }
 
 void IObject::AddSkiningModel(WorldTransform* wt, const std::string& path, const std::string& fileName, bool enableLighting)
@@ -125,15 +116,15 @@ void IObject::AddSkiningModel(WorldTransform* wt, const std::string& path, const
 	}
 
 	// モデルリストに生成モデルを追加
-	skiningModels_.push_back(newModel);
+	skiningModels_.push_back(std::move(newModel));
 }
 
-void IObject::AddSprite(const std::string& name, const Vector2& position, const Vector2& size, Texture* texture)
+void IObject::AddSprite(const std::string& name, const Vector2& position, const Vector2& size, Texture texture)
 {
 	// 新しいインスタンスの追加
 	Sprite* newSprite = SpriteManager::GetInstance()->Create(name, position, size, texture);
 	// リストに追加
-	sprites_.push_back(newSprite);
+	sprites_.push_back(std::move(newSprite));
 }
 
 void IObject::AddColliderSphere(const std::string& name, Vector3* center, float* radius, bool enable)

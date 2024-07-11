@@ -88,6 +88,7 @@ float32_t4 main(PSInput input) : SV_TARGET {
 	float32_t2 uv = input.texcoord;
 
 	output = gTexture.Sample(gSampler, uv);
+	output.a = 1.0f;
 
 )";
 
@@ -114,7 +115,7 @@ float32_t4 main(PSInput input) : SV_TARGET {
 
 	// PSOの生成を行う
 	pso_.VertInit(root_.GetRootSignature(), dxc)
-		.SetDepthStencilState(false)
+		.SetDepthStencilState(false, true)
 		.SetVertexShader("Engine/Resource/Shader/PostProcess/PassThroughVS.hlsl")
 		.SetVertPixelShader("Engine/Resource/Shader/PostProcess/PostProcess.PS.hlsl")
 		.VertBuild(device->GetDevice());

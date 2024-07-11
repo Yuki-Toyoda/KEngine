@@ -1,6 +1,6 @@
 #include "IParticleEmitter.h"
 
-void IParticleEmitter::PreInit(const std::string& name, int32_t maxCount, int32_t maxGenerateCount, const Vector3& translate, float aliveTime, float frequency, Texture* texture)
+void IParticleEmitter::PreInit(const std::string& name, int32_t maxCount, int32_t maxGenerateCount, const Vector3& translate, float aliveTime, float frequency, ParticleModel* model)
 {
 	// 名称設定
 	name_ = name;
@@ -18,21 +18,23 @@ void IParticleEmitter::PreInit(const std::string& name, int32_t maxCount, int32_
 	frequency_ = frequency;
 	frequencyTimer_.Start(0.0f);
 
-	// テクスチャを取得
-	texture_ = texture;
+	// モデル取得
+	model_ = std::move(model);
 }
 
 void IParticleEmitter::Init()
 {
 	// 基底クラスでは記述なし
+	model_->material_.enableLighting_ = false;
 }
 
 void IParticleEmitter::PreUpdate()
 {
 	// 粒子が終了状態の時リストから除外
 	particles_.remove_if([](std::unique_ptr<IParticle>& particle) {
-		if (particle->GetIsEnd())
+		if (particle->GetIsEnd()) {
 			return true;
+		}
 
 		return false;
 	});
@@ -41,6 +43,9 @@ void IParticleEmitter::PreUpdate()
 	for (std::unique_ptr<IParticle>& particle : particles_) {
 		particle->Update();	    // 更新
 		particle->PostUpdate(); // 更新後処理
+
+		// パーティクルの更新後に必要な各情報をセットする
+		model_->AddDrawModel(particle->transform_.GetMatWorld(), particle->material_);
 	}
 }
 
@@ -87,16 +92,16 @@ void IParticleEmitter::GenerateParticle()
 		}
 
 		// 生成粒子の大きさ設定
-		float size = 1.0f;
-		Vector2 generateScale = { size, size };
+		float size = KLib::RandomF(0.1f, 1.0f, 1);
+		Vector3 generateScale = { size, size, size };
 		// 生成粒子の速度ベクトル設定
-		Vector3 generateVelocity = Vector3(1.0f, 1.0f, 1.0f);
+		Vector3 generateVelocity = Vector3(KLib::RandomF(-0.25f, 0.25f, 1), KLib::RandomF(-0.25f, 0.25f, 1), KLib::RandomF(-0.25f, 0.25f, 1));
 		// 生成粒子の色
 		Vector4 generateColor = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 
 		// 新しい粒子を生成
 		std::unique_ptr<IParticle>newParticle = type_();
-		newParticle->PreInit(3.0f, transform_.translate_, generateScale, generateVelocity, texture_, generateColor);
+		newParticle->PreInit(3.0f, transform_.translate_, generateScale, generateVelocity, model_->material_, generateColor);
 
 		// 生成した粒子をリストに追加
 		particles_.push_back(std::move(newParticle));
