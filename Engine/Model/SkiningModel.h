@@ -35,6 +35,15 @@ public: // メンバ関数
 	/// <param name="cmdList">コマンドリスト</param>
 	void Draw(ID3D12GraphicsCommandList6* cmdList) override;
 
+public: // アクセッサ等
+
+	/// <summary>
+	/// 引数で指定された名称のボーンのワールド座標ゲッター
+	/// </summary>
+	/// <param name="boneName">取得するボーン名称</param>
+	/// <returns>ボーンのワールド座標</returns>
+	Vector3 GetBonePosition(const std::string boneName);
+
 public: // パブリックメンバ変数
 
 	// トランスフォーム

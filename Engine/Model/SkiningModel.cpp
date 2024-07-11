@@ -77,3 +77,24 @@ void SkiningModel::Draw(ID3D12GraphicsCommandList6* cmdList)
 	// メッシュレットのプリミティブ数分メッシュシェーダーを実行
 	cmdList->DispatchMesh(modelData_->GetMeshletCount(), 1, 1);
 }
+
+Vector3 SkiningModel::GetBonePosition(const std::string boneName)
+{
+	// 返還用変数を定義
+	Vector3 result{};
+
+	// 指定されたボーン名称が存在するかどうかを確認する
+	if (!skelton_.jointMap_.count(boneName)) { // 存在しない場合
+		// ボーンが存在しないためログに出して停止
+		Debug::Log("Bone Not Found.");
+		assert(false);
+	}
+
+	// 配列上の番号を取得する
+	int boneIndex = skelton_.jointMap_[boneName];
+	// 配列から情報取得
+	result = skelton_.joints_[boneIndex].transform_.GetWorldPos();
+
+	// 返還する
+	return result;
+}
