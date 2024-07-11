@@ -305,13 +305,27 @@
     <ClCompile Include="Engine\PostProcess\GrayScale\GrayScale.cpp">
       <Filter>Engine\PostProcess\GrayScale</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\PostProcess\Vignette\Vignette.cpp" />
-    <ClCompile Include="Engine\PostProcess\GaussianFilter\GaussianFilter.cpp" />
-    <ClCompile Include="Engine\Model\SpriteModel.cpp" />
-    <ClCompile Include="Engine\Base\RootSignature\SpriteRootSignature.cpp" />
-    <ClCompile Include="Engine\Model\ParticleModel.cpp" />
-    <ClCompile Include="Engine\Base\RootSignature\ParticleRootSignature.cpp" />
-    <ClCompile Include="Engine\GameObject\Samples\SampleParticle\SampleParticle.cpp" />
+    <ClCompile Include="Engine\PostProcess\GaussianFilter\GaussianFilter.cpp">
+      <Filter>Engine\PostProcess\Gaussian</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\PostProcess\Vignette\Vignette.cpp">
+      <Filter>Engine\PostProcess\Vignette</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Base\RootSignature\ParticleRootSignature.cpp">
+      <Filter>Engine\Base\RootSignature</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Model\ParticleModel.cpp">
+      <Filter>Engine\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\Samples\SampleParticle\SampleParticle.cpp">
+      <Filter>App\GameObject\Samples\SampleParticle</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Model\SpriteModel.cpp">
+      <Filter>Engine\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Base\RootSignature\SpriteRootSignature.cpp">
+      <Filter>Engine\Base\RootSignature</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -683,14 +697,30 @@
     <ClInclude Include="Engine\PostProcess\GrayScale\GrayScale.h">
       <Filter>Engine\PostProcess\GrayScale</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\PostProcess\Vignette\Vignette.h" />
-    <ClInclude Include="Engine\PostProcess\GaussianFilter\GaussianFilter.h" />
-    <ClInclude Include="Engine\Model\SpriteModel.h" />
-    <ClInclude Include="Engine\Base\RootSignature\SpriteRootSignature.h" />
-    <ClInclude Include="Engine\Model\ParticleModel.h" />
-    <ClInclude Include="Engine\Base\RootSignature\ParticleRootSignature.h" />
-    <ClInclude Include="Engine\GameObject\Samples\SampleParticle\SampleParticle.h" />
-    <ClInclude Include="Engine\Utility\Random\Random.h" />
+    <ClInclude Include="Engine\PostProcess\GaussianFilter\GaussianFilter.h">
+      <Filter>Engine\PostProcess\Gaussian</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\PostProcess\Vignette\Vignette.h">
+      <Filter>Engine\PostProcess\Vignette</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\RootSignature\ParticleRootSignature.h">
+      <Filter>Engine\Base\RootSignature</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Model\ParticleModel.h">
+      <Filter>Engine\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\Samples\SampleParticle\SampleParticle.h">
+      <Filter>App\GameObject\Samples\SampleParticle</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Model\SpriteModel.h">
+      <Filter>Engine\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Utility\Random\Random.h">
+      <Filter>App\Utility\Random</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\RootSignature\SpriteRootSignature.h">
+      <Filter>Engine\Base\RootSignature</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -714,8 +744,12 @@
     <None Include="Engine\Resource\Shader\PostProcess\GrayScale.hlsli">
       <Filter>Engine\Resource\Shader</Filter>
     </None>
-    <None Include="Engine\Resource\Shader\SpriteMeshlet\MeshletSprite.hlsli" />
-    <None Include="Engine\Resource\Shader\ParticleMeshlet\ParticleMeshlet.hlsli" />
+    <None Include="Engine\Resource\Shader\SpriteMeshlet\MeshletSprite.hlsli">
+      <Filter>Engine\Resource\Shader</Filter>
+    </None>
+    <None Include="Engine\Resource\Shader\ParticleMeshlet\ParticleMeshlet.hlsli">
+      <Filter>Engine\Resource\Shader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -901,6 +935,18 @@
     <Filter Include="Engine\PostProcess\GrayScale">
       <UniqueIdentifier>{7747b170-335a-48ef-94fc-284743f3236f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\PostProcess\Gaussian">
+      <UniqueIdentifier>{2171e51e-5102-4a40-ae2c-ec2b45bd2563}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\PostProcess\Vignette">
+      <UniqueIdentifier>{d3d76cfa-f2e7-4cee-a16c-cff1fced587b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\GameObject\Samples\SampleParticle">
+      <UniqueIdentifier>{8e79553b-4a34-4e1a-8893-bb2417e4b2bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Utility\Random">
+      <UniqueIdentifier>{b58389cd-5728-4acc-8f7a-517062c7cb8f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Externals\imgui\LICENSE.txt">
@@ -932,10 +978,20 @@
     <FxCompile Include="Engine\Resource\Shader\PostProcess\SmoothingPS.hlsl">
       <Filter>Engine\Resource\Shader</Filter>
     </FxCompile>
-    <FxCompile Include="Engine\Resource\Shader\SpriteMeshlet\MeshletSpriteMS.hlsl" />
-    <FxCompile Include="Engine\Resource\Shader\SpriteMeshlet\MeshletSpritePS.hlsl" />
-    <FxCompile Include="Engine\Resource\Shader\ParticleMeshlet\ParticleMeshletMS.hlsl" />
-    <FxCompile Include="Engine\Resource\Shader\ParticleMeshlet\ParticleMeshletPS.hlsl" />
-    <FxCompile Include="Engine\Resource\Shader\ParticleMeshlet\ParticleMeshletAS.hlsl" />
+    <FxCompile Include="Engine\Resource\Shader\SpriteMeshlet\MeshletSpriteMS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\SpriteMeshlet\MeshletSpritePS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\ParticleMeshlet\ParticleMeshletAS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\ParticleMeshlet\ParticleMeshletMS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\ParticleMeshlet\ParticleMeshletPS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
