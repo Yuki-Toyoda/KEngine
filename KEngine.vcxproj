@@ -369,7 +369,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\PostProcess\PostProcessor.h" />
     <ClInclude Include="Engine\PostProcess\GrayScale\GrayScale.h" />
     <ClInclude Include="Engine\PostProcess\Vignette\Vignette.h" />
-    <ClInclude Include="Engine\PostProcess\GaussianFilter\GaussianFilter.h" />
     <ClInclude Include="Engine\Model\SpriteModel.h" />
     <ClInclude Include="Engine\Base\RootSignature\SpriteRootSignature.h" />
     <ClInclude Include="Engine\Model\ParticleModel.h" />
