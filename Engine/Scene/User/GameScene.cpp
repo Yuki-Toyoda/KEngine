@@ -33,9 +33,8 @@ void GameScene::Init(){
 	//floor->transform_.scale_ = { 100.0f, 1.0f, 100.0f };
 	//floor->transform_.translate_.y = -1.0f;
 
-	// ステージ生成
-	LevelLoader loader;
-	loader.Load("./Engine/Resource/Samples/SampleLevel", "Stage.json");
+	SampleLevelObjects* l = gameObjectManager_->CreateInstance<SampleLevelObjects>("LevelSample", IObject::TagNone);
+	l->LoadLevel("./Engine/Resource/Samples/SampleLevel", "Stage.json");
 
 	// 敵生成
 	enemy_ = gameObjectManager_->CreateInstance<Enemy>("Enemy", IObject::TagEnemy);
@@ -68,7 +67,7 @@ void GameScene::Update()
 #ifdef _DEBUG
 	// デバッグ遷移
 	if (input_->TriggerKey(DIK_RSHIFT)) {
-		SceneManager::GetInstance()->ChangeScene("Title");
+		SceneManager::GetInstance()->ChangeScene("Game");
 	}
 #endif // _DEBUG
 }
