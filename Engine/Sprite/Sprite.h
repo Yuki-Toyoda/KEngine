@@ -55,6 +55,8 @@ public: // パブリックなメンバ変数
 	// スプライト名
 	std::string name_ = "";
 
+	// 表示トリガー
+	bool isActive_ = true;
 	// 大きさ
 	Vector2 scale_;
 	// 回転
