@@ -92,11 +92,6 @@ void Player::Init()
 
 	// メッシュの追加を行う
 	AddSkiningModel(&transform_, "./Resources/Player", "Player_Skininng.gltf");
-	/*AddMesh(&headTransform_, color_, "./Resources/Player", "Head.obj");
-	AddMesh(&armTransform_R_, color_, "./Resources/Player", "Arm_R.obj");
-	AddMesh(&armTransform_L_, color_, "./Resources/Player", "Arm_L.obj");
-	AddMesh(&armTransform_L_, color_, "./Resources/Sword", "Sword.obj");
-	AddMesh(&armTransform_R_, color_, "./Resources/Shield", "Shiled.obj");*/
 
 	// 待機アニメーションの再生
 	skiningModels_[0]->animationManager_.PlayAnimation("01_Idle", true);
@@ -116,28 +111,28 @@ void Player::Init()
 	// 行動状態を待機状態に変更
 	ChangeState(std::make_unique<Root>());
 
-	//// UIの追加
-	//for (int i = 0; i < 6; i++) {
-	//	hertUISize_[i] = {48.0f, 48.0f };
-	//	hertUITranslate_[i] = { (hertUISize_->x) + (hertUISize_->x * i) , 32.0f };
-	//	AddSprite("Hert", hertUITranslate_[i], hertUISize_[i], TextureManager::Load("./Resources", "Hert.png"));
-	//	sprites_[i]->color_ = { 1.0f, 0.0f, 0.15f, 1.0f };
-	//	sprites_[i]->SetIsActive(false);
-	//}
+	// UIの追加
+	for (int i = 0; i < 6; i++) {
+		hertUISize_[i] = {48.0f, 48.0f };
+		hertUITranslate_[i] = { (hertUISize_->x) + (hertUISize_->x * i) , 32.0f };
+		AddSprite("Hert", hertUITranslate_[i], hertUISize_[i], TextureManager::Load("./Resources", "Hert.png"));
+		sprites_[i]->color_ = { 1.0f, 0.0f, 0.15f, 1.0f };
+		sprites_[i]->isActive_ = false;
+	}
 
-	//// UIの追加
-	//AddSprite("UI", {0.0f, 0.0f}, {1280.0f ,720.0f}, TextureManager::Load("./Resources", "UI.png"));
-	//sprites_[6]->SetIsActive(false);
+	// UIの追加
+	AddSprite("UI", {0.0f, 0.0f}, {1280.0f ,720.0f}, TextureManager::Load("./Resources", "UI.png"));
+	sprites_[6]->isActive_ = false;
 
-	//// タイトル画面ボタン用
-	//AddSprite("Button", {640.0f, 450.0f}, {512.0f ,128.0f}, TextureManager::Load("Start_CR.png"));
-	//// フェードスプライトの色設定
-	//sprites_[7]->anchorPoint_ = { .5f, .5f };
-	//
-	//// フェード演出用
-	//AddSprite("Fade", {0.0f, 0.0f}, {1280.0f ,720.0f}, TextureManager::Load("white2x2.png"));
-	//// フェードスプライトの色設定
-	//sprites_[8]->color_ = { 0.0f, 0.0f, 0.0f, 1.0f };
+	// タイトル画面ボタン用
+	AddSprite("Button", {640.0f, 450.0f}, {512.0f ,128.0f}, TextureManager::Load("Start_CR.png"));
+	// フェードスプライトの色設定
+	sprites_[7]->anchorPoint_ = { .5f, .5f };
+	
+	// フェード演出用
+	AddSprite("Fade", {0.0f, 0.0f}, {1280.0f ,720.0f}, TextureManager::Load("white2x2.png"));
+	// フェードスプライトの色設定
+	sprites_[8]->color_ = { 0.0f, 0.0f, 0.0f, 1.0f };
 
 	// 効果音読み込み
 	SwingSword_ = Audio::GetInstance()->LoadWave("./Resources/Audio/SE/SwingSword.mp3");
@@ -163,11 +158,11 @@ void Player::Update()
 				// メインカメラを使用
 				followCamera_->UseThisCamera();
 
-				//// UIの表示
-				//for (int i = 0; i < 6; i++) {
-				//	sprites_[i]->SetIsActive(true);
-				//}
-				//sprites_[6]->SetIsActive(true);
+				// UIの表示
+				for (int i = 0; i < 6; i++) {
+					sprites_[i]->isActive_ = true;
+				}
+				sprites_[6]->isActive_ = true;
 
 				// ゲームスタート
 				isGameStart_ = true;
@@ -185,7 +180,7 @@ void Player::Update()
 				isFade_ = true;
 
 				// ボタンUI非表示
-				//sprites_[7]->SetIsActive(false);
+				sprites_[7]->isActive_ = false;
 
 				// タイトルアニメーション再生
 				titleAnim_->ChangeParameter("Title_Start", true);
@@ -194,13 +189,13 @@ void Player::Update()
 			}
 		}
 
-		//if (sprites_[8]->color_.w <= 0.0f) {
-		//	
-		//}
-		//else {
-		//	// フェード演出用スプライトの色を徐々に変更
-		//	sprites_[8]->color_.w -= 0.01f;
-		//}
+		if (sprites_[8]->color_.w <= 0.0f) {
+			
+		}
+		else {
+			// フェード演出用スプライトの色を徐々に変更
+			sprites_[8]->color_.w -= 0.01f;
+		}
 	}
 
 	if (canMove_ && isGameStart_) {
@@ -361,7 +356,7 @@ void Player::HitDamage(const Vector3& translate)
 		hp_--;
 
 		// スプライトの色を変更
-		//sprites_[hp_]->color_ = { 0.15f, 0.15f, 0.15f, 1.0f };
+		sprites_[hp_]->color_ = { 0.15f, 0.15f, 0.15f, 1.0f };
 
 		// 弾の座標からプレイヤーの方向ベクトルを求める
 		Vector3 sub = translate - transform_.translate_;
@@ -389,7 +384,7 @@ void Player::OnCollisionEnter(Collider* collider)
 {
 	// 敵と衝突時ヒットストップを行う
 	if (collider->GetGameObject()->GetObjectTag() == IObject::TagEnemy) {
-		HitStop();
+		//HitStop();
 	}
 }
 

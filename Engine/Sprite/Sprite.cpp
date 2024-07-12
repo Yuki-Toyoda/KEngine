@@ -85,6 +85,9 @@ void Sprite::Update()
 	// 回転設定
 	transform_.rotate_ = { 0.0f, 0.0f, rotate_ };
 
+	// マテリアル色設定
+	model_->material_.color_ = color_;
+
 	// 表示トリガーを元にスプライトモデルの表示を設定
 	model_->isActive_ = isActive_;
 }
@@ -99,7 +102,7 @@ void Sprite::DisplayImGui()
 		ImGui::DragFloat2("AnchorPoint", &anchorPoint_.x, 0.01f);
 		ImGui::DragFloat2("texBase", &texBase_.x, 1.0f);
 		ImGui::DragFloat2("texSize", &texSize_.x, 1.0f);
-		ImGui::ColorPicker4("Color", &model_->material_.color_.x);
+		ImGui::ColorPicker4("Color", &color_.x);
 
 		if (ImGui::TreeNode("UVTransform")) {
 			model_->material_.uvTransform_.DisplayImGui("uvTransform");
