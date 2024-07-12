@@ -84,12 +84,15 @@ void Sprite::Update()
 	transform_.translate_ = { translate_.x, translate_.y, 0.0f };
 	// 回転設定
 	transform_.rotate_ = { 0.0f, 0.0f, rotate_ };
+
+	// 表示トリガーを元にスプライトモデルの表示を設定
+	model_->isActive_ = isActive_;
 }
 
 void Sprite::DisplayImGui()
 {
 	if (ImGui::TreeNode(name_.c_str())) {
-		ImGui::Checkbox("isActive", &model_->isActive_);
+		ImGui::Checkbox("isActive", &isActive_);
 		ImGui::DragFloat2("Scale", &scale_.x, 0.1f);
 		ImGui::DragFloat("rotate", &rotate_, 0.01f);
 		ImGui::DragFloat2("Position", &translate_.x, 1.0f);
