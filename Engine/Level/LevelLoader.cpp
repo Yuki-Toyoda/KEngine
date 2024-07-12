@@ -1,9 +1,8 @@
 #include "LevelLoader.h"
-#include "../GameObject/GameObjectManager.h"
 #include "../GameObject/SampleList.h"
 #include "../Utility/Angle/Angle.h"
 
-void LevelLoader::Load(const std::string& filePath, const std::string fileName)
+void LevelLoader::Load(SampleLevelObjects* objects, const std::string& filePath, const std::string fileName)
 {
 	// ファイルまでのフルパスを求める
 	std::string fullPath = filePath + "/" + fileName;
@@ -27,9 +26,6 @@ void LevelLoader::Load(const std::string& filePath, const std::string fileName)
 	assert(deserialized.is_object());
 	assert(deserialized.contains("name"));
 	assert(deserialized["name"].is_string());
-
-	// レベル描画用オブジェクト生成
-	SampleLevelObjects* l = GameObjectManager::GetInstance()->CreateInstance<SampleLevelObjects>("Level", IObject::TagNone);
 
 	// "name"を文字列として取得
 	std::string name = deserialized["name"].get<std::string>();
@@ -75,7 +71,7 @@ void LevelLoader::Load(const std::string& filePath, const std::string fileName)
 			t.scale_.z = (float)transform["scaling"][1];
 
 			// レベルオブジェクトにオブジェクト追加
-			l->AddObjects(filePath, objName, t);
+			objects->AddObjects(filePath, objName, t);
 		}
 	}
 }

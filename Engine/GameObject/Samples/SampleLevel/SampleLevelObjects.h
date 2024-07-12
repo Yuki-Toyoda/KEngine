@@ -1,5 +1,6 @@
 #pragma once
 #include "../../IObject.h"
+#include "../../../Level/LevelLoader.h"
 
 /// <summary>
 /// レベルローダー
@@ -26,6 +27,13 @@ public: // メンバ関数
 public: // 機能関数群
 
 	/// <summary>
+	/// レベルロード関数
+	/// </summary>
+	/// <param name="filePath">レベルデータまでのファイルパス</param>
+	/// <param name="fileName">レベルデータのファイル名</param>
+	void LoadLevel(const std::string& filePath, const std::string& fileName);
+
+	/// <summary>
 	/// オブジェクト追加関数
 	/// </summary>
 	/// <param name="filePath">オブジェクトまでのファイルパス</param>
@@ -35,8 +43,15 @@ public: // 機能関数群
 
 private: // メンバ変数
 
+	// レベルローダー
+	LevelLoader loader_;
+
 	// レベル内のオブジェクトごとのワールドトランスフォーム配列
 	std::vector<std::unique_ptr<WorldTransform>> transforms_;
+
+	// ImGui用変数群
+	char imGuiFilePath_[50];
+	char imGuiFileName_[20];
 
 };
 
