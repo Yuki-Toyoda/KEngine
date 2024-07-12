@@ -1,6 +1,7 @@
 #pragma once
 #include "../BaseScene.h"
 #include "../SceneList.h"
+#include "../../GameObject/SampleList.h"
 
 /// <summary>
 /// ゲームシーンクラス
@@ -24,6 +25,9 @@ public: // メンバ関数
 	void Update() override;
 
 private: // メンバ変数
+
+	// レベル
+	SampleLevelObjects* level_ = nullptr;
 
 	// 敵
 	Enemy* enemy_ = nullptr;

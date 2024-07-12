@@ -50,8 +50,8 @@ private: // メンバ変数
 	std::vector<std::unique_ptr<WorldTransform>> transforms_;
 
 	// ImGui用変数群
-	char imGuiFilePath_[50];
-	char imGuiFileName_[20];
+	char imGuiFilePath_[50] = "./Resources/Level";
+	char imGuiFileName_[20] = "Stage.json";
 
 };
 

@@ -1,6 +1,5 @@
 #include "GameScene.h"
 #include "../SceneManager.h"
-#include "../../GameObject/SampleList.h"
 #include "../../Level/LevelLoader.h"
 
 void GameScene::LoadModel()
@@ -27,14 +26,8 @@ void GameScene::Init(){
 	SkyDome* skyDome = nullptr;
 	skyDome = gameObjectManager_->CreateInstance<SkyDome>("SkyDome", IObject::TagNone);
 
-	//// 床生成
-	//Floor* floor = nullptr;
-	//floor = gameObjectManager_->CreateInstance<Floor>("Floor", IObject::TagFloor);
-	//floor->transform_.scale_ = { 100.0f, 1.0f, 100.0f };
-	//floor->transform_.translate_.y = -1.0f;
-
-	SampleLevelObjects* l = gameObjectManager_->CreateInstance<SampleLevelObjects>("Level", IObject::TagNone);
-	l->LoadLevel("./Engine/Resource/Samples/SampleLevel", "Stage.json");
+	level_ = gameObjectManager_->CreateInstance<SampleLevelObjects>("Level", IObject::TagNone);
+	level_->LoadLevel("./Resources/Level", "Stage.json");
 
 	// 敵生成
 	enemy_ = gameObjectManager_->CreateInstance<Enemy>("Enemy", IObject::TagEnemy);
@@ -61,6 +54,11 @@ void GameScene::Update()
 {
 	if (enemy_->isDead_ || player_->isDead_) {
 		SceneManager::GetInstance()->ChangeScene("Game");
+	}
+
+	// Rキーを押すとステージをリロード
+	if (input_->TriggerKey(DIK_R)) {
+		level_->LoadLevel("./Resources/Level", "Stage.json");
 	}
 
 	// デバッグ時のみ特定のキーでシーン遷移
