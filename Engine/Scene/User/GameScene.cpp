@@ -33,7 +33,7 @@ void GameScene::Init(){
 	//floor->transform_.scale_ = { 100.0f, 1.0f, 100.0f };
 	//floor->transform_.translate_.y = -1.0f;
 
-	SampleLevelObjects* l = gameObjectManager_->CreateInstance<SampleLevelObjects>("LevelSample", IObject::TagNone);
+	SampleLevelObjects* l = gameObjectManager_->CreateInstance<SampleLevelObjects>("Level", IObject::TagNone);
 	l->LoadLevel("./Engine/Resource/Samples/SampleLevel", "Stage.json");
 
 	// 敵生成
