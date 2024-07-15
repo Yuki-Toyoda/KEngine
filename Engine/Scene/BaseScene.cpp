@@ -1,4 +1,6 @@
 #include "BaseScene.h"
+#include "../Sprite/SpriteManager.h"
+#include "../Particle/ParticleEmitterManager.h"
 
 void BaseScene::PreInitialize()
 {
@@ -18,6 +20,10 @@ void BaseScene::PreInitialize()
 
 	// 読み込み済みモデルクリア
 	modelManager_->Clear();
+	// 生成済みスプライトのクリア
+	SpriteManager::GetInstance()->Init();
+	// 生成済みパーティクルのクリア
+	ParticleEmitterManager::GetInstance()->Init();
 
 	// サンプルモデルの読み込み
 	SampleModelLoad();
