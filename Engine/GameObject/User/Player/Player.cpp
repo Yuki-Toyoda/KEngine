@@ -33,6 +33,8 @@ void Player::Init()
 	colliderTransform_.Init();
 	colliderTransform_.SetParent(&bodyTransform_, 0b111);
 	colliderTransform_.translate_ = { 0.0f, 0.65f, 0.0f };
+	weaponTransform_.Init();
+	weaponTransform_.SetParent(&transform_);
 
 	// アニメーションパラメータの追加
 
@@ -91,10 +93,13 @@ void Player::Init()
 	titleAnim_->Play();
 
 	// メッシュの追加を行う
-	AddSkiningModel(&transform_, "./Resources/Player", "Player_Skininng.gltf");
+	AddSkiningModel(&transform_, "./Resources/Player", "Player.gltf");
+	AddSkiningModel(&weaponTransform_, "./Resources/Sword", "Sword.gltf");
 
 	// 待機アニメーションの再生
-	skiningModels_[0]->animationManager_.PlayAnimation("01_Idle", true);
+	skiningModels_[0]->animationManager_.PlayAnimation("00_Idle", true);
+	// 武器を左手に追従するようにする
+	skiningModels_[0]->SetBoneParent("WeaponAnchor", &weaponTransform_);
 
 	// コライダーの追加
 	colliderWorldPos_ = colliderTransform_.GetWorldPos();
@@ -292,36 +297,12 @@ void Player::DisplayImGui()
 	headTransform_.DisplayImGuiWithTreeNode("HeadTransform");
 	armTransform_R_.DisplayImGuiWithTreeNode("Arm_R_Transform");
 	armTransform_L_.DisplayImGuiWithTreeNode("Arm_L_BodyTransform");
+	weaponTransform_.DisplayImGuiWithTreeNode("Weapon");
 
 	ImGui::DragInt("HP", &hp_);
 
 	// プレイヤーのアニメーションImGui
 	playerAnim_->DisplayImGui();
-	// アニメーションの読み込みパラメータ変更
-	if (ImGui::TreeNode("ChangeReadParameter")) {
-		if (ImGui::Button("Idle")) {
-			playerAnim_->ChangeParameter("Player_Idle", true);
-		}
-		if (ImGui::Button("Run")) {
-			playerAnim_->ChangeParameter("Player_Run", true);
-		}
-		if (ImGui::Button("HorizontalSlash")) {
-			playerAnim_->ChangeParameter("Player_HorizontalSlash", true);
-		}
-		if (ImGui::Button("RotaingSlashCharge")) {
-			playerAnim_->ChangeParameter("Player_RotaingSlashCharge", true);
-		}
-		if (ImGui::Button("RotaingSlashChargeing")) {
-			playerAnim_->ChangeParameter("Player_RotaingSlashChargeing", true);
-		}
-		if (ImGui::Button("RotaingSlash")) {
-			playerAnim_->ChangeParameter("Player_RotaingSlash", true);
-		}
-		if (ImGui::Button("Damage")) {
-			playerAnim_->ChangeParameter("Player_Damage", true);
-		}
-		ImGui::TreePop();
-	}
 
 	// タイトルアニメーションのImGuiを表示
 	titleAnim_->DisplayImGui();

@@ -37,8 +37,8 @@ void Root::Update()
 	if (Vector3::Length(move) > deadZone_) {
 		isMoving_ = true;
 		
-		if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("02_Run")) {
-			player_->skiningModels_[0]->animationManager_.PlayAnimation("02_Run");
+		if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("01_Run")) {
+			player_->skiningModels_[0]->animationManager_.PlayAnimation("01_Run");
 		}
 	}
 
@@ -91,8 +91,8 @@ void Root::Update()
 			player_->playerAnim_->ChangeParameter("Player_Idle", 0.15f, true);
 		}
 
-		if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("01_Idle")) {
-			player_->skiningModels_[0]->animationManager_.PlayAnimation("01_Idle");
+		if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("00_Idle")) {
+			player_->skiningModels_[0]->animationManager_.PlayAnimation("00_Idle");
 		}
 	}
 

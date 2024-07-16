@@ -32,14 +32,14 @@ void Damage::Init()
 		c->fov_ = 0.6f;
 		c->UseThisCamera();
 
-		if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("07_Dead")) {
+		/*if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("07_Dead")) {
 			player_->skiningModels_[0]->animationManager_.PlayAnimation("07_Dead");
-		}
+		}*/
 	}
 	else {
-		if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("06_Damage")) {
+		/*if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("06_Damage")) {
 			player_->skiningModels_[0]->animationManager_.PlayAnimation("06_Damage");
-		}
+		}*/
 	}
 }
 

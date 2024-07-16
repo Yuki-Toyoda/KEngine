@@ -12,6 +12,15 @@ struct WellForGPU {
 };
 
 /// <summary>
+/// ボーンとの親子関係用構造体
+/// </summary>
+struct ParentData {
+	WorldTransform* transform_{};   // 子となるワールドトランスフォーム
+	std::string		boneName_ = ""; // 親子付けされるボーン名称
+	Matrix4x4		localMat_{};    // 代入するローカル行列
+};
+
+/// <summary>
 /// スキニングを行うモデル
 /// </summary>
 class SkiningModel : public IModel
@@ -38,10 +47,24 @@ public: // メンバ関数
 public: // アクセッサ等
 
 	/// <summary>
-	/// 引数で指定された名称のボーンのワールド座標ゲッター
+	/// ボーンとの親子関係セッター
 	/// </summary>
-	/// <param name="boneName">取得するボーン名称</param>
-	/// <returns>ボーンのワールド座標</returns>
+	/// <param name="boneName">親子関係を結ぶボーン名</param>
+	/// <param name="transform">親子関係を結ぶトランスフォーム</param>
+	void SetBoneParent(const std::string boneName, WorldTransform* transform);
+
+	/// <summary>
+	/// 引数で指定された名称のボーンの4x4行列のゲッター
+	/// </summary>
+	/// <param name="boneName">取得するボーン名</param>
+	/// <returns>対象ボーンの4x4行列</returns>
+	Matrix4x4 GetBoneMatrix(const std::string boneName);
+
+	/// <summary>
+	/// 引数で指定された名称のボーンのワールド座標のゲッター
+	/// </summary>
+	/// <param name="boneName">取得するボーン名</param>
+	/// <returns>対象ボーンのワールド座標</returns>
 	Vector3 GetBonePosition(const std::string boneName);
 
 public: // パブリックメンバ変数
@@ -58,6 +81,9 @@ public: // パブリックメンバ変数
 
 	// アニメーションマネージャー
 	SkinAnimationManager animationManager_{};
+
+	// ボーンとの親子関係配列
+	std::vector<ParentData> parentDatas_;
 
 	// トランスフォーム用定数バッファ
 	std::unique_ptr<ConstantBuffer<Matrix4x4>> transformBuffer_;

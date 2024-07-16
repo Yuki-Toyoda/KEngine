@@ -111,7 +111,7 @@ void Enemy::Update()
 				if (transform_.translate_.y >= 3.9f) {
 					if (GameObjectManager::GetInstance()->GetGameObject<EnemyBullet>("EnemyBullet") == nullptr) {
 						// 敵が弾を撃つ
-						ChangeState(std::make_unique<EnemyShot>());
+						//ChangeState(std::make_unique<EnemyShot>());
 						rallyCount_ = 0;
 						// 行動変更タイマーリセット
 						stateChangeTimer_.Start(kStateChangeCoolTime_);

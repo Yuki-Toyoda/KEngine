@@ -87,7 +87,7 @@ void QuatWorldTransform::SetParent(QuatWorldTransform* parent, uint8_t parentTyp
 	parentType_ = parentType;
 }
 
-const QuatWorldTransform* QuatWorldTransform::GetParent()
+const QuatWorldTransform* QuatWorldTransform::GetParent() const
 {
 	// 親をそのまま返す
 	return parent_;
@@ -127,6 +127,7 @@ Matrix4x4 QuatWorldTransform::GetMatWorld() const
 		}
 		result = result * parentMat;
 	}
+
 	// 結果を返す
 	return result;
 }

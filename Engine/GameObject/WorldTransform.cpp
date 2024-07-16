@@ -87,7 +87,7 @@ void WorldTransform::SetParent(WorldTransform* parent, uint8_t parentType)
 	parentType_ = parentType;
 }
 
-const WorldTransform* WorldTransform::GetParent()
+const WorldTransform* WorldTransform::GetParent() const
 {
 	// 親をそのまま返す
 	return parent_;
@@ -97,6 +97,16 @@ Matrix4x4 WorldTransform::GetMatWorld() const
 {
 	// 結果格納用
 	Matrix4x4 result;
+
+	// ワールド行列をセットしていればワールド行列を参照する
+	if (worldMat_ != nullptr) {
+		if (parent_) {
+			return *worldMat_ * parent_->GetMatWorld();
+		}
+		else {
+			return *worldMat_;
+		}
+	}
 
 	// アフィン変換行列を計算
 	result = Matrix4x4::MakeAffin(scale_, rotate_, translate_);

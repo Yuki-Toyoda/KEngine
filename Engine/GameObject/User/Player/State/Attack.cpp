@@ -17,8 +17,8 @@ void Attack::Init()
 	// 攻撃中である
 	player_->isAttacking_ = true;
 
-	if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("03_Attack")) {
-		player_->skiningModels_[0]->animationManager_.PlayAnimation("03_Attack");
+	if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("02_HorizontalSlash")) {
+		player_->skiningModels_[0]->animationManager_.PlayAnimation("02_HorizontalSlash");
 	}
 
 	// 線の座標を戻す

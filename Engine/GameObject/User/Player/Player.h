@@ -133,6 +133,9 @@ private: // メンバ変数
 	// 左腕のトランスフォーム
 	WorldTransform armTransform_L_;
 
+	// 武器のトランスフォーム
+	WorldTransform weaponTransform_;
+
 	Vector2 hertUITranslate_[6];
 	Vector2 hertUISize_[6];
 	// ヒットクールタイムタイマー
