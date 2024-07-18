@@ -19,13 +19,13 @@ void NormalRenderer::Init(DirectXDevice* device, DXC* dxc, ModelManager* mm, Dir
 	// 通常描画用PSO初期化
 	standardPSO_.Init(standardRootSignature_, dxc)
 		.SetMeshShader("Engine/Resource/Shader/MeshletMS.hlsl")
-		.SetPixelShader("Engine/Resource/Shader/Toon/MeshletToonPS.hlsl")
+		.SetPixelShader("Engine/Resource/Shader/MeshletPS.hlsl")
 		.Build(device->GetDevice());
 
 	// スキンアニメーション描画用PSO初期化
 	skinModelPSO_.Init(skinRootSignature_, dxc)
 		.SetMeshShader("Engine/Resource/Shader/SkinMeshlet/MeshletSkinMS.hlsl")
-		.SetPixelShader("Engine/Resource/Shader/Toon/MeshletToonPS.hlsl")
+		.SetPixelShader("Engine/Resource/Shader/SkinMeshlet/MeshletSkinPS.hlsl")
 		.Build(device->GetDevice());
 
 	// パーティクル描画用PSO初期化

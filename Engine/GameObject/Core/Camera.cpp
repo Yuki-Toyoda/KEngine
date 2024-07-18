@@ -21,8 +21,6 @@ void Camera::Init()
 	// データに値を代入
 	cameraDataBuffer_.data_->DrawMeshlets = isDrawMeshlets_;
 	cameraDataBuffer_.data_->ViewProjection2D = Matrix4x4::MakeOrthGraphic(0.0f, 0.0f, (float)WinApp::kWindowWidth, (float)WinApp::kwindowHeight, 0.0f, 100.0f);
-	cameraDataBuffer_.data_->ToonMapTex = TextureManager::Load("./Engine/Resource/Samples/Texture", "ToonMap.png").GetView();
-	cameraDataBuffer_.data_->ToonMapTex -= KEngine::Config::Rendering::kMaxBuffer;
 
 	// 各リソース初期化
 	renderResource_.Init(device, heaps);  // レンダリングを行うリソース

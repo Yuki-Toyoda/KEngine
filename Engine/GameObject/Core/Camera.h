@@ -17,7 +17,6 @@ struct CameraData {
 	Matrix4x4 WorldViewProj;		 // 射影変換行列
 	Matrix4x4 ViewProjection2D;		 // 2D射影変換行列
 	uint32_t  DrawMeshlets = false;	 // メッシュレット描画フラグ
-	int32_t   ToonMapTex;			 // トゥーンシェーディング用テクスチャ
 };
 
 /// <summary>
