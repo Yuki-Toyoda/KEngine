@@ -37,5 +37,8 @@ private: // メンバ変数
 
 	KLib::DeltaTimer timer_;
 
+	// 起き上がり中
+	bool recovering_ = false;
+
 };
 

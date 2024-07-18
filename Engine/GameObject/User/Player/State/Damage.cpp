@@ -7,12 +7,6 @@
 void Damage::Init()
 {
 	stateName_ = "Damage";
-
-	// アニメーションのループを切る
-	player_->playerAnim_->isLoop_ = false;
-
-	// プレイヤーアニメーションを変更
-	player_->playerAnim_->ChangeParameter("Player_Damage", true);
 	
 	// 攻撃中でない
 	player_->isAttacking_ = false;
@@ -31,37 +25,29 @@ void Damage::Init()
 		c->transform_.rotate_ = { (float)std::numbers::pi / 2.0f, 0.0f, 0.0f };
 		c->fov_ = 0.6f;
 		c->UseThisCamera();
+	}
 
-		/*if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("07_Dead")) {
-			player_->skiningModels_[0]->animationManager_.PlayAnimation("07_Dead");
-		}*/
-	}
-	else {
-		/*if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("06_Damage")) {
-			player_->skiningModels_[0]->animationManager_.PlayAnimation("06_Damage");
-		}*/
-	}
+	player_->skiningModels_[0]->animationManager_.PlayAnimation("06_Damage");
 }
 
 void Damage::Update()
 {
 	// ダメージアニメーション中なら
-	if (player_->playerAnim_->GetReadingParameterName() == "Player_Damage") {
-		// アニメーションの5割が終了するまで、後ろに吹っ飛ばす
-		if (player_->playerAnim_->GetAnimationProgress() <= 0.25f) {
+	if (player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("06_Damage") && !recovering_ || player_->hp_ <= 0) {
+		// アニメーションが一定に達するまで、後ろに吹っ飛ばす
+		if (player_->skiningModels_[0]->animationManager_.GetPlayingAnimationProgress() <= 0.25f) {
 			player_->transform_.translate_ += velocity_;
 		}
 		
 		// プレイヤーのHPが0以下の時ゲームオーバー
 		if (player_->hp_ <= 0) {
-
-			// カメラのポストプロセスの強さをだんだん上げてく
-			c->ppProcessor_.grayScale_.intensity_ = KLib::Lerp<float>(0.0f, 4.0f, KLib::EaseInQuad(player_->playerAnim_->GetAnimationProgress()));
-			c->ppProcessor_.gaussian_.intensity_ = KLib::Lerp<float>(0.0f, 6.0f, KLib::EaseInQuad(player_->playerAnim_->GetAnimationProgress()));
 			
+			// カメラのポストプロセスの強さをだんだん上げてく
+			c->ppProcessor_.grayScale_.intensity_ = KLib::Lerp<float>(0.0f, 1.0f, KLib::EaseInQuad(player_->skiningModels_[0]->animationManager_.GetPlayingAnimationProgress()));
+			c->ppProcessor_.gaussian_.intensity_ = KLib::Lerp<float>(0.0f, 3.0f, KLib::EaseInQuad(player_->skiningModels_[0]->animationManager_.GetPlayingAnimationProgress()));
+
 			// アニメーションの9割りが終了していた場合、スティックの入力があった場合待機状態へ移行
-			if (player_->playerAnim_->GetAnimationProgress() >= 0.5f && !isDead_) {
-				player_->playerAnim_->Stop();
+			if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation() && !isDead_) {
 				isDead_ = true;
 				timer_.Start(1.5f);
 			}
@@ -80,11 +66,22 @@ void Damage::Update()
 				timer_.Update();
 			}
 		}
+	}
+	else { // アニメーションが終了したら
+		// リカバリーを行う
+		if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("07_Recovery") && !player_->isDead_) {
+			if (recovering_) {
+				// 待機状態に移行
+				player_->ChangeState(std::make_unique<Root>());
 
-		// アニメーションが終了していれば
-		if (player_->playerAnim_->isEnd_) {
-			// 待機状態に移行
-			player_->ChangeState(std::make_unique<Root>());
+				return;
+			}
+			else {
+				player_->skiningModels_[0]->animationManager_.PlayAnimation("07_Recovery");
+
+				recovering_ = true;
+			}
+
 		}
 	}
 }

@@ -65,6 +65,12 @@ public: // アクセッサ等
 	/// <returns>再生されているか</returns>
 	bool GetIsPlayingAnimation(const std::string& animName);
 
+	/// <summary>
+	/// 再生中アニメーションの進捗度ゲッター
+	/// </summary>
+	/// <returns>再生中アニメーションの進捗(0.0 ~ 1.0)</returns>
+	float GetPlayingAnimationProgress();
+
 private: // プライベートなメンバ関数
 
 	/// <summary>

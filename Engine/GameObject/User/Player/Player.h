@@ -63,12 +63,6 @@ public: // メンバ関数
 private: // プライベートなメンバ関数
 
 	/// <summary>
-	/// パラメータを作成する
-	/// </summary>
-	/// <param name="name">作成するパラメータ</param>
-	void CreateParameter(const std::string& name);
-
-	/// <summary>
 	/// タイトル演出パラメータを作成する
 	/// </summary>
 	/// <param name="name">作成するパラメータ名</param>
@@ -92,9 +86,6 @@ public: // パブリックなメンバ変数
 
 	// 追従対象の目標角度
 	float targetAngle_ = 0.0f;
-
-	// キャラクターアニメーション
-	MyAnimation* playerAnim_;
 
 	// 攻撃判定用線
 	std::unique_ptr <Line> attackLine_;
@@ -125,13 +116,6 @@ public: // パブリックなメンバ変数
 	uint32_t RotateSlash_ = 0u; // 回転切り音
 
 private: // メンバ変数
-
-	// 身体のトランスフォーム
-	WorldTransform bodyTransform_;
-	// 右腕のトランスフォーム
-	WorldTransform armTransform_R_;
-	// 左腕のトランスフォーム
-	WorldTransform armTransform_L_;
 
 	// 武器のトランスフォーム
 	WorldTransform weaponTransform_;

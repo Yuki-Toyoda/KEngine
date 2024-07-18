@@ -10,19 +10,14 @@ void Attack::Init()
 {
 	stateName_ = "Attack";
 
-	// プレイヤーのアニメーションの変更
-	player_->playerAnim_->ChangeParameter("Player_HorizontalSlash", true);
-	// アニメーションのループを無効
-	player_->playerAnim_->isLoop_ = false;
 	// 攻撃中である
 	player_->isAttacking_ = true;
 
-	if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("02_HorizontalSlash")) {
-		player_->skiningModels_[0]->animationManager_.PlayAnimation("02_HorizontalSlash");
-	}
+	// 攻撃アニメーションの再生
+	player_->skiningModels_[0]->animationManager_.PlayAnimation("02_HorizontalSlash");
 
 	// 線の座標を戻す
-	player_->attackLine_->position_ = { -0.7f, 0.0f, 0.0f };
+	player_->attackLine_->position_ = { 0.0f, 0.0f, 0.0f };
 
 	// 素振りの効果音の再生
 	Audio::GetInstance()->PlayWave(player_->SwingSword_);
@@ -30,10 +25,10 @@ void Attack::Init()
 
 void Attack::Update()
 {
-	if (!player_->playerAnim_->isEnd_) {
+	if (player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation()) {
 
 		// 6割り終わっていて、なおかつAボタン長押し中なら回転切りの準備に入る
-		if (player_->playerAnim_->GetAnimationProgress() >= 0.6f) {
+		if (player_->skiningModels_[0]->animationManager_.GetPlayingAnimationProgress() >= 0.6f) {
 
 			// 線の座標を戻す
 			player_->attackLine_->position_ = { -1000.0f, 100.0f, 0.0f };
@@ -49,7 +44,7 @@ void Attack::Update()
 		}
 
 		// 8割り終わっていたら再度攻撃可能
-		if (player_->playerAnim_->GetAnimationProgress() >= 0.8f) {
+		if (player_->skiningModels_[0]->animationManager_.GetPlayingAnimationProgress() >= 0.8f) {
 			
 			// 線の座標を戻す
 			player_->attackLine_->position_ = { -1000.0f, 100.0f, 0.0f };

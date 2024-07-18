@@ -1,11 +1,7 @@
 #include "Line.h"
+#include "../../Model/ModelManager.h"
 
-Line::~Line()
-{
-	
-}
-
-void Line::Init(const std::string& name, const Vector3& position, const Vector2& thickness, const float& length, Texture texture)
+void Line::Init(const std::string& name, const Vector3& position, const Vector2& thickness, const float& length)
 {
 	// 座標とかを初期化
 	name_ = name;
@@ -19,7 +15,9 @@ void Line::Init(const std::string& name, const Vector3& position, const Vector2&
 	transform_.translate_ = position_;
 	transform_.scale_ = Vector3{ thickness_.x, thickness_.y, length_ };
 
-	texture;
+	// モデルの追加
+	model_ = ModelManager::GetInstance()->CreateNormalModel("./Engine/Resource/Samples/Box", "Box.obj");
+	model_->transform_.SetParent(&transform_);
 }
 
 void Line::Update()
@@ -64,6 +62,8 @@ void Line::Update()
 		worldPos_ = transform_.GetWorldPos();
 	}
 
+	// 表示状態切り替え
+	model_->isActive_ = isActive_;
 }
 
 void Line::DisplayImGui()

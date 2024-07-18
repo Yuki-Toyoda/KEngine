@@ -14,7 +14,7 @@ public: // コンストラクタ等
 	// コンストラクタ
 	Line() = default;
 	// デストラクタ
-	~Line();
+	~Line() = default;
 
 public: // メンバ関数
 
@@ -24,7 +24,7 @@ public: // メンバ関数
 	/// <param name="position">線の開始座標</param>
 	/// <param name="thickness">線の太さ</param>
 	/// <param name="length">線の長さ</param>
-	void Init(const std::string& name, const Vector3& position, const Vector2& thickness, const float& length, Texture texture = TextureManager::GetInstance()->GetDefaultTexture());
+	void Init(const std::string& name, const Vector3& position, const Vector2& thickness, const float& length);
 
 	/// <summary>
 	/// 更新関数
@@ -58,8 +58,8 @@ private: // メンバ変数
 	// 線の色
 	Vector4 color_;
 
-	// 線で使うテクスチャ
-	Texture* texture_;
+	// 線用モデル
+	NormalModel* model_;
 
 public: // パブリックなメンバ変数
 

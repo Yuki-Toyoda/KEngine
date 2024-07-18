@@ -22,8 +22,11 @@ public: // メンバ関数
 
 private: // メンバ変数
 
-	// チャージ時間タイマー
-	//KLib::DeltaTimer timer_;
+	// 回転切りのチャージが終わっているかフラグ
+	bool isFinishedCharge_ = false;
+
+	// 回転切りに入ったフラグ
+	bool isRotateSlashing_ = false;
 
 };
 

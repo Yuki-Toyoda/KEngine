@@ -18,55 +18,14 @@ void Player::Init()
 	// アニメーションマネージャの取得
 	animManager_ = AnimationManager::GetInstance();
 
-	// 全てのトランスフォームの初期化
-	bodyTransform_.Init();
-	bodyTransform_.SetParent(&transform_, 0b111);
-	headTransform_.Init();
-	headTransform_.SetParent(&bodyTransform_, 0b111);
-	headTransform_.translate_ = { 0.0f, 1.35f, 0.0f };
-	armTransform_R_.Init();
-	armTransform_R_.SetParent(&bodyTransform_, 0b111);
-	armTransform_R_.translate_ = { 0.0f, 1.3f, 0.0f };
-	armTransform_L_.Init();
-	armTransform_L_.SetParent(&bodyTransform_, 0b111);
-	armTransform_L_.translate_ = { 0.0f, 1.3f, 0.0f };
-	colliderTransform_.Init();
-	colliderTransform_.SetParent(&bodyTransform_, 0b111);
-	colliderTransform_.translate_ = { 0.0f, 0.65f, 0.0f };
+	//武器用のトランスフォームの初期化
 	weaponTransform_.Init();
 	weaponTransform_.SetParent(&transform_);
 
-	// アニメーションパラメータの追加
-
-	// 待機状態のパラメータの生成
-	CreateParameter("Player_Idle");
-	// 走りアニメーションのパラメータの生成
-	CreateParameter("Player_Run");
-	// 横切りのパラメータの生成
-	CreateParameter("Player_HorizontalSlash");
-	// 回転切りのチャージのパラメータの生成
-	CreateParameter("Player_RotaingSlashCharge");
-	// 回転切りのチャージ中のパラメータの生成
-	CreateParameter("Player_RotaingSlashChargeing");
-	// 回転切りのパラメータの生成
-	CreateParameter("Player_RotaingSlash");
-	// ダメージのパラメータの生成
-	CreateParameter("Player_Damage");
-
-	// アニメーションの作成
-	playerAnim_ = AnimationManager::GetInstance()->CreateAnimation("PlayerAnimation", "Player_Idle");
-	playerAnim_->AddAnimationKeys<Vector3>("Body_Scale", &bodyTransform_.scale_);
-	playerAnim_->AddAnimationKeys<Vector3>("Body_Rotate", &bodyTransform_.rotate_);
-	playerAnim_->AddAnimationKeys<Vector3>("Body_Translate", &bodyTransform_.translate_);
-	playerAnim_->AddAnimationKeys<Vector3>("Head_Scale", &headTransform_.scale_);
-	playerAnim_->AddAnimationKeys<Vector3>("Head_Rotate", &headTransform_.rotate_);
-	playerAnim_->AddAnimationKeys<Vector3>("Head_Translate", &headTransform_.translate_);
-	playerAnim_->AddAnimationKeys<Vector3>("Arm_R_Scale", &armTransform_R_.scale_);
-	playerAnim_->AddAnimationKeys<Vector3>("Arm_R_Rotate", &armTransform_R_.rotate_);
-	playerAnim_->AddAnimationKeys<Vector3>("Arm_R_Translate", &armTransform_R_.translate_);
-	playerAnim_->AddAnimationKeys<Vector3>("Arm_L_Scale", &armTransform_L_.scale_);
-	playerAnim_->AddAnimationKeys<Vector3>("Arm_L_Rotate", &armTransform_L_.rotate_);
-	playerAnim_->AddAnimationKeys<Vector3>("Arm_L_Translate", &armTransform_L_.translate_);
+	// コライダー用のトランスフォームの初期化
+	colliderTransform_.Init();
+	colliderTransform_.SetParent(&transform_);
+	colliderTransform_.translate_.y += 1.0f;
 
 	/// タイトル演出用パラメータを生成
 	CreateTitleCameraParameter("Title_Idle");
@@ -81,11 +40,6 @@ void Player::Init()
 	titleAnim_ = AnimationManager::GetInstance()->CreateAnimation("TitleAnim", "Title_Idle");
 	titleAnim_->AddAnimationKeys<Vector3>("Camera_Rotate", &titleCamera_->transform_.rotate_);
 	titleAnim_->AddAnimationKeys<Vector3>("Camera_Translate", &titleCamera_->transform_.translate_);
-
-	// ループ状態にする
-	playerAnim_->isLoop_ = true;
-	// この状態で再生
-	playerAnim_->Play();
 
 	// ループ状態にする
 	titleAnim_->isLoop_ = true;
@@ -107,11 +61,12 @@ void Player::Init()
 
 	// 攻撃用の線の追加
 	attackLine_ = std::make_unique<Line>();
-	attackLine_->Init("AttackLine", {-1000.0f, 100.0f, 0.0f}, {0.35f, 0.35f}, 1.0f, TextureManager::Load("./Engine/Resource/Samples/Box", "uvChecker.png"));
-	attackLine_->SetParent(&armTransform_L_);
+	attackLine_->Init("AttackLine", {0.0f, 0.0f, 0.0f}, {0.35f, 0.35f}, 1.0f);
+	attackLine_->SetParent(&weaponTransform_);
 	attackLine_->AddCollider("Sword", this);
-	attackLine_->rotate_.x = (float)std::numbers::pi / 2.0f;
+	attackLine_->rotate_.z = (float)std::numbers::pi;
 	attackLine_->isActive_ = false;
+	attackLine_->Update();
 
 	// 行動状態を待機状態に変更
 	ChangeState(std::make_unique<Root>());
@@ -252,40 +207,14 @@ void Player::Update()
 		//コライダーのワールド座標更新
 		colliderWorldPos_ = colliderTransform_.GetWorldPos();
 
-		// ヒットストップが有効なら
-		if (enableHitStop_) {
-			// 終了している場合
-			if (!hitStopTimer_.GetIsFinish()) {
-				// アニメーション再生速度を0に
-				playerAnim_->SetAnimationSpeed(0.0f);
-
-				// ヒットストップタイマー更新
-				hitStopTimer_.Update();
-				// 命中クールタイマーを停止
-				hitCoolTimeTimer_.SetIsActive(false);
-			}
-			else {
-				// 再生速度をリセット
-				playerAnim_->SetAnimationSpeed(1.0f);
-				// ヒットストップ無効
-				enableHitStop_ = false;
-
-				// 命中クールタイマーを再開
-				hitCoolTimeTimer_.SetIsActive(true);
-			}
-		}
-
 		// ヒットクールタイム更新
 		hitCoolTimeTimer_.Update();
 
 	}
 	else {
-		// 再生速度をリセット
-		playerAnim_->SetAnimationSpeed(1.0f);
 
-		if (playerAnim_->GetReadingParameterName() != "Player_Idle") {
-			playerAnim_->isLoop_ = true;
-			playerAnim_->ChangeParameter("Player_Idle", true);
+		if (!skiningModels_[0]->animationManager_.GetIsPlayingAnimation("00_Idle")) {
+			skiningModels_[0]->animationManager_.PlayAnimation("00_Idle", true);
 		}
 	}
 }
@@ -293,16 +222,10 @@ void Player::Update()
 void Player::DisplayImGui()
 {
 	transform_.DisplayImGui();
-	bodyTransform_.DisplayImGuiWithTreeNode("BodyTransform");
 	headTransform_.DisplayImGuiWithTreeNode("HeadTransform");
-	armTransform_R_.DisplayImGuiWithTreeNode("Arm_R_Transform");
-	armTransform_L_.DisplayImGuiWithTreeNode("Arm_L_BodyTransform");
 	weaponTransform_.DisplayImGuiWithTreeNode("Weapon");
 
 	ImGui::DragInt("HP", &hp_);
-
-	// プレイヤーのアニメーションImGui
-	playerAnim_->DisplayImGui();
 
 	// タイトルアニメーションのImGuiを表示
 	titleAnim_->DisplayImGui();
@@ -367,24 +290,6 @@ void Player::OnCollisionEnter(Collider* collider)
 	if (collider->GetGameObject()->GetObjectTag() == IObject::TagEnemy) {
 		//HitStop();
 	}
-}
-
-void Player::CreateParameter(const std::string& name)
-{
-	// パラメータの生成
-	animManager_->CreateAnimationParameter(name);
-	animManager_->AddSelectAnimationKeys<Vector3>(name, "Body_Scale");
-	animManager_->AddSelectAnimationKeys<Vector3>(name, "Body_Rotate");
-	animManager_->AddSelectAnimationKeys<Vector3>(name, "Body_Translate");
-	animManager_->AddSelectAnimationKeys<Vector3>(name, "Head_Scale");
-	animManager_->AddSelectAnimationKeys<Vector3>(name, "Head_Rotate");
-	animManager_->AddSelectAnimationKeys<Vector3>(name, "Head_Translate");
-	animManager_->AddSelectAnimationKeys<Vector3>(name, "Arm_R_Scale");
-	animManager_->AddSelectAnimationKeys<Vector3>(name, "Arm_R_Rotate");
-	animManager_->AddSelectAnimationKeys<Vector3>(name, "Arm_R_Translate");
-	animManager_->AddSelectAnimationKeys<Vector3>(name, "Arm_L_Scale");
-	animManager_->AddSelectAnimationKeys<Vector3>(name, "Arm_L_Rotate");
-	animManager_->AddSelectAnimationKeys<Vector3>(name, "Arm_L_Translate");
 }
 
 void Player::CreateTitleCameraParameter(const std::string& name)

@@ -102,6 +102,12 @@ bool SkinAnimationManager::GetIsPlayingAnimation(const std::string& animName)
 	return false;
 }
 
+float SkinAnimationManager::GetPlayingAnimationProgress()
+{
+	// アニメーション進捗度を返す
+	return animations_[playingAnimName_].GetProgress();
+}
+
 void SkinAnimationManager::StopAnimation(const std::string& animName)
 {
 	// 引数で指定された名称のアニメーションを停止させる
