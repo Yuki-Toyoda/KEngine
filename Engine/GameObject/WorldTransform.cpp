@@ -15,7 +15,7 @@ WorldTransform::WorldTransform(Vector3 scale, Vector3 rotate, Vector3 translate)
 {
 	// 初期化
 	Init();
-
+	
 	// パブリックメンバ変数に代入
 	scale_ = scale;
 	rotate_ = rotate;
@@ -45,8 +45,8 @@ void WorldTransform::Init()
 {
 	// パブリックメンバ変数初期化
 	scale_ = { 1.0f, 1.0f, 1.0f };
-	rotate_ = { 0.0f, 0.0f, 0.0f };
-	translate_ = { 0.0f, 0.0f, 0.0f };
+	rotate_ = {0.0f, 0.0f, 0.0f};
+	translate_ = {0.0f, 0.0f, 0.0f};
 	parent_ = nullptr;
 	parentType_ = 0b111;
 }
@@ -87,7 +87,7 @@ void WorldTransform::SetParent(WorldTransform* parent, uint8_t parentType)
 	parentType_ = parentType;
 }
 
-const WorldTransform* WorldTransform::GetParent() const
+const WorldTransform* WorldTransform::GetParent()
 {
 	// 親をそのまま返す
 	return parent_;
@@ -97,16 +97,6 @@ Matrix4x4 WorldTransform::GetMatWorld() const
 {
 	// 結果格納用
 	Matrix4x4 result;
-
-	// ワールド行列をセットしていればワールド行列を参照する
-	if (worldMat_ != nullptr) {
-		if (parent_) {
-			return *worldMat_ * parent_->GetMatWorld();
-		}
-		else {
-			return *worldMat_;
-		}
-	}
 
 	// アフィン変換行列を計算
 	result = Matrix4x4::MakeAffin(scale_, rotate_, translate_);
@@ -222,3 +212,5 @@ bool WorldTransform::operator==(const WorldTransform wt) const
 	// 結果を返す
 	return { this->scale_ == wt.scale_ && this->rotate_ == wt.rotate_ && this->translate_ == wt.translate_ };
 }
+
+

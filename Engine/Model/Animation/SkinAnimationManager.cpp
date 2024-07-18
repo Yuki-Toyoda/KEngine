@@ -65,65 +65,13 @@ bool SkinAnimationManager::GetIsPlayingAnimation()
 	if (playingAnimName_ == "") {
 		return false;
 	}
-
+	
 	// アニメーションが再生中であれば
 	if (animations_[playingAnimName_].isPlay_) {
 		return true;
 	}
 	// ここまで到達すれば再生されていない
 	return false;
-}
-
-bool SkinAnimationManager::GetIsPlayingAnimation(const std::string& animName)
-{
-	// そもそもアニメーション名が指定されていない場合は再生されていない
-	if (playingAnimName_ == "") {
-		return false;
-	}
-
-	// アニメーションが存在した場合
-	if (animations_.count(animName)) {
-		// アニメーションが再生中であれば
-		if (animations_[animName].isPlay_) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-	else {
-		// ログ出力
-		Debug::Log("Play Error - Animation Not Found.\n");
-		// 停止させる
-		assert(false);
-	}
-
-	// ここまで到達すれば再生されていない
-	return false;
-}
-
-float SkinAnimationManager::GetPlayingAnimationProgress()
-{
-	// アニメーション進捗度を返す
-	return animations_[playingAnimName_].GetProgress();
-}
-
-float SkinAnimationManager::GetAnimationProgress(const std::string& animName)
-{
-	// アニメーションが存在した場合
-	if (animations_.count(animName)) {
-		// 該当アニメーションの進捗を返す
-		return animations_[animName].GetProgress();
-	}
-	else {
-		// ログ出力
-		Debug::Log("Play Error - Animation Not Found.\n");
-		// 停止させる
-		assert(false);
-	}
-
-	// ここに来た時点でエラー吐いてる
-	return 0.0f;
 }
 
 void SkinAnimationManager::StopAnimation(const std::string& animName)

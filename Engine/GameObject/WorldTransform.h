@@ -71,15 +71,12 @@ public: // パブリックメンバ関数
 private: // メンバ変数
 
 	// 親子関係
-	const WorldTransform* parent_ = nullptr;
+	const WorldTransform* parent_;
 
 	// 親子関係タイプ
 	// 0x111 ... scale, rotate, translate 全て
 	// それぞれ scale rotate translate
 	uint8_t parentType_;
-
-	// 直接指定を行うワールド行列
-	const Matrix4x4* worldMat_ = nullptr;
 
 public: // アクセッサ等
 
@@ -93,13 +90,7 @@ public: // アクセッサ等
 	/// 親のゲッター
 	/// </summary>
 	/// <returns>親</returns>
-	const WorldTransform* GetParent() const;
-
-	/// <summary>
-	/// ワールド行列セッター
-	/// </summary>
-	/// <param name="mat">セットするワールド行列</param>
-	void SetWorldMat(Matrix4x4* mat) { worldMat_ = mat; };
+	const WorldTransform* GetParent();
 
 	/// <summary>
 	/// 現在のワールド行列のゲッター

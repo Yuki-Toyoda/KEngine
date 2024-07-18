@@ -87,7 +87,7 @@ void QuatWorldTransform::SetParent(QuatWorldTransform* parent, uint8_t parentTyp
 	parentType_ = parentType;
 }
 
-const QuatWorldTransform* QuatWorldTransform::GetParent() const
+const QuatWorldTransform* QuatWorldTransform::GetParent()
 {
 	// 親をそのまま返す
 	return parent_;
@@ -113,11 +113,11 @@ Matrix4x4 QuatWorldTransform::GetMatWorld() const
 			if (parentType_ & FLAG_SCALE) { // 拡縮
 				parentMat = parentMat * Matrix4x4::MakeScale(parent_->scale_);
 			}
-
+				
 			if (parentType_ & FLAG_ROTATE) { // 回転
 				parentMat = parentMat * Quaternion::QuaternionToMatrix(parent_->rotate_);
 			}
-
+				
 			if (parentType_ & FLAG_TRANSLATE) { // 座標
 				parentMat = parentMat * Matrix4x4::MakeTranslate(parent_->translate_);
 			}
@@ -127,7 +127,6 @@ Matrix4x4 QuatWorldTransform::GetMatWorld() const
 		}
 		result = result * parentMat;
 	}
-
 	// 結果を返す
 	return result;
 }
