@@ -1,3 +1,4 @@
+
 #include "SkiningModel.h"
 #include "../Base/DirectXCommon.h"
 
@@ -47,6 +48,14 @@ void SkiningModel::Update()
 	// スケルトン更新関数
 	skelton_.Update();
 
+	// 親子関係データがある分ループ
+	for (ParentData& p : parentDatas_) {
+		// ボーンの行列とワールド行列を掛け合わせる
+		p.localMat_ = GetBoneMatrix(p.boneName_);
+		// トランスフォームに計算したワールドトランスフォームにセット
+		p.transform_->SetWorldMat(&p.localMat_);
+	}
+
 	// 全ジョイント数分ループ
 	for (size_t jointIndex = 0; jointIndex < skelton_.joints_.size(); jointIndex++) {
 		// インデックスが行列数を超過していた場合停止させる
@@ -78,11 +87,26 @@ void SkiningModel::Draw(ID3D12GraphicsCommandList6* cmdList)
 	cmdList->DispatchMesh(modelData_->GetMeshletCount(), 1, 1);
 }
 
-Vector3 SkiningModel::GetBonePosition(const std::string boneName)
+void SkiningModel::SetBoneParent(const std::string boneName, WorldTransform* transform)
 {
-	// 返還用変数を定義
-	Vector3 result{};
+	// 指定されたボーン名称が存在するかどうかを確認する
+	if (!skelton_.jointMap_.count(boneName)) { // 存在しない場合
+		// ボーンが存在しないためログに出して停止
+		Debug::Log("Bone Not Found.");
+		assert(false);
+	}
 
+	// 新規親子関係データ生成
+	ParentData newData;
+	newData.transform_ = transform;
+	newData.boneName_ = boneName;
+
+	// 配列にデータを追加
+	parentDatas_.push_back(newData);
+}
+
+Matrix4x4 SkiningModel::GetBoneMatrix(const std::string boneName)
+{
 	// 指定されたボーン名称が存在するかどうかを確認する
 	if (!skelton_.jointMap_.count(boneName)) { // 存在しない場合
 		// ボーンが存在しないためログに出して停止
@@ -93,8 +117,20 @@ Vector3 SkiningModel::GetBonePosition(const std::string boneName)
 	// 配列上の番号を取得する
 	int boneIndex = skelton_.jointMap_[boneName];
 	// 配列から情報取得
-	result = skelton_.joints_[boneIndex].transform_.GetWorldPos();
+	return skelton_.joints_[boneIndex].skeltonSpaceMatrix_;
+}
 
-	// 返還する
-	return result;
+Vector3 SkiningModel::GetBonePosition(const std::string boneName)
+{
+	// 指定されたボーン名称が存在するかどうかを確認する
+	if (!skelton_.jointMap_.count(boneName)) { // 存在しない場合
+		// ボーンが存在しないためログに出して停止
+		Debug::Log("Bone Not Found.");
+		assert(false);
+	}
+
+	// 配列上の番号を取得する
+	int boneIndex = skelton_.jointMap_[boneName];
+	// 配列から情報取得
+	return  Vector3{ skelton_.joints_[boneIndex].skeltonSpaceMatrix_.m[3][0], skelton_.joints_[boneIndex].skeltonSpaceMatrix_.m[3][1], skelton_.joints_[boneIndex].skeltonSpaceMatrix_.m[3][2] };
 }

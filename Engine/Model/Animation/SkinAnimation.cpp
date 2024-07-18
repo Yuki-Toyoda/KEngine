@@ -134,6 +134,12 @@ void SkinAnimation::LoadAnimation(const aiAnimation* anim, std::string& name)
 	}
 }
 
+float SkinAnimation::GetProgress() const
+{
+	// 現在のタイマーの進行度を返す
+	return std::clamp(animationTime_ / duration_, 0.f, 1.f);
+}
+
 Vector3 SkinAnimation::CalculateValue(const std::vector<keyframe<Vector3>>& keyframes, float time)
 {
 	// キーがない場合返す値がないので停止させる

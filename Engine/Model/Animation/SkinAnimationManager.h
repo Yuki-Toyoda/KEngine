@@ -36,7 +36,7 @@ public: // メンバ関数
 	/// </summary>
 	/// <param name="scene">読み込み中シーン</param>
 	void LoadAnimations(const aiScene* scene);
-	
+
 	/// <summary>
 	/// アニメーション再生関数
 	/// </summary>
@@ -53,10 +53,30 @@ public: // メンバ関数
 public: // アクセッサ等
 
 	/// <summary>
-	/// 再生中アニメーションが再生されているかのゲッター
+	/// 配列内のいずれかアニメーションが再生されているかのゲッター
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>再生されているか</returns>
 	bool GetIsPlayingAnimation();
+
+	/// <summary>
+	/// 引数で指定されたアニメーションが再生されているかのゲッター
+	/// </summary>
+	/// <param name="animName">検証するアニメーション名</param>
+	/// <returns>再生されているか</returns>
+	bool GetIsPlayingAnimation(const std::string& animName);
+
+	/// <summary>
+	/// 再生中アニメーションの進捗度ゲッター
+	/// </summary>
+	/// <returns>再生中アニメーションの進捗(0.0 ~ 1.0)</returns>
+	float GetPlayingAnimationProgress();
+
+	/// <summary>
+	/// 再生中アニメーションの進捗度ゲッター
+	/// </summary>
+	/// <param name="animName">検索するアニメーション名</param>
+	/// <returns>再生中アニメーションの進捗(0.0 ~ 1.0)</returns>
+	float GetAnimationProgress(const std::string& animName);
 
 private: // プライベートなメンバ関数
 
@@ -75,4 +95,3 @@ private: // メンバ変数
 	std::string playingAnimName_ = "";
 
 };
-

@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <algorithm>
 
 // クラスの前方宣言
 class Skelton;
@@ -101,6 +102,12 @@ public: // アクセッサ等
 	/// <returns>アニメーション終了フラグ</returns>
 	bool GetIsPLay() { return isPlay_; };
 
+	/// <summary>
+	///	アニメーション進捗度ゲッター
+	/// </summary>
+	/// <returns>進捗度(0.0 ~ 1.0)</returns>
+	float GetProgress() const;
+
 private: // プライベートなメンバ関数
 
 	/// <summary>
@@ -140,4 +147,3 @@ private: // メンバ変数
 	float duration_ = 0.0f;
 
 };
-
