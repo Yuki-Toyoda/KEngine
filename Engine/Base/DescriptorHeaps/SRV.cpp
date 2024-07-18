@@ -84,6 +84,29 @@ SRVInfo SRV::RegisterTexture(ID3D12Resource* resource, const DirectX::ScratchIma
 	return info;
 }
 
+SRVInfo SRV::RegisterDepthTexture(ID3D12Resource* resource)
+{
+	// 返還用
+	SRVInfo info;
+
+	// 深度テクスチャ用のSRVの設定を行う
+	info.desc_.Format				   = DXGI_FORMAT_R24_UNORM_X8_TYPELESS;
+	info.desc_.ViewDimension		   = D3D12_SRV_DIMENSION_TEXTURE2D;
+	info.desc_.Texture2D.MipLevels	   = 1;
+	info.desc_.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+
+	// SRV上の空きインデックスを取得する
+	info.index_ = texIndexList_.UseEmpty();
+	// Viewを設定
+	info.SetView(this);
+
+	// SRVの生成を行う
+	device_->CreateShaderResourceView(resource, &info.desc_, info.cpuView_);
+
+	// 生成後情報構造体を返す
+	return info;
+}
+
 SRVInfo SRV::RegisterRenderResource(ID3D12Resource* resource, const int width, const int height)
 {
 	// 結果確認用

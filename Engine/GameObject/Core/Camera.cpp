@@ -62,7 +62,11 @@ void Camera::Update()
 		cameraDataBuffer_.data_->WorldViewProj = viewProjectionMatrix_;
 		cameraDataBuffer_.data_->DrawMeshlets = isDrawMeshlets_;
 
+		// ポストプロセスの更新
 		ppProcessor_.Update();
+
+		// ポストプロセスのアウトラインにプロジェクション行列の逆行列をセット
+		ppProcessor_.outLine_.SetViewProjectionInverse(projectionMatrix.Inverse());
 
 		// 描画マネージャーに描画ターゲットをセット
 		rendererManager_->AddTarget(cameraDataBuffer_.GetGPUView(), &renderResource_, &depthStencil_);
