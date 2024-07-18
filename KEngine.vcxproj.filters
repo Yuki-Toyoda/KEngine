@@ -747,6 +747,7 @@
     <None Include="Engine\Resource\Shader\ParticleMeshlet\ParticleMeshlet.hlsli">
       <Filter>Engine\Resource\Shader</Filter>
     </None>
+    <None Include="Engine\Resource\Shader\Toon\MeshletToon.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -990,5 +991,6 @@
     <FxCompile Include="Engine\Resource\Shader\ParticleMeshlet\ParticleMeshletPS.hlsl">
       <Filter>Engine\Resource\Shader</Filter>
     </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\Toon\MeshletToonPS.hlsl" />
   </ItemGroup>
 </Project>
