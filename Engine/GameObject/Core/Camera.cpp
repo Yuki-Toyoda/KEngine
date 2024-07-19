@@ -21,6 +21,8 @@ void Camera::Init()
 	// データに値を代入
 	cameraDataBuffer_.data_->DrawMeshlets = isDrawMeshlets_;
 	cameraDataBuffer_.data_->ViewProjection2D = Matrix4x4::MakeOrthGraphic(0.0f, 0.0f, (float)WinApp::kWindowWidth, (float)WinApp::kwindowHeight, 0.0f, 100.0f);
+	cameraDataBuffer_.data_->ToonMapTex = TextureManager::Load("./Engine/Resource/Samples/Texture", "ToonMap.png").GetView();
+	cameraDataBuffer_.data_->ToonMapTex -= KEngine::Config::Rendering::kMaxBuffer;
 
 	// 各リソース初期化
 	renderResource_.Init(device, heaps);  // レンダリングを行うリソース
@@ -60,7 +62,11 @@ void Camera::Update()
 		cameraDataBuffer_.data_->WorldViewProj = viewProjectionMatrix_;
 		cameraDataBuffer_.data_->DrawMeshlets = isDrawMeshlets_;
 
+		// ポストプロセスの更新
 		ppProcessor_.Update();
+
+		// ポストプロセスのアウトラインにプロジェクション行列の逆行列をセット
+		ppProcessor_.outLine_.SetViewProjectionInverse(projectionMatrix.Inverse());
 
 		// 描画マネージャーに描画ターゲットをセット
 		rendererManager_->AddTarget(cameraDataBuffer_.GetGPUView(), &renderResource_, &depthStencil_);

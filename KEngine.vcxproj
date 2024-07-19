@@ -224,6 +224,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Base\RootSignature\ParticleRootSignature.cpp" />
     <ClCompile Include="Engine\GameObject\Samples\SampleParticle\SampleParticle.cpp" />
     <ClCompile Include="Engine\GameObject\Samples\SampleLevel\SampleLevelObjects.cpp" />
+    <ClCompile Include="Engine\PostProcess\OutLine\OutLine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Base\Renderer\CopyRenderer.h" />
@@ -379,6 +380,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\GameObject\Samples\SampleParticle\SampleParticle.h" />
     <ClInclude Include="Engine\GameObject\Samples\SampleLevel\SampleLevelObjects.h" />
     <ClInclude Include="Engine\Level\LevelLoader.h" />
+    <ClInclude Include="Engine\PostProcess\OutLine\OutLine.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Meshlet.hlsli">

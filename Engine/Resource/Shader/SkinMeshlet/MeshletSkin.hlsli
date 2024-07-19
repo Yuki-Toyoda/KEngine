@@ -3,6 +3,7 @@ struct ConstantData
     float32_t4x4 WorldViewProj;
     float32_t4x4 ViewProjection2D;
     uint32_t     DrawMeshlets;
+    int32_t      ToonMapIndex;
 };
 
 struct DirectionalLight

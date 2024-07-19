@@ -4,6 +4,7 @@
 void PostProcessor::Init()
 {
 	// ポストプロセス初期化
+	outLine_.Init(); // アウトライン
 	gaussian_.Init(); // ガウシアンフィルター
 	vignette_.Init(); // ビネット
 	grayScale_.Init(); // グレースケール
@@ -15,6 +16,7 @@ void PostProcessor::Init()
 void PostProcessor::Update()
 {
 	// ポストプロセスの更新を行う
+	outLine_.Update();	// アウトライン
 	gaussian_.Update(); // ガウシアンフィルター
 	vignette_.Update(); // ビネット
 	grayScale_.Update(); // グレースケール更新
@@ -54,6 +56,7 @@ ConstantBuffer<Parameter> gPara : register(b0);
 Texture2D<float32_t4> gTexture : register(t0);
 Texture2D<float32_t4> gDepth : register(t1);
 SamplerState gSampler : register(s0);
+SamplerState gPointSampler : register(s1);
 
 )";
 
@@ -63,6 +66,7 @@ SamplerState gSampler : register(s0);
 	root_.CreateDescriptorTableParameter(0, D3D12_SHADER_VISIBILITY_PIXEL); // テクスチャデータ
 	root_.CreateDescriptorTableParameter(1, D3D12_SHADER_VISIBILITY_PIXEL); // 深度マップ
 	root_.CreateSampler(0);													// サンプラー
+	root_.CreateSampler(1, D3D12_SHADER_VISIBILITY_PIXEL, D3D12_FILTER_MIN_MAG_MIP_POINT); // 深度テクスチャ用サンプラー
 
 	/// 各ポストプロセスのパラメータも追加する
 	// バインド番号指定用
@@ -135,6 +139,7 @@ void PostProcessor::DisplayImGui()
 	// ポストプロセス関連のImGuiを表示
 	if (ImGui::TreeNode("PostProcess")) {
 		// ポストプロセス関連のImGuiを表示
+		outLine_.DisplayImGui();  // アウトライン
 		gaussian_.DisplayImGui(); // ガウシアンフィルター
 		vignette_.DisplayImGui(); // ビネット
 		grayScale_.DisplayImGui(); // グレースケール
@@ -169,6 +174,7 @@ std::vector<IPostProcess*> PostProcessor::GetAllProcess()
 	// 返還用配列
 	std::vector<IPostProcess*> result;
 	// 返還用配列に各ポストプロセスの参照を渡す
+	result.push_back(&outLine_); // アウトライン
 	result.push_back(&gaussian_); // ガウシアンフィルター
 	result.push_back(&vignette_); // ビネット
 	result.push_back(&grayScale_); // グレースケール

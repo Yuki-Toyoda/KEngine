@@ -85,6 +85,7 @@ void GaussianFilter::WriteProcess(std::ofstream* stream)
         color /= totalWeight;
     
         output = color;
+        output.a = 1.0f;
     }
     }
 )";
