@@ -320,11 +320,21 @@
     <ClCompile Include="Engine\Base\RootSignature\SpriteRootSignature.cpp">
       <Filter>Engine\Base\RootSignature</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\GameObject\Samples\SampleLevel\SampleLevelObjects.cpp" />
-    <ClCompile Include="Engine\Level\LevelLoader.cpp" />
-    <ClCompile Include="Engine\Primitive\2d\BillboardPlane.cpp" />
-    <ClCompile Include="Engine\Primitive\2d\Plane.cpp" />
-    <ClCompile Include="Engine\PostProcess\OutLine\OutLine.cpp" />
+    <ClCompile Include="Engine\Level\LevelLoader.cpp">
+      <Filter>App\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Primitive\2d\BillboardPlane.cpp">
+      <Filter>Engine\Primitive\2d</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\PostProcess\OutLine\OutLine.cpp">
+      <Filter>Engine\PostProcess\OutLine</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Primitive\2d\Plane.cpp">
+      <Filter>Engine\Primitive\2d</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\Samples\SampleLevel\SampleLevelObjects.cpp">
+      <Filter>App\GameObject\Samples\SampleLevel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -714,12 +724,24 @@
     <ClInclude Include="Engine\Base\RootSignature\SpriteRootSignature.h">
       <Filter>Engine\Base\RootSignature</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\GameObject\Samples\SampleLevel\SampleLevelObjects.h" />
-    <ClInclude Include="Engine\Level\LevelLoader.h" />
-    <ClInclude Include="Engine\Utility\Angle\Angle.h" />
-    <ClInclude Include="Engine\Primitive\2d\BillboardPlane.h" />
-    <ClInclude Include="Engine\Primitive\2d\Plane.h" />
-    <ClInclude Include="Engine\PostProcess\OutLine\OutLine.h" />
+    <ClInclude Include="Engine\Level\LevelLoader.h">
+      <Filter>App\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Primitive\2d\BillboardPlane.h">
+      <Filter>Engine\Primitive\2d</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Utility\Angle\Angle.h">
+      <Filter>App\Utility\Angle</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\PostProcess\OutLine\OutLine.h">
+      <Filter>Engine\PostProcess\OutLine</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Primitive\2d\Plane.h">
+      <Filter>Engine\Primitive\2d</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\Samples\SampleLevel\SampleLevelObjects.h">
+      <Filter>App\GameObject\Samples\SampleLevel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -945,6 +967,18 @@
     </Filter>
     <Filter Include="App\Utility\Random">
       <UniqueIdentifier>{b58389cd-5728-4acc-8f7a-517062c7cb8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Level">
+      <UniqueIdentifier>{ea37d423-b428-4279-8452-39579b4a8726}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Utility\Angle">
+      <UniqueIdentifier>{a65f1eed-e043-4667-962c-04cacc0a0b4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\PostProcess\OutLine">
+      <UniqueIdentifier>{aa2740df-6185-496f-a070-8dabeacd7142}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\GameObject\Samples\SampleLevel">
+      <UniqueIdentifier>{83065e7f-b397-4665-9644-dec1c2497d51}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
