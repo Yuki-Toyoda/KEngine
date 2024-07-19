@@ -9,6 +9,10 @@ void EnemyBullet::Init()
 	// メッシュを追加
 	AddNormalModel(&transform_, "./Engine/Resource/Samples/Sphere", "Sphere.obj");
 
+	// 弾の色調整
+	normalModels_[0]->materials_[0].color_ = { 0.0f, 2.5f, 1.0f, 0.55f };
+	normalModels_[0]->materials_[0].enableLighting_ = false;
+
 	// 球のコライダー追加
 	AddColliderSphere("Bullet", &transform_.translate_, &transform_.scale_.x);
 

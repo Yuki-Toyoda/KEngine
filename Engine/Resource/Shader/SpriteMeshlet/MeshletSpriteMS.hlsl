@@ -58,7 +58,7 @@ void main(
             float(gid & 1),
             float(gid & 3) / 4,
             float(gid & 7) / 8,
-            1.0f);
+            material.color.a);
         }
         else
         {

@@ -18,7 +18,7 @@ void RendererManager::Init(DirectXDevice* device, SRV* srv)
 
 	// ライトの生成を行う
 	light_ = std::make_unique<DirectionalLight>("MainLight"); // 生成
-	light_->Init();											  // 初期化
+	light_->Init({ 0.45f, 0.6f, 1.0f, 1.0f }, { 0.55f, -1.0f, -0.55f }, 1.0f); // 初期化
 
 	// レンダラー達を初期化
 	normalRenderer_.Init(device, &dxc_, modelManager_, light_.get()); // 通常描画レンダラー

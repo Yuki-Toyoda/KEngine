@@ -13,6 +13,7 @@ void EnemyShot::Init()
 	bullet_ = GameObjectManager::GetInstance()->CreateInstance<EnemyBullet>("EnemyBullet", IObject::TagEnemy);
 	// 弾の座標を左手に合わせる
 	bullet_->transform_.translate_ = enemy_->armTransform_L_.GetWorldPos() + enemy_->armTransform_L_.translate_;
+
 	// プレイヤーの座標をセット
 	Player* player = GameObjectManager::GetInstance()->GetGameObject<Player>("Player");
 	bullet_->SetPlayerTransform(&player->colliderTransform_);
