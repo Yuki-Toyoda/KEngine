@@ -68,7 +68,7 @@ void main(
         // 出力する頂点座標を求める
         outVerts[gtid].pos      = mul(skinned.position, mul(Transform.world, ConstantData.WorldViewProj));
         outVerts[gtid].texCoord = vertex.texCoord;
-        outVerts[gtid].normal   = skinned.normal;
+        outVerts[gtid].normal = normalize(mul(skinned.normal, (float32_t3x3)Transform.world));
         outVerts[gtid].mIndex = vertex.materialIndex;
         
         // 出力する頂点色を求める
