@@ -20,6 +20,7 @@ void PPRenderer::DrawCall(ID3D12GraphicsCommandList6* list)
 		it->pp_->SetToCommandList(list);
 		// テクスチャの書き込み先
 		list->SetGraphicsRootDescriptorTable(1, it->render->srvInfo_.gpuView_);
+		list->SetGraphicsRootDescriptorTable(2, it->depth->srvInfo_.gpuView_);
 
 		// リソースバリアをセット
 		D3D12_RESOURCE_STATES beforeBarrier = it->texture->GetBarrier();

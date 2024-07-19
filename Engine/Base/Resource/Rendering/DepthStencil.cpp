@@ -40,6 +40,8 @@ void DepthStencil::Init(DirectXDevice* device, HeapManager* heaps)
 
 	// 登録したDSV上のインデックスを取得する
 	dsvInfo_ = heaps->dsv()->CreateDepthStencilView(resource_.Get());
+	// 登録したSRV上のインデックスを取得する
+	srvInfo_ = heaps->srv()->RegisterDepthTexture(resource_.Get());
 }
 
 void DepthStencil::Clear(ID3D12GraphicsCommandList6* list)

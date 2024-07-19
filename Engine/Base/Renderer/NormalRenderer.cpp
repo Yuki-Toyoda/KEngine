@@ -25,7 +25,7 @@ void NormalRenderer::Init(DirectXDevice* device, DXC* dxc, ModelManager* mm, Dir
 	// スキンアニメーション描画用PSO初期化
 	skinModelPSO_.Init(skinRootSignature_, dxc)
 		.SetMeshShader("Engine/Resource/Shader/SkinMeshlet/MeshletSkinMS.hlsl")
-		.SetPixelShader("Engine/Resource/Shader/SkinMeshlet/MeshletSkinPS.hlsl")
+		.SetPixelShader("Engine/Resource/Shader/Toon/MeshletSkinToonPS.hlsl")
 		.Build(device->GetDevice());
 
 	// パーティクル描画用PSO初期化

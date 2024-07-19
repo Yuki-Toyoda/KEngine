@@ -105,6 +105,13 @@ public: // メンバ関数
 	SRVInfo RegisterTexture(ID3D12Resource* resource, const DirectX::ScratchImage& mipImages);
 
 	/// <summary>
+	/// 深度テクスチャをSRVに登録する関数
+	/// </summary>
+	/// <param name="resource">登録するリソース</param>
+	/// <returns>深度テクスチャまでのアドレス</returns>
+	SRVInfo RegisterDepthTexture(ID3D12Resource* resource);
+
+	/// <summary>
 	/// レンダーリソースをSRVに登録する関数
 	/// </summary>
 	/// <param name="resource">登録するリソース</param>

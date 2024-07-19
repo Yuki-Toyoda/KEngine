@@ -31,6 +31,9 @@ public: // パブリックなメンバ変数
 	// DSVの登録情報
 	DSVInfo dsvInfo_;
 
+	// SRVの登録情報
+	SRVInfo srvInfo_;
+
 public: // オペレーターオーバーロード
 
 	// 暗黙変換演算子オーバーロード
