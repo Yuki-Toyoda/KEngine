@@ -335,6 +335,7 @@
     <ClCompile Include="Engine\GameObject\Samples\SampleLevel\SampleLevelObjects.cpp">
       <Filter>App\GameObject\Samples\SampleLevel</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\PostProcess\HSVFilter\HSVFilter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -742,6 +743,7 @@
     <ClInclude Include="Engine\GameObject\Samples\SampleLevel\SampleLevelObjects.h">
       <Filter>App\GameObject\Samples\SampleLevel</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\PostProcess\HSVFilter\HSVFilter.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">

@@ -7,6 +7,7 @@
 #include "Vignette/Vignette.h"
 #include "GaussianFilter/GaussianFilter.h"
 #include "OutLine/OutLine.h"
+#include "HSVFilter/HSVFilter.h"
 
 #include<fstream>
 
@@ -65,6 +66,7 @@ public: // パブリックメンバ変数
 	GaussianFilter gaussian_; // ガウシアンフィルター
 	Vignette  vignette_;  // ビネット
 	GrayScale grayScale_; // グレースケール
+	HSVFilter hsvFilter_; // HSVフィルター
 
 private: // メンバ変数
 

@@ -178,6 +178,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\PostProcess\GrayScale\GrayScale.cpp" />
     <ClCompile Include="Engine\PostProcess\GaussianFilter\GaussianFilter.cpp" />
     <ClCompile Include="Engine\Level\LevelLoader.cpp" />
+    <ClCompile Include="Engine\PostProcess\HSVFilter\HSVFilter.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\Scene\SceneFactory.cpp" />
     <ClCompile Include="Engine\Base\RootSignature\ModelRootSignature.cpp" />
@@ -345,6 +346,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\GameObject\Samples\SampleLevel\SampleLevelObjects.h" />
     <ClInclude Include="Engine\Level\LevelLoader.h" />
     <ClInclude Include="Engine\PostProcess\OutLine\OutLine.h" />
+    <ClInclude Include="Engine\PostProcess\HSVFilter\HSVFilter.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Meshlet.hlsli">
