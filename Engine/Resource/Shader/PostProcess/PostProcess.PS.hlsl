@@ -41,19 +41,6 @@ float32_t Vignette(float32_t2 texcoord) {
     float vignette = saturate(1.0f - length(delta) * vData.intensity);
 	return vignette;
 }
-struct GrayScaleData {
-	float32_t intensity;
-};
-
-ConstantBuffer<GrayScaleData> gsData : register(b3);
-    
-float32_t3 GrayScale(float32_t3 color)
-{
-    // グレースケール色を設定する
-    float32_t3 result = dot(color, float32_t3(0.2125f, 0.7154f, 0.0721f));
-    return lerp(color, result, gsData.intensity);
-}
-
 
 struct HSV {
 	float32_t hue;
@@ -61,7 +48,7 @@ struct HSV {
 	float32_t value;
 };
 
-ConstantBuffer<HSV> hsvData : register(b4);
+ConstantBuffer<HSV> hsvData : register(b3);
 
 HSV RGBToHSV(float32_t3 rgb) {
 	HSV result = { 0.0f, 0.0f, 0.0f };
@@ -213,8 +200,6 @@ float32_t4 main(PSInput input) : SV_TARGET {
 
 	float v = Vignette(input.texcoord);
 	output = float32_t4(output.rgb * v, output.a);
-
-	output.rgb = GrayScale(output.rgb);
 
 	HSV tempHSV = RGBToHSV(output.rgb);
 
