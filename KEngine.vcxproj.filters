@@ -335,7 +335,9 @@
     <ClCompile Include="Engine\GameObject\Samples\SampleLevel\SampleLevelObjects.cpp">
       <Filter>App\GameObject\Samples\SampleLevel</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\PostProcess\HSVFilter\HSVFilter.cpp" />
+    <ClCompile Include="Engine\PostProcess\HSVFilter\HSVFilter.cpp">
+      <Filter>Engine\PostProcess\HSVFilter</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -743,7 +745,9 @@
     <ClInclude Include="Engine\GameObject\Samples\SampleLevel\SampleLevelObjects.h">
       <Filter>App\GameObject\Samples\SampleLevel</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\PostProcess\HSVFilter\HSVFilter.h" />
+    <ClInclude Include="Engine\PostProcess\HSVFilter\HSVFilter.h">
+      <Filter>Engine\PostProcess\HSVFilter</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -981,6 +985,9 @@
     </Filter>
     <Filter Include="App\GameObject\Samples\SampleLevel">
       <UniqueIdentifier>{83065e7f-b397-4665-9644-dec1c2497d51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\PostProcess\HSVFilter">
+      <UniqueIdentifier>{f8d0a69d-176c-431a-8382-25922d7db7cb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
