@@ -381,6 +381,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\GameObject\Samples\SampleLevel\SampleLevelObjects.h" />
     <ClInclude Include="Engine\Level\LevelLoader.h" />
     <ClInclude Include="Engine\PostProcess\OutLine\OutLine.h" />
+    <ClInclude Include="Engine\PostProcess\HSVFilter\HSVFilter.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Meshlet.hlsli">

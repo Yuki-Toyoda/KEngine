@@ -8,6 +8,7 @@ void PostProcessor::Init()
 	gaussian_.Init(); // ガウシアンフィルター
 	vignette_.Init(); // ビネット
 	grayScale_.Init(); // グレースケール
+	hsvFilter_.Init(); // HSVフィルター
 
 	// シェーダー生成開始
 	CreateShaderFile();
@@ -19,7 +20,8 @@ void PostProcessor::Update()
 	outLine_.Update();	// アウトライン
 	gaussian_.Update(); // ガウシアンフィルター
 	vignette_.Update(); // ビネット
-	grayScale_.Update(); // グレースケール更新
+	grayScale_.Update(); // グレースケール
+	hsvFilter_.Update(); // HSVフィルター
 }
 
 void PostProcessor::CreateShaderFile()
@@ -143,6 +145,7 @@ void PostProcessor::DisplayImGui()
 		gaussian_.DisplayImGui(); // ガウシアンフィルター
 		vignette_.DisplayImGui(); // ビネット
 		grayScale_.DisplayImGui(); // グレースケール
+		hsvFilter_.DisplayImGui(); // hsvフィルター
 
 		// シェーダーの再読み込み
 		if (ImGui::Button("Reload Shader")) {
@@ -178,6 +181,7 @@ std::vector<IPostProcess*> PostProcessor::GetAllProcess()
 	result.push_back(&gaussian_); // ガウシアンフィルター
 	result.push_back(&vignette_); // ビネット
 	result.push_back(&grayScale_); // グレースケール
+	result.push_back(&hsvFilter_); // HSVフィルター
 	// 配列を返還する
 	return result;
 }
