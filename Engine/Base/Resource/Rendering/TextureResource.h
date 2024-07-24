@@ -60,9 +60,9 @@ public: // パブリックなメンバ変数
 	int height_; // 縦幅
 
 	// リソース設定
-	D3D12_RESOURCE_DESC desc_;
+	D3D12_RESOURCE_DESC desc_{};
 	// ヒープ設定
-	D3D12_HEAP_PROPERTIES properties_;
+	D3D12_HEAP_PROPERTIES properties_{};
 
 private: // メンバ変数
 

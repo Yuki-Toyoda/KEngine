@@ -101,7 +101,7 @@ protected: // メンバ変数
 	// サンプラー設定酔う構造体配列
 	std::vector<D3D12_STATIC_SAMPLER_DESC> samplers_;
 	// ルートシグネチャ設定用構造体
-	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature_;
+	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature_{};
 };
 
 /// <summary>

@@ -88,7 +88,7 @@ private: // 読み込み関数群
 private: // メンバ変数
 
 	// DirectX12汎用クラス
-	DirectXCommon* dxCommon_;
+	DirectXCommon* dxCommon_ = nullptr;
 
 	// テクスチャコンテナ
 	std::map<std::string, TextureStruct> textures_;

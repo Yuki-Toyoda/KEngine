@@ -27,7 +27,7 @@ void TextureResource::Init(DirectXDevice* device, HeapManager* heaps, std::strin
 	desc_.Dimension		   = D3D12_RESOURCE_DIMENSION(metadata.dimension);	   // ディメンション設定
 
 	// 利用するヒープの設定
-	properties_.Type				 = D3D12_HEAP_TYPE_DEFAULT;			   // 細かい設定を行う
+	properties_.Type = D3D12_HEAP_TYPE_DEFAULT;
 
 	// リソースを生成する
 	result = device->GetDevice()->CreateCommittedResource(
@@ -104,15 +104,36 @@ void TextureResource::Load(const std::string& filePath)
 {
 	// テクスチャ読み込みデータ一時格納用
 	DirectX::ScratchImage image{};
-	// 後に呼び出す関数ようにwstring形式に変換する
+	// 後に呼び出す関数用にwstring形式に変換する
 	std::wstring filePathW = Debug::ConvertString(filePath);
-	// テクスチャを読み込む
-	HRESULT result = DirectX::LoadFromWICFile(filePathW.c_str(), DirectX::WIC_FLAGS_FORCE_SRGB, nullptr, image);
+	
+	// 読み込み結果確認用
+	HRESULT result = S_FALSE;
+	
+	// ファイル拡張子によって読み込み処理を変更する
+	if (filePath.ends_with(".dds")) { // .ddsの場合
+		// dds形式の読み込みを行う
+		result = DirectX::LoadFromDDSFile(filePathW.c_str(), DirectX::DDS_FLAGS_NONE, nullptr, image);
+	}
+	else { // それ以外の場合
+		// 通常のテクスチャ読み込む
+		result = DirectX::LoadFromWICFile(filePathW.c_str(), DirectX::WIC_FLAGS_FORCE_SRGB, nullptr, image);
+	}
+
 	// 読み込みに失敗した場合停止させる
 	assert(SUCCEEDED(result));
 
-	// ミップマップの作成
-	result = DirectX::GenerateMipMaps(image.GetImages(), image.GetImageCount(), image.GetMetadata(), DirectX::TEX_FILTER_SRGB, 0, mipImages_);
+	// 圧縮形式であるかどうかで処理を変更する
+	if (DirectX::IsCompressed(image.GetMetadata().format)) { // 圧縮フォーマットである場合
+		// 圧縮形式である場合そのまま代入する
+		mipImages_ = std::move(image);
+		
+	}
+	else { // それ以外である場合
+		// ミップマップの作成
+		result = DirectX::GenerateMipMaps(image.GetImages(), image.GetImageCount(), image.GetMetadata(), DirectX::TEX_FILTER_SRGB, 0, mipImages_);
+	}
+	
 	// 生成に失敗した場合停止させる
 	assert(SUCCEEDED(result));
 }
