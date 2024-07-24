@@ -2,6 +2,7 @@
 #include "Device/DirectXDevice.h"
 
 #include <cassert>
+#include <functional>
 
 /// <summary>
 /// コマンド関連総括クラス
@@ -88,6 +89,22 @@ public:// メンバ関数
 		assert(SUCCEEDED(result));						  // リセット成否確認
 		result = list_->Reset(allocator_.Get(), nullptr); // コマンドリストリセット
 		assert(SUCCEEDED(result));						  // リセット成否確認
+
+		// コマンドに登録されているリソースを削除する
+		ReleaseAllResources();
+	}
+
+	/// <summary>
+	/// 配列に登録されている全てのリリース破棄関数を呼び出す関数
+	/// </summary>
+	void ReleaseAllResources() {
+		// 全ての登録されているリソースを削除する
+		for (const std::function<void()>& func : releaseFunctions_) {
+			func();
+		}
+
+		// リソース削除後リストをクリアする
+		releaseFunctions_.clear();
 	}
 
 public: // アクセッサ等
@@ -110,6 +127,15 @@ public: // アクセッサ等
 	/// <returns>コマンドリスト</returns>
 	ID3D12GraphicsCommandList6* List() { return list_.Get(); }
 
+	/// <summary>
+	/// ポインタをリリースする関数ポインタを追加するアクセッサ
+	/// </summary>
+	/// <param name="function">追加する関数ポインタ</param>
+	void AddReleaseFunction(std::function<void()> func) {
+		// 関数ポインタを追加
+		releaseFunctions_.push_back(func);
+	}
+
 private: // メンバ変数
 
 	// コマンドキュー
@@ -123,4 +149,6 @@ private: // メンバ変数
 	Microsoft::WRL::ComPtr<ID3D12Fence> fence_;
 	UINT64 fenceVal_ = 0;
 
+	// テクスチャの中間リソース解放関数格納配列
+	std::vector<std::function<void()>> releaseFunctions_;
 };
