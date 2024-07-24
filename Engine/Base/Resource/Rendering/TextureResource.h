@@ -18,6 +18,13 @@ public: // メンバ関数
 	/// <param name="filePath">ファイルパス</param>
 	void Init(DirectXDevice* device, HeapManager* heaps, std::string filePath);
 
+	/// <summary>
+	/// テクスチャデータの転送をコマンドリストに命令する関数
+	/// </summary>
+	/// <param name="device">デバイス</param>
+	/// <returns>中間リソース</returns>
+	void UploadTextureData(DirectXDevice* device);
+
 public: // アクセッサ
 
 	/// <summary>
@@ -64,6 +71,9 @@ private: // メンバ変数
 
 	// SRV上の登録データ
 	SRVInfo info_;
+
+	// 中間リソースのポインタ
+	ID3D12Resource* IntermediateResource_ = nullptr;
 
 };
 

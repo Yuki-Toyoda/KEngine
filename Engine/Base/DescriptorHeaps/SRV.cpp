@@ -42,29 +42,11 @@ SRVInfo SRV::RegisterStructuredBuffer(ID3D12Resource* resource, const D3D12_SHAD
 
 SRVInfo SRV::RegisterTexture(ID3D12Resource* resource, const DirectX::ScratchImage& mipImages)
 {
-	// 結果確認用
-	HRESULT result = S_FALSE;
-
 	// 返還用
 	SRVInfo info;
 
 	// Meta情報の取得
 	const DirectX::TexMetadata& metadata = mipImages.GetMetadata();
-	// 全MipMap分ループ
-	for (size_t mipLevel = 0; mipLevel < metadata.mipLevels; mipLevel++) {
-		// MipLevelを指定して各Imagaeを取得
-		const DirectX::Image* img = mipImages.GetImage(mipLevel, 0, 0);
-		// Textureに転送
-		result = resource->WriteToSubresource(
-			UINT(mipLevel),
-			nullptr,
-			img->pixels,
-			UINT(img->rowPitch),
-			UINT(img->slicePitch)
-		);
-		// 成功確認
-		assert(SUCCEEDED(result));
-	}
 
 	// 読み込んだMetaDataを元にSRVの設定を行う
 	info.desc_.Format				   = metadata.format;							// フォーマット設定
