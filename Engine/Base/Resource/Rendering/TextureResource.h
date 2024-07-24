@@ -73,7 +73,7 @@ private: // メンバ変数
 	SRVInfo info_;
 
 	// 中間リソースのポインタ
-	ID3D12Resource* IntermediateResource_ = nullptr;
+	ID3D12Resource* intermediateResource_ = nullptr;
 
 };
 
