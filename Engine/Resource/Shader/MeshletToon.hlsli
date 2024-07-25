@@ -1,4 +1,4 @@
-#include "../Constant.hlsli"
+#include "Constant.hlsli"
 
 ConstantBuffer<ConstantData>     ConstantData : register(b0);
 ConstantBuffer<DirectionalLight> light        : register(b1);

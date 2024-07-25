@@ -1,4 +1,4 @@
-#include "MeshletSkin.hlsli"
+#include "MeshletSkinToon.hlsli"
 
 uint32_t3 UnpackPrimitive(uint primitive)
 {
