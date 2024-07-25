@@ -60,6 +60,7 @@ void Camera::Update()
 
 		// バッファのデータにビュープロジェクション行列をセット
 		cameraDataBuffer_.data_->WorldViewProj = viewProjectionMatrix_;
+		cameraDataBuffer_.data_->WorldPosition = transform_.GetWorldPos();
 		cameraDataBuffer_.data_->DrawMeshlets = isDrawMeshlets_;
 
 		// ポストプロセスの更新

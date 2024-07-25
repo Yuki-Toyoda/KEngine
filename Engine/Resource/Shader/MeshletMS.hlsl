@@ -1,4 +1,4 @@
-#include "Meshlet.hlsli"
+#include "MeshletToon.hlsli"
 
 uint32_t3 UnpackPrimitive(uint primitive)
 {
@@ -46,6 +46,7 @@ void main(
         
         // 出力する頂点座標を求める
         outVerts[gtid].pos      = TransformPosition(vertex.pos);
+        outVerts[gtid].world    = mul(vertex.pos, Transform.world).xyz;
         outVerts[gtid].texCoord = vertex.texCoord;
         outVerts[gtid].normal   = normalize(mul(vertex.normal, (float3x3)Transform.world));
         outVerts[gtid].mIndex   = vertex.materialIndex;

@@ -49,10 +49,19 @@ SRVInfo SRV::RegisterTexture(ID3D12Resource* resource, const DirectX::ScratchIma
 	const DirectX::TexMetadata& metadata = mipImages.GetMetadata();
 
 	// 読み込んだMetaDataを元にSRVの設定を行う
-	info.desc_.Format				   = metadata.format;							// フォーマット設定
+	info.desc_.Format = metadata.format;											// フォーマット設定
 	info.desc_.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;  // シェーダーから読み取る
-	info.desc_.ViewDimension		   = D3D12_SRV_DIMENSION_TEXTURE2D;				// テクスチャとして扱う
-	info.desc_.Texture2D.MipLevels	   = UINT(metadata.mipLevels);					// ミップレベル指定
+	// 以降の処理はキューブマップかどうかで処理を変更する
+	if (metadata.IsCubemap()) { // キューブマップである場合
+		info.desc_.ViewDimension = D3D12_SRV_DIMENSION_TEXTURECUBE; // キューブテクスチャとして使用する
+		info.desc_.TextureCube.MostDetailedMip = 0;					// UnionがTextureCubeになったが内部パラメータの小見はTexture2Dと変わらない
+		info.desc_.TextureCube.MipLevels = UINT_MAX;				// ミップレベルは最大
+		info.desc_.TextureCube.ResourceMinLODClamp = 0.0f;			// LODの最小値の制限設定
+	}
+	else { // それ以外の場合
+		info.desc_.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;  // テクスチャとして扱う
+		info.desc_.Texture2D.MipLevels = UINT(metadata.mipLevels); // ミップレベル指定
+	}
 
 	// 空のインデックスを取得する
 	info.index_ = texIndexList_.UseEmpty();

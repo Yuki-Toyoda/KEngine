@@ -69,6 +69,14 @@ void KEngineFrameWork::Update()
 
 	// シーンマネージャー更新
 	sceneManager_->Update();
+
+	#ifdef _DEBUG // デバッグのみで実行
+
+	// シーンマネージャーのImGuiを表示
+	sceneManager_->DisplayImGui();
+
+	#endif // _DEBUG
+
 }
 
 void KEngineFrameWork::PostUpdate()

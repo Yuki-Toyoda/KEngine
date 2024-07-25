@@ -60,16 +60,16 @@ public: // パブリックなメンバ変数
 	int height_ = KEngine::Config::Window::KWindowHeight; // 縦幅
 
 	// リソースの設定用構造体
-	D3D12_RESOURCE_DESC desc_;
+	D3D12_RESOURCE_DESC desc_{};
 	// 画面クリア時の色
-	D3D12_CLEAR_VALUE clearColor_;
+	D3D12_CLEAR_VALUE clearColor_{};
 	// ヒープの設定
-	D3D12_HEAP_PROPERTIES properties_;
+	D3D12_HEAP_PROPERTIES properties_{};
 
 protected: // 継承先メンバ変数
 
 	// 現在のリソースバリア
-	D3D12_RESOURCE_STATES currentBarrierState_;
+	D3D12_RESOURCE_STATES currentBarrierState_{};
 
 public: // オペレーターオーバーロード
 

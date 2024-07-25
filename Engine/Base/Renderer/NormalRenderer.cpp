@@ -3,6 +3,7 @@
 #include "../../Primitive/PrimitiveManager.h"
 #include "../../Model/ModelManager.h"
 #include "../../Lighting/Light/DirectionalLight.h"
+#include "../../Scene/SceneManager.h"
 #include "../../Base/DirectXCommon.h"
 
 void NormalRenderer::Init(DirectXDevice* device, DXC* dxc, ModelManager* mm, DirectionalLight* lt)
@@ -15,17 +16,18 @@ void NormalRenderer::Init(DirectXDevice* device, DXC* dxc, ModelManager* mm, Dir
 	skinRootSignature_	   = rtsManager->GetRootSignature(1); // スキンアニメーション
 	spriteRootSignature_   = rtsManager->GetRootSignature(2); // スプライト
 	particleRootSignature_ = rtsManager->GetRootSignature(3); // パーティクル
+	skyBoxRootSignature_   = rtsManager->GetRootSignature(4); // スカイボックス
 	
 	// 通常描画用PSO初期化
 	standardPSO_.Init(standardRootSignature_, dxc)
 		.SetMeshShader("Engine/Resource/Shader/MeshletMS.hlsl")
-		.SetPixelShader("Engine/Resource/Shader/Toon/MeshletToonPS.hlsl")
+		.SetPixelShader("Engine/Resource/Shader/MeshletToonPS.hlsl")
 		.Build(device->GetDevice());
 
 	// スキンアニメーション描画用PSO初期化
 	skinModelPSO_.Init(skinRootSignature_, dxc)
 		.SetMeshShader("Engine/Resource/Shader/SkinMeshlet/MeshletSkinMS.hlsl")
-		.SetPixelShader("Engine/Resource/Shader/Toon/MeshletSkinToonPS.hlsl")
+		.SetPixelShader("Engine/Resource/Shader/SkinMeshlet/MeshletSkinToonPS.hlsl")
 		.Build(device->GetDevice());
 
 	// パーティクル描画用PSO初期化
@@ -42,6 +44,13 @@ void NormalRenderer::Init(DirectXDevice* device, DXC* dxc, ModelManager* mm, Dir
 		.SetMeshShader("Engine/Resource/Shader/SpriteMeshlet/MeshletSpriteMS.hlsl")
 		.SetPixelShader("Engine/Resource/Shader/SpriteMeshlet/MeshletSpritePS.hlsl")
 		.Build(device->GetDevice());
+
+	// スカイボックス描画用PSO初期化
+	skyBoxPSO_.VertInit(skyBoxRootSignature_, dxc)
+		.SetVertexShader("Engine/Resource/Shader/SkyBox/SkyBox.VS.hlsl")
+		.SetVertPixelShader("Engine/Resource/Shader/SkyBox/SkyBox.PS.hlsl")
+		.SetVertDepthStencilState(1, 0)
+		.VertBuild(device->GetDevice());
 
 	// 形状マネージャのインスタンス取得
 	modelManager_ = mm;
@@ -97,14 +106,28 @@ void NormalRenderer::DrawCall(ID3D12GraphicsCommandList6* list)
 		// テクスチャ用にSRVヒープの取得
 		SRV* s = DirectXCommon::GetInstance()->GetSRV();
 
+		// 環境マップ用にスカイボックスの取得
+		SkyBox* skyBox = SceneManager::GetInstance()->GetCurrentScene()->skyBox_.get();
+
+		// コマンドリストにスカイボックス描画ルートシグネチャを設定
+		list->SetGraphicsRootSignature(skyBoxRootSignature_);
+		// コマンドリストにスプライト描画PSOを設定
+		list->SetPipelineState(skyBoxPSO_.GetState());
+		// 共通データのアドレスを渡す
+		list->SetGraphicsRootConstantBufferView(0, it->view_);
+
+		// スカイボックスの描画を行う
+		skyBox->Draw(list);
+
 		// コマンドリストに通常描画ルートシグネチャを設定
 		list->SetGraphicsRootSignature(standardRootSignature_);
 		// コマンドリストに通常描画PSOを設定
 		list->SetPipelineState(standardPSO_.GetState());
 		// 共通データのアドレスを渡す
-		list->SetGraphicsRootConstantBufferView(0, it->view_);		   // カメラデータ
-		list->SetGraphicsRootConstantBufferView(1, light_->view());	   // 平行光源データ
-		list->SetGraphicsRootDescriptorTable(8, s->GetFirstTexView()); // テクスチャデータ
+		list->SetGraphicsRootConstantBufferView(0, it->view_);					// カメラデータ
+		list->SetGraphicsRootConstantBufferView(1, light_->view());				// 平行光源データ
+		list->SetGraphicsRootDescriptorTable(8, skyBox->GetTextureAddress());	// 環境マップ用テクスチャ
+		list->SetGraphicsRootDescriptorTable(9, s->GetFirstTexView());			// テクスチャデータ
 
 		// 通常モデルの描画を行う
 		modelManager_->NormalModelDraw(list);
@@ -114,9 +137,10 @@ void NormalRenderer::DrawCall(ID3D12GraphicsCommandList6* list)
 		// コマンドリストにスキニング描画PSOを設定
 		list->SetPipelineState(skinModelPSO_.GetState());
 		// 共通データのアドレスを渡す
-		list->SetGraphicsRootConstantBufferView(0, it->view_);		   // カメラデータ
-		list->SetGraphicsRootConstantBufferView(1, light_->view());	   // 平行光源データ
-		list->SetGraphicsRootDescriptorTable(9, s->GetFirstTexView()); // テクスチャデータ
+		list->SetGraphicsRootConstantBufferView(0, it->view_);				  // カメラデータ
+		list->SetGraphicsRootConstantBufferView(1, light_->view());			  // 平行光源データ
+		list->SetGraphicsRootDescriptorTable(9, skyBox->GetTextureAddress()); // 環境マップ用テクスチャ
+		list->SetGraphicsRootDescriptorTable(10, s->GetFirstTexView());		  // テクスチャデータ
 
 		//スキニングモデルの描画を行う
 		modelManager_->SkiningModelDraw(list);

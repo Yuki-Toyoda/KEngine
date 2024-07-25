@@ -3,6 +3,7 @@
 #include "SkinModelRootSignature.h"
 #include "SpriteRootSignature.h"
 #include "ParticleRootSignature.h"
+#include "SkyBoxRootSignature.h"
 
 void RootSignatureManager::Init()
 {
@@ -11,6 +12,7 @@ void RootSignatureManager::Init()
 	CreateRootSignature<SkinModelRootSignature>();     // スキンアニメーションモデル用
 	CreateRootSignature<SpriteRootSignature>();		   // スプライト用
 	CreateRootSignature<ParticleRootSignature>();	   // パーティクル用
+	CreateRootSignature<SkyBoxRootSignature>();		   // スカイボックス用
 }
 
 ID3D12RootSignature* RootSignatureManager::GetRootSignature(const int32_t& index)

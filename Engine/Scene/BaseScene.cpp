@@ -18,6 +18,9 @@ void BaseScene::PreInitialize()
 	// このカメラを使う
 	camera_->UseThisCamera();
 
+	// スカイボックス生成
+	skyBox_ = std::make_unique<SkyBox>();
+
 	// 読み込み済みモデルクリア
 	modelManager_->Clear();
 	// 生成済みスプライトのクリア
@@ -27,6 +30,18 @@ void BaseScene::PreInitialize()
 
 	// サンプルモデルの読み込み
 	SampleModelLoad();
+}
+
+void BaseScene::DisplayImGui()
+{
+	// ImGui開始
+	ImGui::Begin("Scene");
+
+	// スカイボックスのImGuiを表示
+	skyBox_->DisplayImGui("SkyBox");
+
+	// ImGui終了
+	ImGui::End();
 }
 
 void BaseScene::SampleModelLoad()

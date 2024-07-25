@@ -44,6 +44,11 @@ public: // メンバ関数
 	/// <param name="cmdList">コマンドリスト</param>
 	void Draw(ID3D12GraphicsCommandList6* cmdList) override;
 
+	/// <summary>
+	/// ImGui表示関数
+	/// </summary>
+	void DisplayImGui() override;
+
 public: // アクセッサ等
 
 	/// <summary>

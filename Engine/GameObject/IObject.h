@@ -239,12 +239,12 @@ protected: // 継承メンバ変数
 	CollisionManager* collisionManager_ = nullptr;
 
 	// オブジェクトの所属
-	Tag tag_;
+	Tag tag_ = TagNone;
 	// オブジェクト名
 	std::string name_;
 
 	// デストロイトリガー
-	bool isDestroy_;
+	bool isDestroy_ = false;
 
 	// 色
 	Vector4 color_ = { 1.0f, 1.0f, 1.0f, 1.0f };

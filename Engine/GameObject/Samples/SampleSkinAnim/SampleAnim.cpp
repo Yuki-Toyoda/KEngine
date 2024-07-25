@@ -10,8 +10,3 @@ void SampleAnim::Init()
 void SampleAnim::Update()
 {
 }
-
-void SampleAnim::DisplayImGui()
-{
-	transform_.DisplayImGui();
-}

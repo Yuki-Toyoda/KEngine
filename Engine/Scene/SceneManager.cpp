@@ -48,8 +48,14 @@ void SceneManager::Update()
 	currentScene_->Update();
 }
 
+void SceneManager::DisplayImGui()
+{
+	// 現在シーンのImGuiを表示
+	currentScene_->DisplayImGui();
+}
+
 void SceneManager::ChangeScene(const std::string& name)
 {
 	// 次のシーンに新しいシーンを代入する
-	nextScene_ = sceneFactory_->CreateScene(name);
+	nextScene_ = std::move(sceneFactory_->CreateScene(name));
 }

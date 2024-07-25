@@ -30,6 +30,9 @@ public: // 純粋仮想関数
 	{
 		// モデルデータを取得する
 		modelData_ = std::move(modelData);
+
+		// モデル名取得
+		modelName_ = modelData_->modelName_;
 	};
 
 	/// <summary>
@@ -43,7 +46,15 @@ public: // 純粋仮想関数
 	/// <param name="cmdList">コマンドリスト</param>
 	virtual void Draw(ID3D12GraphicsCommandList6* cmdList) = 0;
 
+	/// <summary>
+	/// ImGui表示関数
+	/// </summary>
+	virtual void DisplayImGui() = 0;
+
 public: // パブリックメンバ変数
+
+	// 描画するモデル名
+	std::string modelName_ = "";
 
 	// 表示トリガー
 	bool isActive_ = true;

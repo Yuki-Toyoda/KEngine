@@ -84,6 +84,14 @@ public: // メンバ関数
 	PSO& SetDepthStencilState(bool writeDSV, bool enableMask);
 
 	/// <summary>
+	/// DSV設定セット関数
+	/// </summary>
+	/// <param name="writeDSV">深度情報を書き込むか</param>
+	/// <param name="enableMask">マスクを有効にするか</param>
+	/// <returns>PSO自身</returns>
+	PSO& SetVertDepthStencilState(bool writeDSV, bool enableMask);
+
+	/// <summary>
 	/// DSVフォーマットセット関数
 	/// </summary>
 	/// <param name="format">DSVのフォーマット</param>

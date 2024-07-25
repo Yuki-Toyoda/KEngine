@@ -73,3 +73,16 @@ void ParticleModel::AddDrawModel(const Matrix4x4& matWorld, const MaterialData& 
 	transforms_.push_back(matWorld); // トランスフォーム
 	materials_.push_back(material);	 // マテリアル
 }
+
+void ParticleModel::DisplayImGui()
+{
+	// ツリーノード開始
+	if (ImGui::TreeNode(modelName_.c_str())) {
+
+		// モデル表示トリガー
+		ImGui::Checkbox("IsActive", &isActive_);
+
+		// ツリーノード終了
+		ImGui::TreePop();
+	}
+}
