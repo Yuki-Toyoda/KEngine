@@ -12,6 +12,10 @@ void GameScene::LoadModel()
 }
 
 void GameScene::Init(){
+	
+	// 
+	skyBox_->Init("./Resources", "SkyTexture.dds");
+
 	// プレイヤー追加
 	player_ = gameObjectManager_->CreateInstance<Player>("Player", IObject::TagPlayer);
 
@@ -21,10 +25,6 @@ void GameScene::Init(){
 	camera->SetTarget(&player_->transform_);
 	camera->UseThisCamera();
 	player_->followCamera_ = camera;
-
-	// スカイドーム生成
-	SkyDome* skyDome = nullptr;
-	skyDome = gameObjectManager_->CreateInstance<SkyDome>("SkyDome", IObject::TagNone);
 
 	level_ = gameObjectManager_->CreateInstance<SampleLevelObjects>("Level", IObject::TagNone);
 	level_->LoadLevel("./Resources/Level", "Stage.json");

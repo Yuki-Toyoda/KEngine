@@ -109,7 +109,6 @@ void SkiningModel::DisplayImGui()
 	}
 }
 
-Vector3 SkiningModel::GetBonePosition(const std::string boneName)
 void SkiningModel::SetBoneParent(const std::string boneName, WorldTransform* transform)
 {
 	// 指定されたボーン名称が存在するかどうかを確認する
