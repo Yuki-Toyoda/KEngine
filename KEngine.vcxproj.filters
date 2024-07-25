@@ -338,8 +338,12 @@
     <ClCompile Include="Engine\PostProcess\HSVFilter\HSVFilter.cpp">
       <Filter>Engine\PostProcess\HSVFilter</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\SkyBox\SkyBox.cpp" />
-    <ClCompile Include="Engine\Base\RootSignature\SkyBoxRootSignature.cpp" />
+    <ClCompile Include="Engine\SkyBox\SkyBox.cpp">
+      <Filter>Engine\SkyBox</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Base\RootSignature\SkyBoxRootSignature.cpp">
+      <Filter>Engine\Base\RootSignature</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -750,8 +754,12 @@
     <ClInclude Include="Engine\PostProcess\HSVFilter\HSVFilter.h">
       <Filter>Engine\PostProcess\HSVFilter</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\SkyBox\SkyBox.h" />
-    <ClInclude Include="Engine\Base\RootSignature\SkyBoxRootSignature.h" />
+    <ClInclude Include="Engine\SkyBox\SkyBox.h">
+      <Filter>Engine\SkyBox</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\RootSignature\SkyBoxRootSignature.h">
+      <Filter>Engine\Base\RootSignature</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -769,9 +777,15 @@
     <None Include="Engine\Resource\Shader\ParticleMeshlet\ParticleMeshlet.hlsli">
       <Filter>Engine\Resource\Shader</Filter>
     </None>
-    <None Include="Engine\Resource\Shader\SkyBox\SkyBox.hlsli" />
-    <None Include="Engine\Resource\Shader\PostProcess\PassThrough.hlsli" />
-    <None Include="Engine\Resource\Shader\Constant.hlsli" />
+    <None Include="Engine\Resource\Shader\Constant.hlsli">
+      <Filter>Engine\Resource\Shader</Filter>
+    </None>
+    <None Include="Engine\Resource\Shader\PostProcess\PassThrough.hlsli">
+      <Filter>Engine\Resource\Shader</Filter>
+    </None>
+    <None Include="Engine\Resource\Shader\SkyBox\SkyBox.hlsli">
+      <Filter>Engine\Resource\Shader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -984,6 +998,9 @@
     <Filter Include="Engine\PostProcess\HSVFilter">
       <UniqueIdentifier>{f8d0a69d-176c-431a-8382-25922d7db7cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\SkyBox">
+      <UniqueIdentifier>{de52639d-a2a1-4628-877e-c0f7480bb2c5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Externals\imgui\LICENSE.txt">
@@ -1012,9 +1029,17 @@
     <FxCompile Include="Engine\Resource\Shader\ParticleMeshlet\ParticleMeshletPS.hlsl">
       <Filter>Engine\Resource\Shader</Filter>
     </FxCompile>
-    <FxCompile Include="Engine\Resource\Shader\SkyBox\SkyBox.VS.hlsl" />
-    <FxCompile Include="Engine\Resource\Shader\PostProcess\PassThroughVS.hlsl" />
-    <FxCompile Include="Engine\Resource\Shader\PostProcess\PostProcess.PS.hlsl" />
-    <FxCompile Include="Engine\Resource\Shader\SkyBox\SkyBox.PS.hlsl" />
+    <FxCompile Include="Engine\Resource\Shader\PostProcess\PassThroughVS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\PostProcess\PostProcess.PS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\SkyBox\SkyBox.VS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\SkyBox\SkyBox.PS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
