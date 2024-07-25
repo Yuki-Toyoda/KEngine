@@ -3,6 +3,7 @@
 #include "../../Primitive/PrimitiveManager.h"
 #include "../../Model/ModelManager.h"
 #include "../../Lighting/Light/DirectionalLight.h"
+#include "../../Scene/SceneManager.h"
 #include "../../Base/DirectXCommon.h"
 
 void NormalRenderer::Init(DirectXDevice* device, DXC* dxc, ModelManager* mm, DirectionalLight* lt)
@@ -15,6 +16,7 @@ void NormalRenderer::Init(DirectXDevice* device, DXC* dxc, ModelManager* mm, Dir
 	skinRootSignature_	   = rtsManager->GetRootSignature(1); // スキンアニメーション
 	spriteRootSignature_   = rtsManager->GetRootSignature(2); // スプライト
 	particleRootSignature_ = rtsManager->GetRootSignature(3); // パーティクル
+	skyBoxRootSignature_   = rtsManager->GetRootSignature(4); // スカイボックス
 	
 	// 通常描画用PSO初期化
 	standardPSO_.Init(standardRootSignature_, dxc)
@@ -42,6 +44,13 @@ void NormalRenderer::Init(DirectXDevice* device, DXC* dxc, ModelManager* mm, Dir
 		.SetMeshShader("Engine/Resource/Shader/SpriteMeshlet/MeshletSpriteMS.hlsl")
 		.SetPixelShader("Engine/Resource/Shader/SpriteMeshlet/MeshletSpritePS.hlsl")
 		.Build(device->GetDevice());
+
+	// スカイボックス描画用PSO初期化
+	skyBoxPSO_.VertInit(skyBoxRootSignature_, dxc)
+		.SetVertexShader("Engine/Resource/Shader/SkyBox/SkyBox.VS.hlsl")
+		.SetVertPixelShader("Engine/Resource/Shader/SkyBox/SkyBox.PS.hlsl")
+		.SetVertDepthStencilState(1, 0)
+		.VertBuild(device->GetDevice());
 
 	// 形状マネージャのインスタンス取得
 	modelManager_ = mm;
@@ -144,6 +153,16 @@ void NormalRenderer::DrawCall(ID3D12GraphicsCommandList6* list)
 
 		// スプライトモデルの描画を行う
 		modelManager_->SpriteModelDraw(list);
+
+		// コマンドリストにスカイボックス描画ルートシグネチャを設定
+		list->SetGraphicsRootSignature(skyBoxRootSignature_);
+		// コマンドリストにスプライト描画PSOを設定
+		list->SetPipelineState(skyBoxPSO_.GetState());
+		// 共通データのアドレスを渡す
+		list->SetGraphicsRootConstantBufferView(0, it->view_);
+
+		// スカイボックスの描画を行う
+		SceneManager::GetInstance()->GetCurrentScene()->skyBox_->Draw(list);
 
 		// 最後のイテレータでImGuiを描画する
 		if (it == std::prev(targets_.end())) {

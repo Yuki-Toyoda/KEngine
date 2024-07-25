@@ -162,6 +162,20 @@ PSO& PSO::SetDepthStencilState(bool writeDSV, bool enableMask)
 	return *this;
 }
 
+PSO& PSO::SetVertDepthStencilState(bool writeDSV, bool enableMask)
+{
+	// DSVの設定を行う
+	D3D12_DEPTH_STENCIL_DESC depthStencilDesc{};
+	// DSVの設定を行う
+	depthStencilDesc = SettingDepthStencilState(writeDSV, enableMask);
+
+	// DSVの設定をセット
+	vertDesc_.DepthStencilState = depthStencilDesc;
+
+	// PSO自身を返す
+	return *this;
+}
+
 PSO& PSO::SetDSVFormat(DXGI_FORMAT format)
 {
 	// フォーマットをセット

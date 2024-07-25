@@ -33,6 +33,11 @@ public: // メンバ関数
 	/// </summary>
 	void Update();
 
+	/// <summary>
+	/// ImGui表示関数
+	/// </summary>
+	void DisplayImGui();
+
 public: // アクセッサ等
 
 	/// <summary>
@@ -46,6 +51,12 @@ public: // アクセッサ等
 	/// </summary>
 	/// <param name="name">切り替えシーン名</param>
 	void ChangeScene(const std::string& name);
+
+	/// <summary>
+	/// 現在シーンのゲッター
+	/// </summary>
+	/// <returns>現在のシーン</returns>
+	BaseScene* GetCurrentScene() { return currentScene_; }
 
 private: // メンバ変数
 

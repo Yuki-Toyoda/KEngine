@@ -53,6 +53,12 @@ public: // アクセッサ等
 	/// <returns>テクスチャサイズ</returns>
 	const Vector2 GetTextureSize() const { return size_; }
 
+	/// <summary>
+	/// テクスチャまでのアドレスゲッター
+	/// </summary>
+	/// <returns></returns>
+	const D3D12_GPU_DESCRIPTOR_HANDLE GetAddress() const { return address_; }
+
 public: // 演算子オーバーロード
 
 	/// <summary>
@@ -75,6 +81,9 @@ private: // メンバ変数
 	int view_ = -1;
 
 	// テクスチャ解像度
-	Vector2 size_;
+	Vector2 size_{};
+
+	// テクスチャまでのアドレス
+	D3D12_GPU_DESCRIPTOR_HANDLE address_{};
 };
 

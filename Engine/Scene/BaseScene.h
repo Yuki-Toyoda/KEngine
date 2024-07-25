@@ -3,6 +3,7 @@
 #include "../GameObject/GameObjectManager.h"
 #include "../Model/Data/ModelDataManager.h"
 #include "../Model/ModelManager.h"
+#include "../SkyBox/SkyBox.h"
 #include "../GameObject/ObjectList.h"
 
 /// <summary>
@@ -37,12 +38,22 @@ public: // 純粋仮想関数
 	/// </summary>
 	virtual void Update() = 0;
 
+	/// <summary>
+	/// ImGui表示関数
+	/// </summary>
+	virtual void DisplayImGui();
+
 private: // メンバ関数
 
 	/// <summary>
 	/// サンプルモデルの読み込み
 	/// </summary>
 	void SampleModelLoad();
+
+public: // パブリックメンバ変数
+
+	// スカイボックス
+	std::unique_ptr<SkyBox> skyBox_;
 
 protected: // 継承先メンバ変数
 

@@ -72,14 +72,16 @@ private: // メンバ変数
 	// ルートシグネチャ群
 	ID3D12RootSignature* standardRootSignature_ = nullptr; // 通常描画用
 	ID3D12RootSignature* skinRootSignature_ = nullptr;	   // スキンアニメーション用
+	ID3D12RootSignature* particleRootSignature_ = nullptr; // パーティクル用
 	ID3D12RootSignature* spriteRootSignature_ = nullptr;   // スプライト用
-	ID3D12RootSignature* particleRootSignature_ = nullptr;   // パーティクル用
+	ID3D12RootSignature* skyBoxRootSignature_ = nullptr;   // スカイボックス用
 
 	// PSO群
 	PSO standardPSO_;  // 通常描画
 	PSO skinModelPSO_; // スキンアニメーション描画
-	PSO spritePSO_;	   // スプライト描画
 	PSO particlePSO_;  // パーティクル描画
+	PSO spritePSO_;	   // スプライト描画
+	PSO skyBoxPSO_;	   // スカイボックス描画
 
 	// 描画ターゲット
 	std::vector<Target> targets_;

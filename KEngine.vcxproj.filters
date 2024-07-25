@@ -338,6 +338,8 @@
     <ClCompile Include="Engine\PostProcess\HSVFilter\HSVFilter.cpp">
       <Filter>Engine\PostProcess\HSVFilter</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\SkyBox\SkyBox.cpp" />
+    <ClCompile Include="Engine\Base\RootSignature\SkyBoxRootSignature.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -748,6 +750,8 @@
     <ClInclude Include="Engine\PostProcess\HSVFilter\HSVFilter.h">
       <Filter>Engine\PostProcess\HSVFilter</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\SkyBox\SkyBox.h" />
+    <ClInclude Include="Engine\Base\RootSignature\SkyBoxRootSignature.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -765,18 +769,14 @@
     <None Include="Engine\Resource\Shader\SkinMeshlet\MeshletSkin.hlsli">
       <Filter>Engine\Resource\Shader</Filter>
     </None>
-    <None Include="Engine\Resource\Shader\PostProcess\PassThrough.hlsli">
-      <Filter>Engine\Resource\Shader</Filter>
-    </None>
-    <None Include="Engine\Resource\Shader\PostProcess\GrayScale.hlsli">
-      <Filter>Engine\Resource\Shader</Filter>
-    </None>
     <None Include="Engine\Resource\Shader\SpriteMeshlet\MeshletSprite.hlsli">
       <Filter>Engine\Resource\Shader</Filter>
     </None>
     <None Include="Engine\Resource\Shader\ParticleMeshlet\ParticleMeshlet.hlsli">
       <Filter>Engine\Resource\Shader</Filter>
     </None>
+    <None Include="Engine\Resource\Shader\SkyBox\SkyBox.hlsli" />
+    <None Include="Engine\Resource\Shader\PostProcess\PassThrough.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -1008,18 +1008,6 @@
     <FxCompile Include="Engine\Resource\Shader\SkinMeshlet\MeshletSkinPS.hlsl">
       <Filter>Engine\Resource\Shader</Filter>
     </FxCompile>
-    <FxCompile Include="Engine\Resource\Shader\PostProcess\PassThroughVS.hlsl">
-      <Filter>Engine\Resource\Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="Engine\Resource\Shader\PostProcess\GrayScalePS.hlsl">
-      <Filter>Engine\Resource\Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="Engine\Resource\Shader\PostProcess\VignettePS.hlsl">
-      <Filter>Engine\Resource\Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="Engine\Resource\Shader\PostProcess\SmoothingPS.hlsl">
-      <Filter>Engine\Resource\Shader</Filter>
-    </FxCompile>
     <FxCompile Include="Engine\Resource\Shader\SpriteMeshlet\MeshletSpriteMS.hlsl">
       <Filter>Engine\Resource\Shader</Filter>
     </FxCompile>
@@ -1035,5 +1023,9 @@
     <FxCompile Include="Engine\Resource\Shader\ParticleMeshlet\ParticleMeshletPS.hlsl">
       <Filter>Engine\Resource\Shader</Filter>
     </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\SkyBox\SkyBox.VS.hlsl" />
+    <FxCompile Include="Engine\Resource\Shader\PostProcess\PassThroughVS.hlsl" />
+    <FxCompile Include="Engine\Resource\Shader\PostProcess\PostProcess.PS.hlsl" />
+    <FxCompile Include="Engine\Resource\Shader\SkyBox\SkyBox.PS.hlsl" />
   </ItemGroup>
 </Project>
