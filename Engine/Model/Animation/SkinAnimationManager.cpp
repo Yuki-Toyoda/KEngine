@@ -1,5 +1,6 @@
 #include "SkinAnimationManager.h"
 #include "../../Debug/Debug.h"
+#include "../../../Externals/imgui/imgui.h"
 #include <cassert>
 
 #include <assimp/Importer.hpp>
@@ -57,6 +58,25 @@ void SkinAnimationManager::StopPlayingAnimation()
 {
 	// 再生中アニメーションを停止させる
 	StopAnimation(playingAnimName_);
+}
+
+void SkinAnimationManager::DisplayImGui()
+{
+	// アニメーション関係ImGui表示
+	if (ImGui::TreeNode("Animation")) {
+		// 再生中アニメーション表示
+		std::string playingAnimName = "PlayingAnim : " + playingAnimName_;
+		ImGui::Text(playingAnimName.c_str());
+
+		// 再生可能アニメーション一覧
+		for (const std::pair<const std::string, SkinAnimation>& anim : animations_) {
+			// 全アニメーションを表示
+			ImGui::Text(anim.second.animName_.c_str());
+		}
+
+		// ツリーノード終了
+		ImGui::TreePop();
+	}
 }
 
 bool SkinAnimationManager::GetIsPlayingAnimation()

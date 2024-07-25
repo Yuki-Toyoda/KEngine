@@ -22,7 +22,7 @@ class TestObject : public IObject
 	/// <summary>
 	/// ImGuiを表示させる関数
 	/// </summary>
-	void DisplayImGui() override;
+	//void DisplayImGui() override;
 
 public: // その他関数
 

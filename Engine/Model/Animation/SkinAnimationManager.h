@@ -50,6 +50,11 @@ public: // メンバ関数
 	/// </summary>
 	void StopPlayingAnimation();
 
+	/// <summary>
+	/// ImGui表示関数
+	/// </summary>
+	void DisplayImGui();
+
 public: // アクセッサ等
 
 	/// <summary>

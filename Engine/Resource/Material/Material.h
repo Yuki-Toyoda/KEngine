@@ -13,12 +13,19 @@
 /// </summary>
 class Material final
 {
-public: // メンバ関数
+public: // コンストラクタ等
 
 	// コンストラクタ
 	Material();
 	// デストラクタ
 	~Material() = default;
+
+public: // メンバ関数
+
+	/// <summary>
+	/// ImGui表示関数
+	/// </summary>
+	void DisplayImGui();
 
 	/// <summary>
 	/// マテリアル情報をassimpから読み込む関数
@@ -27,21 +34,10 @@ public: // メンバ関数
 	/// <param name="filePath">テクスチャ読み込みに使用するファイルパス</param>
 	void LoadMaterial(aiMaterial* material, const std::string& filePath);
 
-public: // アクセッサ等
-
-	/// <summary>
-	/// マテリアルのバッファアドレスゲッター
-	/// </summary>
-	/// <returns>マテリアルのバッファアドレス</returns>
-	//D3D12_GPU_VIRTUAL_ADDRESS GetBufferAddress() { return materialBuffer_.get()->GetGPUView(); }
-
 public: // パブリックなメンバ変数
 
 	// マテリアル名
 	std::string name_;
-
-	// マテリアル用バッファ
-	//std::unique_ptr<ConstantBuffer<MaterialData>> materialBuffer_;
 
 	// テクスチャ
 	Texture tex_;
@@ -51,6 +47,9 @@ public: // パブリックなメンバ変数
 
 	// uvトランスフォーム
 	WorldTransform uvTransform_;
+
+	// 環境マップ移りこみ強度
+	float environmentCoefficient_ = 0.0f;
 
 	// ライティングを行うか
 	bool enableLighting_ = true;
@@ -69,6 +68,8 @@ struct MaterialData {
 	int32_t   enableLighting_;
 	// テクスチャ番号
 	int32_t   textureIndex_;
+	// 環境マップ移りこみ強度
+	float environmentCoefficient_;
 
 	/// <summary>
 	/// コンストラクタ

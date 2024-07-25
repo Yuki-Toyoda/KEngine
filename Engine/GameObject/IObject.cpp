@@ -75,6 +75,15 @@ void IObject::DisplayImGui()
 	// トランスフォーム内の情報を表示
 	transform_.DisplayImGui();
 
+	// 全通常モデルのImGuiを描画
+	for (NormalModel* model : normalModels_) {
+		model->DisplayImGui();
+	}
+
+	// 全通常モデルのImGuiを描画
+	for (SkiningModel* model : skiningModels_) {
+		model->DisplayImGui();
+	}
 }
 
 void IObject::AddNormalModel(WorldTransform* wt, const std::string& path, const std::string& fileName, bool enableLighting)

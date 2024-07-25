@@ -51,3 +51,22 @@ void NormalModel::Draw(ID3D12GraphicsCommandList6* cmdList)
 	// メッシュレットのプリミティブ数分メッシュシェーダーを実行
 	cmdList->DispatchMesh(modelData_->GetMeshletCount(), 1, 1);
 }
+
+void NormalModel::DisplayImGui()
+{
+	// ツリーノード開始
+	if (ImGui::TreeNode(modelName_.c_str())) {
+		
+		// モデル表示トリガー
+		ImGui::Checkbox("IsActive", &isActive_);
+
+		// マテリアル関連ImGui
+		ImGui::Text("Materials");
+		// 全マテリアルのImGuiを描画
+		for (Material& m : materials_) {
+			m.DisplayImGui();
+		}
+		// ツリーノード終了
+		ImGui::TreePop();
+	}
+}

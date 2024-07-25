@@ -25,6 +25,7 @@ struct Material
     float32_t4   color;
     int32_t      enableLighting;
     int32_t      textureIndex;
+    float32_t    environmentCoefficient_;
 };
 
 struct VertexData

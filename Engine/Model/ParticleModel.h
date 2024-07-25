@@ -37,6 +37,11 @@ public: // メンバ関数
 	/// <param name="matWorld">ワールド行列</param>
 	/// <param name="material">マテリアル</param>
 	void AddDrawModel(const Matrix4x4& matWorld, const MaterialData& material);
+	
+	/// <summary>
+	/// ImGui表示関数
+	/// </summary>
+	void DisplayImGui() override;
 
 public: // パブリックメンバ変数
 

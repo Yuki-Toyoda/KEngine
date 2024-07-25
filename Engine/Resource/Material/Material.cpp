@@ -1,15 +1,35 @@
 #include "Material.h"
 #include "../../Base/DirectXCommon.h"
 #include "../../Resource/Texture/TextureManager.h"
+#include "../../../Externals/imgui/imgui.h"
 
 Material::Material()
 {
 	// uvトランスフォーム初期化
 	uvTransform_.Init();
+}
 
-	// マテリアル用バッファ生成
-	//materialBuffer_ = std::make_unique<ConstantBuffer<MaterialData>>();		 // 生成
-	//materialBuffer_->Init(DirectXCommon::GetInstance()->GetDirectXDevice()); // 初期化
+void Material::DisplayImGui()
+{
+	// ツリーノード開始
+	if (ImGui::TreeNode(name_.c_str())) {
+		// ライティング有効トリガー
+		ImGui::Checkbox("EnableLighting", &enableLighting_);
+
+		// 色調整
+		if (ImGui::TreeNode("MaterialColor")) {
+			// マテリアル色
+			ImGui::ColorPicker4("Color", &color_.x);
+
+			ImGui::TreePop();
+		}
+
+		// 環境マップ移りこみ強度
+		ImGui::DragFloat("EnvironmentCoefficient", &environmentCoefficient_, 0.01f, 0.0f, 1.0f);
+
+		// ツリーノード終了
+		ImGui::TreePop();
+	}
 }
 
 void Material::LoadMaterial(aiMaterial* material, const std::string& filePath)
@@ -44,9 +64,10 @@ void Material::LoadMaterial(aiMaterial* material, const std::string& filePath)
 MaterialData& MaterialData::operator=(const Material& mat)
 {
 	// 各情報の代入を行う
-	uvTransform_	= mat.uvTransform_.GetMatWorld();
-	color_			= mat.color_;
-	enableLighting_ = mat.enableLighting_;
+	uvTransform_			= mat.uvTransform_.GetMatWorld();
+	color_					= mat.color_;
+	environmentCoefficient_ = mat.environmentCoefficient_;
+	enableLighting_			= mat.enableLighting_;
 
 	// テクスチャインデックスの取得
 	if (mat.tex_.GetView() == -1) {

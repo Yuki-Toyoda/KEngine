@@ -32,11 +32,15 @@ float32_t4 main(VertexOutPut input) : SV_TARGET
     }
     
     // 環境マップの適用
-    float32_t3 cameraToPosition = normalize(input.world - ConstantData.WorldPosition);
-    float32_t3 reflectVector = reflect(cameraToPosition, normalize(input.normal));
-    float32_t4 environmentColor = gEnvironmentMap.Sample(gSampler, reflectVector);
-    
-    output.rgb += environmentColor.rgb;
+    if (materials[input.mIndex].environmentCoefficient_ > 0.0f)
+    {
+        float32_t3 cameraToPosition = normalize(input.world - ConstantData.WorldPosition);
+        float32_t3 reflectVector = reflect(cameraToPosition, normalize(input.normal));
+        float32_t4 environmentColor = gEnvironmentMap.Sample(gSampler, reflectVector);
+        environmentColor.rgb = environmentColor.rgb * materials[input.mIndex].environmentCoefficient_;
+        
+        output.rgb += environmentColor.rgb;
+    }
     
     // 計算結果を返す
     return output;

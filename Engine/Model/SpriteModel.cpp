@@ -56,3 +56,19 @@ void SpriteModel::Draw(ID3D12GraphicsCommandList6* cmdList)
 	// メッシュレットのプリミティブ数分メッシュシェーダーを実行
 	cmdList->DispatchMesh(modelData_->GetMeshletCount(), 1, 1);
 }
+
+void SpriteModel::DisplayImGui()
+{
+	// ツリーノード開始
+	if (ImGui::TreeNode(modelName_.c_str())) {
+
+		// モデル表示トリガー
+		ImGui::Checkbox("IsActive", &isActive_);
+
+		// マテリアル関連ImGui
+		material_.DisplayImGui();
+
+		// ツリーノード終了
+		ImGui::TreePop();
+	}
+}

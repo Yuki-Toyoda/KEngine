@@ -78,6 +78,29 @@ void SkiningModel::Draw(ID3D12GraphicsCommandList6* cmdList)
 	cmdList->DispatchMesh(modelData_->GetMeshletCount(), 1, 1);
 }
 
+void SkiningModel::DisplayImGui()
+{
+	// ツリーノード開始
+	if (ImGui::TreeNode(modelName_.c_str())) {
+
+		// モデル表示トリガー
+		ImGui::Checkbox("IsActive", &isActive_);
+
+		// マテリアル関連ImGui
+		ImGui::Text("Materials");
+		// 全マテリアルのImGuiを描画
+		for (Material& m : materials_) {
+			m.DisplayImGui();
+		}
+
+		// アニメーションのImGuiを表示
+		animationManager_.DisplayImGui();
+
+		// ツリーノード終了
+		ImGui::TreePop();
+	}
+}
+
 Vector3 SkiningModel::GetBonePosition(const std::string boneName)
 {
 	// 返還用変数を定義
