@@ -16,11 +16,6 @@ class SampleAnim : public IObject
 	/// </summary>
 	void Update() override;
 
-	/// <summary>
-	/// ImGuiを表示させる関数
-	/// </summary>
-	void DisplayImGui() override;
-
 private: // プライベートなメンバ変数
 
 };

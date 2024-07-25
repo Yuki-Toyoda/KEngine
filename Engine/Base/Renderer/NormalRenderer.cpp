@@ -109,6 +109,16 @@ void NormalRenderer::DrawCall(ID3D12GraphicsCommandList6* list)
 		// 環境マップ用にスカイボックスの取得
 		SkyBox* skyBox = SceneManager::GetInstance()->GetCurrentScene()->skyBox_.get();
 
+		// コマンドリストにスカイボックス描画ルートシグネチャを設定
+		list->SetGraphicsRootSignature(skyBoxRootSignature_);
+		// コマンドリストにスプライト描画PSOを設定
+		list->SetPipelineState(skyBoxPSO_.GetState());
+		// 共通データのアドレスを渡す
+		list->SetGraphicsRootConstantBufferView(0, it->view_);
+
+		// スカイボックスの描画を行う
+		skyBox->Draw(list);
+
 		// コマンドリストに通常描画ルートシグネチャを設定
 		list->SetGraphicsRootSignature(standardRootSignature_);
 		// コマンドリストに通常描画PSOを設定
@@ -158,16 +168,6 @@ void NormalRenderer::DrawCall(ID3D12GraphicsCommandList6* list)
 
 		// スプライトモデルの描画を行う
 		modelManager_->SpriteModelDraw(list);
-
-		// コマンドリストにスカイボックス描画ルートシグネチャを設定
-		list->SetGraphicsRootSignature(skyBoxRootSignature_);
-		// コマンドリストにスプライト描画PSOを設定
-		list->SetPipelineState(skyBoxPSO_.GetState());
-		// 共通データのアドレスを渡す
-		list->SetGraphicsRootConstantBufferView(0, it->view_);
-
-		// スカイボックスの描画を行う
-		skyBox->Draw(list);
 
 		// 最後のイテレータでImGuiを描画する
 		if (it == std::prev(targets_.end())) {
