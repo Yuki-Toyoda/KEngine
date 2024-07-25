@@ -24,7 +24,9 @@ StructuredBuffer<Material>       materials           : register(t4);
 
 StructuredBuffer<Well>      gMatrixPalette : register(t5);
 
-Texture2D<float32_t4> gTexture[512] : register(t6);
+TextureCube<float32_t4> gEnvironmentMap : register(t6);
+Texture2D<float32_t4>   gTexture[512]   : register(t7);
+
 SamplerState gSampler : register(s0);
 SamplerState toonMapSampler : register(s1);
 

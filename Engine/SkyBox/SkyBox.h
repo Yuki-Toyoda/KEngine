@@ -52,6 +52,14 @@ public: // メンバ関数
 	/// <param name="id">ImGui上で表示されるID</param>
 	void DisplayImGui(const std::string& id);
 
+public: // アクセッサ等
+
+	/// <summary>
+	/// テクスチャのGPUアドレスのゲッター
+	/// </summary>
+	/// <returns>テクスチャのGPUアドレス</returns>
+	D3D12_GPU_DESCRIPTOR_HANDLE GetTextureAddress() { return texture_.GetAddress(); }
+
 private: // メンバ変数
 
 	// トランスフォーム

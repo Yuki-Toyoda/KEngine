@@ -10,7 +10,9 @@ ByteAddressBuffer            UniqueVertexIndices : register(t2);
 StructuredBuffer<uint32_t>   PrimitiveIndices    : register(t3);
 StructuredBuffer<Material>   materials           : register(t4);
 
-Texture2D<float32_t4> gTexture[512] : register(t5);
+TextureCube<float32_t4> gEnvironmentMap    : register(t5);
+Texture2D<float32_t4>   gTexture[512]      : register(t6);
+
 SamplerState gSampler : register(s0);
 SamplerState toonMapSampler : register(s1);
 

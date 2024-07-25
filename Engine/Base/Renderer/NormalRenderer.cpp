@@ -106,14 +106,18 @@ void NormalRenderer::DrawCall(ID3D12GraphicsCommandList6* list)
 		// テクスチャ用にSRVヒープの取得
 		SRV* s = DirectXCommon::GetInstance()->GetSRV();
 
+		// 環境マップ用にスカイボックスの取得
+		SkyBox* skyBox = SceneManager::GetInstance()->GetCurrentScene()->skyBox_.get();
+
 		// コマンドリストに通常描画ルートシグネチャを設定
 		list->SetGraphicsRootSignature(standardRootSignature_);
 		// コマンドリストに通常描画PSOを設定
 		list->SetPipelineState(standardPSO_.GetState());
 		// 共通データのアドレスを渡す
-		list->SetGraphicsRootConstantBufferView(0, it->view_);		   // カメラデータ
-		list->SetGraphicsRootConstantBufferView(1, light_->view());	   // 平行光源データ
-		list->SetGraphicsRootDescriptorTable(8, s->GetFirstTexView()); // テクスチャデータ
+		list->SetGraphicsRootConstantBufferView(0, it->view_);					// カメラデータ
+		list->SetGraphicsRootConstantBufferView(1, light_->view());				// 平行光源データ
+		list->SetGraphicsRootDescriptorTable(8, skyBox->GetTextureAddress());	// 環境マップ用テクスチャ
+		list->SetGraphicsRootDescriptorTable(9, s->GetFirstTexView());			// テクスチャデータ
 
 		// 通常モデルの描画を行う
 		modelManager_->NormalModelDraw(list);
@@ -123,9 +127,10 @@ void NormalRenderer::DrawCall(ID3D12GraphicsCommandList6* list)
 		// コマンドリストにスキニング描画PSOを設定
 		list->SetPipelineState(skinModelPSO_.GetState());
 		// 共通データのアドレスを渡す
-		list->SetGraphicsRootConstantBufferView(0, it->view_);		   // カメラデータ
-		list->SetGraphicsRootConstantBufferView(1, light_->view());	   // 平行光源データ
-		list->SetGraphicsRootDescriptorTable(9, s->GetFirstTexView()); // テクスチャデータ
+		list->SetGraphicsRootConstantBufferView(0, it->view_);				  // カメラデータ
+		list->SetGraphicsRootConstantBufferView(1, light_->view());			  // 平行光源データ
+		list->SetGraphicsRootDescriptorTable(9, skyBox->GetTextureAddress()); // 環境マップ用テクスチャ
+		list->SetGraphicsRootDescriptorTable(10, s->GetFirstTexView());		  // テクスチャデータ
 
 		//スキニングモデルの描画を行う
 		modelManager_->SkiningModelDraw(list);
@@ -162,7 +167,7 @@ void NormalRenderer::DrawCall(ID3D12GraphicsCommandList6* list)
 		list->SetGraphicsRootConstantBufferView(0, it->view_);
 
 		// スカイボックスの描画を行う
-		SceneManager::GetInstance()->GetCurrentScene()->skyBox_->Draw(list);
+		skyBox->Draw(list);
 
 		// 最後のイテレータでImGuiを描画する
 		if (it == std::prev(targets_.end())) {
