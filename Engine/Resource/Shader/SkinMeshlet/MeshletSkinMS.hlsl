@@ -67,6 +67,7 @@ void main(
         
         // 出力する頂点座標を求める
         outVerts[gtid].pos      = mul(skinned.position, mul(Transform.world, ConstantData.WorldViewProj));
+        outVerts[gtid].world    = mul(skinned.position, Transform.world).xyz;
         outVerts[gtid].texCoord = vertex.texCoord;
         outVerts[gtid].normal   = skinned.normal;
         outVerts[gtid].mIndex = vertex.materialIndex;

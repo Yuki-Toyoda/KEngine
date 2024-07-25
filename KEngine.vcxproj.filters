@@ -777,6 +777,7 @@
     </None>
     <None Include="Engine\Resource\Shader\SkyBox\SkyBox.hlsli" />
     <None Include="Engine\Resource\Shader\PostProcess\PassThrough.hlsli" />
+    <None Include="Engine\Resource\Shader\Constant.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">

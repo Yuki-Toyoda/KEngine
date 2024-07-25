@@ -353,6 +353,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Base\RootSignature\SkyBoxRootSignature.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Engine\Resource\Shader\Constant.hlsli" />
     <None Include="Engine\Resource\Shader\Meshlet.hlsli">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
