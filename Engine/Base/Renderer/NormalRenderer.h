@@ -78,7 +78,7 @@ private: // メンバ変数
 
 	// PSO群
 	PSO standardPSO_;  // 通常描画
-	PSO skinModelPSO_; // スキンアニメーション描画
+	PSO skinModelPSO_; // スキニング計算用
 	PSO particlePSO_;  // パーティクル描画
 	PSO spritePSO_;	   // スプライト描画
 	PSO skyBoxPSO_;	   // スカイボックス描画

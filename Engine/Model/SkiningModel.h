@@ -39,6 +39,12 @@ public: // メンバ関数
 	void Update() override;
 
 	/// <summary>
+	/// コンピュートシェーダーでのスキニングを実行する関数
+	/// </summary>
+	/// <param name="cmdList">コマンドリスト</param>
+	void ExecuteComputeSkining(ID3D12GraphicsCommandList6* cmdList);
+
+	/// <summary>
 	/// 描画関数
 	/// </summary>
 	/// <param name="cmdList">コマンドリスト</param>
@@ -90,10 +96,17 @@ public: // パブリックメンバ変数
 	// ボーンとの親子関係配列
 	std::vector<ParentData> parentDatas_;
 
+private: // メンバ変数
+
 	// トランスフォーム用定数バッファ
 	std::unique_ptr<ConstantBuffer<Matrix4x4>> transformBuffer_;
 	// マテリアル用バッファ
 	std::unique_ptr<StructuredBuffer<MaterialData>> materialsBuffer_;
+
+	// 頂点数カウント用バッファ
+	std::unique_ptr<ConstantBuffer<int32_t>> vertexCountBuffer_;
+	// スキニング計算後頂点バッファ
+	std::unique_ptr<RWStructuredBuffer<VertexData>> vertexBuffer_;
 	// マトリックスパレットバッファ
 	std::unique_ptr<StructuredBuffer<WellForGPU>> palletteBuffer_;
 

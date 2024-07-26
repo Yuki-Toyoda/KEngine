@@ -40,6 +40,26 @@ SRVInfo SRV::RegisterStructuredBuffer(ID3D12Resource* resource, const D3D12_SHAD
 	return info;
 }
 
+UAVInfo SRV::RegisterRWStructuredBuffer(ID3D12Resource* resource, D3D12_UNORDERED_ACCESS_VIEW_DESC& desc)
+{
+	// 返還用
+	UAVInfo info;
+
+	// 設定を引数からコピー
+	info.desc_ = desc;
+
+	// 空のインデックスを取得する
+	info.index_ = indexList_.UseEmpty();
+	// Viewを設定
+	info.SetView(this);
+
+	// UAVの生成を行う
+	device_->CreateUnorderedAccessView(resource, nullptr, &info.desc_, info.cpuView_);
+
+	// 生成後、情報構造体を返す
+	return info;
+}
+
 SRVInfo SRV::RegisterTexture(ID3D12Resource* resource, const DirectX::ScratchImage& mipImages)
 {
 	// 返還用

@@ -120,11 +120,11 @@ float32_t4 main(PSInput input) : SV_TARGET {
 	shader.close();
 
 	// PSOの生成を行う
-	pso_.VertInit(root_.GetRootSignature(), dxc)
+	pso_.Init(root_.GetRootSignature(), dxc, PSO::PSOType::Vertex)
 		.SetDepthStencilState(false, true)
 		.SetVertexShader("Engine/Resource/Shader/PostProcess/PassThroughVS.hlsl")
-		.SetVertPixelShader("Engine/Resource/Shader/PostProcess/PostProcess.PS.hlsl")
-		.VertBuild(device->GetDevice());
+		.SetPixelShader("Engine/Resource/Shader/PostProcess/PostProcess.PS.hlsl")
+		.Build(device->GetDevice());
 }
 
 void PostProcessor::PreCommands(ID3D12GraphicsCommandList6* cmdList, RenderResource* target)

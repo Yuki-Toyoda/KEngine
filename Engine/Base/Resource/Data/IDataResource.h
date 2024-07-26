@@ -25,7 +25,7 @@ protected: // 継承先メンバ関数
 	/// </summary>
 	/// <param name="device">デバイス</param>
 	/// <param name="size">リソースのサイズ</param>
-	void CreateResource(DirectXDevice* device, size_t size) {
+	virtual void CreateResource(DirectXDevice* device, size_t size) {
 		// 結果確認用
 		HRESULT result = S_FALSE;
 

@@ -79,6 +79,12 @@ public: // スキニングモデル用関数群
 	SkiningModel* CreateSkiningModel(const std::string& filePath, const std::string& fileName);
 
 	/// <summary>
+	/// スキニング計算実行関数
+	/// </summary>
+	/// <param name="cmdList">計算シェーダーを実行するコマンドリスト</param>
+	void ExecuteComputeSkiningModel(ID3D12GraphicsCommandList6* cmdList);
+
+	/// <summary>
 	/// スキニングモデル描画関数
 	/// </summary>
 	/// <param name="cmdList">描画に使用するコマンドリスト</param>

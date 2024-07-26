@@ -66,6 +66,63 @@ struct SRVInfo : public HeapInfo {
 };
 
 /// <summary>
+/// UAV情報構造体
+/// </summary>
+struct UAVInfo : public HeapInfo {
+
+	// GPU上のアドレス
+	D3D12_GPU_DESCRIPTOR_HANDLE gpuView_{};
+	// UAV設定用構造体
+	D3D12_UNORDERED_ACCESS_VIEW_DESC desc_{};
+
+	// デフォルトコンストラクタ
+	UAVInfo() = default;
+
+	/// <summary>
+	/// アドレスセッター
+	/// </summary>
+	/// <param name="heap">アドレスを取得するヒープ</param>
+	void SetView(IDescriptorHeap* heap) override {
+		// CPU上のアドレス取得
+		cpuView_ = heap->GetCPUHandle(index_);
+		// GPU上のアドレス取得
+		gpuView_ = heap->GetGPUHandle(index_);
+	}
+
+	/// <summary>
+	/// ムーブコンストラクタ
+	/// </summary>
+	/// <param name="other">他のUAV情報</param>
+	UAVInfo(UAVInfo&& other) noexcept : HeapInfo(std::move(other)) {
+		// 引数をメンバ変数に代入
+		gpuView_ = std::exchange(other.gpuView_, {});
+		desc_ = std::exchange(other.desc_, {});
+	}
+
+	/// <summary>
+	/// 代入演算子オーバーロード
+	/// </summary>
+	/// <param name="other">他のUAV情報</param>
+	/// <returns>代入後のデータ</returns>
+	UAVInfo& operator=(UAVInfo&& other) noexcept {
+		// 代入先と一致していないときのみ代入を行う
+		if (this != &other) {
+			// 継承元のオーバーロードを使用する
+			HeapInfo::operator=(std::move(other));
+			// 引数をメンバ変数に代入
+			gpuView_ = std::exchange(other.gpuView_, {});
+			desc_ = std::exchange(other.desc_, {});
+		}
+		// 代入後のデータを返す
+		return *this;
+	}
+
+	// IndexListのバグを防ぐためコピー操作を禁止する
+	UAVInfo(const UAVInfo&) = delete;
+	UAVInfo& operator=(const UAVInfo&) = delete;
+};
+
+/// <summary>
 /// SRVヒープクラス
 /// </summary>
 class SRV : public IDescriptorHeap
@@ -95,6 +152,14 @@ public: // メンバ関数
 	/// <param name="desc">構造体バッファのフォーマット</param>
 	/// <returns>構造体バッファまでのアドレス</returns>
 	SRVInfo RegisterStructuredBuffer(ID3D12Resource* resource, const D3D12_SHADER_RESOURCE_VIEW_DESC& desc);
+
+	/// <summary>
+	/// GPU書き込みバッファをSRVに登録する関数
+	/// </summary>
+	/// <param name="resource">登録するリソース</param>
+	/// <param name="desc">UAVバッファのフォーマット</param>
+	/// <returns>UAVバッファまでのアドレス</returns>
+	UAVInfo RegisterRWStructuredBuffer(ID3D12Resource* resource, D3D12_UNORDERED_ACCESS_VIEW_DESC& desc);
 
 	/// <summary>
 	/// テクスチャをSRVに登録する関数

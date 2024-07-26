@@ -3,6 +3,7 @@
 #include "../GameObject/WorldTransform.h"
 #include "../Base/Resource/Data/ConstantBuffer.h"
 #include "../Base/Resource/Data/StructuredBuffer.h"
+#include "../Base/Resource/Data/RWStructuredBuffer.h"
 
 /// <summary>
 /// モデル基底クラス

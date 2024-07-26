@@ -27,9 +27,17 @@ void SkiningModel::Init(ModelData* modelData)
 	// マテリアル用のバッファを生成
 	materialsBuffer_ = std::make_unique<StructuredBuffer<MaterialData>>(static_cast<int32_t>(materials_.size())); // 生成
 	materialsBuffer_->Init(device, srv);																		  // 初期化
+
+	// 頂点数カウント用のバッファ生成
+	vertexCountBuffer_ = std::make_unique<ConstantBuffer<int32_t>>();				 // 生成
+	vertexCountBuffer_->Init(device);												 // 初期化
+	*vertexCountBuffer_->data_ = static_cast<uint32_t>(modelData->vertices_.size()); // 代入
 	// MatrixPaletteの生成
 	palletteBuffer_ = std::make_unique<StructuredBuffer<WellForGPU>>(static_cast<uint32_t>(skelton_.joints_.size())); // 生成
 	palletteBuffer_->Init(device, srv);																				  // 初期化
+	// 頂点用バッファ生成
+	vertexBuffer_ = std::make_unique<RWStructuredBuffer<VertexData>>(static_cast<uint32_t>(modelData->vertices_.size())); // 生成
+	vertexBuffer_->Init(device, srv);																					  // 初期化
 }
 
 void SkiningModel::Update()
@@ -71,16 +79,27 @@ void SkiningModel::Update()
 	std::memcpy(materialsBuffer_->data_, materials.data(), sizeof(MaterialData) * materials.size());
 }
 
+void SkiningModel::ExecuteComputeSkining(ID3D12GraphicsCommandList6* cmdList)
+{
+	// 計算シェーダー用バッファをコマンドリストにセットする
+	cmdList->SetComputeRootConstantBufferView(0, vertexCountBuffer_->GetGPUView());		// 頂点数
+	cmdList->SetComputeRootDescriptorTable(1, palletteBuffer_->GetGPUView());			// マトリックスパレット
+	cmdList->SetComputeRootDescriptorTable(2, modelData_->vertexBuffer_->GetGPUView()); // 頂点
+	cmdList->SetComputeRootDescriptorTable(3, vertexBuffer_->GetUAVView());				// スキニング結果格納用
+
+	// 計算シェーダーを実行する
+	cmdList->Dispatch(UINT(modelData_->vertices_.size() + 1023) / 1024, 1, 1);
+}
+
 void SkiningModel::Draw(ID3D12GraphicsCommandList6* cmdList)
 {
 	// 描画用バッファをコマンドリストにセットする
-	cmdList->SetGraphicsRootConstantBufferView(2, transformBuffer_->GetGPUView());					   // トランスフォーム
-	cmdList->SetGraphicsRootDescriptorTable(3, modelData_->meshletBuffer_->GetGPUView());			   // メッシュレット情報
-	cmdList->SetGraphicsRootDescriptorTable(4, modelData_->vertexBuffer_->GetGPUView());			   // 頂点情報
-	cmdList->SetGraphicsRootDescriptorTable(5, modelData_->uniqueVertexIndicesBuffer_->GetGPUView());  // 固有頂点情報
-	cmdList->SetGraphicsRootDescriptorTable(6, modelData_->primitiveIndicesBuffer_->GetGPUView());	   // プリミティブインデックス情報
-	cmdList->SetGraphicsRootDescriptorTable(7, materialsBuffer_->GetGPUView());						   // マテリアル
-	cmdList->SetGraphicsRootDescriptorTable(8, palletteBuffer_->GetGPUView());						   // マトリックスパレット
+	cmdList->SetGraphicsRootConstantBufferView(2, transformBuffer_->GetGPUView());					  // トランスフォーム
+	cmdList->SetGraphicsRootDescriptorTable(3, modelData_->meshletBuffer_->GetGPUView());			  // メッシュレット情報
+	cmdList->SetGraphicsRootDescriptorTable(4, vertexBuffer_->GetSRVView());						  // 頂点情報
+	cmdList->SetGraphicsRootDescriptorTable(5, modelData_->uniqueVertexIndicesBuffer_->GetGPUView()); // 固有頂点情報
+	cmdList->SetGraphicsRootDescriptorTable(6, modelData_->primitiveIndicesBuffer_->GetGPUView());	  // プリミティブインデックス情報
+	cmdList->SetGraphicsRootDescriptorTable(7, materialsBuffer_->GetGPUView());						  // マテリアル
 
 	// メッシュレットのプリミティブ数分メッシュシェーダーを実行
 	cmdList->DispatchMesh(modelData_->GetMeshletCount(), 1, 1);
