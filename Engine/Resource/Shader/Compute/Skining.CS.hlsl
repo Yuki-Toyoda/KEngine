@@ -6,10 +6,15 @@ struct Well
     float32_t4x4 skeltonSpaceInverseTransposeMatrix;
 };
 
-ConstantBuffer<int32_t>        VertCount      : register(b0);
-StructuredBuffer<Well>         gMatrixPalette : register(t0);
-StructuredBuffer<VertexData>   InputVertices  : register(t1);
-RWStructuredBuffer<VertexData> OutputVertices : register(u0);
+struct SkiningInformation
+{
+    int32_t vertexCount;
+};
+
+ConstantBuffer<SkiningInformation> information    : register(b0);
+StructuredBuffer<Well>             gMatrixPalette : register(t0);
+StructuredBuffer<VertexData>       InputVertices  : register(t1);
+RWStructuredBuffer<VertexData>     OutputVertices : register(u0);
 
 [numthreads(1024, 1, 1)]
 void main( uint3 DTid : SV_DispatchThreadID )
@@ -18,15 +23,17 @@ void main( uint3 DTid : SV_DispatchThreadID )
     uint32_t vertexIndex = DTid.x;
     
     // 頂点数を超過していない場合以下の処理を行う
-    if (vertexIndex < VertCount)
+    if (vertexIndex < information.vertexCount)
     {
         // 計算する頂点を取得
         VertexData v = InputVertices[vertexIndex];
         
         // スキニング後の頂点格納用
-        VertexData skinned;
-        // テクスチャ座標系はそのまま取得
-        skinned.texCoord = v.texCoord;
+        VertexData skinned = (VertexData)0;
+        // 下記情報はそのまま取得する
+        skinned.texCoord      = v.texCoord;
+        skinned.color         = v.color;
+        skinned.materialIndex = v.materialIndex;
         
         // スキニングの計算を行う
         skinned.pos  = mul(v.pos, gMatrixPalette[v.jointIndex.x].skeltonSpaceMatrix) * v.weight.x;

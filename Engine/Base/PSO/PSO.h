@@ -9,7 +9,9 @@
 class PSO{
 public: // 設定用列挙子
 
-
+	/// <summary>
+	/// PSO種類列挙子
+	/// </summary>
 	enum class PSOType {
 		Mesh,
 		Vertex,
@@ -71,6 +73,13 @@ public: // メンバ関数
 	/// <param name="filePath">頂点シェーダーまでのファイルパス</param>
 	/// <returns>PSO自身</returns>
 	PSO& SetVertexShader(std::string filePath);
+
+	/// <summary>
+	/// 計算シェーダーセット関数
+	/// </summary>
+	/// <param name="filePath">計算シェーダーまでのファイルパス</param>
+	/// <returns>PSO自身</returns>
+	PSO& SetComputeShader(std::string filePath);
 
 	/// <summary>
 	/// DSV設定セット関数

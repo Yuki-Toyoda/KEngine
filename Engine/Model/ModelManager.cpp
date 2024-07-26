@@ -118,6 +118,16 @@ SkiningModel* ModelManager::CreateSkiningModel(const std::string& filePath, cons
 	return returnModel;
 }
 
+void ModelManager::ExecuteComputeSkiningModel(ID3D12GraphicsCommandList6* cmdList)
+{
+	// 全スキニングモデルのスキニング計算を開始
+	for (std::unique_ptr<SkiningModel>& model : skiningModels_) {
+		if (model->isActive_) {
+			model->ExecuteComputeSkining(cmdList);
+		}
+	}
+}
+
 void ModelManager::SkiningModelDraw(ID3D12GraphicsCommandList6* cmdList)
 {
 	// 全スキニングモデル描画

@@ -308,6 +308,44 @@ PSO& PSO::SetVertexShader(std::string filePath)
 	return *this;
 }
 
+PSO& PSO::SetComputeShader(std::string filePath)
+{
+	// シェーダーコンパイルを行う
+	IDxcBlob* blob = nullptr;											   // コンパイル結果確認用
+	blob = dxc_->CompileShader(Debug::ConvertString(filePath), L"cs_6_0"); // シェーダーコンパイルを行う
+	assert(blob != nullptr);											   // コンパイル成否確認
+
+	// PSOの種類によって処理を変更する
+	switch (type_)
+	{
+	case PSO::PSOType::Mesh: // メッシュシェーダー
+		// ログに出力
+		Debug::Log("mesh can't set ComputeShader.\n");
+		// 停止させる
+		assert(false);
+		break;
+	case PSO::PSOType::Vertex: // 頂点シェーダー
+		// ログに出力
+		Debug::Log("Compute can't set ComputeShader.\n");
+		// 停止させる
+		assert(false);
+		break;
+	case PSO::PSOType::Compute: // 計算シェーダー
+		// シェーダーをセット
+		desc_.compute.CS = { blob->GetBufferPointer(), blob->GetBufferSize() };
+		break;
+	default: // それ以外
+		// ログに出力
+		Debug::Log("Empty PSO type.\n");
+		// 停止させる
+		assert(false);
+		break;
+	}
+
+	// PSO自身を返す
+	return *this;
+}
+
 PSO& PSO::SetDepthStencilState(bool writeDSV, bool enableMask)
 {
 	// DSVの設定を行う

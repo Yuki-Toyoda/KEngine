@@ -24,10 +24,9 @@ void NormalRenderer::Init(DirectXDevice* device, DXC* dxc, ModelManager* mm, Dir
 		.SetPixelShader("Engine/Resource/Shader/MeshletToonPS.hlsl")
 		.Build(device->GetDevice());
 
-	// スキンアニメーション描画用PSO初期化
-	skinModelPSO_.Init(skinRootSignature_, dxc)
-		.SetMeshShader("Engine/Resource/Shader/SkinMeshlet/MeshletSkinMS.hlsl")
-		.SetPixelShader("Engine/Resource/Shader/SkinMeshlet/MeshletSkinToonPS.hlsl")
+	// スキニング計算用PSO初期化
+	skinModelPSO_.Init(skinRootSignature_, dxc, PSO::PSOType::Compute)
+		.SetComputeShader("Engine/Resource/Shader/Compute/Skining.CS.hlsl")
 		.Build(device->GetDevice());
 
 	// パーティクル描画用PSO初期化
@@ -119,6 +118,14 @@ void NormalRenderer::DrawCall(ID3D12GraphicsCommandList6* list)
 		// スカイボックスの描画を行う
 		skyBox->Draw(list);
 
+		// コマンドリストにスキニング描画ルートシグネチャを設定
+		list->SetComputeRootSignature(skinRootSignature_);
+		// コマンドリストにスキニング描画PSOを設定
+		list->SetPipelineState(skinModelPSO_.GetState());
+
+		// スキニング計算を開始する
+		modelManager_->ExecuteComputeSkiningModel(list);
+
 		// コマンドリストに通常描画ルートシグネチャを設定
 		list->SetGraphicsRootSignature(standardRootSignature_);
 		// コマンドリストに通常描画PSOを設定
@@ -132,17 +139,7 @@ void NormalRenderer::DrawCall(ID3D12GraphicsCommandList6* list)
 		// 通常モデルの描画を行う
 		modelManager_->NormalModelDraw(list);
 
-		// コマンドリストにスキニング描画ルートシグネチャを設定
-		list->SetGraphicsRootSignature(skinRootSignature_);
-		// コマンドリストにスキニング描画PSOを設定
-		list->SetPipelineState(skinModelPSO_.GetState());
-		// 共通データのアドレスを渡す
-		list->SetGraphicsRootConstantBufferView(0, it->view_);				  // カメラデータ
-		list->SetGraphicsRootConstantBufferView(1, light_->view());			  // 平行光源データ
-		list->SetGraphicsRootDescriptorTable(9, skyBox->GetTextureAddress()); // 環境マップ用テクスチャ
-		list->SetGraphicsRootDescriptorTable(10, s->GetFirstTexView());		  // テクスチャデータ
-
-		//スキニングモデルの描画を行う
+		// 通常描画でスキニングモデルの描画を行う
 		modelManager_->SkiningModelDraw(list);
 
 		// コマンドリストにパーティクル描画ルートシグネチャを設定

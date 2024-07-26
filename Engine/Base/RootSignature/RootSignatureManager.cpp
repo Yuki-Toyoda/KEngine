@@ -9,7 +9,7 @@ void RootSignatureManager::Init()
 {
 	// 各ルートシグネチャの生成
 	CreateRootSignature<ModelRootSignature>();		   // モデル用
-	CreateRootSignature<SkinModelRootSignature>();     // スキンアニメーションモデル用
+	CreateRootSignature<SkinModelRootSignature>();     // スキニング計算用
 	CreateRootSignature<SpriteRootSignature>();		   // スプライト用
 	CreateRootSignature<ParticleRootSignature>();	   // パーティクル用
 	CreateRootSignature<SkyBoxRootSignature>();		   // スカイボックス用
