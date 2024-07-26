@@ -7,6 +7,15 @@
 /// パイプラインステートオブジェクトクラス
 /// </summary>
 class PSO{
+public: // 設定用列挙子
+
+
+	enum class PSOType {
+		Mesh,
+		Vertex,
+		Compute,
+	};
+
 public: // メンバ関数
 
 	/// <summary>
@@ -14,14 +23,9 @@ public: // メンバ関数
 	/// </summary>
 	/// <param name="signature">RootSignature</param>
 	/// <param name="dxc">DirectXシェーダーコンパイラ</param>
-	PSO& Init(ID3D12RootSignature* signature, DXC* dxc);
-
-	/// <summary>
-	/// 頂点シェーダ用初期化関数
-	/// </summary>
-	/// <param name="signature">RootSignature</param>
-	/// <param name="dxc">DirectXシェーダーコンパイラ</param>
-	PSO& VertInit(ID3D12RootSignature* signature, DXC* dxc);
+	/// <param name="type">PSOの種類</param>
+	/// <returns>PSO自身</returns>
+	PSO& Init(ID3D12RootSignature* signature, DXC* dxc, PSOType type = PSOType::Mesh);
 
 	/// <summary>
 	/// ブレンド設定セット関数
@@ -69,27 +73,12 @@ public: // メンバ関数
 	PSO& SetVertexShader(std::string filePath);
 
 	/// <summary>
-	/// ピクセルシェーダーセット関数
-	/// </summary>
-	/// <param name="filePath">ピクセルシェーダーまでのファイルパス</param>
-	/// <returns>PSO自身</returns>
-	PSO& SetVertPixelShader(std::string filePath);
-
-	/// <summary>
 	/// DSV設定セット関数
 	/// </summary>
 	/// <param name="writeDSV">深度情報を書き込むか</param>
 	/// <param name="enableMask">マスクを有効にするか</param>
 	/// <returns>PSO自身</returns>
 	PSO& SetDepthStencilState(bool writeDSV, bool enableMask);
-
-	/// <summary>
-	/// DSV設定セット関数
-	/// </summary>
-	/// <param name="writeDSV">深度情報を書き込むか</param>
-	/// <param name="enableMask">マスクを有効にするか</param>
-	/// <returns>PSO自身</returns>
-	PSO& SetVertDepthStencilState(bool writeDSV, bool enableMask);
 
 	/// <summary>
 	/// DSVフォーマットセット関数
@@ -103,12 +92,6 @@ public: // メンバ関数
 	/// </summary>
 	/// <param name="device">デバイス</param>
 	void Build(ID3D12Device2* device);
-
-	/// <summary>
-	/// 頂点シェーダーを使用する際のPSO作成関数
-	/// </summary>
-	/// <param name="device">デバイス</param>
-	void VertBuild(ID3D12Device2* device);
 
 public: // アクセッサ等
 
@@ -141,11 +124,20 @@ private: // プライベートなメンバ関数
 private: // メンバ変数
 	// パイプラインステートオブジェクトの状態
 	Microsoft::WRL::ComPtr<ID3D12PipelineState> state_;
-	// PSOの設定用構造体
-	D3DX12_MESH_SHADER_PIPELINE_STATE_DESC desc_{};
+	
+	// PSO種別
+	PSOType type_ = PSOType::Mesh;
+	// PSO設定用構造体
+	union Desc {
+		D3DX12_MESH_SHADER_PIPELINE_STATE_DESC mesh{};
+		D3D12_GRAPHICS_PIPELINE_STATE_DESC	   vertex;
+		D3D12_COMPUTE_PIPELINE_STATE_DESC	   compute;
 
-	// 頂点シェーダを使用する際のPSO設定構造体
-	D3D12_GRAPHICS_PIPELINE_STATE_DESC vertDesc_{};
+		// コンストラクタ
+		Desc() {};
+		// デストラクタ
+		~Desc() {};
+	}desc_;
 
 	// シェーダーコンパイラ
 	DXC* dxc_ = nullptr;

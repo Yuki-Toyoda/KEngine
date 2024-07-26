@@ -46,11 +46,11 @@ void NormalRenderer::Init(DirectXDevice* device, DXC* dxc, ModelManager* mm, Dir
 		.Build(device->GetDevice());
 
 	// スカイボックス描画用PSO初期化
-	skyBoxPSO_.VertInit(skyBoxRootSignature_, dxc)
+	skyBoxPSO_.Init(skyBoxRootSignature_, dxc, PSO::PSOType::Vertex)
 		.SetVertexShader("Engine/Resource/Shader/SkyBox/SkyBox.VS.hlsl")
-		.SetVertPixelShader("Engine/Resource/Shader/SkyBox/SkyBox.PS.hlsl")
-		.SetVertDepthStencilState(1, 0)
-		.VertBuild(device->GetDevice());
+		.SetPixelShader("Engine/Resource/Shader/SkyBox/SkyBox.PS.hlsl")
+		.SetDepthStencilState(1, 0)
+		.Build(device->GetDevice());
 
 	// 形状マネージャのインスタンス取得
 	modelManager_ = mm;
