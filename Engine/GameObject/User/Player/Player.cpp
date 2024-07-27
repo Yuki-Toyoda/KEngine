@@ -35,6 +35,8 @@ void Player::Init()
 	titleCamera_ = GameObjectManager::GetInstance()->CreateInstance<Camera>("TitleCamera", IObject::TagCamera);
 	titleCamera_->transform_.translate_ = { -1.5f, 0.92f, -3.5f };
 	titleCamera_->transform_.rotate_ = { -0.15f, 0.325f, 0.0f };
+	// HSVフィルターによってフェードアウトを行う
+	titleCamera_->ppProcessor_.hsvFilter_.hsv_.value = -1.0f;
 
 	// アニメーション生成
 	titleAnim_ = AnimationManager::GetInstance()->CreateAnimation("TitleAnim", "Title_Idle");
@@ -54,6 +56,9 @@ void Player::Init()
 	skiningModels_[0]->animationManager_.PlayAnimation("00_Idle", true);
 	// 武器を左手に追従するようにする
 	skiningModels_[0]->SetBoneParent("WeaponAnchor", &weaponTransform_);
+
+	// 剣の鏡面反射を有効にする
+	skiningModels_[1]->materials_[1].environmentCoefficient_ = 0.85f;
 
 	// コライダーの追加
 	colliderWorldPos_ = colliderTransform_.GetWorldPos();
@@ -88,11 +93,6 @@ void Player::Init()
 	AddSprite("Button", {640.0f, 450.0f}, {512.0f ,128.0f}, TextureManager::Load("Start_CR.png"));
 	// フェードスプライトの色設定
 	sprites_[7]->anchorPoint_ = { .5f, .5f };
-	
-	// フェード演出用
-	AddSprite("Fade", {0.0f, 0.0f}, {1280.0f ,720.0f}, TextureManager::Load("white2x2.png"));
-	// フェードスプライトの色設定
-	sprites_[8]->color_ = { 0.0f, 0.0f, 0.0f, 1.0f };
 
 	// 効果音読み込み
 	SwingSword_ = Audio::GetInstance()->LoadWave("./Resources/Audio/SE/SwingSword.mp3");
@@ -149,12 +149,12 @@ void Player::Update()
 			}
 		}
 
-		if (sprites_[8]->color_.w <= 0.0f) {
-			
+		if (titleCamera_->ppProcessor_.hsvFilter_.hsv_.value >= 0.0f) {
+			titleCamera_->ppProcessor_.hsvFilter_.hsv_.value = 0.0f;
 		}
 		else {
 			// フェード演出用スプライトの色を徐々に変更
-			sprites_[8]->color_.w -= 0.01f;
+			titleCamera_->ppProcessor_.hsvFilter_.hsv_.value += 0.01f;
 		}
 	}
 
@@ -239,6 +239,9 @@ void Player::DisplayImGui()
 	colliderTransform_.DisplayImGui("collider");
 	Vector3 world = colliderTransform_.GetWorldPos();
 	ImGui::DragFloat3("colliderWorldPos", &world.x);
+
+	// 基底クラスのImGuiを表示する
+	IObject::DisplayImGui();
 }
 
 void Player::ChangeState(std::unique_ptr<IState> newState)

@@ -21,6 +21,8 @@ void BaseScene::PreInitialize()
 	// スカイボックス生成
 	skyBox_ = std::make_unique<SkyBox>();
 
+	// 全ゲームオブジェクト削除
+	gameObjectManager_->Init();
 	// 読み込み済みモデルクリア
 	modelManager_->Clear();
 	// 生成済みスプライトのクリア

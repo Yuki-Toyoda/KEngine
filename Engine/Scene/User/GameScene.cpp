@@ -13,7 +13,10 @@ void GameScene::LoadModel()
 
 void GameScene::Init(){
 	
-	// 
+	// デバッグカメラの明度を-1にする
+	camera_->ppProcessor_.hsvFilter_.hsv_.value = -1.0f;
+
+	// スカイボックス初期化
 	skyBox_->Init("./Resources", "SkyTexture.dds");
 
 	// プレイヤー追加
@@ -23,7 +26,6 @@ void GameScene::Init(){
 	FollowCamera* camera = nullptr;
 	camera = gameObjectManager_->CreateInstance<FollowCamera>("MainCamera", IObject::TagCamera);
 	camera->SetTarget(&player_->transform_);
-	camera->UseThisCamera();
 	player_->followCamera_ = camera;
 
 	level_ = gameObjectManager_->CreateInstance<SampleLevelObjects>("Level", IObject::TagNone);
