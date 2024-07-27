@@ -54,12 +54,12 @@ void Damage::Update()
 
 			if (isDead_) {
 				if (timer_.GetIsFinish()) {
-					c->ppProcessor_.hsvFilter_.hsv_.value = -1.0f;
+					c->ppProcessor_.hsvFilter_.hsv_.value = -1.25f;
 					player_->isDead_ = true;
 				}
 				else {
 					// フェード演出スプライトを暗転させる
-					c->ppProcessor_.hsvFilter_.hsv_.value = KLib::Lerp<float>(0.0f, -1.0f, KLib::EaseOutQuad(timer_.GetProgress()));
+					c->ppProcessor_.hsvFilter_.hsv_.value = KLib::Lerp<float>(0.0f, -1.25f, KLib::EaseOutQuad(timer_.GetProgress()));
 					c->transform_.translate_.z -= 0.0025f;
 				}
 
