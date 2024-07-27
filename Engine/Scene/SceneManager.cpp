@@ -42,6 +42,7 @@ void SceneManager::Update()
 		currentScene_->PreInitialize(); // 取得したシーンの共通初期化を行う
 		currentScene_->LoadModel(); // モデル読み込みを行う
 		currentScene_->Init(); // 取得したシーンの初期化を行う
+		GameObjectManager::GetInstance()->Update(); // ゲームオブジェクトマネージャーの更新
 	}
 
 	// 現在のシーンの更新
