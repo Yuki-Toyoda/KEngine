@@ -85,14 +85,22 @@ void Player::Init()
 		sprites_[i]->isActive_ = false;
 	}
 
-	// UIの追加
-	AddSprite("UI", {0.0f, 0.0f}, {1280.0f ,720.0f}, TextureManager::Load("./Resources", "UI.png"));
-	sprites_[6]->isActive_ = false;
-
 	// タイトル画面ボタン用
-	AddSprite("Button", {640.0f, 450.0f}, {512.0f ,128.0f}, TextureManager::Load("Start_CR.png"));
-	// フェードスプライトの色設定
-	sprites_[7]->anchorPoint_ = { .5f, .5f };
+	AddSprite("StartButton", { 640.0f, 450.0f }, { 512.0f ,128.0f }, TextureManager::Load("Start_CR.png"));
+	// アンカーポイントの設定
+	sprites_[6]->anchorPoint_ = { .5f, .5f };
+
+	// 攻撃ボタン
+	AddSprite("AButton", { 1125.0f, 125.0f }, { 48.0f ,48.0f }, TextureManager::Load("./Resources/UI/Button", "Button_A.png"));
+	// 剣アイコン
+	AddSprite("SwordIcon", { 1140.0f, 142.5f }, { 48.0f ,48.0f }, TextureManager::Load("./Resources/UI/Icon", "MasterSword.png"));
+	// Bボタン
+	AddSprite("BButton", { 1185.0f, 75.0f }, { 48.0f ,48.0f }, TextureManager::Load("./Resources/UI/Button", "Button_B.png"));
+
+	// ボタン関連UI非表示
+	sprites_[7]->isActive_ = false;
+	sprites_[8]->isActive_ = false;
+	sprites_[9]->isActive_ = false;
 
 	// 効果音読み込み
 	SwingSword_ = Audio::GetInstance()->LoadWave("./Resources/Audio/SE/SwingSword.mp3");
@@ -122,7 +130,11 @@ void Player::Update()
 				for (int i = 0; i < 6; i++) {
 					sprites_[i]->isActive_ = true;
 				}
-				sprites_[6]->isActive_ = true;
+
+				// ボタン関連UI表示
+				sprites_[7]->isActive_ = true;
+				sprites_[8]->isActive_ = true;
+				sprites_[9]->isActive_ = true;
 
 				// ゲームスタート
 				isGameStart_ = true;
@@ -140,7 +152,7 @@ void Player::Update()
 				isFade_ = true;
 
 				// ボタンUI非表示
-				sprites_[7]->isActive_ = false;
+				sprites_[6]->isActive_ = false;
 
 				// タイトルアニメーション再生
 				titleAnim_->ChangeParameter("Title_Start", true);
@@ -222,13 +234,8 @@ void Player::Update()
 void Player::DisplayImGui()
 {
 	transform_.DisplayImGui();
-	headTransform_.DisplayImGuiWithTreeNode("HeadTransform");
-	weaponTransform_.DisplayImGuiWithTreeNode("Weapon");
 
 	ImGui::DragInt("HP", &hp_);
-
-	// タイトルアニメーションのImGuiを表示
-	titleAnim_->DisplayImGui();
 
 	// 行動状態のImGuiを表示
 	state_->DisplayImGui();
@@ -236,9 +243,7 @@ void Player::DisplayImGui()
 	// 線のImGui表示
 	attackLine_->DisplayImGui();
 
-	colliderTransform_.DisplayImGui("collider");
-	Vector3 world = colliderTransform_.GetWorldPos();
-	ImGui::DragFloat3("colliderWorldPos", &world.x);
+	sprites_[9]->DisplayImGui();
 
 	// 基底クラスのImGuiを表示する
 	IObject::DisplayImGui();
