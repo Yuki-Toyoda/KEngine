@@ -657,6 +657,9 @@
     <ClInclude Include="Engine\Base\RootSignature\SkyBoxRootSignature.h">
       <Filter>Engine\Base\RootSignature</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Base\Resource\Data\RWStructuredBuffer.h">
+      <Filter>Engine\Base\Resource\Data</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\Base\Resource\Data\RWStructuredBuffer.h" />
     <ClInclude Include="Engine\SkyBox\SkyBox.h" />
     <ClInclude Include="Engine\Base\RootSignature\SkyBoxRootSignature.h" />
@@ -1278,6 +1281,9 @@
       <Filter>Engine\Resource\Shader</Filter>
     </FxCompile>
     <FxCompile Include="Engine\Resource\Shader\SkyBox\SkyBox.PS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\Compute\Skining.CS.hlsl">
       <Filter>Engine\Resource\Shader</Filter>
     </FxCompile>
     <FxCompile Include="Engine\Resource\Shader\Compute\Skining.CS.hlsl" />

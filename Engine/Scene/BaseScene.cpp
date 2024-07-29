@@ -13,14 +13,6 @@ void BaseScene::PreInitialize()
 	// モデルマネージャーのインスタンス取得
 	modelManager_ = ModelManager::GetInstance();
 
-	// カメラを生成
-	camera_ = gameObjectManager_->CreateInstance<Camera>("DebugCamera", IObject::TagCamera);
-	// このカメラを使う
-	camera_->UseThisCamera();
-
-	// スカイボックス生成
-	skyBox_ = std::make_unique<SkyBox>();
-
 	// 全ゲームオブジェクト削除
 	gameObjectManager_->Init();
 	// 読み込み済みモデルクリア
@@ -29,6 +21,14 @@ void BaseScene::PreInitialize()
 	SpriteManager::GetInstance()->Init();
 	// 生成済みパーティクルのクリア
 	ParticleEmitterManager::GetInstance()->Init();
+
+	// カメラを生成
+	camera_ = gameObjectManager_->CreateInstance<Camera>("DebugCamera", IObject::TagCamera);
+	// このカメラを使う
+	camera_->UseThisCamera();
+
+	// スカイボックス生成
+	skyBox_ = std::make_unique<SkyBox>();
 
 	// サンプルモデルの読み込み
 	SampleModelLoad();
