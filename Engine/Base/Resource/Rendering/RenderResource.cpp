@@ -17,9 +17,9 @@ void RenderResource::Init(DirectXDevice* device, HeapManager* heaps)
 
 	// 画面クリア色指定
 	clearColor_.Format   = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
-	clearColor_.Color[0] = 0.1f;
-	clearColor_.Color[1] = 0.25f;
-	clearColor_.Color[2] = 0.5f;
+	clearColor_.Color[0] = 0.0f;
+	clearColor_.Color[1] = 0.0f;
+	clearColor_.Color[2] = 0.0f;
 	clearColor_.Color[3] = 1.0f;
 
 	// 利用するヒープの設定を行う
