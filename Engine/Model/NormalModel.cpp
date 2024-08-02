@@ -64,7 +64,9 @@ void NormalModel::DisplayImGui()
 		ImGui::Text("Materials");
 		// 全マテリアルのImGuiを描画
 		for (Material& m : materials_) {
-			m.DisplayImGui();
+			if (m.name_ != "") {
+				m.DisplayImGui();
+			}
 		}
 		// ツリーノード終了
 		ImGui::TreePop();

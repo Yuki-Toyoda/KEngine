@@ -78,6 +78,14 @@ public: // アクセッサ等
 	/// <returns>平行光源本体</returns>
 	DirectionalLight* GetDirectionalLight() { return light_.get(); }
 
+private: // プライベートなメンバ関数
+
+	/// <summary>
+	/// ImGui描画関数
+	/// </summary>
+	/// <param name="list">コマンドリスト</param>
+	void ImGuiDraw(ID3D12GraphicsCommandList6* list);
+
 private: // メンバ変数
 
 	// コマンド管理用

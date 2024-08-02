@@ -1,5 +1,7 @@
 #include "RendererManager.h"
 #include "../../Resource/Texture/TextureManager.h"
+#include "../../../Externals/imgui/ImGuiManager.h"
+#include "../../Base/DirectXCommon.h"
 
 void RendererManager::Init(DirectXDevice* device, SRV* srv)
 {
@@ -54,10 +56,55 @@ void RendererManager::DrawCall()
 	// ポストプロセス描画を行う
 	ppRenderer_.DrawCall(list);
 
+	// ImGuiの描画を行う
+	ImGuiDraw(list);
+
 	// コマンドリストの実行
 	command_.Execute();
 
 	// 各レンダラーをリセット
 	normalRenderer_.Reset(); // 通常描画
 	ppRenderer_.Reset();	 // ポストプロセス描画
+}
+
+void RendererManager::ImGuiDraw(ID3D12GraphicsCommandList6* list)
+{
+	// 現在書き込み中のバッファを取得
+	BackBuffer* b = DirectXCommon::GetInstance()->GetCurrentBackBuffer();
+	// バリアの以前のステートを取得しておく
+	D3D12_RESOURCE_STATES beforeBarrier = b->GetBarrier();
+	// 書き込み対象にバックバッファを変更
+	b->ChangeResourceBarrier(D3D12_RESOURCE_STATE_RENDER_TARGET, list);
+
+	//ビューポートの設定
+	D3D12_VIEWPORT viewport = {};
+	// ウィンドウのクライアント領域のサイズと一致させて画面全体に表示
+	viewport.Width = static_cast<float>(b->width_);   // 画面横幅
+	viewport.Height = static_cast<float>(b->height_); // 画面縦幅
+	viewport.TopLeftX = 0;							  // 画面左上X座標
+	viewport.TopLeftY = 0;							  // 画面左上Y座標
+	viewport.MinDepth = 0.0f;						  // 最小深度
+	viewport.MaxDepth = 1.0f;						  // 最大深度
+	// コマンドリストにビューポートを設定
+	list->RSSetViewports(1, &viewport);
+
+	// シザー矩形の設定
+	D3D12_RECT scissorRect = {};
+	// ビューポートと同一の矩形が表示
+	scissorRect.left = 0;			 // 左
+	scissorRect.right = b->width_;   // 右
+	scissorRect.top = 0;			 // 上
+	scissorRect.bottom = b->height_; // 下
+	// コマンドリストにシザー矩形を設定
+	list->RSSetScissorRects(1, &scissorRect);
+
+	// ImGuiの受付終了
+	ImGui::EndFrame();
+
+	// ImGuiを描画
+	ImGui::Render();
+	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), list);
+
+	// バリアを元に戻す
+	b->ChangeResourceBarrier(beforeBarrier, list);
 }
