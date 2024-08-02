@@ -1,8 +1,8 @@
 #pragma once
-#include "../GameObject/WorldTransform.h"
-#include "../Resource/Texture/TextureManager.h"
-#include "../Primitive/PrimitiveManager.h"
-#include "../Utility/KLib.h"
+#include "../../GameObject/WorldTransform.h"
+#include "../../Resource/Texture/TextureManager.h"
+#include "../../Primitive/PrimitiveManager.h"
+#include "../../Utility/KLib.h"
 
 /// <summary>
 /// 粒子１つ１つの基底クラス

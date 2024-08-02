@@ -103,13 +103,13 @@
     <ClCompile Include="Engine\Scene\User\SampleScene.cpp">
       <Filter>App\Scene\User</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Particle\IParticleEmitter.cpp">
+    <ClCompile Include="Engine\Particle\CPU\IParticleEmitter.cpp">
       <Filter>Engine\Particle</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Particle\IParticle.cpp">
+    <ClCompile Include="Engine\Particle\CPU\IParticle.cpp">
       <Filter>Engine\Particle</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Particle\ParticleEmitterManager.cpp">
+    <ClCompile Include="Engine\Particle\CPU\ParticleEmitterManager.cpp">
       <Filter>Engine\Particle</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Utility\Animation\AnimationManager.cpp">
@@ -523,13 +523,13 @@
     <ClInclude Include="Engine\Utility\Animation\AnimationKeys.h">
       <Filter>App\Utility\Animation</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Particle\IParticleEmitter.h">
+    <ClInclude Include="Engine\Particle\CPU\IParticleEmitter.h">
       <Filter>Engine\Particle</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Particle\IParticle.h">
+    <ClInclude Include="Engine\Particle\CPU\IParticle.h">
       <Filter>Engine\Particle</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Particle\ParticleEmitterManager.h">
+    <ClInclude Include="Engine\Particle\CPU\ParticleEmitterManager.h">
       <Filter>Engine\Particle</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utility\Animation\AnimationManager.h">

@@ -10,7 +10,7 @@
 #include "Primitive/PrimitiveManager.h"
 #include "Scene/SceneManager.h"
 #include "Collider/CollisionManager.h"
-#include "Particle/ParticleEmitterManager.h"
+#include "Particle/CPU/ParticleEmitterManager.h"
 #include <dxgidebug.h>
 
 /// <summary>

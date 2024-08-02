@@ -1,5 +1,5 @@
 #include "SampleParticle.h"
-#include "../../../Particle/ParticleEmitterManager.h"
+#include "../../../Particle/CPU/ParticleEmitterManager.h"
 
 void SampleParticle::Init()
 {
