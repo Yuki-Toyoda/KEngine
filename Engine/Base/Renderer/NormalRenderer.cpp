@@ -1,5 +1,4 @@
 #include "NormalRenderer.h"
-#include "../../../Externals/imgui/ImGuiManager.h"
 #include "../../Primitive/PrimitiveManager.h"
 #include "../../Model/ModelManager.h"
 #include "../../Lighting/Light/DirectionalLight.h"
@@ -62,9 +61,6 @@ void NormalRenderer::DrawCall(ID3D12GraphicsCommandList6* list)
 {
 	// 形状マネージャの更新
 	modelManager_->Update();
-
-	// ImGuiの受付終了
-	ImGui::EndFrame();
 
 	// ターゲット分ループする
 	for (std::vector<Target>::iterator it = targets_.begin(); it != targets_.end(); it++) {
@@ -165,13 +161,6 @@ void NormalRenderer::DrawCall(ID3D12GraphicsCommandList6* list)
 
 		// スプライトモデルの描画を行う
 		modelManager_->SpriteModelDraw(list);
-
-		// 最後のイテレータでImGuiを描画する
-		if (it == std::prev(targets_.end())) {
-			// ImGuiを描画
-			ImGui::Render();
-			ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), list);
-		}
 
 		// バリアを元に戻す
 		it->backBuffer_->ChangeResourceBarrier(beforeBarrier, list);

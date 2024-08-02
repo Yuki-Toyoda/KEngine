@@ -109,7 +109,9 @@ void SkiningModel::DisplayImGui()
 		ImGui::Text("Materials");
 		// 全マテリアルのImGuiを描画
 		for (Material& m : materials_) {
-			m.DisplayImGui();
+			if (m.name_ != "") {
+				m.DisplayImGui();
+			}
 		}
 
 		// アニメーションのImGuiを表示

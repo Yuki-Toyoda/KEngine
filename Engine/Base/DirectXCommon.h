@@ -94,6 +94,12 @@ public: // ImGui用アクセッサ
 	/// <returns>SRVヒープ</returns>
 	SRV* GetSRV() { return heaps_->srv(); }
 
+	/// <summary>
+	/// 現在のバックバッファゲッター
+	/// </summary>
+	/// <returns>現在のバックバッファ</returns>
+	BackBuffer* GetCurrentBackBuffer() { return &backBuffers_[swapChain_->GetCurrentBackBufferIndex()]; }
+
 private: // メンバ関数
 
 	// シングルトンパターンの設定
