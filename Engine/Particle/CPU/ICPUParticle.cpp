@@ -1,6 +1,6 @@
-#include "IParticle.h"
+#include "ICPUParticle.h"
 
-void IParticle::PreInit(float aliveTime, const Vector3& position, const Vector3& scale, const Vector3& velocity, const Material& material, const Vector4& color)
+void ICPUParticle::PreInit(float aliveTime, const Vector3& position, const Vector3& scale, const Vector3& velocity, const Material& material, const Vector4& color)
 {
 	// 生存時間設定
 	aliveTimer_.Start(aliveTime);
@@ -28,19 +28,19 @@ void IParticle::PreInit(float aliveTime, const Vector3& position, const Vector3&
 	PostUpdate();
 }
 
-void IParticle::Init()
+void ICPUParticle::Init()
 {
 	// 基底クラスでは記述なし
 }
 
-void IParticle::Update()
+void ICPUParticle::Update()
 {
 	transform_.translate_ = transform_.translate_ + velocity_;
 
 	material_.color_.w = KLib::Lerp(1.0f, 0.0f, KLib::EaseInOutQuad(aliveTimer_.GetProgress()));
 }
 
-void IParticle::PostUpdate()
+void ICPUParticle::PostUpdate()
 {
 	//// 頂点座標を求める
 	//float left = (0.0f - anchorPoint_.x) * scale_.x;   // 左

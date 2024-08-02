@@ -1,18 +1,18 @@
 #pragma once
-#include "IParticleEmitter.h"
+#include "ICPUParticleEmitter.h"
 
 /// <summary>
 /// パーティクルエミッタ全てを管理するマネージャ
 /// </summary>
-class ParticleEmitterManager
+class CPUParticleEmitterManager
 {
 private: // コンストラクタ、デストラクタ等
 
 	// シングルトンパターンの設定
-	ParticleEmitterManager() = default;
-	~ParticleEmitterManager() = default;
-	ParticleEmitterManager(const ParticleEmitterManager&) = delete;
-	const ParticleEmitterManager& operator=(const ParticleEmitterManager&) = delete;
+	CPUParticleEmitterManager() = default;
+	~CPUParticleEmitterManager() = default;
+	CPUParticleEmitterManager(const CPUParticleEmitterManager&) = delete;
+	const CPUParticleEmitterManager& operator=(const CPUParticleEmitterManager&) = delete;
 
 public: // メンバ関数
 
@@ -20,8 +20,8 @@ public: // メンバ関数
 	/// シングルトンインスタンスの取得
 	/// </summary>
 	/// <returns>シングルトンインスタンス</returns>
-	static ParticleEmitterManager* GetInstance() {
-		static ParticleEmitterManager instance;
+	static CPUParticleEmitterManager* GetInstance() {
+		static CPUParticleEmitterManager instance;
 		return &instance;
 	}
 
@@ -60,12 +60,12 @@ public: // その他関数群
 private: // メンバ変数
 
 	// エミッタリスト
-	std::list<std::unique_ptr<IParticleEmitter>> emitters_;
+	std::list<std::unique_ptr<ICPUParticleEmitter>> emitters_;
 
 };
 
 template<IsIParticleEmitter SelectEmitter, IsIParticle SelectParticle>
-inline void ParticleEmitterManager::CreateEmitter(const std::string& name, int32_t maxCount, int32_t maxGenerateCount, const Vector3& translate, float aliveTime, float frequency, ParticleModel* model)
+inline void CPUParticleEmitterManager::CreateEmitter(const std::string& name, int32_t maxCount, int32_t maxGenerateCount, const Vector3& translate, float aliveTime, float frequency, ParticleModel* model)
 {
 	// 新しいエミッタを生成
 	std::unique_ptr<SelectEmitter> newEmitter = std::make_unique<SelectEmitter>();

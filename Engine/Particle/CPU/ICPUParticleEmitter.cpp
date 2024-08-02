@@ -1,6 +1,6 @@
-#include "IParticleEmitter.h"
+#include "ICPUParticleEmitter.h"
 
-void IParticleEmitter::PreInit(const std::string& name, int32_t maxCount, int32_t maxGenerateCount, const Vector3& translate, float aliveTime, float frequency, ParticleModel* model)
+void ICPUParticleEmitter::PreInit(const std::string& name, int32_t maxCount, int32_t maxGenerateCount, const Vector3& translate, float aliveTime, float frequency, ParticleModel* model)
 {
 	// 名称設定
 	name_ = name;
@@ -22,16 +22,16 @@ void IParticleEmitter::PreInit(const std::string& name, int32_t maxCount, int32_
 	model_ = std::move(model);
 }
 
-void IParticleEmitter::Init()
+void ICPUParticleEmitter::Init()
 {
 	// 基底クラスでは記述なし
 	model_->material_.enableLighting_ = false;
 }
 
-void IParticleEmitter::PreUpdate()
+void ICPUParticleEmitter::PreUpdate()
 {
 	// 粒子が終了状態の時リストから除外
-	particles_.remove_if([](std::unique_ptr<IParticle>& particle) {
+	particles_.remove_if([](std::unique_ptr<ICPUParticle>& particle) {
 		if (particle->GetIsEnd()) {
 			return true;
 		}
@@ -40,7 +40,7 @@ void IParticleEmitter::PreUpdate()
 	});
 
 	// 生成されている粒子の更新
-	for (std::unique_ptr<IParticle>& particle : particles_) {
+	for (std::unique_ptr<ICPUParticle>& particle : particles_) {
 		particle->Update();	    // 更新
 		particle->PostUpdate(); // 更新後処理
 
@@ -49,12 +49,12 @@ void IParticleEmitter::PreUpdate()
 	}
 }
 
-void IParticleEmitter::Update()
+void ICPUParticleEmitter::Update()
 {
 	// 基底クラスでは記述なし
 }
 
-void IParticleEmitter::PostUpdate()
+void ICPUParticleEmitter::PostUpdate()
 {
 	// 各種タイマーの更新
 	aliveTimer_.Update();
@@ -82,7 +82,7 @@ void IParticleEmitter::PostUpdate()
 	}
 }
 
-void IParticleEmitter::GenerateParticle()
+void ICPUParticleEmitter::GenerateParticle()
 {
 	// 一度に生成する数分のパーティクルを生成する
 	for (int i = 0; i < generateParticleCount_; i++) {
@@ -100,7 +100,7 @@ void IParticleEmitter::GenerateParticle()
 		Vector4 generateColor = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 
 		// 新しい粒子を生成
-		std::unique_ptr<IParticle>newParticle = type_();
+		std::unique_ptr<ICPUParticle>newParticle = type_();
 		newParticle->PreInit(3.0f, transform_.translate_, generateScale, generateVelocity, model_->material_, generateColor);
 
 		// 生成した粒子をリストに追加
@@ -108,7 +108,7 @@ void IParticleEmitter::GenerateParticle()
 	}
 }
 
-void IParticleEmitter::DisplayImGui()
+void ICPUParticleEmitter::DisplayImGui()
 {
 	if (ImGui::TreeNode(name_.c_str())) {
 		// 放出座標の調整

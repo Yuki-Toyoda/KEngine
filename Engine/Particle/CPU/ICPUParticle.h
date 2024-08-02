@@ -7,14 +7,14 @@
 /// <summary>
 /// 粒子１つ１つの基底クラス
 /// </summary>
-class IParticle
+class ICPUParticle
 {
 public: // コンストラクタ等
 
 	// コンストラクタ
-	IParticle() = default;
+	ICPUParticle() = default;
 	// 仮想デストラクタ
-	virtual ~IParticle() = default;
+	virtual ~ICPUParticle() = default;
 
 public: // メンバ関数
 
@@ -88,4 +88,4 @@ protected: // メンバ変数
 /// IParticleを継承したクラスを選択できるテンプレート
 /// </summary>
 template <class SelectParticle>
-concept IsIParticle = std::is_base_of<IParticle, SelectParticle>::value;
+concept IsIParticle = std::is_base_of<ICPUParticle, SelectParticle>::value;

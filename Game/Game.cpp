@@ -18,7 +18,7 @@ void Game::Init()
 	spriteManager_->Init();
 
 	// パーティクルマネージャの初期化
-	particleManager_ = ParticleEmitterManager::GetInstance();
+	particleManager_ = CPUParticleEmitterManager::GetInstance();
 	particleManager_->Init();
 
 	// シーンマネージャーにファクトリークラスをセット

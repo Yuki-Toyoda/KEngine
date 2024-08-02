@@ -139,9 +139,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\GlobalVariables\GlobalVariables.cpp" />
     <ClCompile Include="Engine\Input\Input.cpp" />
     <ClCompile Include="Engine\Math\Quaternion.cpp" />
-    <ClCompile Include="Engine\Particle\CPU\IParticle.cpp" />
-    <ClCompile Include="Engine\Particle\CPU\IParticleEmitter.cpp" />
-    <ClCompile Include="Engine\Particle\CPU\ParticleEmitterManager.cpp" />
+    <ClCompile Include="Engine\Particle\CPU\ICPUParticle.cpp" />
+    <ClCompile Include="Engine\Particle\CPU\ICPUParticleEmitter.cpp" />
+    <ClCompile Include="Engine\Particle\CPU\CPUParticleEmitterManager.cpp" />
     <ClCompile Include="Engine\Primitive\IPrimitive.cpp" />
     <ClCompile Include="Engine\Primitive\PrimitiveManager.cpp" />
     <ClCompile Include="Engine\Resource\Material\Material.cpp" />
@@ -266,9 +266,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Math\Vector2.h" />
     <ClInclude Include="Engine\Math\Vector3.h" />
     <ClInclude Include="Engine\Math\Vector4.h" />
-    <ClInclude Include="Engine\Particle\CPU\IParticle.h" />
-    <ClInclude Include="Engine\Particle\CPU\IParticleEmitter.h" />
-    <ClInclude Include="Engine\Particle\CPU\ParticleEmitterManager.h" />
+    <ClInclude Include="Engine\Particle\CPU\ICPUParticle.h" />
+    <ClInclude Include="Engine\Particle\CPU\ICPUParticleEmitter.h" />
+    <ClInclude Include="Engine\Particle\CPU\CPUParticleEmitterManager.h" />
     <ClInclude Include="Engine\Primitive\IPrimitive.h" />
     <ClInclude Include="Engine\Primitive\PrimitiveManager.h" />
     <ClInclude Include="Engine\Resource\Material\Material.h" />

@@ -1,18 +1,18 @@
 #pragma once
-#include "IParticle.h"
+#include "ICPUParticle.h"
 #include <list>
 
 /// <summary>
 /// パーティクル発生箇所
 /// </summary>
-class IParticleEmitter
+class ICPUParticleEmitter
 {
 public: // コンストラクタ等
 
 	// コンストラクタ
-	IParticleEmitter() = default;
+	ICPUParticleEmitter() = default;
 	// デストラクタ
-	virtual ~IParticleEmitter() = default;
+	virtual ~ICPUParticleEmitter() = default;
 
 public: // メンバ関数
 
@@ -56,7 +56,7 @@ public: // アクセッサ等
 	/// <typeparam name="SelectParticle">生成する粒子の型</typeparam>
 	template<IsIParticle SelectParticle>
 	void SetParticleType() {
-		type_ = []()->std::unique_ptr<IParticle> {
+		type_ = []()->std::unique_ptr<ICPUParticle> {
 			return std::make_unique<SelectParticle>();
 		};
 	}
@@ -89,7 +89,7 @@ public: // パブリックメンバ変数
 protected: // メンバ変数
 
 	// パーティクル達
-	std::list<std::unique_ptr<IParticle>> particles_;
+	std::list<std::unique_ptr<ICPUParticle>> particles_;
 
 	// パーティクル名
 	std::string name_;
@@ -108,7 +108,7 @@ protected: // メンバ変数
 	bool isEnd_ = false;
 
 	// 生成する粒子の型
-	std::function<std::unique_ptr<IParticle>()> type_;
+	std::function<std::unique_ptr<ICPUParticle>()> type_;
 
 	// 粒子生成間隔タイマー
 	KLib::DeltaTimer frequencyTimer_;
@@ -117,4 +117,4 @@ protected: // メンバ変数
 };
 
 template<class SelectEmiiter>
-concept IsIParticleEmitter = std::is_base_of<IParticleEmitter, SelectEmiiter>::value;
+concept IsIParticleEmitter = std::is_base_of<ICPUParticleEmitter, SelectEmiiter>::value;
