@@ -212,6 +212,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\PostProcess\OutLine\OutLine.cpp" />
     <ClCompile Include="Engine\SkyBox\SkyBox.cpp" />
     <ClCompile Include="Engine\Base\RootSignature\SkyBoxRootSignature.cpp" />
+    <ClCompile Include="Engine\Particle\Particle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Base\Renderer\CopyRenderer.h" />
@@ -352,6 +353,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\PostProcess\HSVFilter\HSVFilter.h" />
     <ClInclude Include="Engine\SkyBox\SkyBox.h" />
     <ClInclude Include="Engine\Base\RootSignature\SkyBoxRootSignature.h" />
+    <ClInclude Include="Engine\Particle\Particle.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Constant.hlsli">

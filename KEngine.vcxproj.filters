@@ -344,6 +344,7 @@
     <ClCompile Include="Engine\Base\RootSignature\SkyBoxRootSignature.cpp">
       <Filter>Engine\Base\RootSignature</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Particle\Particle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -763,6 +764,7 @@
     <ClInclude Include="Engine\Base\Resource\Data\RWStructuredBuffer.h">
       <Filter>Engine\Base\Resource\Data</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Particle\Particle.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
