@@ -32,7 +32,8 @@ void ParticleModel::Update()
 
 void ParticleModel::Draw(ID3D12GraphicsCommandList6* cmdList)
 {
-	
+	/*該当モデルでは処理を行わない*/
+	cmdList; 
 }
 
 void ParticleModel::DisplayImGui()

@@ -25,7 +25,7 @@ void ICPUParticleEmitter::PreInit(const std::string& name, int32_t maxCount, int
 void ICPUParticleEmitter::Init()
 {
 	// 基底クラスでは記述なし
-	model_->material_.enableLighting_ = false;
+	//model_->material_.enableLighting_ = false;
 }
 
 void ICPUParticleEmitter::PreUpdate()
@@ -45,7 +45,7 @@ void ICPUParticleEmitter::PreUpdate()
 		particle->PostUpdate(); // 更新後処理
 
 		// パーティクルの更新後に必要な各情報をセットする
-		model_->AddDrawModel(particle->transform_.GetMatWorld(), particle->material_);
+		//model_->AddDrawModel(particle->transform_.GetMatWorld(), particle->material_);
 	}
 }
 
@@ -101,7 +101,7 @@ void ICPUParticleEmitter::GenerateParticle()
 
 		// 新しい粒子を生成
 		std::unique_ptr<ICPUParticle>newParticle = type_();
-		newParticle->PreInit(3.0f, transform_.translate_, generateScale, generateVelocity, model_->material_, generateColor);
+		//newParticle->PreInit(3.0f, transform_.translate_, generateScale, generateVelocity, model_->material_, generateColor);
 
 		// 生成した粒子をリストに追加
 		particles_.push_back(std::move(newParticle));

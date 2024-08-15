@@ -1,12 +1,6 @@
 #include "../Constant.hlsli"
 #include "Particle.hlsli"
 
-struct InfoData
-{
-    int32_t instanceCount;
-    int32_t isBillboard;
-};
-
 struct PayLoad
 {
     uint32_t groupID;

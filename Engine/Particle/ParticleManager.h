@@ -46,6 +46,11 @@ public: // メンバ関数
 	/// </summary>
 	void Update();
 
+	/// <summary>
+	/// 描画関数
+	/// </summary>
+	void Draw();
+
 public: // 生成用関数群
 
 	/// <summary>
@@ -66,8 +71,12 @@ public: // 生成用関数群
 	/// 新規パーティクル生成関数
 	/// </summary>
 	/// <param name="name">生成するパーティクル名</param>
+	/// <param name="filePath">パーティクルに使用するモデルまでのファイルパス</param>
+	/// <param name="fileName">モデルのファイル名</param>
+	/// <param name="lifeTime">パーティクルの生存時間</param>
+	/// <param name="maxCount">粒子数</param>
 	/// <returns>生成済み新規パーティクル</returns>
-	Particle* CreateNewParticle(const std::string& name);
+	Particle* CreateNewParticle(const std::string& name, const std::string& filePath, const std::string& fileName, const float lifeTime, const int maxCount = 1024);
 
 private: // メンバ変数
 
@@ -88,5 +97,8 @@ private: // メンバ変数
 	std::map<std::string, ParticlePSO> psos_;
 
 	// パーティクル配列
-	std::vector<std::unique_ptr<Particle>> particles_;
+	std::list<std::unique_ptr<Particle>> particles_;
+
+	// パーティクル計算シェーダーデフォルトパス
+	std::string defaultDirectory_ = "Engine/Resource/Shader/Particle/user/";
 };

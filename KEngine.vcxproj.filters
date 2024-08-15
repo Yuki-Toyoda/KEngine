@@ -794,6 +794,7 @@
       <Filter>Engine\Resource\Shader</Filter>
     </None>
     <None Include="Engine\Resource\Shader\Particle\Particle.hlsli" />
+    <None Include="Engine\Resource\Shader\Compute\Random.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -1052,5 +1053,8 @@
     <FxCompile Include="Engine\Resource\Shader\Compute\Skining.CS.hlsl">
       <Filter>Engine\Resource\Shader</Filter>
     </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\Particle\user\Test\InitTestParticle.CS.hlsl" />
+    <FxCompile Include="Engine\Resource\Shader\Particle\user\Test\UpdateTestParticle.CS.hlsl" />
+    <FxCompile Include="Engine\Resource\Shader\Particle\user\Test\EmitTestParticle.CS.hlsl" />
   </ItemGroup>
 </Project>

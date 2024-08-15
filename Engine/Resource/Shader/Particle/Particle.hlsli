@@ -1,3 +1,5 @@
+#include "../Compute/Random.hlsli"
+
 struct Particle
 {
     float32_t3  translate;
@@ -17,3 +19,22 @@ struct EmitterSphere
     float32_t   frequencyTime;
     int32_t     emit;
 };
+
+struct PerFrame
+{
+    float32_t time;
+    float32_t deltaTime;
+};
+
+struct InfoData
+{
+    int32_t instanceCount;
+    int32_t isBillboard;
+};
+
+ConstantBuffer<EmitterSphere>   emitter       : register(b0);
+ConstantBuffer<PerFrame>        perFrame      : register(b1);
+ConstantBuffer<InfoData>        info          : register(b2);
+RWStructuredBuffer<Particle>    gParticles    : register(u0);
+RWStructuredBuffer<int32_t>     freeListIndex : register(u1);
+RWStructuredBuffer<uint32_t>    freeList      : register(u2);

@@ -7,6 +7,7 @@
 // クラスの前方宣言
 class PrimitiveManager;
 class ModelManager;
+class ParticleManager;
 class DirectionalLight;
 
 /// <summary>
@@ -94,6 +95,9 @@ private: // メンバ変数
 
 	// モデルマネージャー
 	ModelManager* modelManager_ = nullptr;
+
+	// パーティクルマネージャー
+	ParticleManager* particleManager_ = nullptr;
 
 	// 平行光源取得用
 	DirectionalLight* light_ = nullptr;

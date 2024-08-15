@@ -17,7 +17,7 @@ void ParticleRootSignature::Init()
 	CreateDescriptorTableParameter(2, D3D12_SHADER_VISIBILITY_ALL);
 	// プリミティブ頂点用パラメータ生成
 	CreateDescriptorTableParameter(3, D3D12_SHADER_VISIBILITY_ALL);
-	// トランスフォーム用パラメータ生成
+	// パーティクルデータ用パラメータ生成
 	CreateDescriptorTableParameter(4, D3D12_SHADER_VISIBILITY_ALL);
 	// マテリアル用パラメータ生成
 	CreateDescriptorTableParameter(5, D3D12_SHADER_VISIBILITY_ALL);

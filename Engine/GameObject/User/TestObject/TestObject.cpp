@@ -1,6 +1,7 @@
 #include "TestObject.h"
 #include "../../../Resource/Texture/TextureManager.h"
 #include "../../../Utility/Animation/AnimationManager.h"
+#include "../../../Particle/ParticleManager.h"
 
 void TestObject::Init()
 {
@@ -19,25 +20,17 @@ void TestObject::Update()
 	
 }
 
-//void TestObject::DisplayImGui()
-//{
-//
-//	// 基底クラスのImGuiを表示する
-//	//BaseObject::DisplayParameterImGui();
-//
-//	// 表示状態の切り替え
-//	ImGui::Checkbox("isActive", &isActive_);
-//
-//	transform_.DisplayImGui();
-//
-//	ImGui::DragFloat4("MaterialColor", &normalModels_[0]->materials_[0].color_.x, 0.01f, 0.0f, 1.0f);
-//
-//	if (ImGui::Button("Delete This")) {
-//		Destroy();
-//	}
-//
-//	sprites_[0]->DisplayImGui();
-//}
+void TestObject::DisplayImGui()
+{
+
+	// 基底クラスのImGuiを表示する
+	IObject::DisplayImGui();
+
+	// ボタンを押したらパーティクル生成
+	if (ImGui::Button("GenrateParticle")) {
+		ParticleManager::GetInstance()->CreateNewParticle("Test", "./Engine/Resource/Samples/Box", "Box.obj", 30.0f);
+	}
+}
 
 void TestObject::OnCollisionEnter(Collider* collider)
 {

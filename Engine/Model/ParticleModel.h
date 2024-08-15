@@ -23,7 +23,7 @@ public: // メンバ関数
 	/// 描画関数
 	/// </summary>
 	/// <param name="cmdList">コマンドリスト</param>
-	void Draw(ID3D12GraphicsCommandList6* cmdList) override { /*該当モデルでは処理を行わない*/ };
+	void Draw(ID3D12GraphicsCommandList6* cmdList) override;
 
 	/// <summary>
 	/// ImGui表示関数
