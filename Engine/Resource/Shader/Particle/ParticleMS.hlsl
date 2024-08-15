@@ -92,7 +92,7 @@ void main(
         else
         {
             // 頂点色はマテリアルから取得
-            outVerts[gtid].color = materials[gid].color * p.color;
+            outVerts[gtid].color = p.color;
         }
     }
     if (gtid < meshlet.PrimCount)

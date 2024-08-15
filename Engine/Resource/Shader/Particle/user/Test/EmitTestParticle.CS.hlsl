@@ -30,8 +30,8 @@ void main( uint3 DTid : SV_DispatchThreadID )
                 gParticles[particleIndex].translate   = emitter.translate;
                 gParticles[particleIndex].color.rgb   = generator.Generate3D();
                 gParticles[particleIndex].color.a     = 1.0f;
-                gParticles[particleIndex].lifeTime    = 1.0f;
-                gParticles[particleIndex].velocity    = generator.Generate3D() / 2.0f + float32_t3(-0.25f, -0.25f, -0.25f);
+                gParticles[particleIndex].lifeTime    = 5.0f;
+                gParticles[particleIndex].velocity    = generator.Generate3D() / 4.0f + float32_t3(-0.125f, -0.125f, -0.125f);
                 gParticles[particleIndex].currentTime = 0.0f;
             }
             else

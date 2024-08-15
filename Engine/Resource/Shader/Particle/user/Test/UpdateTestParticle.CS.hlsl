@@ -10,7 +10,7 @@ void main( uint3 DTid : SV_DispatchThreadID )
     if (particleIndex < info.instanceCount)
     {   
         // パーティクルの現在時間が生存秒数を超過していないとき、以下の処理を行う
-        if (gParticles[particleIndex].color.a != 0.0f)
+        if (gParticles[particleIndex].currentTime < gParticles[particleIndex].lifeTime)
         {
             // 座標に速度を加算する
             gParticles[particleIndex].translate += gParticles[particleIndex].velocity;
