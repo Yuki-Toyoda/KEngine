@@ -345,6 +345,7 @@
       <Filter>Engine\Base\RootSignature</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Particle\Particle.cpp" />
+    <ClCompile Include="Engine\Particle\ParticleManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -765,6 +766,7 @@
       <Filter>Engine\Base\Resource\Data</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Particle\Particle.h" />
+    <ClInclude Include="Engine\Particle\ParticleManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -779,7 +781,7 @@
     <None Include="Engine\Resource\Shader\SpriteMeshlet\MeshletSprite.hlsli">
       <Filter>Engine\Resource\Shader</Filter>
     </None>
-    <None Include="Engine\Resource\Shader\ParticleMeshlet\ParticleMeshlet.hlsli">
+    <None Include="Engine\Resource\Shader\Particle\ParticleMeshlet.hlsli">
       <Filter>Engine\Resource\Shader</Filter>
     </None>
     <None Include="Engine\Resource\Shader\Constant.hlsli">
@@ -791,6 +793,7 @@
     <None Include="Engine\Resource\Shader\SkyBox\SkyBox.hlsli">
       <Filter>Engine\Resource\Shader</Filter>
     </None>
+    <None Include="Engine\Resource\Shader\Particle\Particle.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -1025,13 +1028,13 @@
     <FxCompile Include="Engine\Resource\Shader\SpriteMeshlet\MeshletSpritePS.hlsl">
       <Filter>Engine\Resource\Shader</Filter>
     </FxCompile>
-    <FxCompile Include="Engine\Resource\Shader\ParticleMeshlet\ParticleMeshletAS.hlsl">
+    <FxCompile Include="Engine\Resource\Shader\Particle\ParticleAS.hlsl">
       <Filter>Engine\Resource\Shader</Filter>
     </FxCompile>
-    <FxCompile Include="Engine\Resource\Shader\ParticleMeshlet\ParticleMeshletMS.hlsl">
+    <FxCompile Include="Engine\Resource\Shader\Particle\ParticleMS.hlsl">
       <Filter>Engine\Resource\Shader</Filter>
     </FxCompile>
-    <FxCompile Include="Engine\Resource\Shader\ParticleMeshlet\ParticleMeshletPS.hlsl">
+    <FxCompile Include="Engine\Resource\Shader\Particle\ParticlePS.hlsl">
       <Filter>Engine\Resource\Shader</Filter>
     </FxCompile>
     <FxCompile Include="Engine\Resource\Shader\PostProcess\PassThroughVS.hlsl">

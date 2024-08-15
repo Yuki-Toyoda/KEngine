@@ -58,10 +58,18 @@ void Camera::Update()
 		Matrix4x4 projectionMatrix = Matrix4x4::MakePerspectiveFov(fov_, float(WinApp::kWindowWidth) / float(WinApp::kwindowHeight), 0.1f, 100.0f); // プロジェクション行列の生成
 		viewProjectionMatrix_ = viewMatrix_ * projectionMatrix; // 実際に計算
 
-		// バッファのデータにビュープロジェクション行列をセット
-		cameraDataBuffer_.data_->WorldViewProj = viewProjectionMatrix_;
-		cameraDataBuffer_.data_->WorldPosition = transform_.GetWorldPos();
-		cameraDataBuffer_.data_->DrawMeshlets = isDrawMeshlets_;
+		// ビルボード行列の計算
+		Matrix4x4 backToFrontMatrix = Matrix4x4::MakeRotateY(std::numbers::pi_v<float>); // Y軸で π / 2 回転させる
+		Matrix4x4 billboardMatrix = backToFrontMatrix * cameraMatrix;					 // ビルボード行列の計算
+		billboardMatrix.m[3][0] = 0.0f;
+		billboardMatrix.m[3][1] = 0.0f;
+		billboardMatrix.m[3][2] = 0.0f;													 // 平行移動成分を削除する
+
+		// バッファのデータに各データをセットする
+		cameraDataBuffer_.data_->WorldViewProj	= viewProjectionMatrix_;
+		cameraDataBuffer_.data_->Billboard		= billboardMatrix;
+		cameraDataBuffer_.data_->WorldPosition	= transform_.GetWorldPos();
+		cameraDataBuffer_.data_->DrawMeshlets	= isDrawMeshlets_;
 
 		// ポストプロセスの更新
 		ppProcessor_.Update();

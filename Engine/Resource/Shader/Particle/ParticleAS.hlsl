@@ -5,5 +5,5 @@ void main( uint3 DTid : SV_DispatchThreadID )
 {
     PayLoad p;
     p.groupID = DTid.x;
-    DispatchMesh(instanceData.instanceCount, 1, 1, p);
+    DispatchMesh(infoData.instanceCount, 1, 1, p);
 }

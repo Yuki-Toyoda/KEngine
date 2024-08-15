@@ -45,10 +45,38 @@ void main(
         // 取得したインデックスから頂点座標を求める
         VertexData vertex = Vertices[vertexIndex];
         
+        // パーティクル情報の取得
+        Particle p = ParticleData[gid];
+        
+        // ワールド行列の計算
+        float32_t4x4 worldMat;
+        
+        // ビルボードを使用する場合
+        if (infoData.isBillboard)
+        {
+            // ビルボード行列を取得
+            worldMat = ConstantData.Billboard;
+            
+            // ビルボード行列にワールド行列をかける
+            worldMat[0]     *= p.scale.x;
+            worldMat[1]     *= p.scale.y;
+            worldMat[2]     *= p.scale.z;
+            worldMat[3].xyz = p.translate;
+        }
+        else
+        {
+            // ワールド行列をそのまま生成
+            worldMat[0]     = p.scale.x;
+            worldMat[1]     = p.scale.y;
+            worldMat[2]     = p.scale.z;
+            worldMat[3].xyz = p.translate;
+            worldMat[3].w   = 1.0f;
+        }
+        
         // 出力する頂点座標を求める
-        outVerts[gtid].pos      = TransformPosition(vertex.pos, gid);
+        outVerts[gtid].pos      = mul(vertex.pos, mul(worldMat, ConstantData.WorldViewProj));
         outVerts[gtid].texCoord = vertex.texCoord;
-        outVerts[gtid].normal   = normalize(mul(vertex.normal, (float3x3)Transforms[gid].world));
+        outVerts[gtid].normal   = normalize(mul(vertex.normal, (float3x3)worldMat));
         outVerts[gtid].mIndex   = gid;
         
         // 出力する頂点色を求める
@@ -64,7 +92,7 @@ void main(
         else
         {
             // 頂点色はマテリアルから取得
-            outVerts[gtid].color = materials[gid].color;
+            outVerts[gtid].color = materials[gid].color * p.color;
         }
     }
     if (gtid < meshlet.PrimCount)
