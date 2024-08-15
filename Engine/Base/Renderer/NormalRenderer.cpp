@@ -56,7 +56,8 @@ void NormalRenderer::Init(DirectXDevice* device, DXC* dxc, ModelManager* mm, Dir
 
 	// パーティクルマネージャーのインスタンス取得
 	particleManager_ = ParticleManager::GetInstance();
-	particleManager_->Init();
+	particleManager_->Init()
+		.CreateParticlePSO("Test", "Test/InitTestParticle.CS.hlsl", "Test/EmitTestParticle.CS.hlsl", "Test/UpdateTestParticle.CS.hlsl");
 
 	// 平行光源の取得
 	light_ = lt;
@@ -66,6 +67,14 @@ void NormalRenderer::DrawCall(ID3D12GraphicsCommandList6* list)
 {
 	// 形状マネージャの更新
 	modelManager_->Update();
+
+	// コマンドリストにスキニング描画ルートシグネチャを設定
+	list->SetComputeRootSignature(skinRootSignature_);
+	// コマンドリストにスキニング描画PSOを設定
+	list->SetPipelineState(skinModelPSO_.GetState());
+
+	// スキニング計算を開始する
+	modelManager_->ExecuteComputeSkiningModel(list);
 
 	// パーティクルマネージャーの更新
 	particleManager_->Update();
@@ -121,14 +130,6 @@ void NormalRenderer::DrawCall(ID3D12GraphicsCommandList6* list)
 
 		// スカイボックスの描画を行う
 		skyBox->Draw(list);
-
-		// コマンドリストにスキニング描画ルートシグネチャを設定
-		list->SetComputeRootSignature(skinRootSignature_);
-		// コマンドリストにスキニング描画PSOを設定
-		list->SetPipelineState(skinModelPSO_.GetState());
-
-		// スキニング計算を開始する
-		modelManager_->ExecuteComputeSkiningModel(list);
 
 		// コマンドリストに通常描画ルートシグネチャを設定
 		list->SetGraphicsRootSignature(standardRootSignature_);

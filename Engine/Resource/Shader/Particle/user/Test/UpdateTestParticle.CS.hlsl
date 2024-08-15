@@ -8,26 +8,24 @@ void main( uint3 DTid : SV_DispatchThreadID )
     
     // パーティクル番号が最大パーティクル数を超えていなければ
     if (particleIndex < info.instanceCount)
-    {
-        Particle p = gParticles[particleIndex];
-        
+    {   
         // パーティクルの現在時間が生存秒数を超過していないとき、以下の処理を行う
-        if (p.currentTime < p.lifeTime)
+        if (gParticles[particleIndex].color.a != 0.0f)
         {
             // 座標に速度を加算する
-            p.translate += p.velocity;
+            gParticles[particleIndex].translate += gParticles[particleIndex].velocity;
             // 生存時間加算
-            p.currentTime += perFrame.deltaTime;
+            gParticles[particleIndex].currentTime += perFrame.deltaTime;
             
             // 透明度を生存時間で徐々に下げる
-            float32_t alpha = 1.0f - (p.currentTime * rcp(p.lifeTime));
-            p.color.a = saturate(alpha);
+            float32_t alpha = 1.0f - (gParticles[particleIndex].currentTime * rcp(gParticles[particleIndex].lifeTime));
+            gParticles[particleIndex].color.a = saturate(alpha);
             
         }
         else // それ以外の場合
         {
             // パーティクルのスケールを0にする
-            p.scale = float32_t3(0.0f, 0.0f, 0.0f);
+            gParticles[particleIndex].scale = float32_t3(0.0f, 0.0f, 0.0f);
             
             // 使用可能番号確認用
             int32_t fIndex;

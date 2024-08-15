@@ -36,6 +36,9 @@ void Particle::Init(DirectXDevice* device, SRV* srv, ID3D12GraphicsCommandList6*
 	freeIndexListBuffer_->Init(device, srv);													// 初期化
 
 	/// バッファ初期設定
+	// エミッタ
+	emitterDataBuffer_->data_->count = 10;
+	emitterDataBuffer_->data_->frequency = 0.5f;
 	// フレーム時間計測
 	perFrameDataBuffer_->data_->deltaTime = 1.0f / 60.0f;	// 1フレーム秒数
 	perFrameDataBuffer_->data_->time = 0.0f;				// 経過秒数リセット
@@ -85,7 +88,7 @@ void Particle::Update()
 	// 秒数が射出可能秒数を超えていた場合
 	if (emitterDataBuffer_->data_->frequency <= emitterDataBuffer_->data_->frequencyTime) {
 		// エミッタの秒数をリセット
-		emitterDataBuffer_->data_->frequency = 0.0f;
+		emitterDataBuffer_->data_->frequencyTime = 0.0f;
 		// 生成を行う
 		emitterDataBuffer_->data_->emit = true;
 	}
