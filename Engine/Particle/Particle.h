@@ -132,6 +132,9 @@ public: // パブリックメンバ変数
 	// パーティクル自体の生存時間タイマー
 	KLib::DeltaTimer timer_{};
 
+	// エミッタ用バッファ
+	std::unique_ptr<ConstantBuffer<EmitterSphere>> emitterDataBuffer_;
+
 private: // メンバ変数
 
 	// 初期化フラグ
@@ -140,8 +143,6 @@ private: // メンバ変数
 	// 粒子最大数
 	const uint32_t kMaxParticleCount_;
 
-	// エミッタ用バッファ
-	std::unique_ptr<ConstantBuffer<EmitterSphere>> emitterDataBuffer_;
 	// フレーム時間計測バッファ
 	std::unique_ptr<ConstantBuffer<PerFrame>> perFrameDataBuffer_;
 	// 情報バッファ
