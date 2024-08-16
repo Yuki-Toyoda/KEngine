@@ -123,6 +123,12 @@ public: // アクセッサ
 	/// <returns>当バッファの情報構造体</returns>
 	SRVInfo GetSRVInfo() const { return srvInfo_; }
 
+	/// <summary>
+	/// リソース本体のゲッター
+	/// </summary>
+	/// <returns>リソース本体</returns>
+	ID3D12Resource* GetResource() { return resource_.Get(); }
+
 private: // プライベートなメンバ関数
 
 	/// <summary>
@@ -190,5 +196,4 @@ public: // オペレーターオーバーロード
 	operator ID3D12Resource* () {
 		return resource_.Get();
 	}
-
 };

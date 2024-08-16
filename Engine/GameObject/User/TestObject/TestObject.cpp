@@ -1,12 +1,12 @@
 #include "TestObject.h"
 #include "../../../Resource/Texture/TextureManager.h"
-#include "../../../Particle/ParticleEmitterManager.h"
 #include "../../../Utility/Animation/AnimationManager.h"
+#include "../../../Particle/ParticleManager.h"
 
 void TestObject::Init()
 {
 	// メッシュ追加関数
-	AddNormalModel(&transform_, "./Engine/Resource/Samples/Leeme", "Leeme.gltf");
+	AddNormalModel(&transform_, "./Engine/Resource/Samples/Sphere", "Sphere.obj");
 
 	// ~スプライトの追加関数~
 	AddSprite("TestSprite", { 0.0f, 0.0f }, { 512.0f, 512.0f }, TextureManager::Load("./Engine/Resource/Samples/Box", "uvChecker.png"));
@@ -20,25 +20,18 @@ void TestObject::Update()
 	
 }
 
-//void TestObject::DisplayImGui()
-//{
-//
-//	// 基底クラスのImGuiを表示する
-//	//BaseObject::DisplayParameterImGui();
-//
-//	// 表示状態の切り替え
-//	ImGui::Checkbox("isActive", &isActive_);
-//
-//	transform_.DisplayImGui();
-//
-//	ImGui::DragFloat4("MaterialColor", &normalModels_[0]->materials_[0].color_.x, 0.01f, 0.0f, 1.0f);
-//
-//	if (ImGui::Button("Delete This")) {
-//		Destroy();
-//	}
-//
-//	sprites_[0]->DisplayImGui();
-//}
+void TestObject::DisplayImGui()
+{
+
+	// 基底クラスのImGuiを表示する
+	IObject::DisplayImGui();
+
+	// ボタンを押したらパーティクル生成
+	if (ImGui::Button("GenrateParticle")) {
+		Particle* n = ParticleManager::GetInstance()->CreateNewParticle("Test", "./Engine/Resource/Samples/Plane", "Plane.obj", 30.0f);
+		n->transform_.SetParent(&transform_);
+	}
+}
 
 void TestObject::OnCollisionEnter(Collider* collider)
 {

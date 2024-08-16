@@ -1,6 +1,7 @@
 #include "BaseScene.h"
 #include "../Sprite/SpriteManager.h"
-#include "../Particle/ParticleEmitterManager.h"
+#include "../Particle/CPU/CPUParticleEmitterManager.h"
+#include "../Particle/ParticleManager.h"
 
 void BaseScene::PreInitialize()
 {
@@ -19,8 +20,10 @@ void BaseScene::PreInitialize()
 	modelManager_->Clear();
 	// 生成済みスプライトのクリア
 	SpriteManager::GetInstance()->Init();
-	// 生成済みパーティクルのクリア
-	ParticleEmitterManager::GetInstance()->Init();
+	// 生成済みCPUパーティクルのクリア
+	CPUParticleEmitterManager::GetInstance()->Init();
+	// 生成済みGPUパーティクルのクリア
+	ParticleManager::GetInstance()->Clear();
 
 	// カメラを生成
 	camera_ = gameObjectManager_->CreateInstance<Camera>("DebugCamera", IObject::TagCamera);

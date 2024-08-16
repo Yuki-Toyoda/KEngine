@@ -23,16 +23,16 @@ PSO& PSO::Init(ID3D12RootSignature* signature, DXC* dxc, PSOType type)
 		dxc_ = dxc;
 
 		// デフォルトのパラメーターをセットする
-		mDesc.pRootSignature = signature;									 // ルートシグネチャのセット
+		mDesc.pRootSignature = signature;										 // ルートシグネチャのセット
 		mDesc.BlendState = SettingBlendState(0);								 // ブレンド設定
 		mDesc.RasterizerState = SettingRasterizerDesc();						 // ラスタライザ設定
-		mDesc.DepthStencilState = SettingDepthStencilState(1, 1);			 // DSVの設定を行う
+		mDesc.DepthStencilState = SettingDepthStencilState(1, 1);				 // DSVの設定を行う
 		mDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;						 // DSVのフォーマット設定
-		mDesc.NumRenderTargets = 1;											 // 書き込むRTVの数
-		mDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;				 // RTVのフォーマット設定
-		mDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE; // 出力形状設定
-		mDesc.SampleDesc.Count = 1;											 // サンプラー数
-		mDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;						 // マスク設定
+		mDesc.NumRenderTargets = 1;												 // 書き込むRTVの数
+		mDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;					 // RTVのフォーマット設定
+		mDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;	 // 出力形状設定
+		mDesc.SampleDesc.Count = 1;												 // サンプラー数
+		mDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;							 // マスク設定
 
 		break;
 	case PSO::PSOType::Vertex: // 頂点シェーダー
@@ -42,16 +42,16 @@ PSO& PSO::Init(ID3D12RootSignature* signature, DXC* dxc, PSOType type)
 		dxc_ = dxc;
 
 		// デフォルトのパラメーターをセットする
-		vDesc.pRootSignature = signature;									 // ルートシグネチャのセット
-		vDesc.BlendState = SettingBlendState(0);								 // ブレンド設定
-		vDesc.RasterizerState = SettingRasterizerDesc();						 // ラスタライザ設定
-		vDesc.DepthStencilState = SettingDepthStencilState(1, 1);			 // DSVの設定を行う
-		vDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;						 // DSVのフォーマット設定
-		vDesc.NumRenderTargets = 1;											 // 書き込むRTVの数
-		vDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;				 // RTVのフォーマット設定
-		vDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE; // 出力形状設定
-		vDesc.SampleDesc.Count = 1;											 // サンプラー数
-		vDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;						 // マスク設定
+		vDesc.pRootSignature = signature;										// ルートシグネチャのセット
+		vDesc.BlendState = SettingBlendState(0);								// ブレンド設定
+		vDesc.RasterizerState = SettingRasterizerDesc();						// ラスタライザ設定
+		vDesc.DepthStencilState = SettingDepthStencilState(1, 1);				// DSVの設定を行う
+		vDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;						// DSVのフォーマット設定
+		vDesc.NumRenderTargets = 1;												// 書き込むRTVの数
+		vDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;					// RTVのフォーマット設定
+		vDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;	// 出力形状設定
+		vDesc.SampleDesc.Count = 1;												// サンプラー数
+		vDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;							// マスク設定
 		break;
 	case PSO::PSOType::Compute: // 計算シェーダー
 		// ルートシグネチャをセット

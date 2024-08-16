@@ -117,14 +117,12 @@ private: // スプライトモデル用変数群
 
 public: // パーティクルモデル用関数群
 
-	
-	/// <summary>
 	/// パーティクルモデル生成関数
 	/// </summary>
-	/// <param name="modelData">パーティクルに使用するモデル(マルチマテリアル不可)</param>
-	/// <param name="maxDrawCount">最大数</param>
+	/// <param name="filePath">モデルまでのファイルパス</param>
+	/// <param name="fileName">モデル名</param>
 	/// <returns>パーティクルモデル</returns>
-	ParticleModel* CreateParticleModel(ModelData* modelData, int32_t maxDrawCount);
+	ParticleModel* CreateParticleModel(const std::string& filePath, const std::string& fileName);
 
 	/// <summary>
 	/// パーティクルモデル描画関数

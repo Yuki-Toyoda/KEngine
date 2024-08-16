@@ -164,12 +164,11 @@ void ModelManager::SpriteModelDraw(ID3D12GraphicsCommandList6* cmdList)
 	}
 }
 
-ParticleModel* ModelManager::CreateParticleModel(ModelData* modelData, int32_t maxDrawCount)
+ParticleModel* ModelManager::CreateParticleModel(const std::string& filePath, const std::string& fileName)
 {
 	// 新規モデル生成
 	std::unique_ptr<ParticleModel> newModel = std::make_unique<ParticleModel>(); // 生成
-	newModel->Init(modelData);													 // 初期化
-	newModel->CreateBuffer(maxDrawCount);										 // バッファ生成
+	newModel->Init(modelDataManager_->GetModelData(filePath, fileName));		 // 初期化
 
 	// インスタンス返還用のモデルを取得
 	ParticleModel* returnModel = newModel.get();
