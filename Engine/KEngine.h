@@ -11,6 +11,7 @@
 #include "Scene/SceneManager.h"
 #include "Collider/CollisionManager.h"
 #include "Particle/CPU/CPUParticleEmitterManager.h"
+#include "Particle/ParticleManager.h"
 #include <dxgidebug.h>
 
 /// <summary>
@@ -94,7 +95,7 @@ protected: // メンバ変数
 	bool endGameRequest_ = false;
 
 	// パーティクルマネージャのインスタンス格納用
-	//ParticleEmitterManager* particleManager_ = nullptr;
+	ParticleManager* particleManager_ = nullptr;
 
 	// 衝突マネージャーのインスタンス格納用
 	CollisionManager* collisionManager_ = nullptr;

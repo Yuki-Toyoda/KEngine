@@ -25,8 +25,11 @@ void main( uint3 DTid : SV_DispatchThreadID )
                 // 使用可能リストから使用可能インデックスを取得
                 int32_t particleIndex = freeList[fIndex];
                 
+                // スケールは1値から求める
+                float32_t s = generator.Generate1d();
+                
                 // 各値の初期化
-                gParticles[particleIndex].scale       = generator.Generate3D();
+                gParticles[particleIndex].scale       = float32_t3(s, s, s);
                 gParticles[particleIndex].translate   = emitter.translate;
                 gParticles[particleIndex].color.rgb   = generator.Generate3D();
                 gParticles[particleIndex].color.a     = 1.0f;

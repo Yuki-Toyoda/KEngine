@@ -123,6 +123,9 @@ public: // アクセッサ等
 
 public: // パブリックメンバ変数
 
+	// パーティクル中心座標
+	WorldTransform transform_;
+
 	// 描画するモデル
 	ParticleModel* model_ = nullptr;
 
@@ -154,5 +157,6 @@ private: // メンバ変数
 	ID3D12GraphicsCommandList6* cmdList_ = nullptr;
 	// パーティクル描画に用いるPSO配列
 	ParticlePSO pso_{};
+
 };
 

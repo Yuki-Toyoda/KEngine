@@ -39,6 +39,9 @@ void KEngineFrameWork::Init()
 
 	// シーンマネージャーのインスタンス取得
 	sceneManager_ = SceneManager::GetInstance();
+
+	// パーティクルマネージャーの取得
+	particleManager_ = ParticleManager::GetInstance();
 }
 
 void KEngineFrameWork::PostInit()
@@ -93,8 +96,8 @@ void KEngineFrameWork::PreFinalize()
 
 void KEngineFrameWork::Finalize()
 {	
-	//// 全パーティクル削除
-	//particleManager_->Init();
+	// 全パーティクル削除
+	particleManager_->Clear();
 
 	// 音解放処理
 	audio_->Finalize();

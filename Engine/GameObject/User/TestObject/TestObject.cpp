@@ -28,7 +28,8 @@ void TestObject::DisplayImGui()
 
 	// ボタンを押したらパーティクル生成
 	if (ImGui::Button("GenrateParticle")) {
-		ParticleManager::GetInstance()->CreateNewParticle("Test", "./Engine/Resource/Samples/Box", "Box.obj", 30.0f);
+		Particle* n = ParticleManager::GetInstance()->CreateNewParticle("Test", "./Engine/Resource/Samples/Plane", "Plane.obj", 30.0f);
+		n->transform_.SetParent(&transform_);
 	}
 }
 

@@ -42,9 +42,6 @@ private: // メンバ変数
 	// スプライトマネージャのインスタンス格納用
 	SpriteManager* spriteManager_ = nullptr;
 
-	// パーティクルマネージャー
-	CPUParticleEmitterManager* particleManager_ = nullptr;
-
 	// アニメーションマネージャのインスタンス格納用
 	AnimationManager* animManager_ = nullptr;
 

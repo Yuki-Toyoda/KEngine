@@ -9,6 +9,9 @@ void Particle::Init(DirectXDevice* device, SRV* srv, ID3D12GraphicsCommandList6*
 	// コマンドリスト取得
 	cmdList_ = list;
 
+	// トランスフォーム初期化
+	transform_.Init();
+
 	// モデル読み込み
 	model_ = ModelManager::GetInstance()->CreateParticleModel(filePath, fileName);
 
@@ -69,6 +72,9 @@ void Particle::ExecuteInit()
 
 void Particle::Update()
 {
+	// エミッタ座標にワールド座標を代入
+	emitterDataBuffer_->data_->translate = transform_.GetWorldPos();
+
 	// 生成用PSOをセットする
 	cmdList_->SetPipelineState(pso_.emit.GetState());
 
@@ -101,7 +107,7 @@ void Particle::Update()
 	infoDataBuffer_->data_->instanceCount = kMaxParticleCount_;
 
 	// フレーム時間加算
-	perFrameDataBuffer_->data_->time = perFrameDataBuffer_->data_->deltaTime;
+	perFrameDataBuffer_->data_->time += perFrameDataBuffer_->data_->deltaTime;
 
 	/// この時点で生成処理をしながら更新を行わない用にバリアを張る
 	// 　バリア定義
