@@ -2,7 +2,6 @@
 #include "EnemyBullet.h"
 #include "../Player/Player.h"
 #include "../../GameObjectManager.h"
-#include "../../../Particle/ParticleEmitterManager.h"
 #include "../Player/Player.h"
 
 void Enemy::Init()
