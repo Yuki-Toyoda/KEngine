@@ -26,7 +26,7 @@ void main( uint3 DTid : SV_DispatchThreadID )
                 int32_t particleIndex = freeList[fIndex];
                 
                 // スケールを指定
-                float32_t s = 0.25f * (generator.Generate1d()) + 0.05f;
+                float32_t s = 0.4f * (generator.Generate1d()) + 0.1f;
                 
                 // 青色を指定
                 float32_t b = 0.65f * (generator.Generate1d()) + 0.1f;
