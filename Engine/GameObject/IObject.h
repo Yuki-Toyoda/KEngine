@@ -8,6 +8,7 @@
 #include "WorldTransform.h"
 #include "../Model/ModelManager.h"
 #include "../Sprite/SpriteManager.h"
+#include "../Particle/ParticleManager.h"
 #include "../Collider/CollisionManager.h"
 #include "../Utility/KLib.h"
 #include "../Audio/Audio.h"

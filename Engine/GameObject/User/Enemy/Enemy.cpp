@@ -246,6 +246,15 @@ void Enemy::OnCollisionEnter(Collider* collider)
 					}
 
 					if (percent == 6) {
+						// 命中パーティクル再生
+						Particle* hit = ParticleManager::GetInstance()->CreateNewParticle("Hit", "./Engine/Resource/Samples/Plane", "Plane.obj", 1.0f);
+						hit->model_->materials_[1].tex_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png");
+						hit->model_->materials_[1].enableLighting_ = false;
+						hit->transform_.SetParent(&bodyTransform_);
+						hit->emitterDataBuffer_->data_->count = 100;
+						hit->emitterDataBuffer_->data_->frequency = 50.0f;
+						hit->emitterDataBuffer_->data_->frequencyTime = 55.0f;
+
 						// ダウン状態に
 						ChangeState(std::make_unique<EnemyDown>());
 
@@ -266,6 +275,15 @@ void Enemy::OnCollisionEnter(Collider* collider)
 
 				}
 				else {
+					// 命中パーティクル再生
+					Particle* hit = ParticleManager::GetInstance()->CreateNewParticle("Hit", "./Engine/Resource/Samples/Plane", "Plane.obj", 1.0f);
+					hit->model_->materials_[1].tex_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png");
+					hit->model_->materials_[1].enableLighting_ = false;
+					hit->transform_.SetParent(&bodyTransform_);
+					hit->emitterDataBuffer_->data_->count = 100;
+					hit->emitterDataBuffer_->data_->frequency = 50.0f;
+					hit->emitterDataBuffer_->data_->frequencyTime = 55.0f;
+					
 					// ダウン状態に
 					ChangeState(std::make_unique<EnemyDown>());
 
@@ -296,7 +314,15 @@ void Enemy::OnCollision(Collider* collider)
 				// ループを切る
 				enemyAnim_->isLoop_ = false;
 				enemyAnim_->ChangeParameter("Enemy_Damage", true);
-				//ParticleEmitterManager::GetInstance()->CreateEmitter<IParticleEmitter, IParticle>("test", 5, 5, transform_.translate_, 0.1f, 0.15f, TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png"));
+
+				// 命中パーティクル再生
+				Particle* hit = ParticleManager::GetInstance()->CreateNewParticle("Hit", "./Engine/Resource/Samples/Plane", "Plane.obj", 1.0f);
+				hit->model_->materials_[1].tex_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png");
+				hit->model_->materials_[1].enableLighting_ = false;
+				hit->transform_.SetParent(&bodyTransform_);
+				hit->emitterDataBuffer_->data_->count = 25;
+				hit->emitterDataBuffer_->data_->frequency = 50.0f;
+				hit->emitterDataBuffer_->data_->frequencyTime = 55.0f;
 
 				// ダメージ効果音の再生
 				Audio::GetInstance()->PlayWave(damageSound_);

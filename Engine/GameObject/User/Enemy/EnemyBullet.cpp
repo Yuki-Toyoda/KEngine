@@ -9,7 +9,7 @@ void EnemyBullet::Init()
 	AddNormalModel(&transform_, "./Engine/Resource/Samples/Sphere", "Sphere.obj");
 
 	// 弾の色調整
-	normalModels_[0]->materials_[0].color_ = { 0.0f, 2.5f, 1.0f, 0.55f };
+	normalModels_[0]->materials_[0].color_ = { 0.0f, 2.5f, 1.0f, 0.0f };
 	normalModels_[0]->materials_[0].enableLighting_ = false;
 
 	// 球のコライダー追加
@@ -21,6 +21,13 @@ void EnemyBullet::Init()
 
 void EnemyBullet::Update()
 {
+	if (normalModels_[0]->materials_[0].color_.w < 0.55f) {
+		normalModels_[0]->materials_[0].color_.w += 0.025f;
+	}
+	else {
+		normalModels_[0]->materials_[0].color_.w = 0.55f;
+	}
+
 	// 弾を移動させる
 	transform_.translate_ = transform_.translate_ + velocity_;
 
@@ -51,7 +58,15 @@ void EnemyBullet::OnCollisionEnter(Collider* collider)
 		// 素振りの効果音の再生
 		Audio::GetInstance()->PlayWave(counterSound_);
 
-		/*ParticleEmitterManager::GetInstance()->CreateEmitter<IParticleEmitter, IParticle>("test", 10, 5, transform_.translate_, 0.1f, 0.15f, TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png")); */
+		// 命中パーティクル再生
+		Particle* hit = ParticleManager::GetInstance()->CreateNewParticle("Hit", "./Engine/Resource/Samples/Plane", "Plane.obj", 1.0f);
+		hit->model_->materials_[1].tex_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png");
+		hit->model_->materials_[1].enableLighting_ = false;
+		hit->transform_.translate_ = transform_.translate_;
+		hit->emitterDataBuffer_->data_->count = 25;
+		hit->emitterDataBuffer_->data_->frequency = 50.0f;
+		hit->emitterDataBuffer_->data_->frequencyTime = 55.0f;
+
 	}
 
 	// ボスと衝突したら
@@ -60,7 +75,15 @@ void EnemyBullet::OnCollisionEnter(Collider* collider)
 		SetVelocity(true, e->GetRallyCount());
 		isReturn_ = false;
 
-		/*ParticleEmitterManager::GetInstance()->CreateEmitter<IParticleEmitter, IParticle>("test", 10, 5, transform_.translate_, 0.1f, 0.15f, TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png")); */
+		// 命中パーティクル再生
+		Particle* hit = ParticleManager::GetInstance()->CreateNewParticle("EnemyHit", "./Engine/Resource/Samples/Plane", "Plane.obj", 1.0f);
+		hit->model_->materials_[1].tex_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png");
+		hit->model_->materials_[1].enableLighting_ = false;
+		hit->transform_.translate_ = transform_.translate_;
+		hit->emitterDataBuffer_->data_->count = 25;
+		hit->emitterDataBuffer_->data_->frequency = 50.0f;
+		hit->emitterDataBuffer_->data_->frequencyTime = 55.0f;
+
 	}
 
 	// プレイヤー、または床と衝突したら
@@ -68,7 +91,14 @@ void EnemyBullet::OnCollisionEnter(Collider* collider)
 		|| collider->GetGameObject()->GetObjectTag() == TagFloor) {
 		// プレイヤーの場合ダメージ処理を行う
 		if (collider->GetColliderName() == "PlayerCollider") {
-			//ParticleEmitterManager::GetInstance()->CreateEmitter<IParticleEmitter, IParticle>("test", 10, 10, transform_.translate_, 0.1f, 0.15f, TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png"));
+			// 命中パーティクル再生
+			Particle* hit = ParticleManager::GetInstance()->CreateNewParticle("EnemyHit", "./Engine/Resource/Samples/Plane", "Plane.obj", 1.0f);
+			hit->model_->materials_[1].tex_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png");
+			hit->model_->materials_[1].enableLighting_ = false;
+			hit->transform_.translate_ = transform_.translate_;
+			hit->emitterDataBuffer_->data_->count = 25;
+			hit->emitterDataBuffer_->data_->frequency = 50.0f;
+			hit->emitterDataBuffer_->data_->frequencyTime = 55.0f;
 			// プレイヤーを取得
 			Player* p = GameObjectManager::GetInstance()->GetGameObject<Player>("Player");
 			// ダメージ処理を行う

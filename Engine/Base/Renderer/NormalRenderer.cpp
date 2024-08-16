@@ -57,7 +57,9 @@ void NormalRenderer::Init(DirectXDevice* device, DXC* dxc, ModelManager* mm, Dir
 	// パーティクルマネージャーのインスタンス取得
 	particleManager_ = ParticleManager::GetInstance();
 	particleManager_->Init()
-		.CreateParticlePSO("Test", "Test/InitTestParticle.CS.hlsl", "Test/EmitTestParticle.CS.hlsl", "Test/UpdateTestParticle.CS.hlsl");
+		.CreateParticlePSO("Test", "Test/InitTestParticle.CS.hlsl", "Test/EmitTestParticle.CS.hlsl", "Test/UpdateTestParticle.CS.hlsl")
+		.CreateParticlePSO("EnemyHit", "Test/InitTestParticle.CS.hlsl", "EnemyHit/EmitEnemyHitParticle.CS.hlsl", "Hit/UpdateHitParticle.CS.hlsl")
+		.CreateParticlePSO("Hit", "Test/InitTestParticle.CS.hlsl", "Hit/EmitHitParticle.CS.hlsl", "Hit/UpdateHitParticle.CS.hlsl");
 
 	// 平行光源の取得
 	light_ = lt;
