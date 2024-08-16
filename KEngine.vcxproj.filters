@@ -103,15 +103,6 @@
     <ClCompile Include="Engine\Scene\User\SampleScene.cpp">
       <Filter>App\Scene\User</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Particle\CPU\ICPUParticleEmitter.cpp">
-      <Filter>Engine\Particle</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Particle\CPU\ICPUParticle.cpp">
-      <Filter>Engine\Particle</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Particle\CPU\CPUParticleEmitterManager.cpp">
-      <Filter>Engine\Particle</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Utility\Animation\AnimationManager.cpp">
       <Filter>App\Utility\Animation</Filter>
     </ClCompile>
@@ -344,8 +335,21 @@
     <ClCompile Include="Engine\Base\RootSignature\SkyBoxRootSignature.cpp">
       <Filter>Engine\Base\RootSignature</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Particle\Particle.cpp" />
-    <ClCompile Include="Engine\Particle\ParticleManager.cpp" />
+    <ClCompile Include="Engine\Particle\CPU\CPUParticleEmitterManager.cpp">
+      <Filter>Engine\Particle\CPU</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Particle\CPU\ICPUParticle.cpp">
+      <Filter>Engine\Particle\CPU</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Particle\CPU\ICPUParticleEmitter.cpp">
+      <Filter>Engine\Particle\CPU</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Particle\Particle.cpp">
+      <Filter>Engine\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Particle\ParticleManager.cpp">
+      <Filter>Engine\Particle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -524,15 +528,6 @@
     </ClInclude>
     <ClInclude Include="Engine\Utility\Animation\AnimationKeys.h">
       <Filter>App\Utility\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Particle\CPU\ICPUParticleEmitter.h">
-      <Filter>Engine\Particle</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Particle\CPU\ICPUParticle.h">
-      <Filter>Engine\Particle</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Particle\CPU\CPUParticleEmitterManager.h">
-      <Filter>Engine\Particle</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utility\Animation\AnimationManager.h">
       <Filter>App\Utility\Animation</Filter>
@@ -765,8 +760,21 @@
     <ClInclude Include="Engine\Base\Resource\Data\RWStructuredBuffer.h">
       <Filter>Engine\Base\Resource\Data</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Particle\Particle.h" />
-    <ClInclude Include="Engine\Particle\ParticleManager.h" />
+    <ClInclude Include="Engine\Particle\CPU\CPUParticleEmitterManager.h">
+      <Filter>Engine\Particle\CPU</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Particle\CPU\ICPUParticle.h">
+      <Filter>Engine\Particle\CPU</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Particle\CPU\ICPUParticleEmitter.h">
+      <Filter>Engine\Particle\CPU</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Particle\ParticleManager.h">
+      <Filter>Engine\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Particle\Particle.h">
+      <Filter>Engine\Particle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -793,8 +801,12 @@
     <None Include="Engine\Resource\Shader\SkyBox\SkyBox.hlsli">
       <Filter>Engine\Resource\Shader</Filter>
     </None>
-    <None Include="Engine\Resource\Shader\Particle\Particle.hlsli" />
-    <None Include="Engine\Resource\Shader\Compute\Random.hlsli" />
+    <None Include="Engine\Resource\Shader\Particle\Particle.hlsli">
+      <Filter>Engine\Resource\Shader</Filter>
+    </None>
+    <None Include="Engine\Resource\Shader\Compute\Random.hlsli">
+      <Filter>Engine\Resource\Shader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -835,9 +847,6 @@
     </Filter>
     <Filter Include="Engine\Particle">
       <UniqueIdentifier>{35ed7eb1-48ce-4485-9d6f-e794d8493628}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Particle\user">
-      <UniqueIdentifier>{2347873e-0749-4013-b89a-e0b69857473d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\Primitive">
       <UniqueIdentifier>{5fc9c809-8734-4f5e-8651-85bdbe200e78}</UniqueIdentifier>
@@ -1010,6 +1019,9 @@
     <Filter Include="Engine\SkyBox">
       <UniqueIdentifier>{de52639d-a2a1-4628-877e-c0f7480bb2c5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Particle\CPU">
+      <UniqueIdentifier>{552512f8-d458-4a89-8de5-67c7fedf406f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Externals\imgui\LICENSE.txt">
@@ -1053,8 +1065,14 @@
     <FxCompile Include="Engine\Resource\Shader\Compute\Skining.CS.hlsl">
       <Filter>Engine\Resource\Shader</Filter>
     </FxCompile>
-    <FxCompile Include="Engine\Resource\Shader\Particle\user\Test\InitTestParticle.CS.hlsl" />
-    <FxCompile Include="Engine\Resource\Shader\Particle\user\Test\UpdateTestParticle.CS.hlsl" />
-    <FxCompile Include="Engine\Resource\Shader\Particle\user\Test\EmitTestParticle.CS.hlsl" />
+    <FxCompile Include="Engine\Resource\Shader\Particle\user\Test\EmitTestParticle.CS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\Particle\user\Test\InitTestParticle.CS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\Particle\user\Test\UpdateTestParticle.CS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
