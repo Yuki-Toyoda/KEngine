@@ -2,6 +2,7 @@
 #include "../../../Resource/Texture/TextureManager.h"
 #include "../../../Utility/Animation/AnimationManager.h"
 #include "../../../Particle/ParticleManager.h"
+#include "../../../Input/Input.h"
 
 void TestObject::Init()
 {
@@ -17,7 +18,11 @@ void TestObject::Init()
 
 void TestObject::Update()
 {
-	
+	// ボタンを押したらパーティクル生成
+	if (Input::GetInstance()->TriggerKey(DIK_E)) {
+		Particle* n = ParticleManager::GetInstance()->CreateNewParticle("Test", "./Engine/Resource/Samples/Plane", "Plane.obj", 30.0f);
+		n->transform_.SetParent(&transform_);
+	}
 }
 
 void TestObject::DisplayImGui()
