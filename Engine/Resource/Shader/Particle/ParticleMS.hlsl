@@ -77,7 +77,7 @@ void main(
         outVerts[gtid].pos      = mul(vertex.pos, mul(worldMat, ConstantData.WorldViewProj));
         outVerts[gtid].texCoord = vertex.texCoord;
         outVerts[gtid].normal   = normalize(mul(vertex.normal, (float3x3)worldMat));
-        outVerts[gtid].mIndex   = gid;
+        outVerts[gtid].mIndex   = vertex.materialIndex;
         
         // 出力する頂点色を求める
         if (ConstantData.DrawMeshlets == true)
