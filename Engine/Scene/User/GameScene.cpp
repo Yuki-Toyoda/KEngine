@@ -8,7 +8,6 @@ void GameScene::LoadModel()
 	// modelDataManager_->LoadNewModel("モデルまでのファイルパス", "モデル名.拡張子");
 
 	// 新規モデル読み込み処理
-	modelDataManager_->LoadNewModel("./Engine/Resource/Samples/Sphere", "Sphere.obj");
 }
 
 void GameScene::Init(){
@@ -50,6 +49,9 @@ void GameScene::Init(){
 	fairy = gameObjectManager_->CreateInstance<Fairy>("Fairy", IObject::TagPlayer);
 	fairy->SetTarget(&player_->transform_);
 	fairy->SetPlayer(player_);
+
+	// テクスチャ事前読み込み
+	TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png");
 }
 
 void GameScene::Update()

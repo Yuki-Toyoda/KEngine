@@ -1545,6 +1545,9 @@
     <FxCompile Include="Engine\Resource\Shader\Particle\user\Hit\EmitHitParticle.CS.hlsl" />
     <FxCompile Include="Engine\Resource\Shader\Particle\user\Hit\UpdateHitParticle.CS.hlsl" />
     <FxCompile Include="Engine\Resource\Shader\Particle\user\EnemyHit\EmitEnemyHitParticle.CS.hlsl" />
+    <FxCompile Include="Engine\Resource\Shader\Particle\user\Charge\EmitChargeParticle.CS.hlsl" />
+    <FxCompile Include="Engine\Resource\Shader\Particle\user\Charge\UpdateChargeParticle.CS.hlsl" />
+    <FxCompile Include="Engine\Resource\Shader\Particle\user\Dissolve\EmitDissolveParticle.CS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Externals\imgui\LICENSE.txt">

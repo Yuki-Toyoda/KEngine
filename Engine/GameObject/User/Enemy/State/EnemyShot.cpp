@@ -20,6 +20,15 @@ void EnemyShot::Init()
 	// 敵の座標をセット
 	bullet_->SetEnemyTransform(&enemy_->transform_);
 
+	// チャージパーティクル再生
+	Particle* charge = ParticleManager::GetInstance()->CreateNewParticle("Charge", "./Engine/Resource/Samples/Plane", "Plane.obj", 2.5f);
+	charge->model_->materials_[1].tex_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png");
+	charge->model_->materials_[1].enableLighting_ = false;
+	charge->transform_.translate_ = bullet_->transform_.translate_;
+	charge->emitterDataBuffer_->data_->count = 10;
+	charge->emitterDataBuffer_->data_->frequency = 0.25f;
+	charge->emitterDataBuffer_->data_->frequencyTime = 0.25f;
+
 	// アニメーションのループ設定を切る
 	enemy_->enemyAnim_->isLoop_ = false;
 

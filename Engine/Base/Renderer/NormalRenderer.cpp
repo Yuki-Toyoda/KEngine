@@ -58,6 +58,7 @@ void NormalRenderer::Init(DirectXDevice* device, DXC* dxc, ModelManager* mm, Dir
 	particleManager_ = ParticleManager::GetInstance();
 	particleManager_->Init()
 		.CreateParticlePSO("Test", "Test/InitTestParticle.CS.hlsl", "Test/EmitTestParticle.CS.hlsl", "Test/UpdateTestParticle.CS.hlsl")
+		.CreateParticlePSO("Charge", "Test/InitTestParticle.CS.hlsl", "Charge/EmitChargeParticle.CS.hlsl", "Charge/UpdateChargeParticle.CS.hlsl")
 		.CreateParticlePSO("EnemyHit", "Test/InitTestParticle.CS.hlsl", "EnemyHit/EmitEnemyHitParticle.CS.hlsl", "Hit/UpdateHitParticle.CS.hlsl")
 		.CreateParticlePSO("Hit", "Test/InitTestParticle.CS.hlsl", "Hit/EmitHitParticle.CS.hlsl", "Hit/UpdateHitParticle.CS.hlsl");
 
