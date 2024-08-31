@@ -72,10 +72,10 @@ void FollowCamera::Update()
 
 			// どちらに角度を補正するかで処理を変更する
 			if (isRightLockOn_) {
-				kOffsetRotate_ = KLib::Lerp<float>(-0.35f, -0.025f, offset_.z, -40.0f);
+				kOffsetRotate_ = KLib::Lerp<float>(-0.55f, -0.15f, offset_.z, -27.0f);
 			}
 			else {
-				kOffsetRotate_ = KLib::Lerp<float>(0.35f, 0.025f, offset_.z, -40.0f);
+				kOffsetRotate_ = KLib::Lerp<float>(0.55f, 0.15f, offset_.z, -27.0f);
 			}
 
 			// 目標角度にオフセット分を加算する
@@ -136,6 +136,8 @@ void FollowCamera::DisplayImGui()
 	ImGui::DragFloat("TargetAngleY", &targetAngleY_);
 	// 目標角度表示
 	ImGui::DragFloat3("offset", &offset_.x, 0.05f);
+
+	ImGui::DragFloat("RotateOffset", &kOffsetRotate_);
 }
 
 void FollowCamera::UpdateTarget()

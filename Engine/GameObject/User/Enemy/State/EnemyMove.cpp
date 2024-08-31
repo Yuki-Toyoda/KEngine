@@ -39,7 +39,7 @@ void EnemyMove::Init()
 	}
 
 	// 移動座標の高さを統一
-	movePosition_.y = prevPosition_.y;
+	movePosition_.y = KLib::RandomF(3.0f, 4.0f, 2);
 
 	// タイマー起動
 	moveTimer_.Start(2.5f);
