@@ -22,7 +22,7 @@ void EnemyMove::Init()
 		//sub.y = 0.0f;
 
 		// 移動座標を求める
-		movePosition_ = sub * KLib::RandomF(15.0f, 20.0f, 2);
+		movePosition_ = sub * KLib::RandomF(12.5f, 15.5f, 2);
 	}
 	else {
 		// プレイヤーから敵へのベクトルを求める

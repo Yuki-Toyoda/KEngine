@@ -138,7 +138,7 @@ void Enemy::Update()
 			float distance = Vector3::Length(toPlayerDistance_);
 
 			// 距離距離が一定値以下であれば
-			if (distance <= 11.5f) {
+			if (distance <= 10.0f) {
 				// 敵が移動する
 				ChangeState(std::make_unique<EnemyMove>());
 			}
