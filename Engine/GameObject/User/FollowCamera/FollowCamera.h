@@ -137,6 +137,9 @@ private: // メンバ変数
 	// Z注目有効トリガー
 	bool enableZForcus_ = false;
 
+	// ロックオン時の遷移先座標
+	Vector3 lockOnTranslate_ = {};
+
 	// オフセット
 	const Vector3 kOffset_ = { 0.0f, 2.0f, -10.0f };
 	Vector3 offset_ = kOffset_;

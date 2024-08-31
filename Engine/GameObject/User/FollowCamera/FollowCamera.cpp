@@ -21,7 +21,7 @@ void FollowCamera::Update()
 	input_->GetJoystickState(0, joyState_); // 現在フレームの入力取得
 
 	if (joyState_.Gamepad.bLeftTrigger >= 35.0f) {
-		// ロックオンを有効
+		// ロックオンが有効になっていない場合
 		if (!lockOn_->EnableLockOn()) {
 			// 目標角度をプレイヤーの真後ろに
 			targetAngleY_ = target_->rotate_.y;
@@ -37,24 +37,27 @@ void FollowCamera::Update()
 			offset_.y = kOffset_.y;
 			offset_.z = kOffset_.z;
 		}
-		else {
+		else { // ロックオンが有効になっている場合
 			// ロックオン対象の座標
 			Vector3 targetPos = lockOn_->target_->transform_.translate_;
 			// 追従対象からロックオン対象への差分ベクトル
 			Vector3 sub = targetPos - target_->translate_;
 
+			// ロックオン時の座標を計算
+			lockOnTranslate_ = targetPos - (sub / 2.0f);
+
 			// オフセットのY軸を0に
 			offset_.y = 0.0f;
-			offset_.z = -Vector3::Length(sub) + kOffset_.z;
+			offset_.z = -Vector3::Length(sub / 2.0f) + kOffset_.z;
 
-			kOffsetRotate_ = KLib::Lerp<float>(0.2f, 0.065f, offset_.z, -40.0f);
+			kOffsetRotate_ = KLib::Lerp<float>(0.35f, 0.025f, offset_.z, -40.0f);
 
 			// 方向ベクトルを元にプレイヤーがいる角度を求める
 			targetAngleY_ = std::atan2(sub.x, sub.z) + kOffsetRotate_;
 			Matrix4x4 rotateMat =
 				Matrix4x4::MakeRotateY(-std::atan2(sub.x, sub.z));
 			Vector3 subA = sub * rotateMat;
-			targetAngleX_ = std::atan2(-subA.y, subA.z) / 2.5f;
+			targetAngleX_ = std::atan2(-subA.y, subA.z) / 3.5f;
 			if (targetAngleX_ < -0.1f) {
 				targetAngleX_ = -0.1f;
 			}
@@ -66,7 +69,7 @@ void FollowCamera::Update()
 		// Z注目を有効に
 		enableZForcus_ = true;
 	}
-	else {
+	else { // ロックオン有効時
 		// Z注目をしていないに
 		enableZForcus_ = false;
 		// 角度補正速度を設定
@@ -112,7 +115,7 @@ void FollowCamera::UpdateTarget()
 	if (target_) {
 		if (lockOn_->GetIsLockOn()) {
 			// 遷移後の座標を求める
-			interTarget_ = KLib::Lerp<Vector3>(interTarget_, lockOn_->target_->transform_.translate_, trackingDelay_);
+			interTarget_ = KLib::Lerp<Vector3>(interTarget_, lockOnTranslate_, trackingDelay_);
 		}
 		else {
 			// 遷移後の座標を求める

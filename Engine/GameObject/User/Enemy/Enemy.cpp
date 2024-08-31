@@ -44,7 +44,6 @@ void Enemy::Init()
 	// 死亡アニメーション
 	CreateParameter("Enemy_Dead");
 
-
 	// アニメーションの作成
 	enemyAnim_ = AnimationManager::GetInstance()->CreateAnimation("EnemyAnimation", "Enemy_Idle");
 	enemyAnim_->AddAnimationKeys<Vector3>("Body_Scale", &bodyTransform_.scale_);
@@ -61,6 +60,14 @@ void Enemy::Init()
 	enemyAnim_->AddAnimationKeys<Vector3>("Arm_L_Translate", &armTransform_L_.translate_);
 	enemyAnim_->AddAnimationKeys<Vector3>("Translate", &transform_.translate_);
 	enemyAnim_->AddAnimationKeys <float> ("Alpha", &color_.w);
+
+#ifdef _DEBUG // デバッグ時のみ行う
+
+	// デバッグ時は攻撃を行わないように
+	isAttack_ = false;
+
+#endif // _DEBUG
+
 
 	// ループ状態にする
 	enemyAnim_->isLoop_ = true;
@@ -109,9 +116,12 @@ void Enemy::Update()
 				// y座標が特定の値に達してれば
 				if (transform_.translate_.y >= 3.9f) {
 					if (GameObjectManager::GetInstance()->GetGameObject<EnemyBullet>("EnemyBullet") == nullptr) {
-						// 敵が弾を撃つ
-						ChangeState(std::make_unique<EnemyShot>());
-						rallyCount_ = 0;
+						// 攻撃を行う状態であれば
+						if (isAttack_) {
+							// 敵が弾を撃つ
+							ChangeState(std::make_unique<EnemyShot>());
+							rallyCount_ = 0;
+						}
 						// 行動変更タイマーリセット
 						stateChangeTimer_.Start(kStateChangeCoolTime_);
 					}
@@ -227,6 +237,9 @@ void Enemy::DisplayImGui()
 			ChangeState(std::make_unique<EnemyDead>());
 		}
 	}
+
+	// 攻撃行動を行うかの切り替え
+	ImGui::Checkbox("is Attack", &isAttack_);
 }
 
 void Enemy::OnCollisionEnter(Collider* collider)

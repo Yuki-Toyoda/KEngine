@@ -144,5 +144,9 @@ private: // メンバ変数
 	int32_t rallyCount_ = 0;
 	// ラリーを行う最大回数
 	const int32_t kMaxRallyCount_ = 5;
+
+	/// デバック用変数群
+	// 攻撃を行うか
+	bool isAttack_ = true;
 };
 
