@@ -4,3 +4,4 @@
 #include "EnemyShot.h"
 #include "EnemyDown.h"
 #include "EnemyDead.h"
+#include "EnemyMove.h"

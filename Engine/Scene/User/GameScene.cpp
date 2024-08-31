@@ -27,7 +27,7 @@ void GameScene::Init(){
 	camera->SetTarget(&player_->transform_);
 	player_->followCamera_ = camera;
 
-	level_ = gameObjectManager_->CreateInstance<SampleLevelObjects>("Level", IObject::TagNone);
+	level_ = gameObjectManager_->CreateInstance<Level>("Level", IObject::TagNone);
 	level_->LoadLevel("./Resources/Level", "Stage.json");
 
 	// 敵生成

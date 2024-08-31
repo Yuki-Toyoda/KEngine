@@ -41,6 +41,12 @@ public: // メンバ関数
 	void OnCollision(Collider* collider) override;
 
 	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="collider"></param>
+	void OnCollisionExit(Collider* collider) override;
+
+	/// <summary>
 	/// パラメータを作成する
 	/// </summary>
 	/// <param name="name">作成するパラメータ</param>
@@ -101,6 +107,9 @@ public: // パブリックなメンバ変数
 	// 効果音群
 	uint32_t damageSound_ = 0u; // ダメージ音
 
+	// フィールドの範囲外に出ていないか
+	bool isFieldOut_ = false;
+
 private: // メンバ変数
 
 	// アニメーションマネージャ
@@ -144,6 +153,9 @@ private: // メンバ変数
 	int32_t rallyCount_ = 0;
 	// ラリーを行う最大回数
 	const int32_t kMaxRallyCount_ = 5;
+
+	// プレイヤーとの距離
+	Vector3 toPlayerDistance_ = {};
 
 	/// デバック用変数群
 	// 攻撃を行うか

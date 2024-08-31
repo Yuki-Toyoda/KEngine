@@ -110,7 +110,7 @@
       <Filter>App\Utility\Animation</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\User\TestObject\TestObject.cpp">
-      <Filter>App\GameObject\Core\User\TestObject</Filter>
+      <Filter>App\GameObject\User\TestObject</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Utility\Observer\Observer.cpp">
       <Filter>App\Utility\Observer</Filter>
@@ -435,52 +435,58 @@
     <ClCompile Include="Engine\Level\LevelLoader.cpp" />
     <ClCompile Include="Engine\PostProcess\HSVFilter\HSVFilter.cpp" />
     <ClCompile Include="Engine\GameObject\User\Player\Player.cpp">
-      <Filter>App\GameObject\Core\User\Player</Filter>
+      <Filter>App\GameObject\User\Player</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\User\Player\State\Attack.cpp">
-      <Filter>App\GameObject\Core\User\Player\State</Filter>
+      <Filter>App\GameObject\User\Player\State</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\User\Player\State\Damage.cpp">
-      <Filter>App\GameObject\Core\User\Player\State</Filter>
+      <Filter>App\GameObject\User\Player\State</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\User\Player\State\Root.cpp">
-      <Filter>App\GameObject\Core\User\Player\State</Filter>
+      <Filter>App\GameObject\User\Player\State</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\User\Player\State\RotatingSlash.cpp">
-      <Filter>App\GameObject\Core\User\Player\State</Filter>
+      <Filter>App\GameObject\User\Player\State</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\User\Enemy\Enemy.cpp">
-      <Filter>App\GameObject\Core\User\Enemy</Filter>
+      <Filter>App\GameObject\User\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\User\Enemy\EnemyBullet.cpp">
-      <Filter>App\GameObject\Core\User\Enemy\State</Filter>
+      <Filter>App\GameObject\User\Enemy\State</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\User\Enemy\State\EnemyDead.cpp">
-      <Filter>App\GameObject\Core\User\Enemy\State</Filter>
+      <Filter>App\GameObject\User\Enemy\State</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\User\Enemy\State\EnemyDown.cpp">
-      <Filter>App\GameObject\Core\User\Enemy\State</Filter>
+      <Filter>App\GameObject\User\Enemy\State</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\User\Enemy\State\EnemyRoot.cpp">
-      <Filter>App\GameObject\Core\User\Enemy\State</Filter>
+      <Filter>App\GameObject\User\Enemy\State</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\User\Enemy\State\EnemyShot.cpp">
-      <Filter>App\GameObject\Core\User\Enemy\State</Filter>
+      <Filter>App\GameObject\User\Enemy\State</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\User\Fairy\Fairy.cpp">
-      <Filter>App\GameObject\Core\User\Fairy</Filter>
+      <Filter>App\GameObject\User\Fairy</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\User\Floor\Floor.cpp">
-      <Filter>App\GameObject\Core\User\Floor</Filter>
+      <Filter>App\GameObject\User\Floor</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\User\LockOn\LockOn.cpp">
-      <Filter>App\GameObject\Core\User\LockOn</Filter>
+      <Filter>App\GameObject\User\LockOn</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\User\FollowCamera\FollowCamera.cpp">
-      <Filter>App\GameObject\Core\User\FollowCamera</Filter>
+      <Filter>App\GameObject\User\FollowCamera</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\User\TitleSceneManager\TitleManager.cpp">
-      <Filter>App\GameObject\Core\User</Filter>
+      <Filter>App\GameObject\User</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\User\Enemy\State\EnemyMove.cpp">
+      <Filter>App\GameObject\User\Enemy\State</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\User\Level\Level.cpp">
+      <Filter>App\GameObject\User\Level</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -853,25 +859,25 @@
       <Filter>App\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\User\Player\Player.h">
-      <Filter>App\GameObject\Core\User\Player</Filter>
+      <Filter>App\GameObject\User\Player</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\User\Player\State\Attack.h">
-      <Filter>App\GameObject\Core\User\Player\State</Filter>
+      <Filter>App\GameObject\User\Player\State</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\User\Player\State\Damage.h">
-      <Filter>App\GameObject\Core\User\Player\State</Filter>
+      <Filter>App\GameObject\User\Player\State</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\User\Player\State\Root.h">
-      <Filter>App\GameObject\Core\User\Player\State</Filter>
+      <Filter>App\GameObject\User\Player\State</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\User\Player\State\RotatingSlash.h">
-      <Filter>App\GameObject\Core\User\Player\State</Filter>
+      <Filter>App\GameObject\User\Player\State</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\User\Player\State\IState.h">
-      <Filter>App\GameObject\Core\User\Player\State</Filter>
+      <Filter>App\GameObject\User\Player\State</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\User\Player\State\StateList.h">
-      <Filter>App\GameObject\Core\User\Player\State</Filter>
+      <Filter>App\GameObject\User\Player\State</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\GameObjectManager.h">
       <Filter>App\GameObject</Filter>
@@ -883,55 +889,55 @@
       <Filter>App\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\User\Enemy\Enemy.h">
-      <Filter>App\GameObject\Core\User\Enemy</Filter>
+      <Filter>App\GameObject\User\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\User\Enemy\EnemyBullet.h">
-      <Filter>App\GameObject\Core\User\Enemy\State</Filter>
+      <Filter>App\GameObject\User\Enemy\State</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyDead.h">
-      <Filter>App\GameObject\Core\User\Enemy\State</Filter>
+      <Filter>App\GameObject\User\Enemy\State</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyDown.h">
-      <Filter>App\GameObject\Core\User\Enemy\State</Filter>
+      <Filter>App\GameObject\User\Enemy\State</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyRoot.h">
-      <Filter>App\GameObject\Core\User\Enemy\State</Filter>
+      <Filter>App\GameObject\User\Enemy\State</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyShot.h">
-      <Filter>App\GameObject\Core\User\Enemy\State</Filter>
+      <Filter>App\GameObject\User\Enemy\State</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyStateList.h">
-      <Filter>App\GameObject\Core\User\Enemy\State</Filter>
+      <Filter>App\GameObject\User\Enemy\State</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\User\Enemy\State\IEnemyState.h">
-      <Filter>App\GameObject\Core\User\Enemy\State</Filter>
+      <Filter>App\GameObject\User\Enemy\State</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\WorldTransform.h">
       <Filter>App\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\User\Fairy\Fairy.h">
-      <Filter>App\GameObject\Core\User\Fairy</Filter>
+      <Filter>App\GameObject\User\Fairy</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\User\Floor\Floor.h">
-      <Filter>App\GameObject\Core\User\Floor</Filter>
+      <Filter>App\GameObject\User\Floor</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\User\LockOn\LockOn.h">
-      <Filter>App\GameObject\Core\User\LockOn</Filter>
+      <Filter>App\GameObject\User\LockOn</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\User\FollowCamera\FollowCamera.h">
-      <Filter>App\GameObject\Core\User\FollowCamera</Filter>
+      <Filter>App\GameObject\User\FollowCamera</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\SampleList.h">
       <Filter>App\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\User\TitleSceneManager\TitleManager.h">
-      <Filter>App\GameObject\Core\User</Filter>
+      <Filter>App\GameObject\User</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\Core\Camera.h">
       <Filter>App\GameObject\Core</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\User\TestObject\TestObject.h">
-      <Filter>App\GameObject\Core\User\TestObject</Filter>
+      <Filter>App\GameObject\User\TestObject</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Scene\BaseScene.h">
       <Filter>App\Scene</Filter>
@@ -1017,6 +1023,12 @@
     <ClInclude Include="Engine\Resource\Texture\TextureManager.h">
       <Filter>Engine\Resource\Texture</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyMove.h">
+      <Filter>App\GameObject\User\Enemy\State</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\User\Level\Level.h">
+      <Filter>App\GameObject\User\Level</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -1084,9 +1096,6 @@
     <ClCompile Include="Engine\GlobalVariables\GlobalVariables.cpp" />
     <ClCompile Include="Engine\Input\Input.cpp" />
     <ClCompile Include="Engine\Math\Quaternion.cpp" />
-    <ClCompile Include="Engine\Particle\IParticle.cpp" />
-    <ClCompile Include="Engine\Particle\IParticleEmitter.cpp" />
-    <ClCompile Include="Engine\Particle\ParticleEmitterManager.cpp" />
     <ClCompile Include="Engine\Primitive\2d\Plane.cpp" />
     <ClCompile Include="Engine\Primitive\IPrimitive.cpp" />
     <ClCompile Include="Engine\Primitive\PrimitiveManager.cpp" />
@@ -1389,9 +1398,6 @@
     <ClInclude Include="Engine\Math\Vector2.h" />
     <ClInclude Include="Engine\Math\Vector3.h" />
     <ClInclude Include="Engine\Math\Vector4.h" />
-    <ClInclude Include="Engine\Particle\IParticle.h" />
-    <ClInclude Include="Engine\Particle\IParticleEmitter.h" />
-    <ClInclude Include="Engine\Particle\ParticleEmitterManager.h" />
     <ClInclude Include="Engine\Primitive\2d\Plane.h" />
     <ClInclude Include="Engine\Primitive\IPrimitive.h" />
     <ClInclude Include="Engine\Primitive\PrimitiveManager.h" />
@@ -1445,35 +1451,38 @@
     <ClInclude Include="Engine\Base\Renderer\PPRenderer.h" />
     <ClInclude Include="Engine\Base\RootSignature\SkinModelRootSignature.h" />
     <ClInclude Include="Engine\GameObject\Samples\SampleSkinAnim\SampleAnim.h" />
-    <Filter Include="App\GameObject\Core\User">
+    <Filter Include="App\GameObject\User">
       <UniqueIdentifier>{e4d282eb-c22f-46f5-a5d1-e5fa5125b0e2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="App\GameObject\Core\User\TestObject">
+    <Filter Include="App\GameObject\User\TestObject">
       <UniqueIdentifier>{52c77563-6463-40a5-856f-83b0927ce8e1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="App\GameObject\Core\User\Player">
+    <Filter Include="App\GameObject\User\Player">
       <UniqueIdentifier>{d332d6e6-3d8a-44ac-bc73-ec18806e0ae5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="App\GameObject\Core\User\Player\State">
+    <Filter Include="App\GameObject\User\Player\State">
       <UniqueIdentifier>{879ecf67-a814-41ff-9b89-932f64923cd4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="App\GameObject\Core\User\Enemy">
+    <Filter Include="App\GameObject\User\Enemy">
       <UniqueIdentifier>{5c9de76a-9ff8-470c-9347-09c26fd25d51}</UniqueIdentifier>
     </Filter>
-    <Filter Include="App\GameObject\Core\User\Enemy\State">
+    <Filter Include="App\GameObject\User\Enemy\State">
       <UniqueIdentifier>{60676a05-1d7b-4f47-8d92-193d1c73fbb5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="App\GameObject\Core\User\Fairy">
+    <Filter Include="App\GameObject\User\Fairy">
       <UniqueIdentifier>{c599b273-ed32-47e4-9f1e-394ec72dd7c0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="App\GameObject\Core\User\Floor">
+    <Filter Include="App\GameObject\User\Floor">
       <UniqueIdentifier>{9af09147-bcd0-45b5-9dbd-8119130b84ae}</UniqueIdentifier>
     </Filter>
-    <Filter Include="App\GameObject\Core\User\LockOn">
+    <Filter Include="App\GameObject\User\LockOn">
       <UniqueIdentifier>{7064e262-d35e-4df1-95bd-a89a51289412}</UniqueIdentifier>
     </Filter>
-    <Filter Include="App\GameObject\Core\User\FollowCamera">
+    <Filter Include="App\GameObject\User\FollowCamera">
       <UniqueIdentifier>{b9efa3c2-bd73-4f4c-94a0-c74b315d84b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\GameObject\User\Level">
+      <UniqueIdentifier>{230e53f8-5b0e-459d-9120-2dd9cb8642a1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1542,12 +1551,24 @@
     <FxCompile Include="Engine\Resource\Shader\MeshletMS.hlsl">
       <Filter>Engine\Resource\Shader</Filter>
     </FxCompile>
-    <FxCompile Include="Engine\Resource\Shader\Particle\user\Hit\EmitHitParticle.CS.hlsl" />
-    <FxCompile Include="Engine\Resource\Shader\Particle\user\Hit\UpdateHitParticle.CS.hlsl" />
-    <FxCompile Include="Engine\Resource\Shader\Particle\user\EnemyHit\EmitEnemyHitParticle.CS.hlsl" />
-    <FxCompile Include="Engine\Resource\Shader\Particle\user\Charge\EmitChargeParticle.CS.hlsl" />
-    <FxCompile Include="Engine\Resource\Shader\Particle\user\Charge\UpdateChargeParticle.CS.hlsl" />
-    <FxCompile Include="Engine\Resource\Shader\Particle\user\Dissolve\EmitDissolveParticle.CS.hlsl" />
+    <FxCompile Include="Engine\Resource\Shader\Particle\user\Charge\EmitChargeParticle.CS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\Particle\user\Dissolve\EmitDissolveParticle.CS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\Particle\user\EnemyHit\EmitEnemyHitParticle.CS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\Particle\user\Hit\EmitHitParticle.CS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\Particle\user\Charge\UpdateChargeParticle.CS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\Particle\user\Hit\UpdateHitParticle.CS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Externals\imgui\LICENSE.txt">

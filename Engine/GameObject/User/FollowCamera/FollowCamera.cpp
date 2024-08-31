@@ -23,6 +23,9 @@ void FollowCamera::Update()
 	if (joyState_.Gamepad.bLeftTrigger >= 35.0f) {
 		// ロックオンが有効になっていない場合
 		if (!lockOn_->EnableLockOn()) {
+			// セットアップトリガーをfalse
+			isLockOnSetUp_ = false;
+			
 			// 目標角度をプレイヤーの真後ろに
 			targetAngleY_ = target_->rotate_.y;
 			// 角度補正速度を設定
@@ -46,14 +49,37 @@ void FollowCamera::Update()
 			// ロックオン時の座標を計算
 			lockOnTranslate_ = targetPos - (sub / 2.0f);
 
+			// 方向ベクトルを元にプレイヤーがいる角度を求める
+			targetAngleY_ = std::atan2(sub.x, sub.z);
+
+			// セットアップを行っていない場合、ここで行う
+			if (!isLockOnSetUp_) {
+				// 目標角度が負方向であれば
+				if (targetAngleY_ < 0.0f) {
+					isRightLockOn_ = false;
+				}
+				else {
+					isRightLockOn_ = true;
+				}
+
+				// セットアップを実行済み状態に
+				isLockOnSetUp_ = true;
+			}
+
 			// オフセットのY軸を0に
 			offset_.y = 0.0f;
 			offset_.z = -Vector3::Length(sub / 2.0f) + kOffset_.z;
 
-			kOffsetRotate_ = KLib::Lerp<float>(0.35f, 0.025f, offset_.z, -40.0f);
+			// どちらに角度を補正するかで処理を変更する
+			if (isRightLockOn_) {
+				kOffsetRotate_ = KLib::Lerp<float>(-0.35f, -0.025f, offset_.z, -40.0f);
+			}
+			else {
+				kOffsetRotate_ = KLib::Lerp<float>(0.35f, 0.025f, offset_.z, -40.0f);
+			}
 
-			// 方向ベクトルを元にプレイヤーがいる角度を求める
-			targetAngleY_ = std::atan2(sub.x, sub.z) + kOffsetRotate_;
+			// 目標角度にオフセット分を加算する
+			targetAngleY_ += kOffsetRotate_;
 			Matrix4x4 rotateMat =
 				Matrix4x4::MakeRotateY(-std::atan2(sub.x, sub.z));
 			Vector3 subA = sub * rotateMat;
@@ -69,7 +95,10 @@ void FollowCamera::Update()
 		// Z注目を有効に
 		enableZForcus_ = true;
 	}
-	else { // ロックオン有効時
+	else { // Lトリガーを押していない場合
+		// セットアップトリガーをfalse
+		isLockOnSetUp_ = false;
+
 		// Z注目をしていないに
 		enableZForcus_ = false;
 		// 角度補正速度を設定
@@ -138,6 +167,12 @@ void FollowCamera::UpdateTarget()
 	Vector3 offset = CalcOffset();
 	// カメラの座標をオフセットを元に変更
 	transform_.translate_ = interTarget_ + offset;
+
+	// カメラのY座標が0以下の場合
+	if (transform_.translate_.y < 0.05f) {
+		// 0に補正する
+		transform_.translate_.y = 0.05f;
+	}
 
 	// 基底クラスの更新を行う
 	Camera::Update();

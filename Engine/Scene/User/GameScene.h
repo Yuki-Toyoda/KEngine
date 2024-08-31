@@ -27,7 +27,7 @@ public: // メンバ関数
 private: // メンバ変数
 
 	// レベル
-	SampleLevelObjects* level_ = nullptr;
+	Level* level_ = nullptr;
 
 	// 敵
 	Enemy* enemy_ = nullptr;

@@ -140,6 +140,11 @@ private: // メンバ変数
 	// ロックオン時の遷移先座標
 	Vector3 lockOnTranslate_ = {};
 
+	// ロックオン時のセットアップを完了しているか
+	bool isLockOnSetUp_ = false;
+	// どちらに角度を補正するか
+	bool isRightLockOn_ = false;
+
 	// オフセット
 	const Vector3 kOffset_ = { 0.0f, 2.0f, -10.0f };
 	Vector3 offset_ = kOffset_;

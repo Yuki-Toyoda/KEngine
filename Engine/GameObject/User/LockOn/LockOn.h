@@ -83,7 +83,7 @@ private: // メンバ変数
 	// ロックオン最小距離
 	float minDistance_ = 5.0f;
 	// ロックオン最大距離
-	float maxDistance_ = 30.0f;
+	float maxDistance_ = 40.0f;
 	// 角度範囲
 	float angleRange_ = 20.0f * (float)(std::numbers::pi / 180.0f);
 

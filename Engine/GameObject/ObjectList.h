@@ -12,3 +12,4 @@
 #include "User/Enemy/EnemyBullet.h"
 #include "User/LockOn/LockOn.h"
 #include "User/Fairy/Fairy.h"
+#include "User/Level/Level.h"

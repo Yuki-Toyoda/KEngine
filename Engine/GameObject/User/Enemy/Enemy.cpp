@@ -99,11 +99,11 @@ void Enemy::Update()
 		// ダウン状態でない限り
 		if (state_->GetStateName() != "Down") {
 			// 差分ベクトルを求める
-			Vector3 sub = transform_.translate_ - playerPos_->translate_;
+			toPlayerDistance_ = transform_.translate_ - playerPos_->translate_;
 			//sub = Math::Normalize(sub);
 
 			// 目標角度の取得
-			targetAngle_ = std::atan2(sub.x, sub.z);
+			targetAngle_ = std::atan2(toPlayerDistance_.x, toPlayerDistance_.z);
 
 			// 目標角度に向かって徐々に補間
 			transform_.rotate_.y = KLib::LerpShortAngle(transform_.rotate_.y, targetAngle_, 0.1f);
@@ -112,7 +112,7 @@ void Enemy::Update()
 		// 行動変更タイマーが終了していれば
 		if (stateChangeTimer_.GetIsFinish()) {
 			// ダウン状態でない限り変更を行わない
-			if (state_->GetStateName() != "Down" && state_->GetStateName() != "Shot") {
+			if (state_->GetStateName() != "Down" && state_->GetStateName() != "Shot" && state_->GetStateName() != "Move") {
 				// y座標が特定の値に達してれば
 				if (transform_.translate_.y >= 3.9f) {
 					if (GameObjectManager::GetInstance()->GetGameObject<EnemyBullet>("EnemyBullet") == nullptr) {
@@ -126,6 +126,21 @@ void Enemy::Update()
 						stateChangeTimer_.Start(kStateChangeCoolTime_);
 					}
 				}
+			}
+		}
+	}
+	
+	// ダウン状態および射撃状態で無ければ
+	if (state_->GetStateName() != "Down" && state_->GetStateName() != "Shot") {
+
+		if (state_->GetStateName() != "Move") {
+			// プレイヤーとの距離ベクトルの長さを求める
+			float distance = Vector3::Length(toPlayerDistance_);
+
+			// 距離距離が一定値以下であれば
+			if (distance <= 11.5f) {
+				// 敵が移動する
+				ChangeState(std::make_unique<EnemyMove>());
 			}
 		}
 	}
@@ -240,6 +255,13 @@ void Enemy::DisplayImGui()
 
 	// 攻撃行動を行うかの切り替え
 	ImGui::Checkbox("is Attack", &isAttack_);
+
+	// プレイヤーとの距離を表示
+	float d = Vector3::Length(toPlayerDistance_);
+	ImGui::DragFloat("toPlayerDistance", &d);
+
+	// フィールド外か
+	ImGui::Checkbox("FieldOut", &isFieldOut_);
 }
 
 void Enemy::OnCollisionEnter(Collider* collider)
@@ -341,7 +363,25 @@ void Enemy::OnCollision(Collider* collider)
 				Audio::GetInstance()->PlayWave(damageSound_);
 			}
 		}
+
+		// フィールドと衝突している場合
+		if (collider->GetColliderName() == "Level") {
+			// フィールド内に存在する
+			isFieldOut_ = false;
+		}
 	}
+}
+
+void Enemy::OnCollisionExit(Collider* collider)
+{
+	// 死亡していなければ
+	if (hp_ > 0) {
+		// フィールドから離れた場合
+		if (collider->GetColliderName() == "Level") {
+			// フィールド外に出ている
+			isFieldOut_ = true;
+		}
+	}	
 }
 
 void Enemy::CreateParameter(const std::string& name)

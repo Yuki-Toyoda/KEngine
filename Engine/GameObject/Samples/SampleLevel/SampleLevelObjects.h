@@ -41,7 +41,7 @@ public: // 機能関数群
 	/// <param name="t">参照するトランスフォーム</param>
 	void AddObjects(const std::string filePath, const std::string fileName, WorldTransform t);
 
-private: // メンバ変数
+protected: // 継承先メンバ変数
 
 	// レベルローダー
 	LevelLoader loader_;
