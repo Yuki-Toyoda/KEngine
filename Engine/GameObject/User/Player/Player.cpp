@@ -2,10 +2,10 @@
 #include "../LockOn/LockOn.h"
 #include "../FollowCamera/FollowCamera.h"
 #include "../Enemy/Enemy.h"
+#include "../Enemy/EnemyBullet.h"
 #include "../../../Resource/Texture/TextureManager.h"
 #include "../../GameObjectManager.h"
 #include "../../Core/Camera.h"
-#include "../Enemy/Enemy.h"
 
 void Player::Init()
 {
@@ -76,11 +76,20 @@ void Player::Init()
 	// 行動状態を待機状態に変更
 	ChangeState(std::make_unique<Root>());
 
+	// 帯スプライト
+	AddSprite("UpperObi", {640.0f, 0.0f}, {1280.0f, 0.0f}, TextureManager::Load("./Resources", "white2x2.png"));
+	AddSprite("LowerObi", {640.0f, 720.0f}, {1280.0f, 0.0f}, TextureManager::Load("./Resources", "white2x2.png"));
+	
+	sprites_[0]->anchorPoint_ = { 0.5f, 0.0f };
+	sprites_[0]->color_ = { 0.0f, 0.0f, 0.0f, 1.0f };
+	sprites_[1]->anchorPoint_ = { 0.5f, 1.0f };
+	sprites_[1]->color_ = { 0.0f, 0.0f, 0.0f, 1.0f };
+
 	// UIの追加
-	for (int i = 0; i < 6; i++) {
-		hertUISize_[i] = {48.0f, 48.0f };
-		hertUITranslate_[i] = { (hertUISize_->x) + (hertUISize_->x * i) , 32.0f };
-		AddSprite("Hert", hertUITranslate_[i], hertUISize_[i], TextureManager::Load("./Resources", "Hert.png"));
+	for (int i = 2; i < 8; i++) {
+		hertUISize_[i - 2] = {48.0f, 48.0f };
+		hertUITranslate_[i - 2] = { (hertUISize_->x) + (hertUISize_->x * (i - 2)) , 32.0f };
+		AddSprite("Hert", hertUITranslate_[i - 2], hertUISize_[i - 2], TextureManager::Load("./Resources", "Hert.png"));
 		sprites_[i]->color_ = { 1.0f, 0.0f, 0.15f, 1.0f };
 		sprites_[i]->isActive_ = false;
 	}
@@ -88,7 +97,7 @@ void Player::Init()
 	// タイトル画面ボタン用
 	AddSprite("StartButton", { 640.0f, 450.0f }, { 512.0f ,128.0f }, TextureManager::Load("Start_CR.png"));
 	// アンカーポイントの設定
-	sprites_[6]->anchorPoint_ = { .5f, .5f };
+	sprites_[8]->anchorPoint_ = { .5f, .5f };
 
 	// 攻撃ボタン
 	AddSprite("AButton", { 1125.0f, 125.0f }, { 48.0f ,48.0f }, TextureManager::Load("./Resources/UI/Button", "Button_A.png"));
@@ -98,9 +107,9 @@ void Player::Init()
 	AddSprite("BButton", { 1185.0f, 75.0f }, { 48.0f ,48.0f }, TextureManager::Load("./Resources/UI/Button", "Button_B.png"));
 
 	// ボタン関連UI非表示
-	sprites_[7]->isActive_ = false;
-	sprites_[8]->isActive_ = false;
 	sprites_[9]->isActive_ = false;
+	sprites_[10]->isActive_ = false;
+	sprites_[11]->isActive_ = false;
 
 	// 効果音読み込み
 	SwingSword_ = Audio::GetInstance()->LoadWave("./Resources/Audio/SE/SwingSword.mp3");
@@ -127,14 +136,14 @@ void Player::Update()
 				followCamera_->UseThisCamera();
 
 				// UIの表示
-				for (int i = 0; i < 6; i++) {
+				for (int i = 2; i < 8; i++) {
 					sprites_[i]->isActive_ = true;
 				}
 
 				// ボタン関連UI表示
-				sprites_[7]->isActive_ = true;
-				sprites_[8]->isActive_ = true;
 				sprites_[9]->isActive_ = true;
+				sprites_[10]->isActive_ = true;
+				sprites_[11]->isActive_ = true;
 
 				// ゲームスタート
 				isGameStart_ = true;
@@ -152,7 +161,7 @@ void Player::Update()
 				isFade_ = true;
 
 				// ボタンUI非表示
-				sprites_[6]->isActive_ = false;
+				sprites_[8]->isActive_ = false;
 
 				// タイトルアニメーション再生
 				titleAnim_->ChangeParameter("Title_Start", true);
@@ -229,6 +238,16 @@ void Player::Update()
 			skiningModels_[0]->animationManager_.PlayAnimation("00_Idle", true);
 		}
 	}
+
+	// 敵弾が存在する場合帯を出現させる
+	if (GameObjectManager::GetInstance()->GetGameObject<EnemyBullet>("EnemyBullet") != nullptr) {
+		sprites_[0]->scale_.y = KLib::Lerp<float>(sprites_[0]->scale_.y, 75.0f, 0.1f);
+		sprites_[1]->scale_.y = KLib::Lerp<float>(sprites_[0]->scale_.y, 75.0f, 0.1f);
+	}
+	else {
+		sprites_[0]->scale_.y = KLib::Lerp<float>(sprites_[0]->scale_.y, 0.0f, 0.2f);
+		sprites_[1]->scale_.y = KLib::Lerp<float>(sprites_[0]->scale_.y, 0.0f, 0.2f);
+	}
 }
 
 void Player::DisplayImGui()
@@ -243,7 +262,8 @@ void Player::DisplayImGui()
 	// 線のImGui表示
 	attackLine_->DisplayImGui();
 
-	sprites_[9]->DisplayImGui();
+	sprites_[0]->DisplayImGui();
+	sprites_[1]->DisplayImGui();
 
 	// 基底クラスのImGuiを表示する
 	IObject::DisplayImGui();
@@ -268,7 +288,7 @@ void Player::HitDamage(const Vector3& translate)
 		hp_--;
 
 		// スプライトの色を変更
-		sprites_[hp_]->color_ = { 0.15f, 0.15f, 0.15f, 1.0f };
+		sprites_[hp_ + 2]->color_ = { 0.15f, 0.15f, 0.15f, 1.0f };
 
 		// 弾の座標からプレイヤーの方向ベクトルを求める
 		Vector3 sub = translate - transform_.translate_;
