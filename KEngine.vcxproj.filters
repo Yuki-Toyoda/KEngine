@@ -196,7 +196,7 @@
     <ClCompile Include="Engine\Base\DXC\DXC.cpp">
       <Filter>Engine\Base\DXC</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Base\Renderer\NormalRenderer.cpp">
+    <ClCompile Include="Engine\Base\Renderer\ModelRenderer.cpp">
       <Filter>Engine\Base\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Base\Renderer\RendererManager.cpp">
@@ -350,6 +350,7 @@
     <ClCompile Include="Engine\PostProcess\Bloom\Bloom.cpp">
       <Filter>Engine\PostProcess\Bloom</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Base\Renderer\SpriteRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -577,7 +578,7 @@
     <ClInclude Include="Engine\Base\DXC\DXC.h">
       <Filter>Engine\Base\DXC</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Base\Renderer\NormalRenderer.h">
+    <ClInclude Include="Engine\Base\Renderer\ModelRenderer.h">
       <Filter>Engine\Base\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Base\Renderer\IRenderer.h">
@@ -775,6 +776,7 @@
     <ClInclude Include="Engine\PostProcess\Bloom\Bloom.h">
       <Filter>Engine\PostProcess\Bloom</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Base\Renderer\SpriteRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">

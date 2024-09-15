@@ -1,9 +1,8 @@
 #include "../Constant.hlsli"
 
 ConstantBuffer<ConstantData>     ConstantData : register(b0);
-ConstantBuffer<DirectionalLight> light        : register(b1);
-ConstantBuffer<WorldTransform>   Transform    : register(b2);
-ConstantBuffer<Material>         material     : register(b3);
+ConstantBuffer<WorldTransform>   Transform    : register(b1);
+ConstantBuffer<Material>         material     : register(b2);
 
 StructuredBuffer<Meshlet>    Meshlets            : register(t0);
 StructuredBuffer<VertexData> Vertices            : register(t1);

@@ -5,15 +5,14 @@
 #include "../DXC/DXC.h"
 
 // クラスの前方宣言
-class PrimitiveManager;
 class ModelManager;
 class ParticleManager;
 class DirectionalLight;
 
 /// <summary>
-/// 通常描画用レンダラークラス
+/// 3Dモデル用レンダラークラス
 /// </summary>
-class NormalRenderer : public IRenderer
+class ModelRenderer : public IRenderer
 {
 public: // サブクラス
 
@@ -31,12 +30,12 @@ public: // コンストラクタ等
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	NormalRenderer() = default;
+	ModelRenderer() = default;
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~NormalRenderer() = default;
+	~ModelRenderer() = default;
 
 public: // メンバ関数
 

@@ -23,9 +23,9 @@ void RendererManager::Init(DirectXDevice* device, SRV* srv)
 	light_->Init();											  // 初期化
 
 	// レンダラー達を初期化
-	normalRenderer_.Init(device, &dxc_, modelManager_, light_.get()); // 通常描画レンダラー
+	normalRenderer_.Init(device, &dxc_, modelManager_, light_.get()); // 3D描画レンダラー
 	ppRenderer_.Init();												  // ポストプロセスレンダラー
-
+	spriteRenderer_.Init(device, &dxc_, modelManager_);				  // 2D描画レンダラー
 }
 
 void RendererManager::DrawCall()
@@ -51,10 +51,12 @@ void RendererManager::DrawCall()
 	ID3D12DescriptorHeap* descriptorHeaps[] = { srv_->GetDescriptorHeap() };
 	list->SetDescriptorHeaps(1, descriptorHeaps);
 
-	// 通常描画を行う
+	// 3D描画を行う
 	normalRenderer_.DrawCall(list);
 	// ポストプロセス描画を行う
 	ppRenderer_.DrawCall(list);
+	// 2D描画を行う
+	spriteRenderer_.DrawCall(list);
 
 	// ImGuiの描画を行う
 	ImGuiDraw(list);
@@ -63,8 +65,9 @@ void RendererManager::DrawCall()
 	command_.Execute();
 
 	// 各レンダラーをリセット
-	normalRenderer_.Reset(); // 通常描画
+	normalRenderer_.Reset(); // 3D描画
 	ppRenderer_.Reset();	 // ポストプロセス描画
+	spriteRenderer_.Reset(); // 2D描画
 }
 
 void RendererManager::ImGuiDraw(ID3D12GraphicsCommandList6* list)

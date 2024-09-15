@@ -1,12 +1,11 @@
-#include "NormalRenderer.h"
-#include "../../Primitive/PrimitiveManager.h"
+#include "ModelRenderer.h"
 #include "../../Model/ModelManager.h"
 #include "../../Particle/ParticleManager.h"
 #include "../../Lighting/Light/DirectionalLight.h"
 #include "../../Scene/SceneManager.h"
 #include "../../Base/DirectXCommon.h"
 
-void NormalRenderer::Init(DirectXDevice* device, DXC* dxc, ModelManager* mm, DirectionalLight* lt)
+void ModelRenderer::Init(DirectXDevice* device, DXC* dxc, ModelManager* mm, DirectionalLight* lt)
 {
 	// ルートシグネチャマネージャの取得
 	RootSignatureManager* rtsManager = RootSignatureManager::GetInstance();
@@ -14,7 +13,6 @@ void NormalRenderer::Init(DirectXDevice* device, DXC* dxc, ModelManager* mm, Dir
 	// ルートシグネチャ取得
 	standardRootSignature_ = rtsManager->GetRootSignature(0); // 通常
 	skinRootSignature_	   = rtsManager->GetRootSignature(1); // スキンアニメーション
-	spriteRootSignature_   = rtsManager->GetRootSignature(2); // スプライト
 	particleRootSignature_ = rtsManager->GetRootSignature(3); // パーティクル
 	skyBoxRootSignature_   = rtsManager->GetRootSignature(4); // スカイボックス
 	
@@ -38,12 +36,6 @@ void NormalRenderer::Init(DirectXDevice* device, DXC* dxc, ModelManager* mm, Dir
 		.SetPixelShader("Engine/Resource/Shader/Particle/ParticlePS.hlsl")
 		.Build(device->GetDevice());
 
-	// スプライト描画用PSO初期化
-	spritePSO_.Init(spriteRootSignature_, dxc)
-		.SetMeshShader("Engine/Resource/Shader/SpriteMeshlet/MeshletSpriteMS.hlsl")
-		.SetPixelShader("Engine/Resource/Shader/SpriteMeshlet/MeshletSpritePS.hlsl")
-		.Build(device->GetDevice());
-
 	// スカイボックス描画用PSO初期化
 	skyBoxPSO_.Init(skyBoxRootSignature_, dxc, PSO::PSOType::Vertex)
 		.SetVertexShader("Engine/Resource/Shader/SkyBox/SkyBox.VS.hlsl")
@@ -63,7 +55,7 @@ void NormalRenderer::Init(DirectXDevice* device, DXC* dxc, ModelManager* mm, Dir
 	light_ = lt;
 }
 
-void NormalRenderer::DrawCall(ID3D12GraphicsCommandList6* list)
+void ModelRenderer::DrawCall(ID3D12GraphicsCommandList6* list)
 {
 	// 形状マネージャの更新
 	modelManager_->Update();
@@ -159,24 +151,12 @@ void NormalRenderer::DrawCall(ID3D12GraphicsCommandList6* list)
 		// パーティクルモデルの描画を行う
 		particleManager_->Draw();
 
-		// コマンドリストにスプライト描画ルートシグネチャを設定
-		list->SetGraphicsRootSignature(spriteRootSignature_);
-		// コマンドリストにスプライト描画PSOを設定
-		list->SetPipelineState(spritePSO_.GetState());
-		// 共通データのアドレスを渡す
-		list->SetGraphicsRootConstantBufferView(0, it->view_);		   // カメラデータ
-		list->SetGraphicsRootConstantBufferView(1, light_->view());	   // 平行光源データ
-		list->SetGraphicsRootDescriptorTable(8, s->GetFirstTexView()); // テクスチャデータ
-
-		// スプライトモデルの描画を行う
-		modelManager_->SpriteModelDraw(list);
-
 		// バリアを元に戻す
 		it->backBuffer_->ChangeResourceBarrier(beforeBarrier, list);
 	}
 }
 
-void NormalRenderer::Reset()
+void ModelRenderer::Reset()
 {
 	// ターゲット配列クリア
 	targets_.clear();
