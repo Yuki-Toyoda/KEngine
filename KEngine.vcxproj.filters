@@ -351,6 +351,9 @@
     <ClCompile Include="Engine\Particle\ParticleManager.cpp">
       <Filter>Engine\Particle</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\PostProcess\Bloom\Bloom.cpp">
+      <Filter>Engine\PostProcess\Bloom</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\SkyBox\SkyBox.cpp" />
     <ClCompile Include="Engine\Base\RootSignature\SkyBoxRootSignature.cpp" />
     <ClCompile Include="Engine\GameObject\Samples\SampleLevel\SampleLevelObjects.cpp" />
@@ -727,6 +730,9 @@
     <ClInclude Include="Engine\Particle\Particle.h">
       <Filter>Engine\Particle</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\PostProcess\Bloom\Bloom.h">
+      <Filter>Engine\PostProcess\Bloom</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\Base\Resource\Data\RWStructuredBuffer.h" />
     <ClInclude Include="Engine\SkyBox\SkyBox.h" />
     <ClInclude Include="Engine\Base\RootSignature\SkyBoxRootSignature.h" />
@@ -1061,6 +1067,9 @@
     <None Include="Engine\Resource\Shader\Compute\Random.hlsli">
       <Filter>Engine\Resource\Shader</Filter>
     </None>
+    <None Include="Engine\Resource\Shader\PostProcess\Bloom\GaussianBlur.hlsli">
+      <Filter>Engine\Resource\Shader</Filter>
+    </None>
     <None Include="Engine\Resource\Shader\SkyBox\SkyBox.hlsli" />
     <None Include="Engine\Resource\Shader\PostProcess\PassThrough.hlsli" />
     <None Include="Engine\Resource\Shader\Constant.hlsli" />
@@ -1351,6 +1360,9 @@
     <Filter Include="Engine\Particle\CPU">
       <UniqueIdentifier>{552512f8-d458-4a89-8de5-67c7fedf406f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\PostProcess\Bloom">
+      <UniqueIdentifier>{4680ddb0-c774-460a-9532-93b429b6aca0}</UniqueIdentifier>
+    </Filter>
     <ClInclude Include="Engine\Base\Resource\Rendering\RenderResource.h" />
     <ClInclude Include="Engine\Lighting\Light\DirectionalLight.h" />
     <ClInclude Include="Engine\Base\DXC\DXC.h" />
@@ -1535,6 +1547,15 @@
       <Filter>Engine\Resource\Shader</Filter>
     </FxCompile>
     <FxCompile Include="Engine\Resource\Shader\Particle\user\Test\UpdateTestParticle.CS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\PostProcess\Bloom\BrightnessFilter.PS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\PostProcess\Bloom\GaussianBlurX.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\PostProcess\Bloom\GaussianBlurY.hlsl">
       <Filter>Engine\Resource\Shader</Filter>
     </FxCompile>
     <FxCompile Include="Engine\Resource\Shader\Compute\Skining.CS.hlsl" />

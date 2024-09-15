@@ -4,11 +4,12 @@
 void PostProcessor::Init()
 {
 	// ポストプロセス初期化
-	outLine_.Init(); // アウトライン
-	gaussian_.Init(); // ガウシアンフィルター
-	vignette_.Init(); // ビネット
-	//grayScale_.Init(); // グレースケール
-	hsvFilter_.Init(); // HSVフィルター
+	bloom_.Init();		// ブルーム
+	outLine_.Init();	// アウトライン
+	gaussian_.Init();	// ガウシアンフィルター
+	vignette_.Init();	// ビネット
+	grayScale_.Init();	// グレースケール
+	hsvFilter_.Init();	// HSVフィルター
 
 	// シェーダー生成開始
 	CreateShaderFile();
@@ -17,11 +18,12 @@ void PostProcessor::Init()
 void PostProcessor::Update()
 {
 	// ポストプロセスの更新を行う
-	outLine_.Update();	// アウトライン
-	gaussian_.Update(); // ガウシアンフィルター
-	vignette_.Update(); // ビネット
-	//grayScale_.Update(); // グレースケール
-	hsvFilter_.Update(); // HSVフィルター
+	bloom_.Update();		// ブルーム
+	outLine_.Update();		// アウトライン
+	gaussian_.Update();		// ガウシアンフィルター
+	vignette_.Update();		// ビネット
+	grayScale_.Update();	// グレースケール
+	hsvFilter_.Update();	// HSVフィルター
 }
 
 void PostProcessor::CreateShaderFile()
@@ -141,11 +143,12 @@ void PostProcessor::DisplayImGui()
 	// ポストプロセス関連のImGuiを表示
 	if (ImGui::TreeNode("PostProcess")) {
 		// ポストプロセス関連のImGuiを表示
-		outLine_.DisplayImGui();  // アウトライン
-		gaussian_.DisplayImGui(); // ガウシアンフィルター
-		vignette_.DisplayImGui(); // ビネット
-		//grayScale_.DisplayImGui(); // グレースケール
-		hsvFilter_.DisplayImGui(); // hsvフィルター
+		bloom_.DisplayImGui();		// ブルーム
+		outLine_.DisplayImGui();	// アウトライン
+		gaussian_.DisplayImGui();	// ガウシアンフィルター
+		vignette_.DisplayImGui();	// ビネット
+		grayScale_.DisplayImGui();	// グレースケール
+		hsvFilter_.DisplayImGui();	// hsvフィルター
 
 		// シェーダーの再読み込み
 		if (ImGui::Button("Reload Shader")) {
@@ -177,11 +180,12 @@ std::vector<IPostProcess*> PostProcessor::GetAllProcess()
 	// 返還用配列
 	std::vector<IPostProcess*> result;
 	// 返還用配列に各ポストプロセスの参照を渡す
-	result.push_back(&outLine_); // アウトライン
-	result.push_back(&gaussian_); // ガウシアンフィルター
-	result.push_back(&vignette_); // ビネット
-	//result.push_back(&grayScale_); // グレースケール
-	result.push_back(&hsvFilter_); // HSVフィルター
+	result.push_back(&bloom_);		// ブルーム
+	result.push_back(&outLine_);	// アウトライン
+	result.push_back(&gaussian_);	// ガウシアンフィルター
+	result.push_back(&vignette_);	// ビネット
+	result.push_back(&grayScale_);	// グレースケール
+	result.push_back(&hsvFilter_);	// HSVフィルター
 	// 配列を返還する
 	return result;
 }
