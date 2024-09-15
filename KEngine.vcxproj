@@ -106,7 +106,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Engine\PostProcess\Bloom\Bloom.cpp" />
-    <ClCompile Include="Engine\Base\Renderer\CopyRenderer.cpp" />
     <ClCompile Include="Engine\Base\Resource\Rendering\RenderResource.cpp" />
     <ClCompile Include="Engine\Lighting\Light\DirectionalLight.cpp" />
     <ClCompile Include="Engine\Base\DXC\DXC.cpp" />
@@ -218,7 +217,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\PostProcess\Bloom\Bloom.h" />
-    <ClInclude Include="Engine\Base\Renderer\CopyRenderer.h" />
     <ClInclude Include="Engine\Base\Resource\Data\RWStructuredBuffer.h" />
     <ClInclude Include="Engine\Base\Resource\Rendering\RenderResource.h" />
     <ClInclude Include="Engine\Lighting\Light\DirectionalLight.h" />

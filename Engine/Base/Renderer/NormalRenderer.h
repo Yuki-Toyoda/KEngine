@@ -56,12 +56,6 @@ public: // メンバ関数
 	void DrawCall(ID3D12GraphicsCommandList6* list);
 
 	/// <summary>
-	/// ImGui描画命令関数
-	/// </summary>
-	/// <param name="list">コマンドリスト</param>
-	void ImGuiDraw(ID3D12GraphicsCommandList6* list);
-
-	/// <summary>
 	/// レンダラーリセット関数
 	/// </summary>
 	void Reset();

@@ -238,9 +238,6 @@
     <ClCompile Include="Engine\Base\Resource\Rendering\RenderResource.cpp">
       <Filter>Engine\Base\Resource\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Base\Renderer\CopyRenderer.cpp">
-      <Filter>Engine\Base\Renderer</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Model\ModelManager.cpp">
       <Filter>Engine\Model</Filter>
     </ClCompile>
@@ -648,9 +645,6 @@
     </ClInclude>
     <ClInclude Include="Engine\Base\Resource\Rendering\RenderResource.h">
       <Filter>Engine\Base\Resource\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Base\Renderer\CopyRenderer.h">
-      <Filter>Engine\Base\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Model\IModel.h">
       <Filter>Engine\Model</Filter>
