@@ -52,18 +52,18 @@ public: // 純粋仮想関数
 	virtual void WriteProcess(std::ofstream* stream) = 0;
 
 	/// <summary>
-	/// 事前処理関数
-	/// </summary>
-	/// <param name="list">コマンドリスト</param>
-	/// <param name="target">ポストプロセス対象のリソース</param>
-	virtual void PreCommand(ID3D12GraphicsCommandList6* list, RenderResource* target) { list, target; };
-
-	/// <summary>
 	/// コマンドリストに生成したリソースをセットする関数
 	/// </summary>
 	/// <param name="cmdList">セットするコマンドリスト</param>
 	/// <param name="count">セットするバインド番号</param>
 	virtual void SetToCommandList(ID3D12GraphicsCommandList6* cmdList, int* offset) { cmdList, offset; };
+	
+	/// <summary>
+	/// 事前処理関数
+	/// </summary>
+	/// <param name="list">コマンドリスト</param>
+	/// <param name="target">ポストプロセス対象のリソース</param>
+	virtual void PreCommand(ID3D12GraphicsCommandList6* list, RenderResource* target) { list, target; };
 
 	/// <summary>
 	/// ImGui表示関数

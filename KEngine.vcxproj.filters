@@ -350,6 +350,7 @@
     <ClCompile Include="Engine\Particle\ParticleManager.cpp">
       <Filter>Engine\Particle</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\PostProcess\Bloom\Bloom.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -775,6 +776,7 @@
     <ClInclude Include="Engine\Particle\Particle.h">
       <Filter>Engine\Particle</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\PostProcess\Bloom\Bloom.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -807,6 +809,7 @@
     <None Include="Engine\Resource\Shader\Compute\Random.hlsli">
       <Filter>Engine\Resource\Shader</Filter>
     </None>
+    <None Include="Engine\Resource\Shader\PostProcess\Bloom\GaussianBlur.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -1074,5 +1077,8 @@
     <FxCompile Include="Engine\Resource\Shader\Particle\user\Test\UpdateTestParticle.CS.hlsl">
       <Filter>Engine\Resource\Shader</Filter>
     </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\PostProcess\Bloom\BrightnessFilter.PS.hlsl" />
+    <FxCompile Include="Engine\Resource\Shader\PostProcess\Bloom\GaussianBlurX.hlsl" />
+    <FxCompile Include="Engine\Resource\Shader\PostProcess\Bloom\GaussianBlurY.hlsl" />
   </ItemGroup>
 </Project>

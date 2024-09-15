@@ -78,8 +78,8 @@ void Camera::Update()
 		ppProcessor_.outLine_.SetViewProjectionInverse(projectionMatrix.Inverse());
 
 		// 描画マネージャーに描画ターゲットをセット
-		rendererManager_->AddTarget(cameraDataBuffer_.GetGPUView(), &renderResource_, &depthStencil_);
-		rendererManager_->AddTarget(&renderResource_, &textureResource_, &depthStencil_, &ppProcessor_);
+		//rendererManager_->AddTarget(cameraDataBuffer_.GetGPUView(), &renderResource_, &depthStencil_);
+		//rendererManager_->AddTarget(&renderResource_, &textureResource_, &depthStencil_, &ppProcessor_);
 	}
 
 	// デバッグカメラだった場合はキー入力でカメラを移動させる
