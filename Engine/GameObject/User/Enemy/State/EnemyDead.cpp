@@ -46,15 +46,15 @@ void EnemyDead::Update()
 	// アニメーションが終了していたら
 	if (enemy_->enemyAnim_->isEnd_) {
 
-		if (camera_->ppProcessor_.hsvFilter_.hsv_.value <= -1.25f) {
+		if (enemy_->player_->sprites_[12]->color_.w >= 1.0f) {
 			// フェードアウト値固定
-			camera_->ppProcessor_.hsvFilter_.hsv_.value = -1.25f;
+			enemy_->player_->sprites_[12]->color_.w = 1.0f;
 			
 			// 死亡している
 			enemy_->isDead_ = true;
 		}
 		else {
-			camera_->ppProcessor_.hsvFilter_.hsv_.value -= 0.01f;
+			enemy_->player_->sprites_[12]->color_.w += 0.01f;
 		}
 	}
 }

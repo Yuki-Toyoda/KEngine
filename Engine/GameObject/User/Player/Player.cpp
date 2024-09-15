@@ -35,8 +35,6 @@ void Player::Init()
 	titleCamera_ = GameObjectManager::GetInstance()->CreateInstance<Camera>("TitleCamera", IObject::TagCamera);
 	titleCamera_->transform_.translate_ = { -1.5f, 0.92f, -3.5f };
 	titleCamera_->transform_.rotate_ = { -0.15f, 0.325f, 0.0f };
-	// HSVフィルターによってフェードアウトを行う
-	titleCamera_->ppProcessor_.hsvFilter_.hsv_.value = -1.0f;
 
 	// アニメーション生成
 	titleAnim_ = AnimationManager::GetInstance()->CreateAnimation("TitleAnim", "Title_Idle");
@@ -59,6 +57,8 @@ void Player::Init()
 
 	// 剣の鏡面反射を有効にする
 	skiningModels_[1]->materials_[1].environmentCoefficient_ = 0.85f;
+	// ブルームエフェクトを際立たせるためにライティング無効
+	skiningModels_[1]->materials_[1].enableLighting_ = false;
 
 	// コライダーの追加
 	colliderWorldPos_ = colliderTransform_.GetWorldPos();
@@ -105,6 +105,17 @@ void Player::Init()
 	AddSprite("SwordIcon", { 1140.0f, 142.5f }, { 48.0f ,48.0f }, TextureManager::Load("./Resources/UI/Icon", "MasterSword.png"));
 	// Bボタン
 	AddSprite("BButton", { 1185.0f, 75.0f }, { 48.0f ,48.0f }, TextureManager::Load("./Resources/UI/Button", "Button_B.png"));
+	// フェード演出用スプライト
+	AddSprite("BButton", { 
+		(float)KEngine::Config::Window::KWindowWidth / 2.0f, 
+		(float)KEngine::Config::Window::KWindowHeight / 2.0f, }, 
+		{ (float)KEngine::Config::Window::KWindowWidth,
+		(float)KEngine::Config::Window::KWindowHeight }, 
+		TextureManager::Load("white2x2.png"));
+	// アンカーポイントの設定
+	sprites_[12]->anchorPoint_ = { .5f, .5f };
+	// 色、透明度設定
+	sprites_[12]->color_ = { 0.0f, 0.0f, 0.0f, 1.0f };
 
 	// ボタン関連UI非表示
 	sprites_[9]->isActive_ = false;
@@ -167,15 +178,17 @@ void Player::Update()
 				titleAnim_->ChangeParameter("Title_Start", true);
 				// ループ無効
 				titleAnim_->isLoop_ = false;
+
+				sprites_[12]->color_.w = 0.0f;
 			}
 		}
 
-		if (titleCamera_->ppProcessor_.hsvFilter_.hsv_.value >= 0.0f) {
-			titleCamera_->ppProcessor_.hsvFilter_.hsv_.value = 0.0f;
+		if (sprites_[12]->color_.w <= 0.0f) {
+			sprites_[12]->color_.w = 0.0f;
 		}
 		else {
 			// フェード演出用スプライトの色を徐々に変更
-			titleCamera_->ppProcessor_.hsvFilter_.hsv_.value += 0.01f;
+			sprites_[12]->color_.w -= 0.01f;
 		}
 	}
 
@@ -263,7 +276,7 @@ void Player::DisplayImGui()
 	attackLine_->DisplayImGui();
 
 	sprites_[0]->DisplayImGui();
-	sprites_[1]->DisplayImGui();
+	sprites_[12]->DisplayImGui();
 
 	// 基底クラスのImGuiを表示する
 	IObject::DisplayImGui();

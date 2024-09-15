@@ -107,7 +107,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   <ItemGroup>
     <ClCompile Include="Engine\PostProcess\Bloom\Bloom.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\State\EnemyMove.cpp" />
-    <ClCompile Include="Engine\Base\Renderer\CopyRenderer.cpp" />
     <ClCompile Include="Engine\Base\Resource\Rendering\RenderResource.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\Enemy.cpp" />
     <ClCompile Include="Engine\GameObject\User\Enemy\EnemyBullet.cpp" />
@@ -238,7 +237,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   <ItemGroup>
     <ClInclude Include="Engine\PostProcess\Bloom\Bloom.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\State\EnemyMove.h" />
-    <ClInclude Include="Engine\Base\Renderer\CopyRenderer.h" />
     <ClInclude Include="Engine\Base\Resource\Data\RWStructuredBuffer.h" />
     <ClInclude Include="Engine\Base\Resource\Rendering\RenderResource.h" />
     <ClInclude Include="Engine\GameObject\User\Enemy\Enemy.h" />
