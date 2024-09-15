@@ -350,7 +350,9 @@
     <ClCompile Include="Engine\PostProcess\Bloom\Bloom.cpp">
       <Filter>Engine\PostProcess\Bloom</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Base\Renderer\SpriteRenderer.cpp" />
+    <ClCompile Include="Engine\Base\Renderer\SpriteRenderer.cpp">
+      <Filter>Engine\Base\Renderer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -776,7 +778,9 @@
     <ClInclude Include="Engine\PostProcess\Bloom\Bloom.h">
       <Filter>Engine\PostProcess\Bloom</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Base\Renderer\SpriteRenderer.h" />
+    <ClInclude Include="Engine\Base\Renderer\SpriteRenderer.h">
+      <Filter>Engine\Base\Renderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
