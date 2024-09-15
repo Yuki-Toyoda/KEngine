@@ -9,10 +9,6 @@ class WinApp
 {
 public: // 静的なメンバ変数
 
-	// ウィンドウサイズ
-	static const int kWindowWidth = 1280; // 横
-	static const int kwindowHeight = 720; // 縦
-
 	// ウィンドウクラス名
 	static const wchar_t kWindowClassName[];
 
@@ -45,7 +41,7 @@ public: // メンバ関数
 	/// <param name="clientHeight">ウィンドウのクライアント領域の初期縦幅</param>
 	void CreateGameWindow(
 		const wchar_t* title = L"DirectXGame", UINT windowStyle = WS_OVERLAPPEDWINDOW,
-		int32_t clientWidth = kWindowWidth, int32_t clientHeight = kwindowHeight);
+		int32_t clientWidth = 1280, int32_t clientHeight = 720);
 
 	/// <summary>
 	/// ゲームウィンドウの破棄関数

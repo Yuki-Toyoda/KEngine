@@ -203,7 +203,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Base\RootSignature\ModelRootSignature.cpp" />
     <ClCompile Include="Engine\Base\RootSignature\RootSignatureManager.cpp" />
     <ClCompile Include="Engine\Base\Resource\Rendering\TextureResource.cpp" />
-    <ClCompile Include="Engine\Base\Renderer\NormalRenderer.cpp" />
+    <ClCompile Include="Engine\Base\Renderer\ModelRenderer.cpp" />
     <ClCompile Include="Engine\Base\Renderer\RendererManager.cpp" />
     <ClCompile Include="Engine\Base\Renderer\PPRenderer.cpp" />
     <ClCompile Include="Engine\Base\RootSignature\SkinModelRootSignature.cpp" />
@@ -233,6 +233,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Base\RootSignature\SkyBoxRootSignature.cpp" />
     <ClCompile Include="Engine\Particle\Particle.cpp" />
     <ClCompile Include="Engine\Particle\ParticleManager.cpp" />
+    <ClCompile Include="Engine\Base\Renderer\SpriteRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\PostProcess\Bloom\Bloom.h" />
@@ -359,7 +360,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Base\DescriptorHeaps\HeapManager.h" />
     <ClInclude Include="Engine\Base\Resource\Rendering\TextureResource.h" />
     <ClInclude Include="Engine\Base\Renderer\IRenderer.h" />
-    <ClInclude Include="Engine\Base\Renderer\NormalRenderer.h" />
+    <ClInclude Include="Engine\Base\Renderer\ModelRenderer.h" />
     <ClInclude Include="Engine\Base\Renderer\RendererManager.h" />
     <ClInclude Include="Engine\Lighting\Light\ILight.h" />
     <ClInclude Include="Engine\Base\Renderer\PPRenderer.h" />
@@ -397,6 +398,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Base\RootSignature\SkyBoxRootSignature.h" />
     <ClInclude Include="Engine\Particle\Particle.h" />
     <ClInclude Include="Engine\Particle\ParticleManager.h" />
+    <ClInclude Include="Engine\Base\Renderer\SpriteRenderer.h" />
     <ClInclude Include="Engine\GameObject\User\Level\Level.h" />
   </ItemGroup>
   <ItemGroup>

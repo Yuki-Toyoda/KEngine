@@ -8,7 +8,7 @@ void KEngineFrameWork::Init()
 	// ウィンドウズアプリケーションクラスのインスタンスを取得
 	winApp_ = WinApp::GetInstance();
 	// ゲームウィンドウを生成する
-	winApp_->CreateGameWindow(L"KEngine");
+	winApp_->CreateGameWindow(L"KEngine", WS_OVERLAPPEDWINDOW, KEngine::Config::Window::KWindowWidth, KEngine::Config::Window::KWindowHeight);
 
 	// DirectX汎用クラスのインスタンスを取得
 	dxCommon_ = DirectXCommon::GetInstance();

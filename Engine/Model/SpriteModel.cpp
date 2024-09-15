@@ -46,12 +46,12 @@ void SpriteModel::Update()
 void SpriteModel::Draw(ID3D12GraphicsCommandList6* cmdList)
 {
 	// 描画用バッファをコマンドリストにセットする
-	cmdList->SetGraphicsRootConstantBufferView(2, transformBuffer_->GetGPUView());					   // トランスフォーム
-	cmdList->SetGraphicsRootConstantBufferView(3, materialBuffer_->GetGPUView());					   // マテリアル
-	cmdList->SetGraphicsRootDescriptorTable(4, modelData_->meshletBuffer_->GetGPUView());			   // メッシュレット情報
-	cmdList->SetGraphicsRootDescriptorTable(5, vertexBuffer_->GetGPUView());						   // 頂点情報
-	cmdList->SetGraphicsRootDescriptorTable(6, modelData_->uniqueVertexIndicesBuffer_->GetGPUView());  // 固有頂点情報
-	cmdList->SetGraphicsRootDescriptorTable(7, modelData_->primitiveIndicesBuffer_->GetGPUView());	   // プリミティブインデックス情報
+	cmdList->SetGraphicsRootConstantBufferView(1, transformBuffer_->GetGPUView());					   // トランスフォーム
+	cmdList->SetGraphicsRootConstantBufferView(2, materialBuffer_->GetGPUView());					   // マテリアル
+	cmdList->SetGraphicsRootDescriptorTable(3, modelData_->meshletBuffer_->GetGPUView());			   // メッシュレット情報
+	cmdList->SetGraphicsRootDescriptorTable(4, vertexBuffer_->GetGPUView());						   // 頂点情報
+	cmdList->SetGraphicsRootDescriptorTable(5, modelData_->uniqueVertexIndicesBuffer_->GetGPUView());  // 固有頂点情報
+	cmdList->SetGraphicsRootDescriptorTable(6, modelData_->primitiveIndicesBuffer_->GetGPUView());	   // プリミティブインデックス情報
 
 	// メッシュレットのプリミティブ数分メッシュシェーダーを実行
 	cmdList->DispatchMesh(modelData_->GetMeshletCount(), 1, 1);

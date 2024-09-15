@@ -90,10 +90,12 @@ void DirectXCommon::Draw()
 
 void DirectXCommon::SetMainCamera(Camera* camera)
 {
-	// 描画マネージャーに描画ターゲットセット
+	// 3D描画レンダラーに描画ターゲットセット
 	rendererManager_->AddTarget(camera->GetCameraDataBufferView(), camera->GetRendererResource(), &depthStencil_);
-	// ポストプロセスマネージャに描画ターゲットセット
+	// ポストプロセスレンダラーに描画ターゲットセット
 	rendererManager_->AddTarget(camera->GetRendererResource(), &backBuffers_[swapChain_->GetCurrentBackBufferIndex()], camera->GetDepthStencil(), &camera->ppProcessor_);
+	// 2D描画レンダラーに描画ターゲットをセット
+	rendererManager_->Add2DTarget(camera->GetCameraDataBufferView(), &backBuffers_[swapChain_->GetCurrentBackBufferIndex()], &depthStencil_);
 }
 
 void DirectXCommon::InitializeFixFPS()
