@@ -350,7 +350,9 @@
     <ClCompile Include="Engine\Particle\ParticleManager.cpp">
       <Filter>Engine\Particle</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\PostProcess\Bloom\Bloom.cpp" />
+    <ClCompile Include="Engine\PostProcess\Bloom\Bloom.cpp">
+      <Filter>Engine\PostProcess\Bloom</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -776,7 +778,9 @@
     <ClInclude Include="Engine\Particle\Particle.h">
       <Filter>Engine\Particle</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\PostProcess\Bloom\Bloom.h" />
+    <ClInclude Include="Engine\PostProcess\Bloom\Bloom.h">
+      <Filter>Engine\PostProcess\Bloom</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -809,7 +813,9 @@
     <None Include="Engine\Resource\Shader\Compute\Random.hlsli">
       <Filter>Engine\Resource\Shader</Filter>
     </None>
-    <None Include="Engine\Resource\Shader\PostProcess\Bloom\GaussianBlur.hlsli" />
+    <None Include="Engine\Resource\Shader\PostProcess\Bloom\GaussianBlur.hlsli">
+      <Filter>Engine\Resource\Shader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -1025,6 +1031,9 @@
     <Filter Include="Engine\Particle\CPU">
       <UniqueIdentifier>{552512f8-d458-4a89-8de5-67c7fedf406f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\PostProcess\Bloom">
+      <UniqueIdentifier>{4680ddb0-c774-460a-9532-93b429b6aca0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Externals\imgui\LICENSE.txt">
@@ -1077,8 +1086,14 @@
     <FxCompile Include="Engine\Resource\Shader\Particle\user\Test\UpdateTestParticle.CS.hlsl">
       <Filter>Engine\Resource\Shader</Filter>
     </FxCompile>
-    <FxCompile Include="Engine\Resource\Shader\PostProcess\Bloom\BrightnessFilter.PS.hlsl" />
-    <FxCompile Include="Engine\Resource\Shader\PostProcess\Bloom\GaussianBlurX.hlsl" />
-    <FxCompile Include="Engine\Resource\Shader\PostProcess\Bloom\GaussianBlurY.hlsl" />
+    <FxCompile Include="Engine\Resource\Shader\PostProcess\Bloom\BrightnessFilter.PS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\PostProcess\Bloom\GaussianBlurX.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\PostProcess\Bloom\GaussianBlurY.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
