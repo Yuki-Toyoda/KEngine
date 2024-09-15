@@ -79,12 +79,6 @@
     <ClCompile Include="Engine\GameObject\Samples\SampleSkyDome\SkyDome.cpp">
       <Filter>App\GameObject\Samples\SkyDome</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Collider\Collider.cpp">
-      <Filter>Engine\Collider</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Collider\CollisionManager.cpp">
-      <Filter>Engine\Collider</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Math\Quaternion.cpp">
       <Filter>Engine\Math</Filter>
     </ClCompile>
@@ -116,9 +110,6 @@
       <Filter>App\Utility\Observer</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Engine\Audio\Audio.cpp">
-      <Filter>Engine\Audio</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Debug\Debug.cpp">
       <Filter>Engine\Debug</Filter>
     </ClCompile>
@@ -491,6 +482,15 @@
     <ClCompile Include="Engine\GameObject\User\Level\Level.cpp">
       <Filter>App\GameObject\User\Level</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Audio\Audio.cpp">
+      <Filter>Engine\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Collider\Collider.cpp">
+      <Filter>Engine\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Collider\CollisionManager.cpp">
+      <Filter>Engine\Collider</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Utility\Line\Line.h">
@@ -691,9 +691,6 @@
     <ClInclude Include="Engine\Primitive\2d\BillboardPlane.h">
       <Filter>Engine\Primitive\2d</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Utility\Angle\Angle.h">
-      <Filter>App\Utility\Angle</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\PostProcess\OutLine\OutLine.h">
       <Filter>Engine\PostProcess\OutLine</Filter>
     </ClInclude>
@@ -792,24 +789,6 @@
     <ClInclude Include="Engine\Math\Matrix4x4.h">
       <Filter>Engine\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Collider\Shape\AABB.h">
-      <Filter>Engine\Collider\Shape</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Collider\Shape\OBB.h">
-      <Filter>Engine\Collider\Shape</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Collider\Collider.h">
-      <Filter>Engine\Collider</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Collider\Shape\Sphere.h">
-      <Filter>Engine\Collider\Shape</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Collider\CollisionManager.h">
-      <Filter>Engine\Collider</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Audio\Audio.h">
-      <Filter>Engine\Audio</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Utility\Animation\Animation.h">
       <Filter>App\Utility\Animation</Filter>
     </ClInclude>
@@ -821,9 +800,6 @@
     </ClInclude>
     <ClInclude Include="Engine\Utility\Animation\AnimationManager.h">
       <Filter>App\Utility\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Collider\Shape\BaseShape.h">
-      <Filter>Engine\Collider\Shape</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Debug\Debug.h">
       <Filter>Engine\Debug</Filter>
@@ -1034,6 +1010,30 @@
     </ClInclude>
     <ClInclude Include="Engine\GameObject\User\Level\Level.h">
       <Filter>App\GameObject\User\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Audio\Audio.h">
+      <Filter>Engine\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Collider\Collider.h">
+      <Filter>Engine\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Collider\CollisionManager.h">
+      <Filter>Engine\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Collider\Shape\BaseShape.h">
+      <Filter>Engine\Collider\Shape</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Collider\Shape\AABB.h">
+      <Filter>Engine\Collider\Shape</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Collider\Shape\Sphere.h">
+      <Filter>Engine\Collider\Shape</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Collider\Shape\OBB.h">
+      <Filter>Engine\Collider\Shape</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Utility\Angle\Angle.h">
+      <Filter>App\Utility\Angle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
