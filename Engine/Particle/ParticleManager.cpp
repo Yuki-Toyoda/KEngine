@@ -106,7 +106,7 @@ ParticleManager& ParticleManager::CreateParticlePSO(const std::string& name, con
 	 return *this;
 }
 
-Particle* ParticleManager::CreateNewParticle(const std::string& name, const std::string& filePath, const std::string& fileName, const float lifeTime, const int maxCount)
+Particle* ParticleManager::CreateNewParticle(const std::string& name, const std::string& filePath, const std::string& fileName, const float lifeTime, const bool enableLighting, const int maxCount)
 {
 	// ルートシグネチャをセットする
 	cmdList_->SetComputeRootSignature(root_.GetRootSignature());
@@ -114,7 +114,7 @@ Particle* ParticleManager::CreateNewParticle(const std::string& name, const std:
 	// 新規パーティクル生成
 	std::unique_ptr<Particle> newParticle = std::make_unique<Particle>(maxCount);
 	// パーティクル初期化
-	newParticle->Init(device_, srv_, cmdList_, psos_[name], filePath, fileName, lifeTime);
+	newParticle->Init(device_, srv_, cmdList_, psos_[name], filePath, fileName, lifeTime, enableLighting);
 
 	// インスタンス返還用のモデルを取得
 	Particle* returnParticle = newParticle.get();
@@ -125,4 +125,3 @@ Particle* ParticleManager::CreateNewParticle(const std::string& name, const std:
 	// 生成したモデルを返す
 	return returnParticle;
 }
-
