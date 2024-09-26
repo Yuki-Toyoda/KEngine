@@ -96,7 +96,8 @@ public: // メンバ関数
 	/// <param name="filePath">使用モデルまでのファイルパス</param>
 	/// <param name="fileName">使用モデルのファイル名</param>
 	/// <param name="lifeTime">パーティクル自体の生存秒数</param>
-	void Init(DirectXDevice* device, SRV* srv, ID3D12GraphicsCommandList6* list, const ParticlePSO& pso, const std::string& filePath, const std::string& fileName, const float lifeTime);
+	/// <param name="enableLighting">ライティングを有効にするか</param>
+	void Init(DirectXDevice* device, SRV* srv, ID3D12GraphicsCommandList6* list, const ParticlePSO& pso, const std::string& filePath, const std::string& fileName, const float lifeTime, const bool enableLighting);
 
 	/// <summary>
 	/// 初期化シェーダーの実行関数

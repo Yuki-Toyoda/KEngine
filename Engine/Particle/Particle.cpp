@@ -1,7 +1,7 @@
 #include "Particle.h"
 #include "../Model/ModelManager.h"
 
-void Particle::Init(DirectXDevice* device, SRV* srv, ID3D12GraphicsCommandList6* list, const ParticlePSO& pso, const std::string& filePath, const std::string& fileName, const float lifeTime)
+void Particle::Init(DirectXDevice* device, SRV* srv, ID3D12GraphicsCommandList6* list, const ParticlePSO& pso, const std::string& filePath, const std::string& fileName, const float lifeTime, const bool enableLighting)
 {
 	// PSOの取得
 	pso_ = pso;
@@ -14,6 +14,10 @@ void Particle::Init(DirectXDevice* device, SRV* srv, ID3D12GraphicsCommandList6*
 
 	// モデル読み込み
 	model_ = ModelManager::GetInstance()->CreateParticleModel(filePath, fileName);
+	// ライティングの有効状態変更
+	for (size_t i = 0; i < model_->materials_.size(); i++) {
+		model_->materials_[i].enableLighting_ = enableLighting;
+	}
 
 	// タイマーを指定された秒数で開始
 	timer_.Start(lifeTime);
