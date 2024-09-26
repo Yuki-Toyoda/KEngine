@@ -9,8 +9,11 @@ void EnemyBullet::Init()
 	AddNormalModel(&transform_, "./Engine/Resource/Samples/Sphere", "Sphere.obj");
 
 	// 弾の色調整
-	normalModels_[0]->materials_[0].color_ = { 0.0f, 2.5f, 1.0f, 0.0f };
+	normalModels_[0]->materials_[0].color_ = { 0.0f, 2.5f, 1.0f, .85f };
 	normalModels_[0]->materials_[0].enableLighting_ = false;
+	normalModels_[0]->materials_[0].dissolveEdgeColor_ = { 0.0f, 1.0f, 0.45f };
+	normalModels_[0]->materials_[0].dissolveEdgeThreshold_ = 0.1f;
+	normalModels_[0]->materials_[0].dissolveStrength_ = 1.0f;
 
 	// 球のコライダー追加
 	AddColliderSphere("Bullet", &transform_.translate_, &transform_.scale_.x);
@@ -21,11 +24,11 @@ void EnemyBullet::Init()
 
 void EnemyBullet::Update()
 {
-	if (normalModels_[0]->materials_[0].color_.w < 0.55f) {
-		normalModels_[0]->materials_[0].color_.w += 0.025f;
+	if (normalModels_[0]->materials_[0].dissolveStrength_ > 0.0f) {
+		normalModels_[0]->materials_[0].dissolveStrength_ -= 0.01f;
 	}
 	else {
-		normalModels_[0]->materials_[0].color_.w = 0.55f;
+		normalModels_[0]->materials_[0].dissolveStrength_ = 0.0f;
 	}
 
 	// 弾を移動させる
