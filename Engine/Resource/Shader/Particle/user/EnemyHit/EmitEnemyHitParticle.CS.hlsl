@@ -29,12 +29,12 @@ void main( uint3 DTid : SV_DispatchThreadID )
                 float32_t s = 0.45f * (generator.Generate1d()) + 0.15f;
                 
                 // 青色を指定
-                float32_t r = 0.9f * (generator.Generate1d()) + 0.1f;
+                float32_t g = 0.05f * (generator.Generate1d());
                 
                 // 各値の初期化
                 gParticles[particleIndex].scale       = float32_t3(s, s, s);
                 gParticles[particleIndex].translate   = emitter.translate;
-                gParticles[particleIndex].color.rgb   = float32_t3(r, 0.0f, 0.0f);
+                gParticles[particleIndex].color.rgb   = float32_t3(1.0f, g, 0.0f);
                 gParticles[particleIndex].color.a     = 1.0f;
                 gParticles[particleIndex].lifeTime    = 0.5f;
                 gParticles[particleIndex].velocity    = generator.Generate3D() / 4.0f + float32_t3(-0.125f, -0.125f, -0.125f);

@@ -7,6 +7,9 @@ void FollowCamera::Init()
 	// 基底クラスの初期化を行う
 	Camera::Init();
 
+	// ブルームの閾値を変更しておく
+	ppProcessor_.bloom_.threshold_ = 0.25f;
+
 	// オフセットなしのトランスフォームの初期化
 	noOffsetTransform_.Init();
 

@@ -29,7 +29,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
                 float32_t s = 1.0f * (generator.Generate1d()) + 0.35f;
                 
                 // 青色を指定
-                float32_t b = 0.65f * (generator.Generate1d()) + 0.1f;
+                float32_t g = 1.0f * (generator.Generate1d());
                 
                 // 先に速度ベクトルをランダムに求め、生存時間設定
                 gParticles[particleIndex].velocity = generator.Generate3D() / 4.0f + float32_t3(-0.125f, -0.125f, -0.125f);
@@ -43,7 +43,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
                 
                 // 各値の初期化
                 gParticles[particleIndex].scale = float32_t3(s, s, s);
-                gParticles[particleIndex].color.rgb = float32_t3(0.0f, 0.15f, b);
+                gParticles[particleIndex].color.rgb = float32_t3(0.0f, g, 1.0f);
                 gParticles[particleIndex].color.a = 1.0f;
                 gParticles[particleIndex].currentTime = 0.0f;
             }

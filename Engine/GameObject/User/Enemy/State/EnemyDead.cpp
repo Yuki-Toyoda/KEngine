@@ -30,6 +30,7 @@ void EnemyDead::Init()
 	camera_->transform_.rotate_ = { -0.285f, 0.55f, 0.0f };
 	camera_->fov_ = 0.6f;
 	camera_->UseThisCamera();
+	camera_->ppProcessor_.bloom_.threshold_ = 0.25f;
 }
 
 void EnemyDead::Update()

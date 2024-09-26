@@ -25,6 +25,7 @@ void Damage::Init()
 		c->transform_.rotate_ = { (float)std::numbers::pi / 2.0f, 0.0f, 0.0f };
 		c->fov_ = 0.6f;
 		c->UseThisCamera();
+		c->ppProcessor_.bloom_.threshold_ = 0.25f;
 	}
 
 	player_->skiningModels_[0]->animationManager_.PlayAnimation("06_Damage");

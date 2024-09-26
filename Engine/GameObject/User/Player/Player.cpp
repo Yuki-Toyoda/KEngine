@@ -35,6 +35,7 @@ void Player::Init()
 	titleCamera_ = GameObjectManager::GetInstance()->CreateInstance<Camera>("TitleCamera", IObject::TagCamera);
 	titleCamera_->transform_.translate_ = { -1.5f, 0.92f, -3.5f };
 	titleCamera_->transform_.rotate_ = { -0.15f, 0.325f, 0.0f };
+	titleCamera_->ppProcessor_.bloom_.threshold_ = 0.25f;
 
 	// アニメーション生成
 	titleAnim_ = AnimationManager::GetInstance()->CreateAnimation("TitleAnim", "Title_Idle");
