@@ -27,6 +27,11 @@ void Material::DisplayImGui()
 		// 環境マップ移りこみ強度
 		ImGui::DragFloat("EnvironmentCoefficient", &environmentCoefficient_, 0.01f, 0.0f, 1.0f);
 
+		// Dissolve関係のデバッグ
+		ImGui::DragFloat("DissolveStrength", &dissolveStrength_, 0.01f, 0.0f, 1.0f);
+		ImGui::DragFloat3("DissolveEdgeColor", &dissolveEdgeColor_.x, 0.01f, 0.0f, 1.0f);
+		ImGui::DragFloat("DissolveEdgeThreshold", &dissolveEdgeThreshold_, 0.01f, 0.0f, 10.0f);
+
 		// ツリーノード終了
 		ImGui::TreePop();
 	}
@@ -66,8 +71,11 @@ MaterialData& MaterialData::operator=(const Material& mat)
 	// 各情報の代入を行う
 	uvTransform_			= mat.uvTransform_.GetMatWorld();
 	color_					= mat.color_;
-	environmentCoefficient_ = mat.environmentCoefficient_;
 	enableLighting_			= mat.enableLighting_;
+	environmentCoefficient_ = mat.environmentCoefficient_;
+	dissolveStrength_		= mat.dissolveStrength_;
+	dissolveEdgeColor_		= mat.dissolveEdgeColor_;
+	dissolveEdgeThreshold_	= mat.dissolveEdgeThreshold_;
 
 	// テクスチャインデックスの取得
 	if (mat.tex_.GetView() == -1) {
@@ -79,7 +87,8 @@ MaterialData& MaterialData::operator=(const Material& mat)
 		textureIndex_ = mat.tex_.GetView();
 	}
 
-	textureIndex_ -= KEngine::Config::Rendering::kMaxBuffer;
+	// インデックスのずれを修正する
+	textureIndex_			-= KEngine::Config::Rendering::kMaxBuffer;
 
 	// 代入後の結果を返す
 	return *this;

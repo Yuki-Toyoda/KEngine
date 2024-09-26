@@ -19,10 +19,12 @@ void ModelRootSignature::Init()
 	CreateDescriptorTableParameter(3, D3D12_SHADER_VISIBILITY_ALL);
 	// マテリアル用パラメータ生成
 	CreateDescriptorTableParameter(4, D3D12_SHADER_VISIBILITY_ALL);
-	// 環境マップテクスチャ用パラメータ生成
+	// Dissolve用テクスチャパラメータ生成
 	CreateDescriptorTableParameter(5, D3D12_SHADER_VISIBILITY_ALL);
+	// 環境マップテクスチャ用パラメータ生成
+	CreateDescriptorTableParameter(6, D3D12_SHADER_VISIBILITY_ALL);
 	// テクスチャデータ用パラメータ生成
-	CreateDescriptorTableParameter(6, D3D12_SHADER_VISIBILITY_ALL, D3D12_DESCRIPTOR_RANGE_TYPE_SRV, KEngine::Config::Rendering::kMaxTexture);
+	CreateDescriptorTableParameter(7, D3D12_SHADER_VISIBILITY_ALL, D3D12_DESCRIPTOR_RANGE_TYPE_SRV, KEngine::Config::Rendering::kMaxTexture);
 
 	// サンプラー生成
 	CreateSampler(0);

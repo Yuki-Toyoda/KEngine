@@ -27,6 +27,9 @@ struct Material
     int32_t      enableLighting;
     int32_t      textureIndex;
     float32_t    environmentCoefficient_;
+    float32_t    dissolveStrength;
+    float32_t3   dissolveEdgeColor;
+    float32_t    dissolveEdgeThreshold;
 };
 
 struct VertexData

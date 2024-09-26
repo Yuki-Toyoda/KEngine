@@ -17,8 +17,10 @@ void SpriteRootSignature::Init()
 	CreateDescriptorTableParameter(2, D3D12_SHADER_VISIBILITY_ALL);
 	// プリミティブ頂点用パラメータ生成
 	CreateDescriptorTableParameter(3, D3D12_SHADER_VISIBILITY_ALL);
+	// Dissolve用テクスチャパラメータ生成
+	CreateDescriptorTableParameter(4, D3D12_SHADER_VISIBILITY_ALL);
 	// テクスチャデータ用パラメータ生成
-	CreateDescriptorTableParameter(4, D3D12_SHADER_VISIBILITY_ALL, D3D12_DESCRIPTOR_RANGE_TYPE_SRV, KEngine::Config::Rendering::kMaxTexture);
+	CreateDescriptorTableParameter(5, D3D12_SHADER_VISIBILITY_ALL, D3D12_DESCRIPTOR_RANGE_TYPE_SRV, KEngine::Config::Rendering::kMaxTexture);
 
 	// サンプラー生成
 	CreateSampler(0);

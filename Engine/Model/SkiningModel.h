@@ -84,6 +84,8 @@ public: // パブリックメンバ変数
 	WorldTransform transform_;
 	// マテリアル
 	std::vector<Material> materials_;
+	// Dissolve用テクスチャ
+	Texture DissolveTex_;
 
 	// スケルトン
 	Skelton skelton_{};

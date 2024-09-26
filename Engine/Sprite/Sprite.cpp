@@ -105,7 +105,7 @@ void Sprite::DisplayImGui()
 		ImGui::ColorPicker4("Color", &color_.x);
 
 		if (ImGui::TreeNode("UVTransform")) {
-			model_->material_.uvTransform_.DisplayImGui("uvTransform");
+			model_->material_.DisplayImGui();
 			ImGui::TreePop();
 		}
 

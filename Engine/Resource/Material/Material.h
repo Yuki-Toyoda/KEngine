@@ -51,6 +51,13 @@ public: // パブリックなメンバ変数
 	// 環境マップ移りこみ強度
 	float environmentCoefficient_ = 0.0f;
 
+	// Dissolve強度
+	float dissolveStrength_ = 0.0f;
+	// Dissolveのエッジ色
+	Vector3 dissolveEdgeColor_ = Vector3();
+	// Dissolveのエッジ閾値
+	float dissolveEdgeThreshold_ = 0.35f;
+
 	// ライティングを行うか
 	bool enableLighting_ = true;
 
@@ -70,6 +77,12 @@ struct MaterialData {
 	int32_t   textureIndex_;
 	// 環境マップ移りこみ強度
 	float environmentCoefficient_;
+	// Dissolve強度
+	float dissolveStrength_;
+	// Dissolveのエッジ色
+	Vector3 dissolveEdgeColor_;
+	// Dissolveのエッジ閾値
+	float dissolveEdgeThreshold_;
 
 	/// <summary>
 	/// コンストラクタ

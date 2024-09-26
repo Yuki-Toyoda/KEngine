@@ -1,5 +1,6 @@
 #include "SpriteModel.h"
 #include "../Base/DirectXCommon.h"
+#include "../Resource/Texture/TextureManager.h"
 
 void SpriteModel::Init(ModelData* modelData)
 {
@@ -9,6 +10,8 @@ void SpriteModel::Init(ModelData* modelData)
 	material_ = modelData->materials_[0];
 	// 頂点データを取得する
 	vertices_ = modelData_->vertices_;
+	// Dissolve用テクスチャのサンプルを読み込んでおく
+	DissolveTex_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "noise0.png");
 
 	// トランスフォームの初期化
 	transform_.Init();
@@ -52,6 +55,7 @@ void SpriteModel::Draw(ID3D12GraphicsCommandList6* cmdList)
 	cmdList->SetGraphicsRootDescriptorTable(4, vertexBuffer_->GetGPUView());						   // 頂点情報
 	cmdList->SetGraphicsRootDescriptorTable(5, modelData_->uniqueVertexIndicesBuffer_->GetGPUView());  // 固有頂点情報
 	cmdList->SetGraphicsRootDescriptorTable(6, modelData_->primitiveIndicesBuffer_->GetGPUView());	   // プリミティブインデックス情報
+	cmdList->SetGraphicsRootDescriptorTable(7, DissolveTex_.GetAddress());							   // Dissolve用テクスチャ
 
 	// メッシュレットのプリミティブ数分メッシュシェーダーを実行
 	cmdList->DispatchMesh(modelData_->GetMeshletCount(), 1, 1);

@@ -36,6 +36,8 @@ public: // パブリックメンバ変数
 	WorldTransform transform_;
 	// マテリアル
 	std::vector<Material> materials_;
+	// Dissolve用テクスチャ
+	Texture DissolveTex_;
 
 	// トランスフォーム用定数バッファ
 	std::unique_ptr<ConstantBuffer<Matrix4x4>> transformBuffer_;

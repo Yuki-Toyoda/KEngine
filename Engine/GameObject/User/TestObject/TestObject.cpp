@@ -7,7 +7,7 @@
 void TestObject::Init()
 {
 	// メッシュ追加関数
-	AddNormalModel(&transform_, "./Engine/Resource/Samples/Sphere", "Sphere.obj");
+	AddNormalModel(&transform_, "./Engine/Resource/Samples/Leeme", "leeme.gltf");
 
 	// ~スプライトの追加関数~
 	AddSprite("TestSprite", { 0.0f, 0.0f }, { 512.0f, 512.0f }, TextureManager::Load("./Engine/Resource/Samples/Box", "uvChecker.png"));
@@ -30,6 +30,8 @@ void TestObject::DisplayImGui()
 
 	// 基底クラスのImGuiを表示する
 	IObject::DisplayImGui();
+
+	sprites_[0]->DisplayImGui();
 
 	// ボタンを押したらパーティクル生成
 	if (ImGui::Button("GenrateParticle")) {

@@ -66,7 +66,7 @@ void SpriteRenderer::DrawCall(ID3D12GraphicsCommandList6* list)
 		list->SetPipelineState(spritePSO_.GetState());
 		// 共通データのアドレスを渡す
 		list->SetGraphicsRootConstantBufferView(0, it->view_);		   // カメラデータ
-		list->SetGraphicsRootDescriptorTable(7, s->GetFirstTexView()); // テクスチャデータ
+		list->SetGraphicsRootDescriptorTable(8, s->GetFirstTexView()); // テクスチャデータ
 
 		// スプライトモデルの描画を行う
 		modelManager_->SpriteModelDraw(list);
