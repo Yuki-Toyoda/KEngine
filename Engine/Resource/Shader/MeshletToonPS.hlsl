@@ -42,6 +42,22 @@ float32_t4 main(VertexOutPut input) : SV_TARGET
         output.rgb += environmentColor.rgb;
     }
     
+    // Dissolve強度が0.0以上の場合
+    if (materials[input.mIndex].dissolveStrength > 0.0f)
+    {
+        // マスク用のテクスチャをサンプリングする
+        float32_t mask = gMaskTexture.Sample(gSampler, input.texCoord);
+        // マスクの値が強度を超過している場合ピクセルを棄却する
+        if (mask <= materials[input.mIndex].dissolveStrength)
+        {
+            discard;
+        }
+        
+        // エッジの処理を行う
+        float32_t edge = 1.0f - smoothstep(materials[input.mIndex].dissolveStrength, materials[input.mIndex].dissolveStrength + materials[input.mIndex].dissolveEdgeThreshold, mask);
+        output.rgb += edge * materials[input.mIndex].dissolveEdgeColor;
+    }
+    
     // 計算結果を返す
     return output;
 }

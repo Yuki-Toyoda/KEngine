@@ -130,8 +130,8 @@ void ModelRenderer::DrawCall(ID3D12GraphicsCommandList6* list)
 		// 共通データのアドレスを渡す
 		list->SetGraphicsRootConstantBufferView(0, it->view_);					// カメラデータ
 		list->SetGraphicsRootConstantBufferView(1, light_->view());				// 平行光源データ
-		list->SetGraphicsRootDescriptorTable(8, skyBox->GetTextureAddress());	// 環境マップ用テクスチャ
-		list->SetGraphicsRootDescriptorTable(9, s->GetFirstTexView());			// テクスチャデータ
+		list->SetGraphicsRootDescriptorTable(9, skyBox->GetTextureAddress());	// 環境マップ用テクスチャ
+		list->SetGraphicsRootDescriptorTable(10, s->GetFirstTexView());			// テクスチャデータ
 
 		// 通常モデルの描画を行う
 		modelManager_->NormalModelDraw(list);

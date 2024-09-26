@@ -36,6 +36,8 @@ public: // パブリックメンバ変数
 	WorldTransform transform_;
 	// マテリアル
 	Material material_;
+	// Dissolve用テクスチャ
+	Texture DissolveTex_;
 
 	// 頂点配列
 	std::vector<VertexData> vertices_;

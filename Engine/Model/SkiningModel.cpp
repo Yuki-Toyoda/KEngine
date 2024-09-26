@@ -1,5 +1,6 @@
 #include "SkiningModel.h"
 #include "../Base/DirectXCommon.h"
+#include "../Resource/Texture/TextureManager.h"
 
 void SkiningModel::Init(ModelData* modelData)
 {
@@ -13,6 +14,8 @@ void SkiningModel::Init(ModelData* modelData)
 	skelton_ = modelData->skelton_.value();
 	// スキンクラスターの参照を保持
 	skinCluster_ = &modelData->skinCluster_.value();
+	// Dissolve用テクスチャのサンプルを読み込んでおく
+	DissolveTex_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "noise0.png");
 
 	// トランスフォームの初期化
 	transform_.Init();
@@ -92,6 +95,7 @@ void SkiningModel::Draw(ID3D12GraphicsCommandList6* cmdList)
 	cmdList->SetGraphicsRootDescriptorTable(5, modelData_->uniqueVertexIndicesBuffer_->GetGPUView()); // 固有頂点情報
 	cmdList->SetGraphicsRootDescriptorTable(6, modelData_->primitiveIndicesBuffer_->GetGPUView());	  // プリミティブインデックス情報
 	cmdList->SetGraphicsRootDescriptorTable(7, materialsBuffer_->GetGPUView());						  // マテリアル
+	cmdList->SetGraphicsRootDescriptorTable(8, DissolveTex_.GetAddress());							  // Dissolve用テクスチャ
 
 	// メッシュレットのプリミティブ数分メッシュシェーダーを実行
 	cmdList->DispatchMesh(modelData_->GetMeshletCount(), 1, 1);
