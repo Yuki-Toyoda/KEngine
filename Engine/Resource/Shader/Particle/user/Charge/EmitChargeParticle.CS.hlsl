@@ -29,7 +29,7 @@ void main( uint3 DTid : SV_DispatchThreadID )
                 float32_t s = 1.0f * (generator.Generate1d()) + 0.35f;
                 
                 // 青色を指定
-                float32_t b = 1.0f * (generator.Generate1d());
+                float32_t b = 1.0f * (generator.Generate1d()) + 0.15f;
                 
                 // 先に速度ベクトルをランダムに求め、生存時間設定
                 gParticles[particleIndex].velocity = generator.Generate3D() / 4.0f + float32_t3(-0.125f, -0.125f, -0.125f);
