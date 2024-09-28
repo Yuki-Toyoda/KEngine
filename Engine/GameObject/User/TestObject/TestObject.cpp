@@ -7,7 +7,11 @@
 void TestObject::Init()
 {
 	// メッシュ追加関数
-	AddNormalModel(&transform_, "./Engine/Resource/Samples/Leeme", "leeme.gltf");
+	//AddNormalModel(&transform_, "./Engine/Resource/Samples/Leeme", "leeme.gltf");
+	AddSkiningModel(&transform_, "./Engine/Resource/Samples/Player", "Player.gltf");
+
+	// 待機アニメーションの再生
+	skiningModels_[0]->animationManager_.PlayAnimation("00_Idle", 0.0f, true);
 
 	// ~スプライトの追加関数~
 	AddSprite("TestSprite", { 0.0f, 0.0f }, { 512.0f, 512.0f }, TextureManager::Load("./Engine/Resource/Samples/Box", "uvChecker.png"));
@@ -33,10 +37,17 @@ void TestObject::DisplayImGui()
 
 	sprites_[0]->DisplayImGui();
 
-	// ボタンを押したらパーティクル生成
-	if (ImGui::Button("GenrateParticle")) {
-		Particle* n = ParticleManager::GetInstance()->CreateNewParticle("Test", "./Engine/Resource/Samples/Plane", "Plane.obj", 30.0f);
-		n->transform_.SetParent(&transform_);
+	ImGui::DragFloat("TransitionTime", &testFloatValue_, 0.01f, 0.0f, 5.0f);
+
+	// ボタンを押したらアニメーション切り替え
+	if (ImGui::Button("Idle")) {
+		skiningModels_[0]->animationManager_.PlayAnimation("00_Idle", testFloatValue_, true);
+	}
+	if (ImGui::Button("Run")) {
+		skiningModels_[0]->animationManager_.PlayAnimation("01_Run", testFloatValue_, true);
+	}
+	if (ImGui::Button("Attack")) {
+		skiningModels_[0]->animationManager_.PlayAnimation("02_HorizontalSlash", testFloatValue_, true);
 	}
 }
 

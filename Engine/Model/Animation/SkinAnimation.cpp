@@ -1,5 +1,4 @@
 #include "SkinAnimation.h"
-#include "../Component/Skelton.h"
 
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
@@ -20,7 +19,7 @@ void SkinAnimation::Init()
 void SkinAnimation::Update(Skelton* skelton)
 {
 	// アニメーションが再生されていない場合早期リターン
-	if (!isPlay_) { return; }
+	if (!isPlay_ && !isTransitioning_) { return; }
 
 	// 60FPS固定でアニメーションの秒数加算
 	animationTime_ += 1.0f / 60.0f;
@@ -38,14 +37,42 @@ void SkinAnimation::Update(Skelton* skelton)
 		}
 	}
 
-	// スケルトンにアニメーションを適用させる
-	for (Joint& joint : skelton->joints_) {
-		// 対象のジョイントのアニメーションがあれば値の適用を行う
-		if (auto it = nodeAnimations_.find(joint.name_); it != nodeAnimations_.end()) {
-			const NodeAnimation& rootNodeAnimation = (*it).second;
-			joint.transform_.translate_ = CalculateValue(rootNodeAnimation.translate.keyframes, animationTime_);
-			joint.transform_.rotate_ = CalculateValue(rootNodeAnimation.rotate.keyframes, animationTime_);
-			joint.transform_.scale_ = CalculateValue(rootNodeAnimation.scale.keyframes, animationTime_);
+	// 補完中であれば
+	if (isTransitioning_) {
+		// 60FPS固定で補完秒数加算
+		currentTransitionTime_ += 1.0f / 60.0f;
+
+		// スケルトンにアニメーションを適用させる
+		for (Joint& joint : skelton->joints_) {
+			// 対象のジョイントのアニメーションがあれば値の適用を行う
+			if (auto it = nodeAnimations_.find(joint.name_); it != nodeAnimations_.end()) {
+				const NodeAnimation& rootNodeAnimation = (*it).second;
+
+				// 補完元のスケルトンのトランスフォームを取得
+				QuatWorldTransform wt = prevSkelton_.joints_[prevSkelton_.jointMap_[joint.name_]].transform_;
+
+				joint.transform_.translate_ = CalculateValue(wt.translate_, rootNodeAnimation.translate.keyframes, animationTime_);
+				joint.transform_.rotate_ = CalculateValue(wt.rotate_, rootNodeAnimation.rotate.keyframes, animationTime_);
+				joint.transform_.scale_ = CalculateValue(wt.scale_, rootNodeAnimation.scale.keyframes, animationTime_);
+			}
+		}
+
+		// 最終秒数に到達していた場合
+		if (currentTransitionTime_ > transitionDuration_) {
+			// 補完終了
+			isTransitioning_ = false;
+		}
+	}
+	else { // 補完中ではない場合
+		// スケルトンにアニメーションを適用させる
+		for (Joint& joint : skelton->joints_) {
+			// 対象のジョイントのアニメーションがあれば値の適用を行う
+			if (auto it = nodeAnimations_.find(joint.name_); it != nodeAnimations_.end()) {
+				const NodeAnimation& rootNodeAnimation = (*it).second;
+				joint.transform_.translate_ = CalculateValue(rootNodeAnimation.translate.keyframes, animationTime_);
+				joint.transform_.rotate_ = CalculateValue(rootNodeAnimation.rotate.keyframes, animationTime_);
+				joint.transform_.scale_ = CalculateValue(rootNodeAnimation.scale.keyframes, animationTime_);
+			}
 		}
 	}
 }
@@ -62,6 +89,23 @@ void SkinAnimation::Start(float startSec)
 	isPlay_ = true;
 	// 秒数を引数の値でリセット
 	animationTime_ = startSec;
+	// 補完を行わない設定に
+	isTransitioning_ = false;
+}
+
+
+void SkinAnimation::Start(float transitionTime, Skelton* skelton)
+{
+	// アニメーション開始
+	Start(0.0f);
+	// 補完元アニメーションの取得
+	prevSkelton_ = *skelton;
+	// 現在補完秒数リセット
+	currentTransitionTime_ = 0.0f;
+	// 補完秒数取得
+	transitionDuration_ = transitionTime;
+	// 補完中状態に
+	isTransitioning_ = true;
 }
 
 void SkinAnimation::Stop()
@@ -198,4 +242,74 @@ Quaternion SkinAnimation::CalculateValue(const std::vector<keyframe<Quaternion>>
 	return (*keyframes.rbegin()).value;
 }
 
+Vector3 SkinAnimation::CalculateValue(const Vector3& prevKeyframes, const std::vector<keyframe<Vector3>>& keyframes, float time)
+{
+	// キーがない場合返す値がないので停止させる
+	assert(!keyframes.empty());
 
+	// キーが１つ、または秒数がキーフレーム前なら最初の値とする
+	if (keyframes.size() == 1 || time <= keyframes[0].time) {
+		// 最初の値を返す
+		return keyframes[0].value;
+	}
+
+	// キーフレーム数分ループ
+	for (size_t index = 0; index < keyframes.size() - 1; index++) {
+		// 次のインデックスを求める
+		size_t nextIndex = index + 1;
+
+		// 現在のインデックスと次のインデックスの2つのキーフレームを取得し、範囲内に秒数があるか判定
+		if (keyframes[index].time <= time && time <= keyframes[nextIndex].time) {
+			// 計算結果一時保存用
+			Vector3 tempValue = Vector3();
+			
+			// 範囲内を補完する
+			float t = (time - keyframes[index].time) / (keyframes[nextIndex].time - keyframes[index].time);
+			// 線形補間を行う
+			tempValue = KLib::Lerp<Vector3>(keyframes[index].value, keyframes[nextIndex].value, t);
+			// 補完用のtを求める
+			float transitionT = currentTransitionTime_ / transitionDuration_;
+			// 線形補間によるアニメーションの補完を行う
+			return KLib::Lerp<Vector3>(prevKeyframes, tempValue, transitionT);
+		}
+	}
+
+	// ここまで来た場合は最後の値を返す
+	return (*keyframes.rbegin()).value;
+}
+
+Quaternion SkinAnimation::CalculateValue(const Quaternion& prevKeyframes, const std::vector<keyframe<Quaternion>>& keyframes, float time)
+{
+	// キーがない場合返す値がないので停止させる
+	assert(!keyframes.empty());
+
+	// キーが１つ、または秒数がキーフレーム前なら最初の値とする
+	if (keyframes.size() == 1 || time <= keyframes[0].time) {
+		// 最初の値を返す
+		return keyframes[0].value;
+	}
+
+	// キーフレーム数分ループ
+	for (size_t index = 0; index < keyframes.size() - 1; index++) {
+		// 次のインデックスを求める
+		size_t nextIndex = index + 1;
+
+		// 現在のインデックスと次のインデックスの2つのキーフレームを取得し、範囲内に秒数があるか判定
+		if (keyframes[index].time <= time && time <= keyframes[nextIndex].time) {
+			// 計算結果一時保存用
+			Quaternion tempValue = Quaternion();
+			
+			// 範囲内を補完する
+			float t = (time - keyframes[index].time) / (keyframes[nextIndex].time - keyframes[index].time);
+			// 線形補間を行う
+			tempValue = Quaternion::Slerp(t, keyframes[index].value, keyframes[nextIndex].value);
+			// 補完用のtを求める
+			float transitionT = currentTransitionTime_ / transitionDuration_;
+			// 線形補間によるアニメーションの補完を行う
+			return Quaternion::Slerp(transitionT, prevKeyframes, tempValue);
+		}
+	}
+
+	// ここまで来た場合は最後の値を返す
+	return (*keyframes.rbegin()).value;
+}
