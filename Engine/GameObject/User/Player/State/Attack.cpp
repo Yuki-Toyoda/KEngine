@@ -14,7 +14,7 @@ void Attack::Init()
 	player_->isAttacking_ = true;
 
 	// 攻撃アニメーションの再生
-	player_->skiningModels_[0]->animationManager_.PlayAnimation("02_HorizontalSlash");
+	player_->skiningModels_[0]->animationManager_.PlayAnimation("02_HorizontalSlash", 0.05f);
 
 	// 線の座標を戻す
 	player_->attackLine_->position_ = { 0.0f, 0.0f, 0.0f };

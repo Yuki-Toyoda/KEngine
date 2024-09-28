@@ -33,7 +33,7 @@ void Root::Update()
 		// ロックオンが有効でないとき
 		if (!player_->followCamera_->GetEnableZForcus()) {
 			if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("01_Run")) {
-				player_->skiningModels_[0]->animationManager_.PlayAnimation("01_Run");
+				player_->skiningModels_[0]->animationManager_.PlayAnimation("01_Run", 0.25f, true);
 			}
 		}
 		else { // 有効時
@@ -42,12 +42,12 @@ void Root::Update()
 				// 移動ベクトルが前方方向だった場合
 				if (move.z > 0.0f) {
 					if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("01_Run")) {
-						player_->skiningModels_[0]->animationManager_.PlayAnimation("01_Run");
+						player_->skiningModels_[0]->animationManager_.PlayAnimation("01_Run", 0.1f, true);
 					}
 				}
 				else { // 後方だった場合
 					if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("09_LockOnMoveBack")) {
-						player_->skiningModels_[0]->animationManager_.PlayAnimation("09_LockOnMoveBack");
+						player_->skiningModels_[0]->animationManager_.PlayAnimation("09_LockOnMoveBack", 0.15f, true);
 					}
 				}
 			}
@@ -55,12 +55,12 @@ void Root::Update()
 				// 右方向に移動している場合
 				if (move.x > 0.0f) {
 					if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("10_LockOnMoveRight")) {
-						player_->skiningModels_[0]->animationManager_.PlayAnimation("10_LockOnMoveRight");
+						player_->skiningModels_[0]->animationManager_.PlayAnimation("10_LockOnMoveRight", 0.15f, true);
 					}
 				}
 				else if(move.x < 0.0f){ // 左方向に移動している場合
 					if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("11_LockOnMoveLeft")) {
-						player_->skiningModels_[0]->animationManager_.PlayAnimation("11_LockOnMoveLeft");
+						player_->skiningModels_[0]->animationManager_.PlayAnimation("11_LockOnMoveLeft", 0.15f, true);
 					}
 				}
 			}
@@ -110,13 +110,13 @@ void Root::Update()
 		if (!player_->followCamera_->GetEnableZForcus()) {
 			// 
 			if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("00_Idle")) {
-				player_->skiningModels_[0]->animationManager_.PlayAnimation("00_Idle");
+				player_->skiningModels_[0]->animationManager_.PlayAnimation("00_Idle", 0.25f, true);
 			}
 		}
 		else { // 有効時
 			// 
 			if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("08_LockOnIdle")) {
-				player_->skiningModels_[0]->animationManager_.PlayAnimation("08_LockOnIdle");
+				player_->skiningModels_[0]->animationManager_.PlayAnimation("08_LockOnIdle", 0.15f, true);
 			}
 		}
 	}

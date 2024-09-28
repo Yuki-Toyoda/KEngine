@@ -11,7 +11,7 @@ void EnemyBullet::Init()
 	// 弾の色調整
 	normalModels_[0]->materials_[0].color_ = { 0.0f, 2.5f, 1.0f, .85f };
 	normalModels_[0]->materials_[0].enableLighting_ = false;
-	normalModels_[0]->materials_[0].dissolveEdgeColor_ = { 0.0f, 1.0f, 0.45f };
+	normalModels_[0]->materials_[0].dissolveEdgeColor_ = { 1.0f, 1.0f, 0.45f };
 	normalModels_[0]->materials_[0].dissolveEdgeThreshold_ = 0.1f;
 	normalModels_[0]->materials_[0].dissolveStrength_ = 1.0f;
 
@@ -24,11 +24,25 @@ void EnemyBullet::Init()
 
 void EnemyBullet::Update()
 {
-	if (normalModels_[0]->materials_[0].dissolveStrength_ > 0.0f) {
-		normalModels_[0]->materials_[0].dissolveStrength_ -= 0.01f;
+	if (isDissolving_) {
+		if (!isSwitchDissolving_) {
+			normalModels_[0]->materials_[0].dissolveStrength_ = KLib::Lerp<float>(normalModels_[0]->materials_[0].dissolveStrength_, 0.1f, 0.05f);
+			if (normalModels_[0]->materials_[0].dissolveStrength_ <= 0.125f) {
+				isSwitchDissolving_ = true;
+			}
+		}
+		else {
+			normalModels_[0]->materials_[0].dissolveStrength_ = KLib::Lerp<float>(normalModels_[0]->materials_[0].dissolveStrength_, 0.5f, 0.05f);
+			if (normalModels_[0]->materials_[0].dissolveStrength_ >= 0.475f) {
+				isSwitchDissolving_ = false;
+			}
+		}
 	}
 	else {
-		normalModels_[0]->materials_[0].dissolveStrength_ = 0.0f;
+		normalModels_[0]->materials_[0].dissolveStrength_ = KLib::Lerp<float>(normalModels_[0]->materials_[0].dissolveStrength_, 0.1f, 0.1f);
+		if (normalModels_[0]->materials_[0].dissolveStrength_ <= 0.125f) {
+			isDissolving_ = true;
+		}
 	}
 
 	// 弾を移動させる

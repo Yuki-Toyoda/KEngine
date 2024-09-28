@@ -14,7 +14,7 @@ void RotatingSlash::Init()
 	player_->isAttacking_ = false;
 
 	if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("03_RotateSlash_Charge")) {
-		player_->skiningModels_[0]->animationManager_.PlayAnimation("03_RotateSlash_Charge");
+		player_->skiningModels_[0]->animationManager_.PlayAnimation("03_RotateSlash_Charge", 0.1f, false);
 	}
 
 	// 線の座標を戻す

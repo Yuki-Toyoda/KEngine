@@ -28,7 +28,7 @@ void Damage::Init()
 		c->ppProcessor_.bloom_.threshold_ = 0.25f;
 	}
 
-	player_->skiningModels_[0]->animationManager_.PlayAnimation("06_Damage");
+	player_->skiningModels_[0]->animationManager_.PlayAnimation("06_Damage", 0.1f);
 }
 
 void Damage::Update()

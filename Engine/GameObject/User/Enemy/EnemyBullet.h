@@ -80,6 +80,10 @@ private: // メンバ変数
 	// 敵の座標
 	const WorldTransform* enemy_ = nullptr;
 
+	// Dissolveの演出用フラグ
+	bool isDissolving_ = false;
+	bool isSwitchDissolving_ = false;
+
 	// 効果音群
 	uint32_t counterSound_ = 0u;
 };

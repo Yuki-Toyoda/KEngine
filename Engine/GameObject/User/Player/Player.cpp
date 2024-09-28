@@ -52,7 +52,7 @@ void Player::Init()
 	AddSkiningModel(&weaponTransform_, "./Resources/Sword", "Sword.gltf");
 
 	// 待機アニメーションの再生
-	skiningModels_[0]->animationManager_.PlayAnimation("00_Idle", true);
+	skiningModels_[0]->animationManager_.PlayAnimation("00_Idle", 0.0f, true);
 	// 武器を左手に追従するようにする
 	skiningModels_[0]->SetBoneParent("WeaponAnchor", &weaponTransform_);
 

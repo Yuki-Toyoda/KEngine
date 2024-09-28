@@ -10,7 +10,7 @@ void Fairy::Init()
 	transform_.scale_ = { 0.25f, 0.25f, 0.25f };
 
 	// アニメーションのループ
-	skiningModels_[0]->animationManager_.PlayAnimation("00_Idle", true);
+	skiningModels_[0]->animationManager_.PlayAnimation("00_Idle", 0.0f, true);
 
 	// オフセットなしのトランスフォームの初期化
 	noOffsetTransform_.Init();

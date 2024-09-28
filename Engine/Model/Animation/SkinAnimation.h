@@ -2,6 +2,7 @@
 #include "../../Math/Vector3.h"
 #include "../../Math/Quaternion.h"
 #include "../Component/Skelton.h"
+#include "../../Utility/Easing/Easing.h"
 
 #include <string>
 #include <vector>
