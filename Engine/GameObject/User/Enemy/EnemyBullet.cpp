@@ -26,21 +26,21 @@ void EnemyBullet::Update()
 {
 	if (isDissolving_) {
 		if (!isSwitchDissolving_) {
-			normalModels_[0]->materials_[0].dissolveStrength_ = KLib::Lerp<float>(normalModels_[0]->materials_[0].dissolveStrength_, 0.1f, 0.05f);
-			if (normalModels_[0]->materials_[0].dissolveStrength_ <= 0.125f) {
+			normalModels_[0]->materials_[0].dissolveEdgeThreshold_ = KLib::Lerp<float>(normalModels_[0]->materials_[0].dissolveEdgeThreshold_, 0.35f, 0.05f);
+			if (normalModels_[0]->materials_[0].dissolveEdgeThreshold_ >= 0.325f) {
 				isSwitchDissolving_ = true;
 			}
 		}
 		else {
-			normalModels_[0]->materials_[0].dissolveStrength_ = KLib::Lerp<float>(normalModels_[0]->materials_[0].dissolveStrength_, 0.5f, 0.05f);
-			if (normalModels_[0]->materials_[0].dissolveStrength_ >= 0.475f) {
+			normalModels_[0]->materials_[0].dissolveEdgeThreshold_ = KLib::Lerp<float>(normalModels_[0]->materials_[0].dissolveEdgeThreshold_, 0.075f, 0.05f);
+			if (normalModels_[0]->materials_[0].dissolveEdgeThreshold_ <= 0.1f) {
 				isSwitchDissolving_ = false;
 			}
 		}
 	}
 	else {
-		normalModels_[0]->materials_[0].dissolveStrength_ = KLib::Lerp<float>(normalModels_[0]->materials_[0].dissolveStrength_, 0.1f, 0.1f);
-		if (normalModels_[0]->materials_[0].dissolveStrength_ <= 0.125f) {
+		normalModels_[0]->materials_[0].dissolveStrength_ = KLib::Lerp<float>(normalModels_[0]->materials_[0].dissolveStrength_, 0.3f, 0.05f);
+		if (normalModels_[0]->materials_[0].dissolveStrength_ <= 0.35f) {
 			isDissolving_ = true;
 		}
 	}

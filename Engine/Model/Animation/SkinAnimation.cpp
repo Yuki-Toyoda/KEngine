@@ -42,6 +42,12 @@ void SkinAnimation::Update(Skelton* skelton)
 		// 60FPS固定で補完秒数加算
 		currentTransitionTime_ += 1.0f / 60.0f;
 
+		// 最終秒数に到達していた場合
+		if (currentTransitionTime_ > transitionDuration_) {
+			// 補完終了
+			isTransitioning_ = false;
+		}
+
 		// スケルトンにアニメーションを適用させる
 		for (Joint& joint : skelton->joints_) {
 			// 対象のジョイントのアニメーションがあれば値の適用を行う
@@ -55,12 +61,6 @@ void SkinAnimation::Update(Skelton* skelton)
 				joint.transform_.rotate_ = CalculateValue(wt.rotate_, rootNodeAnimation.rotate.keyframes, animationTime_);
 				joint.transform_.scale_ = CalculateValue(wt.scale_, rootNodeAnimation.scale.keyframes, animationTime_);
 			}
-		}
-
-		// 最終秒数に到達していた場合
-		if (currentTransitionTime_ > transitionDuration_) {
-			// 補完終了
-			isTransitioning_ = false;
 		}
 	}
 	else { // 補完中ではない場合
