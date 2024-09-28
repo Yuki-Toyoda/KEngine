@@ -8,12 +8,14 @@ void SkiningModel::Init(ModelData* modelData)
 	IModel::Init(modelData);
 	// マテリアルの取得
 	materials_ = modelData->materials_;
-	// アニメーションの取得
-	animationManager_ = modelData->animationManager_;
 	// スケルトンの取得
 	skelton_ = modelData->skelton_.value();
 	// スキンクラスターの参照を保持
 	skinCluster_ = &modelData->skinCluster_.value();
+	// アニメーションの取得
+	animationManager_ = modelData->animationManager_;
+	// アニメーションにスケルトンを渡す
+	animationManager_.SetSkelton(&skelton_);
 	// Dissolve用テクスチャのサンプルを読み込んでおく
 	DissolveTex_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "noise0.png");
 

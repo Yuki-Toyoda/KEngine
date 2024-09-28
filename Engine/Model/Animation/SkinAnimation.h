@@ -1,14 +1,11 @@
 #pragma once
 #include "../../Math/Vector3.h"
 #include "../../Math/Quaternion.h"
+#include "../Component/Skelton.h"
 
 #include <string>
 #include <vector>
 #include <map>
-
-// クラスの前方宣言
-class Skelton;
-
 
 // 構造体の前方宣言
 struct aiAnimation;
@@ -41,6 +38,16 @@ struct NodeAnimation {
 	AnimationCurve<Quaternion> rotate;	  // 回転
 	AnimationCurve<Vector3>	   scale;	  // 拡縮
 };
+
+/// <summary>
+/// 補完用アニメーション構造体
+/// </summary>
+struct TransitionAnimation {
+	Vector3		translate;	// 位置
+	Quaternion	rotate;		// 回転
+	Vector3		scale;		// 拡縮
+};
+
 
 /// <summary>
 /// スキンアニメーションクラス
@@ -80,6 +87,13 @@ public: // メンバ関数
 	/// </summary>
 	/// <param name="startSec">開始秒数</param>
 	void Start(float startSec);
+	/// <summary>
+	/// アニメーション開始関数(補完アリ)
+	/// </summary>
+	/// <param name="transitionTime">補完秒数</param>
+	/// <param name="prevAnim">補完元アニメーション</param>
+	/// <param name="playingIndex">補完開始時インデックス数</param>
+	void Start(float transitionTime, Skelton* skelton);
 
 	/// <summary>
 	/// アニメーション停止関数
@@ -101,6 +115,12 @@ public: // アクセッサ等
 	/// <returns>アニメーション終了フラグ</returns>
 	bool GetIsPLay() { return isPlay_; };
 
+	/// <summary>
+	/// 補完中トリガーゲッター
+	/// </summary>
+	/// <returns>補完中トリガー状態</returns>
+	bool GetIsTransitioning() { return isTransitioning_; }
+
 private: // プライベートなメンバ関数
 
 	/// <summary>
@@ -117,6 +137,25 @@ private: // プライベートなメンバ関数
 	/// <param name="time">アニメーション秒数</param>
 	/// <returns>クォータニオン</returns>
 	Quaternion CalculateValue(const std::vector<keyframe<Quaternion>>& keyframes, float time);
+
+	/// <summary>
+	/// 引数で指定された秒数の3次元ベクトルをアニメーションから計算する関数
+	/// </summary>
+	/// <param name="prevKeyframes">補完元キーフレーム配列</param>
+	/// <param name="keyframes">対象のキーフレーム配列</param>
+	/// <param name="time">アニメーション秒数</param>
+	/// <param name="prevAnimTime">補完元アニメーション秒数</param>
+	/// <returns>3次元ベクトル</returns>
+	Vector3 CalculateValue(const Vector3& prevKeyframes, const std::vector<keyframe<Vector3>>& keyframes, float time);
+	/// <summary>
+	/// 引数で指定された秒数のクォータニオンをアニメーションから計算する関数
+	/// </summary>
+	/// <param name="prevKeyframes">補完元キーフレーム配列</param>
+	/// <param name="keyframes">対象のキーフレーム配列</param>
+	/// <param name="time">アニメーション秒数</param>
+	/// <param name="prevAnimTime">補完元アニメーション秒数</param>
+	/// <returns>クォータニオン</returns>
+	Quaternion CalculateValue(const Quaternion& prevKeyframes, const std::vector<keyframe<Quaternion>>& keyframes, float time);
 
 public: // パブリックメンバ変数
 
@@ -138,6 +177,14 @@ private: // メンバ変数
 
 	// アニメーション全体の尺
 	float duration_ = 0.0f;
+
+	// 補完用スケルトン
+	Skelton prevSkelton_;
+	// 補間中トリガー
+	bool isTransitioning_ = false;
+	// 補間秒数
+	float currentTransitionTime_	= 0.0f; // 現在
+	float transitionDuration_		= 0.0f; // 秒数
 
 };
 

@@ -31,18 +31,23 @@ void SkinAnimationManager::LoadAnimations(const aiScene* scene)
 	}
 }
 
-void SkinAnimationManager::PlayAnimation(const std::string& animName, bool isLoop, float startTime)
+void SkinAnimationManager::PlayAnimation(const std::string& animName, float transitionTime, bool isLoop, float startTime)
 {
 	// アニメーションが存在した場合
 	if (animations_.count(animName)) {
-		// アニメーション間の補間がまだできていないので再生段階で再生中アニメーションを停止させる
+		// 再生中アニメーションを停止
 		StopAnimation(playingAnimName_);
-
 		// 再生するアニメーション名の取得
 		playingAnimName_ = animName;
-
-		// 指定された名称のアニメーションを再生する
-		animations_[animName].Start(startTime);
+		// 補完秒数が0以外なら
+		if (transitionTime != 0.0f) {
+			// 補完ありで指定された名称のアニメーションを再生する
+			animations_[animName].Start(transitionTime, skelton_);
+		}
+		else {
+			// 補完なしで指定された名称のアニメーションを再生する
+			animations_[animName].Start(startTime);
+		}
 		// アニメーションをループさせるか
 		animations_[animName].isLoop_ = isLoop;
 	}

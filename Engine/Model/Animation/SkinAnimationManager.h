@@ -41,9 +41,10 @@ public: // メンバ関数
 	/// アニメーション再生関数
 	/// </summary>
 	/// <param name="animName">再生するアニメーション名</param>
+	/// <param name="transitionTime">(任意)アニメーション間の補完秒数</param>
 	/// <param name="isLoop">(任意)ループさせるか</param>
 	/// <param name="startTime">(任意)アニメーションの開始秒数</param>
-	void PlayAnimation(const std::string& animName, bool isLoop = false, float startTime = 0.0f);
+	void PlayAnimation(const std::string& animName, float transitionTime = 0.0f, bool isLoop = false, float startTime = 0.0f);
 
 	/// <summary>
 	/// 再生中アニメーション停止関数
@@ -56,6 +57,12 @@ public: // メンバ関数
 	void DisplayImGui();
 
 public: // アクセッサ等
+
+	/// <summary>
+	/// スケルトンセッター
+	/// </summary>
+	/// <param name="skelton">アニメーション対象スケルトン</param>
+	void SetSkelton(Skelton* skelton) { skelton_ = skelton; };
 
 	/// <summary>
 	/// 再生中アニメーションが再生されているかのゲッター
@@ -72,6 +79,9 @@ private: // プライベートなメンバ関数
 	void StopAnimation(const std::string& animName);
 
 private: // メンバ変数
+
+	// スケルトン
+	Skelton* skelton_ = nullptr;
 
 	// アニメーション配列
 	std::map<std::string, SkinAnimation> animations_;
