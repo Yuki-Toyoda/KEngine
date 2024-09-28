@@ -1,5 +1,6 @@
 #include "Quaternion.h"
 #include <cmath>
+#include <algorithm>
 #include "Vector3.h"
 #include "Matrix4x4.h"
 
@@ -112,7 +113,7 @@ Quaternion Quaternion::Normalize(const Quaternion& q)
 	Quaternion result;
 
 	// 計算処理
-	if (length != 0.0f) {
+	if (length > 1e-6f) {
 		result.x = q.x / length;
 		result.y = q.y / length;
 		result.z = q.z / length;
@@ -122,7 +123,7 @@ Quaternion Quaternion::Normalize(const Quaternion& q)
 		result.x = 0.0f;
 		result.y = 0.0f;
 		result.z = 0.0f;
-		result.w = 0.0f;
+		result.w = 1.0f;
 	}
 
 	// 結果を返す
@@ -153,11 +154,18 @@ Quaternion Quaternion::Inverse(const Quaternion& q)
 	Quaternion conjugate = Conjugate(q);
 
 	// 計算処理
-	if (length != 0.0f) {
+	if (length > 1e-6f) {
 		result.x = conjugate.x / length;
 		result.y = conjugate.y / length;
 		result.z = conjugate.z / length;
 		result.w = conjugate.w / length;
+	}
+	else {
+		// 無効なクォータニオンの場合は単位クォータニオンを返還する
+		result.x = 0.0f;
+		result.y = 0.0f;
+		result.z = 0.0f;
+		result.w = 1.0f;
 	}
 
 	// 結果を返す
@@ -222,36 +230,41 @@ Quaternion Quaternion::Slerp(float t, const Quaternion& start, const Quaternion&
 	// 結果格納用
 	Quaternion result = Quaternion();
 
+	// 値を取得
+	Quaternion s = Normalize(start);
+	Quaternion e = Normalize(end);
+
 	// クォータニオンの内積で求める
 	float dot = Dot(start, end);
+	dot = std::clamp(dot, -1.0f, 1.0f);
 
-	Quaternion s = start;
-	Quaternion e = end;
-	if (dot < 0) {
+	if (dot < 0.0f) {
 		// 逆の回転を使う
-		s = Inverse(s);
-		// 内積も逆
+		e = Inverse(e);
 		dot = -dot;
 	}
 
-	// クォータニオンが成す角を求める
-	float theta = std::acos(dot);
-	// sin角も求める
-	float sinTheta = 1.0f / std::sin(theta);
-
-	// 0.0により近いか
-	if (dot <= -1.0f || 1.0f <= dot || sinTheta == 0.0f) {
+	if (dot > 0.9995f) {
 		result = s * (1.0f - t) + (e * t);
+		return Normalize(result);
 	}
-	// 近いほうで補完する
-	else if (dot < 0.0f) {
-		result = (start * (std::sin(theta * (1.0f - t)) * sinTheta)) + (Inverse(end) * (std::sin(theta * t) * sinTheta));
+
+	float theta = std::acos(dot);
+	float sinTheta = 1.0f / std::sin(theta);
+	// しきい値を設定し、非常に小さい角度の場合には線形補間を使用
+	if (std::abs(theta) < 1e-6) {
+		result = s * (1.0f - t) + (e * t);
+		return Normalize(result);
 	}
-	else {
-		result = (start * (std::sin(theta * (1.0f - t)) * sinTheta)) + (end * (std::sin(theta * t) * sinTheta));
-	}
-	// 結果を返す
-	return result;
+
+	// 開始と終端を求める
+	float fStart = std::sin((1.0f - t) * theta) / sinTheta;	// 開始
+	float fEnd = std::sin(t * theta) / sinTheta;			// 終端
+
+	// 補間を行う
+	result = (s * fStart) + (e * fEnd);
+	// 結果を正規化返す
+	return Normalize(result);
 }
 
 Matrix4x4 Quaternion::MakeAffine(const Vector3& scale, const Quaternion& rotate, const Vector3& translate)
