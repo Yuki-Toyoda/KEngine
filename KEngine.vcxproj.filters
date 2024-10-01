@@ -353,7 +353,9 @@
     <ClCompile Include="Engine\Base\Renderer\SpriteRenderer.cpp">
       <Filter>Engine\Base\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\PostProcess\RadialBlur\RadialBlur.cpp" />
+    <ClCompile Include="Engine\PostProcess\RadialBlur\RadialBlur.cpp">
+      <Filter>Engine\PostProcess\RadialBlur</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -782,7 +784,9 @@
     <ClInclude Include="Engine\Base\Renderer\SpriteRenderer.h">
       <Filter>Engine\Base\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\PostProcess\RadialBlur\RadialBlur.h" />
+    <ClInclude Include="Engine\PostProcess\RadialBlur\RadialBlur.h">
+      <Filter>Engine\PostProcess\RadialBlur</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -1035,6 +1039,9 @@
     </Filter>
     <Filter Include="Engine\PostProcess\Bloom">
       <UniqueIdentifier>{4680ddb0-c774-460a-9532-93b429b6aca0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\PostProcess\RadialBlur">
+      <UniqueIdentifier>{560881ec-1056-4fd4-a5db-0d2cac102d55}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
