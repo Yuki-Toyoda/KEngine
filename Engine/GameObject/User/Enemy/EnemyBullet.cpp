@@ -48,6 +48,9 @@ void EnemyBullet::Update()
 	// 弾を移動させる
 	transform_.translate_ = transform_.translate_ + velocity_;
 
+	// UVを動かし続ける
+	normalModels_[0]->materials_[0].uvTransform_.translate_.x += 0.01f;
+
 	// y座標が一定以下になったら削除
 	if (transform_.translate_.y <= -1.0f) {
 		Destroy();

@@ -111,6 +111,9 @@ public: // パブリックなメンバ変数
 	// 敵
 	Enemy* enemy_ = nullptr;
 
+	// 打ち返し時のラジアルブラー有効トリガー
+	bool enableParryBlur_ = false;
+
 	// 効果音群
 	uint32_t SwingSword_ = 0u; // 素振り音
 	uint32_t RotateSlash_ = 0u; // 回転切り音

@@ -222,6 +222,27 @@ void Player::Update()
 				// 身体を回転させる
 				transform_.rotate_.y = KLib::LerpShortAngle(transform_.rotate_.y, targetAngle_, 0.1f);
 			}
+
+			// ブラーの値の参照取得
+			float& blurStrength = followCamera_->ppProcessor_.radialBlur_.data_.blurStrength;
+			// パリィブラー有効時
+			if (enableParryBlur_) {
+				// ブラー強さが一定の値を超えるまで
+				if (blurStrength <= 0.01f) {
+					// ブラー強さを少しずつ上げる
+					blurStrength = KLib::Lerp(blurStrength, 0.0115f, 0.35f);
+				}
+				else {
+					// パリィ時のブラーを無効
+					enableParryBlur_ = false;
+				}
+			}
+			else {
+				// かかっているブラーを元に戻す
+				if (blurStrength > 0.0f) {
+					blurStrength = KLib::Lerp(blurStrength, 0.00f, 0.05f);
+				}
+			}
 		}
 
 		// 攻撃可能か
@@ -315,6 +336,9 @@ void Player::HitDamage(const Vector3& translate)
 
 		// 命中クールタイムリセット
 		hitCoolTimeTimer_.Start(kHitCoolTime_);
+
+		// ダメージ時にはラジアルブラー無効
+		enableParryBlur_ = false;
 	}
 }
 
@@ -328,9 +352,10 @@ void Player::HitStop()
 
 void Player::OnCollisionEnter(Collider* collider)
 {
-	// 敵と衝突時ヒットストップを行う
-	if (collider->GetGameObject()->GetObjectTag() == IObject::TagEnemy) {
-		//HitStop();
+	// プレイヤーの剣と衝突していたら
+	if (collider->GetColliderName() == "Bullet" && !enableParryBlur_) {
+		// パリィ時のブラーを有効
+		enableParryBlur_ = true;
 	}
 }
 
