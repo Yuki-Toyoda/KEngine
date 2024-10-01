@@ -259,7 +259,7 @@ Quaternion Quaternion::Slerp(float t, const Quaternion& start, const Quaternion&
 
 	// 開始と終端を求める
 	float fStart = std::sin((1.0f - t) * theta) / sinTheta;	// 開始
-	float fEnd	= std::sin(t * theta) / sinTheta;			// 終端
+	float fEnd = std::sin(t * theta) / sinTheta;			// 終端
 
 	// 補間を行う
 	result = (s * fStart) + (e * fEnd);
