@@ -6,6 +6,7 @@
 #include "GrayScale/GrayScale.h"
 #include "Vignette/Vignette.h"
 #include "GaussianFilter/GaussianFilter.h"
+#include "RadialBlur/RadialBlur.h"
 #include "OutLine/OutLine.h"
 #include "HSVFilter/HSVFilter.h"
 #include "Bloom/Bloom.h"
@@ -63,12 +64,13 @@ public: // アクセッサ等
 public: // パブリックメンバ変数
 
 	// ポストプロセス変数群
-	Bloom			bloom_;		// ブルーム
-	OutLine			outLine_;	// アウトライン
-	GaussianFilter	gaussian_;	// ガウシアンフィルター
-	Vignette		vignette_;  // ビネット
-	GrayScale		grayScale_; // グレースケール
-	HSVFilter		hsvFilter_; // HSVフィルター
+	Bloom			bloom_;			// ブルーム
+	OutLine			outLine_;		// アウトライン
+	GaussianFilter	gaussian_;		// ガウシアンフィルター
+	RadialBlur		radialBlur_;	// ラジアルブラー
+	Vignette		vignette_;		// ビネット
+	GrayScale		grayScale_;		// グレースケール
+	HSVFilter		hsvFilter_;		// HSVフィルター
 
 private: // メンバ変数
 

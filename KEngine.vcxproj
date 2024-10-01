@@ -215,6 +215,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Particle\Particle.cpp" />
     <ClCompile Include="Engine\Particle\ParticleManager.cpp" />
     <ClCompile Include="Engine\Base\Renderer\SpriteRenderer.cpp" />
+    <ClCompile Include="Engine\PostProcess\RadialBlur\RadialBlur.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\PostProcess\Bloom\Bloom.h" />
@@ -358,6 +359,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Particle\Particle.h" />
     <ClInclude Include="Engine\Particle\ParticleManager.h" />
     <ClInclude Include="Engine\Base\Renderer\SpriteRenderer.h" />
+    <ClInclude Include="Engine\PostProcess\RadialBlur\RadialBlur.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Compute\Random.hlsli">

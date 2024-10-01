@@ -7,6 +7,7 @@ void PostProcessor::Init()
 	bloom_.Init();		// ブルーム
 	outLine_.Init();	// アウトライン
 	gaussian_.Init();	// ガウシアンフィルター
+	radialBlur_.Init();	// ラジアルブラー
 	vignette_.Init();	// ビネット
 	grayScale_.Init();	// グレースケール
 	hsvFilter_.Init();	// HSVフィルター
@@ -21,6 +22,7 @@ void PostProcessor::Update()
 	bloom_.Update();		// ブルーム
 	outLine_.Update();		// アウトライン
 	gaussian_.Update();		// ガウシアンフィルター
+	radialBlur_.Update();	// ラジアルブラー
 	vignette_.Update();		// ビネット
 	grayScale_.Update();	// グレースケール
 	hsvFilter_.Update();	// HSVフィルター
@@ -146,6 +148,7 @@ void PostProcessor::DisplayImGui()
 		bloom_.DisplayImGui();		// ブルーム
 		outLine_.DisplayImGui();	// アウトライン
 		gaussian_.DisplayImGui();	// ガウシアンフィルター
+		radialBlur_.DisplayImGui();	// ラジアルブラー
 		vignette_.DisplayImGui();	// ビネット
 		grayScale_.DisplayImGui();	// グレースケール
 		hsvFilter_.DisplayImGui();	// hsvフィルター
@@ -183,6 +186,7 @@ std::vector<IPostProcess*> PostProcessor::GetAllProcess()
 	result.push_back(&bloom_);		// ブルーム
 	result.push_back(&outLine_);	// アウトライン
 	result.push_back(&gaussian_);	// ガウシアンフィルター
+	result.push_back(&radialBlur_);	// ラジアルブラー
 	result.push_back(&vignette_);	// ビネット
 	result.push_back(&grayScale_);	// グレースケール
 	result.push_back(&hsvFilter_);	// HSVフィルター

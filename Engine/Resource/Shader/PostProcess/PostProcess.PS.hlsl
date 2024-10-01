@@ -30,10 +30,17 @@ float Gaussian(float x, float sigma)
     return exp(-0.5 * (x * x) / (sigma * sigma)) / (sqrt(2.0 * 3.1415926535897932384626433832795) * sigma);
 }
 
+struct RadialData {
+	float32_t2 center;
+	float32_t blurStrength;
+};
+
+ConstantBuffer<RadialData> raData : register(b2);
+
 struct VignetteData {
 	float32_t intensity;
 };
-ConstantBuffer<VignetteData> vData : register(b2);
+ConstantBuffer<VignetteData> vData : register(b3);
 
 float32_t Vignette(float32_t2 texcoord) {
 	float32_t2 center = float2(0.5f, 0.5f);
@@ -45,7 +52,7 @@ struct GrayScaleData {
 	float32_t intensity;
 };
 
-ConstantBuffer<GrayScaleData> gsData : register(b3);
+ConstantBuffer<GrayScaleData> gsData : register(b4);
     
 float32_t3 GrayScale(float32_t3 color)
 {
@@ -61,7 +68,7 @@ struct HSV {
 	float32_t value;
 };
 
-ConstantBuffer<HSV> hsvData : register(b4);
+ConstantBuffer<HSV> hsvData : register(b5);
 
 HSV RGBToHSV(float32_t3 rgb) {
 	HSV result = { 0.0f, 0.0f, 0.0f };
@@ -210,6 +217,17 @@ float32_t4 main(PSInput input) : SV_TARGET {
         output.a = 1.0f;
     }
     }
+
+	if(raData.blurStrength > 0.0f){
+		const int32_t kNumSamples = 10;
+		float32_t2 direction = input.texcoord - raData.center;
+		for(int32_t sampleIndex = 0; sampleIndex < kNumSamples; sampleIndex++){
+			float32_t2 texcoord = input.texcoord + direction * raData.blurStrength * float32_t(sampleIndex);
+			output.rgb += gTexture.Sample(gSampler, texcoord).rgb;
+		}
+
+		output.rgb *= rcp(kNumSamples);
+	}
 
 	float v = Vignette(input.texcoord);
 	output = float32_t4(output.rgb * v, output.a);
