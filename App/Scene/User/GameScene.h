@@ -1,7 +1,7 @@
 #pragma once
 #include "Engine/Scene/BaseScene.h"
-#include "../SceneList.h"
-#include "../../GameObject/SampleList.h"
+#include "App/Scene/SceneList.h"
+#include "Engine/GameObject/SampleList.h"
 
 /// <summary>
 /// ゲームシーンクラス
