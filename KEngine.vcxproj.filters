@@ -43,9 +43,6 @@
     <ClCompile Include="Engine\Base\PSO\PSO.cpp">
       <Filter>Engine\Base\PSO</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Primitive\IPrimitive.cpp">
-      <Filter>Engine\Primitive</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Resource\Texture\Texture.cpp">
       <Filter>Engine\Resource\Texture</Filter>
     </ClCompile>
@@ -60,9 +57,6 @@
     </ClCompile>
     <ClCompile Include="Engine\GameObject\IObject.cpp">
       <Filter>App\GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Primitive\PrimitiveManager.cpp">
-      <Filter>Engine\Primitive</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\Core\Camera.cpp">
       <Filter>App\GameObject\Core</Filter>
@@ -311,14 +305,8 @@
     <ClCompile Include="Engine\Level\LevelLoader.cpp">
       <Filter>App\Level</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Primitive\2d\BillboardPlane.cpp">
-      <Filter>Engine\Primitive\2d</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\PostProcess\OutLine\OutLine.cpp">
       <Filter>Engine\PostProcess\OutLine</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Primitive\2d\Plane.cpp">
-      <Filter>Engine\Primitive\2d</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\Samples\SampleLevel\SampleLevelObjects.cpp">
       <Filter>App\GameObject\Samples\SampleLevel</Filter>
@@ -436,9 +424,6 @@
     <ClInclude Include="Engine\Base\PSO\PSO.h">
       <Filter>Engine\Base\PSO</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Primitive\IPrimitive.h">
-      <Filter>Engine\Primitive</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Resource\Texture\Texture.h">
       <Filter>Engine\Resource\Texture</Filter>
     </ClInclude>
@@ -456,9 +441,6 @@
     </ClInclude>
     <ClInclude Include="Engine\GameObject\IObject.h">
       <Filter>App\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Primitive\PrimitiveManager.h">
-      <Filter>Engine\Primitive</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\Core\Camera.h">
       <Filter>App\GameObject\Core</Filter>
@@ -736,17 +718,11 @@
     <ClInclude Include="Engine\Level\LevelLoader.h">
       <Filter>App\Level</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Primitive\2d\BillboardPlane.h">
-      <Filter>Engine\Primitive\2d</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Utility\Angle\Angle.h">
       <Filter>App\Utility\Angle</Filter>
     </ClInclude>
     <ClInclude Include="Engine\PostProcess\OutLine\OutLine.h">
       <Filter>Engine\PostProcess\OutLine</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Primitive\2d\Plane.h">
-      <Filter>Engine\Primitive\2d</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\Samples\SampleLevel\SampleLevelObjects.h">
       <Filter>App\GameObject\Samples\SampleLevel</Filter>
@@ -862,15 +838,6 @@
     </Filter>
     <Filter Include="Engine\Particle">
       <UniqueIdentifier>{35ed7eb1-48ce-4485-9d6f-e794d8493628}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Primitive">
-      <UniqueIdentifier>{5fc9c809-8734-4f5e-8651-85bdbe200e78}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Primitive\3d">
-      <UniqueIdentifier>{5da4eff7-609f-4695-88a1-eed539634028}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Primitive\2d">
-      <UniqueIdentifier>{ed71e37f-4dd0-470a-a23c-c86e4fe2e5da}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\Resource">
       <UniqueIdentifier>{b2c8cb73-410f-4267-8a42-247c59b88259}</UniqueIdentifier>

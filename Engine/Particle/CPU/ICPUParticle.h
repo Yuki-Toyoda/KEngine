@@ -1,7 +1,6 @@
 #pragma once
 #include "../../GameObject/WorldTransform.h"
 #include "../../Resource/Texture/TextureManager.h"
-#include "../../Primitive/PrimitiveManager.h"
 #include "../../Utility/KLib.h"
 
 /// <summary>

@@ -7,7 +7,6 @@
 #include "Input/Input.h"
 #include "Audio/Audio.h"
 #include "GlobalVariables/GlobalVariables.h"
-#include "Primitive/PrimitiveManager.h"
 #include "Scene/SceneManager.h"
 #include "Collider/CollisionManager.h"
 #include "Particle/CPU/CPUParticleEmitterManager.h"

@@ -1,7 +1,6 @@
 #pragma once
 #include <string>
 #include "../../GameObject/IObject.h"
-#include "../../Primitive/PrimitiveManager.h"
 #include "../../Resource/Texture/TextureManager.h"
 
 /// <summary>
