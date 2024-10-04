@@ -356,6 +356,7 @@
     <ClCompile Include="Engine\PostProcess\RadialBlur\RadialBlur.cpp">
       <Filter>Engine\PostProcess\RadialBlur</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Base\Renderer\LineRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -787,6 +788,7 @@
     <ClInclude Include="Engine\PostProcess\RadialBlur\RadialBlur.h">
       <Filter>Engine\PostProcess\RadialBlur</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Base\Renderer\LineRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
