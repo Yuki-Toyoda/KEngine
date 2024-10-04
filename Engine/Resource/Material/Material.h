@@ -1,8 +1,8 @@
 #pragma once
-#include "../../GameObject/WorldTransform.h"
-#include "../../Math/Vector4.h"
-#include "../../Base/Resource/Data/ConstantBuffer.h"
-#include "../../Resource/Texture/Texture.h"
+#include "Engine/GameObject/WorldTransform.h"
+#include "Engine/Math/Vector4.h"
+#include "Engine/Base/Resource/Data/ConstantBuffer.h"
+#include "Engine/Resource/Texture/Texture.h"
 
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>

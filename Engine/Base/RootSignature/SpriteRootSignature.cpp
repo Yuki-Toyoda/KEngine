@@ -1,5 +1,4 @@
 #include "SpriteRootSignature.h"
-#include "../Config/Config.h"
 
 void SpriteRootSignature::Init()
 {

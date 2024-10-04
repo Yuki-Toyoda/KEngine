@@ -1,5 +1,5 @@
 #include "Sprite.h"
-#include "../Model/ModelManager.h"
+#include "Engine/Model/ModelManager.h"
 
 Sprite::~Sprite()
 {

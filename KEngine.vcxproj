@@ -62,7 +62,7 @@
       <TreatWarningAsError>true</TreatWarningAsError>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(ProjectDir)Externals\assimp\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)Externals\assimp\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -111,8 +111,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Base\DXC\DXC.cpp" />
     <ClCompile Include="Engine\Base\Resource\Rendering\DepthStencil.cpp" />
     <ClCompile Include="Engine\Base\Resource\Rendering\BackBuffer.cpp" />
-    <ClCompile Include="Engine\Primitive\2d\BillboardPlane.cpp" />
-    <ClCompile Include="Engine\Primitive\2d\Plane.cpp" />
     <ClCompile Include="Engine\Utility\DataSegment\DataSegment.cpp" />
     <ClCompile Include="Engine\Math\Matrix4x4.cpp" />
     <ClCompile Include="Engine\Math\Vector2.cpp" />
@@ -134,7 +132,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\GameObject\Core\Camera.cpp" />
     <ClCompile Include="Engine\GameObject\GameObjectManager.cpp" />
     <ClCompile Include="Engine\GameObject\Samples\SampleSkyDome\SkyDome.cpp" />
-    <ClCompile Include="Engine\GameObject\User\TestObject\TestObject.cpp" />
+    <ClCompile Include="App\GameObject\User\TestObject\TestObject.cpp" />
     <ClCompile Include="Engine\GameObject\WorldTransform.cpp" />
     <ClCompile Include="Engine\GlobalVariables\GlobalVariables.cpp" />
     <ClCompile Include="Engine\Input\Input.cpp" />
@@ -142,16 +140,14 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Particle\CPU\ICPUParticle.cpp" />
     <ClCompile Include="Engine\Particle\CPU\ICPUParticleEmitter.cpp" />
     <ClCompile Include="Engine\Particle\CPU\CPUParticleEmitterManager.cpp" />
-    <ClCompile Include="Engine\Primitive\IPrimitive.cpp" />
-    <ClCompile Include="Engine\Primitive\PrimitiveManager.cpp" />
     <ClCompile Include="Engine\Resource\Material\Material.cpp" />
     <ClCompile Include="Engine\Resource\Texture\Texture.cpp" />
     <ClCompile Include="Engine\Resource\Texture\TextureManager.cpp" />
     <ClCompile Include="Engine\Scene\BaseScene.cpp" />
     <ClCompile Include="Engine\Scene\SceneManager.cpp" />
-    <ClCompile Include="Engine\Scene\User\GameScene.cpp" />
-    <ClCompile Include="Engine\Scene\User\SampleScene.cpp" />
-    <ClCompile Include="Engine\Scene\User\TitleScene.cpp" />
+    <ClCompile Include="App\Scene\User\GameScene.cpp" />
+    <ClCompile Include="App\Scene\User\SampleScene.cpp" />
+    <ClCompile Include="App\Scene\User\TitleScene.cpp" />
     <ClCompile Include="Engine\Sprite\Sprite.cpp" />
     <ClCompile Include="Engine\Sprite\SpriteManager.cpp" />
     <ClCompile Include="Engine\Utility\Animation\Animation.cpp" />
@@ -177,11 +173,11 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Model\Component\JointWeight.cpp" />
     <ClCompile Include="Engine\PostProcess\GrayScale\GrayScale.cpp" />
     <ClCompile Include="Engine\PostProcess\GaussianFilter\GaussianFilter.cpp" />
-    <ClCompile Include="Engine\Level\LevelLoader.cpp" />
+    <ClCompile Include="App\Level\LevelLoader.cpp" />
     <ClCompile Include="Engine\PostProcess\HSVFilter\HSVFilter.cpp" />
     <ClCompile Include="Engine\Base\Renderer\LineRenderer.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Engine\Scene\SceneFactory.cpp" />
+    <ClCompile Include="App\Scene\SceneFactory.cpp" />
     <ClCompile Include="Engine\Base\RootSignature\ModelRootSignature.cpp" />
     <ClCompile Include="Engine\Base\RootSignature\RootSignatureManager.cpp" />
     <ClCompile Include="Engine\Base\Resource\Rendering\TextureResource.cpp" />
@@ -219,6 +215,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\PostProcess\RadialBlur\RadialBlur.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="App\GameObject\ObjectList.h" />
     <ClInclude Include="Engine\PostProcess\Bloom\Bloom.h" />
     <ClInclude Include="Engine\Base\Resource\Data\RWStructuredBuffer.h" />
     <ClInclude Include="Engine\Base\Resource\Rendering\RenderResource.h" />
@@ -233,8 +230,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Base\Resource\Data\StructuredBuffer.h" />
     <ClInclude Include="Engine\Base\Resource\Rendering\IRenderingResource.h" />
     <ClInclude Include="Engine\Model\Component\Vertex.h" />
-    <ClInclude Include="Engine\Primitive\2d\BillboardPlane.h" />
-    <ClInclude Include="Engine\Primitive\2d\Plane.h" />
     <ClInclude Include="Engine\Utility\Angle\Angle.h" />
     <ClInclude Include="Engine\Utility\Counter\Counter.h" />
     <ClInclude Include="Engine\Utility\DataSegment\DataSegment.h" />
@@ -259,10 +254,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\GameObject\IObject.h" />
     <ClInclude Include="Engine\GameObject\Core\Camera.h" />
     <ClInclude Include="Engine\GameObject\GameObjectManager.h" />
-    <ClInclude Include="Engine\GameObject\ObjectList.h" />
     <ClInclude Include="Engine\GameObject\SampleList.h" />
     <ClInclude Include="Engine\GameObject\Samples\SampleSkyDome\SkyDome.h" />
-    <ClInclude Include="Engine\GameObject\User\TestObject\TestObject.h" />
+    <ClInclude Include="App\GameObject\User\TestObject\TestObject.h" />
     <ClInclude Include="Engine\GameObject\WorldTransform.h" />
     <ClInclude Include="Engine\GlobalVariables\GlobalVariables.h" />
     <ClInclude Include="Engine\Input\Input.h" />
@@ -274,18 +268,16 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Particle\CPU\ICPUParticle.h" />
     <ClInclude Include="Engine\Particle\CPU\ICPUParticleEmitter.h" />
     <ClInclude Include="Engine\Particle\CPU\CPUParticleEmitterManager.h" />
-    <ClInclude Include="Engine\Primitive\IPrimitive.h" />
-    <ClInclude Include="Engine\Primitive\PrimitiveManager.h" />
     <ClInclude Include="Engine\Resource\Material\Material.h" />
     <ClInclude Include="Engine\Resource\Texture\Texture.h" />
     <ClInclude Include="Engine\Resource\Texture\TextureManager.h" />
     <ClInclude Include="Engine\Scene\BaseScene.h" />
     <ClInclude Include="Engine\Scene\ISceneFactory.h" />
-    <ClInclude Include="Engine\Scene\SceneList.h" />
+    <ClInclude Include="App\Scene\SceneList.h" />
     <ClInclude Include="Engine\Scene\SceneManager.h" />
-    <ClInclude Include="Engine\Scene\User\GameScene.h" />
-    <ClInclude Include="Engine\Scene\User\SampleScene.h" />
-    <ClInclude Include="Engine\Scene\User\TitleScene.h" />
+    <ClInclude Include="App\Scene\User\GameScene.h" />
+    <ClInclude Include="App\Scene\User\SampleScene.h" />
+    <ClInclude Include="App\Scene\User\TitleScene.h" />
     <ClInclude Include="Engine\Sprite\Sprite.h" />
     <ClInclude Include="Engine\Sprite\SpriteManager.h" />
     <ClInclude Include="Engine\Utility\Animation\Animation.h" />
@@ -312,7 +304,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Utility\Line\Line.h" />
     <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Engine\KEngine.h" />
-    <ClInclude Include="Engine\Scene\SceneFactory.h" />
+    <ClInclude Include="App\Scene\SceneFactory.h" />
     <ClInclude Include="Engine\Base\RootSignature\IRootSignature.h" />
     <ClInclude Include="Engine\Base\RootSignature\ModelRootSignature.h" />
     <ClInclude Include="Engine\Base\RootSignature\RootSignatureManager.h" />
@@ -352,7 +344,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Base\RootSignature\ParticleRootSignature.h" />
     <ClInclude Include="Engine\GameObject\Samples\SampleParticle\SampleParticle.h" />
     <ClInclude Include="Engine\GameObject\Samples\SampleLevel\SampleLevelObjects.h" />
-    <ClInclude Include="Engine\Level\LevelLoader.h" />
+    <ClInclude Include="App\Level\LevelLoader.h" />
     <ClInclude Include="Engine\PostProcess\OutLine\OutLine.h" />
     <ClInclude Include="Engine\PostProcess\HSVFilter\HSVFilter.h" />
     <ClInclude Include="Engine\SkyBox\SkyBox.h" />

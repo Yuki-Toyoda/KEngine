@@ -1,7 +1,7 @@
 #pragma once
-#include "../../Math/Vector3.h"
-#include "../../Math/Quaternion.h"
-#include "../Component/Skelton.h"
+#include "Engine/Math/Vector3.h"
+#include "Engine/Math/Quaternion.h"
+#include "Engine/Model/Component/Skelton.h"
 
 #include <string>
 #include <vector>

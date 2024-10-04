@@ -4,8 +4,8 @@
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
 
-#include "../Device/DirectXDevice.h"
-#include "../DescriptorHeaps/HeapManager.h"
+#include "Engine/Base/Device/DirectXDevice.h"
+#include "Engine/Base/DescriptorHeaps/HeapManager.h"
 
 /// <summary>
 /// 全リソース基底クラス

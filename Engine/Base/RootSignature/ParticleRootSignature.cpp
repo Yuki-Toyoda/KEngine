@@ -1,5 +1,4 @@
 #include "ParticleRootSignature.h"
-#include "../Config/Config.h"
 
 void ParticleRootSignature::Init()
 {

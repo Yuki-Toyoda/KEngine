@@ -1,6 +1,6 @@
 #pragma once
-#include "../IResource.h"
-#include "../../Config/Config.h"
+#include "Engine/Base/Resource/IResource.h"
+#include "Engine/Base/Config/Config.h"
 
 /// <summary>
 /// レンダリング用リソース基底クラス

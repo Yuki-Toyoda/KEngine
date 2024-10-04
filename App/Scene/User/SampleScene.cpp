@@ -1,7 +1,6 @@
 #include "SampleScene.h"
-#include "../../GameObject/SampleList.h"
-#include "../SceneManager.h"
-#include "../../Level/LevelLoader.h"
+#include "Engine/GameObject/SampleList.h"
+#include "Engine/Scene/SceneManager.h"
 
 void SampleScene::LoadModel()
 {

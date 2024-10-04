@@ -4,12 +4,15 @@
 #include <memory>
 #include <cmath>
 #include <numbers>
-#include "../../Externals/imgui/imgui.h"
+#include "Externals/imgui/imgui.h"
 #include "WorldTransform.h"
-#include "../Model/ModelManager.h"
-#include "../Sprite/SpriteManager.h"
-#include "../Collider/CollisionManager.h"
-#include "../Utility/KLib.h"
+#include "Engine/Model/ModelManager.h"
+#include "Engine/Sprite/SpriteManager.h"
+#include "Engine/Collider/CollisionManager.h"
+#include "Engine/Utility/KLib.h"
+#include "Engine/Resource/Texture/TextureManager.h"
+#include "Engine/Particle/ParticleManager.h"
+#include "Engine/Input/Input.h"
 
 /// 最小構成
 /*

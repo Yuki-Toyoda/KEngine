@@ -5,7 +5,7 @@
 #include <thread>
 
 #include "WinApp.h"
-#include "../Debug/Debug.h"
+#include "Engine/Debug/Debug.h"
 #include "Device/DirectXDevice.h"
 #include "RootSignature/RootSignatureManager.h"
 #include "DescriptorHeaps/HeapManager.h"

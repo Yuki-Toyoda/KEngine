@@ -1,6 +1,6 @@
 #pragma once
 #include "BaseShape.h"
-#include "../../Math/Matrix4x4.h"
+#include "Engine/Math/Matrix4x4.h"
 
 /// <summary>
 /// コライダー形状(OBB)

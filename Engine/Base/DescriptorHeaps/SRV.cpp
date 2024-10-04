@@ -1,5 +1,5 @@
 #include "SRV.h"
-#include "../../../Externals/DirectXTex/DirectXTex.h"
+#include "Externals/DirectXTex/DirectXTex.h"
 
 using namespace Microsoft::WRL;
 

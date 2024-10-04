@@ -1,6 +1,6 @@
 #include "CollisionManager.h"
 #include <algorithm>
-#include "../GameObject/IObject.h"
+#include "Engine/GameObject/IObject.h"
 
 CollisionManager* CollisionManager::GetInstance()
 {

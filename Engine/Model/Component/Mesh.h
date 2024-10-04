@@ -3,7 +3,7 @@
 #include "JointWeight.h"
 #include "Skelton.h"
 #include "SkinCluster.h"
-#include "../../Base/Resource/Data/StructuredBuffer.h"
+#include "Engine/Base/Resource/Data/StructuredBuffer.h"
 
 #include <vector>
 #include <map>

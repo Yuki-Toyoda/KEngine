@@ -1,7 +1,7 @@
 #pragma once
 #include <variant>
-#include "AnimationKeys.h"
 #include <wrl/client.h>
+#include "AnimationKeys.h"
 
 /// <summary>
 /// アニメーションクラス

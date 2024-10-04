@@ -1,5 +1,5 @@
 #pragma once
-#include "../IResource.h"
+#include "Engine/Base/Resource/IResource.h"
 
 /// <summary>
 /// シェーダー用リソース基底クラス

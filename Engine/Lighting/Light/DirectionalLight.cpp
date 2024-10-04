@@ -1,5 +1,5 @@
 #include "DirectionalLight.h"
-#include "../../Base/DirectXCommon.h"
+#include "Engine/Base/DirectXCommon.h"
 
 void DirectionalLight::Init(const Vector4& color, const Vector3& rotation, const float intensity)
 {

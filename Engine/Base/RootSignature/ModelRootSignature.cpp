@@ -1,5 +1,4 @@
 #include "ModelRootSignature.h"
-#include "../Config/Config.h"
 
 void ModelRootSignature::Init()
 {

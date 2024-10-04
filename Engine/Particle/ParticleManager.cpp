@@ -1,5 +1,5 @@
 #include "ParticleManager.h"
-#include "../Base/DirectXCommon.h"
+#include "Engine/Base/DirectXCommon.h"
 
 ParticleManager& ParticleManager::Init()
 {

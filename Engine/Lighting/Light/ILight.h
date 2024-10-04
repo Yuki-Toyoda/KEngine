@@ -1,9 +1,9 @@
 #pragma once
 #include <string>
-#include "../../../Externals/imgui/imgui.h"
-#include "../../Math/Vector2.h"
-#include "../../Math/Vector3.h"
-#include "../../Math/Vector4.h"
+#include "Externals/imgui/imgui.h"
+#include "Engine/Math/Vector2.h"
+#include "Engine/Math/Vector3.h"
+#include "Engine/Math/Vector4.h"
 
 /// <summary>
 /// ライトの基底クラス

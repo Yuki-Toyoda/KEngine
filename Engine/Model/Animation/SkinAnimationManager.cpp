@@ -1,6 +1,6 @@
 #include "SkinAnimationManager.h"
-#include "../../Debug/Debug.h"
-#include "../../../Externals/imgui/imgui.h"
+#include "Engine/Debug/Debug.h"
+#include "Externals/imgui/imgui.h"
 #include <cassert>
 
 #include <assimp/Importer.hpp>

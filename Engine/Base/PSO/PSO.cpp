@@ -1,6 +1,4 @@
 #include "PSO.h"
-#include "../../Debug/Debug.h"
-
 #include <cassert>
 
 PSO& PSO::Init(ID3D12RootSignature* signature, DXC* dxc, PSOType type)

@@ -1,8 +1,8 @@
-#include "TitleScene.h"
-#include "../SceneManager.h"
-#include "../../Resource/Texture/TextureManager.h"
+#include "GameScene.h"
+#include "Engine/Scene/SceneManager.h"
+#include "Engine/GameObject/SampleList.h"
 
-void TitleScene::LoadModel()
+void GameScene::LoadModel()
 {
 	// モデルデータマネージャーを使用して事前ロードを行ってください
 	// modelDataManager_->LoadNewModel("モデルまでのファイルパス", "モデル名.拡張子");
@@ -10,19 +10,21 @@ void TitleScene::LoadModel()
 	// 新規モデル読み込み処理
 }
 
-void TitleScene::Init()
-{
-	
+void GameScene::Init(){
+
+	// スカイドーム生成
+	SkyDome* skyDome = nullptr;
+	skyDome = gameObjectManager_->CreateInstance<SkyDome>("SkyDome", IObject::TagNone);
+
 }
 
-void TitleScene::Update()
+void GameScene::Update()
 {
-
 	// デバッグ時のみ特定のキーでシーン遷移
 #ifdef _DEBUG
 	// デバッグ遷移
 	if (input_->TriggerKey(DIK_RSHIFT)) {
-		SceneManager::GetInstance()->ChangeScene("Game");
+		SceneManager::GetInstance()->ChangeScene("Title");
 	}
 #endif // _DEBUG
 }

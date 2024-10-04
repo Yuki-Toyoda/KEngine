@@ -1,7 +1,7 @@
 #pragma once
-#include "../RootSignature/RootSignatureManager.h"
-#include "../PSO/PSO.h"
-#include "../Resource/Data/StructuredBuffer.h"
+#include "Engine/Base/RootSignature/RootSignatureManager.h"
+#include "Engine/Base/PSO/PSO.h"
+#include "Engine/Base/Resource/Data/StructuredBuffer.h"
 
 /// <summary>
 /// 描画レンダラー基底クラス

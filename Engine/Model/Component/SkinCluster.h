@@ -1,6 +1,6 @@
 #pragma once
-#include "../../Base/Resource/Data/StructuredBuffer.h"
-#include "../../GameObject/QuatWorldTransform.h"
+#include "Engine/Base/Resource/Data/StructuredBuffer.h"
+#include "Engine/GameObject/QuatWorldTransform.h"
 #include "Node.h"
 
 #include <vector>

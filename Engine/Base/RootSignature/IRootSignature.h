@@ -5,7 +5,8 @@
 #include <vector>
 #include <list>
 #include <cassert>
-#include "../../Debug/Debug.h"
+#include "Engine/Debug/Debug.h"
+#include "Engine/Base/Config/Config.h"
 
 /// <summary>
 /// ルートシグネチャ基底クラス

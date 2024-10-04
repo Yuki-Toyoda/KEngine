@@ -1,5 +1,5 @@
 #pragma once
-#include "../../IObject.h"
+#include "Engine/GameObject/IObject.h"
 
 // クラスの前方宣言
 class MyAnimation;

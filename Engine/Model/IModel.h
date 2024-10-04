@@ -1,9 +1,9 @@
 #pragma once
 #include "Data/ModelData.h"
-#include "../GameObject/WorldTransform.h"
-#include "../Base/Resource/Data/ConstantBuffer.h"
-#include "../Base/Resource/Data/StructuredBuffer.h"
-#include "../Base/Resource/Data/RWStructuredBuffer.h"
+#include "Engine/GameObject/WorldTransform.h"
+#include "Engine/Base/Resource/Data/ConstantBuffer.h"
+#include "Engine/Base/Resource/Data/StructuredBuffer.h"
+#include "Engine/Base/Resource/Data/RWStructuredBuffer.h"
 
 /// <summary>
 /// モデル基底クラス

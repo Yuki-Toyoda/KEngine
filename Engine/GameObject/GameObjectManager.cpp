@@ -1,6 +1,6 @@
 #include "GameObjectManager.h"
 #include "Core/Camera.h"
-#include "../Base/DirectXCommon.h"
+#include "Engine/Base/DirectXCommon.h"
 
 GameObjectManager* GameObjectManager::GetInstance()
 {

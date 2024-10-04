@@ -1,5 +1,6 @@
 #pragma once
 #include "IDescriptorHeap.h"
+#include "Engine/Base/Config/Config.h"
 
 struct RTVInfo : public HeapInfo {
 
