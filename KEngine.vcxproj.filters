@@ -822,6 +822,7 @@
     <None Include="Engine\Resource\Shader\PostProcess\Bloom\GaussianBlur.hlsli">
       <Filter>Engine\Resource\Shader</Filter>
     </None>
+    <None Include="Engine\Resource\Shader\Trail\Trail.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -1104,5 +1105,7 @@
     <FxCompile Include="Engine\Resource\Shader\PostProcess\Bloom\GaussianBlurY.hlsl">
       <Filter>Engine\Resource\Shader</Filter>
     </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\Trail\Trail.VS.hlsl" />
+    <FxCompile Include="Engine\Resource\Shader\Trail\Trail.PS.hlsl" />
   </ItemGroup>
 </Project>

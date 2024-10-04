@@ -71,7 +71,14 @@ SamplerState gPointSampler : register(s1);
 	root_.CreateCBVParameter(0, D3D12_SHADER_VISIBILITY_PIXEL);				// 汎用データ
 	root_.CreateDescriptorTableParameter(0, D3D12_SHADER_VISIBILITY_PIXEL); // テクスチャデータ
 	root_.CreateDescriptorTableParameter(1, D3D12_SHADER_VISIBILITY_PIXEL); // 深度マップ
-	root_.CreateSampler(0);													// サンプラー
+	root_.CreateSampler(0,
+		D3D12_SHADER_VISIBILITY_PIXEL,
+		D3D12_FILTER_MIN_MAG_MIP_LINEAR,
+		D3D12_COMPARISON_FUNC_NEVER,
+		D3D12_TEXTURE_ADDRESS_MODE_CLAMP,
+		D3D12_TEXTURE_ADDRESS_MODE_CLAMP,
+		D3D12_TEXTURE_ADDRESS_MODE_CLAMP
+	);																		// サンプラー
 	root_.CreateSampler(1, D3D12_SHADER_VISIBILITY_PIXEL, D3D12_FILTER_MIN_MAG_MIP_POINT); // 深度テクスチャ用サンプラー
 
 	/// 各ポストプロセスのパラメータも追加する

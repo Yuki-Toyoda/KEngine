@@ -60,3 +60,4 @@ struct VertexOutPut
     float32_t4 color    : COLOR0;
     int32_t    mIndex   : INDEX0;
 };
+
