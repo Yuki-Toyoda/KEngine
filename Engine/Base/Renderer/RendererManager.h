@@ -1,11 +1,11 @@
 #pragma once
-#include "../Command.h"
-#include "../RootSignature/RootSignatureManager.h"
-#include "../../Model/ModelManager.h"
-#include "../../Lighting/Light/DirectionalLight.h"
+#include "Engine/Base/Command.h"
+#include "Engine/Base/RootSignature/RootSignatureManager.h"
+#include "Engine/Model/ModelManager.h"
+#include "Engine/Lighting/Light/DirectionalLight.h"
+#include "Engine/PostProcess/PostProcessor.h"
 #include "ModelRenderer.h"
 #include "PPRenderer.h"
-#include "../../PostProcess/PostProcessor.h"
 #include "SpriteRenderer.h"
 
 // クラスの前方宣言
@@ -127,4 +127,3 @@ private: // メンバ変数
 	SpriteRenderer spriteRenderer_;
 
 };
-

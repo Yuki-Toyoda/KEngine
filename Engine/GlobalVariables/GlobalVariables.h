@@ -1,15 +1,15 @@
 #pragma once
 #include <Windows.h>
-#include "../../Externals/nlohmann/json.hpp"
+#include "Externals/nlohmann/json.hpp"
 #include <variant>
 #include <map>
 #include <string>
 #include <fstream>
-#include "../Math/Vector2.h"
-#include "../Math/Vector3.h"
+#include "Engine/Math/Vector2.h"
+#include "Engine/Math/Vector3.h"
 
 #ifdef _DEBUG
-#include "../../externals/imgui/imgui.h"
+#include "Externals/imgui/imgui.h"
 #endif // _DEBUG
 
 /// <summary>

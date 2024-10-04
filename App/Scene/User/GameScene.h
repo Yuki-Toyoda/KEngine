@@ -1,5 +1,5 @@
 #pragma once
-#include "../BaseScene.h"
+#include "Engine/Scene/BaseScene.h"
 #include "../SceneList.h"
 
 /// <summary>

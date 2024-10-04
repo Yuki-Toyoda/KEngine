@@ -1,7 +1,7 @@
 #include "SkyBox.h"
-#include "../Debug/Debug.h"
-#include "../Resource/Texture/TextureManager.h"
-#include "../Base/DirectXCommon.h"
+#include "Engine/Debug/Debug.h"
+#include "Engine/Resource/Texture/TextureManager.h"
+#include "Engine/Base/DirectXCommon.h"
 
 void SkyBox::Init(const std::string& ddsPath, const std::string& ddsName)
 {

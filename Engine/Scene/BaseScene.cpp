@@ -1,7 +1,7 @@
 #include "BaseScene.h"
-#include "../Sprite/SpriteManager.h"
-#include "../Particle/CPU/CPUParticleEmitterManager.h"
-#include "../Particle/ParticleManager.h"
+#include "Engine/Sprite/SpriteManager.h"
+#include "Engine/Particle/CPU/CPUParticleEmitterManager.h"
+#include "Engine/Particle/ParticleManager.h"
 
 void BaseScene::PreInitialize()
 {

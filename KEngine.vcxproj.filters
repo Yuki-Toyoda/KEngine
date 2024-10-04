@@ -52,26 +52,17 @@
     <ClCompile Include="Engine\Resource\Texture\TextureManager.cpp">
       <Filter>Engine\Resource\Texture</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Scene\BaseScene.cpp">
-      <Filter>App\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject\IObject.cpp">
-      <Filter>App\GameObject</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\GameObject\Core\Camera.cpp">
-      <Filter>App\GameObject\Core</Filter>
+      <Filter>Engine\GameObject\Core</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\GameObject\GameObjectManager.cpp">
-      <Filter>App\GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Scene\User\TitleScene.cpp">
+    <ClCompile Include="App\Scene\User\TitleScene.cpp">
       <Filter>App\Scene\User</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Scene\User\GameScene.cpp">
+    <ClCompile Include="App\Scene\User\GameScene.cpp">
       <Filter>App\Scene\User</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\Samples\SampleSkyDome\SkyDome.cpp">
-      <Filter>App\GameObject\Samples\SkyDome</Filter>
+      <Filter>Engine\GameObject\Samples\SkyDome</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Collider\Collider.cpp">
       <Filter>Engine\Collider</Filter>
@@ -83,31 +74,31 @@
       <Filter>Engine\Math</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Utility\Timer\DeltaTimer.cpp">
-      <Filter>App\Utility\Timer</Filter>
+      <Filter>Engine\Utility\Timer</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Utility\Easing\Easing.cpp">
-      <Filter>App\Utility\Easing</Filter>
+      <Filter>Engine\Utility\Easing</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Sprite\Sprite.cpp">
-      <Filter>App\Sprite</Filter>
+      <Filter>Engine\Sprite</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Sprite\SpriteManager.cpp">
-      <Filter>App\Sprite</Filter>
+      <Filter>Engine\Sprite</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Scene\User\SampleScene.cpp">
+    <ClCompile Include="App\Scene\User\SampleScene.cpp">
       <Filter>App\Scene\User</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Utility\Animation\AnimationManager.cpp">
-      <Filter>App\Utility\Animation</Filter>
+      <Filter>Engine\Utility\Animation</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Utility\Animation\Animation.cpp">
-      <Filter>App\Utility\Animation</Filter>
+      <Filter>Engine\Utility\Animation</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\GameObject\User\TestObject\TestObject.cpp">
+    <ClCompile Include="App\GameObject\User\TestObject\TestObject.cpp">
       <Filter>App\GameObject\User\TestObject</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Utility\Observer\Observer.cpp">
-      <Filter>App\Utility\Observer</Filter>
+      <Filter>Engine\Utility\Observer</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Audio\Audio.cpp">
       <Filter>Engine\Audio</Filter>
@@ -125,13 +116,10 @@
       <Filter>Engine\Input</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Utility\Line\Line.cpp">
-      <Filter>App\Utility\Line</Filter>
+      <Filter>Engine\Utility\Line</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Base\WinApp.cpp">
       <Filter>Engine\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject\WorldTransform.cpp">
-      <Filter>App\GameObject</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Audio\Audio.cpp">
       <Filter>Engine\Audio</Filter>
@@ -166,7 +154,7 @@
     <ClCompile Include="Engine\Scene\SceneManager.cpp">
       <Filter>Engine\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Scene\SceneFactory.cpp">
+    <ClCompile Include="App\Scene\SceneFactory.cpp">
       <Filter>App\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Math\Matrix4x4.cpp">
@@ -182,7 +170,7 @@
       <Filter>Engine\Math</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Utility\DataSegment\DataSegment.cpp">
-      <Filter>App\Utility\DataSegment</Filter>
+      <Filter>Engine\Utility\DataSegment</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Base\DescriptorHeaps\HeapManager.cpp">
       <Filter>Engine\Base\DescriptorHeaps</Filter>
@@ -215,7 +203,7 @@
       <Filter>Engine\Base\RootSignature</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Utility\IndexList\IndexList.cpp">
-      <Filter>App\Utility\IndexList</Filter>
+      <Filter>Engine\Utility\IndexList</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Lighting\Light\DirectionalLight.cpp">
       <Filter>Engine\Lighting\Light</Filter>
@@ -224,7 +212,7 @@
       <Filter>Engine\Base\RootSignature</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\Samples\SampleSkinAnim\SampleAnim.cpp">
-      <Filter>App\GameObject\Samples\SampleSkinAnim</Filter>
+      <Filter>Engine\GameObject\Samples\SampleSkinAnim</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Base\Renderer\PPRenderer.cpp">
       <Filter>Engine\Base\Renderer</Filter>
@@ -240,9 +228,6 @@
     </ClCompile>
     <ClCompile Include="Engine\Model\SkiningModel.cpp">
       <Filter>Engine\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject\QuatWorldTransform.cpp">
-      <Filter>App\GameObject</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\Model\Component\Joint.cpp">
@@ -294,7 +279,7 @@
       <Filter>Engine\Model</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\Samples\SampleParticle\SampleParticle.cpp">
-      <Filter>App\GameObject\Samples\SampleParticle</Filter>
+      <Filter>Engine\GameObject\Samples\SampleParticle</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Model\SpriteModel.cpp">
       <Filter>Engine\Model</Filter>
@@ -302,14 +287,14 @@
     <ClCompile Include="Engine\Base\RootSignature\SpriteRootSignature.cpp">
       <Filter>Engine\Base\RootSignature</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Level\LevelLoader.cpp">
+    <ClCompile Include="App\Level\LevelLoader.cpp">
       <Filter>App\Level</Filter>
     </ClCompile>
     <ClCompile Include="Engine\PostProcess\OutLine\OutLine.cpp">
       <Filter>Engine\PostProcess\OutLine</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameObject\Samples\SampleLevel\SampleLevelObjects.cpp">
-      <Filter>App\GameObject\Samples\SampleLevel</Filter>
+      <Filter>Engine\GameObject\Samples\SampleLevel</Filter>
     </ClCompile>
     <ClCompile Include="Engine\PostProcess\HSVFilter\HSVFilter.cpp">
       <Filter>Engine\PostProcess\HSVFilter</Filter>
@@ -343,6 +328,21 @@
     </ClCompile>
     <ClCompile Include="Engine\PostProcess\RadialBlur\RadialBlur.cpp">
       <Filter>Engine\PostProcess\RadialBlur</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Scene\BaseScene.cpp">
+      <Filter>Engine\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\GameObjectManager.cpp">
+      <Filter>Engine\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\QuatWorldTransform.cpp">
+      <Filter>Engine\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\IObject.cpp">
+      <Filter>Engine\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject\WorldTransform.cpp">
+      <Filter>Engine\GameObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -430,38 +430,23 @@
     <ClInclude Include="Engine\Resource\Material\Material.h">
       <Filter>Engine\Resource\Material</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\GameObject\WorldTransform.h">
-      <Filter>App\GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Resource\Texture\TextureManager.h">
       <Filter>Engine\Resource\Texture</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Scene\BaseScene.h">
-      <Filter>App\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameObject\IObject.h">
-      <Filter>App\GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\GameObject\Core\Camera.h">
-      <Filter>App\GameObject\Core</Filter>
+      <Filter>Engine\GameObject\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\GameObject\GameObjectManager.h">
-      <Filter>App\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameObject\ObjectList.h">
-      <Filter>App\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Scene\SceneList.h">
+    <ClInclude Include="App\Scene\SceneList.h">
       <Filter>App\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Scene\User\TitleScene.h">
+    <ClInclude Include="App\Scene\User\TitleScene.h">
       <Filter>App\Scene\User</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Scene\User\GameScene.h">
+    <ClInclude Include="App\Scene\User\GameScene.h">
       <Filter>App\Scene\User</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\Samples\SampleSkyDome\SkyDome.h">
-      <Filter>App\GameObject\Samples\SkyDome</Filter>
+      <Filter>Engine\GameObject\Samples\SkyDome</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Collider\Collider.h">
       <Filter>Engine\Collider</Filter>
@@ -488,49 +473,46 @@
       <Filter>Engine\Math</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utility\Timer\DeltaTimer.h">
-      <Filter>App\Utility\Timer</Filter>
+      <Filter>Engine\Utility\Timer</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utility\Lerp\Lerp.h">
-      <Filter>App\Utility\Lerp</Filter>
+      <Filter>Engine\Utility\Lerp</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utility\Easing\Easing.h">
-      <Filter>App\Utility\Easing</Filter>
+      <Filter>Engine\Utility\Easing</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utility\KLib.h">
-      <Filter>App\Utility</Filter>
+      <Filter>Engine\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Sprite\Sprite.h">
-      <Filter>App\Sprite</Filter>
+      <Filter>Engine\Sprite</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Sprite\SpriteManager.h">
-      <Filter>App\Sprite</Filter>
+      <Filter>Engine\Sprite</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utility\Animation\AnimationKey.h">
-      <Filter>App\Utility\Animation</Filter>
+      <Filter>Engine\Utility\Animation</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\GameObject\SampleList.h">
-      <Filter>App\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Scene\User\SampleScene.h">
+    <ClInclude Include="App\Scene\User\SampleScene.h">
       <Filter>App\Scene\User</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utility\Animation\AnimationKeys.h">
-      <Filter>App\Utility\Animation</Filter>
+      <Filter>Engine\Utility\Animation</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utility\Animation\AnimationManager.h">
-      <Filter>App\Utility\Animation</Filter>
+      <Filter>Engine\Utility\Animation</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utility\Animation\Animation.h">
-      <Filter>App\Utility\Animation</Filter>
+      <Filter>Engine\Utility\Animation</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\GameObject\User\TestObject\TestObject.h">
+    <ClInclude Include="App\GameObject\User\TestObject\TestObject.h">
       <Filter>App\GameObject\User\TestObject</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utility\Observer\Observer.h">
-      <Filter>App\Utility\Observer</Filter>
+      <Filter>Engine\Utility\Observer</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utility\Line\Line.h">
-      <Filter>App\Utility\Line</Filter>
+      <Filter>Engine\Utility\Line</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utility\Line\Line.h">
       <Filter>App\Utility\Line</Filter>
@@ -547,11 +529,11 @@
     <ClInclude Include="Engine\Scene\ISceneFactory.h">
       <Filter>Engine\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Scene\SceneFactory.h">
+    <ClInclude Include="App\Scene\SceneFactory.h">
       <Filter>App\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utility\DataSegment\DataSegment.h">
-      <Filter>App\Utility\DataSegment</Filter>
+      <Filter>Engine\Utility\DataSegment</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Base\Config\Config.h">
       <Filter>Engine\Base\Config</Filter>
@@ -608,13 +590,13 @@
       <Filter>Engine\Base\RootSignature</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utility\IndexList\IndexList.h">
-      <Filter>App\Utility\IndexList</Filter>
+      <Filter>Engine\Utility\IndexList</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utility\IndexList\Index.h">
-      <Filter>App\Utility\IndexList</Filter>
+      <Filter>Engine\Utility\IndexList</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utility\Counter\Counter.h">
-      <Filter>App\Utility\Counter</Filter>
+      <Filter>Engine\Utility\Counter</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Lighting\Light\DirectionalLight.h">
       <Filter>Engine\Lighting\Light</Filter>
@@ -626,7 +608,7 @@
       <Filter>Engine\Base\RootSignature</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\Samples\SampleSkinAnim\SampleAnim.h">
-      <Filter>App\GameObject\Samples\SampleSkinAnim</Filter>
+      <Filter>Engine\GameObject\Samples\SampleSkinAnim</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Base\Renderer\PPRenderer.h">
       <Filter>Engine\Base\Renderer</Filter>
@@ -645,9 +627,6 @@
     </ClInclude>
     <ClInclude Include="Engine\Model\SkiningModel.h">
       <Filter>Engine\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameObject\QuatWorldTransform.h">
-      <Filter>App\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Model\Component\Joint.h">
       <Filter>Engine\Model\Component</Filter>
@@ -704,28 +683,28 @@
       <Filter>Engine\Model</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\Samples\SampleParticle\SampleParticle.h">
-      <Filter>App\GameObject\Samples\SampleParticle</Filter>
+      <Filter>Engine\GameObject\Samples\SampleParticle</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Model\SpriteModel.h">
       <Filter>Engine\Model</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utility\Random\Random.h">
-      <Filter>App\Utility\Random</Filter>
+      <Filter>Engine\Utility\Random</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Base\RootSignature\SpriteRootSignature.h">
       <Filter>Engine\Base\RootSignature</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Level\LevelLoader.h">
+    <ClInclude Include="App\Level\LevelLoader.h">
       <Filter>App\Level</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utility\Angle\Angle.h">
-      <Filter>App\Utility\Angle</Filter>
+      <Filter>Engine\Utility\Angle</Filter>
     </ClInclude>
     <ClInclude Include="Engine\PostProcess\OutLine\OutLine.h">
       <Filter>Engine\PostProcess\OutLine</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject\Samples\SampleLevel\SampleLevelObjects.h">
-      <Filter>App\GameObject\Samples\SampleLevel</Filter>
+      <Filter>Engine\GameObject\Samples\SampleLevel</Filter>
     </ClInclude>
     <ClInclude Include="Engine\PostProcess\HSVFilter\HSVFilter.h">
       <Filter>Engine\PostProcess\HSVFilter</Filter>
@@ -762,6 +741,27 @@
     </ClInclude>
     <ClInclude Include="Engine\PostProcess\RadialBlur\RadialBlur.h">
       <Filter>Engine\PostProcess\RadialBlur</Filter>
+    </ClInclude>
+    <ClInclude Include="App\GameObject\ObjectList.h">
+      <Filter>App\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Scene\BaseScene.h">
+      <Filter>Engine\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\GameObjectManager.h">
+      <Filter>Engine\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\IObject.h">
+      <Filter>Engine\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\QuatWorldTransform.h">
+      <Filter>Engine\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\WorldTransform.h">
+      <Filter>Engine\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameObject\SampleList.h">
+      <Filter>Engine\GameObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -860,35 +860,8 @@
     <Filter Include="App\Scene\User">
       <UniqueIdentifier>{19111d30-375b-42f5-892b-22a7a66dd627}</UniqueIdentifier>
     </Filter>
-    <Filter Include="App\Utility">
-      <UniqueIdentifier>{c507d589-1a82-40b2-ac1c-f171606562f1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="App\Utility\Timer">
-      <UniqueIdentifier>{05111ea3-bc1b-452c-94f8-cbb5372fffa9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="App\Utility\Lerp">
-      <UniqueIdentifier>{4b65be02-5225-4357-ad00-042292f13c38}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="App\Utility\Easing">
-      <UniqueIdentifier>{e8356644-0f27-4d8e-8218-41dd7d1d5dc9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="App\Utility\Animation">
-      <UniqueIdentifier>{e0beeaf0-3b5a-451f-96a4-9aaedb7e01b6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="App\Utility\Line">
-      <UniqueIdentifier>{374c13ec-a14c-45d2-b7ec-b81642bcd6e3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="App\GameObject">
       <UniqueIdentifier>{aa622da1-e859-4aeb-956f-1b00f16f033f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="App\GameObject\Core">
-      <UniqueIdentifier>{d4d5bd11-e154-4a9a-b4ae-2044cd310347}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="App\GameObject\Samples">
-      <UniqueIdentifier>{89284fb6-f950-449c-974e-bdfdbe7ea9ed}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="App\GameObject\Samples\SkyDome">
-      <UniqueIdentifier>{8065e286-0718-421c-ba52-72d1062819ab}</UniqueIdentifier>
     </Filter>
     <Filter Include="App\GameObject\User">
       <UniqueIdentifier>{e4d282eb-c22f-46f5-a5d1-e5fa5125b0e2}</UniqueIdentifier>
@@ -902,20 +875,11 @@
     <Filter Include="Externals\ImGui">
       <UniqueIdentifier>{13a20c8e-a633-49aa-adb7-a30fe43c4191}</UniqueIdentifier>
     </Filter>
-    <Filter Include="App\Utility\Observer">
-      <UniqueIdentifier>{1911f2d9-37bd-4660-ba92-80feba5155d1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game">
       <UniqueIdentifier>{d78747ab-06c5-47b0-88ad-2075142a0e5c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\Scene">
       <UniqueIdentifier>{427a96d7-68dc-4a21-9ff7-c7d1d8ce5faa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="App\Sprite">
-      <UniqueIdentifier>{89930de6-5713-4b33-a25e-c80afe7ab47c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="App\Utility\DataSegment">
-      <UniqueIdentifier>{9e357208-003e-40e1-b204-427750b773bc}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\Base\Config">
       <UniqueIdentifier>{7461f27d-5bf0-4b83-be24-ebf8d4b255b0}</UniqueIdentifier>
@@ -938,20 +902,11 @@
     <Filter Include="Engine\Base\RootSignature">
       <UniqueIdentifier>{ebdf12b0-c571-49c7-8ce0-8c7e6a7e0efd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="App\Utility\IndexList">
-      <UniqueIdentifier>{50378334-9141-4942-9677-47f44c1ca8a3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="App\Utility\Counter">
-      <UniqueIdentifier>{b911f9a4-fabc-4627-97f0-b449a317fc64}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\Lighting">
       <UniqueIdentifier>{80ac618a-745d-4ebf-89a9-a75f81615d36}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\Lighting\Light">
       <UniqueIdentifier>{7880eb9d-02d6-4256-bdc1-469aadf597ad}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="App\GameObject\Samples\SampleSkinAnim">
-      <UniqueIdentifier>{cb6ba954-25d6-4a66-9c44-e37c00631c88}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\Model">
       <UniqueIdentifier>{08017a48-9acf-451d-8bf8-0422d2fac9c0}</UniqueIdentifier>
@@ -977,23 +932,11 @@
     <Filter Include="Engine\PostProcess\Vignette">
       <UniqueIdentifier>{d3d76cfa-f2e7-4cee-a16c-cff1fced587b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="App\GameObject\Samples\SampleParticle">
-      <UniqueIdentifier>{8e79553b-4a34-4e1a-8893-bb2417e4b2bb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="App\Utility\Random">
-      <UniqueIdentifier>{b58389cd-5728-4acc-8f7a-517062c7cb8f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="App\Level">
       <UniqueIdentifier>{ea37d423-b428-4279-8452-39579b4a8726}</UniqueIdentifier>
     </Filter>
-    <Filter Include="App\Utility\Angle">
-      <UniqueIdentifier>{a65f1eed-e043-4667-962c-04cacc0a0b4a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\PostProcess\OutLine">
       <UniqueIdentifier>{aa2740df-6185-496f-a070-8dabeacd7142}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="App\GameObject\Samples\SampleLevel">
-      <UniqueIdentifier>{83065e7f-b397-4665-9644-dec1c2497d51}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\PostProcess\HSVFilter">
       <UniqueIdentifier>{f8d0a69d-176c-431a-8382-25922d7db7cb}</UniqueIdentifier>
@@ -1009,6 +952,66 @@
     </Filter>
     <Filter Include="Engine\PostProcess\RadialBlur">
       <UniqueIdentifier>{560881ec-1056-4fd4-a5db-0d2cac102d55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GameObject">
+      <UniqueIdentifier>{b3eb95d2-451b-4ac2-9486-5e85d85d1273}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GameObject\Core">
+      <UniqueIdentifier>{d4d5bd11-e154-4a9a-b4ae-2044cd310347}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GameObject\Samples">
+      <UniqueIdentifier>{89284fb6-f950-449c-974e-bdfdbe7ea9ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GameObject\Samples\SkyDome">
+      <UniqueIdentifier>{8065e286-0718-421c-ba52-72d1062819ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GameObject\Samples\SampleSkinAnim">
+      <UniqueIdentifier>{cb6ba954-25d6-4a66-9c44-e37c00631c88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GameObject\Samples\SampleParticle">
+      <UniqueIdentifier>{8e79553b-4a34-4e1a-8893-bb2417e4b2bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\GameObject\Samples\SampleLevel">
+      <UniqueIdentifier>{83065e7f-b397-4665-9644-dec1c2497d51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Sprite">
+      <UniqueIdentifier>{89930de6-5713-4b33-a25e-c80afe7ab47c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Utility">
+      <UniqueIdentifier>{c507d589-1a82-40b2-ac1c-f171606562f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Utility\Timer">
+      <UniqueIdentifier>{05111ea3-bc1b-452c-94f8-cbb5372fffa9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Utility\Lerp">
+      <UniqueIdentifier>{4b65be02-5225-4357-ad00-042292f13c38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Utility\Easing">
+      <UniqueIdentifier>{e8356644-0f27-4d8e-8218-41dd7d1d5dc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Utility\Animation">
+      <UniqueIdentifier>{e0beeaf0-3b5a-451f-96a4-9aaedb7e01b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Utility\Line">
+      <UniqueIdentifier>{374c13ec-a14c-45d2-b7ec-b81642bcd6e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Utility\Observer">
+      <UniqueIdentifier>{1911f2d9-37bd-4660-ba92-80feba5155d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Utility\DataSegment">
+      <UniqueIdentifier>{9e357208-003e-40e1-b204-427750b773bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Utility\IndexList">
+      <UniqueIdentifier>{50378334-9141-4942-9677-47f44c1ca8a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Utility\Counter">
+      <UniqueIdentifier>{b911f9a4-fabc-4627-97f0-b449a317fc64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Utility\Random">
+      <UniqueIdentifier>{b58389cd-5728-4acc-8f7a-517062c7cb8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Utility\Angle">
+      <UniqueIdentifier>{a65f1eed-e043-4667-962c-04cacc0a0b4a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

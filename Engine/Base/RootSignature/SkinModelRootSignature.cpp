@@ -1,5 +1,4 @@
 #include "SkinModelRootSignature.h"
-#include "../Config/Config.h"
 
 void SkinModelRootSignature::Init()
 {

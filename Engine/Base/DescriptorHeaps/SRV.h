@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include "IDescriptorHeap.h"
-#include "../Config/Config.h"
+#include "Engine/Base/Config/Config.h"
 
 // 前方宣言
 namespace DirectX {

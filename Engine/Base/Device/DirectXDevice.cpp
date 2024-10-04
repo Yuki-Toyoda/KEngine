@@ -1,5 +1,5 @@
 #include "DirectXDevice.h"
-#include "../../Debug/Debug.h"
+#include "Engine/Debug/Debug.h"
 #include <cassert>
 
 #pragma comment(lib, "d3d12.lib")

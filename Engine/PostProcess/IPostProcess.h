@@ -1,9 +1,9 @@
 #pragma once
-#include "../Base/RootSignature/IRootSignature.h"
-#include "../Base/Command.h"
-#include "../Base/Resource/Data/ConstantBuffer.h"
-#include "../Base/Resource/Rendering/RenderResource.h"
-#include "../../Externals/imgui/imgui.h"
+#include "Engine/Base/RootSignature/IRootSignature.h"
+#include "Engine/Base/Command.h"
+#include "Engine/Base/Resource/Data/ConstantBuffer.h"
+#include "Engine/Base/Resource/Rendering/RenderResource.h"
+#include "Externals/imgui/imgui.h"
 
 #include <string>
 #include <fstream>

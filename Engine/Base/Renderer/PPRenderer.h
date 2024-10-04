@@ -1,9 +1,9 @@
 #pragma once
 #include "IRenderer.h"
-#include "../Resource/Rendering/RenderResource.h"
-#include "../Resource/Rendering/DepthStencil.h"
-#include "../DXC/DXC.h"
-#include "../../PostProcess/PostProcessor.h"
+#include "Engine/Base/Resource/Rendering/RenderResource.h"
+#include "Engine/Base/Resource/Rendering/DepthStencil.h"
+#include "Engine/Base/DXC/DXC.h"
+#include "Engine/PostProcess/PostProcessor.h"
 
 /// <summary>
 /// ポストプロセス用レンダラークラス

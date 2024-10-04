@@ -1,7 +1,7 @@
 #pragma once
-#include "../IResource.h"
-#include "../../../Math/Vector2.h"
-#include "../../../../Externals/DirectXTex/DirectXTex.h"
+#include "Engine/Base/Resource/IResource.h"
+#include "Engine/Math/Vector2.h"
+#include "Externals/DirectXTex/DirectXTex.h"
 
 /// <summary>
 /// テクスチャリソースクラス

@@ -1,9 +1,10 @@
 #pragma once
 #include <string>
-#include "../../GameObject/WorldTransform.h"
-#include "../../Math/Vector2.h"
-#include "../../Math/Vector3.h"
-#include "../../GlobalVariables/GlobalVariables.h"
+#include "Engine/GameObject/WorldTransform.h"
+#include "Engine/Math/Vector2.h"
+#include "Engine/Math/Vector3.h"
+#include "Engine/GlobalVariables/GlobalVariables.h"
+#include "Engine/Utility/KLib.h"
 
 // テンプレートを定義
 template <typename T>

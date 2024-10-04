@@ -3,7 +3,7 @@
 #include "Base/DirectXCommon.h"
 #include "Base/SafeDelete.h"
 #include "Resource/Texture/TextureManager.h"
-#include "../Externals/imgui/ImGuiManager.h"
+#include "Externals/imgui/ImGuiManager.h"
 #include "Input/Input.h"
 #include "Audio/Audio.h"
 #include "GlobalVariables/GlobalVariables.h"

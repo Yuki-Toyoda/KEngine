@@ -3,7 +3,7 @@
 #include <vector>
 #include <cassert>
 #include <string>
-#include "../../../Externals/imgui/imgui.h"
+#include "Externals/imgui/imgui.h"
 
 /// <summary>
 /// 使用中のインデックスを判別するインデックスリスト

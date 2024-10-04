@@ -1,5 +1,5 @@
 #include "Particle.h"
-#include "../Model/ModelManager.h"
+#include "Engine/Model/ModelManager.h"
 
 void Particle::Init(DirectXDevice* device, SRV* srv, ID3D12GraphicsCommandList6* list, const ParticlePSO& pso, const std::string& filePath, const std::string& fileName, const float lifeTime, const bool enableLighting)
 {

@@ -1,6 +1,6 @@
 #include "SpriteManager.h"
-#include "../Model/Data/ModelDataManager.h"
-#include "../Resource/Texture/TextureManager.h"
+#include "Engine/Model/Data/ModelDataManager.h"
+#include "Engine/Resource/Texture/TextureManager.h"
 
 SpriteManager* SpriteManager::GetInstance()
 {

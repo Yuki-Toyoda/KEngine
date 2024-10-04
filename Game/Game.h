@@ -1,11 +1,11 @@
 #pragma once
-#include "../Engine/Scene/SceneManager.h"
-#include "../Engine/GameObject/GameObjectManager.h"
-#include "../Engine/Sprite/SpriteManager.h"
-#include "../Engine/Particle/CPU/CPUParticleEmitterManager.h"
-#include "../Engine/Utility/Animation/AnimationManager.h"
-#include "../Engine/KEngine.h"
-#include "../Engine/Scene/SceneFactory.h"
+#include "Engine/Scene/SceneManager.h"
+#include "Engine/GameObject/GameObjectManager.h"
+#include "Engine/Sprite/SpriteManager.h"
+#include "Engine/Particle/CPU/CPUParticleEmitterManager.h"
+#include "Engine/Utility/Animation/AnimationManager.h"
+#include "Engine/KEngine.h"
+#include "App/Scene/SceneFactory.h"
 
 /// <summary>
 /// ゲームクラス

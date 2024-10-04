@@ -1,8 +1,8 @@
 #pragma once
 #include <array>
-#include "../../Math/Vector2.h"
-#include "../../Math/Vector3.h"
-#include "../../Math/Vector4.h"
+#include "Engine/Math/Vector2.h"
+#include "Engine/Math/Vector3.h"
+#include "Engine/Math/Vector4.h"
 
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>

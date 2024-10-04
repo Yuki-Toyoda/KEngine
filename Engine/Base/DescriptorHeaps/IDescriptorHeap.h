@@ -1,8 +1,8 @@
 #pragma once
 #include <stdint.h>
 #include <cassert>
-#include "../Device/DirectXDevice.h"
-#include "../../Utility/IndexList/IndexList.h"
+#include "Engine/Base/Device/DirectXDevice.h"
+#include "Engine/Utility/IndexList/IndexList.h"
 
 /// <summary>
 /// ディスクリプタヒープの基底クラス

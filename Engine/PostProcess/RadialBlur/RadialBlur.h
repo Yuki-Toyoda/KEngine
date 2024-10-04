@@ -1,5 +1,5 @@
 #pragma once
-#include "../IPostProcess.h"
+#include "Engine/PostProcess/IPostProcess.h"
 
 /// <summary>
 /// ラジアルブラー

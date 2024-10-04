@@ -1,6 +1,6 @@
 #include "SceneManager.h"
-#include "SceneList.h"
-#include "../GameObject/GameObjectManager.h"
+#include "App/Scene/SceneList.h"
+#include "Engine/GameObject/GameObjectManager.h"
 
 SceneManager* SceneManager::GetInstance()
 {

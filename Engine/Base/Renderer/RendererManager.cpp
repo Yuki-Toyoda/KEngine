@@ -1,7 +1,7 @@
 #include "RendererManager.h"
-#include "../../Resource/Texture/TextureManager.h"
-#include "../../../Externals/imgui/ImGuiManager.h"
-#include "../../Base/DirectXCommon.h"
+#include "Engine/Resource/Texture/TextureManager.h"
+#include "Externals/imgui/ImGuiManager.h"
+#include "Engine/Base/DirectXCommon.h"
 
 void RendererManager::Init(DirectXDevice* device, SRV* srv)
 {

@@ -1,11 +1,11 @@
 #pragma once
-#include "../IObject.h"
-#include "../../Input/Input.h"
-#include "../../Base/Resource/Data/ConstantBuffer.h"
-#include "../../Base/Resource/Rendering/RenderResource.h"
-#include "../../Base/Resource/Rendering/DepthStencil.h"
+#include "Engine/GameObject/IObject.h"
+#include "Engine/Input/Input.h"
+#include "Engine/Base/Resource/Data/ConstantBuffer.h"
+#include "Engine/Base/Resource/Rendering/RenderResource.h"
+#include "Engine/Base/Resource/Rendering/DepthStencil.h"
 
-#include "../../PostProcess/PostProcessor.h"
+#include "Engine/PostProcess/PostProcessor.h"
 
 // クラスの前方宣言
 class RendererManager;

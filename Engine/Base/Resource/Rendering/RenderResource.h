@@ -1,6 +1,6 @@
 #pragma once
 #include "BackBuffer.h"
-#include "../../../Math/Vector2.h"
+#include "Engine/Math/Vector2.h"
 
 // クラスの前方宣言
 class Texture;
