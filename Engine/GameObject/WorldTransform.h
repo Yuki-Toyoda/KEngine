@@ -1,10 +1,10 @@
 #pragma once
 #include <string>
-#include "../../Externals/imgui/ImGui.h"
-#include "../Utility/Lerp/Lerp.h"
-#include "../Math/Vector3.h"
-#include "../Math/Matrix4x4.h"
-#include "../Math/Quaternion.h"
+#include "Externals/imgui/ImGui.h"
+#include "Engine/Utility/Lerp/Lerp.h"
+#include "Engine/Math/Vector3.h"
+#include "Engine/Math/Matrix4x4.h"
+#include "Engine/Math/Quaternion.h"
 #include <vector>
 #include <map>
 #include <optional>

@@ -1,9 +1,9 @@
 #include "ModelRenderer.h"
-#include "../../Model/ModelManager.h"
-#include "../../Particle/ParticleManager.h"
-#include "../../Lighting/Light/DirectionalLight.h"
-#include "../../Scene/SceneManager.h"
-#include "../../Base/DirectXCommon.h"
+#include "Engine/Model/ModelManager.h"
+#include "Engine/Particle/ParticleManager.h"
+#include "Engine/Lighting/Light/DirectionalLight.h"
+#include "Engine/Scene/SceneManager.h"
+#include "Engine/Base/DirectXCommon.h"
 
 void ModelRenderer::Init(DirectXDevice* device, DXC* dxc, ModelManager* mm, DirectionalLight* lt)
 {

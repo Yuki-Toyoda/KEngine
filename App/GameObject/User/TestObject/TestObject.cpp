@@ -1,8 +1,5 @@
 #include "TestObject.h"
-#include "../../../Resource/Texture/TextureManager.h"
-#include "../../../Utility/Animation/AnimationManager.h"
-#include "../../../Particle/ParticleManager.h"
-#include "../../../Input/Input.h"
+#include "Engine/Utility/Animation/AnimationManager.h"
 
 void TestObject::Init()
 {

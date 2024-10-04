@@ -1,7 +1,7 @@
 #pragma once
 #include <list>
-#include "../KLib.h"
 #include "AnimationKey.h"
+#include "Engine/Utility/KLib.h"
 
 // テンプレートの定義
 template<typename T>

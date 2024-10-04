@@ -1,7 +1,7 @@
 #include "SpriteRenderer.h"
-#include "../../Model/ModelManager.h"
-#include "../../Scene/SceneManager.h"
-#include "../../Base/DirectXCommon.h"
+#include "Engine/Model/ModelManager.h"
+#include "Engine/Scene/SceneManager.h"
+#include "Engine/Base/DirectXCommon.h"
 
 void SpriteRenderer::Init(DirectXDevice* device, DXC* dxc, ModelManager* mm)
 {

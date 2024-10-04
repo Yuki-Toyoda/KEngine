@@ -1,13 +1,13 @@
 #pragma once
-#include "../GameObject/WorldTransform.h"
-#include "../Math/Vector4.h"
+#include "Engine/GameObject/WorldTransform.h"
+#include "Engine/Math/Vector4.h"
 
-#include "../Resource/Texture/Texture.h"
+#include "Engine/Resource/Texture/Texture.h"
 
-#include "../Base/Resource/Data/ConstantBuffer.h"
-#include "../Base/Resource/Data/StructuredBuffer.h"
+#include "Engine/Base/Resource/Data/ConstantBuffer.h"
+#include "Engine/Base/Resource/Data/StructuredBuffer.h"
 
-#include "../../Externals/imgui/imgui.h"
+#include "Externals/imgui/imgui.h"
 
 #include <array>
 #include <d3d12.h>

@@ -1,6 +1,6 @@
 #include "TextureResource.h"
-#include "../../../Debug/Debug.h"
-#include "../../DirectXCommon.h"
+#include "Engine/Debug/Debug.h"
+#include "Engine/Base/DirectXCommon.h"
 
 void TextureResource::Init(DirectXDevice* device, HeapManager* heaps, std::string filePath)
 {

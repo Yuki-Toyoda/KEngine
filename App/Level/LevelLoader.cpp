@@ -1,6 +1,6 @@
 #include "LevelLoader.h"
-#include "../GameObject/SampleList.h"
-#include "../Utility/Angle/Angle.h"
+#include "Engine/GameObject/SampleList.h"
+#include "Engine/Utility/Angle/Angle.h"
 
 void LevelLoader::Load(SampleLevelObjects* objects, const std::string& filePath, const std::string fileName)
 {

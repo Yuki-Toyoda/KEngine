@@ -1,12 +1,12 @@
 #pragma once
 #include <string>
-#include "../../DirectXMesh/DirectXMesh.h"
-#include "../../Base/Resource/Data/StructuredBuffer.h"
+#include "Externals/DirectXMesh/DirectXMesh.h"
+#include "Engine/Base/Resource/Data/StructuredBuffer.h"
 
-#include "../Component/Mesh.h"
-#include "../Component/Node.h"
-#include "../Animation/SkinAnimationManager.h"
-#include "../../Resource/Material/Material.h"
+#include "Engine/Model/Component/Mesh.h"
+#include "Engine/Model/Component/Node.h"
+#include "Engine/Model/Animation/SkinAnimationManager.h"
+#include "Engine/Resource/Material/Material.h"
 
 /// <summary>
 /// モデル実体

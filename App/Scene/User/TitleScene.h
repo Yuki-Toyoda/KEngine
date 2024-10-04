@@ -1,11 +1,11 @@
 #pragma once
-#include "../BaseScene.h"
+#include "Engine/Scene/BaseScene.h"
 #include "../SceneList.h"
 
 /// <summary>
-/// サンプルのシーン
+/// タイトルシーンクラス
 /// </summary>
-class SampleScene final : public BaseScene {
+class TitleScene final : public BaseScene {
 public: // メンバ関数
 
 	/// <summary>

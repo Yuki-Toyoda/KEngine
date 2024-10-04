@@ -1,7 +1,7 @@
 #pragma once
-#include "../IPostProcess.h"
+#include "Engine/PostProcess/IPostProcess.h"
 
-#include "../../Base/PSO/PSO.h"
+#include "Engine/Base/PSO/PSO.h"
 
 /// <summary>
 /// ブルームエフェクト

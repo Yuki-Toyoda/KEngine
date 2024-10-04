@@ -1,6 +1,6 @@
 #include "SpriteModel.h"
-#include "../Base/DirectXCommon.h"
-#include "../Resource/Texture/TextureManager.h"
+#include "Engine/Base/DirectXCommon.h"
+#include "Engine/Resource/Texture/TextureManager.h"
 
 void SpriteModel::Init(ModelData* modelData)
 {

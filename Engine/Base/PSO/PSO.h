@@ -1,7 +1,7 @@
 #pragma once
-#include "../Device/DirectXDevice.h"
-#include "../../Debug/Debug.h"
-#include "../DXC/DXC.h"
+#include "Engine/Base/Device/DirectXDevice.h"
+#include "Engine/Debug/Debug.h"
+#include "Engine/Base/DXC/DXC.h"
 
 /// <summary>
 /// パイプラインステートオブジェクトクラス

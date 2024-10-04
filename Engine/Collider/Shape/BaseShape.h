@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
-#include "../../Math/Vector3.h"
-#include "../../../Externals/imgui/imgui.h"
+#include "Engine/Math/Vector3.h"
+#include "Externals/imgui/imgui.h"
 
 /// <summary>
 /// コライダー形状の基底クラス

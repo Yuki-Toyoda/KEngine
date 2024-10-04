@@ -1,7 +1,7 @@
 #pragma once
-#include "../IPostProcess.h"
-#include "../../Math/Matrix4x4.h"
-#include "../../Math/Vector4.h"
+#include "Engine/PostProcess/IPostProcess.h"
+#include "Engine/Math/Matrix4x4.h"
+#include "Engine/Math/Vector4.h"
 
 /// <summary>
 /// アウトラインクラス

@@ -1,5 +1,5 @@
 #pragma once
-#include "../Model/SpriteModel.h"
+#include "Engine/Model/SpriteModel.h"
 
 /// <summary>
 /// 2Dスプライト

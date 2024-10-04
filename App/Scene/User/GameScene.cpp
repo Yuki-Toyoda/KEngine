@@ -1,4 +1,6 @@
 #include "GameScene.h"
+#include "Engine/Scene/SceneManager.h"
+#include "Engine/GameObject/SampleList.h"
 #include "../SceneManager.h"
 #include "../../Level/LevelLoader.h"
 

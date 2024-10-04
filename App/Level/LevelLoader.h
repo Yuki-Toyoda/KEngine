@@ -1,7 +1,7 @@
 #pragma once
 #include <fstream>
 #include <cassert>
-#include "../../../Externals/nlohmann/json.hpp"
+#include "Externals/nlohmann/json.hpp"
 
 // クラスの前方宣言
 class SampleLevelObjects;

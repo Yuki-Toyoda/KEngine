@@ -1,11 +1,11 @@
 #include "Camera.h"
 #include <vector>
-#include "../../Base/WinApp.h"
-#include "../../Base/DirectXCommon.h"
-#include "../../Base/Renderer/RendererManager.h"
-#include "../GameObjectManager.h"
-#include "../../Base/DescriptorHeaps/HeapManager.h"
-#include "../../Resource/Texture/Texture.h"
+#include "Engine/Base/WinApp.h"
+#include "Engine/Base/DirectXCommon.h"
+#include "Engine/Base/Renderer/RendererManager.h"
+#include "Engine/GameObject/GameObjectManager.h"
+#include "Engine/Base/DescriptorHeaps/HeapManager.h"
+#include "Engine/Resource/Texture/Texture.h"
 
 void Camera::Init()
 {
@@ -53,17 +53,17 @@ void Camera::Update()
 {
 	if (isUseThisCamera_) {
 		// ビュープロジェクション行列の計算
-		Matrix4x4 cameraMatrix = transform_.GetMatWorld(); // ワールド行列の生成
-		viewMatrix_ = Matrix4x4::MakeInverse(cameraMatrix); // ビュー表列の生成
-		Matrix4x4 projectionMatrix = Matrix4x4::MakePerspectiveFov(fov_, float(KEngine::Config::Window::KWindowWidth) / float(KEngine::Config::Window::KWindowHeight), 0.1f, 100.0f); // プロジェクション行列の生成
-		viewProjectionMatrix_ = viewMatrix_ * projectionMatrix; // 実際に計算
+		Matrix4x4 cameraMatrix = transform_.GetMatWorld();																																// ワールド行列の生成
+		viewMatrix_ = Matrix4x4::MakeInverse(cameraMatrix);																																// ビュー表列の生成
+		Matrix4x4 projectionMatrix = Matrix4x4::MakePerspectiveFov(fov_, float(KEngine::Config::Window::KWindowWidth) / float(KEngine::Config::Window::KWindowHeight), 0.1f, 100.0f);	// プロジェクション行列の生成
+		viewProjectionMatrix_ = viewMatrix_ * projectionMatrix;																															// 実際に計算
 
 		// ビルボード行列の計算
 		Matrix4x4 backToFrontMatrix = Matrix4x4::MakeRotateY(std::numbers::pi_v<float>); // Y軸で π / 2 回転させる
-		Matrix4x4 billboardMatrix = backToFrontMatrix * cameraMatrix;					 // ビルボード行列の計算
-		billboardMatrix.m[3][0] = 0.0f;
-		billboardMatrix.m[3][1] = 0.0f;
-		billboardMatrix.m[3][2] = 0.0f;													 // 平行移動成分を削除する
+		Matrix4x4 billboardMatrix	= backToFrontMatrix * cameraMatrix;					 // ビルボード行列の計算
+		billboardMatrix.m[3][0]		= 0.0f;
+		billboardMatrix.m[3][1]		= 0.0f;
+		billboardMatrix.m[3][2]		= 0.0f;												 // 平行移動成分を削除する
 
 		// バッファのデータに各データをセットする
 		cameraDataBuffer_.data_->WorldViewProj	= viewProjectionMatrix_;
@@ -86,7 +86,7 @@ void Camera::Update()
 		// 移動ベクトル
 		Vector3 move = Vector3();
 
-		// Wキーが押されたら
+		// キー押下に寄る移動処理
 		if (input_->PushKey(DIK_W)) {
 			move.z = 1.0f;
 		}

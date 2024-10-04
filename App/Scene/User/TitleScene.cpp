@@ -1,6 +1,6 @@
 #include "TitleScene.h"
-#include "../SceneManager.h"
-#include "../../Resource/Texture/TextureManager.h"
+#include "Engine/Scene/SceneManager.h"
+#include "Engine/Resource/Texture/TextureManager.h"
 
 void TitleScene::LoadModel()
 {

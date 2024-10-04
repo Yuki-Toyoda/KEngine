@@ -1,5 +1,5 @@
 #include "DXC.h"
-#include "../../Debug/Debug.h"
+#include "Engine/Debug/Debug.h"
 
 DXC::DXC()
 {

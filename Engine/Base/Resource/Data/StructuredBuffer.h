@@ -1,7 +1,7 @@
 #pragma once
 #include "IDataResource.h"
-#include "../../DescriptorHeaps/SRV.h"
-#include "../../../Utility/Counter/Counter.h"
+#include "Engine/Base/DescriptorHeaps/SRV.h"
+#include "Engine/Utility/Counter/Counter.h"
 
 /// <summary>
 /// 構造体バッファリソースクラス

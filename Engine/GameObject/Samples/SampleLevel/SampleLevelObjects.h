@@ -1,6 +1,6 @@
 #pragma once
-#include "../../IObject.h"
-#include "../../../Level/LevelLoader.h"
+#include "Engine/GameObject/IObject.h"
+#include "App/Level/LevelLoader.h"
 
 /// <summary>
 /// レベルローダー

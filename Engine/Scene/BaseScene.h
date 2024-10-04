@@ -1,10 +1,10 @@
 #pragma once
-#include "../Input/Input.h"
-#include "../GameObject/GameObjectManager.h"
-#include "../Model/Data/ModelDataManager.h"
-#include "../Model/ModelManager.h"
-#include "../SkyBox/SkyBox.h"
-#include "../GameObject/ObjectList.h"
+#include "Engine/Input/Input.h"
+#include "Engine/GameObject/GameObjectManager.h"
+#include "Engine/Model/Data/ModelDataManager.h"
+#include "Engine/Model/ModelManager.h"
+#include "Engine/SkyBox/SkyBox.h"
+#include "App/GameObject/ObjectList.h"
 
 /// <summary>
 /// シーンの基底クラス

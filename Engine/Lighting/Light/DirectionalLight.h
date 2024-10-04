@@ -1,6 +1,6 @@
 #pragma once
 #include "ILight.h"
-#include "../../Base/Resource/Data/ConstantBuffer.h"
+#include "Engine/Base/Resource/Data/ConstantBuffer.h"
 
 /// <summary>
 /// 平行光源クラス

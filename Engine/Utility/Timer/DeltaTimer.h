@@ -4,7 +4,7 @@
 #include <string>
 #include <algorithm>
 
-#include "../../../Externals/imgui/imgui.h"
+#include "Externals/imgui/imgui.h"
 
 /// <summary>
 /// KEngineのライブラリ関数

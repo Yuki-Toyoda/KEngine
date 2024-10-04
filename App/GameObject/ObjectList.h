@@ -3,7 +3,7 @@
 	インクルードするオブジェクトリスト
 ==================================*/
 
-#include "Core/Camera.h"
+#include "Engine/GameObject/Core/Camera.h"
 #include "User/TestObject/TestObject.h"
 #include "User/Player/Player.h"
 #include "User/FollowCamera/FollowCamera.h"

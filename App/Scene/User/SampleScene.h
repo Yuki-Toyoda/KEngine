@@ -1,12 +1,11 @@
 #pragma once
-#include "../BaseScene.h"
+#include "Engine/Scene/BaseScene.h"
 #include "../SceneList.h"
-#include "../../GameObject/SampleList.h"
 
 /// <summary>
-/// ゲームシーンクラス
+/// サンプルのシーン
 /// </summary>
-class GameScene final : public BaseScene {
+class SampleScene final : public BaseScene {
 public: // メンバ関数
 
 	/// <summary>
@@ -25,14 +24,6 @@ public: // メンバ関数
 	void Update() override;
 
 private: // メンバ変数
-
-	// レベル
-	Level* level_ = nullptr;
-
-	// 敵
-	Enemy* enemy_ = nullptr;
-	// プレイヤー
-	Player* player_ = nullptr;
 
 };
 

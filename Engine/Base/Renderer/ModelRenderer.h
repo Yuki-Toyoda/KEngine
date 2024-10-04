@@ -1,8 +1,8 @@
 #pragma once
 #include "IRenderer.h"
-#include "../Resource/Rendering/BackBuffer.h"
-#include "../Resource/Rendering/DepthStencil.h"
-#include "../DXC/DXC.h"
+#include "Engine/Base/Resource/Rendering/BackBuffer.h"
+#include "Engine/Base/Resource/Rendering/DepthStencil.h"
+#include "Engine/Base/DXC/DXC.h"
 
 // クラスの前方宣言
 class ModelManager;
