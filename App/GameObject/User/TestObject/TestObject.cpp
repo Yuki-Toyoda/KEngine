@@ -19,6 +19,8 @@ void TestObject::Init()
 	line_->isDisplayTrail_ = true;
 	line_->trailMaterial_.tex_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "SwordTrail.png");
 
+	line_->SetParent(&transform_);
+
 	// 線用のモデル生成
 	AddNormalModel(line_->GetWorldTransform(), "./Engine/Resource/Samples/Box", "Box.obj");
 }

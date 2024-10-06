@@ -135,16 +135,37 @@ void Line::DisplayImGui()
 
 void Line::TrailUpdate()
 {
-	// 線の始点と終点を取得
-	Vector3 tempStart = position_;
-	// オフセットを求める
-	Vector3 offset = { 0.0f, length_ * 2.0f, 0.0f };
-	// 回転角を元に回転行列を求める
-	Matrix4x4 rotateMat = Matrix4x4::MakeRotate(transform_.rotate_);
+	// 親座標の取得
+	if (transform_.GetParent() != nullptr) {
+		// オフセットを求める
+		Vector3 offset = { 0.0f, length_, 0.0f };
+		// 回転角を元に回転行列を求める
+		Matrix4x4 rotateMat = Matrix4x4::MakeRotate(transform_.rotate_);
 
-	tempTrail_.start = position_;
-	// 終点の座標を取得する
-	tempTrail_.end = position_ + (offset * rotateMat);
+		// ワールド行列の取得
+		Matrix4x4 parentWorldMat = transform_.GetParent()->GetMatWorld();
+		// このローカル回転行列と掛け合わせる
+		Matrix4x4 fWorldMat = rotateMat * parentWorldMat;
+
+		//最終的なオフセットを求める
+		offset = offset * fWorldMat;
+
+		// 親のワールド座標を取得
+		tempTrail_.start	= transform_.GetWorldPos() - offset;
+		tempTrail_.end		= transform_.GetWorldPos() + offset;
+	}
+	else {
+		// オフセットを求める
+		Vector3 offset = { 0.0f, length_ * 2.0f, 0.0f };
+		// 回転角を元に回転行列を求める
+		Matrix4x4 rotateMat = Matrix4x4::MakeRotate(transform_.rotate_);
+
+		// 始点設定
+		tempTrail_.start = position_;
+		// 終点の座標を取得する
+		tempTrail_.end = position_ + (offset * rotateMat);
+	}
+
 	// 使用済み状態に
 	tempTrail_.isUsed = true;
 
