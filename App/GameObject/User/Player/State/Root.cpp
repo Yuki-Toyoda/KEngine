@@ -12,7 +12,7 @@ void Root::Init()
 	targetAngle_ = player_->transform_.rotate_.y;
 
 	// 線の座標を戻す
-	player_->attackLine_->position_ = { -1000.0f, 100.0f, 0.0f };
+	//player_->attackLine_->position_ = { -1000.0f, 100.0f, 0.0f };
 
 }
 

@@ -1,7 +1,7 @@
 #include "Line.h"
 #include "Engine/Base/DirectXCommon.h"
 
-void Line::Init(const std::string& name, const Vector3& position, const Vector2& thickness, const float& length)
+void Line::Init(const std::string& name, const Vector3& position, const Vector2& thickness, const float& length, Texture texture)
 {
 	// 座標とかを初期化
 	name_ = name;
@@ -24,14 +24,14 @@ void Line::Init(const std::string& name, const Vector3& position, const Vector2&
 	trailBuffers_ = std::vector<TrailBuffer>(trailBufferCount_);
 
 	// バッファ初期化のためにデバイスとSRVの取得
-	DirectXDevice* d	= DirectXCommon::GetInstance()->GetDirectXDevice(); // デバイス
-	SRV* s				= DirectXCommon::GetInstance()->GetSRV();			// SRV
+	DirectXDevice* d = DirectXCommon::GetInstance()->GetDirectXDevice(); // デバイス
+	SRV* s = DirectXCommon::GetInstance()->GetSRV();			// SRV
 
 	// 軌跡用バッファの生成
-	transformBuffer_	= std::make_unique<ConstantBuffer<Matrix4x4>>();													// トランスフォーム
-	materialBuffer_		= std::make_unique<ConstantBuffer<MaterialData>>();													// マテリアル
-	vertexBuffer_		= std::make_unique<StructuredBuffer<TrailVertex>>((2 * trailBufferCount_) * (trailInterpCount_));		// 頂点
-	indexBuffer_		= std::make_unique <StructuredBuffer<uint32_t>>((6 * (trailBufferCount_ - 1)) * trailInterpCount_);	// インデックス
+	transformBuffer_ = std::make_unique<ConstantBuffer<Matrix4x4>>();													// トランスフォーム
+	materialBuffer_ = std::make_unique<ConstantBuffer<MaterialData>>();													// マテリアル
+	vertexBuffer_ = std::make_unique<StructuredBuffer<TrailVertex>>((2 * trailBufferCount_) * (trailInterpCount_));		// 頂点
+	indexBuffer_ = std::make_unique <StructuredBuffer<uint32_t>>((6 * (trailBufferCount_ - 1)) * trailInterpCount_);	// インデックス
 	// バッファ初期化
 	transformBuffer_->Init(d);
 	materialBuffer_->Init(d);

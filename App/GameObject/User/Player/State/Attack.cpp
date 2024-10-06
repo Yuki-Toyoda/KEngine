@@ -31,7 +31,7 @@ void Attack::Update()
 		if (player_->skiningModels_[0]->animationManager_.GetPlayingAnimationProgress() >= 0.6f) {
 
 			// 線の座標を戻す
-			player_->attackLine_->position_ = { -1000.0f, 100.0f, 0.0f };
+			//player_->attackLine_->position_ = { -1000.0f, 100.0f, 0.0f };
 
 			if (player_->joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A &&
 				(player_->preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A)) {
@@ -47,7 +47,7 @@ void Attack::Update()
 		if (player_->skiningModels_[0]->animationManager_.GetPlayingAnimationProgress() >= 0.8f) {
 			
 			// 線の座標を戻す
-			player_->attackLine_->position_ = { -1000.0f, 100.0f, 0.0f };
+			//player_->attackLine_->position_ = { -1000.0f, 100.0f, 0.0f };
 
 			if (player_->joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A &&
 				!(player_->preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A)) {

@@ -72,7 +72,9 @@ void Player::Init()
 	attackLine_->AddCollider("Sword", this);
 	attackLine_->rotate_.z = (float)std::numbers::pi;
 	attackLine_->isActive_ = false;
+	attackLine_->isDisplayTrail_ = true;
 	attackLine_->Update();
+	attackLine_->trailMaterial_.tex_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "SwordTrail.png");
 
 	// 行動状態を待機状態に変更
 	ChangeState(std::make_unique<Root>());
