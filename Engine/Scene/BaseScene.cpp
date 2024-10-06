@@ -54,7 +54,7 @@ void BaseScene::SampleModelLoad()
 	// サンプルモデルの読み込みをここで行う
 	modelDataManager_->LoadNewModel("./Engine/Resource/Samples/Box", "Box.obj");
 	modelDataManager_->LoadNewModel("./Engine/Resource/Samples/Plane", "Plane.obj");
-	modelDataManager_->LoadNewModel("./Engine/Resource/Samples/Sphere", "Sphere.obj");
+	modelDataManager_->LoadNewModel("./Engine/Resource/Samples/Plane", "ContainPlane.obj");
 	modelDataManager_->LoadNewModel("./Engine/Resource/Samples/SkyDome", "SkyDome.obj");
 	modelDataManager_->LoadNewModel("./Engine/Resource/Samples/TestMultiMesh", "TestMultiMesh.gltf");
 	modelDataManager_->LoadNewModel("./Engine/Resource/Samples/TestMultiMeshAnim", "TestMultiMeshAnim.gltf");

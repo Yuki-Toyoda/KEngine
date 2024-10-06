@@ -24,6 +24,7 @@ void RendererManager::Init(DirectXDevice* device, SRV* srv)
 
 	// レンダラー達を初期化
 	normalRenderer_.Init(device, &dxc_, modelManager_, light_.get()); // 3D描画レンダラー
+	trailRenderer_.Init(device, &dxc_);								  // 軌跡描画レンダラー
 	ppRenderer_.Init();												  // ポストプロセスレンダラー
 	spriteRenderer_.Init(device, &dxc_, modelManager_);				  // 2D描画レンダラー
 }
@@ -53,6 +54,8 @@ void RendererManager::DrawCall()
 
 	// 3D描画を行う
 	normalRenderer_.DrawCall(list);
+	// 軌跡描画を行う
+	trailRenderer_.DrawCall(list);
 	// ポストプロセス描画を行う
 	ppRenderer_.DrawCall(list);
 	// 2D描画を行う
@@ -66,6 +69,7 @@ void RendererManager::DrawCall()
 
 	// 各レンダラーをリセット
 	normalRenderer_.Reset(); // 3D描画
+	trailRenderer_.Reset();	 // 軌跡描画
 	ppRenderer_.Reset();	 // ポストプロセス描画
 	spriteRenderer_.Reset(); // 2D描画
 }

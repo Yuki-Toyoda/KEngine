@@ -4,17 +4,23 @@
 void TestObject::Init()
 {
 	// メッシュ追加関数
-	//AddNormalModel(&transform_, "./Engine/Resource/Samples/Leeme", "leeme.gltf");
-	AddSkiningModel(&transform_, "./Engine/Resource/Samples/Player", "Player.gltf");
-
-	// 待機アニメーションの再生
-	skiningModels_[0]->animationManager_.PlayAnimation("00_Idle", 0.0f, true);
+	AddNormalModel(&transform_, "./Engine/Resource/Samples/Sphere", "Sphere.obj");
+	//AddSkiningModel(&transform_, "./Engine/Resource/Samples/Player", "Player.gltf");
 
 	// ~スプライトの追加関数~
 	AddSprite("TestSprite", { 0.0f, 0.0f }, { 512.0f, 512.0f }, TextureManager::Load("./Engine/Resource/Samples/Box", "uvChecker.png"));
 
 	// OBB生成
 	AddColliderAABB("Test", &transform_.translate_, &transform_.scale_);
+
+	// 線の生成
+	line_ = std::make_unique<Line>();
+	line_->Init("Test", Vector3(), { 0.25f, 0.25f }, 2.5f);
+	line_->isDisplayTrail_ = true;
+	line_->trailMaterial_.tex_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "SwordTrail.png");
+
+	// 線用のモデル生成
+	AddNormalModel(line_->GetWorldTransform(), "./Engine/Resource/Samples/Box", "Box.obj");
 }
 
 void TestObject::Update()
@@ -24,6 +30,9 @@ void TestObject::Update()
 		Particle* n = ParticleManager::GetInstance()->CreateNewParticle("Test", "./Engine/Resource/Samples/Plane", "Plane.obj", 30.0f);
 		n->transform_.SetParent(&transform_);
 	}
+
+	// 線の更新
+	line_->Update();
 }
 
 void TestObject::DisplayImGui()
@@ -36,16 +45,7 @@ void TestObject::DisplayImGui()
 
 	ImGui::DragFloat("TransitionTime", &testFloatValue_, 0.01f, 0.0f, 5.0f);
 
-	// ボタンを押したらアニメーション切り替え
-	if (ImGui::Button("Idle")) {
-		skiningModels_[0]->animationManager_.PlayAnimation("00_Idle", testFloatValue_, true);
-	}
-	if (ImGui::Button("Run")) {
-		skiningModels_[0]->animationManager_.PlayAnimation("01_Run", testFloatValue_, true);
-	}
-	if (ImGui::Button("Attack")) {
-		skiningModels_[0]->animationManager_.PlayAnimation("02_HorizontalSlash", testFloatValue_, true);
-	}
+	line_->DisplayImGui();
 }
 
 void TestObject::OnCollisionEnter(Collider* collider)

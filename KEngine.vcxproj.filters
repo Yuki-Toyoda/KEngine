@@ -115,9 +115,6 @@
     <ClCompile Include="Engine\Input\Input.cpp">
       <Filter>Engine\Input</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Utility\Line\Line.cpp">
-      <Filter>Engine\Utility\Line</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Base\WinApp.cpp">
       <Filter>Engine\Base</Filter>
     </ClCompile>
@@ -341,6 +338,10 @@
     <ClCompile Include="Engine\GameObject\WorldTransform.cpp">
       <Filter>Engine\GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Utility\Line\Line.cpp">
+      <Filter>Engine\Utility\Line</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Base\Renderer\TrailRenderer.cpp" />
     <ClCompile Include="App\GameObject\User\Player\Player.cpp">
       <Filter>App\GameObject\User\Player</Filter>
     </ClCompile>
@@ -561,9 +562,6 @@
     </ClInclude>
     <ClInclude Include="Engine\Utility\Observer\Observer.h">
       <Filter>Engine\Utility\Observer</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Utility\Line\Line.h">
-      <Filter>Engine\Utility\Line</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utility\Line\Line.h">
       <Filter>App\Utility\Line</Filter>
@@ -808,6 +806,10 @@
     <ClInclude Include="Engine\GameObject\SampleList.h">
       <Filter>Engine\GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Utility\Line\Line.h">
+      <Filter>Engine\Utility\Line</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\Renderer\TrailRenderer.h" />
     <ClInclude Include="App\GameObject\ObjectList.h">
       <Filter>App\GameObject\User</Filter>
     </ClInclude>
@@ -907,6 +909,9 @@
       <Filter>Engine\Resource\Shader</Filter>
     </None>
     <None Include="Engine\Resource\Shader\PostProcess\Bloom\GaussianBlur.hlsli">
+      <Filter>Engine\Resource\Shader</Filter>
+    </None>
+    <None Include="Engine\Resource\Shader\Trail\Trail.hlsli">
       <Filter>Engine\Resource\Shader</Filter>
     </None>
     <ClCompile Include="Engine\PostProcess\Bloom\Bloom.cpp" />
