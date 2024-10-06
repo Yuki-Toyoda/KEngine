@@ -175,7 +175,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\PostProcess\GaussianFilter\GaussianFilter.cpp" />
     <ClCompile Include="App\Level\LevelLoader.cpp" />
     <ClCompile Include="Engine\PostProcess\HSVFilter\HSVFilter.cpp" />
-    <ClCompile Include="Engine\Base\Renderer\LineRenderer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="App\Scene\SceneFactory.cpp" />
     <ClCompile Include="Engine\Base\RootSignature\ModelRootSignature.cpp" />
@@ -213,6 +212,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Particle\ParticleManager.cpp" />
     <ClCompile Include="Engine\Base\Renderer\SpriteRenderer.cpp" />
     <ClCompile Include="Engine\PostProcess\RadialBlur\RadialBlur.cpp" />
+    <ClCompile Include="Engine\Base\Renderer\TrailRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App\GameObject\ObjectList.h" />
@@ -353,7 +353,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Particle\ParticleManager.h" />
     <ClInclude Include="Engine\Base\Renderer\SpriteRenderer.h" />
     <ClInclude Include="Engine\PostProcess\RadialBlur\RadialBlur.h" />
-    <ClInclude Include="Engine\Base\Renderer\LineRenderer.h" />
+    <ClInclude Include="Engine\Base\Renderer\TrailRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Compute\Random.hlsli">

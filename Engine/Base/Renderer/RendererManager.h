@@ -7,6 +7,7 @@
 #include "ModelRenderer.h"
 #include "PPRenderer.h"
 #include "SpriteRenderer.h"
+#include "TrailRenderer.h"
 
 // クラスの前方宣言
 class Camera;
@@ -58,6 +59,7 @@ public: // アクセッサ等
 	/// <param name="depth">DSVバッファリソース</param>
 	void AddTarget(const D3D12_GPU_VIRTUAL_ADDRESS& view, BackBuffer* backBuffer, DepthStencil* depthBuffer) { 
 		normalRenderer_.AddTarget({ view, backBuffer, depthBuffer }); 
+		trailRenderer_.AddTarget({ view, backBuffer, depthBuffer }); 
 	}
 
 	/// <summary>
@@ -91,6 +93,12 @@ public: // アクセッサ等
 	/// <returns>平行光源本体</returns>
 	DirectionalLight* GetDirectionalLight() { return light_.get(); }
 
+	/// <summary>
+	/// 軌跡描画レンダラーのゲッター
+	/// </summary>
+	/// <returns>軌跡描画用レンダラー</returns>
+	TrailRenderer* GetTrailRenderer() { return &trailRenderer_; }
+
 private: // プライベートなメンバ関数
 
 	/// <summary>
@@ -119,6 +127,9 @@ private: // メンバ変数
 
 	// 3D描画レンダラー
 	ModelRenderer normalRenderer_;
+
+	// 軌跡レンダラー
+	TrailRenderer trailRenderer_;
 
 	// ポストプロセス描画レンダラー
 	PPRenderer ppRenderer_;

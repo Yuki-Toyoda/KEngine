@@ -9,7 +9,7 @@ VertexOutPut main(uint vertexID : SV_VertexID)
     VertexData vertex = Vertices[Indices[vertexID]];
 
     // 出力座標を求める
-    output.pos = mul(mul(vertex.pos, transform.world), cData.WorldViewProj);
+    output.pos = mul(vertex.pos, cData.WorldViewProj);
     output.texCoord = vertex.texCoord;
     
     // 求めた情報の出力

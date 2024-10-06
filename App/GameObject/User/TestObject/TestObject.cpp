@@ -15,8 +15,9 @@ void TestObject::Init()
 
 	// 線の生成
 	line_ = std::make_unique<Line>();
-	line_->Init("Test", Vector3(), { 1.0f, 1.0f }, 5.0f);
+	line_->Init("Test", Vector3(), { 0.25f, 0.25f }, 2.5f);
 	line_->isDisplayTrail_ = true;
+	line_->trailMaterial_.tex_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "SwordTrail.png");
 
 	// 線用のモデル生成
 	AddNormalModel(line_->GetWorldTransform(), "./Engine/Resource/Samples/Box", "Box.obj");

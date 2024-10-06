@@ -115,9 +115,6 @@
     <ClCompile Include="Engine\Input\Input.cpp">
       <Filter>Engine\Input</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Utility\Line\Line.cpp">
-      <Filter>Engine\Utility\Line</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Base\WinApp.cpp">
       <Filter>Engine\Base</Filter>
     </ClCompile>
@@ -344,7 +341,10 @@
     <ClCompile Include="Engine\GameObject\WorldTransform.cpp">
       <Filter>Engine\GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Base\Renderer\LineRenderer.cpp" />
+    <ClCompile Include="Engine\Utility\Line\Line.cpp">
+      <Filter>Engine\Utility\Line</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Base\Renderer\TrailRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -511,9 +511,6 @@
     </ClInclude>
     <ClInclude Include="Engine\Utility\Observer\Observer.h">
       <Filter>Engine\Utility\Observer</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Utility\Line\Line.h">
-      <Filter>Engine\Utility\Line</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utility\Line\Line.h">
       <Filter>App\Utility\Line</Filter>
@@ -764,7 +761,10 @@
     <ClInclude Include="Engine\GameObject\SampleList.h">
       <Filter>Engine\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Base\Renderer\LineRenderer.h" />
+    <ClInclude Include="Engine\Utility\Line\Line.h">
+      <Filter>Engine\Utility\Line</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\Renderer\TrailRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -800,7 +800,9 @@
     <None Include="Engine\Resource\Shader\PostProcess\Bloom\GaussianBlur.hlsli">
       <Filter>Engine\Resource\Shader</Filter>
     </None>
-    <None Include="Engine\Resource\Shader\Trail\Trail.hlsli" />
+    <None Include="Engine\Resource\Shader\Trail\Trail.hlsli">
+      <Filter>Engine\Resource\Shader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -1077,7 +1079,11 @@
     <FxCompile Include="Engine\Resource\Shader\PostProcess\Bloom\GaussianBlurY.hlsl">
       <Filter>Engine\Resource\Shader</Filter>
     </FxCompile>
-    <FxCompile Include="Engine\Resource\Shader\Trail\Trail.VS.hlsl" />
-    <FxCompile Include="Engine\Resource\Shader\Trail\Trail.PS.hlsl" />
+    <FxCompile Include="Engine\Resource\Shader\Trail\Trail.PS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\Trail\Trail.VS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

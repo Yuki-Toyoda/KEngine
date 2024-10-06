@@ -52,20 +52,9 @@ public: // メンバ関数
 	void Update();
 
 	/// <summary>
-	/// 描画関数
-	/// </summary>
-	/// <param name="cmdList">コマンドリスト</param>
-	void Draw(ID3D12GraphicsCommandList6* cmdList);
-
-	/// <summary>
 	/// ImGui表示関数
 	/// </summary>
 	void DisplayImGui();
-
-	/// <summary>
-	/// 軌跡更新関数
-	/// </summary>
-	void TrailUpdate();
 
 	/// <summary>
 	/// <para>コライダー追加関数</para>
@@ -95,6 +84,30 @@ public: // アクセッサ等
 	/// </summary>
 	std::vector<TrailBuffer> GetUsedTrailBuffer();
 
+private: // 機能関数群
+
+	/// <summary>
+	/// 軌跡更新関数
+	/// </summary>
+	void TrailUpdate();
+
+	/// <summary>
+	/// 曲線を含んだ頂点情報配列生成関数
+	/// </summary>
+	/// <param name="usedTrailBuffers">使用済み軌跡座標配列の参照</param>
+	void MakeCurveVertices(std::vector<TrailBuffer>& usedTrailBuffers);
+
+	/// <summary>
+	/// Catmull-Romスプラインによる補間点を計算する関数
+	/// </summary>
+	/// <param name="p0">座標1</param>
+	/// <param name="p1">座標2</param>
+	/// <param name="p2">座標3</param>
+	/// <param name="p3">座標4</param>
+	/// <param name="t">補間係数</param>
+	/// <returns>補間点</returns>
+	Vector3 CatmullRom(const Vector3& p0, const Vector3& p1, const Vector3& p2, const Vector3& p3, float t);
+
 private: // メンバ変数
 
 	// (いじらないでね)ワールド座標
@@ -123,22 +136,33 @@ public: // パブリックなメンバ変数
 
 	// 軌跡表示トリガー
 	bool isDisplayTrail_ = false;
+
+	// 軌跡用マテリアル
+	Material trailMaterial_{};
+
+private: // メンバ変数
+
 	// 軌跡座標配列の要素数
-	int trailBufferCount_ = 4;
+	int trailBufferCount_ = 7;
+	// 軌跡の補完数
+	int trailInterpCount_ = 1;
 	// 軌跡用座標配列
 	std::vector<TrailBuffer> trailBuffers_;
 	// 軌跡の現在座標
 	TrailBuffer	tempTrail_{};
-	// 軌跡用マテリアル
-	Material trailMaterial_{};
 
 	// 軌跡用頂点配列
 	std::vector<TrailVertex> vertices_;
 	// 軌跡用インデックス配列
 	std::vector<uint32_t> indices_;
-	// 軌跡用頂点バッファ
-	std::unique_ptr<StructuredBuffer<TrailVertex>> vertexBuffer_;
-	// 軌跡用インデックスバッファ
-	std::unique_ptr<StructuredBuffer<uint32_t>>	indexBuffer_;
+
+	// 更新頻度タイマー
+	KLib::DeltaTimer timer_;
+
+	// 軌跡用バッファ群
+	std::unique_ptr<ConstantBuffer<Matrix4x4>> transformBuffer_;	// トランスフォーム
+	std::unique_ptr<ConstantBuffer<MaterialData>> materialBuffer_;	// マテリアル
+	std::unique_ptr<StructuredBuffer<TrailVertex>> vertexBuffer_;	// 頂点
+	std::unique_ptr<StructuredBuffer<uint32_t>>	indexBuffer_;		// インデックス
 };
 
