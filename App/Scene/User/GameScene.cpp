@@ -13,10 +13,6 @@ void GameScene::LoadModel()
 }
 
 void GameScene::Init(){
-	
-	// デバッグカメラの明度を-1にする
-	camera_->ppProcessor_.hsvFilter_.hsv_.value = -1.0f;
-
 	// スカイボックス初期化
 	skyBox_->Init("./Resources", "SkyTexture.dds");
 

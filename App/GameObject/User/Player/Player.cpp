@@ -73,8 +73,9 @@ void Player::Init()
 	attackLine_->rotate_.z = (float)std::numbers::pi;
 	attackLine_->isActive_ = false;
 	attackLine_->isDisplayTrail_ = true;
-	attackLine_->Update();
 	attackLine_->trailMaterial_.tex_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "SwordTrail.png");
+	attackLine_->trailMaterial_.color_.w = 0.0f;
+	attackLine_->Update();
 
 	// 行動状態を待機状態に変更
 	ChangeState(std::make_unique<Root>());
@@ -245,6 +246,22 @@ void Player::Update()
 					blurStrength = KLib::Lerp(blurStrength, 0.00f, 0.05f);
 				}
 			}
+		}
+
+		// 軌跡a値
+		float& trailAlpha = attackLine_->trailMaterial_.color_.w;
+		// 攻撃中は軌跡を表示させる
+		if (isAttacking_) {
+			trailAlpha = KLib::Lerp(trailAlpha, 1.0f, 0.15f);
+		}
+		else {
+			if (trailAlpha <= 0.01f) {
+				trailAlpha = 0.0f;
+			}
+			else {
+				trailAlpha = KLib::Lerp(trailAlpha, 0.0f, 0.2f);
+			}
+			
 		}
 
 		// 攻撃可能か

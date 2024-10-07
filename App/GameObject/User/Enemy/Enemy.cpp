@@ -340,7 +340,7 @@ void Enemy::OnCollision(Collider* collider)
 		// 剣と衝突していたら
 		if (collider->GetColliderName() == "Sword") {
 			// ヒットクールタイムが終了していれば
-			if (hitCoolTimeTimer_.GetIsFinish() && state_->GetStateName() == "Down") {
+			if (hitCoolTimeTimer_.GetIsFinish() && state_->GetStateName() == "Down" && player_->isAttacking_) {
 				// HPを減らす
 				hp_--;
 				// クールタイムタイマー開始

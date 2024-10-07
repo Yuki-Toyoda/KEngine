@@ -201,25 +201,22 @@ void Line::TrailUpdate()
 	// インデックス配列のクリア
 	indices_.clear();
 	// インデックス配列の生成
-	for (int i = 0; i < vertices_.size() / 2; i++) {
+	for (int i = 0; i < vertices_.size() / 2 - 1; i++) {
 		// 頂点のインデックス
 		uint32_t v0_start = static_cast<uint32_t>(i * 2);
 		uint32_t v0_end = static_cast<uint32_t>(i * 2 + 1);
 		uint32_t v1_start = static_cast<uint32_t>((i + 1) * 2);
 		uint32_t v1_end = static_cast<uint32_t>((i + 1) * 2 + 1);
+		
+		// 1つ目の三角形 (v0_start, v0_end, v1_start)
+		indices_.push_back(v0_start);
+		indices_.push_back(v0_end);
+		indices_.push_back(v1_start);
 
-		// 次の辺が存在する場合のみ処理を行う
-		if (v1_start < vertices_.size() && v1_end < vertices_.size()) {
-			// 1つ目の三角形 (v0_start, v0_end, v1_start)
-			indices_.push_back(v0_start);
-			indices_.push_back(v0_end);
-			indices_.push_back(v1_start);
-
-			// 2つ目の三角形 (v1_start, v0_end, v1_end)
-			indices_.push_back(v1_start);
-			indices_.push_back(v0_end);
-			indices_.push_back(v1_end);
-		}
+		// 2つ目の三角形 (v1_start, v0_end, v1_end)
+		indices_.push_back(v1_start);
+		indices_.push_back(v0_end);
+		indices_.push_back(v1_end);
 	}
 
 	// 軌跡描画を行うかつバッファサイズが2以上のとき
@@ -275,12 +272,12 @@ void Line::MakeCurveVertices(std::vector<TrailBuffer>& usedTrailBuffers)
 		Vector3 start0 = i == 0 ? (usedTrailBuffers[1].start + usedTrailBuffers[2].start) : usedTrailBuffers[i - 1].start;
 		Vector3 start1 = usedTrailBuffers[i].start;
 		Vector3 start2 = usedTrailBuffers[i + 1].start;
-		Vector3 start3 = i == usedTrailBuffers.size() - 2 ? (start0 + start2) : usedTrailBuffers[i + 1].start;
+		Vector3 start3 = i == usedTrailBuffers.size() - 2 ? (start0 + start2) * 0.5f : usedTrailBuffers[i + 2].start;
 		// 終点
 		Vector3 end0 = i == 0 ? (usedTrailBuffers[1].end + usedTrailBuffers[2].end) : usedTrailBuffers[i - 1].end;
 		Vector3 end1 = usedTrailBuffers[i].end;
 		Vector3 end2 = usedTrailBuffers[i + 1].end;
-		Vector3 end3 = i == usedTrailBuffers.size() - 2 ? (start0 + start2) : usedTrailBuffers[i + 1].end;
+		Vector3 end3 = i == usedTrailBuffers.size() - 2 ? (end0 + end2) * 0.5f : usedTrailBuffers[i + 2].end;
 
 		// 補間数分ループする
 		for (int j = 0; j < trailInterpCount_ - 1; j++) {
@@ -311,18 +308,17 @@ Vector3 Line::CatmullRom(const Vector3& p0, const Vector3& p1, const Vector3& p2
 	// 結果格納用
 	Vector3 result{};
 
-	// 補間に必要な値を計算する
-	Vector3 a = (p2 - p0) * 0.5f;
-	Vector3 b = (p3 - p1) * 0.5f;
+	float t2 = std::powf(t, 2);
+	float t3 = t2 * t;
 
 	// 計算を行う
-	result =	p1 * (2.0f * std::powf(t, 3) - 3.0f * std::powf(t, 2) + 1.0f) +
-				p2 * (-2.0f * std::powf(t, 3) + 3.0f * std::powf(t, 2)) +
-				a * (std::powf(t, 3) - 2.0f * std::powf(t, 2) + t) +
-				b * (std::powf(t, 3) - std::powf(t, 2));
+	result = (p1 * 2.0f) +
+		((p2 - p0) * t) +
+		(((p0 * 2.0f) - (p1 * 5.0f) + (p2 * 4.0f) - p3) * t2) +
+		((-p0 + (p1 * 3.0f) - (p2 * 3.0f) + p3) * t3);
 
 	// 結果を返す
-	return result;
+	return result * 0.5f;
 }
 
 void Line::AddCollider(const std::string& name, IObject* object)

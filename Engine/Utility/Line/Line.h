@@ -143,7 +143,7 @@ public: // パブリックなメンバ変数
 private: // メンバ変数
 
 	// 軌跡座標配列の要素数
-	int trailBufferCount_ = 7;
+	int trailBufferCount_ = 8;
 	// 軌跡の補完数
 	int trailInterpCount_ = 1;
 	// 軌跡用座標配列
