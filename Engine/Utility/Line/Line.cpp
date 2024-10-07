@@ -135,24 +135,40 @@ void Line::DisplayImGui()
 
 void Line::TrailUpdate()
 {
-	// 親座標の取得
+	// 親がいる場合
 	if (transform_.GetParent() != nullptr) {
+
 		// オフセットを求める
 		Vector3 offset = { 0.0f, length_, 0.0f };
 		// 回転角を元に回転行列を求める
 		Matrix4x4 rotateMat = Matrix4x4::MakeRotate(transform_.rotate_);
 
-		// ワールド行列の取得
-		Matrix4x4 parentWorldMat = transform_.GetParent()->GetMatWorld();
-		// このローカル回転行列と掛け合わせる
-		Matrix4x4 fWorldMat = rotateMat * parentWorldMat;
+		// 親座標の取得
+		WorldTransform transform = transform_;
 
-		//最終的なオフセットを求める
-		offset = offset * fWorldMat;
+		// 最終的な回転角を格納する
+		Matrix4x4 fRotation = Matrix4x4::kIdentity;
+
+		// 最終的に親がいなくなるまで親の回転行列を掛け合わせる
+		while (true) {
+			fRotation = Matrix4x4::MakeRotate(transform.rotate_) * fRotation;
+
+			if (transform.GetParent() != nullptr) {
+				// 親のトランスフォームを取得
+				transform = *transform.GetParent();
+			}
+			else {
+				// ループを抜ける
+				break;
+			}
+		}
+
+		// 回転の方向ベクトルを求める
+		Vector3 worldDirection = offset * fRotation;
 
 		// 親のワールド座標を取得
-		tempTrail_.start	= transform_.GetWorldPos() - offset;
-		tempTrail_.end		= transform_.GetWorldPos() + offset;
+		tempTrail_.start = transform_.GetWorldPos() + (worldDirection);
+		tempTrail_.end = transform_.GetWorldPos() - (worldDirection);
 	}
 	else {
 		// オフセットを求める
