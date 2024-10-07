@@ -164,8 +164,8 @@ void Line::TrailUpdate()
 		Vector3 rotateOffset = offset * fRotation;
 
 		// 親のワールド座標を取得
-		tempTrail_.start = fPosition - rotateOffset;
-		tempTrail_.end = fPosition + rotateOffset;
+		tempTrail_.start =	fPosition - rotateOffset;
+		tempTrail_.end =	fPosition + rotateOffset;
 	}
 	else {
 		// オフセットを求める
