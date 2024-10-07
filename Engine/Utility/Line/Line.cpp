@@ -148,10 +148,12 @@ void Line::TrailUpdate()
 
 		// 最終的な回転角を格納する
 		Matrix4x4 fRotation = Matrix4x4::kIdentity;
+		Vector3 fPosition = Vector3::kZero;
 
 		// 最終的に親がいなくなるまで親の回転行列を掛け合わせる
 		while (true) {
-			fRotation = Matrix4x4::MakeRotate(transform.rotate_) * fRotation;
+			fRotation = fRotation * Matrix4x4::MakeRotate(transform.rotate_);
+			fPosition = (fPosition * Matrix4x4::MakeRotate(transform.rotate_)) + transform.translate_;
 
 			if (transform.GetParent() != nullptr) {
 				// 親のトランスフォームを取得
@@ -164,11 +166,11 @@ void Line::TrailUpdate()
 		}
 
 		// 回転の方向ベクトルを求める
-		Vector3 worldDirection = offset * fRotation;
+		Vector3 rotateOffset = offset * fRotation;
 
 		// 親のワールド座標を取得
-		tempTrail_.start = transform_.GetWorldPos() + (worldDirection * rotateMat);
-		tempTrail_.end = transform_.GetWorldPos() - (worldDirection * rotateMat);
+		tempTrail_.start = fPosition - rotateOffset;
+		tempTrail_.end = fPosition + rotateOffset;
 	}
 	else {
 		// オフセットを求める
