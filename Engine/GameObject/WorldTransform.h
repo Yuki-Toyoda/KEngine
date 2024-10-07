@@ -100,6 +100,11 @@ public: // アクセッサ等
 	/// </summary>
 	/// <param name="mat">セットするワールド行列</param>
 	void SetWorldMat(Matrix4x4* mat) { worldMat_ = mat; };
+	/// <summary>
+	/// ワールド行列ゲッター
+	/// </summary>
+	/// <returns>ワールドぎょうれつ</returns>
+	const Matrix4x4* GetWorldMat() { return worldMat_; }
 
 	/// <summary>
 	/// 現在のワールド行列のゲッター
