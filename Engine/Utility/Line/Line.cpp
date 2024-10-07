@@ -138,56 +138,12 @@ void Line::TrailUpdate()
 		// 回転角を元に回転行列を求める
 		Matrix4x4 rotateMat = Matrix4x4::MakeRotate(transform_.rotate_);
 
-		// 親座標の取得
-		WorldTransform transform = transform_;
+		Matrix4x4 t = transform_.GetMatWorld();
 
-		// 最終的な回転角を格納する
-		Matrix4x4 fWorld = Matrix4x4::kIdentity;
-
-		// 最終的に親がいなくなるまで親の回転行列を掛け合わせる
-		while (true) {
-			// ワールド行列
-			fWorld = transform.GetMatWorld() * fWorld;
-			
-
-			if (transform.GetParent() != nullptr || transform.GetWorldMat()) {
-				// 親のトランスフォームを取得
-				transform = *transform.GetParent();
-			}
-			else {
-				// ループを抜ける
-				break;
-			}
-		}
-
-		// ワールド座標の取得
-		Vector3 fPosition = Vector3(fWorld.m[3][0], fWorld.m[3][1], fWorld.m[3][2]);
-		// 回転行列の抽出
-		Matrix4x4 fRotation = Matrix4x4::kIdentity;
-		fRotation.m[0][0] = fWorld.m[0][0];
-		fRotation.m[0][1] = fWorld.m[0][1];
-		fRotation.m[0][2] = fWorld.m[0][2];
-		fRotation.m[1][0] = fWorld.m[1][0];
-		fRotation.m[1][1] = fWorld.m[1][1];
-		fRotation.m[1][2] = fWorld.m[1][2];
-		fRotation.m[2][0] = fWorld.m[2][0];
-		fRotation.m[2][1] = fWorld.m[2][1];
-		fRotation.m[2][2] = fWorld.m[2][2];
-
-		fRotation.m[0][3] = 0.0f;
-		fRotation.m[1][3] = 0.0f;
-		fRotation.m[2][3] = 0.0f;
-		fRotation.m[3][0] = 0.0f;
-		fRotation.m[3][1] = 0.0f;
-		fRotation.m[3][2] = 0.0f;
-		fRotation.m[3][3] = 1.0f;
-
-		// 回転の方向ベクトルを求める
-		Vector3 rotateOffset = offset * fRotation;
-
-		// 親のワールド座標を取得
-		tempTrail_.start =	fPosition - rotateOffset;
-		tempTrail_.end =	fPosition + rotateOffset;
+		// 始点設定
+		tempTrail_.start = position_ * transform_.GetMatWorld();
+		// 終点の座標を取得する
+		tempTrail_.end = (position_ + (offset * rotateMat)) * transform_.GetMatWorld();
 	}
 	else {
 		// オフセットを求める
