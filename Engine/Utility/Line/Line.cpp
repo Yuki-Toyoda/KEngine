@@ -1,11 +1,6 @@
 #include "Line.h"
 #include "Engine/Base/DirectXCommon.h"
 
-Line::~Line()
-{
-	
-}
-
 void Line::Init(const std::string& name, const Vector3& position, const Vector2& thickness, const float& length, Texture texture)
 {
 	// 座標とかを初期化

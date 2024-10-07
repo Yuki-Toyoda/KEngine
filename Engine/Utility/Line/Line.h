@@ -32,7 +32,7 @@ public: // コンストラクタ等
 	// コンストラクタ
 	Line() = default;
 	// デストラクタ
-	~Line();
+	~Line() = default;
 
 public: // メンバ関数
 
