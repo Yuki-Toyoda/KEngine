@@ -162,8 +162,8 @@ void Line::TrailUpdate()
 		Vector3 worldDirection = offset * fRotation;
 
 		// 親のワールド座標を取得
-		tempTrail_.start = transform_.GetWorldPos() + (worldDirection);
-		tempTrail_.end = transform_.GetWorldPos() - (worldDirection);
+		tempTrail_.start = transform_.GetWorldPos() + (worldDirection * rotateMat);
+		tempTrail_.end = transform_.GetWorldPos() - (worldDirection * rotateMat);
 	}
 	else {
 		// オフセットを求める
