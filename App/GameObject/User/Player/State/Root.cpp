@@ -46,21 +46,21 @@ void Root::Update()
 					}
 				}
 				else { // 後方だった場合
-					if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("09_LockOnMoveBack")) {
-						player_->skiningModels_[0]->animationManager_.PlayAnimation("09_LockOnMoveBack", 0.15f, true);
+					if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("03_LockOnMoveBack")) {
+						player_->skiningModels_[0]->animationManager_.PlayAnimation("03_LockOnMoveBack", 0.15f, true);
 					}
 				}
 			}
 			else {
 				// 右方向に移動している場合
 				if (move.x > 0.0f) {
-					if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("10_LockOnMoveRight")) {
-						player_->skiningModels_[0]->animationManager_.PlayAnimation("10_LockOnMoveRight", 0.15f, true);
+					if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("04_LockOnMoveRight")) {
+						player_->skiningModels_[0]->animationManager_.PlayAnimation("04_LockOnMoveRight", 0.15f, true);
 					}
 				}
 				else if(move.x < 0.0f){ // 左方向に移動している場合
-					if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("11_LockOnMoveLeft")) {
-						player_->skiningModels_[0]->animationManager_.PlayAnimation("11_LockOnMoveLeft", 0.15f, true);
+					if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("05_LockOnMoveLeft")) {
+						player_->skiningModels_[0]->animationManager_.PlayAnimation("05_LockOnMoveLeft", 0.15f, true);
 					}
 				}
 			}
@@ -115,8 +115,8 @@ void Root::Update()
 		}
 		else { // 有効時
 			// 
-			if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("08_LockOnIdle")) {
-				player_->skiningModels_[0]->animationManager_.PlayAnimation("08_LockOnIdle", 0.15f, true);
+			if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("02_LockOnIdle")) {
+				player_->skiningModels_[0]->animationManager_.PlayAnimation("02_LockOnIdle", 0.15f, true);
 			}
 		}
 	}

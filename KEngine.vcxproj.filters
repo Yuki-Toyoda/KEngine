@@ -133,9 +133,6 @@
     <ClCompile Include="Engine\Input\Input.cpp">
       <Filter>Engine\Input</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Utility\Line\Line.cpp">
-      <Filter>App\Utility\Line</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Base\WinApp.cpp">
       <Filter>Engine\Base</Filter>
     </ClCompile>
@@ -396,6 +393,7 @@
     <ClCompile Include="Engine\GameObject\WorldTransform.cpp">
       <Filter>Engine\GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Utility\Line\Line.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -562,9 +560,6 @@
     </ClInclude>
     <ClInclude Include="Engine\Utility\Observer\Observer.h">
       <Filter>Engine\Utility\Observer</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Utility\Line\Line.h">
-      <Filter>App\Utility\Line</Filter>
     </ClInclude>
     <ClInclude Include="Game\Game.h">
       <Filter>Game</Filter>
@@ -876,6 +871,7 @@
     <ClInclude Include="App\GameObject\User\Enemy\State\IEnemyState.h">
       <Filter>App\GameObject\User\Enemy\State</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Utility\Line\Line.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -1244,7 +1240,6 @@
     <ClInclude Include="Engine\Base\Resource\Rendering\IRenderingResource.h" />
     <ClInclude Include="Engine\Model\Component\Vertex.h" />
     <ClInclude Include="Engine\Utility\Angle\Angle.h" />
-    <ClInclude Include="Engine\PostProcess\GaussianFilter\GaussianFilter.h" />
     <ClInclude Include="Engine\Utility\Counter\Counter.h" />
     <ClInclude Include="Engine\Utility\DataSegment\DataSegment.h" />
     <ClInclude Include="Engine\Audio\Audio.h" />
@@ -1475,5 +1470,7 @@
     <FxCompile Include="Engine\Resource\Shader\Particle\user\Test\UpdateTestParticle.CS.hlsl">
       <Filter>Engine\Resource\Shader</Filter>
     </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\Trail\Trail.PS.hlsl" />
+    <FxCompile Include="Engine\Resource\Shader\Trail\Trail.VS.hlsl" />
   </ItemGroup>
 </Project>

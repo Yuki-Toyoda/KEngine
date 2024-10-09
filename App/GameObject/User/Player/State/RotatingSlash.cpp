@@ -13,8 +13,8 @@ void RotatingSlash::Init()
 	// 攻撃中である
 	player_->isAttacking_ = false;
 
-	if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("03_RotateSlash_Charge")) {
-		player_->skiningModels_[0]->animationManager_.PlayAnimation("03_RotateSlash_Charge", 0.1f, false);
+	if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("12_RotateSlash_Charge")) {
+		player_->skiningModels_[0]->animationManager_.PlayAnimation("12_RotateSlash_Charge", 0.1f, false);
 	}
 
 	// 線の座標を戻す
@@ -24,7 +24,7 @@ void RotatingSlash::Init()
 void RotatingSlash::Update()
 {
 	// 回転斬りチャージアニメーションの再生
-	if (player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("03_RotateSlash_Charge")) {
+	if (player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("12_RotateSlash_Charge")) {
 		// Aボタンを押し続けていないなら
 		if (!(player_->joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A) &&
 			!(player_->preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A)) {
@@ -34,8 +34,8 @@ void RotatingSlash::Update()
 				// 素振りの効果音の再生
 				Audio::GetInstance()->PlayWave(player_->RotateSlash_);
 
-				if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("05_RotateSlash")) {
-					player_->skiningModels_[0]->animationManager_.PlayAnimation("05_RotateSlash");
+				if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("14_RotateSlash")) {
+					player_->skiningModels_[0]->animationManager_.PlayAnimation("14_RotateSlash");
 				}
 
 				// 回転斬り状態に
@@ -72,8 +72,8 @@ void RotatingSlash::Update()
 			// 素振りの効果音の再生
 			Audio::GetInstance()->PlayWave(player_->RotateSlash_);
 
-			if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("05_RotateSlash")) {
-				player_->skiningModels_[0]->animationManager_.PlayAnimation("05_RotateSlash");
+			if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("14_RotateSlash")) {
+				player_->skiningModels_[0]->animationManager_.PlayAnimation("14_RotateSlash");
 			}
 
 			// 回転斬り状態に
@@ -88,7 +88,7 @@ void RotatingSlash::Update()
 	}
 
 	// 回転斬りアニメーションの再生
-	if (player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("05_RotateSlash")) {
+	if (player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("14_RotateSlash")) {
 		
 	}
 	else if(isRotateSlashing_){
