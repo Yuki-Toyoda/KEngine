@@ -133,9 +133,6 @@
     <ClCompile Include="Engine\Input\Input.cpp">
       <Filter>Engine\Input</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Utility\Line\Line.cpp">
-      <Filter>App\Utility\Line</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Base\WinApp.cpp">
       <Filter>Engine\Base</Filter>
     </ClCompile>
@@ -344,7 +341,12 @@
     <ClCompile Include="Engine\Utility\Line\Line.cpp">
       <Filter>Engine\Utility\Line</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Base\Renderer\TrailRenderer.cpp" />
+    <ClCompile Include="Engine\Utility\Line\Line.cpp">
+      <Filter>Engine\Utility\Line</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Base\Renderer\TrailRenderer.cpp">
+      <Filter>Engine\Base\Renderer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -511,9 +513,6 @@
     </ClInclude>
     <ClInclude Include="Engine\Utility\Observer\Observer.h">
       <Filter>Engine\Utility\Observer</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Utility\Line\Line.h">
-      <Filter>App\Utility\Line</Filter>
     </ClInclude>
     <ClInclude Include="Game\Game.h">
       <Filter>Game</Filter>
@@ -764,7 +763,12 @@
     <ClInclude Include="Engine\Utility\Line\Line.h">
       <Filter>Engine\Utility\Line</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Base\Renderer\TrailRenderer.h" />
+    <ClInclude Include="Engine\Utility\Line\Line.h">
+      <Filter>Engine\Utility\Line</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Base\Renderer\TrailRenderer.h">
+      <Filter>Engine\Base\Renderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
