@@ -390,11 +390,11 @@
     <ClCompile Include="Engine\Scene\SceneManager.cpp">
       <Filter>Engine\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Game.cpp">
-      <Filter>App</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\SkyBox\SkyBox.cpp">
       <Filter>Engine\SkyBox</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Game.cpp">
+      <Filter>Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -870,11 +870,11 @@
     <ClInclude Include="Engine\Utility\IndexList\Index.h">
       <Filter>Engine\Utility\IndexList</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Game.h">
-      <Filter>App</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\SkyBox\SkyBox.h">
       <Filter>Engine\SkyBox</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Game.h">
+      <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
