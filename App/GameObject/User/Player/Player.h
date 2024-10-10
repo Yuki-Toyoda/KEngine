@@ -10,6 +10,7 @@ class Camera;
 class FollowCamera;
 class LockOn;
 class Enemy;
+class GameManager;
 
 /// <summary>
 /// プレイヤー
@@ -151,11 +152,6 @@ private: // メンバ変数
 
 	// タイトル演出用カメラ
 	Camera* titleCamera_ = nullptr;
-
-	// フェード演出トリガー
-	bool isFade_ = false;
-	// ゲームスタートフラグ
-	bool isGameStart_ = false;
 
 	// タイトルアニメーション
 	MyAnimation* titleAnim_ = nullptr;

@@ -182,6 +182,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Externals\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Engine\Utility\Line\Line.cpp" />
     <ClCompile Include="App\GameObject\User\Fairy\Fairy.cpp" />
+    <ClCompile Include="App\GameObject\User\GameManger\GameManager.cpp" />
     <ClCompile Include="Game\Game.cpp" />
     <ClCompile Include="Engine\KEngine.cpp" />
     <ClCompile Include="Engine\Base\RootSignature\IRootSignature.cpp" />
@@ -339,6 +340,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Externals\imgui\imstb_truetype.h" />
     <ClInclude Include="Engine\Utility\Line\Line.h" />
     <ClInclude Include="App\GameObject\User\Fairy\Fairy.h" />
+    <ClInclude Include="App\GameObject\User\GameManger\GameManager.h" />
     <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Engine\KEngine.h" />
     <ClInclude Include="App\Scene\SceneFactory.h" />

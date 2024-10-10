@@ -109,17 +109,6 @@ void Player::Init()
 	AddSprite("SwordIcon", { 1140.0f, 142.5f }, { 48.0f ,48.0f }, TextureManager::Load("./Resources/UI/Icon", "MasterSword.png"));
 	// Bボタン
 	AddSprite("BButton", { 1185.0f, 75.0f }, { 48.0f ,48.0f }, TextureManager::Load("./Resources/UI/Button", "Button_B.png"));
-	// フェード演出用スプライト
-	AddSprite("BButton", { 
-		(float)KEngine::Config::Window::KWindowWidth / 2.0f, 
-		(float)KEngine::Config::Window::KWindowHeight / 2.0f, }, 
-		{ (float)KEngine::Config::Window::KWindowWidth,
-		(float)KEngine::Config::Window::KWindowHeight }, 
-		TextureManager::Load("white2x2.png"));
-	// アンカーポイントの設定
-	sprites_[12]->anchorPoint_ = { .5f, .5f };
-	// 色、透明度設定
-	sprites_[12]->color_ = { 0.0f, 0.0f, 0.0f, 1.0f };
 
 	// ボタン関連UI非表示
 	sprites_[9]->isActive_ = false;
