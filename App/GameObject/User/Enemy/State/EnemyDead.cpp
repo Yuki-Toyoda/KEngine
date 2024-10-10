@@ -1,7 +1,8 @@
 #include "EnemyDead.h"
 #include "App/GameObject/User/Enemy/Enemy.h"
-#include "Engine/GameObject/GameObjectManager.h"
 #include "App/GameObject/User/Player/Player.h"
+#include "App/GameObject/User/GameManger/GameManager.h"
+#include "Engine/GameObject/GameObjectManager.h"
 #include "Engine/GameObject/Core/Camera.h"
 
 void EnemyDead::Init()
@@ -19,10 +20,10 @@ void EnemyDead::Init()
 	Player* p = GameObjectManager::GetInstance()->GetGameObject<Player>("Player");
 	p->transform_.translate_ = { -0.544f, 0.0f, -4.65f };
 	p->transform_.rotate_.y = 0.28f;
-	p->canMove_ = false;
+	p->canAction_ = false;
 	
 	// 待機アニメーション再生
-	p->skiningModels_[0]->animationManager_.PlayAnimation("00_Idle", 0.0f, true);
+	p->skiningModels_["Player"]->animationManager_.PlayAnimation("00_Idle", 0.0f, true);
 
 	// カメラ移動
 	camera_ = GameObjectManager::GetInstance()->CreateInstance<Camera>("StagingCamera", IObject::TagCamera);
@@ -35,29 +36,29 @@ void EnemyDead::Init()
 
 void EnemyDead::Update()
 {
-	// 全メッシュ分ループ
-	for (int i = 0; i < enemy_->normalModels_.size(); i++) {
+	// 全通常モデルを透明に
+	for (std::map<std::string, NormalModel*>::const_iterator it = enemy_->normalModels_.cbegin(); it != enemy_->normalModels_.cend(); ++it) {
 		// マテリアルに色を適用
-		enemy_->normalModels_[i]->materials_[1].dissolveStrength_ = enemy_->GetColor().w;
-		enemy_->normalModels_[i]->materials_[1].dissolveEdgeColor_ = {0.0f, 1.0f, 0.75f};
-		enemy_->normalModels_[i]->materials_[1].dissolveEdgeThreshold_ = 0.025f;
+		it->second->materials_[1].dissolveStrength_ = enemy_->GetColor().w;
+		it->second->materials_[1].dissolveEdgeColor_ = { 0.0f, 1.0f, 0.75f };
+		it->second->materials_[1].dissolveEdgeThreshold_ = 0.025f;
 	}
-
-	// カメラのポストプロセスの強さをだんだん上げてく
-	//camera_->postProcessIntensity_ = KLib::Lerp<float>(0.0f, 1.0f, KLib::EaseInQuad(enemy_->enemyAnim_->GetAnimationProgress()));
 
 	// アニメーションが終了していたら
 	if (enemy_->enemyAnim_->isEnd_) {
-
-		if (enemy_->player_->sprites_[12]->color_.w >= 1.0f) {
-			// フェードアウト値固定
-			enemy_->player_->sprites_[12]->color_.w = 1.0f;
-			
-			// 死亡している
-			enemy_->isDead_ = true;
+		// フェードアウト演出が行われていない場合
+		if (!isFadeOut_) {
+			// フェードアウト開始
+			enemy_->gameManager_->StartFade(GameManager::FADEOUT, 1.5f);
+			// フェードアウト開始済み
+			isFadeOut_ = true;
 		}
 		else {
-			enemy_->player_->sprites_[12]->color_.w += 0.01f;
+			// フェード演出中で無ければ
+			if (!enemy_->gameManager_->GetIsFadeStaging()) {
+				// ゲーム終了
+				enemy_->gameManager_->SetIsGameEnd(true);
+			}
 		}
 	}
 }

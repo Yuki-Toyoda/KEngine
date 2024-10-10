@@ -55,10 +55,10 @@ public: // アクセッサ等
 protected: // 継承先メンバ変数
 
 	// 行動状態名
-	std::string stateName_;
+	std::string stateName_ = "";
 
 	// プレイヤーの実体
-	Player* player_;
+	Player* player_ = nullptr;
 
 };
 

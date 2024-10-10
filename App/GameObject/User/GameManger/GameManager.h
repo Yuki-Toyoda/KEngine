@@ -1,15 +1,23 @@
 #pragma once
 #include "Engine/GameObject/IObject.h"
+#include "Engine/Utility/Animation/AnimationManager.h"
 
 // クラスの前方宣言
-class Player;
-class Enemy;
+class Camera;
 
 /// <summary>
 /// ゲームシーンのマネージャー
 /// </summary>
-class GameManager : IObject
+class GameManager : public IObject
 {
+public: // サブクラス
+
+	// フェード状態列挙子
+	enum FadeState {
+		FADEIN, // フェードイン
+		FADEOUT // フェードアウト
+	};
+
 public: // メンバ関数
 
 	/// <summary>
@@ -26,16 +34,89 @@ public: // メンバ関数
 	// ImGuiを表示させたい場合はこの関数に処理を追記
 	void DisplayImGui() override;
 
+	/// <summary>
+	/// フェード演出開始関数
+	/// </summary>
+	/// <param name="fadeState">フェードイン、アウトを選択</param>
+	/// <param name="fadeTime">何秒かけてフェード演出をするか</param>
+	void StartFade(int fadeState, const float fadeTime);
+
+public: // アクセッサ等
+
+	/// <summary>
+	/// ゲーム開始状態のゲッター
+	/// </summary>
+	/// <returns>ゲームが開始されているか</returns>
+	bool GetIsGameStart() { return isGameStart_; }
+
+	/// <summary>
+	/// ゲーム終了状態ゲッター
+	/// </summary>
+	/// <returns>ゲームが終了しているか</returns>
+	bool GetIsGameEnd() { return isGameEnd_; }
+	/// <summary>
+	/// ゲーム終了状態セッター
+	/// </summary>
+	/// <param name="isGameEnd">ゲーム終了状態</param>
+	void SetIsGameEnd(const bool isGameEnd) { isGameEnd_ = isGameEnd; }
+
+	/// <summary>
+	/// フェード演出スプライトの値を直接指定するセッター
+	/// </summary>
+	/// <param name="fadeAlpha"></param>
+	void SetFade(const float fadeAlpha);
+
+	/// <summary>
+	/// フェード演出実行状態ゲッター
+	/// </summary>
+	/// <returns>フェード演出の実行状態</returns>
+	bool GetIsFadeStaging() { return isFadeStaging_; }
+
+private: // 機能関数群
+
+	/// <summary>
+	/// タイトル演出更新関数
+	/// </summary>
+	void TitleStagingUpdate();
+
+	/// <summary>
+	/// タイトル演出パラメータを作成する
+	/// </summary>
+	/// <param name="name">作成するパラメータ名</param>
+	void CreateTitleCameraParameter(const std::string& name);
+
+	/// <summary>
+	/// フェード演出更新関数
+	/// </summary>
+	void FadeUpdate();
+
 private: // メンバ変数
 
-	// ゲーム開始フラグ
-	bool isStartGame_ = false;
-	// ゲーム終了フラグ
-	bool isEndGame_ = false;
+	// 入力検知用
+	Input* input_ = nullptr;
+	// コントローラー入力
+	XINPUT_STATE joyState_; // 現在フレーム用
+	XINPUT_STATE preJoyState_; // 前フレーム用
 
+	// ゲーム開始フラグ
+	bool isGameStart_ = false;
+	// ゲーム終了フラグ
+	bool isGameEnd_ = false;
+
+	// タイトル演出用カメラ
+	Camera* titleCamera_ = nullptr;
+	// アニメーションマネージャ
+	AnimationManager* animManager_;
+	// タイトル演出アニメーション
+	MyAnimation* titleAnim_ = nullptr;
+
+	// フェード演出中フラグ
+	bool isFadeStaging_ = false;
 	// フェード管理フラグ
-	bool isFadeIn_ = false;
+	int fadeState_ = FADEOUT;
+	// フェード演出開始時の透明度
+	float currentFadeAlpha_ = 0.0f;
 	// フェード演出用タイマー
-	KLib::DeltaTimer fadeTimer_;
+	KLib::DeltaTimer fadeTimer_{};
 };
 

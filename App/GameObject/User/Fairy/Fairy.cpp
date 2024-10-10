@@ -4,13 +4,13 @@
 void Fairy::Init()
 {
 	// メッシュ追加関数
-	AddSkiningModel(&transform_, "./Resources/Fairy", "Fairy.gltf");
+	AddSkiningModel("Fairy", &transform_, "./Resources/Fairy", "Fairy.gltf");
 
 	// スケール調整
 	transform_.scale_ = { 0.25f, 0.25f, 0.25f };
 
 	// アニメーションのループ
-	skiningModels_[0]->animationManager_.PlayAnimation("00_Idle", 0.0f, true);
+	skiningModels_["Fairy"]->animationManager_.PlayAnimation("00_Idle", 0.0f, true);
 
 	// オフセットなしのトランスフォームの初期化
 	noOffsetTransform_.Init();

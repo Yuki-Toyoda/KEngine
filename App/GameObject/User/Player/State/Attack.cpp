@@ -12,12 +12,16 @@ void Attack::Init()
 
 	// 攻撃中である
 	player_->isAttacking_ = true;
+	// コライダー有効
+	for (const auto& collider : player_->colliders_) {
+		// 剣のコライダーを発見した場合
+		if (collider->GetColliderName() == "Sword") {
+			collider->SetIsActive(true);
+		}
+	}
 
 	// 攻撃アニメーションの再生
-	player_->skiningModels_[0]->animationManager_.PlayAnimation("08_HorizontalSlash", 0.05f);
-
-	// 線の座標を戻す
-	player_->attackLine_->position_ = { 0.0f, 0.0f, 0.0f };
+	player_->skiningModels_["Player"]->animationManager_.PlayAnimation("08_HorizontalSlash", 0.05f);
 
 	// 素振りの効果音の再生
 	Audio::GetInstance()->PlayWave(player_->SwingSword_);
@@ -25,13 +29,10 @@ void Attack::Init()
 
 void Attack::Update()
 {
-	if (player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation()) {
+	if (player_->skiningModels_["Player"]->animationManager_.GetIsPlayingAnimation()) {
 
 		// 6割り終わっていて、なおかつAボタン長押し中なら回転切りの準備に入る
-		if (player_->skiningModels_[0]->animationManager_.GetPlayingAnimationProgress() >= 0.6f) {
-
-			// 線の座標を戻す
-			//player_->attackLine_->position_ = { -1000.0f, 100.0f, 0.0f };
+		if (player_->skiningModels_["Player"]->animationManager_.GetPlayingAnimationProgress() >= 0.6f) {
 
 			if (player_->joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A &&
 				(player_->preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A)) {
@@ -44,10 +45,7 @@ void Attack::Update()
 		}
 
 		// 8割り終わっていたら再度攻撃可能
-		if (player_->skiningModels_[0]->animationManager_.GetPlayingAnimationProgress() >= 0.8f) {
-			
-			// 線の座標を戻す
-			//player_->attackLine_->position_ = { -1000.0f, 100.0f, 0.0f };
+		if (player_->skiningModels_["Player"]->animationManager_.GetPlayingAnimationProgress() >= 0.8f) {
 
 			if (player_->joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A &&
 				!(player_->preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A)) {

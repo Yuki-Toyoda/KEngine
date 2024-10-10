@@ -6,14 +6,14 @@
 void EnemyBullet::Init()
 {
 	// メッシュを追加
-	AddNormalModel(&transform_, "./Engine/Resource/Samples/Sphere", "Sphere.obj");
+	AddNormalModel("EnemyBullet", &transform_, "./Engine/Resource/Samples/Sphere", "Sphere.obj");
 
 	// 弾の色調整
-	normalModels_[0]->materials_[0].color_ = { 0.0f, 2.5f, 1.0f, .85f };
-	normalModels_[0]->materials_[0].enableLighting_ = false;
-	normalModels_[0]->materials_[0].dissolveEdgeColor_ = { 1.0f, 1.0f, 0.45f };
-	normalModels_[0]->materials_[0].dissolveEdgeThreshold_ = 0.1f;
-	normalModels_[0]->materials_[0].dissolveStrength_ = 1.0f;
+	normalModels_["EnemyBullet"]->materials_[0].color_ = { 0.0f, 2.5f, 1.0f, .85f };
+	normalModels_["EnemyBullet"]->materials_[0].enableLighting_ = false;
+	normalModels_["EnemyBullet"]->materials_[0].dissolveEdgeColor_ = { 1.0f, 1.0f, 0.45f };
+	normalModels_["EnemyBullet"]->materials_[0].dissolveEdgeThreshold_ = 0.1f;
+	normalModels_["EnemyBullet"]->materials_[0].dissolveStrength_ = 1.0f;
 
 	// 球のコライダー追加
 	AddColliderSphere("Bullet", &transform_.translate_, &transform_.scale_.x);
@@ -26,21 +26,21 @@ void EnemyBullet::Update()
 {
 	if (isDissolving_) {
 		if (!isSwitchDissolving_) {
-			normalModels_[0]->materials_[0].dissolveEdgeThreshold_ = KLib::Lerp<float>(normalModels_[0]->materials_[0].dissolveEdgeThreshold_, 0.35f, 0.05f);
-			if (normalModels_[0]->materials_[0].dissolveEdgeThreshold_ >= 0.325f) {
+			normalModels_["EnemyBullet"]->materials_[0].dissolveEdgeThreshold_ = KLib::Lerp<float>(normalModels_["EnemyBullet"]->materials_[0].dissolveEdgeThreshold_, 0.35f, 0.05f);
+			if (normalModels_["EnemyBullet"]->materials_[0].dissolveEdgeThreshold_ >= 0.325f) {
 				isSwitchDissolving_ = true;
 			}
 		}
 		else {
-			normalModels_[0]->materials_[0].dissolveEdgeThreshold_ = KLib::Lerp<float>(normalModels_[0]->materials_[0].dissolveEdgeThreshold_, 0.075f, 0.05f);
-			if (normalModels_[0]->materials_[0].dissolveEdgeThreshold_ <= 0.1f) {
+			normalModels_["EnemyBullet"]->materials_[0].dissolveEdgeThreshold_ = KLib::Lerp<float>(normalModels_["EnemyBullet"]->materials_[0].dissolveEdgeThreshold_, 0.075f, 0.05f);
+			if (normalModels_["EnemyBullet"]->materials_[0].dissolveEdgeThreshold_ <= 0.1f) {
 				isSwitchDissolving_ = false;
 			}
 		}
 	}
 	else {
-		normalModels_[0]->materials_[0].dissolveStrength_ = KLib::Lerp<float>(normalModels_[0]->materials_[0].dissolveStrength_, 0.3f, 0.05f);
-		if (normalModels_[0]->materials_[0].dissolveStrength_ <= 0.35f) {
+		normalModels_["EnemyBullet"]->materials_[0].dissolveStrength_ = KLib::Lerp<float>(normalModels_["EnemyBullet"]->materials_[0].dissolveStrength_, 0.3f, 0.05f);
+		if (normalModels_["EnemyBullet"]->materials_[0].dissolveStrength_ <= 0.35f) {
 			isDissolving_ = true;
 		}
 	}
@@ -49,7 +49,7 @@ void EnemyBullet::Update()
 	transform_.translate_ = transform_.translate_ + velocity_;
 
 	// UVを動かし続ける
-	normalModels_[0]->materials_[0].uvTransform_.translate_.x += 0.01f;
+	normalModels_["EnemyBullet"]->materials_[0].uvTransform_.translate_.x += 0.01f;
 
 	// y座標が一定以下になったら削除
 	if (transform_.translate_.y <= -1.0f) {
@@ -72,6 +72,7 @@ void EnemyBullet::OnCollisionEnter(Collider* collider)
 	// プレイヤーの剣と衝突していたら
 	if (collider->GetColliderName() == "Sword" && isPlayer_) {
 		Enemy* e = GameObjectManager::GetInstance()->GetGameObject<Enemy>("Enemy");
+
 		SetVelocity(false, e->GetRallyCount());
 		isReturn_ = true;
 
@@ -86,7 +87,6 @@ void EnemyBullet::OnCollisionEnter(Collider* collider)
 		hit->emitterDataBuffer_->data_->count = 25;
 		hit->emitterDataBuffer_->data_->frequency = 50.0f;
 		hit->emitterDataBuffer_->data_->frequencyTime = 55.0f;
-
 	}
 
 	// ボスと衝突したら

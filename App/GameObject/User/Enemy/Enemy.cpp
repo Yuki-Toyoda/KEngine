@@ -1,8 +1,8 @@
 #include "Enemy.h"
 #include "EnemyBullet.h"
-#include "App//GameObject/User/Player/Player.h"
+#include "App/GameObject/User/Player/Player.h"
+#include "App/GameObject/User/GameManger/GameManager.h"
 #include "Engine/GameObject/GameObjectManager.h"
-#include "../Player/Player.h"
 
 void Enemy::Init()
 {
@@ -68,17 +68,16 @@ void Enemy::Init()
 
 #endif // _DEBUG
 
-
 	// ループ状態にする
 	enemyAnim_->isLoop_ = true;
 	// この状態で再生
 	enemyAnim_->Play();
 
 	// メッシュを追加
-	AddNormalModel(&bodyTransform_, "./Resources/Enemy", "Body.obj");
-	AddNormalModel(&headTransform_, "./Resources/Enemy", "Head.obj");
-	AddNormalModel(&armTransform_R_, "./Resources/Enemy", "Arm_R.obj");
-	AddNormalModel(&armTransform_L_, "./Resources/Enemy", "Arm_L.obj");
+	AddNormalModel("Body", &bodyTransform_, "./Resources/Enemy", "Body.obj");
+	AddNormalModel("Head", &headTransform_, "./Resources/Enemy", "Head.obj");
+	AddNormalModel("Arm_R", &armTransform_R_, "./Resources/Enemy", "Arm_R.obj");
+	AddNormalModel("Arm_L", &armTransform_L_, "./Resources/Enemy", "Arm_L.obj");
 
 	// 球のコライダー追加
 	AddColliderSphere("Boss", &worldPos_, &colliderRadius_);
@@ -146,13 +145,13 @@ void Enemy::Update()
 	}
 
 	// 現在行動を更新
-	if (isGameStart_) {
+	if (gameManager_->GetIsGameStart()) {
 		state_->Update();
 	}
 
 	// 死亡していなければ
 	if (hp_ > 0) {
-		if (isGameStart_) {
+		if (gameManager_->GetIsGameStart()) {
 			// ヒットクールタイムタイマー更新
 			hitCoolTimeTimer_.Update();
 			// 行動変更クールタイムタイマー更新

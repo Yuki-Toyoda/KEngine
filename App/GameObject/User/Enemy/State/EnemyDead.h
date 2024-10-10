@@ -30,6 +30,7 @@ private: // メンバ変数
 
 	// 死亡演出用カメラ
 	Camera* camera_ = nullptr;
-
+	// フェードアウト開始フラグ
+	bool isFadeOut_ = false;
 };
 

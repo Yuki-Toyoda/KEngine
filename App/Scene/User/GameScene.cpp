@@ -50,17 +50,21 @@ void GameScene::Init(){
 
 	// テクスチャ事前読み込み
 	TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png");
+
+	// ゲームマネージャー生成
+	gameManager_			= gameObjectManager_->CreateInstance<GameManager>("GameManager", IObject::TagNone);
+	player_->gameManager_	= gameManager_;
+	enemy_->gameManager_	= gameManager_;
+	// フェードイン開始
+	gameManager_->StartFade(GameManager::FADEIN, 1.5f);
 }
 
 void GameScene::Update()
 {
-	if (enemy_->isDead_ || player_->isDead_) {
+	// ゲーム終了時
+	if (gameManager_->GetIsGameEnd()) {
+		// ゲームシーンの再読み込み
 		SceneManager::GetInstance()->ChangeScene("Game");
-	}
-
-	// Rキーを押すとステージをリロード
-	if (input_->TriggerKey(DIK_R)) {
-		level_->LoadLevel("./Resources/Level", "Stage.json");
 	}
 
 	// デバッグ時のみ特定のキーでシーン遷移

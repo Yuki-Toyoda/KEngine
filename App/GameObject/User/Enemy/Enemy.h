@@ -6,6 +6,7 @@
 
 // クラスの前方宣言
 class Player;
+class GameManager;
 
 /// <summary>
 /// 敵クラス
@@ -79,18 +80,15 @@ public: // アクセッサ等
 	int32_t GetRallyCount() { return rallyCount_; }
 
 	/// <summary>
-	/// ゲーム開始フラグセッター
-	/// </summary>
-	/// <param name="isStart">ゲームを開始しているか</param>
-	void SetIsGameStart(bool isStart) { isGameStart_ = isStart; }
-
-	/// <summary>
 	/// 色ゲッター
 	/// </summary>
 	/// <returns>色</returns>
 	Vector4 GetColor() { return color_; }
 
 public: // パブリックなメンバ変数
+
+	// ゲームマネージャー
+	GameManager* gameManager_ = nullptr;
 
 	// 左腕のトランスフォーム
 	WorldTransform armTransform_L_;
@@ -121,9 +119,6 @@ private: // メンバ変数
 	KLib::DeltaTimer stateChangeTimer_;
 	// 行動変更クールタイム定数値
 	const float kStateChangeCoolTime_ = 1.5f;
-
-	// ゲームスタートフラグ
-	bool isGameStart_ = false;
 
 	// HP
 	int32_t hp_ = 25;

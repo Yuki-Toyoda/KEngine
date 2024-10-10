@@ -52,31 +52,21 @@ public: // メンバ関数
 	void HitDamage(const Vector3& translate);
 
 	/// <summary>
-	/// ヒットストップ演出開始関数
-	/// </summary>
-	void HitStop();
-
-	/// <summary>
 	/// 衝突した瞬間にコールバックされる関数
 	/// </summary>
 	/// <param name="collider">衝突したコライダー</param>
 	void OnCollisionEnter(Collider* collider) override;
 
-private: // プライベートなメンバ関数
-
-	/// <summary>
-	/// タイトル演出パラメータを作成する
-	/// </summary>
-	/// <param name="name">作成するパラメータ名</param>
-	void CreateTitleCameraParameter(const std::string& name);
-
 public: // パブリックなメンバ変数
+
+	// ゲームマネージャー
+	GameManager* gameManager_ = nullptr;
 
 	// 入力検知用
 	Input* input_ = nullptr;
 	// コントローラー入力
-	XINPUT_STATE joyState_; // 現在フレーム用
-	XINPUT_STATE preJoyState_; // 前フレーム用
+	XINPUT_STATE joyState_;		// 現在フレーム用
+	XINPUT_STATE preJoyState_;	// 前フレーム用
 
 	// 追従カメラ格納用
 	FollowCamera* followCamera_ = nullptr;
@@ -103,7 +93,7 @@ public: // パブリックなメンバ変数
 	WorldTransform headTransform_;
 
 	// 移動可能か
-	bool canMove_ = true;
+	bool canAction_ = false;
 
 	// HP
 	int32_t hp_ = 6;
@@ -122,22 +112,20 @@ public: // パブリックなメンバ変数
 
 private: // メンバ変数
 
+	// 開始前のセットアップフラグ
+	bool isSetUp_ = false;
+
 	// 武器のトランスフォーム
 	WorldTransform weaponTransform_;
 
-	Vector2 hertUITranslate_[6];
-	Vector2 hertUISize_[6];
+	// 体力UI
+	Vector2 hertUITranslate_[6]; // 座標
+	Vector2 hertUISize_[6];		 // サイズ
+
 	// ヒットクールタイムタイマー
 	KLib::DeltaTimer hitCoolTimeTimer_;
 	// ヒットクールタイム定数値
 	const float kHitCoolTime_ = 0.35f;
-
-	// ヒットストップ演出
-	bool enableHitStop_ = false;
-	// ヒットストップタイマー
-	KLib::DeltaTimer hitStopTimer_;
-	// ヒットストップ時間定数値
-	const float kHitStopTime_ = 0.025f;
 
 	// コライダーのワールド座標
 	Vector3 colliderWorldPos_;
@@ -146,14 +134,4 @@ private: // メンバ変数
 
 	// 行動状態格納変数
 	std::unique_ptr<IState> state_;
-
-	// アニメーションマネージャ
-	AnimationManager* animManager_;
-
-	// タイトル演出用カメラ
-	Camera* titleCamera_ = nullptr;
-
-	// タイトルアニメーション
-	MyAnimation* titleAnim_ = nullptr;
-
 };

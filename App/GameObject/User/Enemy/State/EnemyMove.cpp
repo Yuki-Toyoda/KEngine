@@ -28,9 +28,6 @@ void EnemyMove::Init()
 		// プレイヤーから敵へのベクトルを求める
 		sub = Vector3::Normalize(enemy_->transform_.translate_ - Vector3(0.0f, 0.0f, 0.0f));
 
-		// y軸方向のベクトルは0にする
-		//sub.y = 0.0f;
-
 		// 移動座標を求める
 		movePosition_ = sub * KLib::RandomF(15.0f, 25.0f, 2);
 

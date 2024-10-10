@@ -34,5 +34,8 @@ private: // メンバ変数
 	// プレイヤー
 	Player* player_ = nullptr;
 
+	// ゲームマネージャー
+	GameManager* gameManager_ = nullptr;
+
 };
 

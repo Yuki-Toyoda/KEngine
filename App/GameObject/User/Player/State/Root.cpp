@@ -11,9 +11,15 @@ void Root::Init()
 	// 目標角度はプレイヤーの向き
 	targetAngle_ = player_->transform_.rotate_.y;
 
-	// 線の座標を戻す
-	//player_->attackLine_->position_ = { -1000.0f, 100.0f, 0.0f };
-
+	// 攻撃状態でない
+	player_->isAttacking_ = false;
+	// コライダー無効
+	for (const auto& collider : player_->colliders_) {
+		// 剣のコライダーを発見した場合
+		if (collider->GetColliderName() == "Sword") {
+			collider->SetIsActive(false);
+		}
+	}
 }
 
 void Root::Update()
@@ -32,8 +38,8 @@ void Root::Update()
 		
 		// ロックオンが有効でないとき
 		if (!player_->followCamera_->GetEnableZForcus()) {
-			if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("01_Run")) {
-				player_->skiningModels_[0]->animationManager_.PlayAnimation("01_Run", 0.25f, true);
+			if (!player_->skiningModels_["Player"]->animationManager_.GetIsPlayingAnimation("01_Run")) {
+				player_->skiningModels_["Player"]->animationManager_.PlayAnimation("01_Run", 0.25f, true);
 			}
 		}
 		else { // 有効時
@@ -41,26 +47,26 @@ void Root::Update()
 			if (move.x < 0.75f && move.x > -0.75f) {
 				// 移動ベクトルが前方方向だった場合
 				if (move.z > 0.0f) {
-					if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("01_Run")) {
-						player_->skiningModels_[0]->animationManager_.PlayAnimation("01_Run", 0.1f, true);
+					if (!player_->skiningModels_["Player"]->animationManager_.GetIsPlayingAnimation("01_Run")) {
+						player_->skiningModels_["Player"]->animationManager_.PlayAnimation("01_Run", 0.1f, true);
 					}
 				}
 				else { // 後方だった場合
-					if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("03_LockOnMoveBack")) {
-						player_->skiningModels_[0]->animationManager_.PlayAnimation("03_LockOnMoveBack", 0.15f, true);
+					if (!player_->skiningModels_["Player"]->animationManager_.GetIsPlayingAnimation("03_LockOnMoveBack")) {
+						player_->skiningModels_["Player"]->animationManager_.PlayAnimation("03_LockOnMoveBack", 0.15f, true);
 					}
 				}
 			}
 			else {
 				// 右方向に移動している場合
 				if (move.x > 0.0f) {
-					if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("04_LockOnMoveRight")) {
-						player_->skiningModels_[0]->animationManager_.PlayAnimation("04_LockOnMoveRight", 0.15f, true);
+					if (!player_->skiningModels_["Player"]->animationManager_.GetIsPlayingAnimation("04_LockOnMoveRight")) {
+						player_->skiningModels_["Player"]->animationManager_.PlayAnimation("04_LockOnMoveRight", 0.15f, true);
 					}
 				}
 				else if(move.x < 0.0f){ // 左方向に移動している場合
-					if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("05_LockOnMoveLeft")) {
-						player_->skiningModels_[0]->animationManager_.PlayAnimation("05_LockOnMoveLeft", 0.15f, true);
+					if (!player_->skiningModels_["Player"]->animationManager_.GetIsPlayingAnimation("05_LockOnMoveLeft")) {
+						player_->skiningModels_["Player"]->animationManager_.PlayAnimation("05_LockOnMoveLeft", 0.15f, true);
 					}
 				}
 			}
@@ -109,14 +115,14 @@ void Root::Update()
 		// ロックオンが有効でないとき
 		if (!player_->followCamera_->GetEnableZForcus()) {
 			// 
-			if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("00_Idle")) {
-				player_->skiningModels_[0]->animationManager_.PlayAnimation("00_Idle", 0.25f, true);
+			if (!player_->skiningModels_["Player"]->animationManager_.GetIsPlayingAnimation("00_Idle")) {
+				player_->skiningModels_["Player"]->animationManager_.PlayAnimation("00_Idle", 0.25f, true);
 			}
 		}
 		else { // 有効時
 			// 
-			if (!player_->skiningModels_[0]->animationManager_.GetIsPlayingAnimation("02_LockOnIdle")) {
-				player_->skiningModels_[0]->animationManager_.PlayAnimation("02_LockOnIdle", 0.15f, true);
+			if (!player_->skiningModels_["Player"]->animationManager_.GetIsPlayingAnimation("02_LockOnIdle")) {
+				player_->skiningModels_["Player"]->animationManager_.PlayAnimation("02_LockOnIdle", 0.15f, true);
 			}
 		}
 	}

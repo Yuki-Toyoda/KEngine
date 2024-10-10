@@ -13,3 +13,4 @@
 #include "User/LockOn/LockOn.h"
 #include "User/Fairy/Fairy.h"
 #include "User/Level/Level.h"
+#include "User/GameManger/GameManager.h"
