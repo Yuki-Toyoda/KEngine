@@ -20,16 +20,16 @@ void GameObjectManager::Init()
 	objects_.remove_if([](std::unique_ptr<IObject>& object) {
 		if (object->GetIsDestroy()) {
 			// 全通常モデルを削除
-			for (NormalModel* normalModel : object->normalModels_) {
-				normalModel->isDestroy_ = true;
+			for (std::map<std::string, NormalModel*>::const_iterator it = object->normalModels_.cbegin(); it != object->normalModels_.cend(); ++it) {
+				it->second->isDestroy_ = true;
 			}
 			// 全スキニングモデルを削除
-			for (SkiningModel* skiningModel : object->skiningModels_) {
-				skiningModel->isDestroy_ = true;
+			for (std::map<std::string, SkiningModel*>::const_iterator it = object->skiningModels_.cbegin(); it != object->skiningModels_.cend(); ++it) {
+				it->second->isDestroy_ = true;
 			}
 			// 全スプライトを削除
-			for (Sprite* sprite : object->sprites_) {
-				sprite->Destroy();
+			for (std::map<std::string, Sprite*>::const_iterator it = object->sprites_.cbegin(); it != object->sprites_.cend(); ++it) {
+				it->second->Destroy();
 			}
 
 			return true;
@@ -52,16 +52,16 @@ void GameObjectManager::Update()
 	objects_.remove_if([](std::unique_ptr<IObject>& object) {
 		if (object->GetIsDestroy()) {
 			// 全通常モデルを削除
-			for (NormalModel* normalModel : object->normalModels_) {
-				normalModel->isDestroy_ = true;
+			for (std::map<std::string, NormalModel*>::const_iterator it = object->normalModels_.cbegin(); it != object->normalModels_.cend(); ++it) {
+				it->second->isDestroy_ = true;
 			}
 			// 全スキニングモデルを削除
-			for (SkiningModel* skiningModel : object->skiningModels_) {
-				skiningModel->isDestroy_ = true;
+			for (std::map<std::string, SkiningModel*>::const_iterator it = object->skiningModels_.cbegin(); it != object->skiningModels_.cend(); ++it) {
+				it->second->isDestroy_ = true;
 			}
 			// 全スプライトを削除
-			for (Sprite* sprite : object->sprites_) {
-				sprite->Destroy();
+			for (std::map<std::string, Sprite*>::const_iterator it = object->sprites_.cbegin(); it != object->sprites_.cend(); ++it) {
+				it->second->Destroy();
 			}
 
 			return true;

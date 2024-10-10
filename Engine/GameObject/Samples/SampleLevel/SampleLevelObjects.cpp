@@ -38,9 +38,12 @@ void SampleLevelObjects::DisplayImGui()
 void SampleLevelObjects::LoadLevel(const std::string& filePath, const std::string& fileName)
 {
 	// 全通常モデルを削除
-	for (NormalModel* normalModel : normalModels_) {
-		normalModel->isDestroy_ = true;
+	for (std::map<std::string, SkiningModel*>::const_iterator it = skiningModels_.cbegin(); it != skiningModels_.cend(); ++it) {
+		it->second->isDestroy_ = true;
 	}
+
+	// モデルカウントリセット
+	modelCount_ = 0;
 
 	// 読み込み済みモデルのクリア
 	normalModels_.clear();
@@ -61,6 +64,10 @@ void SampleLevelObjects::AddObjects(const std::string filePath, const std::strin
 	// 配列に追加
 	transforms_.push_back(std::move(newT));
 
+	// モデル名の生成
+	std::string modelName = "StageModel : " + std::to_string(modelCount_);
 	// メッシュ追加
-	AddNormalModel(transforms_.back().get(), filePath, fileName);
+	AddNormalModel(modelName,transforms_.back().get(), filePath, fileName);
+	// 追加次第カウント増加
+	modelCount_++;
 }
