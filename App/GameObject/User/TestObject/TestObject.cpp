@@ -4,7 +4,7 @@
 void TestObject::Init()
 {
 	// メッシュ追加関数
-	AddNormalModel(&transform_, "./Engine/Resource/Samples/Sphere", "Sphere.obj");
+	AddNormalModel("TestMesh", & transform_, "./Engine/Resource/Samples/Sphere", "Sphere.obj");
 	//AddSkiningModel(&transform_, "./Engine/Resource/Samples/Player", "Player.gltf");
 
 	// ~スプライトの追加関数~
@@ -22,7 +22,7 @@ void TestObject::Init()
 	line_->SetParent(&transform_);
 
 	// 線用のモデル生成
-	AddNormalModel(line_->GetWorldTransform(), "./Engine/Resource/Samples/Box", "Box.obj");
+	AddNormalModel("LineModel", line_->GetWorldTransform(), "./Engine/Resource/Samples/Box", "Box.obj");
 }
 
 void TestObject::Update()
@@ -43,7 +43,7 @@ void TestObject::DisplayImGui()
 	// 基底クラスのImGuiを表示する
 	IObject::DisplayImGui();
 
-	sprites_[0]->DisplayImGui();
+	sprites_["TestSprite"]->DisplayImGui();
 
 	ImGui::DragFloat("TransitionTime", &testFloatValue_, 0.01f, 0.0f, 5.0f);
 

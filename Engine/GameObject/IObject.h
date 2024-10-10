@@ -189,20 +189,22 @@ protected: // プライベートなメンバ関数
 	/// <summary>
 	/// 通常モデル追加関数
 	/// </summary>
+	/// <param name="name">配列上のモデル</param>
 	/// <param name="wt">ワールドトランスフォーム</param>
 	/// <param name="path">モデルまでのファイルパス</param>
 	/// <param name="fileName">モデル名</param>
 	/// <param name="enableLighting">ライティング有効トリガー</param>
-	void AddNormalModel(WorldTransform* wt, const std::string& path, const std::string& fileName, bool enableLighting = true);
+	void AddNormalModel(const std::string& name, WorldTransform* wt, const std::string& path, const std::string& fileName, bool enableLighting = true);
 
 	/// <summary>
-	/// スキニングモデル追加関数
+	/// 通常モデル追加関数
 	/// </summary>
+	/// <param name="name">配列上のモデル</param>
 	/// <param name="wt">ワールドトランスフォーム</param>
 	/// <param name="path">モデルまでのファイルパス</param>
 	/// <param name="fileName">モデル名</param>
 	/// <param name="enableLighting">ライティング有効トリガー</param>
-	void AddSkiningModel(WorldTransform* wt, const std::string& path, const std::string& fileName, bool enableLighting = true);
+	void AddSkiningModel(const std::string& name, WorldTransform* wt, const std::string& path, const std::string& fileName, bool enableLighting = true);
 
 	/// <summary>
 	/// スプライト追加関数
@@ -225,11 +227,11 @@ public: // パブリックなメンバ変数
 	Matrix4x4 localMat_;
 
 	// 通常モデルリスト
-	std::vector<NormalModel*> normalModels_;
+	std::map<std::string, NormalModel*> normalModels_;
 	// スキニングモデルリスト
-	std::vector<SkiningModel*> skiningModels_;
+	std::map<std::string, SkiningModel*> skiningModels_;
 	// スプライトリスト
-	std::vector<Sprite*> sprites_;
+	std::map<std::string, Sprite*> sprites_;
 
 protected: // 継承メンバ変数
 	

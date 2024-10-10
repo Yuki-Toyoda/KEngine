@@ -76,17 +76,17 @@ void IObject::DisplayImGui()
 	transform_.DisplayImGui();
 
 	// 全通常モデルのImGuiを描画
-	for (NormalModel* model : normalModels_) {
-		model->DisplayImGui();
+	for (std::map<std::string, NormalModel*>::const_iterator it = normalModels_.cbegin(); it != normalModels_.cend(); ++it) {
+		it->second->DisplayImGui();
 	}
 
-	// 全通常モデルのImGuiを描画
-	for (SkiningModel* model : skiningModels_) {
-		model->DisplayImGui();
+	// 全スキニングモデルのImGuiを描画
+	for (std::map<std::string, SkiningModel*>::const_iterator it = skiningModels_.cbegin(); it != skiningModels_.cend(); ++it) {
+		it->second->DisplayImGui();
 	}
 }
 
-void IObject::AddNormalModel(WorldTransform* wt, const std::string& path, const std::string& fileName, bool enableLighting)
+void IObject::AddNormalModel(const std::string& name, WorldTransform* wt, const std::string& path, const std::string& fileName, bool enableLighting)
 {
 	// モデルマネージャのインスタンスが取得されていない場合ここで取得
 	if (modelManager_ == nullptr) {
@@ -94,20 +94,17 @@ void IObject::AddNormalModel(WorldTransform* wt, const std::string& path, const 
 	}
 
 	// 新規モデルの生成
-	NormalModel* newModel = modelManager_->CreateNormalModel(path, fileName);
-	newModel->transform_.SetParent(wt);
+	normalModels_[name] = modelManager_->CreateNormalModel(path, fileName);
+	normalModels_[name]->transform_.SetParent(wt);
 	if (!enableLighting) {
 		// 全マテリアルのライティングを設定
-		for (Material& m : newModel->materials_) {
+		for (Material& m : normalModels_[name]->materials_) {
 			m.enableLighting_ = false;
 		}
 	}
-
-	// モデルリストに生成モデルを追加
-	normalModels_.push_back(std::move(newModel));
 }
 
-void IObject::AddSkiningModel(WorldTransform* wt, const std::string& path, const std::string& fileName, bool enableLighting)
+void IObject::AddSkiningModel(const std::string& name, WorldTransform* wt, const std::string& path, const std::string& fileName, bool enableLighting)
 {
 	// モデルマネージャのインスタンスが取得されていない場合ここで取得
 	if (modelManager_ == nullptr) {
@@ -115,25 +112,21 @@ void IObject::AddSkiningModel(WorldTransform* wt, const std::string& path, const
 	}
 
 	// 新規モデルの生成
-	SkiningModel* newModel = modelManager_->CreateSkiningModel(path, fileName);
-	newModel->transform_.SetParent(wt);
+	skiningModels_[name] = modelManager_->CreateSkiningModel(path, fileName);
+	skiningModels_[name]->transform_.SetParent(wt);
 	if (!enableLighting) {
 		// 全マテリアルのライティングを設定
-		for (Material& m : newModel->materials_) {
+		for (Material& m : skiningModels_[name]->materials_) {
 			m.enableLighting_ = false;
 		}
 	}
 
-	// モデルリストに生成モデルを追加
-	skiningModels_.push_back(std::move(newModel));
 }
 
 void IObject::AddSprite(const std::string& name, const Vector2& position, const Vector2& size, Texture texture)
 {
 	// 新しいインスタンスの追加
-	Sprite* newSprite = SpriteManager::GetInstance()->Create(name, position, size, texture);
-	// リストに追加
-	sprites_.push_back(std::move(newSprite));
+	sprites_[name] = SpriteManager::GetInstance()->Create(name, position, size, texture);
 }
 
 void IObject::AddColliderSphere(const std::string& name, Vector3* center, float* radius, bool enable)

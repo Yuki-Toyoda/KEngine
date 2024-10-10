@@ -46,6 +46,8 @@ private: // メンバ変数
 	// レベルローダー
 	LevelLoader loader_;
 
+	// ステージ全体のモデル数カウント用
+	int modelCount_ = 0;
 	// レベル内のオブジェクトごとのワールドトランスフォーム配列
 	std::vector<std::unique_ptr<WorldTransform>> transforms_;
 
