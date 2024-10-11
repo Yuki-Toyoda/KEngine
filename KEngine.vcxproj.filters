@@ -392,14 +392,14 @@
     <ClCompile Include="Engine\SkyBox\SkyBox.cpp">
       <Filter>Engine\SkyBox</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Game.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
     <ClCompile Include="App\GameObject\User\GameManger\GameManager.cpp">
       <Filter>App\GameObject\User\GameManager</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Utility\Line\Line.cpp">
       <Filter>Engine\Utility\Line</Filter>
+    </ClCompile>
+    <ClCompile Include="App\Game.cpp">
+      <Filter>App</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -877,14 +877,14 @@
     <ClInclude Include="Engine\SkyBox\SkyBox.h">
       <Filter>Engine\SkyBox</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Game.h">
-      <Filter>Game</Filter>
-    </ClInclude>
     <ClInclude Include="App\GameObject\User\GameManger\GameManager.h">
       <Filter>App\GameObject\User\GameManager</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utility\Line\Line.h">
       <Filter>Engine\Utility\Line</Filter>
+    </ClInclude>
+    <ClInclude Include="App\Game.h">
+      <Filter>App</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1097,9 +1097,6 @@
     </Filter>
     <Filter Include="Externals\ImGui">
       <UniqueIdentifier>{13a20c8e-a633-49aa-adb7-a30fe43c4191}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game">
-      <UniqueIdentifier>{d78747ab-06c5-47b0-88ad-2075142a0e5c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\Scene">
       <UniqueIdentifier>{427a96d7-68dc-4a21-9ff7-c7d1d8ce5faa}</UniqueIdentifier>
