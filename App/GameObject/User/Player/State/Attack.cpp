@@ -8,6 +8,7 @@
 
 void Attack::Init()
 {
+	// ステート名を設定
 	stateName_ = "Attack";
 
 	// 攻撃中である
@@ -29,14 +30,15 @@ void Attack::Init()
 
 void Attack::Update()
 {
+	// アニメーション再生中の場合
 	if (player_->skiningModels_["Player"]->animationManager_.GetIsPlayingAnimation()) {
 
-		// 6割り終わっていて、なおかつAボタン長押し中なら回転切りの準備に入る
+		// アニメーションの6割が終了している場合
 		if (player_->skiningModels_["Player"]->animationManager_.GetPlayingAnimationProgress() >= 0.6f) {
-
+			// Aボタンが長押しされていれば
 			if (player_->joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A &&
 				(player_->preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A)) {
-				// 行動を変更
+				// 回転斬りステートへ
 				player_->ChangeState(std::make_unique<RotatingSlash>());
 
 				// この先の処理を強制終了
@@ -44,12 +46,12 @@ void Attack::Update()
 			}
 		}
 
-		// 8割り終わっていたら再度攻撃可能
+		// アニメーションの8割が終了している場合
 		if (player_->skiningModels_["Player"]->animationManager_.GetPlayingAnimationProgress() >= 0.8f) {
-
+			// Aボタンを彩度トリガーした場合
 			if (player_->joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A &&
 				!(player_->preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A)) {
-				// 行動を変更
+				// もう一度攻撃ステートへ
 				player_->ChangeState(std::make_unique<Attack>());
 
 				// この先の処理を強制終了
@@ -61,7 +63,7 @@ void Attack::Update()
 		// 攻撃中でない
 		player_->isAttacking_ = false;
 
-		// プレイヤーのステートを再設定
+		// プレイヤーのステートを待機状態へ
 		player_->ChangeState(std::make_unique<Root>());
 	}
 }

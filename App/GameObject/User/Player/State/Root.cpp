@@ -6,6 +6,7 @@
 
 void Root::Init()
 {
+	// ステート名の設定
 	stateName_ = "Root";
 
 	// 目標角度はプレイヤーの向き

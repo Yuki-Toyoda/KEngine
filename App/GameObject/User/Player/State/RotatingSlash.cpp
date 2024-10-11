@@ -8,6 +8,7 @@
 
 void RotatingSlash::Init()
 {
+	// ステート名の設定
 	stateName_ = "RotatingSlash";
 
 	// 攻撃中である
@@ -27,7 +28,7 @@ void RotatingSlash::Init()
 
 void RotatingSlash::Update()
 {
-	// 回転斬りチャージアニメーションの再生
+	// 回転斬りチャージアニメーションの再生中であれば
 	if (player_->skiningModels_["Player"]->animationManager_.GetIsPlayingAnimation("12_RotateSlash_Charge")) {
 		// Aボタンを押し続けていないなら
 		if (!(player_->joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A) &&

@@ -14,7 +14,7 @@ void Player::Init()
 	input_ = Input::GetInstance();
 	// コントローラー入力取得
 	input_->GetJoystickState(0, joyState_); // 現在フレームの入力取得
-	preJoyState_ = joyState_; // 前フレームの入力取得
+	preJoyState_ = joyState_;				// 前フレームの入力取得
 
 	//武器用のトランスフォームの初期化
 	weaponTransform_.Init();
@@ -48,11 +48,12 @@ void Player::Init()
 	attackLine_->Init("AttackLine", {0.0f, 0.0f, 0.0f}, {0.35f, 0.35f}, 1.0f);
 	attackLine_->SetParent(&weaponTransform_);
 	attackLine_->AddCollider("Sword", this);
-	attackLine_->rotate_.z = (float)std::numbers::pi;
-	attackLine_->isActive_ = false;
-	attackLine_->isDisplayTrail_ = true;
-	attackLine_->trailMaterial_.tex_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "SwordTrail.png");
-	attackLine_->trailMaterial_.color_.w = 0.0f;
+	attackLine_->rotate_.z					= (float)std::numbers::pi;
+	attackLine_->isActive_					= false;
+	attackLine_->isDisplayTrail_			= true;
+	attackLine_->trailMaterial_.tex_		= TextureManager::Load("./Engine/Resource/Samples/Texture", "SwordTrail.png");
+	attackLine_->trailMaterial_.color_.w	= 0.0f;
+	// 一度更新する
 	attackLine_->Update();
 
 	// 行動状態を待機状態に変更
@@ -61,7 +62,7 @@ void Player::Init()
 	// 帯スプライト
 	AddSprite("UpperObi", {640.0f, 0.0f}, {1280.0f, 0.0f}, TextureManager::Load("./Resources", "white2x2.png"));
 	AddSprite("LowerObi", {640.0f, 720.0f}, {1280.0f, 0.0f}, TextureManager::Load("./Resources", "white2x2.png"));
-	
+	// 生成したスプライトの生成
 	sprites_["UpperObi"]->anchorPoint_ = { 0.5f, 0.0f };
 	sprites_["UpperObi"]->color_ = { 0.0f, 0.0f, 0.0f, 1.0f };
 	sprites_["LowerObi"]->anchorPoint_ = { 0.5f, 1.0f };
@@ -106,7 +107,9 @@ void Player::Update()
 		// 現在の行動状態の更新を行う
 		state_->Update();
 
+		// 追従カメラがセットされている場合
 		if (followCamera_ != nullptr) {
+			// Z注目が有効にされている場合
 			if (!followCamera_->GetEnableZForcus()) {
 				followCamera_->SetTargetAngle(followCamera_->transform_.rotate_.y);
 				// ロックオン中は徐々にビネット解除
@@ -161,6 +164,7 @@ void Player::Update()
 			trailAlpha = KLib::Lerp(trailAlpha, 1.0f, 0.15f);
 		}
 		else {
+			// 攻撃中でない場合は軌跡を徐々に消す
 			if (trailAlpha <= 0.01f) {
 				trailAlpha = 0.0f;
 			}
@@ -270,8 +274,10 @@ void Player::HitDamage(const Vector3& translate)
 		// 角度を求める
 		transform_.rotate_.y = std::atan2(sub.x, sub.z);
 
+		// ダメージステートに移行
 		ChangeState(std::make_unique<Damage>());
 
+		// ロックオン無効
 		lockOn_->DisableLockOn();
 
 		// 命中クールタイムリセット

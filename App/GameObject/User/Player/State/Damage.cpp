@@ -7,6 +7,7 @@
 
 void Damage::Init()
 {
+	// ステート名の設定
 	stateName_ = "Damage";
 	
 	// 攻撃中でない
@@ -19,7 +20,7 @@ void Damage::Init()
 
 	// プレイヤーのHPが0以下の時ゲームオーバー
 	if (player_->hp_ <= 0) {
-		// カメラ移動
+		// 死亡演出用のカメラを生成
 		c = GameObjectManager::GetInstance()->CreateInstance<Camera>("StagingCamera", IObject::TagCamera);
 		c->transform_.SetParent(&player_->transform_);
 		c->transform_.translate_ = { 0.0f, 5.0f, -1.15f };
@@ -40,6 +41,7 @@ void Damage::Init()
 		player_->sprites_["BButton"]->isActive_		= false;
 	}
 
+	// ダメージアニメーションを再生
 	player_->skiningModels_["Player"]->animationManager_.PlayAnimation("06_Damage", 0.1f);
 }
 
@@ -87,12 +89,13 @@ void Damage::Update()
 			if (recovering_) {
 				// 待機状態に移行
 				player_->ChangeState(std::make_unique<Root>());
-
+				// 以降の処理を無視
 				return;
 			}
 			else {
+				// 復帰アニメーションを再生
 				player_->skiningModels_["Player"]->animationManager_.PlayAnimation("07_Recovery");
-
+				// 復帰状態に
 				recovering_ = true;
 			}
 
