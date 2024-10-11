@@ -95,7 +95,6 @@
     <ClCompile Include="Engine\GameObject\WorldTransform.cpp">
       <Filter>Engine\GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Utility\Line\Line.cpp" />
     <ClCompile Include="Externals\imgui\imgui.cpp">
       <Filter>Externals\ImGui</Filter>
     </ClCompile>
@@ -396,7 +395,12 @@
     <ClCompile Include="Game\Game.cpp">
       <Filter>Game</Filter>
     </ClCompile>
-    <ClCompile Include="App\GameObject\User\GameManger\GameManager.cpp" />
+    <ClCompile Include="App\GameObject\User\GameManger\GameManager.cpp">
+      <Filter>App\GameObject\User\GameManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Utility\Line\Line.cpp">
+      <Filter>Engine\Utility\Line</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App\Scene\SceneList.h">
@@ -489,7 +493,6 @@
     <ClInclude Include="App\GameObject\User\Enemy\State\IEnemyState.h">
       <Filter>App\GameObject\User\Enemy\State</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Utility\Line\Line.h" />
     <ClInclude Include="Externals\imgui\imconfig.h">
       <Filter>Externals\ImGui</Filter>
     </ClInclude>
@@ -877,7 +880,12 @@
     <ClInclude Include="Game\Game.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="App\GameObject\User\GameManger\GameManager.h" />
+    <ClInclude Include="App\GameObject\User\GameManger\GameManager.h">
+      <Filter>App\GameObject\User\GameManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Utility\Line\Line.h">
+      <Filter>Engine\Utility\Line</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -1385,6 +1393,9 @@
     </Filter>
     <Filter Include="Engine\Math">
       <UniqueIdentifier>{f2cd2653-c2e1-45f0-b0b9-481baba94153}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\GameObject\User\GameManager">
+      <UniqueIdentifier>{f0d2f002-6e31-422f-9773-62ee26e17084}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
