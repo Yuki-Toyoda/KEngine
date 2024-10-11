@@ -1,6 +1,6 @@
 #include <Windows.h>
 #include "Engine/KEngine.h"
-#include "Game/Game.h"
+#include "App/Game.h"
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
@@ -10,6 +10,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// エンジン実行
 	game->Run();
+
+	// インスタンスの削除
+	delete game;
 
 	// 終了
 	return 0;

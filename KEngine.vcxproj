@@ -165,7 +165,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Externals\imgui\imgui_tables.cpp" />
     <ClCompile Include="Externals\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Engine\Utility\Line\Line.cpp" />
-    <ClCompile Include="Game\Game.cpp" />
+    <ClCompile Include="App\Game.cpp" />
     <ClCompile Include="Engine\KEngine.cpp" />
     <ClCompile Include="Engine\Base\RootSignature\IRootSignature.cpp" />
     <ClCompile Include="Engine\Base\DescriptorHeaps\HeapManager.cpp" />
@@ -302,7 +302,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Externals\imgui\imstb_textedit.h" />
     <ClInclude Include="Externals\imgui\imstb_truetype.h" />
     <ClInclude Include="Engine\Utility\Line\Line.h" />
-    <ClInclude Include="Game\Game.h" />
+    <ClInclude Include="App\Game.h" />
     <ClInclude Include="Engine\KEngine.h" />
     <ClInclude Include="App\Scene\SceneFactory.h" />
     <ClInclude Include="Engine\Base\RootSignature\IRootSignature.h" />

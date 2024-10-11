@@ -139,9 +139,6 @@
     <ClCompile Include="Engine\GameObject\WorldTransform.cpp">
       <Filter>App\GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Game.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\KEngine.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
@@ -347,6 +344,9 @@
     <ClCompile Include="Engine\Base\Renderer\TrailRenderer.cpp">
       <Filter>Engine\Base\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="App\Game.cpp">
+      <Filter>App</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -513,9 +513,6 @@
     </ClInclude>
     <ClInclude Include="Engine\Utility\Observer\Observer.h">
       <Filter>Engine\Utility\Observer</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\Game.h">
-      <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="Engine\KEngine.h">
       <Filter>Engine</Filter>
@@ -769,6 +766,9 @@
     <ClInclude Include="Engine\Base\Renderer\TrailRenderer.h">
       <Filter>Engine\Base\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="App\Game.h">
+      <Filter>App</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -883,9 +883,6 @@
     </Filter>
     <Filter Include="Externals\ImGui">
       <UniqueIdentifier>{13a20c8e-a633-49aa-adb7-a30fe43c4191}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game">
-      <UniqueIdentifier>{d78747ab-06c5-47b0-88ad-2075142a0e5c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\Scene">
       <UniqueIdentifier>{427a96d7-68dc-4a21-9ff7-c7d1d8ce5faa}</UniqueIdentifier>
