@@ -1,9 +1,5 @@
 #pragma once
 #include "Engine/Scene/SceneManager.h"
-#include "Engine/GameObject/GameObjectManager.h"
-#include "Engine/Sprite/SpriteManager.h"
-#include "Engine/Particle/CPU/CPUParticleEmitterManager.h"
-#include "Engine/Utility/Animation/AnimationManager.h"
 #include "Engine/KEngine.h"
 #include "App/Scene/SceneFactory.h"
 
@@ -35,15 +31,6 @@ public: // メンバ関数
 	void Finalize() override;
 
 private: // メンバ変数
-
-	// オブジェクトマネージャーのインスタンス格納用
-	GameObjectManager* gameObjectManager_ = nullptr;
-
-	// スプライトマネージャのインスタンス格納用
-	SpriteManager* spriteManager_ = nullptr;
-
-	// アニメーションマネージャのインスタンス格納用
-	AnimationManager* animManager_ = nullptr;
 
 };
 

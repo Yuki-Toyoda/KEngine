@@ -11,7 +11,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// エンジン実行
 	game->Run();
 
-	// インスタンスのdelete
+	// インスタンスの削除
 	delete game;
 
 	// 終了
