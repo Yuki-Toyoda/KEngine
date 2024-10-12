@@ -11,6 +11,10 @@
 #include "Collider/CollisionManager.h"
 #include "Particle/CPU/CPUParticleEmitterManager.h"
 #include "Particle/ParticleManager.h"
+#include "Engine/GameObject/GameObjectManager.h"
+#include "Engine/Sprite/SpriteManager.h"
+#include "Engine/Particle/CPU/CPUParticleEmitterManager.h"
+#include "Engine/Utility/Animation/AnimationManager.h"
 #include <dxgidebug.h>
 
 /// <summary>
@@ -31,29 +35,14 @@ public: // メンバ関数
 	virtual void Init();
 
 	/// <summary>
-	/// 初期化後処理関数
-	/// </summary>
-	void PostInit();
-
-	/// <summary>
 	/// 更新処理関数
 	/// </summary>
 	virtual void Update();
 
 	/// <summary>
-	/// 更新後処理関数
-	/// </summary>
-	void PostUpdate();
-
-	/// <summary>
 	/// 描画処理関数
 	/// </summary>
 	virtual void Draw() = 0;
-
-	/// <summary>
-	/// 終了前処理関数
-	/// </summary>
-	void PreFinalize();
 
 	/// <summary>
 	/// 終了処理
@@ -90,8 +79,14 @@ protected: // メンバ変数
 	// ImGuiマネージャのインスタンス格納用
 	ImGuiManager* imGuiManager_ = nullptr;
 
-	// ゲーム終了フラグ
-	bool endGameRequest_ = false;
+	// オブジェクトマネージャーのインスタンス格納用
+	GameObjectManager* gameObjectManager_ = nullptr;
+
+	// スプライトマネージャのインスタンス格納用
+	SpriteManager* spriteManager_ = nullptr;
+
+	// アニメーションマネージャのインスタンス格納用
+	AnimationManager* animManager_ = nullptr;
 
 	// パーティクルマネージャのインスタンス格納用
 	ParticleManager* particleManager_ = nullptr;
@@ -101,5 +96,8 @@ protected: // メンバ変数
 
 	// シーンマネージャーのインスタンス格納用
 	SceneManager* sceneManager_ = nullptr;
+
+	// ゲーム終了フラグ
+	bool endGameRequest_ = false;
 };
 

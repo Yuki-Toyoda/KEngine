@@ -37,17 +37,23 @@ void KEngineFrameWork::Init()
 	// 衝突マネージャーの初期化
 	collisionManager_ = CollisionManager::GetInstance();
 
-	// シーンマネージャーのインスタンス取得
-	sceneManager_ = SceneManager::GetInstance();
+	// アニメーションマネージャの初期化
+	animManager_ = AnimationManager::GetInstance();
+	animManager_->Init();
+
+	// オブジェクトマネージャーの初期化
+	gameObjectManager_ = GameObjectManager::GetInstance();
+	gameObjectManager_->Init();
+
+	// スプライトマネージャの初期化
+	spriteManager_ = SpriteManager::GetInstance();
+	spriteManager_->Init();
 
 	// パーティクルマネージャーの取得
 	particleManager_ = ParticleManager::GetInstance();
-}
 
-void KEngineFrameWork::PostInit()
-{
-	// シーンマネージャーの初期化
-	sceneManager_->Init();
+	// シーンマネージャーのインスタンス取得
+	sceneManager_ = SceneManager::GetInstance();
 }
 
 void KEngineFrameWork::Update()
@@ -80,22 +86,32 @@ void KEngineFrameWork::Update()
 
 	#endif // _DEBUG
 
-}
+	// オブジェクトマネージャー更新
+	gameObjectManager_->Update();
 
-void KEngineFrameWork::PostUpdate()
-{
+	// スプライトマネージャ更新
+	spriteManager_->Update();
+
+	// アニメーションマネージャ更新
+	animManager_->Update();
+	animManager_->DisplayImGui();
+
 	// 衝突判定検証
 	collisionManager_->CheckAllCollision();
 }
 
-void KEngineFrameWork::PreFinalize()
-{
-	// 衝突マネージャーリストクリア
-	collisionManager_->ListClear();
-}
-
 void KEngineFrameWork::Finalize()
 {	
+	// 衝突マネージャーリストクリア
+	collisionManager_->ListClear();
+
+	// 全オブジェクトを削除
+	gameObjectManager_->Init();
+	// 読み込みスプライト削除
+	spriteManager_->Init();
+	// 全アニメーション削除
+	animManager_->Init();
+
 	// 全パーティクル削除
 	particleManager_->Clear();
 
@@ -116,16 +132,14 @@ void KEngineFrameWork::Run()
 {
 	// ゲームの初期化を行う
 	Init();
-	// ゲームの初期化後処理を行う
-	PostInit();
+	// シーンマネージャーはゲーム固有の初期化が終わってから初期化
+	sceneManager_->Init();
 
 	// メインループ
 	while (true) {
 		
 		// ゲームの更新処理を呼び出す
 		Update();
-		// 更新後処理を呼び出す
-		PostUpdate();
 
 		// 終了リクエストを受け取った場合はゲームを終了させる
 		if (GetIsEndGameRequest()) {
@@ -136,8 +150,6 @@ void KEngineFrameWork::Run()
 		Draw();
 	}
 
-	// 終了前処理の呼び出し
-	PreFinalize();
 	// ゲームの終了処理を行う
 	Finalize();
 }
