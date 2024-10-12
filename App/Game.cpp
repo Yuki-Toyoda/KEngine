@@ -23,13 +23,6 @@ void Game::Draw()
 
 void Game::Finalize()
 {
-	// 全オブジェクトを削除
-	gameObjectManager_->Init();
-	// 読み込みスプライト削除
-	spriteManager_->Init();
-	// 全アニメーション削除
-	animManager_->Init();
-
 	// 基底クラスの終了後処理を呼び出す
 	KEngineFrameWork::Finalize();
 }
