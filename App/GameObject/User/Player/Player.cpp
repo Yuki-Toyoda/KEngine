@@ -12,9 +12,6 @@ void Player::Init()
 {
 	// 入力取得
 	input_ = Input::GetInstance();
-	// コントローラー入力取得
-	input_->GetJoystickState(0, joyState_); // 現在フレームの入力取得
-	preJoyState_ = joyState_;				// 前フレームの入力取得
 
 	//武器用のトランスフォームの初期化
 	weaponTransform_.Init();
@@ -98,10 +95,6 @@ void Player::Init()
 
 void Player::Update()
 {
-	// 入力取得
-	preJoyState_ = joyState_; // 前フレームの入力取得
-	input_->GetJoystickState(0, joyState_); // 現在フレームの入力取得
-
 	// 行動可能時
 	if (canAction_) {
 		// 現在の行動状態の更新を行う
@@ -178,8 +171,7 @@ void Player::Update()
 		if (state_->GetStateName() != "Damage") {
 			if (canAttack_ && !isAttacking_) {
 				// Aボタンを押すと攻撃する
-				if (joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A &&
-					!(preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A)) {
+				if (input_->InspectButton(XINPUT_GAMEPAD_A, TRIGGER)) {
 					// 行動を変更
 					ChangeState(std::make_unique<Attack>());
 				}

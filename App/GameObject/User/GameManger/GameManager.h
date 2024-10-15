@@ -94,9 +94,6 @@ private: // メンバ変数
 
 	// 入力検知用
 	Input* input_ = nullptr;
-	// コントローラー入力
-	XINPUT_STATE joyState_; // 現在フレーム用
-	XINPUT_STATE preJoyState_; // 前フレーム用
 
 	// ゲーム開始フラグ
 	bool isGameStart_ = false;

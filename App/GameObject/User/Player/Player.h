@@ -62,12 +62,6 @@ public: // パブリックなメンバ変数
 	// ゲームマネージャー
 	GameManager* gameManager_ = nullptr;
 
-	// 入力検知用
-	Input* input_ = nullptr;
-	// コントローラー入力
-	XINPUT_STATE joyState_;		// 現在フレーム用
-	XINPUT_STATE preJoyState_;	// 前フレーム用
-
 	// 追従カメラ格納用
 	FollowCamera* followCamera_ = nullptr;
 	// ロックオン時のビネットエフェクト用
@@ -111,6 +105,9 @@ public: // パブリックなメンバ変数
 	uint32_t RotateSlash_ = 0u; // 回転切り音
 
 private: // メンバ変数
+
+	// 入力検知用
+	Input* input_ = nullptr;
 
 	// 開始前のセットアップフラグ
 	bool isSetUp_ = false;

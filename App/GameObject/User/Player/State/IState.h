@@ -3,6 +3,7 @@
 #include "Engine/Math/Vector2.h"
 #include "Engine/Math/Vector3.h"
 #include "Engine/Math/Vector4.h"
+#include "Engine/Input/Input.h"
 
 // クラスの前方宣言
 class Player;
@@ -25,7 +26,10 @@ public: // メンバ関数
 	/// 共通初期化関数
 	/// </summary>
 	/// <param name="player">プレイヤーの実体</param>
-	void PreInit(Player* player) { player_ = player; }
+	void PreInit(Player* player) { 
+		player_ = player;
+		input_	= Input::GetInstance();
+	}
 
 	/// <summary>
 	/// 初期化関数
@@ -59,6 +63,7 @@ protected: // 継承先メンバ変数
 
 	// プレイヤーの実体
 	Player* player_ = nullptr;
-
+	// 入力検知用
+	Input* input_ = nullptr;
 };
 

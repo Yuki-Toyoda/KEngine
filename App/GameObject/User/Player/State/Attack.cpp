@@ -36,8 +36,7 @@ void Attack::Update()
 		// アニメーションの6割が終了している場合
 		if (player_->skiningModels_["Player"]->animationManager_.GetPlayingAnimationProgress() >= 0.6f) {
 			// Aボタンが長押しされていれば
-			if (player_->joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A &&
-				(player_->preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A)) {
+			if (input_->InspectButton(XINPUT_GAMEPAD_A, PRESS)) {
 				// 回転斬りステートへ
 				player_->ChangeState(std::make_unique<RotatingSlash>());
 
@@ -48,9 +47,8 @@ void Attack::Update()
 
 		// アニメーションの8割が終了している場合
 		if (player_->skiningModels_["Player"]->animationManager_.GetPlayingAnimationProgress() >= 0.8f) {
-			// Aボタンを彩度トリガーした場合
-			if (player_->joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A &&
-				!(player_->preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A)) {
+			// Aボタンを再度トリガーした場合
+			if (input_->InspectButton(XINPUT_GAMEPAD_A, TRIGGER)) {
 				// もう一度攻撃ステートへ
 				player_->ChangeState(std::make_unique<Attack>());
 

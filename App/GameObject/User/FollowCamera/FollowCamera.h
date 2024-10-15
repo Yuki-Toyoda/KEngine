@@ -100,10 +100,6 @@ private: // メンバ変数
 	// ロックオンクラス
 	LockOn* lockOn_ = nullptr;
 
-	// コントローラー入力
-	XINPUT_STATE joyState_; // 現在フレーム用
-	XINPUT_STATE preJoyState_; // 前フレーム用
-
 	// 追従対象のワールド座標
 	const WorldTransform* target_ = nullptr;
 

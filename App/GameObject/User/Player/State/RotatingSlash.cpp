@@ -31,8 +31,7 @@ void RotatingSlash::Update()
 	// 回転斬りチャージアニメーションの再生中であれば
 	if (player_->skiningModels_["Player"]->animationManager_.GetIsPlayingAnimation("12_RotateSlash_Charge")) {
 		// Aボタンを押し続けていないなら
-		if (!(player_->joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A) &&
-			!(player_->preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A)) {
+		if (input_->InspectButton(XINPUT_GAMEPAD_A, RELEASE)) {
 			// チャージが終わっていると
 			if (isFinishedCharge_) {
 				
@@ -85,8 +84,7 @@ void RotatingSlash::Update()
 	}
 	else if(!isRotateSlashing_) {
 		// Aボタンを押し続けていないなら
-		if (!(player_->joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A) &&
-			!(player_->preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A)) {
+		if (input_->InspectButton(XINPUT_GAMEPAD_A, RELEASE)) {
 			// 素振りの効果音の再生
 			Audio::GetInstance()->PlayWave(player_->RotateSlash_);
 

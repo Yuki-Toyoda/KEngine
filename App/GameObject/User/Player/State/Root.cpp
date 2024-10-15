@@ -30,9 +30,7 @@ void Root::Update()
 	isMoving_ = false;
 
 	// スティックの方向を元に移動ベクトルを求める
-	Vector3 move = {
-		(float)player_->joyState_.Gamepad.sThumbLX, 0.0f,
-		(float)player_->joyState_.Gamepad.sThumbLY };
+	Vector3 move = input_->GetJoyStickInput(0);
 	// 移動ベクトルが一定の長さになっていれば
 	if (Vector3::Length(move) > deadZone_) {
 		isMoving_ = true;
@@ -76,9 +74,6 @@ void Root::Update()
 
 	// 移動中であれば
 	if (isMoving_) {
-		// 移動ベクトルの正規化を行う
-		move = Vector3::Normalize(move);
-
 		// プレイヤーに追従カメラがセットされている場合
 		if (player_->followCamera_ != nullptr) {
 			

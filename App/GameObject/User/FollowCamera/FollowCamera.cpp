@@ -19,11 +19,7 @@ void FollowCamera::Init()
 
 void FollowCamera::Update()
 {
-	// 入力取得
-	preJoyState_ = joyState_; // 前フレームの入力取得
-	input_->GetJoystickState(0, joyState_); // 現在フレームの入力取得
-
-	if (joyState_.Gamepad.bLeftTrigger >= 35.0f) {
+	if (input_->InspectTrigger(PRESS, 0)) {
 		// ロックオンが有効になっていない場合
 		if (!lockOn_->EnableLockOn()) {
 			// セットアップトリガーをfalse

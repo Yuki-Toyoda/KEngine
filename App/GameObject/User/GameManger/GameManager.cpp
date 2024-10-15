@@ -6,9 +6,6 @@ void GameManager::Init()
 {
 	// 入力取得
 	input_ = Input::GetInstance();
-	// コントローラー入力取得
-	input_->GetJoystickState(0, joyState_);	// 現在フレームの入力取得
-	preJoyState_ = joyState_;				// 前フレームの入力取得
 
 	// アニメーションマネージャの取得
 	animManager_ = AnimationManager::GetInstance();
@@ -54,10 +51,6 @@ void GameManager::Init()
 
 void GameManager::Update()
 {
-	// 入力取得
-	preJoyState_ = joyState_;				// 前フレームの入力取得
-	input_->GetJoystickState(0, joyState_);	// 現在フレームの入力取得
-
 	// タイトル演出更新関数
 	TitleStagingUpdate();
 
@@ -127,8 +120,7 @@ void GameManager::TitleStagingUpdate()
 		// タイトルアニメーションが終了していない、かつタイトルアニメーションの読み込みパラメーターが開始アニメーションでないとき
 		if (!titleAnim_->isEnd_ || titleAnim_->GetReadingParameterName() != "Title_Start") {
 			// Aボタンを押すと
-			if (joyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A &&
-				!(preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_A)) {
+			if (input_->InspectButton(XINPUT_GAMEPAD_A, TRIGGER)) {
 
 				// 強制フェードイン
 				SetFade(0.0f);
