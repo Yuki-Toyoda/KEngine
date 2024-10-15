@@ -257,7 +257,7 @@ void Input::Init() {
 	SetupForIsXInputDevice();
 
 	// JoyStickのセットアップ
-	SetupJoysticks();
+	SetupControllers();
 
 	// 抜き差し検知
 	DEV_BROADCAST_DEVICEINTERFACE notificationFilter{};
@@ -279,7 +279,7 @@ void Input::Update() {
 
 	if (sRefreshInputDevices) {
 		SetupForIsXInputDevice();
-		SetupJoysticks();
+		SetupControllers();
 		sRefreshInputDevices = false;
 	}
 
@@ -395,7 +395,178 @@ int32_t Input::GetWheel() const { return mouse_.lZ; }
 
 const DirectX::XMFLOAT2& Input::GetMousePosition() const { return mousePosition_; }
 
-bool Input::GetJoystickState(int32_t stickNo, DIJOYSTATE2& out) const {
+bool Input::InspectButton(int button, int state, int32_t controllerNo)
+{
+	// 現在と前フレームの入力状態取得用一時変数
+	XINPUT_STATE controllerState{};
+	XINPUT_STATE prevControllerState{};
+	// 入力取得
+	GetControllerState(controllerNo, controllerState);
+	GetControllerStatePrevious(controllerNo, prevControllerState);
+
+	// 指定された入力状態を検証する
+	switch (state)
+	{
+	case TRIGGER:
+		// トリガー状態を検出する
+		if (controllerState.Gamepad.wButtons & button &&
+			!(prevControllerState.Gamepad.wButtons & button)) {
+			return true;
+		}
+		break;
+	case PRESS:
+		// 押下状態を検出する
+		if (controllerState.Gamepad.wButtons & button) {
+			return true;
+		}
+		break;
+	case RELEASE:
+		// リリース状態を検出する
+		if (!(controllerState.Gamepad.wButtons & button) &&
+			(prevControllerState.Gamepad.wButtons & button)) {
+			return true;
+		}
+		break;
+	default:
+		// ここに来ること自体まずない
+		break;
+	}
+
+	// ここまで来た場合は入力されていない
+	return false;
+}
+
+bool Input::InspectTrigger(int state, int leftOrRight, int32_t controllerNo)
+{
+	// 現在と前フレームの入力状態取得用一時変数
+	XINPUT_STATE controllerState{};
+	XINPUT_STATE prevControllerState{};
+	// 入力取得
+	GetControllerState(controllerNo, controllerState);
+	GetControllerStatePrevious(controllerNo, prevControllerState);
+
+	// トリガー入力取得用の一時変数
+	int32_t triggerInput{};
+	int32_t prevTriggerInput{};
+
+	// フラグで左右のトリガーの入力を取得する
+	switch (leftOrRight)
+	{
+	case 0: // 左
+		triggerInput		= controllerState.Gamepad.bLeftTrigger;
+		prevTriggerInput	= prevControllerState.Gamepad.bLeftTrigger;
+		break;
+	case 1: // 右
+		triggerInput		= controllerState.Gamepad.bRightTrigger;
+		prevTriggerInput	= prevControllerState.Gamepad.bRightTrigger;
+		break;
+	default: // それ以外
+		// 何もしない
+		break;
+	}
+
+	// 指定された入力状態を検証する
+	switch (state)
+	{
+	case TRIGGER:
+		// トリガー状態を検出する
+		if (triggerInput > triggerDeadZone_ &&
+			prevTriggerInput < triggerDeadZone_) {
+			return true;
+		}
+		break;
+	case PRESS:
+		// 押下状態を検出する
+		if (triggerInput > triggerDeadZone_) {
+			return true;
+		}
+		break;
+	case RELEASE:
+		// リリース状態を検出する
+		if (triggerInput < triggerDeadZone_ &&
+			prevTriggerInput > triggerDeadZone_) {
+			return true;
+		}
+		break;
+	default:
+		// ここに来ること自体まずない
+		break;
+	}
+
+	// ここまで来た場合は入力されていない
+	return false;
+}
+
+Vector3 Input::GetJoyStickInput(int leftOrRight, int32_t controllerNo)
+{
+	// 現在入力状態取得用一時変数
+	XINPUT_STATE controllerState{};
+	// 入力取得
+	GetControllerState(controllerNo, controllerState);
+
+	// スティックの入力取得用の一時変数
+	SHORT stickInputX{};
+	SHORT stickInputY{};
+
+	// フラグで左右のスティックの入力を取得する
+	switch (leftOrRight)
+	{
+	case 0: // 左
+		stickInputX = controllerState.Gamepad.sThumbLX;
+		stickInputY = controllerState.Gamepad.sThumbLY;
+		break;
+	case 1: // 右
+		stickInputX = controllerState.Gamepad.sThumbRX;
+		stickInputY = controllerState.Gamepad.sThumbRY;
+		break;
+	default: // それ以外
+		// 何もしない
+		break;
+	}
+
+	// 入力を正規化して返還
+	return Vector3::Normalize(Vector3(stickInputX, 0.0f, stickInputY));
+}
+
+bool Input::InspectJoyStickInput(int leftOrRight, int32_t controllerNo)
+{
+	// 現在入力状態取得用一時変数
+	XINPUT_STATE controllerState{};
+	// 入力取得
+	GetControllerState(controllerNo, controllerState);
+
+	// スティックの入力取得用の一時変数
+	SHORT stickInputX{};
+	SHORT stickInputY{};
+
+	// フラグで左右のスティックの入力を取得する
+	switch (leftOrRight)
+	{
+	case 0: // 左
+		stickInputX = controllerState.Gamepad.sThumbLX;
+		stickInputY = controllerState.Gamepad.sThumbLY;
+		break;
+	case 1: // 右
+		stickInputX = controllerState.Gamepad.sThumbRX;
+		stickInputY = controllerState.Gamepad.sThumbRY;
+		break;
+	default: // それ以外
+		// 何もしない
+		break;
+	}
+
+	// 入力されているかを検証
+	if (stickInputX > 0.01f || stickInputX < -0.01f || 
+		stickInputY > 0.01f || stickInputY < -0.01f) {
+		// 何らかの入力が入っていればtrue
+		return true;
+	}
+
+	// ここまで来た場合は入力されていない
+	return false;
+}
+
+bool Input::GetControllerState(int32_t stickNo, DIJOYSTATE2& out) const {
 	if (0 <= stickNo && stickNo < devJoysticks_.size()) {
 		if (devJoysticks_[stickNo].type_ == PadType::DirectInput) {
 			out = devJoysticks_[stickNo].state_.directInput_;
@@ -405,7 +576,7 @@ bool Input::GetJoystickState(int32_t stickNo, DIJOYSTATE2& out) const {
 	return false;
 }
 
-bool Input::GetJoystickStatePrevious(int32_t stickNo, DIJOYSTATE2& out) const {
+bool Input::GetControllerStatePrevious(int32_t stickNo, DIJOYSTATE2& out) const {
 	if (0 <= stickNo && stickNo < devJoysticks_.size()) {
 		if (devJoysticks_[stickNo].type_ == PadType::DirectInput) {
 			out = devJoysticks_[stickNo].statePre_.directInput_;
@@ -415,7 +586,7 @@ bool Input::GetJoystickStatePrevious(int32_t stickNo, DIJOYSTATE2& out) const {
 	return false;
 }
 
-bool Input::GetJoystickState(int32_t stickNo, XINPUT_STATE& out) const {
+bool Input::GetControllerState(int32_t stickNo, XINPUT_STATE& out) const {
 	if (0 <= stickNo && stickNo < devJoysticks_.size()) {
 		if (devJoysticks_[stickNo].type_ == PadType::XInput) {
 			out = devJoysticks_[stickNo].state_.xInput_;
@@ -425,7 +596,7 @@ bool Input::GetJoystickState(int32_t stickNo, XINPUT_STATE& out) const {
 	return false;
 }
 
-bool Input::GetJoystickStatePrevious(int32_t stickNo, XINPUT_STATE& out) const {
+bool Input::GetControllerStatePrevious(int32_t stickNo, XINPUT_STATE& out) const {
 	if (0 <= stickNo && stickNo < devJoysticks_.size()) {
 		if (devJoysticks_[stickNo].type_ == PadType::XInput) {
 			out = devJoysticks_[stickNo].statePre_.xInput_;
@@ -442,7 +613,7 @@ void Input::SetJoystickDeadZone(int32_t stickNo, int32_t deadZoneL, int32_t dead
 	}
 }
 
-size_t Input::GetNumberOfJoysticks() { return devJoysticks_.size(); }
+size_t Input::GetNumberOfControllers() { return devJoysticks_.size(); }
 
 BOOL CALLBACK
 Input::EnumJoysticksCallback(const DIDEVICEINSTANCE* pdidInstance, VOID* pContext) noexcept {
@@ -465,7 +636,7 @@ Input::EnumJoysticksCallback(const DIDEVICEINSTANCE* pdidInstance, VOID* pContex
 	return DIENUM_CONTINUE;
 }
 
-void Input::SetupJoysticks() {
+void Input::SetupControllers() {
 	devJoysticks_.clear();
 	// JoyStickの列挙
 	HRESULT result =

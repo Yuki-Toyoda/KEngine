@@ -9,6 +9,17 @@
 #define DIRECTINPUT_VERSION 0x0800 // DirectInputのバージョン指定
 #include <dinput.h>
 
+#include "Engine/Math/Vector3.h"
+
+/// <summary>
+/// 入力状態用
+/// </summary>
+enum InputState {
+	TRIGGER, // トリガー
+	PRESS,	 // 押下
+	RELEASE	 // リリース
+};
+
 /// <summary>
 /// 入力検知クラス
 /// </summary>
@@ -66,6 +77,8 @@ public: // メンバ関数
 	/// 更新関数
 	/// </summary>
 	void Update();
+
+public: // 機能関数群
 
 	/// <summary>
 	/// キーの押下をチェック
@@ -126,12 +139,64 @@ public: // メンバ関数
 	const DirectX::XMFLOAT2& GetMousePosition() const;
 
 	/// <summary>
-	/// 現在のジョイスティック状態を取得する
+	/// 指定されたコントローラーボタンが指定した状態かを検証する
+	/// </summary>
+	/// <param name="button">検知するボタン</param>
+	/// <param name="state">検証する状態</param>
+	/// <param name="controllerNo">(任意)取得するコントローラー番号</param>
+	/// <returns>指定された状態か</returns>
+	bool InspectButton(int button, int state, int32_t controllerNo = 0);
+
+	/// <summary>
+	/// 左トリガーが指定した状態かを検証する
+	/// </summary>
+	/// <param name="state">検証する状態</param>
+	/// <param name="leftOrRight">左右どちらか (0 : 左, 1 : 右)</param>
+	/// <param name="controllerNo">(任意)取得するコントローラー番号</param>
+	/// <returns>指定された状態か</returns>
+	bool InspectTrigger(int state, int leftOrRight, int32_t controllerNo = 0);
+
+	/// <summary>
+	/// コントローラーのスティックの入力ベクトルの取得
+	/// </summary>
+	/// <param name="leftOrRight">左右どちらか (0 : 左, 1 : 右)</param>
+	/// <param name="controllerNo">(任意)取得するコントローラー番号</param>
+	/// <returns>スティックの入力ベクトル</returns>
+	Vector3 GetJoyStickInput(int leftOrRight, int32_t controllerNo = 0);
+
+	/// <summary>
+	/// コントローラーのスティックが入力されているかを検証する
+	/// </summary>
+	/// <param name="leftOrRight">左右どちらか (0 : 左, 1 : 右)</param>
+	/// <param name="controllerNo">(任意)取得するコントローラー番号</param>
+	/// <returns>スティックが入力されているか</returns>
+	bool InspectJoyStickInput(int leftOrRight, int32_t controllerNo = 0);
+
+private: // メンバ関数
+
+	/// <summary>
+	/// 現在のコントローラーの入力状態を取得する
+	/// </summary>
+	/// <param name="stickNo">取得するコントローラー番号</param>
+	/// <param name="out">現在のコントローラーの入力状態</param>
+	/// <returns>取得できたか</returns>
+	bool GetControllerState(int32_t stickNo, DIJOYSTATE2& out) const;
+
+	/// <summary>
+	/// 前フレームのコントローラーの入力状態を取得する
+	/// </summary>
+	/// <param name="stickNo">取得するコントローラー番号</param>
+	/// <param name="out">前フレームのコントローラーの入力状態</param>
+	/// <returns>取得できたか</returns>
+	bool GetControllerStatePrevious(int32_t stickNo, DIJOYSTATE2& out) const;
+
+	/// <summary>
+	/// 現在のコントローラー状態を取得する
 	/// </summary>
 	/// <param name="stickNo">ジョイスティック番号</param>
 	/// <param name="out">現在のジョイスティック状態</param>
 	/// <returns>正しく取得できたか</returns>
-	bool GetJoystickState(int32_t stickNo, DIJOYSTATE2& out) const;
+	bool GetControllerState(int32_t stickNo, XINPUT_STATE& out) const;
 
 	/// <summary>
 	/// 前回のジョイスティック状態を取得する
@@ -139,23 +204,7 @@ public: // メンバ関数
 	/// <param name="stickNo">ジョイスティック番号</param>
 	/// <param name="out">前回のジョイスティック状態</param>
 	/// <returns>正しく取得できたか</returns>
-	bool GetJoystickStatePrevious(int32_t stickNo, DIJOYSTATE2& out) const;
-
-	/// <summary>
-	/// 現在のジョイスティック状態を取得する
-	/// </summary>
-	/// <param name="stickNo">ジョイスティック番号</param>
-	/// <param name="out">現在のジョイスティック状態</param>
-	/// <returns>正しく取得できたか</returns>
-	bool GetJoystickState(int32_t stickNo, XINPUT_STATE& out) const;
-
-	/// <summary>
-	/// 前回のジョイスティック状態を取得する
-	/// </summary>
-	/// <param name="stickNo">ジョイスティック番号</param>
-	/// <param name="out">前回のジョイスティック状態</param>
-	/// <returns>正しく取得できたか</returns>
-	bool GetJoystickStatePrevious(int32_t stickNo, XINPUT_STATE& out) const;
+	bool GetControllerStatePrevious(int32_t stickNo, XINPUT_STATE& out) const;
 
 	/// <summary>
 	/// デッドゾーンを設定する
@@ -163,16 +212,8 @@ public: // メンバ関数
 	/// <param name="stickNo">ジョイスティック番号</param>
 	/// <param name="deadZoneL">デッドゾーン左スティック 0~32768</param>
 	/// <param name="deadZoneR">デッドゾーン右スティック 0~32768</param>
-	/// <returns>正しく取得できたか</returns>
+	/// <returns>正しく設定できたか</returns>
 	void SetJoystickDeadZone(int32_t stickNo, int32_t deadZoneL, int32_t deadZoneR);
-
-	/// <summary>
-	/// 接続されているジョイスティック数を取得する
-	/// </summary>
-	/// <returns>接続されているジョイスティック数</returns>
-	size_t GetNumberOfJoysticks();
-
-private: // メンバ関数
 
 	/// <summary>
 	/// ジョイスティックのコールバック取得関数
@@ -184,31 +225,41 @@ private: // メンバ関数
 		EnumJoysticksCallback(const DIDEVICEINSTANCE* pdidInstance, VOID* pContext) noexcept;
 	
 	/// <summary>
-	/// ジョイスティックの初期設定関数
+	/// コントローラーの初期設定関数
 	/// </summary>
-	void SetupJoysticks();
+	void SetupControllers();
+
+	/// <summary>
+	/// 接続されているコントローラー数を取得する
+	/// </summary>
+	/// <returns>接続されているコントローラー数</returns>
+	size_t GetNumberOfControllers();
 
 private: // メンバ変数
 	  
-	  // dInputのインスタンス
-	  Microsoft::WRL::ComPtr<IDirectInput8> dInput_;
-	  // キー入力取得デバイス
-	  Microsoft::WRL::ComPtr<IDirectInputDevice8> devKeyboard_;
-	  // マウス入力取得デバイス
-	  Microsoft::WRL::ComPtr<IDirectInputDevice8> devMouse_;
-	  // ジョイスティック状態取得
-	  std::vector<Joystick> devJoysticks_;
-	  // キー入力状態
-	  std::array<BYTE, 256> key_;
-	  // 前フレームキー入力状態
-	  std::array<BYTE, 256> keyPre_;
-	  // マウス入力状態
-	  DIMOUSESTATE2 mouse_;
-	  // 前フレームマウス入力状態
-	  DIMOUSESTATE2 mousePre_;
-	  // ウィンドウハンドル
-	  HWND hwnd_;
-	  // マウス座標
-	  DirectX::XMFLOAT2 mousePosition_;
+	// ウィンドウハンドル
+	HWND hwnd_{};
+
+	// DirectInputのインスタンス
+	Microsoft::WRL::ComPtr<IDirectInput8> dInput_;
+	// キー入力取得デバイス
+	Microsoft::WRL::ComPtr<IDirectInputDevice8> devKeyboard_;
+	// マウス入力取得デバイス
+	Microsoft::WRL::ComPtr<IDirectInputDevice8> devMouse_;
+	// ジョイスティック状態取得
+	std::vector<Joystick> devJoysticks_{};
+	// キー入力状態
+	std::array<BYTE, 256> key_{};
+	// 前フレームキー入力状態
+	std::array<BYTE, 256> keyPre_{};
+	// マウス入力状態
+	DIMOUSESTATE2 mouse_{};
+	// 前フレームマウス入力状態
+	DIMOUSESTATE2 mousePre_{};
+	// マウス座標
+	DirectX::XMFLOAT2 mousePosition_{};
+
+	// トリガーの入力デッドゾーン
+	int32_t triggerDeadZone_ = 35;
 
 };
