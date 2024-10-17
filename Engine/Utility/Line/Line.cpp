@@ -355,6 +355,9 @@ void Line::AddCollider(const std::string& name, IObject* object)
 	else {
 		object->AddColliderOBB(name, &transform_.scale_, &transform_.rotate_, &transform_.translate_);
 	}
+
+	// 追加したコライダーを取得しておく
+	collider_ = object->GetCollider(name);
 }
 
 void Line::SetParent(WorldTransform* parent, uint8_t parentType)
