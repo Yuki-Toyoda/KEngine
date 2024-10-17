@@ -1,6 +1,9 @@
 #pragma once
 #include "IState.h"
 
+/// <summary>
+/// 回転斬り
+/// </summary>
 class RotatingSlash : public IState
 {
 public: // メンバ関数

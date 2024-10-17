@@ -2,9 +2,9 @@
 #include "IState.h"
 
 /// <summary>
-/// 攻撃状態クラス
+/// 回転斬りのチャージ状態
 /// </summary>
-class Attack : public IState
+class RotatingSlashCharge : public IState
 {
 public: // メンバ関数
 
@@ -25,8 +25,10 @@ public: // メンバ関数
 
 private: // メンバ変数
 
-	// 回転斬りのチャージへの移行閾値
-	const float chargeTransitionThreshold_ = 0.6f;
-	const float slashTransitionThreshold_ = 0.8f;
+	// 回転切りのチャージが終わっているかフラグ
+	bool isFinishedCharge_ = false;
+
+	// 回転斬りチャージ時間の閾値
+	const float chargeTimeThreshold_ = 0.6f;
 };
 

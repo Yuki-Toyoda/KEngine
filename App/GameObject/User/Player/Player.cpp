@@ -40,17 +40,16 @@ void Player::Init()
 	AddColliderSphere("PlayerCollider", &colliderWorldPos_, &colliderRadius_);
 
 	// 攻撃用の線の追加
-	attackLine_ = std::make_unique<Line>();
-	attackLine_->Init("AttackLine", {0.0f, 0.0f, 0.0f}, {0.35f, 0.35f}, 1.0f);
-	attackLine_->SetParent(&weaponTransform_);
-	attackLine_->AddCollider("Sword", this);
-	attackLine_->rotate_.z					= (float)std::numbers::pi;
-	attackLine_->isActive_					= false;
-	attackLine_->isDisplayTrail_			= true;
-	attackLine_->trailMaterial_.tex_		= TextureManager::Load("./Engine/Resource/Samples/Texture", "SwordTrail.png");
-	attackLine_->trailMaterial_.color_.w	= 0.0f;
+	SwordLine_ = std::make_unique<Line>();
+	SwordLine_->Init("AttackLine", {0.0f, 0.0f, 0.0f}, {0.35f, 0.35f}, 1.0f);
+	SwordLine_->SetParent(&weaponTransform_);
+	SwordLine_->AddCollider("Sword", this);
+	SwordLine_->rotate_.z					= (float)std::numbers::pi;
+	SwordLine_->isActive_					= false;
+	SwordLine_->trailMaterial_.tex_			= TextureManager::Load("./Engine/Resource/Samples/Texture", "SwordTrail.png");
+	SwordLine_->trailMaterial_.color_.w		= 0.0f;
 	// 一度更新する
-	attackLine_->Update();
+	SwordLine_->Update();
 
 	// 行動状態を待機状態に変更
 	ChangeState(std::make_unique<Root>());
@@ -140,7 +139,7 @@ void Player::Update()
 	}
 
 	// 軌跡a値
-	float& trailAlpha = attackLine_->trailMaterial_.color_.w;
+	float& trailAlpha = SwordLine_->trailMaterial_.color_.w;
 	// 攻撃中は軌跡を表示させる
 	if (isAttacking_) {
 		trailAlpha = KLib::Lerp(trailAlpha, 1.0f, 0.15f);
@@ -178,7 +177,7 @@ void Player::Update()
 	}
 
 	// 線の更新
-	attackLine_->Update();
+	SwordLine_->Update();
 
 	//コライダーのワールド座標更新
 	colliderWorldPos_ = colliderTransform_.GetWorldPos();
@@ -197,7 +196,7 @@ void Player::DisplayImGui()
 	state_->DisplayImGui();
 
 	// 線のImGui表示
-	attackLine_->DisplayImGui();
+	SwordLine_->DisplayImGui();
 
 	// 基底クラスのImGuiを表示する
 	IObject::DisplayImGui();

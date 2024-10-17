@@ -2,9 +2,9 @@
 #include "IState.h"
 
 /// <summary>
-/// 攻撃状態クラス
+/// 復帰状態
 /// </summary>
-class Attack : public IState
+class Recovery : public IState
 {
 public: // メンバ関数
 
@@ -25,8 +25,5 @@ public: // メンバ関数
 
 private: // メンバ変数
 
-	// 回転斬りのチャージへの移行閾値
-	const float chargeTransitionThreshold_ = 0.6f;
-	const float slashTransitionThreshold_ = 0.8f;
 };
 

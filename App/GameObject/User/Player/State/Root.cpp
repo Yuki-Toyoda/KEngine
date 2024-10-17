@@ -15,12 +15,7 @@ void Root::Init()
 	// 攻撃状態でない
 	player_->SetIsAttacking(false);
 	// コライダー無効
-	for (const auto& collider : player_->colliders_) {
-		// 剣のコライダーを発見した場合
-		if (collider->GetColliderName() == "Sword") {
-			collider->SetIsActive(false);
-		}
-	}
+	player_->GetSwordLine()->isActive_ = false;
 }
 
 void Root::Update()
@@ -43,7 +38,7 @@ void Root::Update()
 		}
 		else { // 有効時
 			// 横移動をしていない場合
-			if (move.x < 0.75f && move.x > -0.75f) {
+			if (move.x < latralMovementThreshold_ && move.x > -latralMovementThreshold_) {
 				// 移動ベクトルが前方方向だった場合
 				if (move.z > 0.0f) {
 					if (!player_->skiningModels_["Player"]->animationManager_.GetIsPlayingAnimation("01_Run")) {
@@ -128,6 +123,7 @@ void Root::Update()
 		player_->transform_.rotate_.y = KLib::LerpShortAngle(player_->transform_.rotate_.y, targetAngle_, 0.1f);
 	}
 
+	// 移動ベクトルに基づいてプレイヤーを動かす
 	player_->transform_.translate_ += move;
 }
 

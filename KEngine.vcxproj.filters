@@ -401,6 +401,10 @@
     <ClCompile Include="App\Game.cpp">
       <Filter>App</Filter>
     </ClCompile>
+    <ClCompile Include="App\GameObject\User\Player\State\RotatingSlashCharge.cpp">
+      <Filter>App\GameObject\User\Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="App\GameObject\User\Player\State\Recovery.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App\Scene\SceneList.h">
@@ -889,6 +893,10 @@
     <ClInclude Include="App\Game.h">
       <Filter>App</Filter>
     </ClInclude>
+    <ClInclude Include="App\GameObject\User\Player\State\RotatingSlashCharge.h">
+      <Filter>App\GameObject\User\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="App\GameObject\User\Player\State\Recovery.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -961,7 +969,6 @@
     <ClCompile Include="Externals\imgui\imgui_tables.cpp" />
     <ClCompile Include="Externals\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Engine\Utility\Line\Line.cpp" />
-    <ClCompile Include="Game\Game.cpp" />
     <ClCompile Include="Engine\KEngine.cpp" />
     <ClCompile Include="Engine\Base\RootSignature\IRootSignature.cpp" />
     <ClCompile Include="Engine\Base\DescriptorHeaps\HeapManager.cpp" />
@@ -1317,7 +1324,6 @@
     <ClInclude Include="Externals\imgui\imstb_textedit.h" />
     <ClInclude Include="Externals\imgui\imstb_truetype.h" />
     <ClInclude Include="Engine\Utility\Line\Line.h" />
-    <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Engine\KEngine.h" />
     <ClInclude Include="Engine\Base\RootSignature\IRootSignature.h" />
     <ClInclude Include="Engine\Base\RootSignature\ModelRootSignature.h" />

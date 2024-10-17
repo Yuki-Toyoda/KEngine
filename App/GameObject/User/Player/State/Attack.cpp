@@ -1,6 +1,6 @@
 #include "Attack.h"
 #include "Root.h"
-#include "RotatingSlash.h"
+#include "RotatingSlashCharge.h"
 #include "App/GameObject/User/Player/Player.h"
 #include "App/GameObject/User/FollowCamera/FollowCamera.h"
 #include "App/GameObject/User/LockOn/LockOn.h"
@@ -12,14 +12,9 @@ void Attack::Init()
 	stateName_ = "Attack";
 
 	// 攻撃中である
-	player_->isAttacking_ = true;
+	player_->SetIsAttacking(true);
 	// コライダー有効
-	for (const auto& collider : player_->colliders_) {
-		// 剣のコライダーを発見した場合
-		if (collider->GetColliderName() == "Sword") {
-			collider->SetIsActive(true);
-		}
-	}
+	player_->GetSwordLine()->isActive_ = true;
 
 	// 攻撃アニメーションの再生
 	player_->skiningModels_["Player"]->animationManager_.PlayAnimation("08_HorizontalSlash", 0.05f);
@@ -34,11 +29,11 @@ void Attack::Update()
 	if (player_->skiningModels_["Player"]->animationManager_.GetIsPlayingAnimation()) {
 
 		// アニメーションの6割が終了している場合
-		if (player_->skiningModels_["Player"]->animationManager_.GetPlayingAnimationProgress() >= 0.6f) {
+		if (player_->skiningModels_["Player"]->animationManager_.GetPlayingAnimationProgress() >= chargeTransitionThreshold_) {
 			// Aボタンが長押しされていれば
 			if (input_->InspectButton(XINPUT_GAMEPAD_A, PRESS)) {
 				// 回転斬りステートへ
-				player_->ChangeState(std::make_unique<RotatingSlash>());
+				player_->ChangeState(std::make_unique<RotatingSlashCharge>());
 
 				// この先の処理を強制終了
 				return;
@@ -46,7 +41,7 @@ void Attack::Update()
 		}
 
 		// アニメーションの8割が終了している場合
-		if (player_->skiningModels_["Player"]->animationManager_.GetPlayingAnimationProgress() >= 0.8f) {
+		if (player_->skiningModels_["Player"]->animationManager_.GetPlayingAnimationProgress() >= slashTransitionThreshold_) {
 			// Aボタンを再度トリガーした場合
 			if (input_->InspectButton(XINPUT_GAMEPAD_A, TRIGGER)) {
 				// もう一度攻撃ステートへ
@@ -59,7 +54,7 @@ void Attack::Update()
 	}
 	else {
 		// 攻撃中でない
-		player_->isAttacking_ = false;
+		player_->SetIsAttacking(false);
 
 		// プレイヤーのステートを待機状態へ
 		player_->ChangeState(std::make_unique<Root>());

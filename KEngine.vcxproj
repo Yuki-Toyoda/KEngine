@@ -231,6 +231,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Base\Renderer\SpriteRenderer.cpp" />
     <ClCompile Include="Engine\PostProcess\RadialBlur\RadialBlur.cpp" />
     <ClCompile Include="Engine\Base\Renderer\TrailRenderer.cpp" />
+    <ClCompile Include="App\GameObject\User\Player\State\RotatingSlashCharge.cpp" />
+    <ClCompile Include="App\GameObject\User\Player\State\Recovery.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App\GameObject\ObjectList.h" />
@@ -393,6 +395,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\PostProcess\RadialBlur\RadialBlur.h" />
     <ClInclude Include="Engine\Base\Renderer\TrailRenderer.h" />
     <ClInclude Include="App\GameObject\User\Level\Level.h" />
+    <ClInclude Include="App\GameObject\User\Player\State\RotatingSlashCharge.h" />
+    <ClInclude Include="App\GameObject\User\Player\State\Recovery.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Compute\Random.hlsli">

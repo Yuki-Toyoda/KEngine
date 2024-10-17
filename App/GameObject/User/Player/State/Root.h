@@ -42,5 +42,7 @@ private: // メンバ変数
 	// 移動フラグ
 	bool isMoving_ = false;
 
+	// 横移動判定のベクトル閾値
+	const float latralMovementThreshold_ = 0.75f;
 };
 

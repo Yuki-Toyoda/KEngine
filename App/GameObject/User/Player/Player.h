@@ -103,6 +103,12 @@ public: // アクセッサ等
 	void SetTargetAngle(const float angle) { targetAngle_ = angle; }
 
 	/// <summary>
+	/// 体力ゲッター
+	/// </summary>
+	/// <returns>プレイヤー体力</returns>
+	int32_t GetHP() { return hp_; }
+
+	/// <summary>
 	/// 攻撃状態セッター
 	/// </summary>
 	/// <param name="isAttacking">攻撃状態</param>
@@ -112,6 +118,23 @@ public: // アクセッサ等
 	/// </summary>
 	/// <returns>攻撃状態</returns>
 	bool GetIsAttacking() { return isAttacking_; }
+
+	/// <summary>
+	/// 剣の当たり判定ゲッター
+	/// </summary>
+	/// <returns>剣の当たり判定</returns>
+	Line* GetSwordLine() { return SwordLine_.get(); }
+
+	/// <summary>
+	/// 死亡状態セッター
+	/// </summary>
+	/// <param name="isDead">死亡しているか</param>
+	void SetIsDead(const bool isDead) { isDead_ = isDead; }
+	/// <summary>
+	/// 死亡状態ゲッター
+	/// </summary>
+	/// <returns>死亡しているか</returns>
+	bool GetIsDead() { return isDead_; }
 
 public: // パブリックなメンバ変数
 
@@ -140,7 +163,7 @@ private: // メンバ変数
 	// 武器のトランスフォーム
 	WorldTransform weaponTransform_;
 	// 攻撃判定用線
-	std::unique_ptr <Line> attackLine_;
+	std::unique_ptr <Line> SwordLine_;
 	// 攻撃可能か
 	bool canAttack_ = true;
 	// 攻撃中か

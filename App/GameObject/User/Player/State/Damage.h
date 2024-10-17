@@ -29,16 +29,14 @@ public: // メンバ関数
 
 private: // メンバ変数
 
-	Vector3 velocity_;
-
-	bool isDead_ = false;
-
-	Camera* c;
-
+	// 吹っ飛ばされる速度ベクトル
+	Vector3 velocity_{};
+	// 演出用カメラ
+	Camera* c = nullptr;
+	// 演出用タイマー
 	KLib::DeltaTimer timer_;
 
-	// 起き上がり中
-	bool recovering_ = false;
-
+	// 吹っ飛ばし時間閾値
+	const float blowTimeThreshold_ = 0.25f;
 };
 
