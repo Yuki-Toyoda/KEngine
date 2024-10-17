@@ -84,6 +84,18 @@ public: // アクセッサ等
 	/// </summary>
 	std::vector<TrailBuffer> GetUsedTrailBuffer();
 
+	/// <summary>
+	/// コライダーのゲッター
+	/// </summary>
+	/// <returns>コライダー</returns>
+	Collider* GetCollider() { return collider_; }
+
+	/// <summary>
+	/// 軌跡描画フラグセッター
+	/// </summary>
+	/// <param name="isDisplay">描画するか</param>
+	void SetIsDisplayTrail(const bool isDisplay) { isDisplayTrail_ = isDisplay; }
+
 private: // 機能関数群
 
 	/// <summary>
@@ -134,13 +146,16 @@ public: // パブリックなメンバ変数
 	// 表示状態
 	bool isActive_ = true;
 
-	// 軌跡表示トリガー
-	bool isDisplayTrail_ = false;
-
 	// 軌跡用マテリアル
 	Material trailMaterial_{};
 
 private: // メンバ変数
+
+	// 線に使用しているコライダー
+	Collider* collider_ = nullptr;
+
+	// 軌跡表示トリガー
+	bool isDisplayTrail_ = false;
 
 	// 軌跡座標配列の要素数
 	int trailBufferCount_ = 8;
