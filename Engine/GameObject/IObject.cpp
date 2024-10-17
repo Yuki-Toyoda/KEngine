@@ -192,3 +192,18 @@ void IObject::DeleteCollider(const std::string& name)
 		});
 }
 
+Collider* IObject::GetCollider(const std::string& name)
+{
+	// 全てのコライダーを探索
+	for (const auto& collider : colliders_) {
+		// 指定された名称のコライダーを発見した場合
+		if (collider->GetColliderName() == name) {
+			// そのコライダーを返す
+			return collider.get();
+		}
+	}
+
+	// 発見できなかった場合nullptrを返す
+	return nullptr;
+}
+
