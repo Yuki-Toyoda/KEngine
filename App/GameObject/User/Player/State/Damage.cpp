@@ -75,10 +75,6 @@ void Damage::Update()
 					// カメラを徐々に後ろに
 					c->transform_.translate_.z -= 0.0025f;
 				}
-				else {
-					// ゲームを終了状態に
-					player_->gameManager_->SetIsGameEnd(true);
-				}
 				timer_.Update();
 			}
 		}

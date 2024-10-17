@@ -1,6 +1,8 @@
 #include "GameManager.h"
 #include "Engine/GameObject/GameObjectManager.h"
 #include "Engine/GameObject/Core/Camera.h"
+#include "App/GameObject/User/Player/Player.h"
+#include "App/GameObject/User/Enemy/Enemy.h"
 
 void GameManager::Init()
 {
@@ -156,6 +158,12 @@ void GameManager::CreateTitleCameraParameter(const std::string& name)
 	animManager_->CreateAnimationParameter(name);
 	animManager_->AddSelectAnimationKeys<Vector3>(name, "Camera_Rotate");
 	animManager_->AddSelectAnimationKeys<Vector3>(name, "Camera_Translate");
+}
+
+void GameManager::GameStateUpdate()
+{
+	// 敵、またはプレイヤーの死亡トリガーがtrueになってる場合はゲームが終了している
+	
 }
 
 void GameManager::FadeUpdate()

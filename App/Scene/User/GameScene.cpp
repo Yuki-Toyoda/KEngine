@@ -22,17 +22,22 @@ void GameScene::Init(){
 	// 追従カメラ生成
 	FollowCamera* camera = nullptr;
 	camera = gameObjectManager_->CreateInstance<FollowCamera>("MainCamera", IObject::TagCamera);
+	// カメラの追従対象をプレイヤーに指定
 	camera->SetTarget(&player_->transform_);
-	player_->followCamera_ = camera;
+	// プレイヤーに追従カメラをセット
+	player_->SetFollowCamera(camera);
 
 	level_ = gameObjectManager_->CreateInstance<Level>("Level", IObject::TagNone);
 	level_->LoadLevel("./Resources/Level", "Stage.json");
 
 	// 敵生成
 	enemy_ = gameObjectManager_->CreateInstance<Enemy>("Enemy", IObject::TagEnemy);
+	// 敵の初期座標
 	enemy_->transform_.translate_ = { 0.0f, 1.5f, 10.0f };
+	// プレイヤーの座標を敵に渡し続ける
 	enemy_->SetPlayerPos(&player_->transform_);
-	player_->enemy_ = this->enemy_;
+	// プレイヤーに敵をセット
+	player_->SetEnemy(this->enemy_);
 	enemy_->player_ = this->player_;
 
 	// ロックオンクラス生成
@@ -40,7 +45,6 @@ void GameScene::Init(){
 	lockOn = gameObjectManager_->CreateInstance<LockOn>("LockOn", IObject::TagPlayer);
 	lockOn->SetCamera(camera);
 	camera->SetLockOn(lockOn);
-	player_->lockOn_ = lockOn;
 
 	// ナビィ生成
 	Fairy* fairy = nullptr;
@@ -53,7 +57,7 @@ void GameScene::Init(){
 
 	// ゲームマネージャー生成
 	gameManager_			= gameObjectManager_->CreateInstance<GameManager>("GameManager", IObject::TagNone);
-	player_->gameManager_	= gameManager_;
+	player_->SetGameManager(gameManager_);
 	enemy_->gameManager_	= gameManager_;
 	// フェードイン開始
 	gameManager_->StartFade(GameManager::FADEIN, 1.5f);

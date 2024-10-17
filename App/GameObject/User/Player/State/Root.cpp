@@ -13,7 +13,7 @@ void Root::Init()
 	targetAngle_ = player_->transform_.rotate_.y;
 
 	// 攻撃状態でない
-	player_->isAttacking_ = false;
+	player_->SetIsAttacking(false);
 	// コライダー無効
 	for (const auto& collider : player_->colliders_) {
 		// 剣のコライダーを発見した場合
@@ -36,7 +36,7 @@ void Root::Update()
 		isMoving_ = true;
 		
 		// ロックオンが有効でないとき
-		if (!player_->followCamera_->GetEnableZForcus()) {
+		if (!player_->GetFollowCamera()->GetEnableZForcus()) {
 			if (!player_->skiningModels_["Player"]->animationManager_.GetIsPlayingAnimation("01_Run")) {
 				player_->skiningModels_["Player"]->animationManager_.PlayAnimation("01_Run", 0.25f, true);
 			}
@@ -75,19 +75,19 @@ void Root::Update()
 	// 移動中であれば
 	if (isMoving_) {
 		// プレイヤーに追従カメラがセットされている場合
-		if (player_->followCamera_ != nullptr) {
+		if (player_->GetFollowCamera() != nullptr) {
 			
-			if (move.z != -1.0f && !player_->followCamera_->GetEnableZForcus()) {
-				player_->followCamera_->SetTargetAngle(player_->transform_.rotate_.y);
+			if (move.z != -1.0f && !player_->GetFollowCamera()->GetEnableZForcus()) {
+				player_->GetFollowCamera()->SetTargetAngle(player_->transform_.rotate_.y);
 			}
 
 			// カメラの角度から回転行列を生成
 			Vector3 v = { 0.0f, 0.0f, 1.0f };
-			Matrix4x4 rotateMat = Matrix4x4::MakeRotateY(player_->followCamera_->transform_.rotate_.y);
+			Matrix4x4 rotateMat = Matrix4x4::MakeRotateY(player_->GetFollowCamera()->transform_.rotate_.y);
 			// 移動ベクトルをカメラの角度に応じて回転させる
 			move = (move * rotateMat);
 
-			if (!player_->followCamera_->GetLockOn()->GetIsLockOn()) {
+			if (!player_->GetFollowCamera()->GetLockOn()->GetIsLockOn()) {
 				// ターゲット座標
 				Vector3 targetPos = player_->transform_.translate_ + (move * kMaxSpeed_);
 				// 差分ベクトルを求める
@@ -100,7 +100,7 @@ void Root::Update()
 		}
 
 		// 移動ベクトルに最大速度を掛ける
-		if (player_->followCamera_->GetEnableZForcus()) {
+		if (player_->GetFollowCamera()->GetEnableZForcus()) {
 			move = move * kMaxZforcusSpeed_;
 		}
 		else {
@@ -109,7 +109,7 @@ void Root::Update()
 	}
 	else {
 		// ロックオンが有効でないとき
-		if (!player_->followCamera_->GetEnableZForcus()) {
+		if (!player_->GetFollowCamera()->GetEnableZForcus()) {
 			// 
 			if (!player_->skiningModels_["Player"]->animationManager_.GetIsPlayingAnimation("00_Idle")) {
 				player_->skiningModels_["Player"]->animationManager_.PlayAnimation("00_Idle", 0.25f, true);
@@ -124,7 +124,7 @@ void Root::Update()
 	}
 
 	// プレイヤーを移動方向に回転させる
-	if (player_->transform_.rotate_.y != targetAngle_ && !player_->followCamera_->GetEnableZForcus()) {
+	if (player_->transform_.rotate_.y != targetAngle_ && !player_->GetFollowCamera()->GetEnableZForcus()) {
 		player_->transform_.rotate_.y = KLib::LerpShortAngle(player_->transform_.rotate_.y, targetAngle_, 0.1f);
 	}
 

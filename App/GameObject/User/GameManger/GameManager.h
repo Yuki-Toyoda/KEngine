@@ -4,6 +4,8 @@
 
 // クラスの前方宣言
 class Camera;
+class Player;
+class Enemy;
 
 /// <summary>
 /// ゲームシーンのマネージャー
@@ -42,6 +44,18 @@ public: // メンバ関数
 	void StartFade(int fadeState, const float fadeTime);
 
 public: // アクセッサ等
+
+	/// <summary>
+	/// プレイヤーセッター
+	/// </summary>
+	/// <param name="player">プレイヤー</param>
+	void SetPlayer(Player* player) { player_ = player; }
+
+	/// <summary>
+	/// 敵セッター
+	/// </summary>
+	/// <param name="enemy">敵</param>
+	void SetEnemy(Enemy* enemy) { enemy_ = enemy; }
 
 	/// <summary>
 	/// ゲーム開始状態のゲッター
@@ -86,6 +100,11 @@ private: // 機能関数群
 	void CreateTitleCameraParameter(const std::string& name);
 
 	/// <summary>
+	/// ゲーム状態の更新関数
+	/// </summary>
+	void GameStateUpdate();
+
+	/// <summary>
 	/// フェード演出更新関数
 	/// </summary>
 	void FadeUpdate();
@@ -94,6 +113,11 @@ private: // メンバ変数
 
 	// 入力検知用
 	Input* input_ = nullptr;
+
+	// プレイヤー
+	Player* player_ = nullptr;
+	// 敵
+	Enemy* enemy_ = nullptr;
 
 	// ゲーム開始フラグ
 	bool isGameStart_ = false;

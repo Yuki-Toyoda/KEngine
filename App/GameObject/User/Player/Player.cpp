@@ -6,7 +6,6 @@
 #include "App/GameObject/User/Enemy/EnemyBullet.h"
 #include "Engine/Resource/Texture/TextureManager.h"
 #include "Engine/GameObject/GameObjectManager.h"
-#include "Engine/GameObject/Core/Camera.h"
 
 void Player::Init()
 {
@@ -95,119 +94,76 @@ void Player::Init()
 
 void Player::Update()
 {
-	// 行動可能時
-	if (canAction_) {
-		// 現在の行動状態の更新を行う
-		state_->Update();
+	// ゲーム開始状態のとき
+	if (gameManager_->GetIsGameStart() && !isSetUp_) {
+		// メインカメラを使用
+		followCamera_->UseThisCamera();
 
-		// 追従カメラがセットされている場合
-		if (followCamera_ != nullptr) {
-			// Z注目が有効にされている場合
-			if (!followCamera_->GetEnableZForcus()) {
-				followCamera_->SetTargetAngle(followCamera_->transform_.rotate_.y);
-				// ロックオン中は徐々にビネット解除
-				focusVignette_ = KLib::Lerp<float>(focusVignette_, 0.0f, 0.1f);
-			}
-			else {
-				// ロックオン中は徐々にビネット
-				focusVignette_ = KLib::Lerp<float>(focusVignette_, 1.0f, 0.1f);
-			}
-
-			// ビネットをかける
-			followCamera_->ppProcessor_.vignette_.intensity_ = focusVignette_;
-
-			if (followCamera_->GetLockOn()->GetIsLockOn()) {
-				// ロックオン対象の座標
-				Vector3 targetPos = followCamera_->GetLockOn()->target_->transform_.translate_;
-				// 追従対象からロックオン対象への差分ベクトル
-				Vector3 sub = targetPos - transform_.translate_;
-				// 方向ベクトルを元にプレイヤーがいる角度を求める
-				targetAngle_ = std::atan2(sub.x, sub.z);
-
-				// 身体を回転させる
-				transform_.rotate_.y = KLib::LerpShortAngle(transform_.rotate_.y, targetAngle_, 0.1f);
-			}
-
-			// ブラーの値の参照取得
-			float& blurStrength = followCamera_->ppProcessor_.radialBlur_.data_.blurStrength;
-			// パリィブラー有効時
-			if (enableParryBlur_) {
-				// ブラー強さが一定の値を超えるまで
-				if (blurStrength <= 0.01f) {
-					// ブラー強さを少しずつ上げる
-					blurStrength = KLib::Lerp(blurStrength, 0.0115f, 0.35f);
-				}
-				else {
-					// パリィ時のブラーを無効
-					enableParryBlur_ = false;
-				}
-			}
-			else {
-				// かかっているブラーを元に戻す
-				if (blurStrength > 0.0f) {
-					blurStrength = KLib::Lerp(blurStrength, 0.00f, 0.05f);
-				}
-			}
+		// 体力UIの表示
+		for (int i = 0; i < 6; i++) {
+			std::string hert = "Hert" + std::to_string(i);
+			sprites_[hert]->isActive_ = true;
 		}
+		// ボタン関連UIの表示
+		sprites_["AButton"]->isActive_ = true;
+		sprites_["SwordIcon"]->isActive_ = true;
+		sprites_["BButton"]->isActive_ = true;
 
-		// 軌跡a値
-		float& trailAlpha = attackLine_->trailMaterial_.color_.w;
-		// 攻撃中は軌跡を表示させる
-		if (isAttacking_) {
-			trailAlpha = KLib::Lerp(trailAlpha, 1.0f, 0.15f);
+		// 行動可能状態に
+		canAction_ = true;
+
+		// セットアップした状態に
+		isSetUp_ = true;
+	}
+
+	// 行動可能状態でない場合早期リターン
+	if (!canAction_) {
+		return;
+	}
+
+	// 現在の行動状態の更新を行う
+	state_->Update();
+
+	// 追従カメラがセットされている場合
+	if (followCamera_ != nullptr) {
+		if (followCamera_->GetLockOn()->GetIsLockOn()) {
+			// ロックオン対象の座標
+			Vector3 targetPos = followCamera_->GetLockOn()->target_->transform_.translate_;
+			// 追従対象からロックオン対象への差分ベクトル
+			Vector3 sub = targetPos - transform_.translate_;
+			// 方向ベクトルを元にプレイヤーがいる角度を求める
+			targetAngle_ = std::atan2(sub.x, sub.z);
+
+			// 身体を回転させる
+			transform_.rotate_.y = KLib::LerpShortAngle(transform_.rotate_.y, targetAngle_, 0.1f);
 		}
-		else {
-			// 攻撃中でない場合は軌跡を徐々に消す
-			if (trailAlpha <= 0.01f) {
-				trailAlpha = 0.0f;
-			}
-			else {
-				trailAlpha = KLib::Lerp(trailAlpha, 0.0f, 0.2f);
-			}
-			
-		}
+	}
 
-		// 攻撃可能か
-		if (state_->GetStateName() != "Damage") {
-			if (canAttack_ && !isAttacking_) {
-				// Aボタンを押すと攻撃する
-				if (input_->InspectButton(XINPUT_GAMEPAD_A, TRIGGER)) {
-					// 行動を変更
-					ChangeState(std::make_unique<Attack>());
-				}
-			}
-		}
-
-		// 線の更新
-		attackLine_->Update();
-
-		//コライダーのワールド座標更新
-		colliderWorldPos_ = colliderTransform_.GetWorldPos();
-
-		// ヒットクールタイム更新
-		hitCoolTimeTimer_.Update();
+	// 軌跡a値
+	float& trailAlpha = attackLine_->trailMaterial_.color_.w;
+	// 攻撃中は軌跡を表示させる
+	if (isAttacking_) {
+		trailAlpha = KLib::Lerp(trailAlpha, 1.0f, 0.15f);
 	}
 	else {
-		// ゲーム開始状態のとき
-		if (gameManager_->GetIsGameStart() && !isSetUp_) {
-			// メインカメラを使用
-			followCamera_->UseThisCamera();
+		// 攻撃中でない場合は軌跡を徐々に消す
+		if (trailAlpha <= 0.01f) {
+			trailAlpha = 0.0f;
+		}
+		else {
+			trailAlpha = KLib::Lerp(trailAlpha, 0.0f, 0.2f);
+		}
 
-			// 体力UIの表示
-			for (int i = 0; i < 6; i++) {
-				std::string hert = "Hert" + std::to_string(i);
-				sprites_[hert]->isActive_ = true;
+	}
+
+	// 攻撃可能か
+	if (state_->GetStateName() != "Damage") {
+		if (canAttack_ && !isAttacking_) {
+			// Aボタンを押すと攻撃する
+			if (input_->InspectButton(XINPUT_GAMEPAD_A, TRIGGER)) {
+				// 行動を変更
+				ChangeState(std::make_unique<Attack>());
 			}
-			// ボタン関連UIの表示
-			sprites_["AButton"]->isActive_		= true;
-			sprites_["SwordIcon"]->isActive_	= true;
-			sprites_["BButton"]->isActive_		= true;
-
-			// 行動可能状態に
-			canAction_ = true;
-
-			// セットアップした状態に
-			isSetUp_ = true;
 		}
 	}
 
@@ -220,6 +176,15 @@ void Player::Update()
 		sprites_["UpperObi"]->scale_.y = KLib::Lerp<float>(sprites_["UpperObi"]->scale_.y, 0.0f, 0.2f);
 		sprites_["LowerObi"]->scale_.y = KLib::Lerp<float>(sprites_["LowerObi"]->scale_.y, 0.0f, 0.2f);
 	}
+
+	// 線の更新
+	attackLine_->Update();
+
+	//コライダーのワールド座標更新
+	colliderWorldPos_ = colliderTransform_.GetWorldPos();
+
+	// ヒットクールタイム更新
+	hitCoolTimeTimer_.Update();
 }
 
 void Player::DisplayImGui()
@@ -236,6 +201,11 @@ void Player::DisplayImGui()
 
 	// 基底クラスのImGuiを表示する
 	IObject::DisplayImGui();
+}
+
+void Player::OnCollisionEnter(Collider* collider)
+{
+	collider;
 }
 
 void Player::ChangeState(std::unique_ptr<IState> newState)
@@ -270,21 +240,9 @@ void Player::HitDamage(const Vector3& translate)
 		ChangeState(std::make_unique<Damage>());
 
 		// ロックオン無効
-		lockOn_->DisableLockOn();
+		followCamera_->GetLockOn()->DisableLockOn();
 
 		// 命中クールタイムリセット
 		hitCoolTimeTimer_.Start(kHitCoolTime_);
-
-		// ダメージ時にはラジアルブラー無効
-		enableParryBlur_ = false;
-	}
-}
-
-void Player::OnCollisionEnter(Collider* collider)
-{
-	// プレイヤーの剣と衝突していたら
-	if (collider->GetColliderName() == "Bullet" && !enableParryBlur_ && isAttacking_) {
-		// パリィ時のブラーを有効
-		enableParryBlur_ = true;
 	}
 }

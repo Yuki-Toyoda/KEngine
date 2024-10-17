@@ -164,6 +164,13 @@ public: // アクセッサ等
 	/// <param name="name">削除するコライダー</param>
 	void DeleteCollider(const std::string& name);
 
+	/// <summary>
+	/// 指定した名称のコライダーを取得する関数
+	/// </summary>
+	/// <param name="name">取得するコライダー名</param>
+	/// <returns>コライダー</returns>
+	Collider* GetCollider(const std::string& name);
+
 public: // その他関数群
 
 	/// <summary>
@@ -233,9 +240,6 @@ public: // パブリックなメンバ変数
 	// スプライトリスト
 	std::map<std::string, Sprite*> sprites_;
 
-	// コライダー
-	std::list<std::unique_ptr<Collider>> colliders_;
-
 protected: // 継承メンバ変数
 	
 	// モデルデータマネージャーのインスタンス
@@ -252,6 +256,9 @@ protected: // 継承メンバ変数
 
 	// デストロイトリガー
 	bool isDestroy_ = false;
+
+	// コライダー
+	std::list<std::unique_ptr<Collider>> colliders_;
 
 	// 色
 	Vector4 color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
