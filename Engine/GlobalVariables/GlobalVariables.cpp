@@ -74,6 +74,13 @@ void GlobalVariables::Update() {
 				ImGui::DragFloat3(
 				    itemName.c_str(), reinterpret_cast<float*>(ptr), 0.1f);
 			}
+			// string型の値を保持している場合
+			else if (std::holds_alternative<std::string>(item.value)) {
+				// string型の値を取得
+				std::string* ptr = std::get_if<std::string>(&item.value);
+				// ImGuiのUIを出す
+				ImGui::Text(ptr->c_str());
+			}
 		}
 
 		// 改行する
@@ -143,6 +150,13 @@ void GlobalVariables::SaveFile(const std::string& groupName) {
 			Vector3 value = std::get<Vector3>(item.value);
 			// jsonの配列でVector3の要素一つ一つを格納する
 			root[groupName][itemName] = json::array({value.x, value.y, value.z});
+		}
+		// std::stirng型の値を保持している場合
+		else if (std::holds_alternative<std::string>(item.value)) {
+			// Vector3型の値を登録
+			std::string value = std::get<std::string>(item.value);
+			// std::string型の値を登録
+			root[groupName][itemName] = json::string_t(value);
 		}
 	}
 
@@ -270,6 +284,13 @@ void GlobalVariables::LoadFile(const std::string& groupName) {
 			// 値をセットする
 			SetValue(groupName, itemName, value);
 		}
+		// string型の値を保持している場合
+		else if (itItem->is_string()) {
+			// std::string型の値を登録する
+			std::string value = itItem->get<std::string>();
+			// 値をセットする
+			SetValue(groupName, itemName, value);
+		}
 	}
 }
 
@@ -316,6 +337,17 @@ void GlobalVariables::SetValue(
 	group.items[key] = newItem;
 }
 
+void GlobalVariables::SetValue(const std::string& groupName, const std::string& key, const std::string& value)
+{
+	// グループの参照を取得する
+	Group& group = datas_[groupName];
+	// 新しい項目のデータを設定
+	Item newItem{};
+	newItem.value = value;
+	// 設定を行った項目をデータコンテナに追加
+	group.items[key] = newItem;
+}
+
 void GlobalVariables::AddItem(const std::string& groupName, const std::string& key, int32_t value) {
 	// 同名のキーを見つけたら処理を抜ける
 	if (datas_[groupName].items.find(key) == datas_[groupName].items.end()) {
@@ -342,6 +374,15 @@ void GlobalVariables::AddItem(const std::string& groupName, const std::string& k
 }
 
 void GlobalVariables::AddItem(const std::string& groupName, const std::string& key, Vector3 value) {
+	// 同名のキーを見つけたら処理を抜ける
+	if (datas_[groupName].items.find(key) == datas_[groupName].items.end()) {
+		// 関数呼び出し
+		SetValue(groupName, key, value);
+	}
+}
+
+void GlobalVariables::AddItem(const std::string& groupName, const std::string& key, const std::string& value)
+{
 	// 同名のキーを見つけたら処理を抜ける
 	if (datas_[groupName].items.find(key) == datas_[groupName].items.end()) {
 		// 関数呼び出し
@@ -403,4 +444,19 @@ Vector3 GlobalVariables::GetVector3Value(const std::string& groupName, const std
 
 	// 指定グループから指定のキーの値を取得
 	return std::get<Vector3>(group.items[key].value);
+}
+
+std::string GlobalVariables::GetStringValue(const std::string& groupName, const std::string& key)
+{
+	// 指定グループがいない場合エラー
+	assert(datas_.find(groupName) != datas_.end());
+
+	// グループの参照を取得する
+	Group& group = datas_[groupName];
+
+	// 指定グループに指定のキーが存在しない場合エラー
+	assert(group.items.find(key) != group.items.end());
+
+	// 指定グループから指定のキーの値を取得
+	return std::get<std::string>(group.items[key].value);
 }
