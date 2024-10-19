@@ -176,15 +176,15 @@ private: // メンバ変数
 	bool isAttacking_ = false;
 
 	// 最大HP
-	const int32_t maxHP_ = 6;
+	static const int32_t maxHP_ = 6;
 	// HP
 	int32_t hp_ = maxHP_;
 	// 死亡トリガー
 	bool isDead_ = false;
 
 	// 体力UI
-	Vector2 hertUITranslate_[6]; // 座標
-	Vector2 hertUISize_[6];		 // サイズ
+	Vector2 hertUITranslate_[maxHP_]; // 座標
+	Vector2 hertUISize_[maxHP_];	  // サイズ
 
 	// ヒットクールタイムタイマー
 	KLib::DeltaTimer hitCoolTimeTimer_;
