@@ -406,7 +406,8 @@
     </ClCompile>
     <ClCompile Include="App\GameObject\User\Player\State\Recovery.cpp" />
     <ClCompile Include="App\GameObject\User\Player\Combo\ComboManager.cpp" />
-    <ClCompile Include="App\GameObject\User\Player\Combo\ICombo.cpp" />
+    <ClCompile Include="App\GameObject\User\Player\Combo\Combo.cpp" />
+    <ClCompile Include="App\GameObject\User\Player\Combo\Action.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App\Scene\SceneList.h">
@@ -900,7 +901,8 @@
     </ClInclude>
     <ClInclude Include="App\GameObject\User\Player\State\Recovery.h" />
     <ClInclude Include="App\GameObject\User\Player\Combo\ComboManager.h" />
-    <ClInclude Include="App\GameObject\User\Player\Combo\ICombo.h" />
+    <ClInclude Include="App\GameObject\User\Player\Combo\Combo.h" />
+    <ClInclude Include="App\GameObject\User\Player\Combo\Action.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">

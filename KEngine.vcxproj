@@ -105,6 +105,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="App\GameObject\User\Player\Combo\Action.cpp" />
     <ClCompile Include="App\GameObject\User\Player\Combo\ComboManager.cpp" />
     <ClCompile Include="Engine\PostProcess\Bloom\Bloom.cpp" />
     <ClCompile Include="App\GameObject\User\Enemy\State\EnemyMove.cpp" />
@@ -194,7 +195,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="App\GameObject\User\Level\Level.cpp" />
     <ClCompile Include="App\Level\LevelLoader.cpp" />
     <ClCompile Include="Engine\PostProcess\HSVFilter\HSVFilter.cpp" />
-    <ClCompile Include="App\GameObject\User\Player\Combo\ICombo.cpp" />
+    <ClCompile Include="App\GameObject\User\Player\Combo\Combo.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="App\Scene\SceneFactory.cpp" />
     <ClCompile Include="Engine\Base\RootSignature\ModelRootSignature.cpp" />
@@ -237,6 +238,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="App\GameObject\User\Player\State\Recovery.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="App\GameObject\User\Player\Combo\Action.h" />
     <ClInclude Include="App\GameObject\ObjectList.h" />
     <ClInclude Include="App\GameObject\User\Player\Combo\ComboManager.h" />
     <ClInclude Include="Engine\PostProcess\Bloom\Bloom.h" />
@@ -400,7 +402,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="App\GameObject\User\Level\Level.h" />
     <ClInclude Include="App\GameObject\User\Player\State\RotatingSlashCharge.h" />
     <ClInclude Include="App\GameObject\User\Player\State\Recovery.h" />
-    <ClInclude Include="App\GameObject\User\Player\Combo\ICombo.h" />
+    <ClInclude Include="App\GameObject\User\Player\Combo\Combo.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Resource\Shader\Compute\Random.hlsli">
