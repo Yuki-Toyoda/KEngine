@@ -65,7 +65,7 @@ void Player::Init()
 	sprites_["LowerObi"]->color_ = { 0.0f, 0.0f, 0.0f, 1.0f };
 
 	// UIの追加
-	for (int i = 0; i < 6; i++) {
+	for (int i = 0; i < maxHP_; i++) {
 		hertUISize_[i] = {48.0f, 48.0f };
 		hertUITranslate_[i] = { (hertUISize_->x) + (hertUISize_->x * i) , 32.0f };
 		// ハートスプライト名の取得
@@ -100,7 +100,7 @@ void Player::Update()
 		followCamera_->UseThisCamera();
 
 		// 体力UIの表示
-		for (int i = 0; i < 6; i++) {
+		for (int i = 0; i < maxHP_; i++) {
 			std::string hert = "Hert" + std::to_string(i);
 			sprites_[hert]->isActive_ = true;
 		}

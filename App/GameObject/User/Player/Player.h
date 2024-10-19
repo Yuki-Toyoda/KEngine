@@ -175,8 +175,10 @@ private: // メンバ変数
 	// 攻撃中か
 	bool isAttacking_ = false;
 
+	// 最大HP
+	const int32_t maxHP_ = 6;
 	// HP
-	int32_t hp_ = 6;
+	int32_t hp_ = maxHP_;
 	// 死亡トリガー
 	bool isDead_ = false;
 
