@@ -405,6 +405,8 @@
       <Filter>App\GameObject\User\Player\State</Filter>
     </ClCompile>
     <ClCompile Include="App\GameObject\User\Player\State\Recovery.cpp" />
+    <ClCompile Include="App\GameObject\User\Player\Combo\ComboManager.cpp" />
+    <ClCompile Include="App\GameObject\User\Player\Combo\ICombo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App\Scene\SceneList.h">
@@ -897,6 +899,8 @@
       <Filter>App\GameObject\User\Player\State</Filter>
     </ClInclude>
     <ClInclude Include="App\GameObject\User\Player\State\Recovery.h" />
+    <ClInclude Include="App\GameObject\User\Player\Combo\ComboManager.h" />
+    <ClInclude Include="App\GameObject\User\Player\Combo\ICombo.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
