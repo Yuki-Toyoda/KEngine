@@ -62,11 +62,44 @@ public: // メンバ関数
 public: // アクセッサ等
 
 	/// <summary>
+	/// ゲームマネージャーセッター
+	/// </summary>
+	/// <param name="gameManager">ゲームマネージャー</param>
+	void SetGameManager(GameManager* gameManager) { gameManager_ = gameManager; }
+	/// <summary>
+	/// ゲームマネージャーゲッター
+	/// </summary>
+	/// <returns>ゲームマネージャー</returns>
+	GameManager* GetGameManager() { return gameManager_; }
+
+	/// <summary>
+	/// プレイヤーセッター
+	/// </summary>
+	/// <param name="player">プレイヤー</param>
+	void SetPlayer(Player* player) { player_ = player; }
+	/// <summary>
+	/// プレイヤーゲッター
+	/// </summary>
+	/// <returns>プレイヤー本体</returns>
+	Player* GetPlayer() { return player_; }
+
+	/// <summary>
 	/// プレイヤー座標セッター
 	/// </summary>
 	/// <param name="playerPos">プレイヤー座標</param>
 	void SetPlayerPos(const WorldTransform* playerPos) { playerPos_ = playerPos; }
 
+	/// <summary>
+	/// 左腕のワールド座標ゲッター
+	/// </summary>
+	/// <returns>左腕のワールド座標</returns>
+	Vector3 GetLeftArmPosition() { return armTransform_L_.GetWorldPos(); }
+
+	/// <summary>
+	/// 死亡状態セッター
+	/// </summary>
+	/// <param name="isDead">s</param>
+	void SetIsDead(const bool isDead) { isDead_ = isDead; }
 	/// <summary>
 	/// 死亡状態ゲッター
 	/// </summary>
@@ -85,19 +118,21 @@ public: // アクセッサ等
 	/// <returns>色</returns>
 	Vector4 GetColor() { return color_; }
 
-public: // パブリックなメンバ変数
+	/// <summary>
+	/// 場外判定セッター
+	/// </summary>
+	/// <param name="isFieldOut">場外判定</param>
+	void SetIsFieldOut(const bool isFieldOut) { isFieldOut_ = isFieldOut; }
+	/// <summary>
+	/// 場外判定ゲッター
+	/// </summary>
+	/// <returns>場外判定</returns>
+	bool GetIsFieldOut() { return isFieldOut_; }
+
+private: // メンバ変数
 
 	// ゲームマネージャー
 	GameManager* gameManager_ = nullptr;
-
-	// 左腕のトランスフォーム
-	WorldTransform armTransform_L_;
-
-	// 敵アニメーション
-	MyAnimation* enemyAnim_;
-
-	// 死亡トリガー
-	bool isDead_ = false;
 
 	// プレイヤー
 	Player* player_ = nullptr;
@@ -108,34 +143,38 @@ public: // パブリックなメンバ変数
 	// フィールドの範囲外に出ていないか
 	bool isFieldOut_ = false;
 
-private: // メンバ変数
-
 	// アニメーションマネージャ
-	AnimationManager* animManager_;
+	AnimationManager* animManager_ = nullptr;
+	// 敵アニメーション
+	MyAnimation* enemyAnim_{};
 
 	// 行動
 	std::unique_ptr<IEnemyState> state_;
 	// 行動変更クールタイム
-	KLib::DeltaTimer stateChangeTimer_;
+	KLib::DeltaTimer stateChangeTimer_{};
 	// 行動変更クールタイム定数値
 	const float kStateChangeCoolTime_ = 1.5f;
 
+	// 死亡トリガー
+	bool isDead_ = false;
 	// HP
 	int32_t hp_ = 25;
 	// ヒットクールタイムタイマー
-	KLib::DeltaTimer hitCoolTimeTimer_;
+	KLib::DeltaTimer hitCoolTimeTimer_{};
 	// ヒットクールタイム定数値
 	const float kHitCoolTime_ = 0.35f;
 
 	// 身体のトランスフォーム
-	WorldTransform bodyTransform_;
+	WorldTransform bodyTransform_{};
 	// 頭のトランスフォーム
-	WorldTransform headTransform_;
+	WorldTransform headTransform_{};
 	// 右腕のトランスフォーム
-	WorldTransform armTransform_R_;
+	WorldTransform armTransform_R_{};
+	// 左腕のトランスフォーム
+	WorldTransform armTransform_L_{};
 
 	// 当たり判定ワールド座標
-	Vector3 worldPos_;
+	Vector3 worldPos_{};
 	// 当たり判定半径
 	float colliderRadius_ = 1.0f;
 

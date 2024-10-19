@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "Engine/Math/Vector3.h"
+#include "Engine/Utility/Animation/Animation.h"
 
 // クラスの前方宣言
 class Enemy;
@@ -23,7 +24,11 @@ public: // メンバ関数
 	/// 共通初期化関数
 	/// </summary>
 	/// <param name="enemy">敵の実体</param>
-	void PreInit(Enemy* enemy) { enemy_ = enemy; }
+	/// <param name="anim">敵アニメーション</param>
+	void PreInit(Enemy* enemy, MyAnimation* anim) { 
+		enemy_ = enemy; 
+		anim_ = anim;
+	}
 
 	/// <summary>
 	/// 初期化関数
@@ -57,6 +62,8 @@ protected: // 継承先メンバ変数
 
 	// プレイヤーの実体
 	Enemy* enemy_ = nullptr;
+	// アニメーション
+	MyAnimation* anim_ = nullptr;
 
 };
 

@@ -12,117 +12,44 @@ void FollowCamera::Init()
 
 	// オフセットなしのトランスフォームの初期化
 	noOffsetTransform_.Init();
-
-	// 球コライダー追加
-	AddColliderSphere("collider", &transform_.translate_, &colliderRadius_);
 }
 
 void FollowCamera::Update()
 {
-	if (input_->InspectTrigger(PRESS, 0)) {
-		// ロックオンが有効になっていない場合
-		if (!lockOn_->EnableLockOn()) {
-			// セットアップトリガーをfalse
-			isLockOnSetUp_ = false;
-			
-			// 目標角度をプレイヤーの真後ろに
-			targetAngleY_ = target_->rotate_.y;
-			// 角度補正速度を設定
-			correctionSpeed_ = zForcusCorrectionSpeed_;
-
-			// X軸の目標角度は0に
-			targetAngleX_ = 0.0f;
-			// 計算したのちにオフセットのリセット
-			targetAngleXOffset_ = 0.0f;
-
-			// オフセットのY軸をリセット
-			offset_.y = kOffset_.y;
-			offset_.z = kOffset_.z;
-		}
-		else { // ロックオンが有効になっている場合
-			// ロックオン対象の座標
-			Vector3 targetPos = lockOn_->target_->transform_.translate_;
-			// 追従対象からロックオン対象への差分ベクトル
-			Vector3 sub = targetPos - target_->translate_;
-
-			// ロックオン時の座標を計算
-			lockOnTranslate_ = targetPos - (sub / 2.0f);
-
-			// 方向ベクトルを元にプレイヤーがいる角度を求める
-			targetAngleY_ = std::atan2(sub.x, sub.z);
-
-			// セットアップを行っていない場合、ここで行う
-			if (!isLockOnSetUp_) {
-				// 目標角度が負方向であれば
-				if (targetAngleY_ < 0.0f) {
-					isRightLockOn_ = false;
-				}
-				else {
-					isRightLockOn_ = true;
-				}
-
-				// セットアップを実行済み状態に
-				isLockOnSetUp_ = true;
-			}
-
-			// オフセットのY軸を0に
-			offset_.y = 0.0f;
-			offset_.z = -Vector3::Length(sub / 2.0f) + kOffset_.z;
-
-			// どちらに角度を補正するかで処理を変更する
-			if (isRightLockOn_) {
-				kOffsetRotate_ = KLib::Lerp<float>(-0.55f, -0.15f, offset_.z, -27.0f);
-			}
-			else {
-				kOffsetRotate_ = KLib::Lerp<float>(0.55f, 0.15f, offset_.z, -27.0f);
-			}
-
-			// 目標角度にオフセット分を加算する
-			targetAngleY_ += kOffsetRotate_;
-			Matrix4x4 rotateMat =
-				Matrix4x4::MakeRotateY(-std::atan2(sub.x, sub.z));
-			Vector3 subA = sub * rotateMat;
-			targetAngleX_ = std::atan2(-subA.y, subA.z) / 3.5f;
-			if (targetAngleX_ < -0.1f) {
-				targetAngleX_ = -0.1f;
-			}
-
-			// 角度補正速度を設定
-			correctionSpeed_ = zEnemyForcusCorrectionSpeed_;
-		}
-
-		// Z注目を有効に
+	// 左トリガーがトリガーされた、かつZ注目が有効になっていない場合
+	if (input_->InspectTrigger(TRIGGER, 0) && !enableZForcus_) {
 		enableZForcus_ = true;
 	}
-	else { // Lトリガーを押していない場合
-		// セットアップトリガーをfalse
-		isLockOnSetUp_ = false;
 
-		// Z注目をしていないに
-		enableZForcus_ = false;
+	// Z注目有効時
+	if (enableZForcus_) {
+		// 注目時の更新
+		ZForcusUpdate();
+		// 注目時のビネット更新
+		ForcusVignetteUpdate();
+	}
+	else { // 有効になっていない場合
 		// 角度補正速度を設定
 		correctionSpeed_ = normalCorrectionSpeed_;
 
 		// X軸の目標角度は0に
 		targetAngleX_ = 0.0f;
+		// 目標角度を現在の角度に
+		targetAngleY_ = transform_.rotate_.y;
 
 		// オフセットのY軸をリセット
 		offset_.y = kOffset_.y;
 		offset_.z = kOffset_.z;
-		// ロックオンを無効
-		lockOn_->DisableLockOn();
-
 	}
-
-	// 回転させる
-	transform_.rotate_.x = KLib::LerpShortAngle(transform_.rotate_.x, targetAngleX_, zEnemyForcusCorrectionSpeed_) + targetAngleXOffset_;
-	transform_.rotate_.y = KLib::LerpShortAngle(transform_.rotate_.y, targetAngleY_, correctionSpeed_);
-
-	// 計算したのちにオフセットのリセット
-	targetAngleXOffset_ = 0.0f;
 
 	// 追従対象の更新
 	UpdateTarget();
+
+	// パリィ演出を行う場合
+	if (isParryStaging_) {
+		// パリィ演出の更新
+		ParryBlurUpdate();
+	}
 }
 
 void FollowCamera::DisplayImGui()
@@ -137,6 +64,20 @@ void FollowCamera::DisplayImGui()
 	ImGui::DragFloat3("offset", &offset_.x, 0.05f);
 
 	ImGui::DragFloat("RotateOffset", &kOffsetRotate_);
+}
+
+void FollowCamera::StartParryBlur(const float stagingTime, const float endStagingTime, const float blurStrength)
+{
+	// ブラー演出中状態に
+	isParryStaging_ = true;
+	// ブラー演出用タイマーを開始する
+	parryBlurTimer_.Start(stagingTime);
+	// 終了時間の取得
+	parryStagingEndTime_ = endStagingTime;
+	// ブラー強さの設定
+	parryBlurStrength_ = blurStrength;
+	// 一応終了演出フラグをfalseにしておく
+	isParryEndStaging_ = false;
 }
 
 void FollowCamera::UpdateTarget()
@@ -186,19 +127,6 @@ const Matrix4x4 FollowCamera::GetViewMatrixNoOffset()
 	return returnMatrix;
 }
 
-void FollowCamera::OnCollision(Collider* collider)
-{
-	// 床と衝突していた場合
-	if (collider->GetGameObject()->GetObjectTag() == TagFloor) {
-		//targetAngleXOffset_ = KLib::Lerp<float>(0.1f, 0.0f, offset_.z, -40.0f);
-	}
-}
-
-void FollowCamera::OnCollisionExit(Collider* collider)
-{
-	collider;
-}
-
 Vector3 FollowCamera::CalcOffset() const
 {
 	// 追従対象からカメラまでのオフセットを設定
@@ -213,3 +141,126 @@ Vector3 FollowCamera::CalcOffset() const
 	// 計算したオフセットを返す
 	return offset;
 }
+
+void FollowCamera::ZForcusUpdate()
+{
+	// ロックオンが有効になっている場合
+	if (lockOn_->EnableLockOn()) {
+		// ロックオン対象の座標
+		Vector3 targetPos = lockOn_->target_->transform_.translate_;
+		// 追従対象からロックオン対象への差分ベクトル
+		Vector3 sub = targetPos - target_->translate_;
+
+		// ロックオン時の座標を計算
+		lockOnTranslate_ = targetPos - (sub / 2.0f);
+
+		// 方向ベクトルを元にプレイヤーがいる角度を求める
+		targetAngleY_ = std::atan2(sub.x, sub.z);
+
+		// ロックオン方向の設定
+		if (!lockOnDirectionSetUp_) {
+			// 目標角度が負方向であれば
+			if (targetAngleY_ < 0.0f) {
+				isRightLockOn_ = false;
+			}
+			else {
+				isRightLockOn_ = true;
+			}
+			// セットアップ済み
+			lockOnDirectionSetUp_ = true;
+		}
+
+		// オフセットのY軸を0に
+		offset_.y = 0.0f;
+		offset_.z = -Vector3::Length(sub / 2.0f) + kOffset_.z;
+
+		// どちらに角度を補正するかで処理を変更する
+		if (isRightLockOn_) {
+			kOffsetRotate_ = KLib::Lerp<float>(-0.55f, -0.15f, offset_.z, -27.0f);
+		}
+		else {
+			kOffsetRotate_ = KLib::Lerp<float>(0.55f, 0.15f, offset_.z, -27.0f);
+		}
+
+		// 目標角度にオフセット分を加算する
+		targetAngleY_ += kOffsetRotate_;
+		Matrix4x4 rotateMat =
+			Matrix4x4::MakeRotateY(-std::atan2(sub.x, sub.z));
+		Vector3 subA = sub * rotateMat;
+		targetAngleX_ = std::atan2(-subA.y, subA.z) / 3.5f;
+		if (targetAngleX_ < -0.1f) {
+			targetAngleX_ = -0.1f;
+		}
+
+		// 角度補正速度を設定
+		correctionSpeed_ = zEnemyForcusCorrectionSpeed_;
+	}
+	else { // 有効になっていない場合
+		// 目標角度をプレイヤーの真後ろに
+		targetAngleY_ = target_->rotate_.y;
+		// 角度補正速度を設定
+		correctionSpeed_ = zForcusCorrectionSpeed_;
+
+		// X軸の目標角度は0に
+		targetAngleX_ = 0.0f;
+
+		// オフセットのY軸をリセット
+		offset_.y = kOffset_.y;
+		offset_.z = kOffset_.z;
+	}
+
+	// 回転させる
+	transform_.rotate_.x = KLib::LerpShortAngle(transform_.rotate_.x, targetAngleX_, zEnemyForcusCorrectionSpeed_);
+	transform_.rotate_.y = KLib::LerpShortAngle(transform_.rotate_.y, targetAngleY_, correctionSpeed_);
+
+	// 左トリガーが離されている場合
+	if (input_->InspectTrigger(RELEASE, 0)) {
+		// Z注目をしていないに
+		enableZForcus_ = false;
+		// ロックオン方向の選定
+		lockOnDirectionSetUp_ = false;
+		// ロックオンを無効
+		lockOn_->DisableLockOn();
+	}
+}
+
+void FollowCamera::ForcusVignetteUpdate()
+{
+	// Z注目有効時にビネットエフェクトを徐々にかける
+	if (enableZForcus_) {
+		ppProcessor_.vignette_.intensity_ = KLib::Lerp<float>(ppProcessor_.vignette_.intensity_, vignetteStrength_, vignetteT_);
+	}
+	else { // 無効時は徐々に下げる
+		ppProcessor_.vignette_.intensity_ = KLib::Lerp<float>(ppProcessor_.vignette_.intensity_, 0.0f, vignetteT_);
+	}
+}
+
+void FollowCamera::ParryBlurUpdate()
+{
+	// パリィ演出タイマーが終了していない場合
+	if (!parryBlurTimer_.GetIsFinish() && !isParryEndStaging_) {
+		// ブラーを徐々に線形補間で強くしていく
+		ppProcessor_.radialBlur_.data_.blurStrength = 
+			KLib::Lerp<float>(ppProcessor_.radialBlur_.data_.blurStrength, parryBlurStrength_, parryBlurTimer_.GetProgress());
+	}
+	else if(!isParryEndStaging_){
+		// 終了演出開始
+		isParryEndStaging_ = true;
+		// パリィ演出タイマーを再度開始する
+		parryBlurTimer_.Start(parryStagingEndTime_);
+	}
+	else if (!parryBlurTimer_.GetIsFinish() && isParryEndStaging_) {
+		// ブラーを徐々に線形補間で弱くしていく
+		ppProcessor_.radialBlur_.data_.blurStrength =
+			KLib::Lerp<float>(ppProcessor_.radialBlur_.data_.blurStrength, 0.0f, parryBlurTimer_.GetProgress());
+	}
+	else {
+		// パリィ演出終了
+		isParryStaging_ = false;
+	}
+
+	// タイマーを更新する
+	parryBlurTimer_.Update();
+}
+
+

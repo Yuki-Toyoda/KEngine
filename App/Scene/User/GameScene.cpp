@@ -38,7 +38,7 @@ void GameScene::Init(){
 	enemy_->SetPlayerPos(&player_->transform_);
 	// プレイヤーに敵をセット
 	player_->SetEnemy(this->enemy_);
-	enemy_->player_ = this->player_;
+	enemy_->SetPlayer(this->player_);
 
 	// ロックオンクラス生成
 	LockOn* lockOn = nullptr;
@@ -56,9 +56,13 @@ void GameScene::Init(){
 	TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png");
 
 	// ゲームマネージャー生成
-	gameManager_			= gameObjectManager_->CreateInstance<GameManager>("GameManager", IObject::TagNone);
+	gameManager_ = gameObjectManager_->CreateInstance<GameManager>("GameManager", IObject::TagNone);
+	// ゲームマネージャーに対して渡す
+	gameManager_->SetPlayer(player_);
+	gameManager_->SetEnemy(enemy_);
+	// 他のクラスにゲームマネージャーを渡す
 	player_->SetGameManager(gameManager_);
-	enemy_->gameManager_	= gameManager_;
+	enemy_->SetGameManager(gameManager_);
 	// フェードイン開始
 	gameManager_->StartFade(GameManager::FADEIN, 1.5f);
 }

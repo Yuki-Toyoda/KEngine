@@ -8,9 +8,9 @@ void EnemyDown::Init()
 	stateName_ = "Down";
 
 	// ループを切れる
-	enemy_->enemyAnim_->isLoop_ = false;
+	anim_->isLoop_ = false;
 	// 敵のアニメーションを変更
-	enemy_->enemyAnim_->ChangeParameter("Enemy_Down", true);
+	anim_->ChangeParameter("Enemy_Down", true);
 
 	// ダウン時間タイマースタート
 	timer_.Start(kMaxDownTime_);
@@ -31,22 +31,22 @@ void EnemyDown::Update()
 	}
 
 	// 再生中のパラメータがダウンアニメーション中なら
-	if (enemy_->enemyAnim_->GetReadingParameterName() == "Enemy_Down" || enemy_->enemyAnim_->GetReadingParameterName() == "Enemy_Damage") {
-		if (enemy_->enemyAnim_->GetAnimationProgress() >= 0.35f) {
+	if (anim_->GetReadingParameterName() == "Enemy_Down" || anim_->GetReadingParameterName() == "Enemy_Damage") {
+		if (anim_->GetAnimationProgress() >= 0.35f) {
 			isFalling_ = true;
 		}
 
 		// 終了していたら次のアニメーションに移る
-		if (enemy_->enemyAnim_->isEnd_) {
+		if (anim_->isEnd_) {
 			// ループを行う
-			enemy_->enemyAnim_->isLoop_ = true;
+			anim_->isLoop_ = true;
 			// 敵のアニメーションを変更
-			enemy_->enemyAnim_->ChangeParameter("Enemy_Downing", true);
+			anim_->ChangeParameter("Enemy_Downing", true);
 		}
 	}
 
 	// 再生中のパラメータがダウン中アニメーション中なら
-	if (enemy_->enemyAnim_->GetReadingParameterName() == "Enemy_Downing" || enemy_->enemyAnim_->GetReadingParameterName() == "Enemy_Damage") {
+	if (anim_->GetReadingParameterName() == "Enemy_Downing" || anim_->GetReadingParameterName() == "Enemy_Damage") {
 		// タイマーが終了時
 		if (timer_.GetIsFinish()) {
 			// 待機状態に移行
@@ -55,11 +55,11 @@ void EnemyDown::Update()
 			return;
 		}
 
-		if (enemy_->enemyAnim_->GetReadingParameterName() == "Enemy_Damage") {// ループを行う
-			if (enemy_->enemyAnim_->isEnd_) {
-				enemy_->enemyAnim_->isLoop_ = true;
+		if (anim_->GetReadingParameterName() == "Enemy_Damage") {// ループを行う
+			if (anim_->isEnd_) {
+				anim_->isLoop_ = true;
 				// 敵のアニメーションを変更
-				enemy_->enemyAnim_->ChangeParameter("Enemy_Downing", true);
+				anim_->ChangeParameter("Enemy_Downing", true);
 			}
 		}
 

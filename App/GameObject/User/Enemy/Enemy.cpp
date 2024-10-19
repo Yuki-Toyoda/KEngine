@@ -99,7 +99,6 @@ void Enemy::Update()
 		if (state_->GetStateName() != "Down") {
 			// 差分ベクトルを求める
 			toPlayerDistance_ = transform_.translate_ - playerPos_->translate_;
-			//sub = Math::Normalize(sub);
 
 			// 目標角度の取得
 			targetAngle_ = std::atan2(toPlayerDistance_.x, toPlayerDistance_.z);
@@ -266,49 +265,22 @@ void Enemy::DisplayImGui()
 void Enemy::OnCollisionEnter(Collider* collider)
 {
 	// 死亡していなければ
-	if (hp_ > 0) {
+	if (isDead_) {
+		return;
+	}
 
-		// 弾と衝突していたら
-		if (collider->GetColliderName() == "Bullet") {
-			EnemyBullet* b = GameObjectManager::GetInstance()->GetGameObject<EnemyBullet>("EnemyBullet");
-			if (b->GetIsReturn()) {
-				// ラリー回数が最大数を超えていなければ
-				if (rallyCount_ <= kMaxRallyCount_) {
-					int percent = KLib::Random(rallyCount_, 6);
-					if (rallyCount_ == 1) {
-						percent = 0;
-					}
-
-					if (percent == 6) {
-						// 命中パーティクル再生
-						Particle* hit = ParticleManager::GetInstance()->CreateNewParticle("Hit", "./Engine/Resource/Samples/Plane", "Plane.obj", 1.0f);
-						hit->model_->materials_[1].tex_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png");
-						hit->model_->materials_[1].enableLighting_ = false;
-						hit->transform_.SetParent(&bodyTransform_);
-						hit->emitterDataBuffer_->data_->count = 100;
-						hit->emitterDataBuffer_->data_->frequency = 50.0f;
-						hit->emitterDataBuffer_->data_->frequencyTime = 55.0f;
-
-						// ダウン状態に
-						ChangeState(std::make_unique<EnemyDown>());
-
-						// 衝突した弾を破壊
-						collider->GetGameObject()->Destroy();
-
-						// ラリー回数リセット
-						rallyCount_ = 0;
-					}
-					else {
-						// アニメーションを変更
-						// ループを切る
-						enemyAnim_->isLoop_ = false;
-						enemyAnim_->ChangeParameter("Enemy_Rally", true);
-						// ラリー回数加算
-						rallyCount_++;
-					}
-
+	// 弾と衝突していたら
+	if (collider->GetColliderName() == "Bullet") {
+		EnemyBullet* b = GameObjectManager::GetInstance()->GetGameObject<EnemyBullet>("EnemyBullet");
+		if (b->GetIsReturn()) {
+			// ラリー回数が最大数を超えていなければ
+			if (rallyCount_ <= kMaxRallyCount_) {
+				int percent = KLib::Random(rallyCount_, 6);
+				if (rallyCount_ == 1) {
+					percent = 0;
 				}
-				else {
+
+				if (percent == 6) {
 					// 命中パーティクル再生
 					Particle* hit = ParticleManager::GetInstance()->CreateNewParticle("Hit", "./Engine/Resource/Samples/Plane", "Plane.obj", 1.0f);
 					hit->model_->materials_[1].tex_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png");
@@ -317,7 +289,7 @@ void Enemy::OnCollisionEnter(Collider* collider)
 					hit->emitterDataBuffer_->data_->count = 100;
 					hit->emitterDataBuffer_->data_->frequency = 50.0f;
 					hit->emitterDataBuffer_->data_->frequencyTime = 55.0f;
-					
+
 					// ダウン状態に
 					ChangeState(std::make_unique<EnemyDown>());
 
@@ -327,6 +299,34 @@ void Enemy::OnCollisionEnter(Collider* collider)
 					// ラリー回数リセット
 					rallyCount_ = 0;
 				}
+				else {
+					// アニメーションを変更
+					// ループを切る
+					enemyAnim_->isLoop_ = false;
+					enemyAnim_->ChangeParameter("Enemy_Rally", true);
+					// ラリー回数加算
+					rallyCount_++;
+				}
+
+			}
+			else {
+				// 命中パーティクル再生
+				Particle* hit = ParticleManager::GetInstance()->CreateNewParticle("Hit", "./Engine/Resource/Samples/Plane", "Plane.obj", 1.0f);
+				hit->model_->materials_[1].tex_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png");
+				hit->model_->materials_[1].enableLighting_ = false;
+				hit->transform_.SetParent(&bodyTransform_);
+				hit->emitterDataBuffer_->data_->count = 100;
+				hit->emitterDataBuffer_->data_->frequency = 50.0f;
+				hit->emitterDataBuffer_->data_->frequencyTime = 55.0f;
+
+				// ダウン状態に
+				ChangeState(std::make_unique<EnemyDown>());
+
+				// 衝突した弾を破壊
+				collider->GetGameObject()->Destroy();
+
+				// ラリー回数リセット
+				rallyCount_ = 0;
 			}
 		}
 	}
@@ -334,53 +334,57 @@ void Enemy::OnCollisionEnter(Collider* collider)
 
 void Enemy::OnCollision(Collider* collider)
 {
-	// 死亡していなければ
-	if (hp_ > 0) {
-		// 剣と衝突していたら
-		if (collider->GetColliderName() == "Sword") {
-			// ヒットクールタイムが終了していれば
-			if (hitCoolTimeTimer_.GetIsFinish() && state_->GetStateName() == "Down" && player_->isAttacking_) {
-				// HPを減らす
-				hp_--;
-				// クールタイムタイマー開始
-				hitCoolTimeTimer_.Start(kHitCoolTime_);
+	// 死亡している場合は早期リターン
+	if (isDead_) {
+		return;
+	}
 
-				// ループを切る
-				enemyAnim_->isLoop_ = false;
-				enemyAnim_->ChangeParameter("Enemy_Damage", true);
+	// 剣と衝突していたら
+	if (collider->GetColliderName() == "Sword") {
+		// ダウン中かつダウン状態であれば
+		if (hitCoolTimeTimer_.GetIsFinish() && state_->GetStateName() == "Down" && player_->GetIsAttacking()) {
+			// HPを減らす
+			hp_--;
+			// クールタイムタイマー開始
+			hitCoolTimeTimer_.Start(kHitCoolTime_);
 
-				// 命中パーティクル再生
-				Particle* hit = ParticleManager::GetInstance()->CreateNewParticle("Hit", "./Engine/Resource/Samples/Plane", "Plane.obj", 1.0f);
-				hit->model_->materials_[1].tex_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png");
-				hit->model_->materials_[1].enableLighting_ = false;
-				hit->transform_.SetParent(&bodyTransform_);
-				hit->emitterDataBuffer_->data_->count = 25;
-				hit->emitterDataBuffer_->data_->frequency = 50.0f;
-				hit->emitterDataBuffer_->data_->frequencyTime = 55.0f;
+			// ループを切る
+			enemyAnim_->isLoop_ = false;
+			enemyAnim_->ChangeParameter("Enemy_Damage", true);
 
-				// ダメージ効果音の再生
-				Audio::GetInstance()->PlayWave(damageSound_);
-			}
+			// 命中パーティクル再生
+			Particle* hit = ParticleManager::GetInstance()->CreateNewParticle("Hit", "./Engine/Resource/Samples/Plane", "Plane.obj", 1.0f);
+			hit->model_->materials_[1].tex_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png");
+			hit->model_->materials_[1].enableLighting_ = false;
+			hit->transform_.SetParent(&bodyTransform_);
+			hit->emitterDataBuffer_->data_->count = 25;
+			hit->emitterDataBuffer_->data_->frequency = 50.0f;
+			hit->emitterDataBuffer_->data_->frequencyTime = 55.0f;
+
+			// ダメージ効果音の再生
+			Audio::GetInstance()->PlayWave(damageSound_);
 		}
+	}
 
-		// フィールドと衝突している場合
-		if (collider->GetColliderName() == "Level") {
-			// フィールド内に存在する
-			isFieldOut_ = false;
-		}
+	// フィールドと衝突している場合
+	if (collider->GetColliderName() == "Level") {
+		// フィールド内に存在する
+		isFieldOut_ = false;
 	}
 }
 
 void Enemy::OnCollisionExit(Collider* collider)
 {
 	// 死亡していなければ
-	if (hp_ > 0) {
-		// フィールドから離れた場合
-		if (collider->GetColliderName() == "Level") {
-			// フィールド外に出ている
-			isFieldOut_ = true;
-		}
-	}	
+	if (isDead_) {
+		return;
+	}
+
+	// フィールドから離れた場合
+	if (collider->GetColliderName() == "Level") {
+		// フィールド外に出ている
+		isFieldOut_ = true;
+	}
 }
 
 void Enemy::CreateParameter(const std::string& name)
@@ -407,7 +411,7 @@ void Enemy::CreateParameter(const std::string& name)
 void Enemy::ChangeState(std::unique_ptr<IEnemyState> newState)
 {
 	// 共通初期化を行う
-	newState->PreInit(this);
+	newState->PreInit(this, enemyAnim_);
 	// 初期化を行う
 	newState->Init();
 

@@ -11,16 +11,15 @@ void EnemyDead::Init()
 	stateName_ = "Dead";
 
 	// ループを切れる
-	enemy_->enemyAnim_->isLoop_ = false;
+	anim_->isLoop_ = false;
 	// 敵のアニメーションを変更
-	enemy_->enemyAnim_->ChangeParameter("Enemy_Dead", true);
+	anim_->ChangeParameter("Enemy_Dead", true);
 	enemy_->transform_.rotate_.y = 0.037f;
 
 	// プレイヤー強制移動
 	Player* p = GameObjectManager::GetInstance()->GetGameObject<Player>("Player");
 	p->transform_.translate_ = { -0.544f, 0.0f, -4.65f };
 	p->transform_.rotate_.y = 0.28f;
-	p->canAction_ = false;
 	
 	// 待機アニメーション再生
 	p->skiningModels_["Player"]->animationManager_.PlayAnimation("00_Idle", 0.0f, true);
@@ -45,21 +44,9 @@ void EnemyDead::Update()
 	}
 
 	// アニメーションが終了していたら
-	if (enemy_->enemyAnim_->isEnd_) {
-		// フェードアウト演出が行われていない場合
-		if (!isFadeOut_) {
-			// フェードアウト開始
-			enemy_->gameManager_->StartFade(GameManager::FADEOUT, 1.5f);
-			// フェードアウト開始済み
-			isFadeOut_ = true;
-		}
-		else {
-			// フェード演出中で無ければ
-			if (!enemy_->gameManager_->GetIsFadeStaging()) {
-				// ゲーム終了
-				enemy_->gameManager_->SetIsGameEnd(true);
-			}
-		}
+	if (anim_->isEnd_) {
+		// 死亡状態に
+		enemy_->SetIsDead(true);
 	}
 }
 

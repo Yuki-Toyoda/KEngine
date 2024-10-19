@@ -56,6 +56,9 @@ void GameManager::Update()
 	// タイトル演出更新関数
 	TitleStagingUpdate();
 
+	// ゲームの進行状態の確認
+	GameStateUpdate();
+
 	// フェード演出中であれば
 	if (isFadeStaging_) {
 		// フェード演出更新
@@ -163,7 +166,22 @@ void GameManager::CreateTitleCameraParameter(const std::string& name)
 void GameManager::GameStateUpdate()
 {
 	// 敵、またはプレイヤーの死亡トリガーがtrueになってる場合はゲームが終了している
-	
+	if (enemy_->GetIsDead() || player_->GetIsDead()) {
+		// 終了演出の開始フラグ
+		if (!isEndStaging_) {
+			// フェードアウト開始
+			StartFade(FADEOUT, 1.5f);
+
+			// 終了演出フラグをtrue
+			isEndStaging_ = true;
+		}
+	}
+
+	// 終了演出を開始していてｍフェード演出が終了している場合
+	if (isEndStaging_ && !isFadeStaging_) {
+		// ゲーム終了
+		isGameEnd_ = true;
+	}
 }
 
 void GameManager::FadeUpdate()

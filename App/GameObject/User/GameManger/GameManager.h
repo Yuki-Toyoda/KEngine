@@ -131,6 +131,9 @@ private: // メンバ変数
 	// タイトル演出アニメーション
 	MyAnimation* titleAnim_ = nullptr;
 
+	// ゲーム終了演出フラグ
+	bool isEndStaging_ = false;
+
 	// フェード演出中フラグ
 	bool isFadeStaging_ = false;
 	// フェード管理フラグ

@@ -48,6 +48,7 @@ void Player::Init()
 	SwordLine_->isActive_					= false;
 	SwordLine_->trailMaterial_.tex_			= TextureManager::Load("./Engine/Resource/Samples/Texture", "SwordTrail.png");
 	SwordLine_->trailMaterial_.color_.w		= 0.0f;
+	SwordLine_->SetIsDisplayTrail(true);
 	// 一度更新する
 	SwordLine_->Update();
 
@@ -104,15 +105,21 @@ void Player::Update()
 			sprites_[hert]->isActive_ = true;
 		}
 		// ボタン関連UIの表示
-		sprites_["AButton"]->isActive_ = true;
-		sprites_["SwordIcon"]->isActive_ = true;
-		sprites_["BButton"]->isActive_ = true;
+		sprites_["AButton"]->isActive_		= true;
+		sprites_["SwordIcon"]->isActive_	= true;
+		sprites_["BButton"]->isActive_		= true;
 
 		// 行動可能状態に
 		canAction_ = true;
 
 		// セットアップした状態に
 		isSetUp_ = true;
+	}
+
+	// 敵が死亡している状態であれば
+	if (enemy_->GetIsDead()) {
+		// 行動出来ない状態に
+		canAction_ = false;
 	}
 
 	// 行動可能状態でない場合早期リターン
@@ -204,7 +211,11 @@ void Player::DisplayImGui()
 
 void Player::OnCollisionEnter(Collider* collider)
 {
-	collider;
+	// プレイヤーの剣と衝突していたら
+	if (collider->GetColliderName() == "Bullet" && isAttacking_) {
+		// パリィ演出を開始
+		followCamera_->StartParryBlur(0.1f, 0.2f, 0.055f);
+	}
 }
 
 void Player::ChangeState(std::unique_ptr<IState> newState)

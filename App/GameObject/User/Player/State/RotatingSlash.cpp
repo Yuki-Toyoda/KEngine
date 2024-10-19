@@ -20,7 +20,7 @@ void RotatingSlash::Init()
 void RotatingSlash::Update()
 {
 	// 回転斬りアニメーションの再生が終了している場合
-	if (player_->skiningModels_["Player"]->animationManager_.GetIsPlayingAnimation("14_RotateSlash")) {
+	if (!player_->skiningModels_["Player"]->animationManager_.GetIsPlayingAnimation("14_RotateSlash")) {
 		// プレイヤーのステートを再設定
 		player_->ChangeState(std::make_unique<Root>());
 

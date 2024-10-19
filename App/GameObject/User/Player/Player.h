@@ -136,6 +136,12 @@ public: // アクセッサ等
 	/// <returns>死亡しているか</returns>
 	bool GetIsDead() { return isDead_; }
 
+	/// <summary>
+	/// 身体の中心座標ゲッター
+	/// </summary>
+	/// <returns>身体の中心座標</returns>
+	WorldTransform* GetBodyPos() { return &colliderTransform_; }
+
 public: // パブリックなメンバ変数
 
 	// 効果音群

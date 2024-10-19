@@ -7,19 +7,19 @@ void EnemyRoot::Init()
 	stateName_ = "Root";
 
 	// ループを行う
-	enemy_->enemyAnim_->isLoop_ = true;
+	anim_->isLoop_ = true;
 	// アニメーションを変更
-	enemy_->enemyAnim_->ChangeParameter("Enemy_Idle", 0.25f, true);
+	anim_->ChangeParameter("Enemy_Idle", 0.25f, true);
 }
 
 void EnemyRoot::Update()
 {
 	// アニメーションを変更
-	if (enemy_->enemyAnim_->GetReadingParameterName() != "Enemy_Idle") {
+	if (anim_->GetReadingParameterName() != "Enemy_Idle") {
 		// ループを切る
-		if (enemy_->enemyAnim_->isEnd_) {
-			enemy_->enemyAnim_->isLoop_ = true;
-			enemy_->enemyAnim_->ChangeParameter("Enemy_Idle", 0.15f, true);
+		if (anim_->isEnd_) {
+			anim_->isLoop_ = true;
+			anim_->ChangeParameter("Enemy_Idle", 0.15f, true);
 		}
 	}
 

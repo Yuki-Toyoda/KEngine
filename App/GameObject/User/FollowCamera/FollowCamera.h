@@ -27,11 +27,6 @@ public: // メンバ関数
 	/// </summary>
 	void DisplayImGui() override;
 
-	/// <summary>
-	/// カメラの座標を動かした際の更新関数
-	/// </summary>
-	void UpdateTarget();
-
 public: // アクセッサ等
 
 	/// <summary>
@@ -75,25 +70,44 @@ public: // アクセッサ等
 	/// <returns>オフセットなしのビュー行列</returns>
 	const Matrix4x4 GetViewMatrixNoOffset();
 
+public: // 機能関数群
+
 	/// <summary>
-	/// 衝突時のみコールバックされ続ける関数
+	/// パリィ時のブラー演出の開始関数
 	/// </summary>
-	/// <param name="collider">衝突したコライダー</param>
-	void OnCollision(Collider* collider) override;
-	
-	/// <summary>
-	/// 衝突時にコールバックされ続ける関数
-	/// </summary>
-	/// <param name="collider">衝突したコライダー</param>
-	void OnCollisionExit(Collider* collider) override;
+	/// <param name="stagingTime">演出時間</param>
+	/// <param name="blurStrength">ブラーの強さ</param>
+	/// <param name="endStagingTime">演出の終了時間</param>
+	/// <param name="blurStrength">ブラー強さ</param>
+	void StartParryBlur(const float stagingTime, const float endStagingTime, const float blurStrength);
 
 private: // プライベートなメンバ関数
+
+	/// <summary>
+	/// カメラの座標を動かした際の更新関数
+	/// </summary>
+	void UpdateTarget();
 
 	/// <summary>
 	/// オフセット計算関数
 	/// </summary>
 	/// <returns>計算後オフセット</returns>
 	Vector3 CalcOffset() const;
+
+	/// <summary>
+	/// Z注目更新関数
+	/// </summary>
+	void ZForcusUpdate();
+
+	/// <summary>
+	/// Z注目時のビネット演出の更新関数
+	/// </summary>
+	void ForcusVignetteUpdate();
+
+	/// <summary>
+	/// パリィ時のラジアルブラー演出の更新関数
+	/// </summary>
+	void ParryBlurUpdate();
 
 private: // メンバ変数
 
@@ -106,14 +120,12 @@ private: // メンバ変数
 	// オフセットなしのカメラのワールドトランスフォーム
 	WorldTransform noOffsetTransform_;
 
-	// カメラの当たり判定半径
-	float colliderRadius_ = 0.1f;
-
 	// 追従対象の目標角度
 	float targetAngleX_ = 0.0f;
 	float targetAngleY_ = 0.0f;
-	// 床と衝突していた際のオフセット値
-	float targetAngleXOffset_ = 0.0f;
+
+	// X軸目標角度の最大閾値
+	float maxTargetAngleX_ = -0.1f;
 
 	// 目標角度への補正スピード
 	float correctionSpeed_ = 0.035f;
@@ -124,6 +136,12 @@ private: // メンバ変数
 	const float zForcusCorrectionSpeed_ = 0.25f;
 	// Z注目で敵をロックオンしたときのカメラ角度補正速度
 	const float zEnemyForcusCorrectionSpeed_ = 0.25f;
+
+	// Z注目時の回転補正値
+	float minOffsetRotateY_ = 0.15f; // 最小
+	float maxOffsetRotateY_ = 0.55f; // 最大
+	// Z注目時のZ軸方向の最大オフセット値
+	float maxZOffset_ = -27.0f;
 
 	// 追従対象の残像座標
 	Vector3 interTarget_ = {};
@@ -136,8 +154,8 @@ private: // メンバ変数
 	// ロックオン時の遷移先座標
 	Vector3 lockOnTranslate_ = {};
 
-	// ロックオン時のセットアップを完了しているか
-	bool isLockOnSetUp_ = false;
+	// ロックオン方向のセットアップフラグ
+	bool lockOnDirectionSetUp_ = false;
 	// どちらに角度を補正するか
 	bool isRightLockOn_ = false;
 
@@ -147,5 +165,21 @@ private: // メンバ変数
 
 	// ロックオン時の回転角
 	float kOffsetRotate_ = 0.05f;
+
+	// ロックオン中のビネット補間値
+	float vignetteT_		= 0.025f;
+	// ロックオン中のビネット強さ
+	float vignetteStrength_ = 0.25f;
+
+	// パリィ演出中かのフラグ
+	bool isParryStaging_ = false;
+	// パリィ時のラジアルブラー演出用タイマー
+	KLib::DeltaTimer parryBlurTimer_{};
+	// パリィ時のブラー強さ
+	float parryBlurStrength_ = 0.55f;
+	// パリィ演出の終了時間
+	float parryStagingEndTime_ = 0.0f;
+	// 終了演出中フラグ
+	bool isParryEndStaging_ = false;
 };
 

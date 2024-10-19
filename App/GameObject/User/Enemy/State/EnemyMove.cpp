@@ -14,12 +14,9 @@ void EnemyMove::Init()
 	// 差分計算用
 	Vector3 sub{};
 
-	if (!enemy_->isFieldOut_) {
+	if (!enemy_->GetIsFieldOut()) {
 		// プレイヤーから敵へのベクトルを求める
-		sub = Vector3::Normalize(enemy_->transform_.translate_ - enemy_->player_->transform_.translate_);
-
-		// y軸方向のベクトルは0にする
-		//sub.y = 0.0f;
+		sub = Vector3::Normalize(enemy_->transform_.translate_ - enemy_->GetPlayer()->transform_.translate_);
 
 		// 移動座標を求める
 		movePosition_ = sub * KLib::RandomF(12.5f, 15.5f, 2);
@@ -32,7 +29,7 @@ void EnemyMove::Init()
 		movePosition_ = sub * KLib::RandomF(15.0f, 25.0f, 2);
 
 		// フィールドアウトしていない状態に
-		enemy_->isFieldOut_ = false;
+		enemy_->SetIsFieldOut(false);
 	}
 
 	// 移動座標の高さを統一
@@ -50,7 +47,7 @@ void EnemyMove::Update()
 		enemy_->transform_.translate_ = KLib::Lerp<Vector3>(prevPosition_, movePosition_, KLib::EaseInOutQuad(moveTimer_.GetProgress()));
 
 		// 移動中にフィールド外にいった場合
-		if (enemy_->isFieldOut_) {
+		if (enemy_->GetIsFieldOut()) {
 			// 初期化
 			Init();
 		}
