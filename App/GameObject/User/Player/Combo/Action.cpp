@@ -43,15 +43,13 @@ void Action::Update()
 
 	// アニメーション終了時に
 	if (isStandByfromAnimEnd_) {
-		// アニメーションが再生されていない場合
-		if (!player_->skiningModels_["Player"]->animationManager_.GetIsPlayingAnimation(animName_)) {
-			// 遷移準備完了
-			isTransitionReady_ = true;
-		}
+		AnimationCheck();
 	}
 
-	// 硬直時間が終了し次第遷移可能に
-	if (stunTimer_.GetIsFinish()) { isTransitionReady_ = true; }
+	// 硬直時間が終了し次第、かつアニメーションが終了するまで待たない場合次のアクションへ遷移できる状態に
+	if (stunTimer_.GetIsFinish() && !isStandByfromAnimEnd_) { 
+		isTransitionReady_ = true; 
+	}
 
 	// 遷移時間タイマー終了時
 	if (isTransitionReady_) {
@@ -72,7 +70,7 @@ void Action::Update()
 
 void Action::DisplayImGui()
 {
-	if (ImGui::TreeNode(name_.c_str())) {
+	if (ImGui::BeginTabItem(name_.c_str())) {
 		// アクション名の設定
 		ImGui::InputText("ActionName", name_.data(), sizeof(name_.size()));
 
@@ -93,7 +91,11 @@ void Action::DisplayImGui()
 			ImGui::DragFloat("AttackLength", &acceptTime_, 0.01f, 0.5f);
 		}
 
+		// 移動した際のアクション終了設定
+		ImGui::Checkbox("IsActionEndFromMove", &isActionEndFromMove_);
+
 		// 入力条件の設定
+		ImGui::Text("Input Condition");
 		ImGui::RadioButton("TRIGGER", &inputCondition_, TRIGGER);
 		ImGui::RadioButton("PRESS",   &inputCondition_, PRESS);
 		ImGui::RadioButton("TRIGGER", &inputCondition_, RELEASE);
@@ -101,7 +103,8 @@ void Action::DisplayImGui()
 		// 特殊条件の設定
 		ImGui::InputText("SpecialConditionName", specialConditionName_.data(), sizeof(specialConditionName_.size()));
 
-		ImGui::TreePop();
+		// タブ終了
+		ImGui::EndTabItem();
 	}
 }
 
@@ -109,35 +112,50 @@ void Action::AddParam()
 {
 	// グローバル変数クラスのインスタンス取得
 	GlobalVariables* gv = GlobalVariables::GetInstance();
+	// 被り防止用に名称設定
+	std::string actionName = comboName_ + " - " + name_;
 
 	// 各パラメータをグローバル変数クラスに追加
-	gv->AddItem(comboName_, name_, animName_);
-	gv->AddItem(comboName_, name_, isStandByfromAnimEnd_);
-	gv->AddItem(comboName_, name_, stunTime_);
-	gv->AddItem(comboName_, name_, acceptTime_);
-	gv->AddItem(comboName_, name_, isAttack_);
-	gv->AddItem(comboName_, name_, damage_);
-	gv->AddItem(comboName_, name_, attackLength_);
-	gv->AddItem(comboName_, name_, inputCondition_);
-	gv->AddItem(comboName_, name_, specialConditionName_);
+	gv->AddItem("Combo", actionName, animName_);
+	gv->AddItem("Combo", actionName, isStandByfromAnimEnd_);
+	gv->AddItem("Combo", actionName, stunTime_);
+	gv->AddItem("Combo", actionName, acceptTime_);
+	gv->AddItem("Combo", actionName, isAttack_);
+	gv->AddItem("Combo", actionName, damage_);
+	gv->AddItem("Combo", actionName, attackLength_);
+	gv->AddItem("Combo", actionName, isActionEndFromMove_);
+	gv->AddItem("Combo", actionName, inputCondition_);
+	gv->AddItem("Combo", actionName, specialConditionName_);
 }
 
 void Action::ApplyParam()
 {
 	// グローバル変数クラスのインスタンス取得
 	GlobalVariables* gv = GlobalVariables::GetInstance();
+	// 被り防止用に名称設定
+	std::string actionName = comboName_ + " - " + name_;
 
 	// 各パラメータをグローバル変数クラスから取得
-	animName_				= gv->GetStringValue(comboName_, name_);
-	isStandByfromAnimEnd_	= gv->GetIntValue(comboName_, name_);
-	stunTime_				= gv->GetFloatValue(comboName_, name_);
-	acceptTime_				= gv->GetFloatValue(comboName_, name_);
-	isAttack_				= gv->GetIntValue(comboName_, name_);
-	damage_					= gv->GetIntValue(comboName_, name_);
-	attackLength_			= gv->GetFloatValue(comboName_, name_);
-	inputCondition_			= gv->GetIntValue(comboName_, name_);
-	specialConditionName_	= gv->GetStringValue(comboName_, name_);
+	animName_				= gv->GetStringValue("Combo", actionName);
+	isStandByfromAnimEnd_	= gv->GetIntValue("Combo", actionName);
+	stunTime_				= gv->GetFloatValue("Combo", actionName);
+	acceptTime_				= gv->GetFloatValue("Combo", actionName);
+	isAttack_				= gv->GetIntValue("Combo", actionName);
+	damage_					= gv->GetIntValue("Combo", actionName);
+	attackLength_			= gv->GetFloatValue("Combo", actionName);
+	isActionEndFromMove_	= gv->GetFloatValue("Combo", actionName);
+	inputCondition_			= gv->GetIntValue("Combo", actionName);
+	specialConditionName_	= gv->GetStringValue("Combo", actionName);
 
+}
+
+void Action::AnimationCheck()
+{
+	// アニメーションが再生されていない場合
+	if (!player_->skiningModels_["Player"]->animationManager_.GetIsPlayingAnimation(animName_)) {
+		// 遷移準備完了
+		isTransitionReady_ = true;
+	}
 }
 
 void Action::CheckCondition()

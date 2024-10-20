@@ -62,10 +62,34 @@ public: // アクセッサ等
 	void SetPlayer(Player* player) { player_ = player; }
 
 	/// <summary>
+	/// アクション名ゲッター
+	/// </summary>
+	/// <returns>アクション名</returns>
+	std::string GetActionName() { return name_; }
+
+	/// <summary>
+	/// 移動した際に該当アクションを終了するか
+	/// </summary>
+	/// <returns>フラグ状態</returns>
+	bool GetIsActionEndFromMove() { return isActionEndFromMove_; }
+
+	/// <summary>
 	/// 遷移可能状態ゲッター
 	/// </summary>
 	/// <returns>遷移可能か</returns>
 	bool GetIsTransitionReady() { return isTransitionReady_; }
+
+	/// <summary>
+	/// 次のアクション移行フラグゲッター
+	/// </summary>
+	/// <returns>次のアクションに移行するか</returns>
+	bool GetIsGoNextAciton() { return isGoNextAction_; }
+
+	/// <summary>
+	/// コンボ変更フラグゲッター
+	/// </summary>
+	/// <returns>コンボ変更を行うか</returns>
+	bool GetIsChangeCombo() { return isChangeCombo_; }
 
 	/// <summary>
 	/// アクションの終了状態ゲッター
@@ -76,6 +100,11 @@ public: // アクセッサ等
 private: // 機能関数群
 	
 	/// <summary>
+	/// アニメーションが終了しているか検証する関数
+	/// </summary>
+	void AnimationCheck();
+
+	/// <summary>
 	/// 次のコンボに移る条件を満たしているか検証する関数
 	/// </summary>
 	void CheckCondition();
@@ -85,7 +114,7 @@ private: // メンバ変数
 	// コンボ名
 	std::string comboName_ = "";
 	// アクション名
-	std::string name_ = "";
+	std::string name_ = "Action";
 
 	// プレイヤー
 	Player* player_ = nullptr;
@@ -110,6 +139,9 @@ private: // メンバ変数
 	int32_t damage_ = 1;
 	// 攻撃判定の長さ
 	float attackLength_ = 1.0f;
+
+	// 移動した際にアクション終了するか
+	bool isActionEndFromMove_ = false;
 
 	// 次のコンボに移るボタンの条件
 	int32_t inputCondition_ = TRIGGER;
