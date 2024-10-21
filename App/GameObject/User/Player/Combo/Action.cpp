@@ -1,12 +1,15 @@
 #include "Action.h"
 #include "App/GameObject/User/Player/Player.h"
 
-Action::Action(const std::string& comboName, const std::string& actionName)
+Action::Action(const std::string& comboName, const std::string& actionName, const int32_t count)
 {
 	// コンボ名の取得
 	comboName_ = comboName;
 	// アクション名の取得
 	name_ = actionName;
+
+	// 何コンボ目のアクションかを取得
+	comboCount_ = count;
 
 	// パラメータ追加
 	AddParam();
@@ -20,13 +23,20 @@ void Action::Init()
 	if (player_ == nullptr) { return; }
 
 	// 各タイマーの開始
-	stunTimer_.Start(stunTime_);		// 硬直時間
-	acceptTimer_.Start(acceptTime_);	// 受付時間
+	stunTimer_.Start(stunTime_);			// 硬直時間
+	acceptTimer_.Start(acceptTime_);		// 受付時間
+	attackEndTimer_.Start(attackEndTime_);	// 攻撃終了時間
 
+	// 攻撃開始秒数が0.0以外だった場合
+	if (attackStartTime_ != 0.0f) {
+		// 攻撃開始秒数タイマー開始
+		attackStartTimer_.Start(attackStartTime_);
+	}
+
+	// 攻撃していない状態に
+	player_->SetIsAttacking(false);
 	// 指定されたアニメーションの再生
-	player_->skiningModels_["Player"]->animationManager_.PlayAnimation(animName_, 0.1f);
-	// プレイヤーの攻撃判定の設定
-	player_->SetIsAttacking(isAttack_);
+	player_->skiningModels_["Player"]->animationManager_.PlayAnimation(animName_, 0.015f);
 	// プレイヤーの攻撃判定の長さを設定
 	player_->GetSwordLine()->length_ = attackLength_;
 
@@ -44,6 +54,12 @@ void Action::Update()
 	// アニメーション終了時に
 	if (isStandByfromAnimEnd_) {
 		AnimationCheck();
+	}
+
+	// 攻撃判定有効時
+	if (isAttack_) {
+		// 攻撃判定の更新
+		AttackJudgeUpdate();
 	}
 
 	// 硬直時間が終了し次第、かつアニメーションが終了するまで待たない場合次のアクションへ遷移できる状態に
@@ -64,47 +80,61 @@ void Action::Update()
 	}
 
 	// 各タイマーの更新
-	stunTimer_.Update();	// 硬直時間
-	acceptTimer_.Update();	// コンボ受付時間
+	stunTimer_.Update();		// 硬直時間
+	acceptTimer_.Update();		// コンボ受付時間
+	attackStartTimer_.Update(); // 攻撃開始時間
+	attackEndTimer_.Update();	// 攻撃終了時間
 }
 
 void Action::DisplayImGui()
 {
-	if (ImGui::BeginTabItem(name_.c_str())) {
-		// アクション名の設定
-		ImGui::InputText("ActionName", name_.data(), sizeof(name_.size()));
+	// アクション名の設定
+	ImGui::InputText("ActionName", imGuiActionName_, sizeof(imGuiActionName_));
+	name_ = imGuiActionName_;
 
-		// 再生されるアニメーション名
-		ImGui::InputText("AnimName", animName_.data(), sizeof(animName_.size()));
+	// 再生されるアニメーション名
+	ImGui::InputText("AnimName", imGuiAnimName_, sizeof(imGuiAnimName_));
+	animName_ = imGuiAnimName_;
+	// アニメーション終了した段階で遷移可能にするか
+	ImGui::Checkbox("IsStandByfromAnimEnd", &isStandByfromAnimEnd_);
 
-		// 硬直時間の設定
-		ImGui::DragFloat("StunTime", &stunTime_, 0.01f, 0.001f);
+	// 硬直時間の設定
+	ImGui::DragFloat("StunTime", &stunTime_, 0.01f, 0.001f);
 
-		// 受付時間の設定
-		ImGui::DragFloat("AcceptTime", &acceptTime_, 0.01f, 0.001f);
+	// 受付時間の設定
+	ImGui::DragFloat("AcceptTime", &acceptTime_, 0.01f, 0.001f);
 
-		// 攻撃判定があるかどうか
-		if (ImGui::Checkbox("IsAttack", &isAttack_)) { // 攻撃判定がある場合
-			// ダメージ量の設定
-			ImGui::InputInt("Damage", &damage_);
-			// 攻撃長さの設定
-			ImGui::DragFloat("AttackLength", &acceptTime_, 0.01f, 0.5f);
-		}
+	// 攻撃判定があるかどうか
+	ImGui::Checkbox("IsAttack", &isAttack_);
+	if (isAttack_) { // 攻撃判定がある場合
+		// ダメージ量の設定
+		ImGui::InputInt("Damage", &damage_);
+		// 攻撃長さの設定
+		ImGui::DragFloat("AttackLength", &attackLength_, 0.01f, 0.5f);
 
-		// 移動した際のアクション終了設定
-		ImGui::Checkbox("IsActionEndFromMove", &isActionEndFromMove_);
+		// 攻撃開始秒数の設定
+		ImGui::DragFloat("StartTime", &attackStartTime_, 0.01f, 0.0f);
+		// 攻撃終了秒数の設定
+		ImGui::DragFloat("EndTime", &attackEndTime_, 0.01f, 0.5f);
+	}
 
-		// 入力条件の設定
-		ImGui::Text("Input Condition");
-		ImGui::RadioButton("TRIGGER", &inputCondition_, TRIGGER);
-		ImGui::RadioButton("PRESS",   &inputCondition_, PRESS);
-		ImGui::RadioButton("TRIGGER", &inputCondition_, RELEASE);
+	// 移動した際のアクション終了設定
+	ImGui::Checkbox("IsActionEndFromMove", &isActionEndFromMove_);
 
-		// 特殊条件の設定
-		ImGui::InputText("SpecialConditionName", specialConditionName_.data(), sizeof(specialConditionName_.size()));
+	// 入力条件の設定
+	ImGui::Text("Input Condition");
+	ImGui::RadioButton("TRIGGER", &inputCondition_, TRIGGER);
+	ImGui::RadioButton("PRESS", &inputCondition_, PRESS);
+	ImGui::RadioButton("RELEASE", &inputCondition_, RELEASE);
 
-		// タブ終了
-		ImGui::EndTabItem();
+	// 特殊条件の設定
+	ImGui::InputText("SpecialConditionName", imGuiSpecialConditionName_, sizeof(imGuiSpecialConditionName_));
+	specialConditionName_ = imGuiSpecialConditionName_;
+	// 特殊条件が設定されている場合
+	if (specialConditionName_ != "") {
+		// コンボ名の設定
+		ImGui::InputText("SpecialConditionName", imGuiSpecialConditionName_, sizeof(imGuiSpecialConditionName_));
+		specialConditionName_ = imGuiSpecialConditionName_;
 	}
 }
 
@@ -113,19 +143,45 @@ void Action::AddParam()
 	// グローバル変数クラスのインスタンス取得
 	GlobalVariables* gv = GlobalVariables::GetInstance();
 	// 被り防止用に名称設定
-	std::string actionName = comboName_ + " - " + name_;
+	std::string actionName = name_ + " : " + std::to_string(comboCount_);
 
 	// 各パラメータをグローバル変数クラスに追加
-	gv->AddItem("Combo", actionName, animName_);
-	gv->AddItem("Combo", actionName, isStandByfromAnimEnd_);
-	gv->AddItem("Combo", actionName, stunTime_);
-	gv->AddItem("Combo", actionName, acceptTime_);
-	gv->AddItem("Combo", actionName, isAttack_);
-	gv->AddItem("Combo", actionName, damage_);
-	gv->AddItem("Combo", actionName, attackLength_);
-	gv->AddItem("Combo", actionName, isActionEndFromMove_);
-	gv->AddItem("Combo", actionName, inputCondition_);
-	gv->AddItem("Combo", actionName, specialConditionName_);
+	gv->AddItem(comboName_, actionName + " - AnimName", animName_);
+	gv->AddItem(comboName_, actionName + " - IsStandByfromAnimEnd", isStandByfromAnimEnd_);
+	gv->AddItem(comboName_, actionName + " - StunTime", stunTime_);
+	gv->AddItem(comboName_, actionName + " - AcceptTime", acceptTime_);
+	gv->AddItem(comboName_, actionName + " - IsAttack", isAttack_);
+	gv->AddItem(comboName_, actionName + " - Damage", damage_);
+	gv->AddItem(comboName_, actionName + " - AttackLength", attackLength_);
+	gv->AddItem(comboName_, actionName + " - AttackStartTime", attackStartTime_);
+	gv->AddItem(comboName_, actionName + " - AttackEndTime", attackEndTime_);
+	gv->AddItem(comboName_, actionName + " - IsActionEndFromMove", isActionEndFromMove_);
+	gv->AddItem(comboName_, actionName + " - InputCondition", inputCondition_);
+	gv->AddItem(comboName_, actionName + " - SpecialConditionName", specialConditionName_);
+	gv->AddItem(comboName_, actionName + " - NextComboName", nextComboName_);
+}
+
+void Action::SetValue()
+{
+	// グローバル変数クラスのインスタンス取得
+	GlobalVariables* gv = GlobalVariables::GetInstance();
+	// 被り防止用に名称設定
+	std::string actionName = name_ + " : " + std::to_string(comboCount_);
+
+	// 各パラメータをグローバル変数クラスに追加
+	gv->SetValue(comboName_, actionName + " - AnimName", animName_);
+	gv->SetValue(comboName_, actionName + " - IsStandByfromAnimEnd", isStandByfromAnimEnd_);
+	gv->SetValue(comboName_, actionName + " - StunTime", stunTime_);
+	gv->SetValue(comboName_, actionName + " - AcceptTime", acceptTime_);
+	gv->SetValue(comboName_, actionName + " - IsAttack", isAttack_);
+	gv->SetValue(comboName_, actionName + " - Damage", damage_);
+	gv->SetValue(comboName_, actionName + " - AttackLength", attackLength_);
+	gv->SetValue(comboName_, actionName + " - AttackStartTime", attackStartTime_);
+	gv->SetValue(comboName_, actionName + " - AttackEndTime", attackEndTime_);
+	gv->SetValue(comboName_, actionName + " - IsActionEndFromMove", isActionEndFromMove_);
+	gv->SetValue(comboName_, actionName + " - InputCondition", inputCondition_);
+	gv->SetValue(comboName_, actionName + " - SpecialConditionName", specialConditionName_);
+	gv->SetValue(comboName_, actionName + " - NextComboName", nextComboName_);
 }
 
 void Action::ApplyParam()
@@ -133,20 +189,28 @@ void Action::ApplyParam()
 	// グローバル変数クラスのインスタンス取得
 	GlobalVariables* gv = GlobalVariables::GetInstance();
 	// 被り防止用に名称設定
-	std::string actionName = comboName_ + " - " + name_;
+	std::string actionName = name_ + " : " + std::to_string(comboCount_);
 
 	// 各パラメータをグローバル変数クラスから取得
-	animName_				= gv->GetStringValue("Combo", actionName);
-	isStandByfromAnimEnd_	= gv->GetIntValue("Combo", actionName);
-	stunTime_				= gv->GetFloatValue("Combo", actionName);
-	acceptTime_				= gv->GetFloatValue("Combo", actionName);
-	isAttack_				= gv->GetIntValue("Combo", actionName);
-	damage_					= gv->GetIntValue("Combo", actionName);
-	attackLength_			= gv->GetFloatValue("Combo", actionName);
-	isActionEndFromMove_	= gv->GetFloatValue("Combo", actionName);
-	inputCondition_			= gv->GetIntValue("Combo", actionName);
-	specialConditionName_	= gv->GetStringValue("Combo", actionName);
+	animName_				= gv->GetStringValue(comboName_, actionName + " - AnimName");
+	isStandByfromAnimEnd_	= gv->GetIntValue(comboName_, actionName + " - IsStandByfromAnimEnd");
+	stunTime_				= gv->GetFloatValue(comboName_, actionName + " - StunTime");
+	acceptTime_				= gv->GetFloatValue(comboName_, actionName + " - AcceptTime");
+	isAttack_				= gv->GetIntValue(comboName_, actionName + " - IsAttack");
+	damage_					= gv->GetIntValue(comboName_, actionName + " - Damage");
+	attackLength_			= gv->GetFloatValue(comboName_, actionName + " - AttackLength");
+	attackStartTime_		= gv->GetFloatValue(comboName_, actionName + " - AttackStartTime");
+	attackEndTime_			= gv->GetFloatValue(comboName_, actionName + " - AttackEndTime");
+	isActionEndFromMove_	= gv->GetIntValue(comboName_, actionName + " - IsActionEndFromMove");
+	inputCondition_			= gv->GetIntValue(comboName_, actionName + " - InputCondition");
+	specialConditionName_	= gv->GetStringValue(comboName_, actionName + " - SpecialConditionName");
+	nextComboName_			= gv->GetStringValue(comboName_, actionName + " - NextComboName");
 
+	// ImGui用変数の名称を変更しておく
+	strncpy_s(imGuiActionName_, sizeof(imGuiActionName_), name_.c_str(), _TRUNCATE);
+	strncpy_s(imGuiAnimName_, sizeof(imGuiAnimName_), animName_.c_str(), _TRUNCATE);
+	strncpy_s(imGuiSpecialConditionName_, sizeof(imGuiSpecialConditionName_), specialConditionName_.c_str(), _TRUNCATE);
+	strncpy_s(imGuiNextComboName_, sizeof(imGuiNextComboName_), nextComboName_.c_str(), _TRUNCATE);
 }
 
 void Action::AnimationCheck()
@@ -156,6 +220,26 @@ void Action::AnimationCheck()
 		// 遷移準備完了
 		isTransitionReady_ = true;
 	}
+}
+
+void Action::AttackJudgeUpdate()
+{
+	// 攻撃開始タイマーが終了している場合
+	if (attackStartTimer_.GetIsFinish()) {
+		// 攻撃中に
+		player_->SetIsAttacking(true);
+
+		// 攻撃終了タイマーが終了している場合
+		if (attackEndTimer_.GetIsFinish()) {
+			// 攻撃中ではない
+			player_->SetIsAttacking(false);
+		}
+	}
+	else { // 終了していない場合
+		// 攻撃中ではない
+		player_->SetIsAttacking(false);
+	}
+
 }
 
 void Action::CheckCondition()
@@ -170,6 +254,12 @@ void Action::CheckCondition()
 	if (Input::GetInstance()->InspectButton(XINPUT_GAMEPAD_A, inputCondition_)) {
 		// 次のコンボに移る
 		isGoNextAction_ = true;
+		// 行動を終了する
+		isEndAction_ = true;
+	}
+
+	// 左スティックが入力されているかつ移動によってアクションが終了する状態の場合
+	if (Input::GetInstance()->InspectJoyStickInput(0) && isActionEndFromMove_) {
 		// 行動を終了する
 		isEndAction_ = true;
 	}

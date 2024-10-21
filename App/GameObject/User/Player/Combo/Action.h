@@ -14,12 +14,13 @@ class Action
 {
 public: // コンストラクタ等
 
-	/// <summary>
+	// <summary>
 	/// コンストラクタ
 	/// </summary>
 	/// <param name="comboName">読み込まれるコンボ名</param>
 	/// <param name="name">読み込まれるアクション名</param>
-	Action(const std::string& comboName, const std::string& actionName);
+	/// <param name="count">何番目のアクションか</param>
+	Action(const std::string& comboName, const std::string& actionName, const int32_t count);
 
 	/// <summary>
 	/// デストラクタ
@@ -49,6 +50,11 @@ public: // メンバ関数
 	void AddParam();
 
 	/// <summary>
+	/// パラメーターセット関数
+	/// </summary>
+	void SetValue();
+
+	/// <summary>
 	/// パラメーター適用関数
 	/// </summary>
 	void ApplyParam();
@@ -62,10 +68,27 @@ public: // アクセッサ等
 	void SetPlayer(Player* player) { player_ = player; }
 
 	/// <summary>
+	/// コンボ名セッター
+	/// </summary>
+	/// <param name="comboName">コンボ名</param>
+	void SetComboName(const std::string& comboName) { comboName_ = comboName; };
+
+	/// <summary>
 	/// アクション名ゲッター
 	/// </summary>
 	/// <returns>アクション名</returns>
 	std::string GetActionName() { return name_; }
+
+	/// <summary>
+	/// 何コンボ目のアクションかのセッター
+	/// </summary>
+	/// <param name="count">何コンボ目のアクションにするか</param>
+	void SetComboCount(const int32_t count) { comboCount_ = count; }
+	/// <summary>
+	/// 何コンボ目のアクションかのゲッター
+	/// </summary>
+	/// <returns>何コンボ目のアクションか</returns>
+	int32_t GetComboCount() { return comboCount_; }
 
 	/// <summary>
 	/// 移動した際に該当アクションを終了するか
@@ -105,6 +128,11 @@ private: // 機能関数群
 	void AnimationCheck();
 
 	/// <summary>
+	/// 攻撃判定更新関数
+	/// </summary>
+	void AttackJudgeUpdate();
+
+	/// <summary>
 	/// 次のコンボに移る条件を満たしているか検証する関数
 	/// </summary>
 	void CheckCondition();
@@ -115,6 +143,9 @@ private: // メンバ変数
 	std::string comboName_ = "";
 	// アクション名
 	std::string name_ = "Action";
+
+	// 何コンボ目のアクションか
+	int32_t comboCount_ = 0;
 
 	// プレイヤー
 	Player* player_ = nullptr;
@@ -131,7 +162,7 @@ private: // メンバ変数
 	// 受付時間タイマー
 	KLib::DeltaTimer acceptTimer_{};
 	// 次のコンボ受付時間
-	float acceptTime_ = 0.65f;
+	float acceptTime_ = 0.5f;
 
 	// 行動中に攻撃判定が存在するか
 	bool isAttack_ = false;
@@ -139,6 +170,15 @@ private: // メンバ変数
 	int32_t damage_ = 1;
 	// 攻撃判定の長さ
 	float attackLength_ = 1.0f;
+
+	// 攻撃開始秒数
+	float attackStartTime_ = 0.0f;
+	// 攻撃開始時間タイマー
+	KLib::DeltaTimer attackStartTimer_{};
+	// 攻撃終了秒数
+	float attackEndTime_ = 0.5f;
+	// 攻撃終了時間タイマー
+	KLib::DeltaTimer attackEndTimer_{};
 
 	// 移動した際にアクション終了するか
 	bool isActionEndFromMove_ = false;
@@ -165,6 +205,15 @@ private: // メンバ変数
 	bool isEndAction_ = false;
 
 	#pragma region ImGui用変数
+
+	// アクション名
+	char imGuiActionName_[64] = "";
+	// 再生アニメーション名
+	char imGuiAnimName_[64] = "";
+	// 特殊条件名
+	char imGuiSpecialConditionName_[64] = "";
+	// 次のコンボ名
+	char imGuiNextComboName_[64] = "";
 
 	int32_t imGuiInputCondition_ = TRIGGER;
 

@@ -12,8 +12,9 @@ public: // コンストラクタ等
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	/// <param name="name">読み込むコンボ名称</param>
-	Combo(const std::string& name);
+	/// <param name="comboID">コンボID</param>
+	/// <param name="comboName">コンボ名</param>
+	Combo(const std::string& comboID, const std::string& comboName = "Combo");
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
@@ -42,6 +43,11 @@ public: // メンバ関数
 	void AddParam();
 
 	/// <summary>
+	/// パラメータセット関数
+	/// </summary>
+	void SetValue();
+
+	/// <summary>
 	/// パラメータ適用関数
 	/// </summary>
 	void ApplyParam();
@@ -55,6 +61,17 @@ public: // アクセッサ等
 	void SetPlayer(Player* player) { player_ = player; }
 
 	/// <summary>
+	/// コンボ名セッター
+	/// </summary>
+	/// <param name="comboName">コンボ名</param>
+	void SetComboName(const std::string& comboName) { name_ = comboName; }
+	/// <summary>
+	/// コンボ名ゲッター
+	/// </summary>
+	/// <returns>コンボ名</returns>
+	std::string GetComboName() { return name_; }
+
+	/// <summary>
 	/// 現在のコンボ数ゲッター
 	/// </summary>
 	/// <returns>現在のコンボ数</returns>
@@ -65,6 +82,12 @@ public: // アクセッサ等
 	/// </summary>
 	/// <returns>終了しているか</returns>
 	bool GetIsComboEnd() { return isComboEnd_; }
+
+	/// <summary>
+	/// 遷移可能状態ゲッター
+	/// </summary>
+	/// <returns>遷移可能か</returns>
+	bool GetIsTransitionReady();
 
 private: // プライベートメンバ関数
 
@@ -98,5 +121,15 @@ private: // メンバ変数
 
 	// コンボの終了フラグ
 	bool isComboEnd_ = false;
+
+	#pragma region ImGui用変数
+
+	// コンボ名
+	char imGuiComboName_[64] = "";
+
+	// 追加するアクション名
+	char imGuiAddActionName_[64] = "New Action";
+
+	#pragma endregion
 };
 

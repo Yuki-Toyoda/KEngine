@@ -4,6 +4,7 @@
 #include "State/StateList.h"
 #include "Engine/Utility/Animation/AnimationManager.h"
 #include "Engine/Audio/Audio.h"
+#include "App/GameObject/User/Player/Combo/ComboManager.h"
 
 // クラスの前方宣言
 class Camera;
@@ -109,6 +110,12 @@ public: // アクセッサ等
 	int32_t GetHP() { return hp_; }
 
 	/// <summary>
+	/// コンボマネージャーゲッター
+	/// </summary>
+	/// <returns>コンボマネージャー</returns>
+	ComboManager* GetComboManager() { return &comboManager_; }
+
+	/// <summary>
 	/// 攻撃状態セッター
 	/// </summary>
 	/// <param name="isAttacking">攻撃状態</param>
@@ -165,6 +172,9 @@ private: // メンバ変数
 
 	// 行動可能か
 	bool canAction_ = false;
+
+	// コンボマネージャー
+	ComboManager comboManager_;
 
 	// 武器のトランスフォーム
 	WorldTransform weaponTransform_;

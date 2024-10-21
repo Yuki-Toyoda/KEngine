@@ -87,6 +87,9 @@ void Player::Init()
 	sprites_["SwordIcon"]->isActive_ = false;
 	sprites_["BButton"]->isActive_ = false;
 
+	// コンボマネージャーの初期化
+	comboManager_.Init(this);
+
 	// 効果音読み込み
 	SwingSword_ = Audio::GetInstance()->LoadWave("./Resources/Audio/SE/SwingSword.mp3");
 	RotateSlash_ = Audio::GetInstance()->LoadWave("./Resources/Audio/SE/RotateSlash.mp3");
@@ -94,6 +97,14 @@ void Player::Init()
 
 void Player::Update()
 {
+	#ifdef _DEBUG // デバッグ時のみ実行
+
+	// ImGuiの表示
+	comboManager_.DisplayImGui();
+
+	#endif // _DEBUG // デバッグ時のみ実行
+
+
 	// ゲーム開始状態のとき
 	if (gameManager_->GetIsGameStart() && !isSetUp_) {
 		// メインカメラを使用
@@ -169,6 +180,15 @@ void Player::Update()
 			if (input_->InspectButton(XINPUT_GAMEPAD_A, TRIGGER)) {
 				// 行動を変更
 				ChangeState(std::make_unique<Attack>());
+
+				// Z注目有効時
+				if (followCamera_->GetEnableZForcus()) {
+					comboManager_.ChangeCombo("LockOn");
+				}
+				else {
+					comboManager_.ChangeCombo("Normal");
+				}
+				
 			}
 		}
 	}

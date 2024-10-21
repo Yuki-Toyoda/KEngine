@@ -1,6 +1,9 @@
 #pragma once
 #include "IState.h"
 
+// クラスの前方宣言
+class ComboManager;
+
 /// <summary>
 /// 攻撃状態クラス
 /// </summary>
@@ -24,6 +27,9 @@ public: // メンバ関数
 	void DisplayImGui() override;
 
 private: // メンバ変数
+
+	// コンボマネージャー本体
+	ComboManager* comboManager_ = nullptr;
 
 	// 回転斬りのチャージへの移行閾値
 	const float chargeTransitionThreshold_ = 0.6f;
