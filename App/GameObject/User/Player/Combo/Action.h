@@ -121,7 +121,7 @@ public: // アクセッサ等
 	bool GetIsActionEnd() { return isEndAction_; }
 
 private: // 機能関数群
-	
+
 	/// <summary>
 	/// アニメーションが終了しているか検証する関数
 	/// </summary>
@@ -131,6 +131,11 @@ private: // 機能関数群
 	/// 攻撃判定更新関数
 	/// </summary>
 	void AttackJudgeUpdate();
+
+	/// <summary>
+	/// スタン確認関数
+	/// </summary>
+	void StunCheck();
 
 	/// <summary>
 	/// 次のコンボに移る条件を満たしているか検証する関数
@@ -158,6 +163,8 @@ private: // メンバ変数
 	KLib::DeltaTimer stunTimer_{};
 	// 硬直時間
 	float stunTime_ = 0.1f;
+	// スタン終了フラグ
+	bool stunEnd_ = false;
 
 	// 受付時間タイマー
 	KLib::DeltaTimer acceptTimer_{};
@@ -175,6 +182,8 @@ private: // メンバ変数
 	float attackStartTime_ = 0.0f;
 	// 攻撃開始時間タイマー
 	KLib::DeltaTimer attackStartTimer_{};
+	// 攻撃開始フラグ
+	bool attackStart_ = true;
 	// 攻撃終了秒数
 	float attackEndTime_ = 0.5f;
 	// 攻撃終了時間タイマー

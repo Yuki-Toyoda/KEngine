@@ -31,6 +31,8 @@ void Action::Init()
 	if (attackStartTime_ != 0.0f) {
 		// 攻撃開始秒数タイマー開始
 		attackStartTimer_.Start(attackStartTime_);
+		// 攻撃開始フラグリセット
+		attackStart_ = false;
 	}
 
 	// 攻撃していない状態に
@@ -62,28 +64,15 @@ void Action::Update()
 		AttackJudgeUpdate();
 	}
 
-	// 硬直時間が終了し次第、かつアニメーションが終了するまで待たない場合次のアクションへ遷移できる状態に
-	if (stunTimer_.GetIsFinish() && !isStandByfromAnimEnd_) { 
-		isTransitionReady_ = true; 
+	// 硬直が終了していなければ
+	if (!stunEnd_) {
+		// 硬直検証
+		StunCheck();
 	}
-
-	// 遷移時間タイマー終了時
-	if (isTransitionReady_) {
+	else {
 		// 遷移条件のチェック
 		CheckCondition();
 	}
-
-	// 受付時間タイマー終了時
-	if (acceptTimer_.GetIsFinish()) {
-		// アクション終了
-		isEndAction_ = true;
-	}
-
-	// 各タイマーの更新
-	stunTimer_.Update();		// 硬直時間
-	acceptTimer_.Update();		// コンボ受付時間
-	attackStartTimer_.Update(); // 攻撃開始時間
-	attackEndTimer_.Update();	// 攻撃終了時間
 }
 
 void Action::DisplayImGui()
@@ -213,6 +202,21 @@ void Action::ApplyParam()
 	strncpy_s(imGuiNextComboName_, sizeof(imGuiNextComboName_), nextComboName_.c_str(), _TRUNCATE);
 }
 
+void Action::StunCheck()
+{
+	// 硬直時間終了時
+	if (stunTimer_.GetIsFinish()) {
+		// 硬直終了
+		stunEnd_ = true;
+		// 次のアクションへ遷移できる状態に
+		isTransitionReady_ = true;
+	}
+	else {
+		// 硬直時間タイマー更新
+		stunTimer_.Update();
+	}
+}
+
 void Action::AnimationCheck()
 {
 	// アニメーションが再生されていない場合
@@ -224,20 +228,29 @@ void Action::AnimationCheck()
 
 void Action::AttackJudgeUpdate()
 {
-	// 攻撃開始タイマーが終了している場合
-	if (attackStartTimer_.GetIsFinish()) {
-		// 攻撃中に
-		player_->SetIsAttacking(true);
-
-		// 攻撃終了タイマーが終了している場合
-		if (attackEndTimer_.GetIsFinish()) {
-			// 攻撃中ではない
-			player_->SetIsAttacking(false);
+	// 攻撃開始判定がある場合
+	if (!attackStart_) {
+		// 攻撃タイマー終了時
+		if (attackStartTimer_.GetIsFinish()) {
+			attackStart_ = true;
 		}
+
+		// タイマー
+		attackStartTimer_.Update(); 
+		// 攻撃中ではない状態に
+		player_->SetIsAttacking(false);
 	}
 	else { // 終了していない場合
-		// 攻撃中ではない
-		player_->SetIsAttacking(false);
+		if (attackEndTimer_.GetIsFinish()) {
+			// 攻撃中ではない状態に
+			player_->SetIsAttacking(false);
+		}
+		else {
+			// 攻撃中状態に
+			player_->SetIsAttacking(true);
+		}
+		// タイマー
+		attackEndTimer_.Update();
 	}
 
 }
@@ -263,4 +276,12 @@ void Action::CheckCondition()
 		// 行動を終了する
 		isEndAction_ = true;
 	}
+
+	// 受付時間タイマー終了時
+	if (acceptTimer_.GetIsFinish()) {
+		// アクション終了
+		isEndAction_ = true;
+	}
+
+	acceptTimer_.Update();
 }

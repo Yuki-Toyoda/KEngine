@@ -168,13 +168,13 @@ void Player::Update()
 			trailAlpha = 0.0f;
 		}
 		else {
-			trailAlpha = KLib::Lerp(trailAlpha, 0.0f, 0.2f);
+			trailAlpha = KLib::Lerp(trailAlpha, 0.0f, 0.25f);
 		}
 
 	}
 
 	// 攻撃可能か
-	if (state_->GetStateName() != "Damage") {
+	if (state_->GetStateName() != "Damage" && state_->GetStateName() != "Attack") {
 		if (canAttack_ && !isAttacking_) {
 			// Aボタンを押すと攻撃する
 			if (input_->InspectButton(XINPUT_GAMEPAD_A, TRIGGER)) {
