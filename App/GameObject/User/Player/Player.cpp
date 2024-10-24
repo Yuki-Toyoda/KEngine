@@ -46,7 +46,7 @@ void Player::Init()
 	SwordLine_->AddCollider("Sword", this);
 	SwordLine_->rotate_.z					= (float)std::numbers::pi;
 	SwordLine_->isActive_					= false;
-	SwordLine_->trailMaterial_.tex_			= TextureManager::Load("./Engine/Resource/Samples/Texture", "SwordTrail.png");
+	SwordLine_->trailMaterial_.tex_			= TextureManager::Load("./Resources", "SwordTrail.png");
 	SwordLine_->trailMaterial_.color_.w		= 0.0f;
 	SwordLine_->SetIsDisplayTrail(true);
 	// 一度更新する
@@ -160,7 +160,7 @@ void Player::Update()
 	float& trailAlpha = SwordLine_->trailMaterial_.color_.w;
 	// 攻撃中は軌跡を表示させる
 	if (isAttacking_) {
-		trailAlpha = KLib::Lerp(trailAlpha, 1.0f, 0.15f);
+		trailAlpha = KLib::Lerp(trailAlpha, 1.0f, 0.2f);
 	}
 	else {
 		// 攻撃中でない場合は軌跡を徐々に消す
@@ -168,9 +168,8 @@ void Player::Update()
 			trailAlpha = 0.0f;
 		}
 		else {
-			trailAlpha = KLib::Lerp(trailAlpha, 0.0f, 0.25f);
+			trailAlpha = KLib::Lerp(trailAlpha, 0.0f, 0.3f);
 		}
-
 	}
 
 	// 攻撃可能か

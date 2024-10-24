@@ -190,9 +190,9 @@ void Line::TrailUpdate()
 	// 頂点座標とUV座標の調整
 	for (int i = 0, j = 0; i < vertices_.size() && j < usedTrailBuffer.size(); i += 2, j++) {
 		vertices_[i].pos = { usedTrailBuffer[j].start.x, usedTrailBuffer[j].start.y, usedTrailBuffer[j].start.z, 1.0f };
-		vertices_[i].uv = { uvOffset, 1.0f };
+		vertices_[i].uv = { uvOffset, 0.0f };
 		vertices_[i + 1].pos = { usedTrailBuffer[j].end.x, usedTrailBuffer[j].end.y, usedTrailBuffer[j].end.z, 1.0f };
-		vertices_[i + 1].uv = { uvOffset, 0.0f };
+		vertices_[i + 1].uv = { uvOffset, 1.0f };
 
 		// UV座標をずらす
 		uvOffset += amount;
@@ -249,54 +249,33 @@ void Line::TrailUpdate()
 void Line::MakeCurveVertices(std::vector<TrailBuffer>& usedTrailBuffers)
 {
 	// 頂点座標が3未満、または曲線補間を行う設定でない場合早期リターン
-	if (usedTrailBuffers.size() < 3 || trailInterpCount_ < 1) { return; }
+	if (usedTrailBuffers.size() < 4 || trailInterpCount_ < 1) { return; }
 
 	// 新規配列の生成
 	std::vector<TrailBuffer> InterpTrailBuffers;
-	// 配列スペースの確保
-	InterpTrailBuffers.reserve(usedTrailBuffers.size() + ((usedTrailBuffers.size() - 1) * trailInterpCount_));
 
-	// 係数の取得
-	const float amount = 1.0f / (trailInterpCount_ + 1);
-
-	// 新規座標生成
-	TrailBuffer newTrailBuffer{};
-	InterpTrailBuffers.push_back(usedTrailBuffers.front());
 	// 最初の要素を配列に組み込む
-	for (int i = 0; i < usedTrailBuffers.size() - 1; i++) {
-		// 係数の取得
-		float ratio = amount;
+	InterpTrailBuffers.push_back(usedTrailBuffers.front());
+	for (int i = 1; i < usedTrailBuffers.size() - 2; i++) {
+		// 制御点取得
+		TrailBuffer& p0 = usedTrailBuffers[i - 1];
+		TrailBuffer& p1 = usedTrailBuffers[i];
+		TrailBuffer& p2 = usedTrailBuffers[i + 1];
+		TrailBuffer& p3 = usedTrailBuffers[i + 2];
 
-		/// 制御点の取得を行う
-		//始点
-		Vector3 start0 = i == 0 ? (usedTrailBuffers[1].start + usedTrailBuffers[2].start) : usedTrailBuffers[i - 1].start;
-		Vector3 start1 = usedTrailBuffers[i].start;
-		Vector3 start2 = usedTrailBuffers[i + 1].start;
-		Vector3 start3 = i == usedTrailBuffers.size() - 2 ? (start0 + start2) * 0.5f : usedTrailBuffers[i + 2].start;
-		// 終点
-		Vector3 end0 = i == 0 ? (usedTrailBuffers[1].end + usedTrailBuffers[2].end) : usedTrailBuffers[i - 1].end;
-		Vector3 end1 = usedTrailBuffers[i].end;
-		Vector3 end2 = usedTrailBuffers[i + 1].end;
-		Vector3 end3 = i == usedTrailBuffers.size() - 2 ? (end0 + end2) * 0.5f : usedTrailBuffers[i + 2].end;
+		// 分割数分スプライン曲線で補完する
+		for (int j = 0; j <= trailInterpCount_; j++) {
+			// 補間用tを求める
+			float t = static_cast<float>(j) / static_cast<float>(trailInterpCount_);
 
-		// 補間数分ループする
-		for (int j = 0; j < trailInterpCount_ - 1; j++) {
-			// 使用済み状態
-			newTrailBuffer.isUsed = true;
+			// スプライン曲線関数で補間
+			TrailBuffer newTrailBuffer{};
+			newTrailBuffer.start = CatmullRom(p0.start, p1.start, p2.start, p3.start, t);
+			newTrailBuffer.end = CatmullRom(p0.end, p1.end, p2.end, p3.end, t);
 
-			// 曲線補間を行う
-			newTrailBuffer.start	= CatmullRom(start0, start1, start2, start3, ratio);
-			newTrailBuffer.end		= CatmullRom(end0, end1, end2, end3, ratio);
-
-			// 配列に新規情報追加
+			// 補間した頂点情報を追加
 			InterpTrailBuffers.push_back(newTrailBuffer);
-
-			// 係数加算
-			ratio += amount;
 		}
-
-		// 次頂点追加
-		InterpTrailBuffers.push_back(usedTrailBuffers[i + 1]);
 	}
 
 	// 配列の情報を代入する
@@ -305,20 +284,15 @@ void Line::MakeCurveVertices(std::vector<TrailBuffer>& usedTrailBuffers)
 
 Vector3 Line::CatmullRom(const Vector3& p0, const Vector3& p1, const Vector3& p2, const Vector3& p3, float t)
 {
-	// 結果格納用
-	Vector3 result{};
-
-	float t2 = std::powf(t, 2);
+	const float s = 0.5f;
+	float t2 = t * t;
 	float t3 = t2 * t;
 
-	// 計算を行う
-	result = (p1 * 2.0f) +
-		((p2 - p0) * t) +
-		(((p0 * 2.0f) - (p1 * 5.0f) + (p2 * 4.0f) - p3) * t2) +
-		((-p0 + (p1 * 3.0f) - (p2 * 3.0f) + p3) * t3);
-
-	// 結果を返す
-	return result * 0.5f;
+	Vector3 e3 = (p0 * -1.0f) + (p1 * 3.0f) - (p2 * 3.0f) + p3;
+	Vector3 e2 = (p0 * 2.0f) - (p1 * 5.0f) + (p2 * 4.0f) - p3;
+	Vector3 e1 = (p0 * -1.0f) + p2;
+	Vector3 e0 = p1 * 2.0f;
+	return (e3 * t3 + e2 * t2 + e1 * t + e0) * s;
 }
 
 void Line::AddCollider(const std::string& name, IObject* object)

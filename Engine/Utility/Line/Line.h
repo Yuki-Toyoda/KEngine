@@ -158,9 +158,9 @@ private: // メンバ変数
 	bool isDisplayTrail_ = false;
 
 	// 軌跡座標配列の要素数
-	int trailBufferCount_ = 8;
+	int trailBufferCount_ = 24;
 	// 軌跡の補完数
-	int trailInterpCount_ = 1;
+	int trailInterpCount_ = 4;
 	// 軌跡用座標配列
 	std::vector<TrailBuffer> trailBuffers_;
 	// 軌跡の現在座標
