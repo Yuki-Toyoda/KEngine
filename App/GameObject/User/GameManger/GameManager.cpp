@@ -125,7 +125,7 @@ void GameManager::TitleStagingUpdate()
 		// タイトルアニメーションが終了していない、かつタイトルアニメーションの読み込みパラメーターが開始アニメーションでないとき
 		if (!titleAnim_->isEnd_ || titleAnim_->GetReadingParameterName() != "Title_Start") {
 			// Aボタンを押すと
-			if (input_->InspectButton(XINPUT_GAMEPAD_A, TRIGGER)) {
+			if (input_->InspectButton(XINPUT_GAMEPAD_A, TRIGGER) && !isGameStarting_) {
 
 				// 強制フェードイン
 				SetFade(0.0f);
@@ -134,6 +134,8 @@ void GameManager::TitleStagingUpdate()
 				titleAnim_->ChangeParameter("Title_Start", true);
 				// ループ無効
 				titleAnim_->isLoop_ = false;
+				// ゲーム開始演出中に
+				isGameStarting_ = true;
 			}
 		}
 		else { // タイトルアニメーション終了時

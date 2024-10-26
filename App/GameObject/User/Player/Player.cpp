@@ -135,6 +135,10 @@ void Player::Update()
 
 	// 行動可能状態でない場合早期リターン
 	if (!canAction_) {
+		// 強制待機状態に
+		if (GetStateName() != "Root") {
+			ChangeState(std::make_unique<Root>());
+		}
 		return;
 	}
 

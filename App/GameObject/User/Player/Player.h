@@ -133,6 +133,12 @@ public: // アクセッサ等
 	Line* GetSwordLine() { return SwordLine_.get(); }
 
 	/// <summary>
+	/// 行動可能状態セッター
+	/// </summary>
+	/// <param name="canAction">行動可能状態</param>
+	void SetCanAction(const bool canAction) { canAction_ = canAction; }
+
+	/// <summary>
 	/// 死亡状態セッター
 	/// </summary>
 	/// <param name="isDead">死亡しているか</param>

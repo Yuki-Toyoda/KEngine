@@ -20,6 +20,7 @@ void EnemyDead::Init()
 	Player* p = GameObjectManager::GetInstance()->GetGameObject<Player>("Player");
 	p->transform_.translate_ = { -0.544f, 0.0f, -4.65f };
 	p->transform_.rotate_.y = 0.28f;
+	p->SetCanAction(false);
 	
 	// 待機アニメーション再生
 	p->skiningModels_["Player"]->animationManager_.PlayAnimation("00_Idle", 0.0f, true);

@@ -130,6 +130,8 @@ private: // メンバ変数
 	AnimationManager* animManager_;
 	// タイトル演出アニメーション
 	MyAnimation* titleAnim_ = nullptr;
+	// タイトル演出中フラグ
+	bool isGameStarting_ = false;
 
 	// ゲーム終了演出フラグ
 	bool isEndStaging_ = false;
