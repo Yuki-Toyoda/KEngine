@@ -2,6 +2,7 @@
     "ComboGeneralData": {
         "Combo 0": "Normal",
         "Combo 1": "LockOn",
-        "Total Combo Count": 2
+        "Combo 2": "Hit",
+        "Total Combo Count": 3
     }
 }

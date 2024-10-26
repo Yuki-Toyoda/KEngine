@@ -257,6 +257,8 @@ void FollowCamera::ParryBlurUpdate()
 	else {
 		// パリィ演出終了
 		isParryStaging_ = false;
+		// 終了演出フラグfalse
+		isParryEndStaging_ = false;
 	}
 
 	// タイマーを更新する

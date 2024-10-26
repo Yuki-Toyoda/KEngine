@@ -264,7 +264,7 @@ void Enemy::DisplayImGui()
 
 void Enemy::OnCollisionEnter(Collider* collider)
 {
-	// 死亡していなければ
+	// 死亡している場合早期リターン
 	if (isDead_) {
 		return;
 	}
@@ -347,6 +347,9 @@ void Enemy::OnCollision(Collider* collider)
 			hp_--;
 			// クールタイムタイマー開始
 			hitCoolTimeTimer_.Start(kHitCoolTime_);
+
+			// プレイヤーに攻撃が命中したことを伝える
+			player_->SetIsHit(true);
 
 			// ループを切る
 			enemyAnim_->isLoop_ = false;

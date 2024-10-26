@@ -127,6 +127,12 @@ public: // アクセッサ等
 	bool GetIsAttacking() { return isAttacking_; }
 
 	/// <summary>
+	/// 命中状態セッター
+	/// </summary>
+	/// <param name="isHit">命中状態</param>
+	void SetIsHit(const bool isHit) { isHit_ = isHit; }
+
+	/// <summary>
 	/// 剣の当たり判定ゲッター
 	/// </summary>
 	/// <returns>剣の当たり判定</returns>
@@ -190,6 +196,8 @@ private: // メンバ変数
 	bool canAttack_ = true;
 	// 攻撃中か
 	bool isAttacking_ = false;
+	// 攻撃が命中したか
+	bool isHit_ = false;
 
 	// 最大HP
 	static const int32_t maxHP_ = 6;

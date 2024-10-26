@@ -39,6 +39,13 @@ public: // メンバ関数
 public: // 機能関数群
 
 	/// <summary>
+	/// 特殊条件の追加関数
+	/// </summary>
+	/// <param name="conditionName">条件名</param>
+	/// <param name="condition">条件変数までのアドレス</param>
+	void AddCondition(const std::string& conditionName, bool* condition);
+
+	/// <summary>
 	/// 再生するコンボを変更する関数
 	/// </summary>
 	/// <param name="comboName"></param>
@@ -57,6 +64,25 @@ public: // アクセッサ等
 	/// </summary>
 	/// <returns>コンボが終了しているか</returns>
 	bool GetIsComboEnd() { return combo_.GetIsComboEnd(); }
+
+	/// <summary>
+	/// 表示コンボのデバッグ機能が有効になっているかのゲッター
+	/// </summary>
+	/// <returns>デバッグ機能が有効かどうか</returns>
+	bool GetEnableComboDebug() { return imGuiEnableComboDebug_; }
+
+	/// <summary>
+	/// 特殊条件の取得
+	/// </summary>
+	/// <param name="name">取得する条件の名称</param>
+	/// <returns>特殊条件のアドレス</returns>
+	bool* GetCondition(const std::string& name) { return conditions_[name]; }
+
+	/// <summary>
+	/// ImGuiで表示中のコンボ名ゲッター
+	/// </summary>
+	/// <returns>ImGuiで表示されているコンボ名</returns>
+	std::string GetImGuiDisplayName() { return imGuiDisplayComboName_; }
 
 private: // デバッグ機能関数群
 
@@ -115,11 +141,16 @@ private: // メンバ変数
 
 	// コンボ配列
 	std::list<Combo> combos_;
+	// 特殊条件配列
+	std::map<std::string, bool*> conditions_;
 
 	#pragma region ImGui用変数
 
 	// ImGuiを表示するコンボ名
 	std::string imGuiDisplayComboName_ = "";
+
+	// コンボテストを行うかのフラグ
+	bool imGuiEnableComboDebug_ = false;
 
 	#pragma endregion
 };

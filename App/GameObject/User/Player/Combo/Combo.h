@@ -2,6 +2,9 @@
 #include "Action.h"
 #include <list>
 
+// クラスの前方宣言
+class ComboManager;
+
 /// <summary>
 /// コンボクラス
 /// </summary>
@@ -25,7 +28,8 @@ public: // メンバ関数
 	/// <summary>
 	/// 初期化関数
 	/// </summary>
-	void Init();
+	/// <param name="manager">コンボマネージャー本体</param>
+	void Init(ComboManager* manager);
 
 	/// <summary>
 	/// 更新関数
@@ -110,6 +114,8 @@ private: // メンバ変数
 	// コンボ名
 	std::string name_ = "Combo";
 
+	// コンボマネージャー
+	ComboManager* comboManager_ = nullptr;
 	// プレイヤー本体
 	Player* player_ = nullptr;
 

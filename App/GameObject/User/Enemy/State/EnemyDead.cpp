@@ -20,6 +20,8 @@ void EnemyDead::Init()
 	Player* p = GameObjectManager::GetInstance()->GetGameObject<Player>("Player");
 	p->transform_.translate_ = { -0.544f, 0.0f, -4.65f };
 	p->transform_.rotate_.y = 0.28f;
+
+	// 敵が死亡した時点で行動不可能な状態にする
 	p->SetCanAction(false);
 	
 	// 待機アニメーション再生

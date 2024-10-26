@@ -89,6 +89,8 @@ void Player::Init()
 
 	// コンボマネージャーの初期化
 	comboManager_.Init(this);
+	// コンボマネージャーに条件を追加する
+	comboManager_.AddCondition("IsHit", &isHit_); // 攻撃の命中フラグ
 
 	// 効果音読み込み
 	SwingSword_ = Audio::GetInstance()->LoadWave("./Resources/Audio/SE/SwingSword.mp3");
@@ -177,21 +179,23 @@ void Player::Update()
 	}
 
 	// 攻撃可能か
-	if (state_->GetStateName() != "Damage" && state_->GetStateName() != "Attack") {
-		if (canAttack_ && !isAttacking_) {
-			// Aボタンを押すと攻撃する
-			if (input_->InspectButton(XINPUT_GAMEPAD_A, TRIGGER)) {
-				// 行動を変更
-				ChangeState(std::make_unique<Attack>());
+	if (state_->GetStateName() != "Damage" && state_->GetStateName() != "Attack" && canAttack_ && !isAttacking_) {
+		// Aボタンを押すと攻撃する
+		if (input_->InspectButton(XINPUT_GAMEPAD_A, TRIGGER)) {
+			// 行動を変更
+			ChangeState(std::make_unique<Attack>());
 
-				// Z注目有効時
-				if (followCamera_->GetEnableZForcus()) {
-					comboManager_.ChangeCombo("LockOn");
-				}
-				else {
-					comboManager_.ChangeCombo("Normal");
-				}
-				
+			// Z注目有効時
+			if (followCamera_->GetEnableZForcus()) {
+				comboManager_.ChangeCombo("LockOn");
+			}
+			else {
+				comboManager_.ChangeCombo("Normal");
+			}
+
+			// デバッグ有効時には表示中コンボへ切り替える
+			if (comboManager_.GetEnableComboDebug()) {
+				comboManager_.ChangeCombo(comboManager_.GetImGuiDisplayName());
 			}
 		}
 	}
@@ -205,6 +209,9 @@ void Player::Update()
 		sprites_["UpperObi"]->scale_.y = KLib::Lerp<float>(sprites_["UpperObi"]->scale_.y, 0.0f, 0.2f);
 		sprites_["LowerObi"]->scale_.y = KLib::Lerp<float>(sprites_["LowerObi"]->scale_.y, 0.0f, 0.2f);
 	}
+
+	// 命中フラグのリセット
+	isHit_ = false;
 
 	// 線の更新
 	SwordLine_->Update();
@@ -235,7 +242,7 @@ void Player::DisplayImGui()
 void Player::OnCollisionEnter(Collider* collider)
 {
 	// プレイヤーの剣と衝突していたら
-	if (collider->GetColliderName() == "Bullet" && isAttacking_) {
+	if (collider->GetColliderName() == "Bullet" && GetStateName() == "Attack") {
 		// パリィ演出を開始
 		followCamera_->StartParryBlur(0.1f, 0.2f, 0.055f);
 	}

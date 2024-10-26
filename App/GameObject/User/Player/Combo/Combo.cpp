@@ -1,5 +1,6 @@
 #include "Combo.h"
 #include "App/GameObject/User/Player/Player.h"
+#include "App/GameObject/User/Player/Combo/ComboManager.h"
 
 Combo::Combo(const std::string& comboID, const std::string& comboName)
 {
@@ -19,7 +20,7 @@ Combo::Combo(const std::string& comboID, const std::string& comboName)
 	}
 }
 
-void Combo::Init()
+void Combo::Init(ComboManager* manager)
 {
 	// プレイヤーがセットされていない場合早期リターン
 	if (player_ == nullptr) { return; }
@@ -33,8 +34,10 @@ void Combo::Init()
 		action.SetPlayer(player_);
 	}
 
+	// コンボマネージャーをセットする
+	comboManager_ = manager;
 	// 最初のアクションを初期化する
-	actions_.begin()->Init();
+	actions_.begin()->Init(comboManager_);
 }
 
 void Combo::Update()
@@ -56,7 +59,9 @@ void Combo::Update()
 	else { // アクションが終了している場合
 		// コンボ変更フラグがtrueの場合はコンボマネージャーへコンボを変更するよう通達する
 		if (action->GetIsChangeCombo()) {
-
+			comboManager_->ChangeCombo(action->GetNextComboName());
+			// 以降の処理を無視する
+			return;
 		}
 
 		// 次アクションへ移行する場合は次のアクションへ
@@ -73,7 +78,7 @@ void Combo::Update()
 
 			// 更新を行うアクションを取得
 			auto nextAction = std::next(actions_.begin(), comboCount_);
-			nextAction->Init();
+			nextAction->Init(comboManager_);
 		}
 		else { // 次アクションに移行しない場合
 			// コンボ終了

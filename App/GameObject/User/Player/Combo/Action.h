@@ -6,6 +6,7 @@
 
 // クラスの前方宣言
 class Player;
+class ComboManager;
 
 /// <summary>
 /// コンボ１つ１つのデータクラス
@@ -32,7 +33,8 @@ public: // メンバ関数
 	/// <summary>
 	/// 初期化関数
 	/// </summary>
-	void Init();
+	/// <param name="manager">コンボマネージャー本体</param>
+	void Init(ComboManager* manager);
 
 	/// <summary>
 	/// 更新関数
@@ -113,6 +115,12 @@ public: // アクセッサ等
 	/// </summary>
 	/// <returns>コンボ変更を行うか</returns>
 	bool GetIsChangeCombo() { return isChangeCombo_; }
+
+	/// <summary>
+	/// 次のコンボ名ゲッター
+	/// </summary>
+	/// <returns>次のコンボ名</returns>
+	std::string GetNextComboName() { return nextComboName_; }
 
 	/// <summary>
 	/// アクションの終了状態ゲッター

@@ -1,5 +1,6 @@
 #include "Action.h"
 #include "App/GameObject/User/Player/Player.h"
+#include "App/GameObject/User/Player/Combo/ComboManager.h"
 
 Action::Action(const std::string& comboName, const std::string& actionName, const int32_t count)
 {
@@ -17,7 +18,7 @@ Action::Action(const std::string& comboName, const std::string& actionName, cons
 	ApplyParam();
 }
 
-void Action::Init()
+void Action::Init(ComboManager* manager)
 {
 	// プレイヤーがセットされていなければ早期リターン
 	if (player_ == nullptr) { return; }
@@ -42,9 +43,9 @@ void Action::Init()
 	// プレイヤーの攻撃判定の長さを設定
 	player_->GetSwordLine()->length_ = attackLength_;
 
-	// ToDo : 特殊条件の取得処理を書く
+	// 特殊条件のアドレス取得
 	if (specialConditionName_ != "") {
-
+		specialCondition_ = manager->GetCondition(specialConditionName_);
 	}
 }
 
@@ -62,6 +63,12 @@ void Action::Update()
 	if (isAttack_) {
 		// 攻撃判定の更新
 		AttackJudgeUpdate();
+	}
+
+	// コンボ変更を行う条件を満たしている場合
+	if (specialCondition_ && *specialCondition_) {
+		// コンボ変更フラグをtrueに
+		isChangeCombo_ = true;
 	}
 
 	// 硬直が終了していなければ
@@ -122,8 +129,8 @@ void Action::DisplayImGui()
 	// 特殊条件が設定されている場合
 	if (specialConditionName_ != "") {
 		// コンボ名の設定
-		ImGui::InputText("SpecialConditionName", imGuiSpecialConditionName_, sizeof(imGuiSpecialConditionName_));
-		specialConditionName_ = imGuiSpecialConditionName_;
+		ImGui::InputText("ChangeComboName", imGuiNextComboName_, sizeof(imGuiNextComboName_));
+		nextComboName_ = imGuiNextComboName_;
 	}
 }
 
@@ -257,12 +264,6 @@ void Action::AttackJudgeUpdate()
 
 void Action::CheckCondition()
 {
-	// コンボ変更を行う条件を満たしている場合
-	if (specialCondition_) {
-		// コンボ変更フラグをtrueに
-		isChangeCombo_ = true;
-	}
-
 	// 次のコンボに移る条件を達成している場合
 	if (Input::GetInstance()->InspectButton(XINPUT_GAMEPAD_A, inputCondition_)) {
 		// 次のコンボに移る

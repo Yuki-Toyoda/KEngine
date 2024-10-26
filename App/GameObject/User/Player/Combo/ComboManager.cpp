@@ -55,15 +55,14 @@ void ComboManager::DisplayImGui()
 		imGuiDisplayComboName_ = displayCombo->GetComboName();
 
 		// タブ開始
-		if (ImGui::BeginTabItem("Delete Menu")) {
-			// ボタンを押したらコンボを変更する
-			if (ImGui::Button("ChangeCombo")) {
-				// コンボを変更する
-				ChangeCombo(imGuiDisplayComboName_);
-			}
+		if (ImGui::BeginTabItem("Utility Menu")) {
+			// デバッグ機能の切り替え
+			ImGui::Checkbox("Enable Combo Debug", &imGuiEnableComboDebug_);
 
 			// 削除ボタンはツリーノードで隠す
 			if (ImGui::TreeNode("DELETE")) {
+				// デバッグ無効
+				imGuiEnableComboDebug_ = false;
 				// ボタンを押したら該当コンボ削除
 				if (ImGui::Button("Delete This Combo")) {
 					DeleteCombo(imGuiDisplayComboName_);
@@ -83,6 +82,12 @@ void ComboManager::DisplayImGui()
 	ImGui::End();
 }
 
+void ComboManager::AddCondition(const std::string& conditionName, bool* condition)
+{
+	// 条件配列に内容を追加する
+	conditions_[conditionName] = condition;
+}
+
 void ComboManager::ChangeCombo(const std::string& comboName)
 {
 	// 該当するコンボが存在するか探査する
@@ -96,7 +101,7 @@ void ComboManager::ChangeCombo(const std::string& comboName)
 	// プレイヤーを渡す
 	combo_.SetPlayer(player_);
 	// 初期化
-	combo_.Init();
+	combo_.Init(this);
 }
 
 Combo* ComboManager::GetCombo(const std::string& name)
