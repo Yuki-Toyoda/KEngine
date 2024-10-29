@@ -231,31 +231,22 @@ Quaternion Quaternion::Slerp(float t, const Quaternion& start, const Quaternion&
 	Quaternion result = Quaternion();
 
 	// 値を取得
-	Quaternion s = Normalize(start);
-	Quaternion e = Normalize(end);
+	Quaternion s = start;
+	Quaternion e = end;
 
-	// クォータニオンの内積で求める
+	// クォータニオンの内積を求める
 	float dot = Dot(start, end);
-	dot = std::clamp(dot, -1.0f, 1.0f);
-
 	if (dot < 0.0f) {
-		// 逆の回転を使う
-		e = Inverse(e);
+		s = s * -1.0f;
 		dot = -dot;
 	}
 
-	if (dot > 0.9995f) {
-		result = s * (1.0f - t) + (e * t);
-		return Normalize(result);
+	if (dot >= DBL_EPSILON) {
+		return s * (1.0f - t) + e * t;
 	}
 
 	float theta = std::acos(dot);
-	float sinTheta = 1.0f / std::sin(theta);
-	// しきい値を設定し、非常に小さい角度の場合には線形補間を使用
-	if (std::abs(theta) < 1e-6) {
-		result = s * (1.0f - t) + (e * t);
-		return Normalize(result);
-	}
+	float sinTheta = std::sin(theta);
 
 	// 開始と終端を求める
 	float fStart = std::sin((1.0f - t) * theta) / sinTheta;	// 開始

@@ -12,7 +12,7 @@ void Damage::Init()
 	// 攻撃中でない
 	player_->SetIsAttacking(false);
 	// コライダー無効
-	player_->GetSwordLine()->isActive_ = false;
+	player_->GetSwordLine()->GetCollider()->SetIsActive(false);
 
 	// 速度を求める
 	velocity_ = { 0.0f, 0.0f, -0.1f };

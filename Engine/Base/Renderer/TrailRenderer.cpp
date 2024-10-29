@@ -44,8 +44,6 @@ void TrailRenderer::DrawCall(ID3D12GraphicsCommandList6* list)
 		D3D12_RESOURCE_STATES beforeBarrier = it->backBuffer_->GetBarrier();
 		// リソースバリア変更
 		it->backBuffer_->ChangeResourceBarrier(D3D12_RESOURCE_STATE_RENDER_TARGET, list);
-		// 指定した深度で全画面クリア
-		it->depthBuffer_->Clear(list);
 
 		//ビューポートの設定
 		D3D12_VIEWPORT viewport = {};

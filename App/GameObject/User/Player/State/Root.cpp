@@ -15,7 +15,7 @@ void Root::Init()
 	// 攻撃状態でない
 	player_->SetIsAttacking(false);
 	// コライダー無効
-	player_->GetSwordLine()->isActive_ = false;
+	player_->GetSwordLine()->GetCollider()->SetIsActive(false);
 }
 
 void Root::Update()

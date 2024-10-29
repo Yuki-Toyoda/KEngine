@@ -12,7 +12,7 @@ void Attack::Init()
 	stateName_ = "Attack";
 
 	// コライダー有効
-	player_->GetSwordLine()->isActive_ = true;
+	player_->GetSwordLine()->GetCollider()->SetIsActive(true);
 
 	// 素振りの効果音の再生
 	Audio::GetInstance()->PlayWave(player_->SwingSword_);

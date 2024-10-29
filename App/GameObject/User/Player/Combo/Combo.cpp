@@ -83,6 +83,8 @@ void Combo::Update()
 		else { // 次アクションに移行しない場合
 			// コンボ終了
 			isComboEnd_ = true;
+			// コンボ終了時点で攻撃していない設定に
+			player_->SetIsAttacking(false);
 		}
 	}
 }
