@@ -236,13 +236,13 @@ Quaternion Quaternion::Slerp(float t, const Quaternion& start, const Quaternion&
 
 	// クォータニオンの内積を求める
 	float dot = Dot(start, end);
-	if (dot < 0.0f) {
+	if (dot < 0) {
 		s = s * -1.0f;
 		dot = -dot;
 	}
 
 	if (dot >= DBL_EPSILON) {
-		return s * (1.0f - t) + e * t;
+		return Normalize(s * (1.0f - t) + e * t);
 	}
 
 	float theta = std::acos(dot);
