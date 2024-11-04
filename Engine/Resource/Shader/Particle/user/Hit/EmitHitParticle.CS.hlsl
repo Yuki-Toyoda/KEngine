@@ -25,20 +25,17 @@ void main( uint3 DTid : SV_DispatchThreadID )
                 // 使用可能リストから使用可能インデックスを取得
                 int32_t particleIndex = freeList[fIndex];
                 
-                // スケールを指定
-                float32_t s = 0.4f * (generator.Generate1d()) + 0.1f;
-                
-                // 青色を指定
-                float32_t g = 0.65f * (generator.Generate1d());
+                // 最終スケールを指定
+                float32_t s = 3.5f * ((generator.Generate1d()) + 0.25f);
                 
                 // 各値の初期化
-                gParticles[particleIndex].scale       = float32_t3(s, s, s);
-                gParticles[particleIndex].translate   = emitter.translate;
-                gParticles[particleIndex].color.rgb   = float32_t3(0.0f, g, 1.0f);
-                gParticles[particleIndex].color.a     = 1.0f;
-                gParticles[particleIndex].lifeTime    = 0.5f;
-                gParticles[particleIndex].velocity    = generator.Generate3D() / 4.0f + float32_t3(-0.125f, -0.125f, -0.125f);
-                gParticles[particleIndex].currentTime = 0.0f;
+                gParticles[particleIndex].scale         = float32_t3(0.0f, 0.0f, 0.0f);
+                gParticles[particleIndex].translate     = emitter.translate;
+                gParticles[particleIndex].color.rgb     = float32_t3(1.0f, 1.0f, 1.0f);
+                gParticles[particleIndex].color.a       = 1.0f;
+                gParticles[particleIndex].lifeTime      = 0.35f;
+                gParticles[particleIndex].velocity      = float32_t3(s, 0.0f, 0.0f);
+                gParticles[particleIndex].currentTime   = 0.0f;
             }
             else
             {

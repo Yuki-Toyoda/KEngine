@@ -38,3 +38,9 @@ ConstantBuffer<InfoData>        info          : register(b2);
 RWStructuredBuffer<Particle>    gParticles    : register(u0);
 RWStructuredBuffer<int32_t>     freeListIndex : register(u1);
 RWStructuredBuffer<uint32_t>    freeList      : register(u2);
+
+float Lerp(float start, float end, float t)
+{
+    return (start * (1.0f - t) + end * t);
+
+}

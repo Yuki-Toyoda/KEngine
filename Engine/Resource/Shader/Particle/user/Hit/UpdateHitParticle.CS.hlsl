@@ -12,15 +12,18 @@ void main( uint3 DTid : SV_DispatchThreadID )
         // パーティクルの現在時間が生存秒数を超過していないとき、以下の処理を行う
         if (gParticles[particleIndex].currentTime < gParticles[particleIndex].lifeTime)
         {
-            // 座標に速度を加算する
-            gParticles[particleIndex].translate += gParticles[particleIndex].velocity;
+            float scale = Lerp(0.0f, gParticles[particleIndex].velocity.x, gParticles[particleIndex].currentTime / gParticles[particleIndex].lifeTime);
+            gParticles[particleIndex].scale = float32_t3(scale, scale, 1.0f);
+            
             // 生存時間加算
             gParticles[particleIndex].currentTime += perFrame.deltaTime;
             
             // 透明度を生存時間で徐々に下げる
-            float32_t alpha = 1.0f - (gParticles[particleIndex].currentTime * rcp(gParticles[particleIndex].lifeTime));
-            gParticles[particleIndex].color.a = saturate(alpha);
-            
+            if (gParticles[particleIndex].currentTime > gParticles[particleIndex].lifeTime / 2.0f)
+            {
+                float32_t alpha = Lerp(1.0f, 0.0f, (gParticles[particleIndex].currentTime / 2.0f) / (gParticles[particleIndex].lifeTime / 2.0f));
+                gParticles[particleIndex].color.a = alpha;
+            }
         }
         else // それ以外の場合
         {

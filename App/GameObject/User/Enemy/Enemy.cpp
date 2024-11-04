@@ -282,13 +282,13 @@ void Enemy::OnCollisionEnter(Collider* collider)
 
 				if (percent == 6) {
 					// 命中パーティクル再生
-					Particle* hit = ParticleManager::GetInstance()->CreateNewParticle("Hit", "./Engine/Resource/Samples/Plane", "Plane.obj", 1.0f);
-					hit->model_->materials_[1].tex_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png");
+					Particle* hit = ParticleManager::GetInstance()->CreateNewParticle("Hit", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.5f);
+					hit->model_->materials_[1].tex_ = TextureManager::Load("BulletHitEffect.png");
 					hit->model_->materials_[1].enableLighting_ = false;
 					hit->transform_.SetParent(&bodyTransform_);
-					hit->emitterDataBuffer_->data_->count = 100;
-					hit->emitterDataBuffer_->data_->frequency = 50.0f;
-					hit->emitterDataBuffer_->data_->frequencyTime = 55.0f;
+					hit->emitterDataBuffer_->data_->count = 1;
+					hit->emitterDataBuffer_->data_->frequency = 1.0f;
+					hit->emitterDataBuffer_->data_->frequencyTime = 3.0f;
 
 					// ダウン状態に
 					ChangeState(std::make_unique<EnemyDown>());
@@ -311,13 +311,13 @@ void Enemy::OnCollisionEnter(Collider* collider)
 			}
 			else {
 				// 命中パーティクル再生
-				Particle* hit = ParticleManager::GetInstance()->CreateNewParticle("Hit", "./Engine/Resource/Samples/Plane", "Plane.obj", 1.0f);
-				hit->model_->materials_[1].tex_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png");
+				Particle* hit = ParticleManager::GetInstance()->CreateNewParticle("EnemyHit", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.5f);
+				hit->model_->materials_[1].tex_ = TextureManager::Load("HitEffect.png");
 				hit->model_->materials_[1].enableLighting_ = false;
 				hit->transform_.SetParent(&bodyTransform_);
-				hit->emitterDataBuffer_->data_->count = 100;
-				hit->emitterDataBuffer_->data_->frequency = 50.0f;
-				hit->emitterDataBuffer_->data_->frequencyTime = 55.0f;
+				hit->emitterDataBuffer_->data_->count = 1;
+				hit->emitterDataBuffer_->data_->frequency = 1.0f;
+				hit->emitterDataBuffer_->data_->frequencyTime = 3.0f;
 
 				// ダウン状態に
 				ChangeState(std::make_unique<EnemyDown>());
@@ -356,13 +356,13 @@ void Enemy::OnCollision(Collider* collider)
 			enemyAnim_->ChangeParameter("Enemy_Damage", true);
 
 			// 命中パーティクル再生
-			Particle* hit = ParticleManager::GetInstance()->CreateNewParticle("Hit", "./Engine/Resource/Samples/Plane", "Plane.obj", 1.0f);
-			hit->model_->materials_[1].tex_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png");
+			Particle* hit = ParticleManager::GetInstance()->CreateNewParticle("Hit", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.5f);
+			hit->model_->materials_[1].tex_ = TextureManager::Load("HitEffect.png");
 			hit->model_->materials_[1].enableLighting_ = false;
 			hit->transform_.SetParent(&bodyTransform_);
-			hit->emitterDataBuffer_->data_->count = 25;
-			hit->emitterDataBuffer_->data_->frequency = 50.0f;
-			hit->emitterDataBuffer_->data_->frequencyTime = 55.0f;
+			hit->emitterDataBuffer_->data_->count = 1;
+			hit->emitterDataBuffer_->data_->frequency = 1.0f;
+			hit->emitterDataBuffer_->data_->frequencyTime = 3.0f;
 
 			// ダメージ効果音の再生
 			Audio::GetInstance()->PlayWave(damageSound_);
