@@ -74,7 +74,7 @@ public: // 生成用関数群
 	/// <param name="filePath">パーティクルに使用するモデルまでのファイルパス</param>
 	/// <param name="fileName">モデルのファイル名</param>
 	/// <param name="lifeTime">パーティクルの生存時間</param>
-	/// <param name="enableLighting"></param>
+	/// <param name="enableLighting">ライティング有効トリガー</param>
 	/// <param name="maxCount">粒子数</param>
 	/// <returns>生成済み新規パーティクル</returns>
 	Particle* CreateNewParticle(const std::string& name, const std::string& filePath, const std::string& fileName, const float lifeTime, const bool enableLighting = false, const int maxCount = 1024);

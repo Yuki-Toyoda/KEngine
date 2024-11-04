@@ -68,7 +68,7 @@ void Particle::ExecuteInit()
 	cmdList_->SetComputeRootDescriptorTable(5, freeIndexListBuffer_->GetUAVView());
 
 	// パーティクルの初期化を実行する
-	cmdList_->Dispatch(UINT(kMaxParticleCount_ + 1023) / 1024, 1, 1);
+	cmdList_->Dispatch(kMaxParticleCount_, 1, 1);
 
 	// 初期化完了
 	isInit_ = true;
@@ -135,7 +135,7 @@ void Particle::Update()
 	cmdList_->SetComputeRootDescriptorTable(5, freeIndexListBuffer_->GetUAVView());
 
 	// パーティクルの更新を実行する
-	cmdList_->Dispatch(UINT(kMaxParticleCount_ + 1023) / 1024, 1, 1);
+	cmdList_->Dispatch(kMaxParticleCount_, 1, 1);
 
 	// タイマー更新
 	timer_.Update();
