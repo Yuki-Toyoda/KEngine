@@ -29,17 +29,8 @@ void FollowCamera::Update()
 		ForcusVignetteUpdate();
 	}
 	else { // 有効になっていない場合
-		// 角度補正速度を設定
-		correctionSpeed_ = normalCorrectionSpeed_;
-
-		// X軸の目標角度は0に
-		targetAngleX_ = 0.0f;
-		// 目標角度を現在の角度に
-		targetAngleY_ = transform_.rotate_.y;
-
-		// オフセットのY軸をリセット
-		offset_.y = kOffset_.y;
-		offset_.z = kOffset_.z;
+		// 通常時の更新
+		NormalUpdate();
 	}
 
 	// 追従対象の更新
@@ -56,6 +47,9 @@ void FollowCamera::DisplayImGui()
 {
 	// 基底クラスのImGuiを表示
 	Camera::DisplayImGui();
+
+	// 感度調整
+	ImGui::DragFloat2("Seisitivity", &sensitivity_.x, 0.001f, 0.001f);
 
 	// 目標角度表示
 	ImGui::DragFloat("TargetAngleX", &targetAngleX_);
@@ -110,10 +104,12 @@ void FollowCamera::UpdateTarget()
 	// カメラの座標をオフセットを元に変更
 	transform_.translate_ = interTarget_ + offset;
 
-	// カメラのY座標が0以下の場合
-	if (transform_.translate_.y < 0.05f) {
-		// 0に補正する
-		transform_.translate_.y = 0.05f;
+	// カメラのY座標が指定の座標以下の場合
+	if (transform_.translate_.y < minPositionY_) {
+		// 最小位置に補正する
+		transform_.translate_.y = minPositionY_;
+		// 床に触れている状態に
+		isTouchFloor_ = true;
 	}
 
 	// 基底クラスの更新を行う
@@ -214,7 +210,7 @@ void FollowCamera::ZForcusUpdate()
 	transform_.rotate_.y = KLib::LerpShortAngle(transform_.rotate_.y, targetAngleY_, correctionSpeed_);
 
 	// 左トリガーが離されている場合
-	if (input_->InspectTrigger(RELEASE, 0)) {
+	if (!input_->InspectTrigger(PRESS, 0)) {
 		// Z注目をしていないに
 		enableZForcus_ = false;
 		// ロックオン方向の選定
@@ -232,6 +228,44 @@ void FollowCamera::ForcusVignetteUpdate()
 	}
 	else { // 無効時は徐々に下げる
 		ppProcessor_.vignette_.intensity_ = KLib::Lerp<float>(ppProcessor_.vignette_.intensity_, 0.0f, vignetteT_);
+	}
+}
+
+void FollowCamera::NormalUpdate()
+{
+	// 角度補正速度を設定
+	correctionSpeed_ = normalCorrectionSpeed_;
+
+	// X軸の目標角度は0に
+	targetAngleX_ = 0.0f;
+	// 目標角度を現在の角度に
+	targetAngleY_ = transform_.rotate_.y;
+
+	// オフセットのY軸をリセット
+	//offset_.y = kOffset_.y;
+	//offset_.z = kOffset_.z;
+
+	// 右スティックの入力を取得
+	Vector3 rStickInput = input_->GetJoyStickInput(1);
+	// カメラを回転させる
+	transform_.rotate_.y += rStickInput.x * sensitivity_.x;
+	transform_.rotate_.x -= rStickInput.z * sensitivity_.y;
+	
+	// x軸の回転角度が一定値を上回った場合
+	if (transform_.rotate_.x > maxControllAngleX_) {
+		transform_.rotate_.x = maxControllAngleX_;
+	}
+	if (transform_.rotate_.x < minControllAngleX_) {
+		transform_.rotate_.x = minControllAngleX_;
+	}
+
+	if (transform_.rotate_.x < 0.0f) {
+		offset_.z = KLib::Lerp<float>(kOffset_.z, minlerpOffsetZ_, transform_.rotate_.x, -0.2f);
+		offset_.y = KLib::Lerp<float>(kOffset_.y, minlerpOffsetY_, transform_.rotate_.x, -0.2f);
+	}
+	else {
+		offset_.z = KLib::Lerp<float>(kOffset_.z, maxlerpOffsetZ_, transform_.rotate_.x, maxControllAngleX_);
+		offset_.y = kOffset_.y;
 	}
 }
 

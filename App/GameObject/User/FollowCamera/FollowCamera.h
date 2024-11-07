@@ -105,6 +105,11 @@ private: // プライベートなメンバ関数
 	void ForcusVignetteUpdate();
 
 	/// <summary>
+	/// カメラのロックオンが有効になっていない場合の更新関数
+	/// </summary>
+	void NormalUpdate();
+
+	/// <summary>
 	/// パリィ時のラジアルブラー演出の更新関数
 	/// </summary>
 	void ParryBlurUpdate();
@@ -118,7 +123,23 @@ private: // メンバ変数
 	const WorldTransform* target_ = nullptr;
 
 	// オフセットなしのカメラのワールドトランスフォーム
-	WorldTransform noOffsetTransform_;
+	WorldTransform noOffsetTransform_{};
+
+	// カメラ操作感度
+	Vector2 sensitivity_ = { 0.025f, 0.025f };
+	// カメラ操作時の最大X軸アングル
+	float maxControllAngleX_ = 0.8f;
+	float minControllAngleX_ = -0.5f;
+	
+	float maxlerpOffsetZ_ = -16.5f;
+	float minlerpOffsetZ_ = -7.5f;
+
+	float minlerpOffsetY_ = 1.5f;
+
+	// カメラの高さ最小位置
+	float minPositionY_ = 0.05f;
+	// カメラが地面に触れているか
+	bool isTouchFloor_ = false;
 
 	// 追従対象の目標角度
 	float targetAngleX_ = 0.0f;

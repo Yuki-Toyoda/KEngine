@@ -404,10 +404,18 @@
     <ClCompile Include="App\GameObject\User\Player\State\RotatingSlashCharge.cpp">
       <Filter>App\GameObject\User\Player\State</Filter>
     </ClCompile>
-    <ClCompile Include="App\GameObject\User\Player\State\Recovery.cpp" />
-    <ClCompile Include="App\GameObject\User\Player\Combo\ComboManager.cpp" />
-    <ClCompile Include="App\GameObject\User\Player\Combo\Combo.cpp" />
-    <ClCompile Include="App\GameObject\User\Player\Combo\Action.cpp" />
+    <ClCompile Include="App\GameObject\User\Player\Combo\Action.cpp">
+      <Filter>App\GameObject\User\Player\Combo</Filter>
+    </ClCompile>
+    <ClCompile Include="App\GameObject\User\Player\Combo\Combo.cpp">
+      <Filter>App\GameObject\User\Player\Combo</Filter>
+    </ClCompile>
+    <ClCompile Include="App\GameObject\User\Player\Combo\ComboManager.cpp">
+      <Filter>App\GameObject\User\Player\Combo</Filter>
+    </ClCompile>
+    <ClCompile Include="App\GameObject\User\Player\State\Recovery.cpp">
+      <Filter>App\GameObject\User\Player\State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App\Scene\SceneList.h">
@@ -899,10 +907,18 @@
     <ClInclude Include="App\GameObject\User\Player\State\RotatingSlashCharge.h">
       <Filter>App\GameObject\User\Player\State</Filter>
     </ClInclude>
-    <ClInclude Include="App\GameObject\User\Player\State\Recovery.h" />
-    <ClInclude Include="App\GameObject\User\Player\Combo\ComboManager.h" />
-    <ClInclude Include="App\GameObject\User\Player\Combo\Combo.h" />
-    <ClInclude Include="App\GameObject\User\Player\Combo\Action.h" />
+    <ClInclude Include="App\GameObject\User\Player\Combo\Action.h">
+      <Filter>App\GameObject\User\Player\Combo</Filter>
+    </ClInclude>
+    <ClInclude Include="App\GameObject\User\Player\Combo\Combo.h">
+      <Filter>App\GameObject\User\Player\Combo</Filter>
+    </ClInclude>
+    <ClInclude Include="App\GameObject\User\Player\Combo\ComboManager.h">
+      <Filter>App\GameObject\User\Player\Combo</Filter>
+    </ClInclude>
+    <ClInclude Include="App\GameObject\User\Player\State\Recovery.h">
+      <Filter>App\GameObject\User\Player\State</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
@@ -1408,6 +1424,9 @@
     </Filter>
     <Filter Include="App\GameObject\User\GameManager">
       <UniqueIdentifier>{f0d2f002-6e31-422f-9773-62ee26e17084}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\GameObject\User\Player\Combo">
+      <UniqueIdentifier>{75d27015-41e2-4397-a8d0-968e045d6c09}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
