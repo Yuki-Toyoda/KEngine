@@ -16,8 +16,19 @@ void FollowCamera::Init()
 
 void FollowCamera::Update()
 {
+	// このカメラを使用中でない場合早期リターン
+	if (!isUseThisCamera_) { return; }
+
 	// 左トリガーがトリガーされた、かつZ注目が有効になっていない場合
 	if (input_->InspectTrigger(TRIGGER, 0) && !enableZForcus_) {
+		// X軸の目標角度は0に
+		targetAngleX_ = 0.0f;
+		// 目標角度をプレイヤーの真後ろに
+		targetAngleY_ = target_->rotate_.y;
+		// カメラを一時的に操作不能に
+		isCanControll_ = false;
+
+		// Z注目有効
 		enableZForcus_ = true;
 	}
 
@@ -29,8 +40,16 @@ void FollowCamera::Update()
 		ForcusVignetteUpdate();
 	}
 	else { // 有効になっていない場合
-		// 通常時の更新
-		NormalUpdate();
+		// 角度補正速度を設定
+		correctionSpeed_ = normalCorrectionSpeed_;
+
+		// X軸の目標角度は0に
+		targetAngleX_ = 0.0f;
+		// 目標角度を現在の角度に
+		targetAngleY_ = transform_.rotate_.y;
+
+		// カメラ操作を行う
+		ControllUpdate();
 	}
 
 	// 追従対象の更新
@@ -190,24 +209,33 @@ void FollowCamera::ZForcusUpdate()
 
 		// 角度補正速度を設定
 		correctionSpeed_ = zEnemyForcusCorrectionSpeed_;
+
+		// 回転させる
+		transform_.rotate_.x = KLib::LerpShortAngle(transform_.rotate_.x, targetAngleX_, zEnemyForcusCorrectionSpeed_);
+		transform_.rotate_.y = KLib::LerpShortAngle(transform_.rotate_.y, targetAngleY_, correctionSpeed_);
 	}
 	else { // 有効になっていない場合
-		// 目標角度をプレイヤーの真後ろに
-		targetAngleY_ = target_->rotate_.y;
 		// 角度補正速度を設定
 		correctionSpeed_ = zForcusCorrectionSpeed_;
 
-		// X軸の目標角度は0に
-		targetAngleX_ = 0.0f;
+		// 目標角度になるまでは補正を行う
+		if (std::abs(transform_.rotate_.y - targetAngleY_) > 0.1f && !isCanControll_) {
+			// 回転させる
+			transform_.rotate_.x = KLib::LerpShortAngle(transform_.rotate_.x, targetAngleX_, correctionSpeed_);
+			transform_.rotate_.y = KLib::LerpShortAngle(transform_.rotate_.y, targetAngleY_, correctionSpeed_);
 
-		// オフセットのY軸をリセット
-		offset_.y = kOffset_.y;
-		offset_.z = kOffset_.z;
+			// 位置を元に戻す
+			offset_.y = KLib::Lerp<float>(offset_.y, kOffset_.y, correctionSpeed_);
+			offset_.z = KLib::Lerp<float>(offset_.z, kOffset_.z, correctionSpeed_);
+		}
+		else {
+			// 操作可能状態に
+			isCanControll_ = true;
+		}
+
+		// カメラ操作を行う
+		ControllUpdate();
 	}
-
-	// 回転させる
-	transform_.rotate_.x = KLib::LerpShortAngle(transform_.rotate_.x, targetAngleX_, zEnemyForcusCorrectionSpeed_);
-	transform_.rotate_.y = KLib::LerpShortAngle(transform_.rotate_.y, targetAngleY_, correctionSpeed_);
 
 	// 左トリガーが離されている場合
 	if (!input_->InspectTrigger(PRESS, 0)) {
@@ -215,6 +243,9 @@ void FollowCamera::ZForcusUpdate()
 		enableZForcus_ = false;
 		// ロックオン方向の選定
 		lockOnDirectionSetUp_ = false;
+		// カメラ操作を可能な状態に
+		isCanControll_ = true;
+
 		// ロックオンを無効
 		lockOn_->DisableLockOn();
 	}
@@ -231,19 +262,10 @@ void FollowCamera::ForcusVignetteUpdate()
 	}
 }
 
-void FollowCamera::NormalUpdate()
+void FollowCamera::ControllUpdate()
 {
-	// 角度補正速度を設定
-	correctionSpeed_ = normalCorrectionSpeed_;
-
-	// X軸の目標角度は0に
-	targetAngleX_ = 0.0f;
-	// 目標角度を現在の角度に
-	targetAngleY_ = transform_.rotate_.y;
-
-	// オフセットのY軸をリセット
-	//offset_.y = kOffset_.y;
-	//offset_.z = kOffset_.z;
+	// 操作可能状態でない場合早期リターン
+	if (!isCanControll_) { return; }
 
 	// 右スティックの入力を取得
 	Vector3 rStickInput = input_->GetJoyStickInput(1);

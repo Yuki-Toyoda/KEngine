@@ -105,9 +105,9 @@ private: // プライベートなメンバ関数
 	void ForcusVignetteUpdate();
 
 	/// <summary>
-	/// カメラのロックオンが有効になっていない場合の更新関数
+	/// カメラ操作の更新関数
 	/// </summary>
-	void NormalUpdate();
+	void ControllUpdate();
 
 	/// <summary>
 	/// パリィ時のラジアルブラー演出の更新関数
@@ -125,6 +125,8 @@ private: // メンバ変数
 	// オフセットなしのカメラのワールドトランスフォーム
 	WorldTransform noOffsetTransform_{};
 
+	// カメラ操作可能フラグ
+	bool isCanControll_ = true;
 	// カメラ操作感度
 	Vector2 sensitivity_ = { 0.025f, 0.025f };
 	// カメラ操作時の最大X軸アングル
