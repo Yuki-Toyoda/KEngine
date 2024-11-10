@@ -113,7 +113,7 @@ public: // アクセッサ等
 	/// アニメーション終了トリガーゲッター
 	/// </summary>
 	/// <returns>アニメーション終了フラグ</returns>
-	bool GetIsPLay() { return isPlay_; };
+	bool GetIsPlay() { return isPlay_; };
 
 	/// <summary>
 	/// 補完中トリガーゲッター

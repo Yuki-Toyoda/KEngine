@@ -84,11 +84,12 @@ public: // アクセッサ等
 	/// <param name="parent">セットするワールド座標</param>
 	/// <param name="parentType">親子関係フラグ</param>
 	void SetParent(QuatWorldTransform* parent, uint8_t parentType = 0b111);
+
 	/// <summary>
 	/// 親のゲッター
 	/// </summary>
 	/// <returns>親</returns>
-	const QuatWorldTransform* GetParent();
+	const QuatWorldTransform* GetParent() const;
 
 	/// <summary>
 	/// 現在のワールド行列のゲッター
@@ -103,4 +104,3 @@ public: // アクセッサ等
 	Vector3 GetWorldPos() const;
 
 };
-

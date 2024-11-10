@@ -31,8 +31,14 @@ void SkinAnimationManager::LoadAnimations(const aiScene* scene)
 	}
 }
 
-void SkinAnimationManager::PlayAnimation(const std::string& animName, float transitionTime, bool isLoop, float startTime)
+void SkinAnimationManager::PlayAnimation(const std::string& animName, float transitionTime, bool isLoop, bool isCheckPlaying, float startTime)
 {
+	// 同名アニメーション再生中かを検出する
+	if (isCheckPlaying) {
+		// 再生しようとしているアニメーションが再生中なら早期リターンを行う
+		if (animations_[animName].GetIsPlay()) { return; }
+	}
+
 	// アニメーションが存在した場合
 	if (animations_.count(animName)) {
 		// 再生中アニメーションを停止
