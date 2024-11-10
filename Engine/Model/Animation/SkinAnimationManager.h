@@ -43,8 +43,9 @@ public: // メンバ関数
 	/// <param name="animName">再生するアニメーション名</param>
 	/// <param name="transitionTime">(任意)アニメーション間の補完秒数</param>
 	/// <param name="isLoop">(任意)ループさせるか</param>
+	/// <param name="isCheckPlaying">(任意)同名アニメーション再生中かどうかのチェックを行う</param>
 	/// <param name="startTime">(任意)アニメーションの開始秒数</param>
-	void PlayAnimation(const std::string& animName, float transitionTime = 0.0f, bool isLoop = false, float startTime = 0.0f);
+	void PlayAnimation(const std::string& animName, float transitionTime = 0.0f, bool isLoop = false, bool isCheckPlaying = false, float startTime = 0.0f);
 
 	/// <summary>
 	/// 再生中アニメーション停止関数

@@ -113,11 +113,11 @@ Matrix4x4 QuatWorldTransform::GetMatWorld() const
 			if (parentType_ & FLAG_SCALE) { // 拡縮
 				parentMat = parentMat * Matrix4x4::MakeScale(parent_->scale_);
 			}
-				
+
 			if (parentType_ & FLAG_ROTATE) { // 回転
 				parentMat = parentMat * Quaternion::QuaternionToMatrix(parent_->rotate_);
 			}
-				
+
 			if (parentType_ & FLAG_TRANSLATE) { // 座標
 				parentMat = parentMat * Matrix4x4::MakeTranslate(parent_->translate_);
 			}

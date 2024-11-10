@@ -45,11 +45,10 @@ private: // サブクラス
 		float	frequency = 0.5f;		// 生成間隔秒数
 		float	frequencyTime = 0.0f;	// 生成間隔現在秒数
 		int32_t emit = false;			// 生成トリガー
-
 	};
 
 	/// <summary>
-	/// 共通パーティクルデータ
+	/// パーティクルデータ
 	/// </summary>
 	struct ParticleData {
 		Vector3 translate;	 // 位置座標
@@ -64,8 +63,9 @@ private: // サブクラス
 	/// パーティクル情報構造体
 	/// </summary>
 	struct InfoData {
-		int32_t instanceCount; // パーティクル生成数
-		int32_t isBillboard;   // ビルボードを行うか
+		int32_t instanceCount;	// パーティクル生成数
+		int32_t isBillboard;	// ビルボードを行うか
+		int32_t isAnimated;		// テクスチャアニメーションを行うか
 	};
 
 public: // コンストラクタ等
@@ -133,9 +133,6 @@ public: // パブリックメンバ変数
 	// パーティクル自体の生存時間タイマー
 	KLib::DeltaTimer timer_{};
 
-	// エミッタ用バッファ
-	std::unique_ptr<ConstantBuffer<EmitterSphere>> emitterDataBuffer_;
-
 private: // メンバ変数
 
 	// 初期化フラグ
@@ -144,6 +141,8 @@ private: // メンバ変数
 	// 粒子最大数
 	const uint32_t kMaxParticleCount_;
 
+	// エミッタ用バッファ
+	std::unique_ptr<ConstantBuffer<EmitterSphere>> emitterDataBuffer_;
 	// フレーム時間計測バッファ
 	std::unique_ptr<ConstantBuffer<PerFrame>> perFrameDataBuffer_;
 	// 情報バッファ

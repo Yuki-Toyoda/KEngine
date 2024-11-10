@@ -15,7 +15,7 @@ WorldTransform::WorldTransform(Vector3 scale, Vector3 rotate, Vector3 translate)
 {
 	// 初期化
 	Init();
-	
+
 	// パブリックメンバ変数に代入
 	scale_ = scale;
 	rotate_ = rotate;
@@ -45,8 +45,8 @@ void WorldTransform::Init()
 {
 	// パブリックメンバ変数初期化
 	scale_ = { 1.0f, 1.0f, 1.0f };
-	rotate_ = {0.0f, 0.0f, 0.0f};
-	translate_ = {0.0f, 0.0f, 0.0f};
+	rotate_ = { 0.0f, 0.0f, 0.0f };
+	translate_ = { 0.0f, 0.0f, 0.0f };
 	parent_ = nullptr;
 	parentType_ = 0b111;
 }
@@ -222,5 +222,3 @@ bool WorldTransform::operator==(const WorldTransform wt) const
 	// 結果を返す
 	return { this->scale_ == wt.scale_ && this->rotate_ == wt.rotate_ && this->translate_ == wt.translate_ };
 }
-
-

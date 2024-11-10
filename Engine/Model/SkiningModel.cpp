@@ -148,7 +148,7 @@ void SkiningModel::SetBoneParent(const std::string boneName, WorldTransform* tra
 	// 新規親子関係データ生成
 	ParentData newData;
 	newData.transform_ = transform;
-	newData.boneName_  = boneName;
+	newData.boneName_ = boneName;
 
 	// 配列にデータを追加
 	parentDatas_.push_back(newData);
