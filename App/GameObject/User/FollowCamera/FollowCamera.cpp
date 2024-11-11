@@ -161,58 +161,68 @@ void FollowCamera::ZForcusUpdate()
 {
 	// ロックオンが有効になっている場合
 	if (lockOn_->EnableLockOn()) {
-		// ロックオン対象の座標
-		Vector3 targetPos = lockOn_->target_->transform_.translate_;
-		// 追従対象からロックオン対象への差分ベクトル
-		Vector3 sub = targetPos - target_->translate_;
 
-		// ロックオン時の座標を計算
-		lockOnTranslate_ = targetPos - (sub / 2.0f);
+		// 目標角度になるまでは補正を行う
+		if (std::abs(transform_.rotate_.y - targetAngleY_) > 0.1f && !isCanControll_) {
+			// ロックオン対象の座標
+			Vector3 targetPos = lockOn_->target_->transform_.translate_;
+			// 追従対象からロックオン対象への差分ベクトル
+			Vector3 sub = targetPos - target_->translate_;
 
-		// 方向ベクトルを元にプレイヤーがいる角度を求める
-		targetAngleY_ = std::atan2(sub.x, sub.z);
+			// ロックオン時の座標を計算
+			lockOnTranslate_ = targetPos - (sub / 2.0f);
 
-		// ロックオン方向の設定
-		if (!lockOnDirectionSetUp_) {
-			// 目標角度が負方向であれば
-			if (targetAngleY_ < 0.0f) {
-				isRightLockOn_ = false;
+			// 方向ベクトルを元にプレイヤーがいる角度を求める
+			targetAngleY_ = std::atan2(sub.x, sub.z);
+
+			// ロックオン方向の設定
+			if (!lockOnDirectionSetUp_) {
+				// 目標角度が負方向であれば
+				if (targetAngleY_ < 0.0f) {
+					isRightLockOn_ = false;
+				}
+				else {
+					isRightLockOn_ = true;
+				}
+				// セットアップ済み
+				lockOnDirectionSetUp_ = true;
+			}
+
+			// オフセットのY軸を0に
+			offset_.y = 0.0f;
+			offset_.z = -Vector3::Length(sub / 2.0f) + kOffset_.z;
+
+			// どちらに角度を補正するかで処理を変更する
+			if (isRightLockOn_) {
+				kOffsetRotate_ = KLib::Lerp<float>(-0.55f, -0.15f, offset_.z, -27.0f);
 			}
 			else {
-				isRightLockOn_ = true;
+				kOffsetRotate_ = KLib::Lerp<float>(0.55f, 0.15f, offset_.z, -27.0f);
 			}
-			// セットアップ済み
-			lockOnDirectionSetUp_ = true;
-		}
 
-		// オフセットのY軸を0に
-		offset_.y = 0.0f;
-		offset_.z = -Vector3::Length(sub / 2.0f) + kOffset_.z;
+			// 目標角度にオフセット分を加算する
+			targetAngleY_ += kOffsetRotate_;
+			Matrix4x4 rotateMat =
+				Matrix4x4::MakeRotateY(-std::atan2(sub.x, sub.z));
+			Vector3 subA = sub * rotateMat;
+			targetAngleX_ = std::atan2(-subA.y, subA.z) / 3.5f;
+			if (targetAngleX_ < -0.1f) {
+				targetAngleX_ = -0.1f;
+			}
 
-		// どちらに角度を補正するかで処理を変更する
-		if (isRightLockOn_) {
-			kOffsetRotate_ = KLib::Lerp<float>(-0.55f, -0.15f, offset_.z, -27.0f);
+			// 角度補正速度を設定
+			correctionSpeed_ = zEnemyForcusCorrectionSpeed_;
+
+			// 回転させる
+			transform_.rotate_.x = KLib::LerpShortAngle(transform_.rotate_.x, targetAngleX_, zEnemyForcusCorrectionSpeed_);
+			transform_.rotate_.y = KLib::LerpShortAngle(transform_.rotate_.y, targetAngleY_, correctionSpeed_);
 		}
 		else {
-			kOffsetRotate_ = KLib::Lerp<float>(0.55f, 0.15f, offset_.z, -27.0f);
+			// 操作可能状態に
+			isCanControll_ = true;
 		}
 
-		// 目標角度にオフセット分を加算する
-		targetAngleY_ += kOffsetRotate_;
-		Matrix4x4 rotateMat =
-			Matrix4x4::MakeRotateY(-std::atan2(sub.x, sub.z));
-		Vector3 subA = sub * rotateMat;
-		targetAngleX_ = std::atan2(-subA.y, subA.z) / 3.5f;
-		if (targetAngleX_ < -0.1f) {
-			targetAngleX_ = -0.1f;
-		}
-
-		// 角度補正速度を設定
-		correctionSpeed_ = zEnemyForcusCorrectionSpeed_;
-
-		// 回転させる
-		transform_.rotate_.x = KLib::LerpShortAngle(transform_.rotate_.x, targetAngleX_, zEnemyForcusCorrectionSpeed_);
-		transform_.rotate_.y = KLib::LerpShortAngle(transform_.rotate_.y, targetAngleY_, correctionSpeed_);
+		ForcusControllUpdate();
 	}
 	else { // 有効になっていない場合
 		// 角度補正速度を設定
@@ -289,6 +299,49 @@ void FollowCamera::ControllUpdate()
 		offset_.z = KLib::Lerp<float>(kOffset_.z, maxlerpOffsetZ_, transform_.rotate_.x, maxControllAngleX_);
 		offset_.y = kOffset_.y;
 	}
+}
+
+void FollowCamera::ForcusControllUpdate()
+{
+	// 操作可能状態でない場合早期リターン
+	if (!isCanControll_) { return; }
+
+	// ロックオン対象の座標
+	Vector3 targetPos = lockOn_->target_->transform_.translate_;
+	// 追従対象からロックオン対象への差分ベクトル
+	Vector3 sub = targetPos - target_->translate_;
+
+	// ロックオン時の座標を計算
+	lockOnTranslate_ = targetPos - (sub / 2.0f);
+
+	// オフセットのY軸を0に
+	offset_.y = 0.0f;
+	offset_.z = -Vector3::Length(sub / 1.75f) + kOffset_.z;
+
+	// 右スティックの入力を取得
+	Vector3 rStickInput = input_->GetJoyStickInput(1);
+	// カメラを回転させる
+	transform_.rotate_.y += rStickInput.x * sensitivity_.x;
+	transform_.rotate_.x -= rStickInput.z * sensitivity_.y;
+
+	// x軸の回転角度が一定値を上回った場合
+	if (transform_.rotate_.x > maxLockOnControllAngleX_) {
+		transform_.rotate_.x = maxLockOnControllAngleX_;
+	}
+	if (transform_.rotate_.x < minLockOnControllAngleX_) {
+		transform_.rotate_.x = minLockOnControllAngleX_;
+	}
+
+	float addZOffset = 0.0f;
+
+	if (transform_.rotate_.x > 0.0f) {
+		offset_.y = KLib::Lerp<float>(minLockOnHeight_, maxLockOnHeight_, transform_.rotate_.x, maxLockOnControllAngleX_);
+		addZOffset += KLib::Lerp<float>(minAddLockOnXAngleZOffset_, maxAddLockOnXAngleZOffset_, transform_.rotate_.x, maxLockOnControllAngleX_);
+	}
+
+	addZOffset += KLib::Lerp<float>(minAddLockOnDistanceZOffset_, maxAddLockOnDistanceZOffset_, std::abs(Vector3::Length(sub)), 40.0f);
+
+	offset_.z += addZOffset;
 }
 
 void FollowCamera::ParryBlurUpdate()

@@ -105,9 +105,14 @@ private: // プライベートなメンバ関数
 	void ForcusVignetteUpdate();
 
 	/// <summary>
-	/// カメラ操作の更新関数
+	/// 通常時のカメラ操作関数
 	/// </summary>
 	void ControllUpdate();
+
+	/// <summary>
+	/// 注目時の操作関数
+	/// </summary>
+	void ForcusControllUpdate();
 
 	/// <summary>
 	/// パリィ時のラジアルブラー演出の更新関数
@@ -137,6 +142,19 @@ private: // メンバ変数
 	float minlerpOffsetZ_ = -7.5f;
 
 	float minlerpOffsetY_ = 1.5f;
+
+	// ロックオン時のカメラ操作時の最大X軸アングル
+	float maxLockOnControllAngleX_ = 0.75f;
+	float minLockOnControllAngleX_ = -0.15f;
+	// ロックオン時のカメラのX角度によって加算されるZ軸オフセット値
+	float maxAddLockOnXAngleZOffset_ = -6.5f;
+	float minAddLockOnXAngleZOffset_ = 0.0f;
+	// ロックオン時の敵との距離によって加算されるZ軸オフセット値
+	float maxAddLockOnDistanceZOffset_ = -10.0f;
+	float minAddLockOnDistanceZOffset_ = 0.0f;
+	// ロックオン時のカメラ高さ
+	float maxLockOnHeight_ = 1.15f;
+	float minLockOnHeight_ = 0.0f;
 
 	// カメラの高さ最小位置
 	float minPositionY_ = 0.05f;

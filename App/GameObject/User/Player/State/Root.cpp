@@ -28,96 +28,81 @@ void Root::Update()
 
 	// 移動ベクトルが一定の長さになっていれば
 	if (Vector3::Length(move) > deadZone_) {
+		// 移動中状態へ
 		isMoving_ = true;
-
-		// ロックオンが有効でないとき
-		if (!player_->GetFollowCamera()->GetEnableZForcus()) {
-			if (!player_->skiningModels_["Player"]->animationManager_.GetIsPlayingAnimation("01_Run")) {
-				player_->skiningModels_["Player"]->animationManager_.PlayAnimation("01_Run", 0.25f, true);
-			}
-		}
-		else { // 有効時
-			// 横移動をしていない場合
-			if (move.x < latralMovementThreshold_ && move.x > -latralMovementThreshold_) {
-				// 移動ベクトルが前方方向だった場合
-				if (move.z > 0.0f) {
-					if (!player_->skiningModels_["Player"]->animationManager_.GetIsPlayingAnimation("01_Run")) {
-						player_->skiningModels_["Player"]->animationManager_.PlayAnimation("01_Run", 0.1f, true);
-					}
-				}
-				else { // 後方だった場合
-					if (!player_->skiningModels_["Player"]->animationManager_.GetIsPlayingAnimation("03_LockOnMoveBack")) {
-						player_->skiningModels_["Player"]->animationManager_.PlayAnimation("03_LockOnMoveBack", 0.15f, true);
-					}
-				}
-			}
-			else {
-				// 右方向に移動している場合
-				if (move.x > 0.0f) {
-					if (!player_->skiningModels_["Player"]->animationManager_.GetIsPlayingAnimation("04_LockOnMoveRight")) {
-						player_->skiningModels_["Player"]->animationManager_.PlayAnimation("04_LockOnMoveRight", 0.15f, true);
-					}
-				}
-				else if (move.x < 0.0f) { // 左方向に移動している場合
-					if (!player_->skiningModels_["Player"]->animationManager_.GetIsPlayingAnimation("05_LockOnMoveLeft")) {
-						player_->skiningModels_["Player"]->animationManager_.PlayAnimation("05_LockOnMoveLeft", 0.15f, true);
-					}
-				}
-			}
-		}
-	}
-
-	// 移動中であれば
-	if (isMoving_) {
-		// プレイヤーに追従カメラがセットされている場合
-		if (player_->GetFollowCamera() != nullptr) {
-			
-			if (move.z != -1.0f && !player_->GetFollowCamera()->GetEnableZForcus()) {
-				player_->GetFollowCamera()->SetTargetAngle(player_->transform_.rotate_.y);
-			}
-
-			// カメラの角度から回転行列を生成
-			Matrix4x4 rotateMat = Matrix4x4::MakeRotateY(player_->GetFollowCamera()->transform_.rotate_.y);
-			// 移動ベクトルをカメラの角度に応じて回転させる
-			move = Vector3::Normalize((move * rotateMat));
-
-			if (!player_->GetFollowCamera()->GetLockOn()->GetIsLockOn()) {
-				// ターゲット座標
-				Vector3 targetPos = player_->transform_.translate_ + (move * kMaxSpeed_);
-				// 差分ベクトルを求める
-				Vector3 sub = targetPos - player_->transform_.translate_;
-
-				// 目標角度の取得
-				targetAngle_ = std::atan2(sub.x, sub.z);
-			}
-
-		}
-
-		// 移動ベクトルに最大速度を掛ける
-		if (player_->GetFollowCamera()->GetEnableZForcus()) {
-			move = move * kMaxZforcusSpeed_;
-		}
-		else {
-			move = move * kMaxSpeed_;
-		}
-
-		// 現在の移動ベクトルを保持
-		speed_ = move;
 	}
 	else {
 		// ロックオンが有効でないとき
 		if (!player_->GetFollowCamera()->GetEnableZForcus()) {
-			// 
-			if (!player_->skiningModels_["Player"]->animationManager_.GetIsPlayingAnimation("00_Idle")) {
-				player_->skiningModels_["Player"]->animationManager_.PlayAnimation("00_Idle", 0.25f, true);
-			}
+			player_->skiningModels_["Player"]->animationManager_.PlayAnimation("00_Idle", 0.25f, true, true);
 		}
 		else { // 有効時
-			// 
-			if (!player_->skiningModels_["Player"]->animationManager_.GetIsPlayingAnimation("02_LockOnIdle")) {
-				player_->skiningModels_["Player"]->animationManager_.PlayAnimation("02_LockOnIdle", 0.15f, true);
+			player_->skiningModels_["Player"]->animationManager_.PlayAnimation("02_LockOnIdle", 0.15f, true, true);
+		}
+	}
+
+	// 移動中でなければ早期リターン
+	if (!isMoving_) { return; }
+
+	// プレイヤーに追従カメラがセットされている場合
+	if (player_->GetFollowCamera() != nullptr) {
+
+		if (move.z != -1.0f && !player_->GetFollowCamera()->GetEnableZForcus()) {
+			player_->GetFollowCamera()->SetTargetAngle(player_->transform_.rotate_.y);
+		}
+
+		// カメラの角度から回転行列を生成
+		Matrix4x4 rotateMat = Matrix4x4::MakeRotateY(player_->GetFollowCamera()->transform_.rotate_.y);
+		// 移動ベクトルをカメラの角度に応じて回転させる
+		move = Vector3::Normalize((move * rotateMat));
+
+		if (!player_->GetFollowCamera()->GetLockOn()->GetIsLockOn()) {
+			// ターゲット座標
+			Vector3 targetPos = player_->transform_.translate_ + (move * kMaxSpeed_);
+			// 差分ベクトルを求める
+			Vector3 sub = targetPos - player_->transform_.translate_;
+
+			// 目標角度の取得
+			targetAngle_ = std::atan2(sub.x, sub.z);
+		}
+
+	}
+
+	// ロックオンが有効でないとき
+	if (!player_->GetFollowCamera()->GetEnableZForcus()) {
+		player_->skiningModels_["Player"]->animationManager_.PlayAnimation("01_Run", 0.25f, true, true);
+	}
+	else { // 有効時
+		// 横移動をしていない場合
+		if (move.x < latralMovementThreshold_ && move.x > -latralMovementThreshold_) {
+			// 移動ベクトルが前方方向だった場合
+			if (move.z > 0.0f) {
+				player_->skiningModels_["Player"]->animationManager_.PlayAnimation("01_Run", 0.1f, true, true);
+			}
+			else { // 後方だった場合
+				player_->skiningModels_["Player"]->animationManager_.PlayAnimation("03_LockOnMoveBack", 0.15f, true, true);
 			}
 		}
+		else {
+			// 右方向に移動している場合
+			if (move.x > 0.0f) {
+				player_->skiningModels_["Player"]->animationManager_.PlayAnimation("04_LockOnMoveRight", 0.15f, true, true);
+			}
+			else if (move.x < 0.0f) { // 左方向に移動している場合
+				player_->skiningModels_["Player"]->animationManager_.PlayAnimation("05_LockOnMoveLeft", 0.15f, true, true);
+			}
+		}
+	}
+
+	// 現在の移動ベクトルを保持
+	speed_ = move;
+
+	// 移動ベクトルに最大速度を掛ける
+	if (player_->GetFollowCamera()->GetEnableZForcus()) {
+		move = move * kMaxZforcusSpeed_;
+	}
+	else {
+		move = move * kMaxSpeed_;
 	}
 
 	// プレイヤーを移動方向に回転させる
