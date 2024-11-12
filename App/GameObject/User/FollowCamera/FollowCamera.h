@@ -153,7 +153,7 @@ private: // メンバ変数
 	float maxAddLockOnYAngleZOffset_ = -20.0f;
 	float minAddLockOnYAngleZOffset_ = 0.0f;
 	// ロックオン時の敵との距離によって加算されるZ軸オフセット値
-	float maxAddLockOnDistanceZOffset_ = -5.0f;
+	float maxAddLockOnDistanceZOffset_ = -5.5f;
 	float minAddLockOnDistanceZOffset_ = 5.0f;
 	// ロックオン時のカメラ高さ
 	float maxLockOnHeight_ = 1.15f;
