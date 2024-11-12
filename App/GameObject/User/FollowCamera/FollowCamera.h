@@ -146,15 +146,20 @@ private: // メンバ変数
 	// ロックオン時のカメラ操作時の最大X軸アングル
 	float maxLockOnControllAngleX_ = 0.75f;
 	float minLockOnControllAngleX_ = -0.15f;
-	// ロックオン時のカメラのX角度によって加算されるZ軸オフセット値
-	float maxAddLockOnXAngleZOffset_ = -6.5f;
+	// ロックオン時のカメラのX軸角度によって加算されるZ軸オフセット値
+	float maxAddLockOnXAngleZOffset_ = -12.5f;
 	float minAddLockOnXAngleZOffset_ = 0.0f;
+	// ロックオン時のカメラのY軸角度によって加算されるZ軸オフセット値
+	float maxAddLockOnYAngleZOffset_ = -20.0f;
+	float minAddLockOnYAngleZOffset_ = 0.0f;
 	// ロックオン時の敵との距離によって加算されるZ軸オフセット値
-	float maxAddLockOnDistanceZOffset_ = -10.0f;
-	float minAddLockOnDistanceZOffset_ = 0.0f;
+	float maxAddLockOnDistanceZOffset_ = -5.0f;
+	float minAddLockOnDistanceZOffset_ = 5.0f;
 	// ロックオン時のカメラ高さ
 	float maxLockOnHeight_ = 1.15f;
 	float minLockOnHeight_ = 0.0f;
+
+	float directionOffset_ = 0.0f;
 
 	// カメラの高さ最小位置
 	float minPositionY_ = 0.05f;

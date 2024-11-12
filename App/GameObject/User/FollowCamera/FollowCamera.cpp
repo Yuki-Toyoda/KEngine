@@ -73,6 +73,7 @@ void FollowCamera::DisplayImGui()
 	// 目標角度表示
 	ImGui::DragFloat("TargetAngleX", &targetAngleX_);
 	ImGui::DragFloat("TargetAngleY", &targetAngleY_);
+	ImGui::DragFloat("DirectionOffset", &directionOffset_);
 	// 目標角度表示
 	ImGui::DragFloat3("offset", &offset_.x, 0.05f);
 
@@ -161,7 +162,6 @@ void FollowCamera::ZForcusUpdate()
 {
 	// ロックオンが有効になっている場合
 	if (lockOn_->EnableLockOn()) {
-
 		// 目標角度になるまでは補正を行う
 		if (std::abs(transform_.rotate_.y - targetAngleY_) > 0.1f && !isCanControll_) {
 			// ロックオン対象の座標
@@ -190,7 +190,7 @@ void FollowCamera::ZForcusUpdate()
 
 			// オフセットのY軸を0に
 			offset_.y = 0.0f;
-			offset_.z = -Vector3::Length(sub / 2.0f) + kOffset_.z;
+			offset_.z = -Vector3::Length(sub / 1.75f) + kOffset_.z;
 
 			// どちらに角度を補正するかで処理を変更する
 			if (isRightLockOn_) {
@@ -314,6 +314,9 @@ void FollowCamera::ForcusControllUpdate()
 	// ロックオン時の座標を計算
 	lockOnTranslate_ = targetPos - (sub / 2.0f);
 
+	// 方向ベクトルを元にプレイヤーがいる角度を求める
+	targetAngleY_ = std::atan2(sub.x, sub.z);
+
 	// オフセットのY軸を0に
 	offset_.y = 0.0f;
 	offset_.z = -Vector3::Length(sub / 1.75f) + kOffset_.z;
@@ -334,11 +337,16 @@ void FollowCamera::ForcusControllUpdate()
 
 	float addZOffset = 0.0f;
 
+	// X軸方向の回転でオフセットを変更する
 	if (transform_.rotate_.x > 0.0f) {
 		offset_.y = KLib::Lerp<float>(minLockOnHeight_, maxLockOnHeight_, transform_.rotate_.x, maxLockOnControllAngleX_);
 		addZOffset += KLib::Lerp<float>(minAddLockOnXAngleZOffset_, maxAddLockOnXAngleZOffset_, transform_.rotate_.x, maxLockOnControllAngleX_);
 	}
+	// Y軸方向の回転でオフセットを変更する
+	directionOffset_ = std::abs(transform_.rotate_.y - targetAngleY_);
+	addZOffset += KLib::Lerp<float>(minAddLockOnYAngleZOffset_, maxAddLockOnYAngleZOffset_, directionOffset_, 2.75f);
 
+	// 敵との距離によってオフセットを変更する
 	addZOffset += KLib::Lerp<float>(minAddLockOnDistanceZOffset_, maxAddLockOnDistanceZOffset_, std::abs(Vector3::Length(sub)), 40.0f);
 
 	offset_.z += addZOffset;
