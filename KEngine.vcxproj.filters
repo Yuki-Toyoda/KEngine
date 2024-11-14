@@ -347,6 +347,15 @@
     <ClCompile Include="App\Game.cpp">
       <Filter>App</Filter>
     </ClCompile>
+    <ClCompile Include="Externals\imgui\implot.cpp">
+      <Filter>Externals\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Externals\imgui\implot_demo.cpp">
+      <Filter>Externals\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Externals\imgui\implot_items.cpp">
+      <Filter>Externals\ImGui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -768,6 +777,12 @@
     </ClInclude>
     <ClInclude Include="App\Game.h">
       <Filter>App</Filter>
+    </ClInclude>
+    <ClInclude Include="Externals\imgui\implot.h">
+      <Filter>Externals\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Externals\imgui\implot_internal.h">
+      <Filter>Externals\ImGui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,6 @@
 #include "ImGuiManager.h"
 
+#include "implot.h"
 #include "../../Engine/Base/DirectXCommon.h"
 #include "../../Engine/Base/WinApp.h"
 
@@ -16,6 +17,8 @@ void ImGuiManager::Intialize(WinApp* win, DirectXCommon* dxCommon)
 
 	// ImGuiのコンテキストを生成
 	ImGui::CreateContext();
+    // ImPlotのコンテキストを生成
+    ImPlot::CreateContext();
 	// ImGuiのスタイルを設定
 	ImGui::StyleColorsDark();
 	// プラットフォームとレンダラーのバックエンドを設定する
@@ -37,6 +40,7 @@ void ImGuiManager::Finalize()
 	// ImGuiを落とす
 	ImGui_ImplDX12_Shutdown();
 	ImGui_ImplWin32_Shutdown();
+    ImPlot::DestroyContext();
 	ImGui::DestroyContext();
 }
 
