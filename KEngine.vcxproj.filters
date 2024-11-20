@@ -356,6 +356,7 @@
     <ClCompile Include="Externals\imgui\implot_items.cpp">
       <Filter>Externals\ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Resource\Texture\TextureConverter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h">
@@ -784,6 +785,7 @@
     <ClInclude Include="Externals\imgui\implot_internal.h">
       <Filter>Externals\ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Resource\Texture\TextureConverter.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">

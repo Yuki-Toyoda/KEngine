@@ -1,0 +1,2 @@
+Get-Childitem
+pause

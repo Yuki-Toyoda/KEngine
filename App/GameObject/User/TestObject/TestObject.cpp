@@ -1,11 +1,17 @@
 #include "TestObject.h"
 #include "Engine/Utility/Animation/AnimationManager.h"
 #include "Engine/GlobalVariables/GlobalVariables.h"
+#include "Engine/Resource/Texture/TextureConverter.h"
 
 void TestObject::Init()
 {
+	// テクスチャコンバーター起動
+	TextureConverter converter{};
+	converter.ConvertTextureWICToDDS("./Resources/uvChecker.png");
+
 	// メッシュ追加関数
 	AddNormalModel("TestMesh", & transform_, "./Engine/Resource/Samples/Sphere", "Sphere.obj");
+	normalModels_["TestMesh"]->materials_[0].tex_ = TextureManager::Load("uvChecker.dds");
 
 	// ~スプライトの追加関数~
 	AddSprite("TestSprite", { 0.0f, 0.0f }, { 512.0f, 512.0f }, TextureManager::Load("./Engine/Resource/Samples/Box", "uvChecker.png"));
