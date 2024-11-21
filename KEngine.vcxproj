@@ -195,6 +195,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="App\GameObject\User\Level\Level.cpp" />
     <ClCompile Include="App\Level\LevelLoader.cpp" />
     <ClCompile Include="Engine\PostProcess\HSVFilter\HSVFilter.cpp" />
+    <ClCompile Include="Externals\imgui\implot.cpp" />
+    <ClCompile Include="Externals\imgui\implot_demo.cpp" />
+    <ClCompile Include="Externals\imgui\implot_items.cpp" />
     <ClCompile Include="App\GameObject\User\Player\Combo\Combo.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="App\Scene\SceneFactory.cpp" />
@@ -342,6 +345,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Externals\imgui\imgui_impl_dx12.h" />
     <ClInclude Include="Externals\imgui\imgui_impl_win32.h" />
     <ClInclude Include="Externals\imgui\imgui_internal.h" />
+    <ClInclude Include="Externals\imgui\implot.h" />
+    <ClInclude Include="Externals\imgui\implot_internal.h" />
     <ClInclude Include="Externals\imgui\imstb_rectpack.h" />
     <ClInclude Include="Externals\imgui\imstb_textedit.h" />
     <ClInclude Include="Externals\imgui\imstb_truetype.h" />
