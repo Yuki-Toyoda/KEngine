@@ -28,22 +28,14 @@ class Particle
 private: // サブクラス
 
 	/// <summary>
-	/// フレーム時間計算用
-	/// </summary>
-	struct PerFrame {
-		float time;
-		float deltaTime;
-	};
-
-	/// <summary>
 	/// 球状エミッタ
 	/// </summary>
 	struct EmitterSphere {
 		Vector3 translate = {};			// 生成中心座標
 		float	radius = 0.0f;			// 生成半径
-		int32_t count = 10;				// 一度に生成する粒子数
 		float	frequency = 0.5f;		// 生成間隔秒数
 		float	frequencyTime = 0.0f;	// 生成間隔現在秒数
+		int32_t count = 10;				// 一度に生成する粒子数
 		int32_t emit = false;			// 生成トリガー
 	};
 
@@ -51,12 +43,12 @@ private: // サブクラス
 	/// パーティクルデータ
 	/// </summary>
 	struct ParticleData {
+		Vector4 color;		 // 色
 		Vector3 translate;	 // 位置座標
 		Vector3 scale;		 // 大きさ
 		Vector3 velocity;	 // 速度ベクトル
 		float	currentTime; // 現在時間
 		float	lifeTime;	 // 生存時間全体
-		Vector4 color;		 // 色
 	};
 
 	/// <summary>
@@ -65,7 +57,6 @@ private: // サブクラス
 	struct InfoData {
 		int32_t instanceCount;	// パーティクル生成数
 		int32_t isBillboard;	// ビルボードを行うか
-		int32_t isAnimated;		// テクスチャアニメーションを行うか
 	};
 
 public: // コンストラクタ等
@@ -144,8 +135,6 @@ private: // メンバ変数
 	// 粒子最大数
 	const uint32_t kMaxParticleCount_;
 
-	// フレーム時間計測バッファ
-	std::unique_ptr<ConstantBuffer<PerFrame>> perFrameDataBuffer_;
 	// 情報バッファ
 	std::unique_ptr<ConstantBuffer<InfoData>> infoDataBuffer_;
 	// パーティクル用バッファ

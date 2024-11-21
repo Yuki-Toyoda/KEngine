@@ -10,6 +10,14 @@
 /// </summary>
 class ParticleManager
 {
+	/// <summary>
+	/// フレーム時間計算用
+	/// </summary>
+	struct PerFrame {
+		float time;
+		float deltaTime;
+	};
+
 private: // コンストラクタ等
 
 	// シングルトンパターンの設定
@@ -102,4 +110,7 @@ private: // メンバ変数
 
 	// パーティクル計算シェーダーデフォルトパス
 	std::string defaultDirectory_ = "Engine/Resource/Shader/Particle/user/";
+
+	// フレーム時間計測バッファ
+	std::unique_ptr<ConstantBuffer<PerFrame>> perFrameDataBuffer_;
 };

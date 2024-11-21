@@ -33,6 +33,13 @@ ParticleManager& ParticleManager::Init()
 	// ルートシグネチャを生成する
 	root_.CreateRootSignature();
 
+	// フレーム時間計測用バッファの生成
+	perFrameDataBuffer_ = std::make_unique<ConstantBuffer<PerFrame>>();	// 生成
+	perFrameDataBuffer_->Init(device_);									// 初期化
+	// フレーム時間計測
+	perFrameDataBuffer_->data_->deltaTime = 1.0f / 60.0f;	// 1フレーム秒数
+	perFrameDataBuffer_->data_->time = 0.0f;				// 経過秒数リセット
+
 	// 自身を返す
 	return *this;
 }
@@ -69,18 +76,27 @@ void ParticleManager::Update()
 	for (std::unique_ptr<Particle>& p : particles_) {
 		// 初期化処理
 		if (!p->GetIsInit()) {
+			// フレーム時間計測用バッファをコマンドリストにセットする
+			cmdList_->SetComputeRootConstantBufferView(1, perFrameDataBuffer_->GetGPUView());
+			// 初期化実行
 			p->ExecuteInit();
 		}
 
+		// フレーム時間計測用バッファをコマンドリストにセットする
+		cmdList_->SetComputeRootConstantBufferView(1, perFrameDataBuffer_->GetGPUView());
 		// 更新処理
 		p->Update();
 	}
+
+	// フレーム時間加算
+	perFrameDataBuffer_->data_->time += perFrameDataBuffer_->data_->deltaTime;
 }
 
 void ParticleManager::Draw()
 {
 	// 全パーティクル描画
 	for (std::unique_ptr<Particle>& p : particles_) {
+		cmdList_->SetComputeRootConstantBufferView(1, perFrameDataBuffer_->GetGPUView());
 		p->Draw();
 	}
 }
