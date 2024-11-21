@@ -32,6 +32,7 @@ private: // サブクラス
 	/// </summary>
 	struct EmitterSphere {
 		Vector3 translate = {};			// 生成中心座標
+		float	pa1;					// パディング回避用
 		float	radius = 0.0f;			// 生成半径
 		float	frequency = 0.5f;		// 生成間隔秒数
 		float	frequencyTime = 0.0f;	// 生成間隔現在秒数
@@ -45,8 +46,11 @@ private: // サブクラス
 	struct ParticleData {
 		Vector4 color;		 // 色
 		Vector3 translate;	 // 位置座標
+		float	pa1;		 // パディング回避用
 		Vector3 scale;		 // 大きさ
+		float	pa2;		 // パディング回避用
 		Vector3 velocity;	 // 速度ベクトル
+		float	pa3;		 // パディング回避用
 		float	currentTime; // 現在時間
 		float	lifeTime;	 // 生存時間全体
 	};
