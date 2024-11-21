@@ -13,9 +13,6 @@
     <ClCompile Include="App\GameObject\User\TestObject\TestObject.cpp">
       <Filter>App\GameObject\User\TestObject</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Audio\Audio.cpp">
-      <Filter>Engine\Audio</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Debug\Debug.cpp">
       <Filter>Engine\Debug</Filter>
     </ClCompile>
@@ -124,12 +121,6 @@
     </ClCompile>
     <ClCompile Include="Engine\Audio\Audio.cpp">
       <Filter>Engine\Audio</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Utility\Animation\Animation.cpp">
-      <Filter>Engine\Utility\Animation</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Utility\Animation\AnimationManager.cpp">
-      <Filter>Engine\Utility\Animation</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Utility\DataSegment\DataSegment.cpp">
       <Filter>Engine\Utility\DataSegment</Filter>
@@ -416,6 +407,18 @@
     <ClCompile Include="App\GameObject\User\Player\State\Recovery.cpp">
       <Filter>App\GameObject\User\Player\State</Filter>
     </ClCompile>
+    <ClCompile Include="Externals\imgui\implot.cpp" />
+    <ClCompile Include="Externals\imgui\implot_demo.cpp" />
+    <ClCompile Include="Externals\imgui\implot_items.cpp" />
+    <ClCompile Include="Engine\Audio\Audio.cpp">
+      <Filter>Engine\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Utility\Animation\Animation.cpp">
+      <Filter>Engine\Utility\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Utility\Animation\AnimationManager.cpp">
+      <Filter>Engine\Utility\Animation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App\Scene\SceneList.h">
@@ -537,24 +540,6 @@
     </ClInclude>
     <ClInclude Include="Engine\KEngine.h">
       <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Audio\Audio.h">
-      <Filter>Engine\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Utility\Angle\Angle.h">
-      <Filter>Engine\Utility\Angle</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Utility\Animation\Animation.h">
-      <Filter>Engine\Utility\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Utility\Animation\AnimationKey.h">
-      <Filter>Engine\Utility\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Utility\Animation\AnimationKeys.h">
-      <Filter>Engine\Utility\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Utility\Animation\AnimationManager.h">
-      <Filter>Engine\Utility\Animation</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utility\Counter\Counter.h">
       <Filter>Engine\Utility\Counter</Filter>
@@ -918,6 +903,26 @@
     </ClInclude>
     <ClInclude Include="App\GameObject\User\Player\State\Recovery.h">
       <Filter>App\GameObject\User\Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="Externals\imgui\implot.h" />
+    <ClInclude Include="Externals\imgui\implot_internal.h" />
+    <ClInclude Include="Engine\Audio\Audio.h">
+      <Filter>Engine\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Utility\Animation\Animation.h">
+      <Filter>Engine\Utility\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Utility\Animation\AnimationKey.h">
+      <Filter>Engine\Utility\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Utility\Animation\AnimationKeys.h">
+      <Filter>Engine\Utility\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Utility\Animation\AnimationManager.h">
+      <Filter>Engine\Utility\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Utility\Angle\Angle.h">
+      <Filter>Engine\Utility\Angle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
