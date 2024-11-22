@@ -1526,6 +1526,8 @@
     <FxCompile Include="Engine\Resource\Shader\Trail\Trail.VS.hlsl">
       <Filter>Engine\Resource\Shader</Filter>
     </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\Particle\user\BulletTrail\UpdateBulletTrailParticle.CS.hlsl" />
+    <FxCompile Include="Engine\Resource\Shader\Particle\user\BulletTrail\EmitBulletTrailParticle.CS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Externals\imgui\LICENSE.txt">
