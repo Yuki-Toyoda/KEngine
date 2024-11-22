@@ -10,6 +10,7 @@
 #include "Engine/Utility/Timer/DeltaTimer.h"
 
 #include <string>
+#include <DirectXMath.h>
 
 /// <summary>
 /// パーティクル用PSO構造体
@@ -30,7 +31,7 @@ private: // サブクラス
 	/// <summary>
 	/// 球状エミッタ
 	/// </summary>
-	struct EmitterSphere {
+	__declspec(align(16)) struct EmitterSphere {
 		Vector3 translate = {};			// 生成中心座標
 		float	radius = 0.0f;			// 生成半径
 		float	frequency = 0.5f;		// 生成間隔秒数
@@ -45,10 +46,10 @@ private: // サブクラス
 	struct ParticleData {
 		Vector4 color;		 // 色
 		Vector3 translate;	 // 位置座標
-		Vector3 scale;		 // 大きさ
-		Vector3 velocity;	 // 速度ベクトル
 		float	currentTime; // 現在時間
+		Vector3 scale;		 // 大きさ
 		float	lifeTime;	 // 生存時間全体
+		Vector3 velocity;	 // 速度ベクトル
 	};
 
 	/// <summary>
@@ -57,6 +58,7 @@ private: // サブクラス
 	struct InfoData {
 		int32_t instanceCount;	// パーティクル生成数
 		int32_t isBillboard;	// ビルボードを行うか
+		float padding[2];
 	};
 
 public: // コンストラクタ等
