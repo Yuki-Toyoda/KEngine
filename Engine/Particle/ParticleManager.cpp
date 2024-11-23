@@ -63,7 +63,7 @@ void ParticleManager::Update()
 
 	// 生存時間を超過したパーティクルを削除
 	particles_.remove_if([](std::unique_ptr<Particle>& p) {
-		if (p->timer_.GetIsFinish() || p->) {
+		if (p->GetIsEnd()) {
 			// パーティクルに使用しているモデルを削除
 			p->model_->isDestroy_ = true;
 
@@ -122,7 +122,7 @@ ParticleManager& ParticleManager::CreateParticlePSO(const std::string& name, con
 	 return *this;
 }
 
-Particle* ParticleManager::CreateNewParticle(const std::string& name, const std::string& filePath, const std::string& fileName, const float lifeTime, const bool enableLighting, const int maxCount)
+Particle* ParticleManager::CreateNewParticle(const std::string& name, const std::string& filePath, const std::string& fileName, const float lifeTime, const bool isEndless, const int maxCount, const bool enableLighting)
 {
 	// ルートシグネチャをセットする
 	cmdList_->SetComputeRootSignature(root_.GetRootSignature());
@@ -130,7 +130,7 @@ Particle* ParticleManager::CreateNewParticle(const std::string& name, const std:
 	// 新規パーティクル生成
 	std::unique_ptr<Particle> newParticle = std::make_unique<Particle>(maxCount);
 	// パーティクル初期化
-	newParticle->Init(device_, srv_, cmdList_, psos_[name], filePath, fileName, lifeTime, enableLighting);
+	newParticle->Init(device_, srv_, cmdList_, psos_[name], filePath, fileName, lifeTime, isEndless, enableLighting);
 
 	// インスタンス返還用のモデルを取得
 	Particle* returnParticle = newParticle.get();

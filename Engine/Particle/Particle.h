@@ -49,7 +49,10 @@ private: // サブクラス
 		float	currentTime; // 現在時間
 		Vector3 scale;		 // 大きさ
 		float	lifeTime;	 // 生存時間全体
+		Vector3 rotate;		 // 回転角
+		float	padding;	 // パディング回避用
 		Vector3 velocity;	 // 速度ベクトル
+		float	padding2;	 // パディング回避用
 	};
 
 	/// <summary>
@@ -58,8 +61,7 @@ private: // サブクラス
 	struct InfoData {
 		int32_t instanceCount;	// パーティクル生成数
 		int32_t isBillboard;	// ビルボードを行うか
-		int32_t isEndless;		// 終了処理が入るまで発生し続ける
-		int32_t isEnd;			// 終了フラグ
+		float padding[2];		// パディング回避用
 	};
 
 public: // コンストラクタ等
@@ -90,8 +92,9 @@ public: // メンバ関数
 	/// <param name="filePath">使用モデルまでのファイルパス</param>
 	/// <param name="fileName">使用モデルのファイル名</param>
 	/// <param name="lifeTime">パーティクル自体の生存秒数</param>
+	/// <param name="isEndless">終了指示がくるまで出続けるか</param>
 	/// <param name="enableLighting">ライティングを有効にするか</param>
-	void Init(DirectXDevice* device, SRV* srv, ID3D12GraphicsCommandList6* list, const ParticlePSO& pso, const std::string& filePath, const std::string& fileName, const float lifeTime, const bool enableLighting);
+	void Init(DirectXDevice* device, SRV* srv, ID3D12GraphicsCommandList6* list, const ParticlePSO& pso, const std::string& filePath, const std::string& fileName, const float lifeTime, const bool isEndless, const bool enableLighting);
 
 	/// <summary>
 	/// 初期化シェーダーの実行関数
@@ -116,8 +119,22 @@ public: // アクセッサ等
 	/// <returns>初期化</returns>
 	bool GetIsInit() { return isInit_; }
 
+	/// <summary>
+	/// ループ状態ゲッター
+	/// </summary>
+	/// <returns>ループ状態</returns>
+	bool GetIsEndless() { return isEndless_; }
 
-	void SetIsEnd() { infoDataBuffer_->data_->isEnd = true; }
+	/// <summary>
+	/// 終了状態ゲッター
+	/// </summary>
+	/// <returns>終了状態</returns>
+	bool GetIsEnd() { return isEnd_; }
+	/// <summary>
+	/// 終了状態セッター
+	/// </summary>
+	/// <param name="isEnd">設定する終了状態</param>
+	void SetIsEnd(const bool isEnd) { isEnd_ = isEnd; }
 
 public: // パブリックメンバ変数
 
@@ -137,6 +154,11 @@ private: // メンバ変数
 
 	// 初期化フラグ
 	bool isInit_ = false;
+
+	// パーティクルを無限に出すか
+	bool isEndless_ = false;
+	// パーティクルの終了フラグ
+	bool isEnd_ = false;
 
 	// 粒子最大数
 	const uint32_t kMaxParticleCount_;

@@ -16,6 +16,8 @@ void main( uint3 DTid : SV_DispatchThreadID )
             gParticles[particleIndex].translate += gParticles[particleIndex].velocity;
             // 生存時間加算
             gParticles[particleIndex].currentTime += perFrame.deltaTime;
+            // Z軸回転をかける
+            gParticles[particleIndex].rotate.z += 0.05f;
             
             // 透明度を生存時間で徐々に下げる
             float32_t alpha = 1.0f - (gParticles[particleIndex].currentTime * rcp(gParticles[particleIndex].lifeTime));
