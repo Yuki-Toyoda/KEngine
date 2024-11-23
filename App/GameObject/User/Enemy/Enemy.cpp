@@ -294,7 +294,7 @@ void Enemy::OnCollisionEnter(Collider* collider)
 					ChangeState(std::make_unique<EnemyDown>());
 
 					// 衝突した弾を破壊
-					collider->GetGameObject()->Destroy();
+					b->DeleteBullet();
 
 					// ラリー回数リセット
 					rallyCount_ = 0;

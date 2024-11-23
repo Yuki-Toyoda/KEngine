@@ -26,7 +26,7 @@ void main( uint3 DTid : SV_DispatchThreadID )
                 int32_t particleIndex = freeList[fIndex];
                 
                 // 最終スケールを指定
-                float32_t s = 3.5f * ((generator.Generate1d()) + 0.25f);
+                float32_t s = 2.5f * ((generator.Generate1d()) + 0.65f);
                 
                 // 各値の初期化
                 gParticles[particleIndex].scale         = float32_t3(0.0f, 0.0f, 0.0f);

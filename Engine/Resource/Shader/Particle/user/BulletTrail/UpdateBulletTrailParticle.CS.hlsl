@@ -13,7 +13,7 @@ void main( uint3 DTid : SV_DispatchThreadID )
         if (gParticles[particleIndex].currentTime < gParticles[particleIndex].lifeTime)
         {
             // 座標に速度を加算する
-            gParticles[particleIndex].translate -= gParticles[particleIndex].velocity;
+            gParticles[particleIndex].translate += gParticles[particleIndex].velocity;
             // 生存時間加算
             gParticles[particleIndex].currentTime += perFrame.deltaTime;
             

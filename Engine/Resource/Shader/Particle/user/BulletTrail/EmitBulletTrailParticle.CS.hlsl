@@ -31,22 +31,13 @@ void main( uint3 DTid : SV_DispatchThreadID )
                 // 青色を指定
                 float32_t b = 1.0f * (generator.Generate1d()) + 0.15f;
                 
-                // 先に速度ベクトルをランダムに求め、生存時間設定
-                gParticles[particleIndex].velocity = generator.Generate3D() / 4.0f + float32_t3(-0.125f, -0.125f, -0.125f);
-                gParticles[particleIndex].lifeTime = 0.5f;
-                
-                // 取得
-                Particle p = gParticles[particleIndex];
-                
-                float32_t3 t = emitter.translate + (p.velocity * (60.0f * p.lifeTime));
-                
-                // 速度ベクトルと生存時間をかけた値をエミッタ座標と掛け合わせる
-                gParticles[particleIndex].translate = t;
-                
                 // 各値の初期化
                 gParticles[particleIndex].scale       = float32_t3(s, s, s);
+                gParticles[particleIndex].translate   = emitter.translate;
                 gParticles[particleIndex].color.rgb   = float32_t3(0.0f, 1.0f, b);
                 gParticles[particleIndex].color.a     = 1.0f;
+                gParticles[particleIndex].velocity = generator.Generate3D() / 10.0f + float32_t3(-0.05f, -0.05f, -0.05f);
+                gParticles[particleIndex].lifeTime    = 0.5f;
                 gParticles[particleIndex].currentTime = 0.0f;
             }
             else

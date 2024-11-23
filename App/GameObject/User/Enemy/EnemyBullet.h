@@ -58,6 +58,11 @@ public: // メンバ関数
 	/// <returns>跳ね返しているのか</returns>
 	bool GetIsReturn() { return isReturn_; }
 
+	/// <summary>
+	/// 弾の削除時に呼び出す関数
+	/// </summary>
+	void DeleteBullet();
+
 private: // メンバ変数
 
 	// 発射ベクトル
@@ -83,6 +88,9 @@ private: // メンバ変数
 	// Dissolveの演出用フラグ
 	bool isDissolving_ = false;
 	bool isSwitchDissolving_ = false;
+
+	// 軌跡パーティクル
+	Particle* trailParticle_ = nullptr;
 
 	// 効果音群
 	uint32_t counterSound_ = 0u;

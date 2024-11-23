@@ -15,6 +15,15 @@ void EnemyBullet::Init()
 	normalModels_["EnemyBullet"]->materials_[0].dissolveEdgeThreshold_ = 0.1f;
 	normalModels_["EnemyBullet"]->materials_[0].dissolveStrength_ = 1.0f;
 
+	// 軌跡パーティクル再生
+	trailParticle_ = ParticleManager::GetInstance()->CreateNewParticle("BulletTrail", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.0f, true);
+	trailParticle_->model_->materials_[1].tex_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png");
+	trailParticle_->model_->materials_[1].enableLighting_ = false;
+	trailParticle_->transform_.translate_ = transform_.translate_;
+	trailParticle_->emitterDataBuffer_->data_->count = 10;
+	trailParticle_->emitterDataBuffer_->data_->frequency = 0.25f;
+	trailParticle_->emitterDataBuffer_->data_->frequencyTime = 0.25f;
+
 	// 球のコライダー追加
 	AddColliderSphere("Bullet", &transform_.translate_, &transform_.scale_.x);
 
@@ -24,6 +33,9 @@ void EnemyBullet::Init()
 
 void EnemyBullet::Update()
 {
+	// 軌跡パーティクル発生座標を調整する
+	trailParticle_->transform_.translate_ = transform_.translate_;
+
 	if (isDissolving_) {
 		if (!isSwitchDissolving_) {
 			normalModels_["EnemyBullet"]->materials_[0].dissolveEdgeThreshold_ = KLib::Lerp<float>(normalModels_["EnemyBullet"]->materials_[0].dissolveEdgeThreshold_, 0.35f, 0.05f);
@@ -53,12 +65,12 @@ void EnemyBullet::Update()
 
 	// y座標が一定以下になったら削除
 	if (transform_.translate_.y <= -1.0f) {
-		Destroy();
+		DeleteBullet();
 	}
 
 	// y座標が一定以上になったら削除
 	if (transform_.translate_.y >= 10.0f) {
-		Destroy();
+		DeleteBullet();
 	}
 }
 
@@ -126,7 +138,7 @@ void EnemyBullet::OnCollisionEnter(Collider* collider)
 		}
 
 		// このオブジェクトを破壊する
-		Destroy();
+		DeleteBullet();
 	}
 }
 
@@ -154,4 +166,12 @@ void EnemyBullet::SetVelocity(const bool& isPlayer, const int32_t& rallyCount)
 	else {
 		velocity_ = sub * (speed_ + kAcceleration_ * (float)rallyCount);
 	}
+}
+
+void EnemyBullet::DeleteBullet()
+{
+	// 軌跡用パーティクルの停止
+	trailParticle_->SetIsEnd(true);
+	// 削除
+	Destroy();
 }
