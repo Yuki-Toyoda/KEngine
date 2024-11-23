@@ -51,11 +51,31 @@ void main(
         // ワールド行列の計算
         float32_t4x4 worldMat;
         
+        // 回転行列の計算用
+        float32_t4x4 rotationX = {
+            1.0f, 0.0f,             0.0f,           0.0f,
+            0.0f, cos(p.rotate.x), -sin(p.rotate.x), 0.0f,
+            0.0f, sin(p.rotate.x), cos(p.rotate.x), 0.0f,
+            0.0f, 0.0f,             0.0f,           1.0f
+        };
+        float32_t4x4 rotationY = {
+            cos(p.rotate.y), 0.0f, sin(p.rotate.y), 0.0f,
+            0.0f,           1.0f,   0.0f,           0.0f,
+            -sin(p.rotate.y), 0.0f, cos(p.rotate.y), 0.0f,
+            0.0f, 0.0f,             0.0f,           1.0f
+        };
+        float32_t4x4 rotationZ = {
+            cos(p.rotate.z), -sin(p.rotate.z), 0.0f, 0.0f,
+            sin(p.rotate.z), cos(p.rotate.z), 0.0f, 0.0f,
+            0.0f,            0.0f,            1.0f, 0.0f,
+            0.0f, 0.0f, 0.0f, 1.0f
+        };
+        
         // ビルボードを使用する場合
         if (infoData.isBillboard)
-        {
+        {   
             // ビルボード行列を取得
-            worldMat = ConstantData.Billboard;
+            worldMat = mul(rotationZ, ConstantData.Billboard);
             
             // ビルボード行列にワールド行列をかける
             worldMat[0]     *= p.scale.x;
@@ -65,6 +85,12 @@ void main(
         }
         else
         {
+            // 回転行列の計算
+            float32_t4x4 rotationMatirx = mul(mul(rotationX, rotationY), rotationZ);
+            
+             // ビルボード行列を取得
+            worldMat = mul(rotationMatirx, ConstantData.Billboard);
+            
             // ワールド行列をそのまま生成
             worldMat[0]     = p.scale.x;
             worldMat[1]     = p.scale.y;

@@ -1,7 +1,7 @@
 #include "Particle.h"
 #include "Engine/Model/ModelManager.h"
 
-void Particle::Init(DirectXDevice* device, SRV* srv, ID3D12GraphicsCommandList6* list, const ParticlePSO& pso, const std::string& filePath, const std::string& fileName, const float lifeTime, const bool enableLighting)
+void Particle::Init(DirectXDevice* device, SRV* srv, ID3D12GraphicsCommandList6* list, const ParticlePSO& pso, const std::string& filePath, const std::string& fileName, const float lifeTime, const bool isEndless, const bool enableLighting)
 {
 	// PSOの取得
 	pso_ = pso;
@@ -19,8 +19,14 @@ void Particle::Init(DirectXDevice* device, SRV* srv, ID3D12GraphicsCommandList6*
 		model_->materials_[i].enableLighting_ = enableLighting;
 	}
 
-	// タイマーを指定された秒数で開始
-	timer_.Start(lifeTime);
+	// ループ状態の取得
+	isEndless_ = isEndless;
+
+	// パーティクルを無限に放出しない場合
+	if (!isEndless_) {
+		// タイマーを指定された秒数で開始
+		timer_.Start(lifeTime);
+	}
 
 	/// バッファ生成
 	// エミッタ
@@ -124,6 +130,11 @@ void Particle::Update()
 
 	// パーティクルの更新を実行する
 	cmdList_->Dispatch(kMaxParticleCount_, 1, 1);
+
+	// タイマー終了時かつパーティクルを無限に出す状態でなければ
+	if (timer_.GetIsFinish() && !isEndless_) {
+		isEnd_ = true;
+	}
 
 	// タイマー更新
 	timer_.Update();

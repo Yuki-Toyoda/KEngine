@@ -49,5 +49,8 @@ private: // プライベートなメンバ変数
 
 	// アニメーションの管理用
 	MyAnimation* animation_ = nullptr;
+
+	// パーティクルテスト用
+	Particle* p = nullptr;
 };
 
