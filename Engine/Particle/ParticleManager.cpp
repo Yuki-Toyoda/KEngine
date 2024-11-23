@@ -63,7 +63,7 @@ void ParticleManager::Update()
 
 	// 生存時間を超過したパーティクルを削除
 	particles_.remove_if([](std::unique_ptr<Particle>& p) {
-		if (p->timer_.GetIsFinish()) {
+		if (p->timer_.GetIsFinish() || p->) {
 			// パーティクルに使用しているモデルを削除
 			p->model_->isDestroy_ = true;
 

@@ -58,7 +58,8 @@ private: // サブクラス
 	struct InfoData {
 		int32_t instanceCount;	// パーティクル生成数
 		int32_t isBillboard;	// ビルボードを行うか
-		float padding[2];
+		int32_t isEndless;		// 終了処理が入るまで発生し続ける
+		int32_t isEnd;			// 終了フラグ
 	};
 
 public: // コンストラクタ等
@@ -114,6 +115,9 @@ public: // アクセッサ等
 	/// </summary>
 	/// <returns>初期化</returns>
 	bool GetIsInit() { return isInit_; }
+
+
+	void SetIsEnd() { infoDataBuffer_->data_->isEnd = true; }
 
 public: // パブリックメンバ変数
 
