@@ -1528,6 +1528,8 @@
     </FxCompile>
     <FxCompile Include="Engine\Resource\Shader\Particle\user\BulletTrail\UpdateBulletTrailParticle.CS.hlsl" />
     <FxCompile Include="Engine\Resource\Shader\Particle\user\BulletTrail\EmitBulletTrailParticle.CS.hlsl" />
+    <FxCompile Include="Engine\Resource\Shader\Particle\user\Enemy\EmitEnemyParticle.CS.hlsl" />
+    <FxCompile Include="Engine\Resource\Shader\Particle\user\Enemy\UpdateEnemyParticle.CS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Externals\imgui\LICENSE.txt">

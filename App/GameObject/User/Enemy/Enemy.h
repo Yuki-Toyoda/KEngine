@@ -191,6 +191,9 @@ private: // メンバ変数
 	// プレイヤーとの距離
 	Vector3 toPlayerDistance_ = {};
 
+	// 敵パーティクル
+	Particle* enemyParticle_ = nullptr;
+
 	/// デバック用変数群
 	// 攻撃を行うか
 	bool isAttack_ = true;

@@ -89,6 +89,16 @@ void Enemy::Init()
 
 	// 効果音読み込み
 	damageSound_ = Audio::GetInstance()->LoadWave("./Resources/Audio/SE/SwordDamage.mp3");
+
+	// 敵パーティクル再生
+	enemyParticle_ = ParticleManager::GetInstance()->CreateNewParticle("Enemy", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.0f, true);
+	enemyParticle_->model_->materials_[1].tex_ = TextureManager::Load("EnemyParticle.png");
+	enemyParticle_->model_->materials_[1].enableLighting_ = false;
+	enemyParticle_->transform_.translate_ = bodyTransform_.translate_;
+	enemyParticle_->transform_.translate_.y -= 1.0f;
+	enemyParticle_->emitterDataBuffer_->data_->count = 25;
+	enemyParticle_->emitterDataBuffer_->data_->frequency = 0.1f;
+	enemyParticle_->emitterDataBuffer_->data_->frequencyTime = 0.1f;
 }
 
 void Enemy::Update()
@@ -106,6 +116,9 @@ void Enemy::Update()
 			// 目標角度に向かって徐々に補間
 			transform_.rotate_.y = KLib::LerpShortAngle(transform_.rotate_.y, targetAngle_, 0.1f);
 		}
+
+		enemyParticle_->transform_.translate_ = bodyTransform_.GetWorldPos();
+		enemyParticle_->transform_.translate_.y -= 0.9f;
 
 		// 行動変更タイマーが終了していれば
 		if (stateChangeTimer_.GetIsFinish()) {
@@ -125,6 +138,12 @@ void Enemy::Update()
 					}
 				}
 			}
+		}
+	}
+	else {
+		if (enemyParticle_ != nullptr) {
+			enemyParticle_->SetIsEnd(true);
+			enemyParticle_ = nullptr;
 		}
 	}
 	
@@ -323,7 +342,7 @@ void Enemy::OnCollisionEnter(Collider* collider)
 				ChangeState(std::make_unique<EnemyDown>());
 
 				// 衝突した弾を破壊
-				collider->GetGameObject()->Destroy();
+				b->DeleteBullet();
 
 				// ラリー回数リセット
 				rallyCount_ = 0;

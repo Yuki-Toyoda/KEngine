@@ -20,8 +20,8 @@ void EnemyBullet::Init()
 	trailParticle_->model_->materials_[1].tex_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png");
 	trailParticle_->model_->materials_[1].enableLighting_ = false;
 	trailParticle_->transform_.translate_ = transform_.translate_;
-	trailParticle_->emitterDataBuffer_->data_->count = 10;
-	trailParticle_->emitterDataBuffer_->data_->frequency = 0.25f;
+	trailParticle_->emitterDataBuffer_->data_->count = 1;
+	trailParticle_->emitterDataBuffer_->data_->frequency = 0.0f;
 	trailParticle_->emitterDataBuffer_->data_->frequencyTime = 0.25f;
 
 	// 球のコライダー追加

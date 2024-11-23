@@ -26,18 +26,26 @@ void main( uint3 DTid : SV_DispatchThreadID )
                 int32_t particleIndex = freeList[fIndex];
                 
                 // スケールを指定
-                float32_t s = 0.5f * (generator.Generate1d()) + 0.5f;
+                float32_t s = (0.25f * generator.Generate1d()) + 0.25f;
                 
                 // 青色を指定
                 float32_t b = 1.0f * (generator.Generate1d()) + 0.15f;
                 
+                // 生成範囲を設定
+                float32_t horizontalX = 1.25f * (generator.Generate1d()) - 0.625f;
+                float32_t horizontalZ = 2.0f * (generator.Generate1d()) - 1.0f;
+                float32_t vertical = 0.5f * (generator.Generate1d()) - 0.25f;
+                
+                // 秒数指定
+                float32_t lifeTime = 0.25f * (generator.Generate1d()) + 0.25f;
+                
                 // 各値の初期化
                 gParticles[particleIndex].scale       = float32_t3(s, s, s);
-                gParticles[particleIndex].translate   = emitter.translate;
+                gParticles[particleIndex].translate = float32_t3(emitter.translate.x + horizontalX, emitter.translate.y + vertical, emitter.translate.z + horizontalZ);
                 gParticles[particleIndex].color.rgb   = float32_t3(0.0f, 1.0f, b);
                 gParticles[particleIndex].color.a     = 1.0f;
-                gParticles[particleIndex].velocity = generator.Generate3D() / 10.0f + float32_t3(-0.05f, -0.05f, -0.05f);
-                gParticles[particleIndex].lifeTime    = 0.5f;
+                gParticles[particleIndex].velocity = generator.Generate3D() / 30.0f + float32_t3(-0.015f, 0.015f, -0.015f);
+                gParticles[particleIndex].lifeTime      = lifeTime;
                 gParticles[particleIndex].currentTime = 0.0f;
             }
             else
