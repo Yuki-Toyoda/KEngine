@@ -52,7 +52,6 @@ private: // サブクラス
 		Vector3 rotate;		 // 回転角
 		float	padding;	 // パディング回避用
 		Vector3 velocity;	 // 速度ベクトル
-		float	padding2;	 // パディング回避用
 	};
 
 	/// <summary>
