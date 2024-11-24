@@ -99,6 +99,15 @@ void EnemyBullet::OnCollisionEnter(Collider* collider)
 		hit->emitterDataBuffer_->data_->count = 1;
 		hit->emitterDataBuffer_->data_->frequency = 1.0f;
 		hit->emitterDataBuffer_->data_->frequencyTime = 3.0f;
+
+		// 命中破片パーティクル再生
+		Particle* hitDebris = ParticleManager::GetInstance()->CreateNewParticle("HitDebris", "./Engine/Resource/Samples/Plane", "Plane.obj", 1.0f);
+		hitDebris->model_->materials_[1].tex_ = TextureManager::Load("HitDebrisEffect.png");
+		hitDebris->model_->materials_[1].enableLighting_ = false;
+		hitDebris->transform_.translate_ = transform_.translate_;
+		hitDebris->emitterDataBuffer_->data_->count = 10;
+		hitDebris->emitterDataBuffer_->data_->frequency = 3.0f;
+		hitDebris->emitterDataBuffer_->data_->frequencyTime = 5.0f;
 	}
 
 	// ボスと衝突したら
@@ -108,7 +117,7 @@ void EnemyBullet::OnCollisionEnter(Collider* collider)
 		isReturn_ = false;
 
 		// 命中パーティクル再生
-		Particle* hit = ParticleManager::GetInstance()->CreateNewParticle("EnemyHit", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.5f);
+		Particle* hit = ParticleManager::GetInstance()->CreateNewParticle("Hit", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.5f);
 		hit->model_->materials_[1].tex_ = TextureManager::Load("BulletHitEffect.png");
 		hit->model_->materials_[1].enableLighting_ = false;
 		hit->transform_.translate_ = transform_.translate_;
@@ -116,6 +125,14 @@ void EnemyBullet::OnCollisionEnter(Collider* collider)
 		hit->emitterDataBuffer_->data_->frequency = 1.0f;
 		hit->emitterDataBuffer_->data_->frequencyTime = 3.0f;
 
+		// 命中破片パーティクル再生
+		Particle* hitDebris = ParticleManager::GetInstance()->CreateNewParticle("HitDebris", "./Engine/Resource/Samples/Plane", "Plane.obj", 1.0f);
+		hitDebris->model_->materials_[1].tex_ = TextureManager::Load("HitDebrisEffect.png");
+		hitDebris->model_->materials_[1].enableLighting_ = false;
+		hitDebris->transform_.translate_ = transform_.translate_;
+		hitDebris->emitterDataBuffer_->data_->count = 10;
+		hitDebris->emitterDataBuffer_->data_->frequency = 3.0f;
+		hitDebris->emitterDataBuffer_->data_->frequencyTime = 5.0f;
 	}
 
 	// プレイヤー、または床と衝突したら
