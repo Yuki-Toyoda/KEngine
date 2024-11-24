@@ -147,7 +147,7 @@ private: // メンバ変数
 	float maxLockOnControllAngleX_ = 0.75f;
 	float minLockOnControllAngleX_ = -0.15f;
 	// ロックオン時のカメラのX軸角度によって加算されるZ軸オフセット値
-	float maxAddLockOnXAngleZOffset_ = -12.5f;
+	float maxAddLockOnXAngleZOffset_ = -5.0f;
 	float minAddLockOnXAngleZOffset_ = 0.0f;
 	// ロックオン時のカメラのY軸角度によって加算されるZ軸オフセット値
 	float maxAddLockOnYAngleZOffset_ = -20.0f;

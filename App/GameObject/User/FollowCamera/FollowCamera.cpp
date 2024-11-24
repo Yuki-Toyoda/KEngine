@@ -77,6 +77,16 @@ void FollowCamera::DisplayImGui()
 	// 目標角度表示
 	ImGui::DragFloat3("offset", &offset_.x, 0.05f);
 
+	// 補間系パラメータの調整
+	ImGui::DragFloat("maxLockOnControllAngleX", &maxLockOnControllAngleX_, 0.001f);
+	ImGui::DragFloat("minLockOnControllAngleX", &minLockOnControllAngleX_, 0.001f);
+	ImGui::DragFloat("maxAddLockOnXAngleZOffset", &maxAddLockOnXAngleZOffset_, 0.001f);
+	ImGui::DragFloat("minAddLockOnXAngleZOffset", &minAddLockOnXAngleZOffset_, 0.001f);
+	ImGui::DragFloat("maxAddLockOnYAngleZOffset", &maxAddLockOnYAngleZOffset_, 0.001f);
+	ImGui::DragFloat("minAddLockOnYAngleZOffset", &minAddLockOnYAngleZOffset_, 0.001f);
+	ImGui::DragFloat("maxAddLockOnDistanceZOffset", &maxAddLockOnDistanceZOffset_, 0.001f);
+	ImGui::DragFloat("minAddLockOnDistanceZOffset", &minAddLockOnDistanceZOffset_, 0.001f);
+
 	ImGui::DragFloat("RotateOffset", &kOffsetRotate_);
 }
 
