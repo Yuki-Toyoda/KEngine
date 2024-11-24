@@ -93,7 +93,7 @@ void DirectXCommon::SetMainCamera(Camera* camera)
 	// 3D描画レンダラーに描画ターゲットセット
 	rendererManager_->AddTarget(camera->GetCameraDataBufferView(), camera->GetRendererResource(), &depthStencil_);
 	// ポストプロセスレンダラーに描画ターゲットセット
-	rendererManager_->AddTarget(camera->GetRendererResource(), &backBuffers_[swapChain_->GetCurrentBackBufferIndex()], camera->GetDepthStencil(), &camera->ppProcessor_);
+	rendererManager_->AddTarget(camera->GetRendererResource(), &backBuffers_[swapChain_->GetCurrentBackBufferIndex()], &depthStencil_, &camera->ppProcessor_);
 	// 2D描画レンダラーに描画ターゲットをセット
 	rendererManager_->Add2DTarget(camera->GetCameraDataBufferView(), &backBuffers_[swapChain_->GetCurrentBackBufferIndex()], &depthStencil_);
 }
