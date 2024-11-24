@@ -91,6 +91,8 @@ private: // メンバ変数
 
 	// 軌跡パーティクル
 	Particle* trailParticle_ = nullptr;
+	// 弾パーティクル
+	Particle* bulletParticle_ = nullptr;
 
 	// 効果音群
 	uint32_t counterSound_ = 0u;

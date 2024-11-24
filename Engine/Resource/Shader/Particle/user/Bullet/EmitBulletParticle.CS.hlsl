@@ -26,27 +26,25 @@ void main( uint3 DTid : SV_DispatchThreadID )
                 int32_t particleIndex = freeList[fIndex];
                 
                 // スケールを指定
-                float32_t s = 1.5f * (generator.Generate1d()) + 0.15f;
-                
-                // 青色を指定
-                float32_t g = 1.0f * (generator.Generate1d()) + 0.15f;
+                float32_t s = 1.85f;
+               
                 
                 // 回転角ランダム選定
                 float32_t rotate = (3.141592f * 2.0f) * generator.Generate1d();
 
                  // 生成範囲を設定
-                float32_t horizontalX = 1.0f * (generator.Generate1d()) - 0.5f;
-                float32_t horizontalZ = 1.0f * (generator.Generate1d()) - 0.5f;
-                float32_t vertical = 1.0f * (generator.Generate1d()) - 0.5f;
+                float32_t horizontalX = 0.25f * (generator.Generate1d()) - 0.125f;
+                float32_t horizontalZ = 0.25f * (generator.Generate1d()) - 0.125f;
+                float32_t vertical = 0.25f * (generator.Generate1d()) - 0.125f;
                 
                 // 各値の初期化
                 gParticles[particleIndex].scale       = float32_t3(s, s, s);
                 gParticles[particleIndex].rotate.z = rotate;
                 gParticles[particleIndex].translate = float32_t3(emitter.translate.x + horizontalX, emitter.translate.y + vertical, emitter.translate.z + horizontalZ);
-                gParticles[particleIndex].color.rgb = float32_t3(0.0f, g, 3.0f);
+                gParticles[particleIndex].color.rgb   = float32_t3(0.0f, 0.5f, 3.0f);
                 gParticles[particleIndex].color.a     = 1.0f;
                 gParticles[particleIndex].velocity = generator.Generate3D() / 10.0f + float32_t3(-0.05f, -0.05f, -0.05f);
-                gParticles[particleIndex].lifeTime    = 0.15f;
+                gParticles[particleIndex].lifeTime    = 0.1f;
                 gParticles[particleIndex].currentTime = 0.0f;
             }
             else

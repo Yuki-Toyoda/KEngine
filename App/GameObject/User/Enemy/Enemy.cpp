@@ -64,7 +64,7 @@ void Enemy::Init()
 #ifdef _DEBUG // デバッグ時のみ行う
 
 	// デバッグ時は攻撃を行わないように
-	isAttack_ = false;
+	//isAttack_ = false;
 
 #endif // _DEBUG
 

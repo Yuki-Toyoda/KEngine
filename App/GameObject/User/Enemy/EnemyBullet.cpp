@@ -8,8 +8,11 @@ void EnemyBullet::Init()
 	// メッシュを追加
 	AddNormalModel("EnemyBullet", &transform_, "./Engine/Resource/Samples/Sphere", "Sphere.obj");
 
+	// 拡縮を0に
+	transform_.scale_ = Vector3(0.0f, 0.0f, 0.0f);
+
 	// 弾の色調整
-	normalModels_["EnemyBullet"]->materials_[0].color_ = { 0.0f, 2.5f, 1.0f, .85f };
+	normalModels_["EnemyBullet"]->materials_[0].color_ = { 0.0f, 0.5f, 3.0f, 1.0f };
 	normalModels_["EnemyBullet"]->materials_[0].enableLighting_ = false;
 	normalModels_["EnemyBullet"]->materials_[0].dissolveEdgeColor_ = { 1.0f, 1.0f, 0.45f };
 	normalModels_["EnemyBullet"]->materials_[0].dissolveEdgeThreshold_ = 0.1f;
@@ -17,10 +20,10 @@ void EnemyBullet::Init()
 
 	// 軌跡パーティクル再生
 	trailParticle_ = ParticleManager::GetInstance()->CreateNewParticle("BulletTrail", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.0f, true);
-	trailParticle_->model_->materials_[1].tex_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png");
+	trailParticle_->model_->materials_[1].tex_ = TextureManager::Load("BulletTrailParticle.png");
 	trailParticle_->model_->materials_[1].enableLighting_ = false;
 	trailParticle_->transform_.translate_ = transform_.translate_;
-	trailParticle_->emitterDataBuffer_->data_->count = 1;
+	trailParticle_->emitterDataBuffer_->data_->count = 3;
 	trailParticle_->emitterDataBuffer_->data_->frequency = 0.0f;
 	trailParticle_->emitterDataBuffer_->data_->frequencyTime = 0.25f;
 
@@ -36,32 +39,36 @@ void EnemyBullet::Update()
 	// 軌跡パーティクル発生座標を調整する
 	trailParticle_->transform_.translate_ = transform_.translate_;
 
-	if (isDissolving_) {
-		if (!isSwitchDissolving_) {
-			normalModels_["EnemyBullet"]->materials_[0].dissolveEdgeThreshold_ = KLib::Lerp<float>(normalModels_["EnemyBullet"]->materials_[0].dissolveEdgeThreshold_, 0.35f, 0.05f);
-			if (normalModels_["EnemyBullet"]->materials_[0].dissolveEdgeThreshold_ >= 0.325f) {
-				isSwitchDissolving_ = true;
-			}
-		}
-		else {
-			normalModels_["EnemyBullet"]->materials_[0].dissolveEdgeThreshold_ = KLib::Lerp<float>(normalModels_["EnemyBullet"]->materials_[0].dissolveEdgeThreshold_, 0.075f, 0.05f);
-			if (normalModels_["EnemyBullet"]->materials_[0].dissolveEdgeThreshold_ <= 0.1f) {
-				isSwitchDissolving_ = false;
-			}
+	// 線形補間でサイズを大きく
+	transform_.scale_ = KLib::Lerp<Vector3>(transform_.scale_, { 1.0f, 1.0f, 1.0f }, 0.05f);
+
+	if (!isDissolving_) {
+		normalModels_["EnemyBullet"]->materials_[0].dissolveStrength_ = KLib::Lerp<float>(normalModels_["EnemyBullet"]->materials_[0].dissolveStrength_, 0.0f, 0.05f);
+		if (normalModels_["EnemyBullet"]->materials_[0].dissolveStrength_ <= 0.05f) {
+			isDissolving_ = true;
+
+			// 弾パーティクル再生
+			bulletParticle_ = ParticleManager::GetInstance()->CreateNewParticle("Bullet", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.0f, true);
+			bulletParticle_->model_->materials_[1].tex_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png");
+			bulletParticle_->model_->materials_[1].enableLighting_ = false;
+			bulletParticle_->transform_.translate_ = transform_.translate_;
+			bulletParticle_->emitterDataBuffer_->data_->count = 1;
+			bulletParticle_->emitterDataBuffer_->data_->frequency = 0.0f;
+			bulletParticle_->emitterDataBuffer_->data_->frequencyTime = 0.25f;
 		}
 	}
 	else {
-		normalModels_["EnemyBullet"]->materials_[0].dissolveStrength_ = KLib::Lerp<float>(normalModels_["EnemyBullet"]->materials_[0].dissolveStrength_, 0.3f, 0.05f);
-		if (normalModels_["EnemyBullet"]->materials_[0].dissolveStrength_ <= 0.35f) {
-			isDissolving_ = true;
+		normalModels_["EnemyBullet"]->materials_[0].color_.w = KLib::Lerp<float>(normalModels_["EnemyBullet"]->materials_[0].color_.w, 0.0f, 0.15f);
+
+		bulletParticle_->transform_.translate_ = transform_.translate_;
+
+		if (normalModels_["EnemyBullet"]->materials_[0].color_.w <= 0.05f) {
+			normalModels_["EnemyBullet"]->isActive_ = false;
 		}
 	}
 
 	// 弾を移動させる
 	transform_.translate_ = transform_.translate_ + velocity_;
-
-	// UVを動かし続ける
-	normalModels_["EnemyBullet"]->materials_[0].uvTransform_.translate_.x += 0.01f;
 
 	// y座標が一定以下になったら削除
 	if (transform_.translate_.y <= -1.0f) {
@@ -197,8 +204,9 @@ void EnemyBullet::SetVelocity(const bool& isPlayer, const int32_t& rallyCount)
 
 void EnemyBullet::DeleteBullet()
 {
-	// 軌跡用パーティクルの停止
+	// パーティクルの停止
 	trailParticle_->SetIsEnd(true);
+	bulletParticle_->SetIsEnd(true);
 	// 削除
 	Destroy();
 }
