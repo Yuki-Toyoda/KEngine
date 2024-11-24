@@ -34,7 +34,7 @@ void main( uint3 DTid : SV_DispatchThreadID )
                 // 回転角ランダム選定
                 float32_t rotate = (3.141592f * 2.0f) * generator.Generate1d();
 
-                 // 生成範囲を設定
+                // 生成範囲を設定
                 float32_t horizontalX = 1.0f * (generator.Generate1d()) - 0.5f;
                 float32_t horizontalZ = 1.0f * (generator.Generate1d()) - 0.5f;
                 float32_t vertical = 1.0f * (generator.Generate1d()) - 0.5f;

@@ -129,6 +129,16 @@ public: // アクセッサ等
 	/// <returns>場外判定</returns>
 	bool GetIsFieldOut() { return isFieldOut_; }
 
+	/// <summary>
+	/// 麻痺パーティクルゲッター
+	/// </summary>
+	/// <returns>麻痺パーティクル</returns>
+	Particle* GetStunParticle() { return stunParticle_; }
+	/// <summary>
+	/// 麻痺パーティクル停止関数
+	/// </summary>
+	void ResetStunParticle();
+
 private: // メンバ変数
 
 	// ゲームマネージャー
@@ -193,6 +203,8 @@ private: // メンバ変数
 
 	// 敵パーティクル
 	Particle* enemyParticle_ = nullptr;
+	// スタンパーティクル
+	Particle* stunParticle_ = nullptr;
 
 	/// デバック用変数群
 	// 攻撃を行うか

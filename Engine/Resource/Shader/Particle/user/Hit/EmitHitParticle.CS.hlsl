@@ -28,9 +28,18 @@ void main( uint3 DTid : SV_DispatchThreadID )
                 // 最終スケールを指定
                 float32_t s = 2.5f * ((generator.Generate1d()) + 0.65f);
                 
+                // 回転角ランダム選定
+                float32_t rotate = (3.141592f * 2.0f) * generator.Generate1d();
+                
+                // 生成範囲を設定
+                float32_t horizontalX = 0.5f * (generator.Generate1d()) - 0.25f;
+                float32_t horizontalZ = 0.5f * (generator.Generate1d()) - 0.25f;
+                float32_t vertical = 0.5f * (generator.Generate1d()) - 0.25f;
+                
                 // 各値の初期化
                 gParticles[particleIndex].scale         = float32_t3(0.0f, 0.0f, 0.0f);
-                gParticles[particleIndex].translate     = emitter.translate;
+                gParticles[particleIndex].translate = float32_t3(emitter.translate.x + horizontalX, emitter.translate.y + vertical, emitter.translate.z + horizontalZ);
+                gParticles[particleIndex].rotate.z = rotate;
                 gParticles[particleIndex].color.rgb     = float32_t3(1.0f, 1.0f, 1.0f);
                 gParticles[particleIndex].color.a       = 1.0f;
                 gParticles[particleIndex].lifeTime      = 0.35f;

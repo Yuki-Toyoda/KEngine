@@ -309,6 +309,15 @@ void Enemy::OnCollisionEnter(Collider* collider)
 					hit->emitterDataBuffer_->data_->frequency = 1.0f;
 					hit->emitterDataBuffer_->data_->frequencyTime = 3.0f;
 
+					// 麻痺パーティクル再生
+					stunParticle_ = ParticleManager::GetInstance()->CreateNewParticle("BulletTrail", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.0f, true);
+					stunParticle_->model_->materials_[1].tex_ = TextureManager::Load("BulletTrailParticle.png");
+					stunParticle_->model_->materials_[1].enableLighting_ = false;
+					stunParticle_->transform_.SetParent(&bodyTransform_);
+					stunParticle_->emitterDataBuffer_->data_->count = 3;
+					stunParticle_->emitterDataBuffer_->data_->frequency = 0.0f;
+					stunParticle_->emitterDataBuffer_->data_->frequencyTime = 0.25f;
+
 					// ダウン状態に
 					ChangeState(std::make_unique<EnemyDown>());
 
@@ -337,6 +346,15 @@ void Enemy::OnCollisionEnter(Collider* collider)
 				hit->emitterDataBuffer_->data_->count = 1;
 				hit->emitterDataBuffer_->data_->frequency = 1.0f;
 				hit->emitterDataBuffer_->data_->frequencyTime = 3.0f;
+
+				// 麻痺パーティクル再生
+				stunParticle_ = ParticleManager::GetInstance()->CreateNewParticle("BulletTrail", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.0f, true);
+				stunParticle_->model_->materials_[1].tex_ = TextureManager::Load("BulletTrailParticle.png");
+				stunParticle_->model_->materials_[1].enableLighting_ = false;
+				stunParticle_->transform_.SetParent(&bodyTransform_);
+				stunParticle_->emitterDataBuffer_->data_->count = 3;
+				stunParticle_->emitterDataBuffer_->data_->frequency = 0.0f;
+				stunParticle_->emitterDataBuffer_->data_->frequencyTime = 0.25f;
 
 				// ダウン状態に
 				ChangeState(std::make_unique<EnemyDown>());
@@ -448,4 +466,10 @@ void Enemy::ChangeState(std::unique_ptr<IEnemyState> newState)
 
 	// 初期化した新しいステートを代入
 	state_ = std::move(newState);
+}
+
+void Enemy::ResetStunParticle()
+{
+	// スタンパーティクルインスタンスをnullptrに
+	stunParticle_ = nullptr;
 }

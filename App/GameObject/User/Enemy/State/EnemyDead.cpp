@@ -10,6 +10,12 @@ void EnemyDead::Init()
 	// 行動名設定
 	stateName_ = "Dead";
 
+	// 麻痺パーティクルのインスタンスが存在する場合
+	if (enemy_->GetStunParticle() != nullptr) {
+		// 強制敵に停止
+		enemy_->GetStunParticle()->SetIsEnd(true);
+	}
+
 	// ループを切れる
 	anim_->isLoop_ = false;
 	// 敵のアニメーションを変更

@@ -49,6 +49,13 @@ void EnemyDown::Update()
 	if (anim_->GetReadingParameterName() == "Enemy_Downing" || anim_->GetReadingParameterName() == "Enemy_Damage") {
 		// タイマーが終了時
 		if (timer_.GetIsFinish()) {
+			// 麻痺パーティクルのインスタンスが存在する場合
+			if (enemy_->GetStunParticle() != nullptr) {
+				// 強制敵に停止
+				enemy_->GetStunParticle()->SetIsEnd(true);
+				enemy_->ResetStunParticle();
+			}
+
 			// 待機状態に移行
 			enemy_->ChangeState(std::make_unique<EnemyRoot>());
 			// これ以降の処理を無視
