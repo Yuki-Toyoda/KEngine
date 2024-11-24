@@ -4,7 +4,7 @@
 void OutLine::Init()
 {
 	// 各種変数のリセット
-	use_	   = false;
+	use_	   = true;
 	threshold_ = 0.5f;
 	color_	   = { 0.0f, 0.0f, 0.0f, 1.0f };
 

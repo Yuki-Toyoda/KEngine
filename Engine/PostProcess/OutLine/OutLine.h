@@ -17,6 +17,7 @@ private: // サブクラス
 		Matrix4x4 projectionInverse;
 		Vector4 color;
 		float threshold;
+		float padding[3];
 	};
 
 public: // メンバ関数
