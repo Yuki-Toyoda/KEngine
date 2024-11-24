@@ -33,18 +33,23 @@ void main( uint3 DTid : SV_DispatchThreadID )
                 gParticles[particleIndex].translate   = emitter.translate;
                 gParticles[particleIndex].color.rgb   = float32_t3(1.0f, 1.0f, 1.0f);
                 gParticles[particleIndex].color.a     = 1.0f;
-                gParticles[particleIndex].velocity = generator.Generate3D() / 3.0f + float32_t3(-0.16667f, -0.16667f, -0.16667f);
+                float32_t3 velocity = generator.Generate3D() / 3.0f + float32_t3(-0.16667f, -0.16667f, -0.16667f);
+                gParticles[particleIndex].velocity = velocity;
                 
-                float32_t2 normVec = normalize(float32_t2(gParticles[particleIndex].velocity.x, gParticles[particleIndex].velocity.y));
-                float32_t2 baseVec = float32_t2(1.0f, 0.0f);
+                float32_t4 cameraSpaceDirection = mul(cData.ViewMatrix, float32_t4(velocity, 0.0f));
+                float32_t2 velocity2D = cameraSpaceDirection.xy;
                 
-                float32_t cosTheta = dot(normVec, baseVec);
-                float32_t sinTheta = normVec.y * baseVec.x - normVec.x * baseVec.y;
+                float32_t2 normVec = normalize(velocity2D);
+                float32_t2 referenceVec = float32_t2(1.0f, 0.0f);
                 
-                float32_t direction = (sinTheta >= 0.0f) ? acos(cosTheta) : -acos(cosTheta);
-                gParticles[particleIndex].rotate.z = direction;
+                float32_t cosTheta = dot(normVec, referenceVec);
+                float32_t sinTheta = normVec.y * referenceVec.x - normVec.x * referenceVec.y;
                 
-                gParticles[particleIndex].lifeTime    = 0.5f;
+                float angle = (sinTheta >= 0.0f) ? acos(cosTheta) : -acos(cosTheta);
+                
+                gParticles[particleIndex].rotate.z = angle;
+                
+                gParticles[particleIndex].lifeTime    = 0.35f;
                 gParticles[particleIndex].currentTime = 0.0f;
             }
             else

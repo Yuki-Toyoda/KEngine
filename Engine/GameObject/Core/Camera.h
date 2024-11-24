@@ -23,6 +23,13 @@ struct CameraData {
 };
 
 /// <summary>
+/// パーティクル用カメラデータ構造体
+/// </summary>
+struct ParticleCameraData {
+	Matrix4x4 ViewMatrix; // ビュー行列
+};
+
+/// <summary>
 /// カメラ
 /// </summary>
 class Camera : public IObject
@@ -82,6 +89,12 @@ public: // アクセッサ等
 	D3D12_GPU_VIRTUAL_ADDRESS GetCameraDataBufferView() { return cameraDataBuffer_.GetGPUView(); }
 
 	/// <summary>
+	/// パーティクル用カメラデータまでのアドレスゲッター
+	/// </summary>
+	/// <returns>カメラデータまでのアドレス</returns>
+	D3D12_GPU_VIRTUAL_ADDRESS GetParticleCameraDataBufferView() { return pCameraDataBuffer_.GetGPUView(); }
+
+	/// <summary>
 	/// レンダリング予定リソースのゲッター
 	/// </summary>
 	/// <returns>レンダリング予定リソース</returns>
@@ -115,6 +128,7 @@ protected: // メンバ変数
 
 	// 定数バッファデータ
 	ConstantBuffer<CameraData> cameraDataBuffer_;			// カメラデータ
+	ConstantBuffer<ParticleCameraData> pCameraDataBuffer_;  // パーティクル用カメラデータ
 
 	// レンダリングを行うリソース
 	RenderResource renderResource_;

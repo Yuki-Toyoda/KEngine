@@ -15,12 +15,14 @@ ParticleManager& ParticleManager::Init()
 
 	// シグネチャの初期化
 	root_.Init();
-	// エミッタデータ用パラメータ生成
+	// パーティクル用カメラデータ用パラメータ生成
 	root_.CreateCBVParameter(0, D3D12_SHADER_VISIBILITY_ALL);
-	// フレーム時間計測用パラメータ生成
+	// エミッタデータ用パラメータ生成
 	root_.CreateCBVParameter(1, D3D12_SHADER_VISIBILITY_ALL);
-	// 情報用パラメータ生成
+	// フレーム時間計測用パラメータ生成
 	root_.CreateCBVParameter(2, D3D12_SHADER_VISIBILITY_ALL);
+	// 情報用パラメータ生成
+	root_.CreateCBVParameter(3, D3D12_SHADER_VISIBILITY_ALL);
 	// パーティクルデータ用パラメータ生成
 	root_.CreateDescriptorTableParameter(0, D3D12_SHADER_VISIBILITY_ALL, D3D12_DESCRIPTOR_RANGE_TYPE_UAV);
 	// 使用可能番号用パラメータ生成
@@ -77,13 +79,13 @@ void ParticleManager::Update()
 		// 初期化処理
 		if (!p->GetIsInit()) {
 			// フレーム時間計測用バッファをコマンドリストにセットする
-			cmdList_->SetComputeRootConstantBufferView(1, perFrameDataBuffer_->GetGPUView());
+			cmdList_->SetComputeRootConstantBufferView(2, perFrameDataBuffer_->GetGPUView());
 			// 初期化実行
 			p->ExecuteInit();
 		}
 
 		// フレーム時間計測用バッファをコマンドリストにセットする
-		cmdList_->SetComputeRootConstantBufferView(1, perFrameDataBuffer_->GetGPUView());
+		cmdList_->SetComputeRootConstantBufferView(2, perFrameDataBuffer_->GetGPUView());
 		// 更新処理
 		p->Update();
 	}

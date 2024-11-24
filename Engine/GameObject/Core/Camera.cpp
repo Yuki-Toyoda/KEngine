@@ -18,11 +18,13 @@ void Camera::Init()
 
 	// 定数バッファ生成
 	cameraDataBuffer_.Init(device);
+	pCameraDataBuffer_.Init(device);
 	// データに値を代入
 	cameraDataBuffer_.data_->DrawMeshlets = isDrawMeshlets_;
 	cameraDataBuffer_.data_->ViewProjection2D = Matrix4x4::MakeOrthGraphic(0.0f, 0.0f, (float)KEngine::Config::Window::KWindowWidth, (float)KEngine::Config::Window::KWindowHeight, 0.0f, 100.0f);
 	cameraDataBuffer_.data_->ToonMapTex = TextureManager::Load("./Engine/Resource/Samples/Texture", "ToonMap.png").GetView();
 	cameraDataBuffer_.data_->ToonMapTex -= KEngine::Config::Rendering::kMaxBuffer;
+	pCameraDataBuffer_.data_->ViewMatrix = viewMatrix_;
 
 	// 各リソース初期化
 	renderResource_.Init(device, heaps);  // レンダリングを行うリソース
@@ -70,6 +72,7 @@ void Camera::Update()
 		cameraDataBuffer_.data_->Billboard		= billboardMatrix;
 		cameraDataBuffer_.data_->WorldPosition	= transform_.GetWorldPos();
 		cameraDataBuffer_.data_->DrawMeshlets	= isDrawMeshlets_;
+		pCameraDataBuffer_.data_->ViewMatrix = viewMatrix_;
 
 		// ポストプロセスの更新
 		ppProcessor_.Update();

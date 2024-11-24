@@ -1,5 +1,7 @@
 #include "Particle.h"
 #include "Engine/Model/ModelManager.h"
+#include "Engine/GameObject/GameObjectManager.h"
+#include "Engine/GameObject/Core/Camera.h"
 
 void Particle::Init(DirectXDevice* device, SRV* srv, ID3D12GraphicsCommandList6* list, const ParticlePSO& pso, const std::string& filePath, const std::string& fileName, const float lifeTime, const bool isEndless, const bool enableLighting)
 {
@@ -60,11 +62,12 @@ void Particle::ExecuteInit()
 	cmdList_->SetPipelineState(pso_.init.GetState());
 
 	// パーティクルの初期化に必要なバッファをセットする
-	cmdList_->SetComputeRootConstantBufferView(0, emitterDataBuffer_->GetGPUView());
-	cmdList_->SetComputeRootConstantBufferView(2, infoDataBuffer_->GetGPUView());
-	cmdList_->SetComputeRootDescriptorTable(3, particleBuffer_->GetUAVView());
-	cmdList_->SetComputeRootDescriptorTable(4, freeIndexBuffer_->GetUAVView());
-	cmdList_->SetComputeRootDescriptorTable(5, freeIndexListBuffer_->GetUAVView());
+	cmdList_->SetComputeRootConstantBufferView(0, GameObjectManager::GetInstance()->GetUseCamera()->GetParticleCameraDataBufferView());
+	cmdList_->SetComputeRootConstantBufferView(1, emitterDataBuffer_->GetGPUView());
+	cmdList_->SetComputeRootConstantBufferView(3, infoDataBuffer_->GetGPUView());
+	cmdList_->SetComputeRootDescriptorTable(4, particleBuffer_->GetUAVView());
+	cmdList_->SetComputeRootDescriptorTable(5, freeIndexBuffer_->GetUAVView());
+	cmdList_->SetComputeRootDescriptorTable(6, freeIndexListBuffer_->GetUAVView());
 
 	// パーティクルの初期化を実行する
 	cmdList_->Dispatch(kMaxParticleCount_, 1, 1);
@@ -82,11 +85,12 @@ void Particle::Update()
 	cmdList_->SetPipelineState(pso_.emit.GetState());
 
 	// パーティクルの生成に必要なバッファをセットする
-	cmdList_->SetComputeRootConstantBufferView(0, emitterDataBuffer_->GetGPUView());
-	cmdList_->SetComputeRootConstantBufferView(2, infoDataBuffer_->GetGPUView());
-	cmdList_->SetComputeRootDescriptorTable(3, particleBuffer_->GetUAVView());
-	cmdList_->SetComputeRootDescriptorTable(4, freeIndexBuffer_->GetUAVView());
-	cmdList_->SetComputeRootDescriptorTable(5, freeIndexListBuffer_->GetUAVView());
+	cmdList_->SetComputeRootConstantBufferView(0, GameObjectManager::GetInstance()->GetUseCamera()->GetParticleCameraDataBufferView());
+	cmdList_->SetComputeRootConstantBufferView(1, emitterDataBuffer_->GetGPUView());
+	cmdList_->SetComputeRootConstantBufferView(3, infoDataBuffer_->GetGPUView());
+	cmdList_->SetComputeRootDescriptorTable(4, particleBuffer_->GetUAVView());
+	cmdList_->SetComputeRootDescriptorTable(5, freeIndexBuffer_->GetUAVView());
+	cmdList_->SetComputeRootDescriptorTable(6, freeIndexListBuffer_->GetUAVView());
 
 	// パーティクルの生成を実行する
 	cmdList_->Dispatch(1, 1, 1);
@@ -122,11 +126,12 @@ void Particle::Update()
 	cmdList_->SetPipelineState(pso_.update.GetState());
 
 	// パーティクルの更新に必要なバッファをセットする
-	cmdList_->SetComputeRootConstantBufferView(0, emitterDataBuffer_->GetGPUView());
-	cmdList_->SetComputeRootConstantBufferView(2, infoDataBuffer_->GetGPUView());
-	cmdList_->SetComputeRootDescriptorTable(3, particleBuffer_->GetUAVView());
-	cmdList_->SetComputeRootDescriptorTable(4, freeIndexBuffer_->GetUAVView());
-	cmdList_->SetComputeRootDescriptorTable(5, freeIndexListBuffer_->GetUAVView());
+	cmdList_->SetComputeRootConstantBufferView(0, GameObjectManager::GetInstance()->GetUseCamera()->GetParticleCameraDataBufferView());
+	cmdList_->SetComputeRootConstantBufferView(1, emitterDataBuffer_->GetGPUView());
+	cmdList_->SetComputeRootConstantBufferView(3, infoDataBuffer_->GetGPUView());
+	cmdList_->SetComputeRootDescriptorTable(4, particleBuffer_->GetUAVView());
+	cmdList_->SetComputeRootDescriptorTable(5, freeIndexBuffer_->GetUAVView());
+	cmdList_->SetComputeRootDescriptorTable(6, freeIndexListBuffer_->GetUAVView());
 
 	// パーティクルの更新を実行する
 	cmdList_->Dispatch(kMaxParticleCount_, 1, 1);

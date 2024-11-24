@@ -1,5 +1,10 @@
 #include "../Compute/Random.hlsli"
 
+struct PConstantData
+{
+    float32_t4x4 ViewMatrix;
+};
+
 struct Particle
 {
     float32_t4  color;
@@ -33,9 +38,10 @@ struct InfoData
     int32_t isBillboard;
 };
 
-ConstantBuffer<EmitterSphere>   emitter       : register(b0);
-ConstantBuffer<PerFrame>        perFrame      : register(b1);
-ConstantBuffer<InfoData>        info          : register(b2);
+ConstantBuffer<PConstantData>   cData         : register(b0);
+ConstantBuffer<EmitterSphere>   emitter       : register(b1);
+ConstantBuffer<PerFrame>        perFrame      : register(b2);
+ConstantBuffer<InfoData>        info          : register(b3);
 RWStructuredBuffer<Particle>    gParticles    : register(u0);
 RWStructuredBuffer<int32_t>     freeListIndex : register(u1);
 RWStructuredBuffer<uint32_t>    freeList      : register(u2);

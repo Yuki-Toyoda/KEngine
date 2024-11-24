@@ -383,6 +383,15 @@ void Enemy::OnCollision(Collider* collider)
 			hit->emitterDataBuffer_->data_->frequency = 1.0f;
 			hit->emitterDataBuffer_->data_->frequencyTime = 3.0f;
 
+			// 命中破片パーティクル再生
+			Particle* hitDebris = ParticleManager::GetInstance()->CreateNewParticle("HitDebris", "./Engine/Resource/Samples/Plane", "Plane.obj", 1.0f);
+			hitDebris->model_->materials_[1].tex_ = TextureManager::Load("HitDebrisEffect.png");
+			hitDebris->model_->materials_[1].enableLighting_ = false;
+			hitDebris->transform_.translate_ = transform_.translate_;
+			hitDebris->emitterDataBuffer_->data_->count = 10;
+			hitDebris->emitterDataBuffer_->data_->frequency = 3.0f;
+			hitDebris->emitterDataBuffer_->data_->frequencyTime = 5.0f;
+
 			// ダメージ効果音の再生
 			Audio::GetInstance()->PlayWave(damageSound_);
 		}

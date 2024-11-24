@@ -21,6 +21,19 @@ void main( uint3 DTid : SV_DispatchThreadID )
             float32_t alpha = 1.0f - (gParticles[particleIndex].currentTime * rcp(gParticles[particleIndex].lifeTime));
             gParticles[particleIndex].color.a = saturate(alpha);
             
+            float32_t4 cameraSpaceDirection = mul(cData.ViewMatrix, float32_t4(gParticles[particleIndex].velocity, 0.0f));
+            float32_t2 velocity2D = cameraSpaceDirection.xy;
+                
+            float32_t2 normVec = normalize(velocity2D);
+            float32_t2 referenceVec = float32_t2(1.0f, 0.0f);
+                
+            float32_t cosTheta = dot(normVec, referenceVec);
+            float32_t sinTheta = normVec.y * referenceVec.x - normVec.x * referenceVec.y;
+                
+            float angle = (sinTheta >= 0.0f) ? acos(cosTheta) : -acos(cosTheta);
+                
+            gParticles[particleIndex].rotate.z = angle;
+            
         }
         else // それ以外の場合
         {
