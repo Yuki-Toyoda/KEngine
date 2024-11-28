@@ -26,6 +26,15 @@ void EnemyBullet::Init()
 	AddNormalModel("Shadow", &shadowTransform_, "./Resources/DropShadow", "DropShadow.obj");
 	normalModels_["Shadow"]->materials_[1].color_ = Vector4(0.0f, 0.5f, 3.0f, 0.25f);
 
+	// 弾パーティクル再生
+	bulletParticle_ = ParticleManager::GetInstance()->CreateNewParticle("Bullet", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.0f, true);
+	bulletParticle_->model_->materials_[1].tex_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png");
+	bulletParticle_->model_->materials_[1].enableLighting_ = false;
+	bulletParticle_->transform_.SetParent(&transform_);
+	bulletParticle_->emitterDataBuffer_->data_->count = 1;
+	bulletParticle_->emitterDataBuffer_->data_->frequency = 0.0f;
+	bulletParticle_->emitterDataBuffer_->data_->frequencyTime = 0.25f;
+
 	// 球のコライダー追加
 	AddColliderSphere("Bullet", &transform_.translate_, &transform_.scale_.x);
 
@@ -42,15 +51,6 @@ void EnemyBullet::Update()
 		normalModels_["EnemyBullet"]->materials_[0].dissolveStrength_ = KLib::Lerp<float>(normalModels_["EnemyBullet"]->materials_[0].dissolveStrength_, 0.0f, 0.05f);
 		if (normalModels_["EnemyBullet"]->materials_[0].dissolveStrength_ <= 0.05f) {
 			isDissolving_ = true;
-
-			// 弾パーティクル再生
-			bulletParticle_ = ParticleManager::GetInstance()->CreateNewParticle("Bullet", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.0f, true);
-			bulletParticle_->model_->materials_[1].tex_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png");
-			bulletParticle_->model_->materials_[1].enableLighting_ = false;
-			bulletParticle_->transform_.SetParent(&transform_);
-			bulletParticle_->emitterDataBuffer_->data_->count = 1;
-			bulletParticle_->emitterDataBuffer_->data_->frequency = 0.0f;
-			bulletParticle_->emitterDataBuffer_->data_->frequencyTime = 0.25f;
 
 			// 雷パーティクル再生
 			sparkParticle_ = ParticleManager::GetInstance()->CreateNewParticle("BulletSpark", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.0f, true);
@@ -198,7 +198,7 @@ void EnemyBullet::PlayTrailParticle()
 	trailParticle_->model_->materials_[1].enableLighting_ = false;
 	trailParticle_->transform_.SetParent(&transform_);
 	trailParticle_->emitterDataBuffer_->data_->count = 1;
-	trailParticle_->emitterDataBuffer_->data_->frequency = 0.0f;
+	trailParticle_->emitterDataBuffer_->data_->frequency = 0.025f;
 	trailParticle_->emitterDataBuffer_->data_->frequencyTime = 0.25f;
 }
 

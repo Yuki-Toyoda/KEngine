@@ -229,6 +229,11 @@ private: // メンバ変数
 	// ヒットクールタイム定数値
 	const float kHitCoolTime_ = 0.35f;
 
+	// ヒットストップタイマー
+	KLib::DeltaTimer hitStopTimer_;
+	// ヒットストップ時間
+	const float kHitStopTime_ = 0.25f;
+
 	// 追従対象の目標角度
 	float targetAngle_ = 0.0f;
 

@@ -55,8 +55,6 @@ void EnemyShot::Update()
 			anim_->ChangeParameter("Enemy_Shot", 0.1f, true);
 			// プレイヤーに向かって弾を発射する
 			bullet_->SetVelocity(true, enemy_->GetRallyCount());
-			// 弾の軌跡パーティクルの再生
-			bullet_->PlayTrailParticle();
 
 			// その後の処理を強制終了
 			return;
@@ -70,6 +68,9 @@ void EnemyShot::Update()
 	if (anim_->GetReadingParameterName() == "Enemy_Shot") {
 		// アニメーションが終了しているなら
 		if (anim_->isEnd_) {
+			// 弾の軌跡パーティクルの再生
+			bullet_->PlayTrailParticle();
+
 			// 行動を変更
 			enemy_->ChangeState(std::make_unique<EnemyRoot>());
 			// それ以降の処理を無視
