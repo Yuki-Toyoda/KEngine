@@ -23,6 +23,12 @@ void EnemyRoot::Update()
 		}
 	}
 
+	// 一定高度以上の場合
+	if (enemy_->transform_.translate_.y >= kCanAttackHeight_) {
+		// 攻撃可能状態に
+		enemy_->SetCanAttack(true);
+	}
+
 	// 最高高度に達していない場合
 	if (enemy_->transform_.translate_.y < kHeight_) {
 		// 最高高度に線形補間を行う

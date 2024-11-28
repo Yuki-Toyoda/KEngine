@@ -93,6 +93,18 @@ public: // アクセッサ等
 	int32_t GetComboCount() { return comboCount_; }
 
 	/// <summary>
+	/// ダメージ量ゲッター
+	/// </summary>
+	/// <returns>ダメージ量</returns>
+	int32_t GetDamage() { return damage_; };
+
+	/// <summary>
+	/// ヒットストップ秒数ゲッター
+	/// </summary>
+	/// <returns>ヒットストップの秒数</returns>
+	float GetHitStopTime() { return hitStopTime_; }
+
+	/// <summary>
 	/// 移動した際に該当アクションを終了するか
 	/// </summary>
 	/// <returns>フラグ状態</returns>
@@ -196,6 +208,9 @@ private: // メンバ変数
 	float attackEndTime_ = 0.5f;
 	// 攻撃終了時間タイマー
 	KLib::DeltaTimer attackEndTimer_{};
+
+	// ヒットストップ秒数
+	float hitStopTime_ = 0.0f;
 
 	// 移動した際にアクション終了するか
 	bool isActionEndFromMove_ = false;

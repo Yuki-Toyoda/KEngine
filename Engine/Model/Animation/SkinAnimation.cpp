@@ -22,7 +22,7 @@ void SkinAnimation::Update(Skelton* skelton)
 	if (!isPlay_ && !isTransitioning_) { return; }
 
 	// 60FPS固定でアニメーションの秒数加算
-	animationTime_ += 1.0f / 60.0f;
+	animationTime_ += (1.0f / 60.0f) * animationSpeed_;
 
 	// ループ再生を行う場合
 	if (isLoop_) {
@@ -40,7 +40,7 @@ void SkinAnimation::Update(Skelton* skelton)
 	// 補完中であれば
 	if (isTransitioning_) {
 		// 60FPS固定で補完秒数加算
-		currentTransitionTime_ += 1.0f / 60.0f;
+		currentTransitionTime_ += (1.0f / 60.0f) * animationSpeed_;
 
 		// 最終秒数に到達していた場合
 		if (currentTransitionTime_ > transitionDuration_) {

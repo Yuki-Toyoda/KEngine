@@ -140,6 +140,7 @@ void Player::Update()
 
 	// 敵が死亡している状態であれば
 	if (enemy_->GetIsDead()) {
+
 		// 行動出来ない状態に
 		canAction_ = false;
 	}
@@ -151,6 +152,12 @@ void Player::Update()
 			ChangeState(std::make_unique<Root>());
 		}
 		return;
+	}
+
+	// ヒットストップ中であれば更新関数呼び出しからの早期リターン
+	if (isHitStop_) { 
+		HitStopUpdate();
+		return; 
 	}
 
 	// 現在の行動状態の更新を行う
@@ -166,8 +173,17 @@ void Player::Update()
 			// 方向ベクトルを元にプレイヤーがいる角度を求める
 			targetAngle_ = std::atan2(sub.x, sub.z);
 
+			// ロックオン中は帯を表示
+			sprites_["UpperObi"]->scale_.y = KLib::Lerp<float>(sprites_["UpperObi"]->scale_.y, 75.0f, 0.1f);
+			sprites_["LowerObi"]->scale_.y = KLib::Lerp<float>(sprites_["LowerObi"]->scale_.y, 75.0f, 0.1f);
+
 			// 身体を回転させる
 			transform_.rotate_.y = KLib::LerpShortAngle(transform_.rotate_.y, targetAngle_, 0.1f);
+		}
+		else {
+			// ロックオンをしていない場合帯を非表示
+			sprites_["UpperObi"]->scale_.y = KLib::Lerp<float>(sprites_["UpperObi"]->scale_.y, 0.0f, 0.2f);
+			sprites_["LowerObi"]->scale_.y = KLib::Lerp<float>(sprites_["LowerObi"]->scale_.y, 0.0f, 0.2f);
 		}
 	}
 
@@ -207,16 +223,6 @@ void Player::Update()
 				comboManager_.ChangeCombo(comboManager_.GetImGuiDisplayName());
 			}
 		}
-	}
-
-	// 敵弾が存在する場合帯を出現させる
-	if (GameObjectManager::GetInstance()->GetGameObject<EnemyBullet>("EnemyBullet") != nullptr) {
-		sprites_["UpperObi"]->scale_.y = KLib::Lerp<float>(sprites_["UpperObi"]->scale_.y, 75.0f, 0.1f);
-		sprites_["LowerObi"]->scale_.y = KLib::Lerp<float>(sprites_["LowerObi"]->scale_.y, 75.0f, 0.1f);
-	}
-	else {
-		sprites_["UpperObi"]->scale_.y = KLib::Lerp<float>(sprites_["UpperObi"]->scale_.y, 0.0f, 0.2f);
-		sprites_["LowerObi"]->scale_.y = KLib::Lerp<float>(sprites_["LowerObi"]->scale_.y, 0.0f, 0.2f);
 	}
 
 	// 命中フラグのリセット
@@ -269,6 +275,34 @@ void Player::ChangeState(std::unique_ptr<IState> newState)
 
 	// 初期化した新しいステートを代入
 	state_ = std::move(newState);
+}
+
+void Player::StartHitStop(const float hitStopTime)
+{
+	// ヒットストップ秒数が0以下の場合早期リターン
+	if (hitStopTime <= 0.0f) { return; }
+
+	// プレイヤーアニメーションの再生速度を指定
+	skiningModels_["Player"]->animationManager_.SetAnimationSpeed(0.0f);
+	// ヒットストップタイマー開始
+	hitStopTimer_.Start(hitStopTime);
+	// ヒットストップ中状態に
+	isHitStop_ = true;
+}
+
+void Player::HitStopUpdate()
+{
+	// ヒットストップタイマー終了時
+	if (hitStopTimer_.GetIsFinish()) {
+		// プレイヤーアニメーションの再生速度を指定
+		skiningModels_["Player"]->animationManager_.SetAnimationSpeed(1.0f);
+
+		// ヒットストップ状態終了
+		isHitStop_ = false;
+	}
+
+	// ヒットストップタイマーの更新
+	hitStopTimer_.Update();
 }
 
 void Player::HitDamage(const Vector3& translate)

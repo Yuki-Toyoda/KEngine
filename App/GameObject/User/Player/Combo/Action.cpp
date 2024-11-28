@@ -112,6 +112,9 @@ void Action::DisplayImGui()
 		ImGui::DragFloat("StartTime", &attackStartTime_, 0.01f, 0.0f);
 		// 攻撃終了秒数の設定
 		ImGui::DragFloat("EndTime", &attackEndTime_, 0.01f, 0.5f);
+
+		// ヒットストップ秒数の設定
+		ImGui::DragFloat("HitStopTime", &hitStopTime_, 0.01f, 0.0f);
 	}
 
 	// 移動した際のアクション終了設定
@@ -151,6 +154,7 @@ void Action::AddParam()
 	gv->AddItem(comboName_, actionName + " - AttackLength", attackLength_);
 	gv->AddItem(comboName_, actionName + " - AttackStartTime", attackStartTime_);
 	gv->AddItem(comboName_, actionName + " - AttackEndTime", attackEndTime_);
+	gv->AddItem(comboName_, actionName + " - HitStopTime", hitStopTime_);
 	gv->AddItem(comboName_, actionName + " - IsActionEndFromMove", isActionEndFromMove_);
 	gv->AddItem(comboName_, actionName + " - InputCondition", inputCondition_);
 	gv->AddItem(comboName_, actionName + " - SpecialConditionName", specialConditionName_);
@@ -174,6 +178,7 @@ void Action::SetValue()
 	gv->SetValue(comboName_, actionName + " - AttackLength", attackLength_);
 	gv->SetValue(comboName_, actionName + " - AttackStartTime", attackStartTime_);
 	gv->SetValue(comboName_, actionName + " - AttackEndTime", attackEndTime_);
+	gv->SetValue(comboName_, actionName + " - HitStopTime", hitStopTime_);
 	gv->SetValue(comboName_, actionName + " - IsActionEndFromMove", isActionEndFromMove_);
 	gv->SetValue(comboName_, actionName + " - InputCondition", inputCondition_);
 	gv->SetValue(comboName_, actionName + " - SpecialConditionName", specialConditionName_);
@@ -197,6 +202,7 @@ void Action::ApplyParam()
 	attackLength_			= gv->GetFloatValue(comboName_, actionName + " - AttackLength");
 	attackStartTime_		= gv->GetFloatValue(comboName_, actionName + " - AttackStartTime");
 	attackEndTime_			= gv->GetFloatValue(comboName_, actionName + " - AttackEndTime");
+	hitStopTime_			= gv->GetFloatValue(comboName_, actionName + " - HitStopTime");
 	isActionEndFromMove_	= gv->GetIntValue(comboName_, actionName + " - IsActionEndFromMove");
 	inputCondition_			= gv->GetIntValue(comboName_, actionName + " - InputCondition");
 	specialConditionName_	= gv->GetStringValue(comboName_, actionName + " - SpecialConditionName");

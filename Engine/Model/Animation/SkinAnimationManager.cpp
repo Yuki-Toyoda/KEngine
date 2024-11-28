@@ -139,6 +139,31 @@ float SkinAnimationManager::GetPlayingAnimationProgress()
 	return animations_[playingAnimName_].GetProgress();
 }
 
+void SkinAnimationManager::SetAnimationSpeed(const float speed, const std::string& animName)
+{
+	// 変更するアニメーション名取得
+	std::string name = animName;
+
+	// アニメーション名が何も入力されていなければ再生中アニメーション名を指定
+	if (name == "") {
+		// 何も再生されていなければ早期リターン
+		if (playingAnimName_ == "") { return; }
+		// 変更アニメーション名の変更
+		name = playingAnimName_;
+	}
+
+	// アニメーションが存在ない場合
+	if (!animations_.count(animName)) {
+		// ログ出力
+		Debug::Log("Error - Animation Not Found.\n");
+		// 停止させる
+		assert(false);
+	}
+	
+	// アニメーションの再生速度指定
+	animations_[name].SetIsAnimationSpeed(speed);
+}
+
 void SkinAnimationManager::StopAnimation(const std::string& animName)
 {
 	// 引数で指定された名称のアニメーションを停止させる

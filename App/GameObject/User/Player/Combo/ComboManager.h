@@ -84,6 +84,18 @@ public: // アクセッサ等
 	/// <returns>ImGuiで表示されているコンボ名</returns>
 	std::string GetImGuiDisplayName() { return imGuiDisplayComboName_; }
 
+	/// <summary>
+	/// 現在のダメージ量を取得するゲッター
+	/// </summary>
+	/// <returns>現在再生中アクションのダメージ量</returns>
+	int32_t GetDamage() { return combo_.GetDamage(); };
+
+	/// <summary>
+	/// 現在のヒットストップ秒数を取得するゲッター
+	/// </summary>
+	/// <returns>現在再生中アクションのヒットストップ秒数</returns>
+	float GetHitStopTime() { return combo_.GetHitStopTime(); }
+
 private: // デバッグ機能関数群
 
 	/// <summary>

@@ -57,6 +57,17 @@ public: // 行動状態関数群
 public: // その他関数
 
 	/// <summary>
+	/// ヒットストップの開始関数
+	/// </summary>
+	/// <param name="hitStopTime">ヒットストップする秒数</param>
+	void StartHitStop(const float hitStopTime);
+
+	/// <summary>
+	/// ヒットストップの更新関数
+	/// </summary>
+	void HitStopUpdate();
+
+	/// <summary>
 	/// ダメージ処理関数
 	/// </summary>
 	/// <param name="translate">衝突したやつの座標</param>
@@ -229,10 +240,10 @@ private: // メンバ変数
 	// ヒットクールタイム定数値
 	const float kHitCoolTime_ = 0.35f;
 
+	// ヒットストップ状態か
+	bool isHitStop_ = false;
 	// ヒットストップタイマー
-	KLib::DeltaTimer hitStopTimer_;
-	// ヒットストップ時間
-	const float kHitStopTime_ = 0.25f;
+	KLib::DeltaTimer hitStopTimer_{};
 
 	// 追従対象の目標角度
 	float targetAngle_ = 0.0f;

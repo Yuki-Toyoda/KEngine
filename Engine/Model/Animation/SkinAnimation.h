@@ -128,6 +128,12 @@ public: // アクセッサ等
 	/// <returns>進捗度(0.0 ~ 1.0)</returns>
 	float GetProgress() const;
 
+	/// <summary>
+	/// アニメーション再生速度セッター
+	/// </summary>
+	/// <param name="speed">アニメーション再生速度</param>
+	void SetIsAnimationSpeed(const float speed) { animationSpeed_ = speed; }
+
 private: // プライベートなメンバ関数
 
 	/// <summary>
@@ -193,5 +199,7 @@ private: // メンバ変数
 	float currentTransitionTime_	= 0.0f; // 現在
 	float transitionDuration_		= 0.0f; // 秒数
 
+	// アニメーション再生速度
+	float animationSpeed_ = 1.0f;
 };
 

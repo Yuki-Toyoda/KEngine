@@ -88,6 +88,18 @@ public: // アクセッサ等
 	bool GetIsComboEnd() { return isComboEnd_; }
 
 	/// <summary>
+	/// ダメージ量ゲッター
+	/// </summary>
+	/// <returns>ダメージ量</returns>
+	int32_t GetDamage();
+
+	/// <summary>
+	/// ヒットストップの秒数ゲッター
+	/// </summary>
+	/// <returns>ヒットストップ秒数</returns>
+	float GetHitStopTime();
+
+	/// <summary>
 	/// 遷移可能状態ゲッター
 	/// </summary>
 	/// <returns>遷移可能か</returns>

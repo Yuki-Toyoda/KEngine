@@ -60,6 +60,17 @@ public: // メンバ関数
 	void ChangeState(std::unique_ptr<IEnemyState> newState);
 
 	/// <summary>
+	/// ヒットストップの開始関数
+	/// </summary>
+	/// <param name="hitStopTime">ヒットストップする秒数</param>
+	void StartHitStop(const float hitStopTime);
+
+	/// <summary>
+	/// ヒットストップの更新関数
+	/// </summary>
+	void HitStopUpdate();
+
+	/// <summary>
 	/// 落ち影更新関数
 	/// </summary>
 	void ShadowUpdate();
@@ -135,6 +146,12 @@ public: // アクセッサ等
 	bool GetIsFieldOut() { return isFieldOut_; }
 
 	/// <summary>
+	/// 攻撃可能状態セッター
+	/// </summary>
+	/// <param name="canAttack">攻撃可能状態</param>
+	void SetCanAttack(const bool canAttack) { canAttack_ = canAttack; }
+
+	/// <summary>
 	/// 麻痺パーティクルゲッター
 	/// </summary>
 	/// <returns>麻痺パーティクル</returns>
@@ -179,6 +196,11 @@ private: // メンバ変数
 	// ヒットクールタイム定数値
 	const float kHitCoolTime_ = 0.35f;
 
+	// ヒットストップ状態か
+	bool isHitStop_ = false;
+	// ヒットストップ用タイマー
+	KLib::DeltaTimer hitStopTimer_{};
+
 	// 身体のトランスフォーム
 	WorldTransform bodyTransform_{};
 	// 頭のトランスフォーム
@@ -205,6 +227,9 @@ private: // メンバ変数
 	const WorldTransform* playerPos_ = nullptr;
 	// プレイヤーへの角度
 	float targetAngle_ = 0.0f;
+
+	// 攻撃可能状態か
+	bool canAttack_ = false;
 
 	// ラリー回数記録用
 	int32_t rallyCount_ = 0;

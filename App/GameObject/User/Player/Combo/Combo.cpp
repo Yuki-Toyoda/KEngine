@@ -230,11 +230,27 @@ void Combo::ApplyParam()
 	strncpy_s(imGuiComboName_, sizeof(imGuiComboName_), name_.c_str(), _TRUNCATE);
 }
 
+int32_t Combo::GetDamage()
+{
+	// 再生中アクションの取得
+	auto action = std::next(actions_.begin(), comboCount_);
+	// ダメージ量を返す
+	return action->GetDamage();
+}
+
+float Combo::GetHitStopTime()
+{
+	// 再生中アクションの取得
+	auto action = std::next(actions_.begin(), comboCount_);
+	// ヒットストップ秒数を返す
+	return action->GetHitStopTime();
+}
+
 bool Combo::GetIsTransitionReady()
 {
 	// 再生中アクションの取得
 	auto action = std::next(actions_.begin(), comboCount_);
-
+	// 遷移可能状態の取得
 	return action->GetIsTransitionReady();
 }
 

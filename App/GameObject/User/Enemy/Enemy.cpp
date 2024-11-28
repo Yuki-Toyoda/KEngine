@@ -111,50 +111,59 @@ void Enemy::Init()
 
 void Enemy::Update()
 {
-	// 死亡していなければ
-	if (hp_ > 0) {
-		// ダウン状態でない限り
-		if (state_->GetStateName() != "Down") {
-			// 差分ベクトルを求める
-			toPlayerDistance_ = transform_.translate_ - playerPos_->translate_;
+	// ダウン状態でない場合
+	if (state_->GetStateName() != "Down") {
+		// 差分ベクトルを求める
+		toPlayerDistance_ = transform_.translate_ - playerPos_->translate_;
 
-			// 目標角度の取得
-			targetAngle_ = std::atan2(toPlayerDistance_.x, toPlayerDistance_.z);
+		// 目標角度の取得
+		targetAngle_ = std::atan2(toPlayerDistance_.x, toPlayerDistance_.z);
 
-			// 目標角度に向かって徐々に補間
-			transform_.rotate_.y = KLib::LerpShortAngle(transform_.rotate_.y, targetAngle_, 0.1f);
-		}
+		// 目標角度に向かって徐々に補間
+		transform_.rotate_.y = KLib::LerpShortAngle(transform_.rotate_.y, targetAngle_, 0.1f);
+	}
 
+	// 敵パーティクルが存在する場合
+	if (enemyParticle_ != nullptr) {
+		// エミッタの位置調整
 		enemyParticle_->transform_.translate_ = bodyTransform_.GetWorldPos();
 		enemyParticle_->transform_.translate_.y -= 0.9f;
-
-		// 行動変更タイマーが終了していれば
-		if (stateChangeTimer_.GetIsFinish()) {
-			// ダウン状態でない限り変更を行わない
-			if (state_->GetStateName() != "Down" && state_->GetStateName() != "Shot" && state_->GetStateName() != "Move") {
-				// y座標が特定の値に達してれば
-				if (transform_.translate_.y >= 3.9f) {
-					if (GameObjectManager::GetInstance()->GetGameObject<EnemyBullet>("EnemyBullet") == nullptr) {
-						// 攻撃を行う状態であれば
-						if (isAttack_) {
-							// 敵が弾を撃つ
-							ChangeState(std::make_unique<EnemyShot>());
-							rallyCount_ = 0;
-						}
-						// 行動変更タイマーリセット
-						stateChangeTimer_.Start(kStateChangeCoolTime_);
-					}
-				}
-			}
-		}
 	}
-	else {
+
+	// ヒットストップ中であれば更新関数呼び出しからの早期リターン
+	if (isHitStop_) {
+		HitStopUpdate();
+		return;
+	}
+
+	// ゲーム開始状態でない場合早期リターン
+	if (!gameManager_->GetIsGameStart()) {
+		return;
+	}
+
+	// 行動状態の更新
+	state_->Update();
+
+	// 落ち影更新
+	ShadowUpdate();
+
+	// HPが0になっている場合
+	if (hp_ <= 0) {
+		// 死亡時のステートへ変更
+		if (state_->GetStateName() != "Dead") {
+			ChangeState(std::make_unique<EnemyDead>());
+		}
+
+		// 永続パーティクルの終了
 		if (enemyParticle_ != nullptr) {
 			enemyParticle_->SetIsEnd(true);
 			enemyParticle_ = nullptr;
 		}
+
+		// 早期リターン
+		return;
 	}
-	
+
 	// ダウン状態および射撃状態で無ければ
 	if (state_->GetStateName() != "Down" && state_->GetStateName() != "Shot") {
 
@@ -170,46 +179,57 @@ void Enemy::Update()
 		}
 	}
 
-	// 現在行動を更新
-	if (gameManager_->GetIsGameStart()) {
-		state_->Update();
+	// 攻撃を行う状態でなければ早期リターン
+	if (!isAttack_) {
+		return;
 	}
 
-	// 死亡していなければ
-	if (hp_ > 0) {
-		if (gameManager_->GetIsGameStart()) {
-			// ヒットクールタイムタイマー更新
-			hitCoolTimeTimer_.Update();
-			// 行動変更クールタイムタイマー更新
-			if (state_->GetStateName() == "Root"
-				&& GameObjectManager::GetInstance()->GetGameObject<EnemyBullet>("EnemyBullet") == nullptr
-				&& GameObjectManager::GetInstance()->GetGameObject<Player>("Player")->GetStateName() != "Damage") {
-				stateChangeTimer_.Update();
-			}
+	// 行動変更タイマーが終了している場合
+	if (stateChangeTimer_.GetIsFinish()) {
+		// 待機状態でない場合早期リターン
+		if (state_->GetStateName() == "Down" || state_->GetStateName() == "Shot" || state_->GetStateName() == "Move") {
+			return;
+		}
 
-			// 行動変更クールタイムタイマー更新
-			if (enemyAnim_->GetReadingParameterName() == "Enemy_Rally") {
-				if (enemyAnim_->isLoop_) {
-					enemyAnim_->isLoop_ = false;
-				}
+		// 攻撃可能状態で無ければリターン
+		if (!canAttack_) {
+			return;
+		}
 
-				if (enemyAnim_->isEnd_) {
-					// 行動変更
-					ChangeState(std::make_unique<EnemyRoot>());
-				}
-			}
+		// 弾が生成されていない状態の場合
+		if (GameObjectManager::GetInstance()->GetGameObject<EnemyBullet>("EnemyBullet") == nullptr) {
+			// 敵が弾を撃つ
+			ChangeState(std::make_unique<EnemyShot>());
+			rallyCount_ = 0;
+			// 行動変更タイマーリセット
+			stateChangeTimer_.Start(kStateChangeCoolTime_);
 		}
 	}
-	else {
-		if (state_->GetStateName() != "Dead") {
-			ChangeState(std::make_unique<EnemyDead>());
+
+	// 行動変更クールタイムタイマー更新
+	if (enemyAnim_->GetReadingParameterName() == "Enemy_Rally") {
+		if (enemyAnim_->isLoop_) {
+			enemyAnim_->isLoop_ = false;
+		}
+
+		if (enemyAnim_->isEnd_) {
+			// 行動変更
+			ChangeState(std::make_unique<EnemyRoot>());
 		}
 	}
+
+	// ヒットクールタイムタイマー更新
+	hitCoolTimeTimer_.Update();
+	// 行動変更クールタイムタイマー更新
+	if (state_->GetStateName() == "Root"
+		&& GameObjectManager::GetInstance()->GetGameObject<EnemyBullet>("EnemyBullet") == nullptr
+		&& GameObjectManager::GetInstance()->GetGameObject<Player>("Player")->GetStateName() != "Damage") {
+		// 行動変更クールタイムの更新
+		stateChangeTimer_.Update();
+	}
+
 	// ワールド座標の取得
 	worldPos_ = transform_.GetWorldPos();
-
-	// 落ち影更新
-	ShadowUpdate();
 }
 
 void Enemy::DisplayImGui()
@@ -398,12 +418,15 @@ void Enemy::OnCollision(Collider* collider)
 		// ダウン中かつダウン状態であれば
 		if (hitCoolTimeTimer_.GetIsFinish() && state_->GetStateName() == "Down" && player_->GetIsAttacking()) {
 			// HPを減らす
-			hp_--;
+			hp_ -= player_->GetComboManager()->GetDamage();
 			// クールタイムタイマー開始
 			hitCoolTimeTimer_.Start(kHitCoolTime_);
 
 			// プレイヤーに攻撃が命中したことを伝える
 			player_->SetIsHit(true);
+
+			// プレイヤーにヒットストップ処理の実行を命令
+			player_->StartHitStop(player_->GetComboManager()->GetHitStopTime());
 
 			// ループを切る
 			enemyAnim_->isLoop_ = false;
@@ -483,6 +506,34 @@ void Enemy::ChangeState(std::unique_ptr<IEnemyState> newState)
 
 	// 初期化した新しいステートを代入
 	state_ = std::move(newState);
+}
+
+void Enemy::StartHitStop(const float hitStopTime)
+{
+	// ヒットストップ秒数が0以下の場合早期リターン
+	if (hitStopTime <= 0.0f) { return; }
+
+	// 再生中アニメーションの再生を停止
+	enemyAnim_->SetAnimationSpeed(0.0f);
+	// ヒットストップタイマー開始
+	hitStopTimer_.Start(hitStopTime);
+	// ヒットストップ中状態に
+	isHitStop_ = true;
+}
+
+void Enemy::HitStopUpdate()
+{
+	// ヒットストップタイマー終了時
+	if (hitStopTimer_.GetIsFinish()) {
+		// 再生中アニメーションの再生を再開
+		enemyAnim_->SetAnimationSpeed(1.0f);
+
+		// ヒットストップ状態終了
+		isHitStop_ = false;
+	}
+
+	// ヒットストップタイマーの更新
+	hitStopTimer_.Update();
 }
 
 void Enemy::ShadowUpdate()
