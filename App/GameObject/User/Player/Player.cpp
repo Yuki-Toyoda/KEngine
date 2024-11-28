@@ -140,7 +140,6 @@ void Player::Update()
 
 	// 敵が死亡している状態であれば
 	if (enemy_->GetIsDead()) {
-
 		// 行動出来ない状態に
 		canAction_ = false;
 	}
@@ -151,6 +150,10 @@ void Player::Update()
 		if (GetStateName() != "Root") {
 			ChangeState(std::make_unique<Root>());
 		}
+
+		// 帯の非表示を行う
+		sprites_["UpperObi"]->scale_.y = KLib::Lerp<float>(sprites_["UpperObi"]->scale_.y, 0.0f, 0.2f);
+		sprites_["LowerObi"]->scale_.y = KLib::Lerp<float>(sprites_["LowerObi"]->scale_.y, 0.0f, 0.2f);
 		return;
 	}
 
@@ -173,12 +176,15 @@ void Player::Update()
 			// 方向ベクトルを元にプレイヤーがいる角度を求める
 			targetAngle_ = std::atan2(sub.x, sub.z);
 
+			// 身体を回転させる
+			transform_.rotate_.y = KLib::LerpShortAngle(transform_.rotate_.y, targetAngle_, 0.1f);
+		}
+
+		// Z注目有効時かつ敵が死亡していない場合
+		if (followCamera_->GetEnableZForcus()) {
 			// ロックオン中は帯を表示
 			sprites_["UpperObi"]->scale_.y = KLib::Lerp<float>(sprites_["UpperObi"]->scale_.y, 75.0f, 0.1f);
 			sprites_["LowerObi"]->scale_.y = KLib::Lerp<float>(sprites_["LowerObi"]->scale_.y, 75.0f, 0.1f);
-
-			// 身体を回転させる
-			transform_.rotate_.y = KLib::LerpShortAngle(transform_.rotate_.y, targetAngle_, 0.1f);
 		}
 		else {
 			// ロックオンをしていない場合帯を非表示
@@ -262,7 +268,7 @@ void Player::OnCollisionEnter(Collider* collider)
 	// プレイヤーの剣と衝突していたら
 	if (collider->GetColliderName() == "Bullet" && GetStateName() == "Attack") {
 		// パリィ演出を開始
-		followCamera_->StartParryBlur(0.1f, 0.2f, 0.055f);
+		followCamera_->StartParryBlur(0.05f, 0.3f, 0.055f);
 	}
 }
 
@@ -284,6 +290,8 @@ void Player::StartHitStop(const float hitStopTime)
 
 	// プレイヤーアニメーションの再生速度を指定
 	skiningModels_["Player"]->animationManager_.SetAnimationSpeed(0.0f);
+	// 軌跡座標の更新を停止
+	SwordLine_->SetIsUpdateTrail(false);
 	// ヒットストップタイマー開始
 	hitStopTimer_.Start(hitStopTime);
 	// ヒットストップ中状態に
@@ -296,6 +304,8 @@ void Player::HitStopUpdate()
 	if (hitStopTimer_.GetIsFinish()) {
 		// プレイヤーアニメーションの再生速度を指定
 		skiningModels_["Player"]->animationManager_.SetAnimationSpeed(1.0f);
+		// 軌跡座標の更新を再開
+		SwordLine_->SetIsUpdateTrail(true);
 
 		// ヒットストップ状態終了
 		isHitStop_ = false;

@@ -70,8 +70,14 @@ void EnemyBullet::Update()
 		}
 	}
 
-	// 弾を移動させる
-	transform_.translate_ = transform_.translate_ + velocity_;
+	// ヒットストップ中であれば更新関数呼び出し
+	if (isHitStop_) {
+		HitStopUpdate();
+	}
+	else {
+		// 弾を移動させる
+		transform_.translate_ = transform_.translate_ + velocity_;
+	}
 
 	// 落ち影更新
 	ShadowUpdate();
@@ -103,6 +109,12 @@ void EnemyBullet::OnCollisionEnter(Collider* collider)
 
 		// 命中パーティクル再生
 		PlayHitParticle();
+
+		// プレイヤーの取得
+		Player* p = GameObjectManager::GetInstance()->GetGameObject<Player>("Player");
+		// ヒットストップ開始
+		StartHitStop(p->GetComboManager()->GetHitStopTime());
+		p->StartHitStop(p->GetComboManager()->GetHitStopTime());
 
 		// 素振りの効果音の再生
 		Audio::GetInstance()->PlayWave(counterSound_);
@@ -221,4 +233,27 @@ void EnemyBullet::PlayHitParticle()
 	hitDebris->emitterDataBuffer_->data_->count = 10;
 	hitDebris->emitterDataBuffer_->data_->frequency = 3.0f;
 	hitDebris->emitterDataBuffer_->data_->frequencyTime = 5.0f;
+}
+
+void EnemyBullet::StartHitStop(const float hitStopTime)
+{
+	// ヒットストップ秒数が0以下の場合早期リターン
+	if (hitStopTime <= 0.0f) { return; }
+
+	// ヒットストップタイマー開始
+	hitStopTimer_.Start(hitStopTime);
+	// ヒットストップ中状態に
+	isHitStop_ = true;
+}
+
+void EnemyBullet::HitStopUpdate()
+{
+	// ヒットストップタイマー終了時
+	if (hitStopTimer_.GetIsFinish()) {
+		// ヒットストップ状態終了
+		isHitStop_ = false;
+	}
+
+	// ヒットストップタイマーの更新
+	hitStopTimer_.Update();
 }

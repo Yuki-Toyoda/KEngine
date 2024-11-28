@@ -50,6 +50,17 @@ public: // 機能関数群
 	/// </summary>
 	void PlayHitParticle();
 
+	/// <summary>
+	/// ヒットストップの開始関数
+	/// </summary>
+	/// <param name="hitStopTime">ヒットストップする秒数</param>
+	void StartHitStop(const float hitStopTime);
+
+	/// <summary>
+	/// ヒットストップの更新関数
+	/// </summary>
+	void HitStopUpdate();
+
 public: // アクセッサ等
 
 	/// <summary>
@@ -106,6 +117,11 @@ private: // メンバ変数
 
 	// 一度跳ね返しているか
 	bool isReturn_ = false;
+
+	// ヒットストップ状態か
+	bool isHitStop_ = false;
+	// ヒットストップ用タイマー
+	KLib::DeltaTimer hitStopTimer_{};
 
 	// プレイヤーの座標
 	const WorldTransform* player_ = nullptr;

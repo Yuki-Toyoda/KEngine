@@ -200,6 +200,8 @@ private: // メンバ変数
 	bool isHitStop_ = false;
 	// ヒットストップ用タイマー
 	KLib::DeltaTimer hitStopTimer_{};
+	// とどめを指した場合のヒットストップ秒数
+	float finishHitStopTime_ = 0.5f;
 
 	// 身体のトランスフォーム
 	WorldTransform bodyTransform_{};

@@ -96,12 +96,23 @@ public: // アクセッサ等
 	/// <param name="isDisplay">描画するか</param>
 	void SetIsDisplayTrail(const bool isDisplay) { isDisplayTrail_ = isDisplay; }
 
+	/// <summary>
+	/// 軌跡座標を更新するかどうかのセッター
+	/// </summary>
+	/// <param name="isUpdate">軌跡座標を更新するか</param>
+	void SetIsUpdateTrail(const bool isUpdate) { isTrailUpdate_ = isUpdate; }
+
 private: // 機能関数群
 
 	/// <summary>
 	/// 軌跡更新関数
 	/// </summary>
 	void TrailUpdate();
+
+	/// <summary>
+	/// 軌跡描画関数
+	/// </summary>
+	void TrailDraw();
 
 	/// <summary>
 	/// 曲線を含んだ頂点情報配列生成関数
@@ -156,6 +167,8 @@ private: // メンバ変数
 
 	// 軌跡表示トリガー
 	bool isDisplayTrail_ = false;
+	// 軌跡更新トリガー
+	bool isTrailUpdate_ = true;
 
 	// 軌跡座標配列の要素数
 	int trailBufferCount_ = 24;

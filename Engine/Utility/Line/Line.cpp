@@ -88,6 +88,8 @@ void Line::Update()
 	if (isDisplayTrail_) {
 		// 軌跡更新
 		TrailUpdate();
+		// 軌跡描画
+		TrailDraw();
 	}
 }
 
@@ -130,6 +132,9 @@ void Line::DisplayImGui()
 
 void Line::TrailUpdate()
 {
+	// 軌跡座標を更新しない場合早期リターン
+	if (!isTrailUpdate_) { return; }
+
 	// 親がいる場合
 	if (transform_.GetParent() != nullptr) {
 
@@ -218,7 +223,10 @@ void Line::TrailUpdate()
 		indices_.push_back(v0_end);
 		indices_.push_back(v1_end);
 	}
+}
 
+void Line::TrailDraw()
+{
 	// 軌跡描画を行うかつバッファサイズが2以上のとき
 	if (isDisplayTrail_ && trailBuffers_.size() > 2) {
 		// 描画するマテリアルデータを取得
@@ -242,7 +250,7 @@ void Line::TrailUpdate()
 
 			// 描画を行う
 			cmdList->DrawInstanced(UINT(6 * GetUsedTrailBuffer().size()), 1, 0, 0);
-		});
+			});
 	}
 }
 

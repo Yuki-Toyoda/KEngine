@@ -1,6 +1,7 @@
 #include "Enemy.h"
 #include "EnemyBullet.h"
 #include "App/GameObject/User/Player/Player.h"
+#include "App/GameObject/User/FollowCamera/FollowCamera.h"
 #include "App/GameObject/User/GameManger/GameManager.h"
 #include "Engine/GameObject/GameObjectManager.h"
 
@@ -385,7 +386,7 @@ void Enemy::OnCollisionEnter(Collider* collider)
 				hit->emitterDataBuffer_->data_->frequencyTime = 3.0f;
 
 				// 麻痺パーティクル再生
-				stunParticle_ = ParticleManager::GetInstance()->CreateNewParticle("BulletTrail", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.0f, true);
+				stunParticle_ = ParticleManager::GetInstance()->CreateNewParticle("BulletSpark", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.0f, true);
 				stunParticle_->model_->materials_[1].tex_ = TextureManager::Load("BulletSparkParticle.png");
 				stunParticle_->model_->materials_[1].enableLighting_ = false;
 				stunParticle_->transform_.SetParent(&bodyTransform_);
@@ -425,8 +426,19 @@ void Enemy::OnCollision(Collider* collider)
 			// プレイヤーに攻撃が命中したことを伝える
 			player_->SetIsHit(true);
 
-			// プレイヤーにヒットストップ処理の実行を命令
-			player_->StartHitStop(player_->GetComboManager()->GetHitStopTime());
+			// とどめの場合固定秒数でヒットストップ
+			if (hp_ <= 0) {
+				player_->StartHitStop(finishHitStopTime_);
+				StartHitStop(finishHitStopTime_);
+
+				// ブラー演出を開始
+				player_->GetFollowCamera()->StartParryBlur(0.05f, 0.45f, 0.055f);
+			}
+			else {
+				// ヒットストップ開始
+				player_->StartHitStop(player_->GetComboManager()->GetHitStopTime());
+				StartHitStop(player_->GetComboManager()->GetHitStopTime());
+			}
 
 			// ループを切る
 			enemyAnim_->isLoop_ = false;
