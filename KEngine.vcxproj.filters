@@ -1526,14 +1526,16 @@
     <FxCompile Include="Engine\Resource\Shader\Trail\Trail.VS.hlsl">
       <Filter>Engine\Resource\Shader</Filter>
     </FxCompile>
-    <FxCompile Include="Engine\Resource\Shader\Particle\user\BulletTrail\UpdateBulletTrailParticle.CS.hlsl" />
-    <FxCompile Include="Engine\Resource\Shader\Particle\user\BulletTrail\EmitBulletTrailParticle.CS.hlsl" />
+    <FxCompile Include="Engine\Resource\Shader\Particle\user\BulletSpark\UpdateBulletSparkParticle.CS.hlsl" />
+    <FxCompile Include="Engine\Resource\Shader\Particle\user\BulletSpark\EmitBulletSparkParticle.CS.hlsl" />
     <FxCompile Include="Engine\Resource\Shader\Particle\user\Enemy\EmitEnemyParticle.CS.hlsl" />
     <FxCompile Include="Engine\Resource\Shader\Particle\user\Enemy\UpdateEnemyParticle.CS.hlsl" />
     <FxCompile Include="Engine\Resource\Shader\Particle\user\HitDebris\EmitHitDebrisParticle.CS.hlsl" />
     <FxCompile Include="Engine\Resource\Shader\Particle\user\HitDebris\UpdateHitDebrisParticle.CS.hlsl" />
     <FxCompile Include="Engine\Resource\Shader\Particle\user\Bullet\EmitBulletParticle.CS.hlsl" />
     <FxCompile Include="Engine\Resource\Shader\Particle\user\Bullet\UpdateBulletParticle.CS.hlsl" />
+    <FxCompile Include="Engine\Resource\Shader\Particle\user\BulletTrail\EmitBulletTrailParticle.CS.hlsl" />
+    <FxCompile Include="Engine\Resource\Shader\Particle\user\BulletTrail\UpdateBulletTrailParticle.CS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Externals\imgui\LICENSE.txt">

@@ -310,8 +310,8 @@ void Enemy::OnCollisionEnter(Collider* collider)
 					hit->emitterDataBuffer_->data_->frequencyTime = 3.0f;
 
 					// 麻痺パーティクル再生
-					stunParticle_ = ParticleManager::GetInstance()->CreateNewParticle("BulletTrail", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.0f, true);
-					stunParticle_->model_->materials_[1].tex_ = TextureManager::Load("BulletTrailParticle.png");
+					stunParticle_ = ParticleManager::GetInstance()->CreateNewParticle("BulletSpark", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.0f, true);
+					stunParticle_->model_->materials_[1].tex_ = TextureManager::Load("BulletSparkParticle.png");
 					stunParticle_->model_->materials_[1].enableLighting_ = false;
 					stunParticle_->transform_.SetParent(&bodyTransform_);
 					stunParticle_->emitterDataBuffer_->data_->count = 3;

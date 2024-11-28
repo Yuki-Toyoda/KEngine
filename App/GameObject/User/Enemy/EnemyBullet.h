@@ -28,6 +28,25 @@ public: // メンバ関数
 	/// <param name="collider">衝突したコライダー</param>
 	void OnCollisionEnter(Collider* collider) override;
 
+public: // 機能関数群
+
+	/// <summary>
+	/// 弾の削除時に呼び出す関数
+	/// </summary>
+	void DeleteBullet();
+
+	/// <summary>
+	/// 軌跡パーティクルの再生関数
+	/// </summary>
+	void PlayTrailParticle();
+
+	/// <summary>
+	/// 命中パーティクル再生関数
+	/// </summary>
+	void PlayHitParticle();
+
+public: // アクセッサ等
+
 	/// <summary>
 	/// プレイヤー座標のセッター
 	/// </summary>
@@ -58,11 +77,6 @@ public: // メンバ関数
 	/// <returns>跳ね返しているのか</returns>
 	bool GetIsReturn() { return isReturn_; }
 
-	/// <summary>
-	/// 弾の削除時に呼び出す関数
-	/// </summary>
-	void DeleteBullet();
-
 private: // メンバ変数
 
 	// 発射ベクトル
@@ -89,10 +103,12 @@ private: // メンバ変数
 	bool isDissolving_ = false;
 	bool isSwitchDissolving_ = false;
 
-	// 軌跡パーティクル
-	Particle* trailParticle_ = nullptr;
+	// 雷パーティクル
+	Particle* sparkParticle_ = nullptr;
 	// 弾パーティクル
 	Particle* bulletParticle_ = nullptr;
+	// 弾の軌跡パーティクル
+	Particle* trailParticle_ = nullptr;
 
 	// 効果音群
 	uint32_t counterSound_ = 0u;

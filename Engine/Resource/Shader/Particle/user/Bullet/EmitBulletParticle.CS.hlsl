@@ -26,7 +26,7 @@ void main( uint3 DTid : SV_DispatchThreadID )
                 int32_t particleIndex = freeList[fIndex];
                 
                 // スケールを指定
-                float32_t s = 1.85f;
+                float32_t s = 1.75f;
                
                 
                 // 回転角ランダム選定

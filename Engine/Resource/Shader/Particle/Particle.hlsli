@@ -51,3 +51,20 @@ float Lerp(float start, float end, float t)
     return (start * (1.0f - t) + end * t);
 
 }
+
+float Randomize(RandomGenerator randGenerator, float range)
+{
+    return range * (randGenerator.Generate1d()) - (range / 2.0f);
+}
+
+float Randomize(RandomGenerator randGenerator, float max, float min)
+{
+    float result = max * randGenerator.Generate1d() + min;
+    
+    if (result > max)
+    {
+        result = max;
+    }
+
+    return result;
+}

@@ -56,7 +56,8 @@ void ModelRenderer::Init(DirectXDevice* device, DXC* dxc, ModelManager* mm, Dire
 		.CreateParticlePSO("Enemy", "Test/InitTestParticle.CS.hlsl", "Enemy/EmitEnemyParticle.CS.hlsl", "Enemy/UpdateEnemyParticle.CS.hlsl")
 		.CreateParticlePSO("HitDebris", "Test/InitTestParticle.CS.hlsl", "HitDebris/EmitHitDebrisParticle.CS.hlsl", "HitDebris/UpdateHitDebrisParticle.CS.hlsl")
 		.CreateParticlePSO("Bullet", "Test/InitTestParticle.CS.hlsl", "Bullet/EmitBulletParticle.CS.hlsl", "Bullet/UpdateBulletParticle.CS.hlsl")
-		.CreateParticlePSO("BulletTrail", "Test/InitTestParticle.CS.hlsl", "BulletTrail/EmitBulletTrailParticle.CS.hlsl", "BulletTrail/UpdateBulletTrailParticle.CS.hlsl");
+		.CreateParticlePSO("BulletTrail", "Test/InitTestParticle.CS.hlsl", "BulletTrail/EmitBulletTrailParticle.CS.hlsl", "BulletTrail/UpdateBulletTrailParticle.CS.hlsl")
+		.CreateParticlePSO("BulletSpark", "Test/InitTestParticle.CS.hlsl", "BulletSpark/EmitBulletSparkParticle.CS.hlsl", "BulletSpark/UpdateBulletSparkParticle.CS.hlsl");
 
 	// 平行光源の取得
 	light_ = lt;

@@ -55,6 +55,8 @@ void EnemyShot::Update()
 			anim_->ChangeParameter("Enemy_Shot", 0.1f, true);
 			// プレイヤーに向かって弾を発射する
 			bullet_->SetVelocity(true, enemy_->GetRallyCount());
+			// 弾の軌跡パーティクルの再生
+			bullet_->PlayTrailParticle();
 
 			// その後の処理を強制終了
 			return;

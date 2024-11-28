@@ -18,15 +18,6 @@ void EnemyBullet::Init()
 	normalModels_["EnemyBullet"]->materials_[0].dissolveEdgeThreshold_ = 0.1f;
 	normalModels_["EnemyBullet"]->materials_[0].dissolveStrength_ = 1.0f;
 
-	// 軌跡パーティクル再生
-	trailParticle_ = ParticleManager::GetInstance()->CreateNewParticle("BulletTrail", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.0f, true);
-	trailParticle_->model_->materials_[1].tex_ = TextureManager::Load("BulletTrailParticle.png");
-	trailParticle_->model_->materials_[1].enableLighting_ = false;
-	trailParticle_->transform_.translate_ = transform_.translate_;
-	trailParticle_->emitterDataBuffer_->data_->count = 3;
-	trailParticle_->emitterDataBuffer_->data_->frequency = 0.0f;
-	trailParticle_->emitterDataBuffer_->data_->frequencyTime = 0.25f;
-
 	// 球のコライダー追加
 	AddColliderSphere("Bullet", &transform_.translate_, &transform_.scale_.x);
 
@@ -36,9 +27,6 @@ void EnemyBullet::Init()
 
 void EnemyBullet::Update()
 {
-	// 軌跡パーティクル発生座標を調整する
-	trailParticle_->transform_.translate_ = transform_.translate_;
-
 	// 線形補間でサイズを大きく
 	transform_.scale_ = KLib::Lerp<Vector3>(transform_.scale_, { 1.0f, 1.0f, 1.0f }, 0.05f);
 
@@ -51,16 +39,23 @@ void EnemyBullet::Update()
 			bulletParticle_ = ParticleManager::GetInstance()->CreateNewParticle("Bullet", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.0f, true);
 			bulletParticle_->model_->materials_[1].tex_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png");
 			bulletParticle_->model_->materials_[1].enableLighting_ = false;
-			bulletParticle_->transform_.translate_ = transform_.translate_;
+			bulletParticle_->transform_.SetParent(&transform_);
 			bulletParticle_->emitterDataBuffer_->data_->count = 1;
 			bulletParticle_->emitterDataBuffer_->data_->frequency = 0.0f;
 			bulletParticle_->emitterDataBuffer_->data_->frequencyTime = 0.25f;
+
+			// 雷パーティクル再生
+			sparkParticle_ = ParticleManager::GetInstance()->CreateNewParticle("BulletSpark", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.0f, true);
+			sparkParticle_->model_->materials_[1].tex_ = TextureManager::Load("BulletSparkParticle.png");
+			sparkParticle_->model_->materials_[1].enableLighting_ = false;
+			sparkParticle_->transform_.SetParent(&transform_);
+			sparkParticle_->emitterDataBuffer_->data_->count = 3;
+			sparkParticle_->emitterDataBuffer_->data_->frequency = 0.0f;
+			sparkParticle_->emitterDataBuffer_->data_->frequencyTime = 0.25f;
 		}
 	}
 	else {
 		normalModels_["EnemyBullet"]->materials_[0].color_.w = KLib::Lerp<float>(normalModels_["EnemyBullet"]->materials_[0].color_.w, 0.0f, 0.15f);
-
-		bulletParticle_->transform_.translate_ = transform_.translate_;
 
 		if (normalModels_["EnemyBullet"]->materials_[0].color_.w <= 0.05f) {
 			normalModels_["EnemyBullet"]->isActive_ = false;
@@ -95,26 +90,11 @@ void EnemyBullet::OnCollisionEnter(Collider* collider)
 		SetVelocity(false, e->GetRallyCount());
 		isReturn_ = true;
 
+		// 命中パーティクル再生
+		PlayHitParticle();
+
 		// 素振りの効果音の再生
 		Audio::GetInstance()->PlayWave(counterSound_);
-
-		// 命中パーティクル再生
-		Particle* hit = ParticleManager::GetInstance()->CreateNewParticle("Hit", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.5f);
-		hit->model_->materials_[1].tex_ = TextureManager::Load("BulletHitEffect.png");
-		hit->model_->materials_[1].enableLighting_ = false;
-		hit->transform_.translate_ = transform_.translate_;
-		hit->emitterDataBuffer_->data_->count = 1;
-		hit->emitterDataBuffer_->data_->frequency = 1.0f;
-		hit->emitterDataBuffer_->data_->frequencyTime = 3.0f;
-
-		// 命中破片パーティクル再生
-		Particle* hitDebris = ParticleManager::GetInstance()->CreateNewParticle("HitDebris", "./Engine/Resource/Samples/Plane", "Plane.obj", 1.0f);
-		hitDebris->model_->materials_[1].tex_ = TextureManager::Load("BulletHitDebrisEffect.png");
-		hitDebris->model_->materials_[1].enableLighting_ = false;
-		hitDebris->transform_.translate_ = transform_.translate_;
-		hitDebris->emitterDataBuffer_->data_->count = 10;
-		hitDebris->emitterDataBuffer_->data_->frequency = 3.0f;
-		hitDebris->emitterDataBuffer_->data_->frequencyTime = 5.0f;
 	}
 
 	// ボスと衝突したら
@@ -124,22 +104,7 @@ void EnemyBullet::OnCollisionEnter(Collider* collider)
 		isReturn_ = false;
 
 		// 命中パーティクル再生
-		Particle* hit = ParticleManager::GetInstance()->CreateNewParticle("Hit", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.5f);
-		hit->model_->materials_[1].tex_ = TextureManager::Load("BulletHitEffect.png");
-		hit->model_->materials_[1].enableLighting_ = false;
-		hit->transform_.translate_ = transform_.translate_;
-		hit->emitterDataBuffer_->data_->count = 1;
-		hit->emitterDataBuffer_->data_->frequency = 1.0f;
-		hit->emitterDataBuffer_->data_->frequencyTime = 3.0f;
-
-		// 命中破片パーティクル再生
-		Particle* hitDebris = ParticleManager::GetInstance()->CreateNewParticle("HitDebris", "./Engine/Resource/Samples/Plane", "Plane.obj", 1.0f);
-		hitDebris->model_->materials_[1].tex_ = TextureManager::Load("BulletHitDebrisEffect.png");
-		hitDebris->model_->materials_[1].enableLighting_ = false;
-		hitDebris->transform_.translate_ = transform_.translate_;
-		hitDebris->emitterDataBuffer_->data_->count = 10;
-		hitDebris->emitterDataBuffer_->data_->frequency = 3.0f;
-		hitDebris->emitterDataBuffer_->data_->frequencyTime = 5.0f;
+		PlayHitParticle();
 	}
 
 	// プレイヤー、または床と衝突したら
@@ -148,22 +113,7 @@ void EnemyBullet::OnCollisionEnter(Collider* collider)
 		// プレイヤーの場合ダメージ処理を行う
 		if (collider->GetColliderName() == "PlayerCollider") {
 			// 命中パーティクル再生
-			Particle* hit = ParticleManager::GetInstance()->CreateNewParticle("EnemyHit", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.5f);
-			hit->model_->materials_[1].tex_ = TextureManager::Load("BulletHitEffect.png");
-			hit->model_->materials_[1].enableLighting_ = false;
-			hit->transform_.translate_ = transform_.translate_;
-			hit->emitterDataBuffer_->data_->count = 1;
-			hit->emitterDataBuffer_->data_->frequency = 1.0f;
-			hit->emitterDataBuffer_->data_->frequencyTime = 3.0f;
-			
-			// 命中破片パーティクル再生
-			Particle* hitDebris = ParticleManager::GetInstance()->CreateNewParticle("HitDebris", "./Engine/Resource/Samples/Plane", "Plane.obj", 1.0f);
-			hitDebris->model_->materials_[1].tex_ = TextureManager::Load("BulletHitDebrisEffect.png");
-			hitDebris->model_->materials_[1].enableLighting_ = false;
-			hitDebris->transform_.translate_ = transform_.translate_;
-			hitDebris->emitterDataBuffer_->data_->count = 10;
-			hitDebris->emitterDataBuffer_->data_->frequency = 3.0f;
-			hitDebris->emitterDataBuffer_->data_->frequencyTime = 5.0f;
+			PlayHitParticle();
 			
 			// プレイヤーを取得
 			Player* p = GameObjectManager::GetInstance()->GetGameObject<Player>("Player");
@@ -205,8 +155,45 @@ void EnemyBullet::SetVelocity(const bool& isPlayer, const int32_t& rallyCount)
 void EnemyBullet::DeleteBullet()
 {
 	// パーティクルの停止
-	trailParticle_->SetIsEnd(true);
+	sparkParticle_->SetIsEnd(true);
 	bulletParticle_->SetIsEnd(true);
+	trailParticle_->SetIsEnd(true);
 	// 削除
 	Destroy();
+}
+
+void EnemyBullet::PlayTrailParticle()
+{
+	// 軌跡パーティクル再生済みの場合早期リターン
+	if (trailParticle_ != nullptr) { return; }
+
+	// 軌跡パーティクル再生
+	trailParticle_ = ParticleManager::GetInstance()->CreateNewParticle("BulletTrail", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.0f, true);
+	trailParticle_->model_->materials_[1].tex_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png");
+	trailParticle_->model_->materials_[1].enableLighting_ = false;
+	trailParticle_->transform_.SetParent(&transform_);
+	trailParticle_->emitterDataBuffer_->data_->count = 1;
+	trailParticle_->emitterDataBuffer_->data_->frequency = 0.0f;
+	trailParticle_->emitterDataBuffer_->data_->frequencyTime = 0.25f;
+}
+
+void EnemyBullet::PlayHitParticle()
+{
+	// 命中パーティクル再生
+	Particle* hit = ParticleManager::GetInstance()->CreateNewParticle("Hit", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.5f);
+	hit->model_->materials_[1].tex_ = TextureManager::Load("BulletHitEffect.png");
+	hit->model_->materials_[1].enableLighting_ = false;
+	hit->transform_.SetParent(&transform_);
+	hit->emitterDataBuffer_->data_->count = 1;
+	hit->emitterDataBuffer_->data_->frequency = 1.0f;
+	hit->emitterDataBuffer_->data_->frequencyTime = 3.0f;
+
+	// 命中破片パーティクル再生
+	Particle* hitDebris = ParticleManager::GetInstance()->CreateNewParticle("HitDebris", "./Engine/Resource/Samples/Plane", "Plane.obj", 1.0f);
+	hitDebris->model_->materials_[1].tex_ = TextureManager::Load("BulletHitDebrisEffect.png");
+	hitDebris->model_->materials_[1].enableLighting_ = false;
+	hitDebris->transform_.SetParent(&transform_);
+	hitDebris->emitterDataBuffer_->data_->count = 10;
+	hitDebris->emitterDataBuffer_->data_->frequency = 3.0f;
+	hitDebris->emitterDataBuffer_->data_->frequencyTime = 5.0f;
 }
