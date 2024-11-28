@@ -16,6 +16,9 @@ void GameScene::Init(){
 	// スカイボックス初期化
 	skyBox_->Init("./Resources", "SkyTexture.dds");
 
+	level_ = gameObjectManager_->CreateInstance<Level>("Level", IObject::TagNone);
+	level_->LoadLevel("./Resources/Level", "Stage.json");
+
 	// プレイヤー追加
 	player_ = gameObjectManager_->CreateInstance<Player>("Player", IObject::TagPlayer);
 
@@ -26,9 +29,6 @@ void GameScene::Init(){
 	camera->SetTarget(&player_->transform_);
 	// プレイヤーに追従カメラをセット
 	player_->SetFollowCamera(camera);
-
-	level_ = gameObjectManager_->CreateInstance<Level>("Level", IObject::TagNone);
-	level_->LoadLevel("./Resources/Level", "Stage.json");
 
 	// 敵生成
 	enemy_ = gameObjectManager_->CreateInstance<Enemy>("Enemy", IObject::TagEnemy);

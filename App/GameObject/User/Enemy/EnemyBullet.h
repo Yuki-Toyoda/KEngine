@@ -31,6 +31,11 @@ public: // メンバ関数
 public: // 機能関数群
 
 	/// <summary>
+	/// 落ち影の更新関数
+	/// </summary>
+	void ShadowUpdate();
+
+	/// <summary>
 	/// 弾の削除時に呼び出す関数
 	/// </summary>
 	void DeleteBullet();
@@ -85,8 +90,16 @@ private: // メンバ変数
 	float speed_ = 0.25f;
 	// 最大発射スピード
 	const float maxSpeed_ = 0.5f;
-
+	// 加速度
 	const float kAcceleration_ = 0.035f;
+
+	// 落ち影のワールドトランスフォーム
+	WorldTransform shadowTransform_{};
+	// 落ち影のスケール補間値
+	float maxShadowScale = 1.85f;
+	float minShadowScale = 1.5f;
+	// 敵のY座標閾値
+	float maxHeight_ = 5.0f;
 
 	// プレイヤーへ発射されているか
 	bool isPlayer_ = false;

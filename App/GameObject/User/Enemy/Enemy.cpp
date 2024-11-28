@@ -23,6 +23,10 @@ void Enemy::Init()
 	armTransform_L_.SetParent(&bodyTransform_, 0b111);
 	armTransform_L_.translate_ = { 0.0f, 1.0f, 0.0f };
 
+	// 落ち影用トランスフォームの初期化
+	shadowTransform_.Init();
+	shadowTransform_.SetParent(&transform_);
+
 	// アニメーションパラメータの生成
 
 	// 待機状態
@@ -78,6 +82,10 @@ void Enemy::Init()
 	AddNormalModel("Head", &headTransform_, "./Resources/Enemy", "Head.obj");
 	AddNormalModel("Arm_R", &armTransform_R_, "./Resources/Enemy", "Arm_R.obj");
 	AddNormalModel("Arm_L", &armTransform_L_, "./Resources/Enemy", "Arm_L.obj");
+
+	// 落ち影用モデル
+	AddNormalModel("Shadow", &shadowTransform_, "./Resources/DropShadow", "DropShadow.obj");
+	normalModels_["Shadow"]->materials_[1].color_ = Vector4(0.0f, 0.0f, 0.0f, 0.5f);
 
 	// 球のコライダー追加
 	AddColliderSphere("Boss", &worldPos_, &colliderRadius_);
@@ -199,6 +207,9 @@ void Enemy::Update()
 	}
 	// ワールド座標の取得
 	worldPos_ = transform_.GetWorldPos();
+
+	// 落ち影更新
+	ShadowUpdate();
 }
 
 void Enemy::DisplayImGui()
@@ -210,9 +221,15 @@ void Enemy::DisplayImGui()
 	armTransform_R_.DisplayImGuiWithTreeNode("Arm_R_Transform");
 	armTransform_L_.DisplayImGuiWithTreeNode("Arm_L_Transform");
 
+	shadowTransform_.DisplayImGuiWithTreeNode("Shadow");
+
 	enemyAnim_->DisplayImGui();
 
 	ImGui::DragInt("HP", &hp_);
+
+	// 落ち影関係の調整
+	ImGui::DragFloat("MaxShadowScale", &maxShadowScale, 0.01f, 0.05f);
+	ImGui::DragFloat("MinShadowScale", &minShadowScale, 0.01f, 0.01f);
 
 	// アニメーションの読み込みパラメータ変更
 	if (ImGui::TreeNode("ChangeReadParameter")) {
@@ -466,6 +483,16 @@ void Enemy::ChangeState(std::unique_ptr<IEnemyState> newState)
 
 	// 初期化した新しいステートを代入
 	state_ = std::move(newState);
+}
+
+void Enemy::ShadowUpdate()
+{
+	// 敵の高さを元に影の大きさを調整
+	float shadowScale = KLib::Lerp<float>(maxShadowScale, minShadowScale, transform_.translate_.y, maxHeight_);
+	shadowTransform_.scale_ = { shadowScale, 1.0f, shadowScale };
+
+	// 高さは自動調整
+	shadowTransform_.translate_.y = -(transform_.GetWorldPos().y) + 0.05f;
 }
 
 void Enemy::ResetStunParticle()

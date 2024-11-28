@@ -59,6 +59,11 @@ public: // メンバ関数
 	/// <param name="newState"></param>
 	void ChangeState(std::unique_ptr<IEnemyState> newState);
 
+	/// <summary>
+	/// 落ち影更新関数
+	/// </summary>
+	void ShadowUpdate();
+
 public: // アクセッサ等
 
 	/// <summary>
@@ -187,6 +192,14 @@ private: // メンバ変数
 	Vector3 worldPos_{};
 	// 当たり判定半径
 	float colliderRadius_ = 1.0f;
+
+	// 落ち影のワールドトランスフォーム
+	WorldTransform shadowTransform_{};
+	// 落ち影のスケール補間値
+	float maxShadowScale = 2.5f;
+	float minShadowScale = 1.75f;
+	// 敵のY座標閾値
+	float maxHeight_ = 4.0f;
 
 	// プレイヤー座標
 	const WorldTransform* playerPos_ = nullptr;

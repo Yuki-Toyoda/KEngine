@@ -5,6 +5,10 @@
 
 void EnemyBullet::Init()
 {
+	// 落ち影用トランスフォームの初期化
+	shadowTransform_.Init();
+	shadowTransform_.SetParent(&transform_);
+
 	// メッシュを追加
 	AddNormalModel("EnemyBullet", &transform_, "./Engine/Resource/Samples/Sphere", "Sphere.obj");
 
@@ -17,6 +21,10 @@ void EnemyBullet::Init()
 	normalModels_["EnemyBullet"]->materials_[0].dissolveEdgeColor_ = { 1.0f, 1.0f, 0.45f };
 	normalModels_["EnemyBullet"]->materials_[0].dissolveEdgeThreshold_ = 0.1f;
 	normalModels_["EnemyBullet"]->materials_[0].dissolveStrength_ = 1.0f;
+
+	// 落ち影用モデル
+	AddNormalModel("Shadow", &shadowTransform_, "./Resources/DropShadow", "DropShadow.obj");
+	normalModels_["Shadow"]->materials_[1].color_ = Vector4(0.0f, 0.5f, 3.0f, 0.25f);
 
 	// 球のコライダー追加
 	AddColliderSphere("Bullet", &transform_.translate_, &transform_.scale_.x);
@@ -64,6 +72,9 @@ void EnemyBullet::Update()
 
 	// 弾を移動させる
 	transform_.translate_ = transform_.translate_ + velocity_;
+
+	// 落ち影更新
+	ShadowUpdate();
 
 	// y座標が一定以下になったら削除
 	if (transform_.translate_.y <= -1.0f) {
@@ -152,12 +163,26 @@ void EnemyBullet::SetVelocity(const bool& isPlayer, const int32_t& rallyCount)
 	}
 }
 
+void EnemyBullet::ShadowUpdate()
+{
+	// 敵の高さを元に影の大きさを調整
+	float shadowScale = KLib::Lerp<float>(maxShadowScale, minShadowScale, transform_.translate_.y, maxHeight_);
+	shadowTransform_.scale_ = { shadowScale, 1.0f, shadowScale };
+
+	// 高さは自動調整
+	shadowTransform_.translate_.y = -(transform_.GetWorldPos().y) + 0.05f;
+}
+
 void EnemyBullet::DeleteBullet()
 {
 	// パーティクルの停止
+	sparkParticle_->transform_.SetParent(nullptr);
 	sparkParticle_->SetIsEnd(true);
+	bulletParticle_->transform_.SetParent(nullptr);
 	bulletParticle_->SetIsEnd(true);
+	trailParticle_->transform_.SetParent(nullptr);
 	trailParticle_->SetIsEnd(true);
+
 	// 削除
 	Destroy();
 }
@@ -183,7 +208,7 @@ void EnemyBullet::PlayHitParticle()
 	Particle* hit = ParticleManager::GetInstance()->CreateNewParticle("Hit", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.5f);
 	hit->model_->materials_[1].tex_ = TextureManager::Load("BulletHitEffect.png");
 	hit->model_->materials_[1].enableLighting_ = false;
-	hit->transform_.SetParent(&transform_);
+	hit->transform_ = transform_.translate_;
 	hit->emitterDataBuffer_->data_->count = 1;
 	hit->emitterDataBuffer_->data_->frequency = 1.0f;
 	hit->emitterDataBuffer_->data_->frequencyTime = 3.0f;
@@ -192,7 +217,7 @@ void EnemyBullet::PlayHitParticle()
 	Particle* hitDebris = ParticleManager::GetInstance()->CreateNewParticle("HitDebris", "./Engine/Resource/Samples/Plane", "Plane.obj", 1.0f);
 	hitDebris->model_->materials_[1].tex_ = TextureManager::Load("BulletHitDebrisEffect.png");
 	hitDebris->model_->materials_[1].enableLighting_ = false;
-	hitDebris->transform_.SetParent(&transform_);
+	hitDebris->transform_ = transform_.translate_;
 	hitDebris->emitterDataBuffer_->data_->count = 10;
 	hitDebris->emitterDataBuffer_->data_->frequency = 3.0f;
 	hitDebris->emitterDataBuffer_->data_->frequencyTime = 5.0f;

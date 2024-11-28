@@ -21,9 +21,16 @@ void Player::Init()
 	colliderTransform_.SetParent(&transform_);
 	colliderTransform_.translate_.y += 1.0f;
 
+	// 落ち影用トランスフォームの初期化
+	shadowTransform_.Init();
+	shadowTransform_.SetParent(&transform_);
+
 	// メッシュの追加を行う
 	AddSkiningModel("Player", &transform_, "./Resources/Player", "Player.gltf");
 	AddSkiningModel("Sword", &weaponTransform_, "./Resources/Sword", "Sword.gltf");
+	// 落ち影用モデル
+	AddNormalModel("Shadow", &shadowTransform_, "./Resources/DropShadow", "DropShadow.obj");
+	normalModels_["Shadow"]->materials_[1].color_ = Vector4(0.0f, 0.0f, 0.0f, 0.5f);
 
 	// 待機アニメーションの再生
 	skiningModels_["Player"]->animationManager_.PlayAnimation("00_Idle", 0.0f, true);
@@ -106,6 +113,8 @@ void Player::Update()
 
 	#endif // _DEBUG // デバッグ時のみ実行
 
+	// 落ち影更新
+	ShadowUpdate();
 
 	// ゲーム開始状態のとき
 	if (gameManager_->GetIsGameStart() && !isSetUp_) {
@@ -235,6 +244,9 @@ void Player::DisplayImGui()
 	// 線のImGui表示
 	SwordLine_->DisplayImGui();
 
+	// 影のa値の調整
+	ImGui::DragFloat("ShadowAlpha", &normalModels_["Shadow"]->materials_[0].color_.w, 0.001f);
+
 	// 基底クラスのImGuiを表示する
 	IObject::DisplayImGui();
 }
@@ -285,4 +297,19 @@ void Player::HitDamage(const Vector3& translate)
 		// 命中クールタイムリセット
 		hitCoolTimeTimer_.Start(kHitCoolTime_);
 	}
+}
+
+void Player::ShadowUpdate()
+{
+	// プレイヤーのHipボーンの座標取得
+	Vector3 hipBonePosition = skiningModels_["Player"]->GetBonePosition("Hip");
+
+	// Hipボーンの座標を元に影の大きさを変更
+	float shadowScale = KLib::Lerp<float>(maxShadowScale, minShadowScale, hipBonePosition.y, maxHipBoneHeight_);
+	shadowTransform_.scale_ = { shadowScale, 1.0f, shadowScale };
+
+	// プレイヤーのHipボーンと同じ座標に
+	shadowTransform_.translate_ = hipBonePosition;
+	// 高さは自動調整
+	shadowTransform_.translate_.y = -(transform_.GetWorldPos().y) + 0.01f;
 }

@@ -62,6 +62,11 @@ public: // その他関数
 	/// <param name="translate">衝突したやつの座標</param>
 	void HitDamage(const Vector3& translate);
 
+	/// <summary>
+	/// 落ち影更新関数
+	/// </summary>
+	void ShadowUpdate();
+
 public: // アクセッサ等
 
 	/// <summary>
@@ -198,6 +203,15 @@ private: // メンバ変数
 	bool isAttacking_ = false;
 	// 攻撃が命中したか
 	bool isHit_ = false;
+
+	// 落ち影のワールドトランスフォーム
+	WorldTransform shadowTransform_{};
+	// 落ち影のスケール補間値
+	float maxShadowScale = 2.0f;
+	float minShadowScale = 0.25f;
+	// HipボーンのY座標閾値
+	float minHipBoneHeight_ = 0.0f;
+	float maxHipBoneHeight_ = 2.0f;
 
 	// 最大HP
 	static const int32_t maxHP_ = 6;
