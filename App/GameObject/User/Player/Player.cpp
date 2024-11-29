@@ -160,6 +160,22 @@ void Player::Update()
 		return;
 	}
 
+	// 軌跡a値
+	float& trailAlpha = SwordLine_->trailMaterial_.color_.w;
+	// 攻撃中は軌跡を表示させる
+	if (isAttacking_) {
+		trailAlpha = KLib::Lerp(trailAlpha, 1.0f, 0.2f);
+	}
+	else {
+		// 攻撃中でない場合は軌跡を徐々に消す
+		if (trailAlpha <= 0.01f) {
+			trailAlpha = 0.0f;
+		}
+		else {
+			trailAlpha = KLib::Lerp(trailAlpha, 0.0f, 0.3f);
+		}
+	}
+
 	// ヒットストップ中であれば更新関数呼び出しからの早期リターン
 	if (isHitStop_) { 
 		HitStopUpdate();
@@ -193,22 +209,6 @@ void Player::Update()
 			// ロックオンをしていない場合帯を非表示
 			sprites_["UpperObi"]->scale_.y = KLib::Lerp<float>(sprites_["UpperObi"]->scale_.y, 0.0f, 0.2f);
 			sprites_["LowerObi"]->scale_.y = KLib::Lerp<float>(sprites_["LowerObi"]->scale_.y, 0.0f, 0.2f);
-		}
-	}
-
-	// 軌跡a値
-	float& trailAlpha = SwordLine_->trailMaterial_.color_.w;
-	// 攻撃中は軌跡を表示させる
-	if (isAttacking_) {
-		trailAlpha = KLib::Lerp(trailAlpha, 1.0f, 0.2f);
-	}
-	else {
-		// 攻撃中でない場合は軌跡を徐々に消す
-		if (trailAlpha <= 0.01f) {
-			trailAlpha = 0.0f;
-		}
-		else {
-			trailAlpha = KLib::Lerp(trailAlpha, 0.0f, 0.3f);
 		}
 	}
 
@@ -294,7 +294,7 @@ void Player::StartHitStop(const float hitStopTime, const float timeScale)
 	// プレイヤーアニメーションの再生速度を指定
 	skiningModels_["Player"]->animationManager_.SetAnimationSpeed(timeScale);
 	// 軌跡座標の更新を停止
-	SwordLine_->SetIsUpdateTrail(false);
+	//SwordLine_->SetIsUpdateTrail(false);
 	// ヒットストップタイマー開始
 	hitStopTimer_.Start(hitStopTime);
 	// ヒットストップ中状態に

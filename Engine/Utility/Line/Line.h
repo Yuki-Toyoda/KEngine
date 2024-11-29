@@ -105,6 +105,11 @@ public: // アクセッサ等
 private: // 機能関数群
 
 	/// <summary>
+	/// 軌跡用座標追加関数
+	/// </summary>
+	void AddTrail();
+
+	/// <summary>
 	/// 軌跡更新関数
 	/// </summary>
 	void TrailUpdate();

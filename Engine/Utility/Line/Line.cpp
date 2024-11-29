@@ -130,7 +130,7 @@ void Line::DisplayImGui()
 	}
 }
 
-void Line::TrailUpdate()
+void Line::AddTrail()
 {
 	// 軌跡座標を更新しない場合早期リターン
 	if (!isTrailUpdate_) { return; }
@@ -172,6 +172,12 @@ void Line::TrailUpdate()
 	}
 	// 最終要素の現在の座標を代入する
 	trailBuffers_.front() = tempTrail_;
+}
+
+void Line::TrailUpdate()
+{
+	// 軌跡用座標追加
+	AddTrail();
 
 	// 使用済み要素を抽出
 	std::vector<TrailBuffer> usedTrailBuffer = GetUsedTrailBuffer();
