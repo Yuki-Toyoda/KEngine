@@ -176,6 +176,10 @@ void Player::Update()
 		}
 	}
 
+	// 線の更新
+	SwordLine_->Update();
+
+
 	// ヒットストップ中であれば更新関数呼び出しからの早期リターン
 	if (isHitStop_) { 
 		HitStopUpdate();
@@ -237,9 +241,6 @@ void Player::Update()
 	// 命中フラグのリセット
 	isHit_ = false;
 
-	// 線の更新
-	SwordLine_->Update();
-
 	//コライダーのワールド座標更新
 	colliderWorldPos_ = colliderTransform_.GetWorldPos();
 
@@ -293,12 +294,15 @@ void Player::StartHitStop(const float hitStopTime, const float timeScale)
 
 	// プレイヤーアニメーションの再生速度を指定
 	skiningModels_["Player"]->animationManager_.SetAnimationSpeed(timeScale);
-	// 軌跡座標の更新を停止
-	//SwordLine_->SetIsUpdateTrail(false);
 	// ヒットストップタイマー開始
 	hitStopTimer_.Start(hitStopTime);
 	// ヒットストップ中状態に
 	isHitStop_ = true;
+
+	if (timeScale != 0.0f) { return; }
+
+	// 軌跡座標の更新を停止
+	SwordLine_->SetIsUpdateTrail(false);
 }
 
 void Player::HitStopUpdate()
