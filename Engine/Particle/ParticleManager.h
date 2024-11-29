@@ -88,7 +88,13 @@ public: // 生成用関数群
 	/// <returns>生成済み新規パーティクル</returns>
 	Particle* CreateNewParticle(const std::string& name, const std::string& filePath, const std::string& fileName, const float lifeTime, const bool isEndless = false, const int maxCount = 1024, const bool enableLighting = false);
 
-private: // 機能関数群
+public: // アクセッサ等
+
+	/// <summary>
+	/// 全てのパーティクルを更新するかどうかのセッター
+	/// </summary>
+	/// <param name="isUpdate">更新するか否か</param>
+	void SetIsUpdateAllParticles(const bool isUpdate) { isUpdateAllParticles_ = isUpdate; }
 
 private: // メンバ変数
 
@@ -116,4 +122,7 @@ private: // メンバ変数
 
 	// フレーム時間計測バッファ
 	std::unique_ptr<ConstantBuffer<PerFrame>> perFrameDataBuffer_;
+
+	// 全てのパーティクルを更新するか
+	bool isUpdateAllParticles_ = true;
 };

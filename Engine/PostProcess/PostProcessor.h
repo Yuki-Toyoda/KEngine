@@ -47,6 +47,12 @@ public: // メンバ関数
 	/// </summary>
 	void DisplayImGui();
 
+	/// <summary>
+	/// 引数内のポストプロセスのパラメータを全てコピーする関数
+	/// </summary>
+	/// <param name="pp">他のポストプロセス</param>
+	void CopyAllParameters(const PostProcessor& pp);
+
 public: // アクセッサ等
 
 	/// <summary>

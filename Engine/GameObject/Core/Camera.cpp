@@ -178,12 +178,20 @@ Texture Camera::GetRenderTexture()
 	return textureResource_;
 }
 
-void Camera::UseThisCamera() {
+void Camera::UseThisCamera(const bool takePostProcessSettings)
+{
 	// 配列
 	std::vector<Camera*>cameraObjects = GameObjectManager::GetInstance()->GetGameObject<Camera>();
 	// 全てのカメラの使用トリガーを一度false
-	for (Camera* camera : cameraObjects)
+	for (Camera* camera : cameraObjects) {
+		// 使用中カメラの場合かつポストプロセスの設定を引き継ぐ場合
+		if (camera->GetIsUsedCamera() && takePostProcessSettings) {
+			// 全てのポストプロセスのパラメータをコピー
+			ppProcessor_.CopyAllParameters(camera->ppProcessor_);
+		}
+
 		camera->SetIsUseThisCamera(false);
+	}
 
 	// このカメラを使用する
 	isUseThisCamera_ = true;

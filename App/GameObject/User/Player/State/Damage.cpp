@@ -28,7 +28,6 @@ void Damage::Init()
 		c->transform_.rotate_ = { (float)std::numbers::pi / 2.0f, 0.0f, 0.0f };
 		c->fov_ = 0.6f;
 		c->UseThisCamera();
-		c->ppProcessor_.bloom_.threshold_ = 0.25f;
 
 		// 体力UI非表示
 		for (int i = 0; i < 6; i++) {

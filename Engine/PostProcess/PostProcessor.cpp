@@ -170,6 +170,19 @@ void PostProcessor::DisplayImGui()
 	}
 }
 
+void PostProcessor::CopyAllParameters(const PostProcessor& pp)
+{
+	// ポストプロセスパラメータのコピー
+	this->bloom_.threshold_ = pp.bloom_.threshold_;
+	this->outLine_.threshold_ = pp.outLine_.threshold_;
+	this->outLine_.color_ = pp.outLine_.color_;
+	this->gaussian_.intensity_ = pp.gaussian_.intensity_;
+	this->radialBlur_.data_ = pp.radialBlur_.data_;
+	this->vignette_.intensity_ = pp.vignette_.intensity_;
+	this->grayScale_.intensity_ = pp.grayScale_.intensity_;
+	this->hsvFilter_.hsv_ = pp.hsvFilter_.hsv_;
+}
+
 void PostProcessor::SetToCommandList(ID3D12GraphicsCommandList6* list)
 {
 	// コマンドリストにRoot SignatureとPSOをセットする

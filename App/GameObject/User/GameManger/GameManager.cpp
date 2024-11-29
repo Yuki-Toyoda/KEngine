@@ -17,7 +17,7 @@ void GameManager::Init()
 	titleCamera_->transform_.translate_ = { -1.5f, 0.92f, -3.5f };
 	titleCamera_->transform_.rotate_ = { -0.15f, 0.325f, 0.0f };
 	titleCamera_->ppProcessor_.bloom_.threshold_ = 0.25f;
-	titleCamera_->UseThisCamera();
+	titleCamera_->UseThisCamera(false);
 
 	/// タイトル演出用パラメータを生成
 	CreateTitleCameraParameter("Title_Idle");

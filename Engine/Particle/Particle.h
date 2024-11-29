@@ -125,6 +125,12 @@ public: // アクセッサ等
 	bool GetIsEndless() { return isEndless_; }
 
 	/// <summary>
+	/// パーティクルの更新状態のセッター
+	/// </summary>
+	/// <param name="isUpdate">該当パーティクルを更新するか</param>
+	void SetIsUpdate(const bool isUpdate) { isUpdate_ = isUpdate; }
+
+	/// <summary>
 	/// 終了状態ゲッター
 	/// </summary>
 	/// <returns>終了状態</returns>
@@ -158,6 +164,9 @@ private: // メンバ変数
 	bool isEndless_ = false;
 	// パーティクルの終了フラグ
 	bool isEnd_ = false;
+
+	// 更新を行うか
+	bool isUpdate_ = true;
 
 	// 粒子最大数
 	const uint32_t kMaxParticleCount_;

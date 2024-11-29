@@ -78,6 +78,9 @@ void Particle::ExecuteInit()
 
 void Particle::Update()
 {
+	// 更新を行わない状態の場合早期リターン
+	if (!isUpdate_) { return; }
+
 	// エミッタ座標にワールド座標を代入
 	emitterDataBuffer_->data_->translate = transform_.GetWorldPos();
 

@@ -100,18 +100,21 @@ void EnemyBullet::DisplayImGui()
 
 void EnemyBullet::OnCollisionEnter(Collider* collider)
 {
-	// プレイヤーの剣と衝突していたら
+	// プレイヤーの剣と衝突している、かつプレイヤーに向かって弾が飛んでいるとき
 	if (collider->GetColliderName() == "Sword" && isPlayer_) {
+		// プレイヤーの取得
+		Player* p = GameObjectManager::GetInstance()->GetGameObject<Player>("Player");
+
+		// 敵の取得
 		Enemy* e = GameObjectManager::GetInstance()->GetGameObject<Enemy>("Enemy");
 
+		// ベクトルを敵の方向へ変更
 		SetVelocity(false, e->GetRallyCount());
 		isReturn_ = true;
 
 		// 命中パーティクル再生
 		PlayHitParticle();
 
-		// プレイヤーの取得
-		Player* p = GameObjectManager::GetInstance()->GetGameObject<Player>("Player");
 		// ヒットストップ開始
 		StartHitStop(p->GetComboManager()->GetHitStopTime() * hitStopTimeAcceleration_);
 		p->StartHitStop(p->GetComboManager()->GetHitStopTime() * hitStopTimeAcceleration_);
@@ -242,6 +245,11 @@ void EnemyBullet::StartHitStop(const float hitStopTime)
 
 	// ヒットストップタイマー開始
 	hitStopTimer_.Start(hitStopTime);
+	// 弾パーティクルの再生を停止
+	bulletParticle_->SetIsUpdate(false);
+	// 雷パーティクルの再生を停止
+	sparkParticle_->SetIsUpdate(false);
+
 	// ヒットストップ中状態に
 	isHitStop_ = true;
 }
@@ -250,6 +258,10 @@ void EnemyBullet::HitStopUpdate()
 {
 	// ヒットストップタイマー終了時
 	if (hitStopTimer_.GetIsFinish()) {
+		// 弾パーティクルの再生を再開
+		bulletParticle_->SetIsUpdate(true);
+		// 雷パーティクルの再生を再開
+		sparkParticle_->SetIsUpdate(true);
 		// ヒットストップ状態終了
 		isHitStop_ = false;
 	}

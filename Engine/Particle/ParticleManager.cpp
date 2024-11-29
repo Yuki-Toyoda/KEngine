@@ -60,9 +60,7 @@ void ParticleManager::Clear()
 
 void ParticleManager::Update()
 {
-	// ルートシグネチャをセットする
-	cmdList_->SetComputeRootSignature(root_.GetRootSignature());
-
+	
 	// 生存時間を超過したパーティクルを削除
 	particles_.remove_if([](std::unique_ptr<Particle>& p) {
 		if (p->GetIsEnd()) {
@@ -73,6 +71,12 @@ void ParticleManager::Update()
 		}
 		return false;
 	});
+
+	// 更新を行わない状態の場合早期リターン
+	if (!isUpdateAllParticles_) { return; }
+
+	// ルートシグネチャをセットする
+	cmdList_->SetComputeRootSignature(root_.GetRootSignature());
 
 	// 全パーティクル更新
 	for (std::unique_ptr<Particle>& p : particles_) {

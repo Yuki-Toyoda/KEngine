@@ -111,7 +111,8 @@ public: // その他関数
 	/// <summary>
 	///	このカメラを使用する際に呼び出す関数
 	/// </summary>
-	void UseThisCamera();
+	/// <param name="takePostProcessSettings">ポストプロセス関連の設定を引き継ぐか</param>
+	void UseThisCamera(const bool takePostProcessSettings = true);
 
 public: // パブリックなメンバ変数
 
