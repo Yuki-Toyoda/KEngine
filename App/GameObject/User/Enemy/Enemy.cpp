@@ -73,7 +73,10 @@ void Enemy::Init()
 	// 一度ダウンした場合起き上がらないように
 	isNeverDown_ = false;
 	// 無限HP
-	isInfiniteHP_ = true;
+	//isInfiniteHP_ = true;
+
+	// HPを1に
+	hp_ = 1;
 
 #endif // _DEBUG
 
@@ -135,6 +138,11 @@ void Enemy::Update()
 		enemyParticle_->transform_.translate_.y -= 0.9f;
 	}
 
+	// 死亡演出の更新
+	if (isDeadStaging_) {
+		DeadCameraStaging();
+	}
+
 	// ヒットストップ中であれば更新関数呼び出しからの早期リターン
 	if (isHitStop_) {
 		HitStopUpdate();
@@ -153,7 +161,7 @@ void Enemy::Update()
 	ShadowUpdate();
 
 	// HPが0になっている場合
-	if (hp_ <= 0) {
+	if (hp_ <= 0 && !isDeadStaging_) {
 		// 死亡時のステートへ変更
 		if (state_->GetStateName() != "Dead") {
 			ChangeState(std::make_unique<EnemyDead>());
@@ -309,7 +317,7 @@ void Enemy::OnCollisionEnter(Collider* collider)
 					stunParticle_->model_->materials_[1].enableLighting_ = false;
 					stunParticle_->transform_.SetParent(&bodyTransform_);
 					stunParticle_->emitterDataBuffer_->data_->count = 3;
-					stunParticle_->emitterDataBuffer_->data_->frequency = 0.0f;
+					stunParticle_->emitterDataBuffer_->data_->frequency = 0.01f;
 					stunParticle_->emitterDataBuffer_->data_->frequencyTime = 0.25f;
 
 					// ダウン状態に
@@ -334,7 +342,7 @@ void Enemy::OnCollisionEnter(Collider* collider)
 			else {
 				// 命中パーティクル再生
 				Particle* hit = ParticleManager::GetInstance()->CreateNewParticle("EnemyHit", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.5f);
-				hit->model_->materials_[1].tex_ = TextureManager::Load("HitEffect.png");
+				hit->model_->materials_[1].tex_ = TextureManager::Load("BulletHitEffect.png");
 				hit->model_->materials_[1].enableLighting_ = false;
 				hit->transform_.SetParent(&bodyTransform_);
 				hit->emitterDataBuffer_->data_->count = 1;
@@ -347,7 +355,7 @@ void Enemy::OnCollisionEnter(Collider* collider)
 				stunParticle_->model_->materials_[1].enableLighting_ = false;
 				stunParticle_->transform_.SetParent(&bodyTransform_);
 				stunParticle_->emitterDataBuffer_->data_->count = 3;
-				stunParticle_->emitterDataBuffer_->data_->frequency = 0.0f;
+				stunParticle_->emitterDataBuffer_->data_->frequency = 0.01f;
 				stunParticle_->emitterDataBuffer_->data_->frequencyTime = 0.25f;
 
 				// ダウン状態に
@@ -391,11 +399,17 @@ void Enemy::OnCollision(Collider* collider)
 
 		// とどめの場合固定秒数でヒットストップ
 		if (hp_ <= 0) {
-			player_->StartHitStop(finishHitStopTime_);
-			StartHitStop(finishHitStopTime_);
+			player_->StartHitStop(finishHitStopTime_, deadStagingAnimSpeed_);
+			StartHitStop(finishHitStopTime_, deadStagingAnimSpeed_);
 
 			// ブラー演出を開始
-			player_->GetFollowCamera()->StartParryBlur(0.01f, 0.65f, 0.065f);
+			player_->GetFollowCamera()->StartParryBlur(0.01f, 1.5f, 0.065f);
+
+			// 死亡時の演出用カメラのセットアップ
+			SetUpDeadCameraStaging();
+
+			// 全パーティクルの再生速度を設定
+			ParticleManager::GetInstance()->SetTimeScale(deadStagingAnimSpeed_);
 		}
 		else {
 			// ヒットストップ開始
@@ -482,13 +496,13 @@ void Enemy::ChangeState(std::unique_ptr<IEnemyState> newState)
 	state_ = std::move(newState);
 }
 
-void Enemy::StartHitStop(const float hitStopTime)
+void Enemy::StartHitStop(const float hitStopTime, float timeScale)
 {
 	// ヒットストップ秒数が0以下の場合早期リターン
 	if (hitStopTime <= 0.0f) { return; }
 
 	// 再生中アニメーションの再生を停止
-	enemyAnim_->SetAnimationSpeed(0.0f);
+	enemyAnim_->SetAnimationSpeed(timeScale);
 	// ヒットストップタイマー開始
 	hitStopTimer_.Start(hitStopTime);
 	// ヒットストップ中状態に
@@ -518,6 +532,81 @@ void Enemy::ShadowUpdate()
 
 	// 高さは自動調整
 	shadowTransform_.translate_.y = -(transform_.GetWorldPos().y) + 0.05f;
+}
+
+void Enemy::SetUpDeadCameraStaging()
+{
+	// カメラの切り替え秒数を求める
+	kCameraSwitchTime_ = finishHitStopTime_ / static_cast<float>(kDeadStagingCameraCount_);
+
+	// カメラをカウント分生成
+	for (int32_t i = 0; i < kDeadStagingCameraCount_; i++) {
+		// 演出用カメラ生成
+		Camera* stagingCamera = GameObjectManager::GetInstance()->CreateInstance<Camera>("deadStagingCamera", IObject::TagCamera);
+
+		// カメラ座標を敵座標に一度合わせる
+		stagingCamera->transform_ = transform_;
+
+		// オフセット
+		const Vector3 kOffset = { 0.0f, 1.0f, -15.0f };
+
+		// 差分ベクトルを求める
+		Vector3 distance = transform_.translate_ - playerPos_->translate_;
+
+		// 目標角度の取得
+		float rotateY = std::atan2(distance.x, distance.z);
+
+		// 回転角をランダムに指定
+		rotateY -= static_cast<float>(std::numbers::pi) / 2.0f;
+
+		// 回転行列の生成
+		Matrix4x4 rotateMat = Matrix4x4::MakeRotateY(rotateY);
+
+		// オフセットを求める
+		Vector3 offset = kOffset * rotateMat;
+
+		// カメラ座標を動かす
+		stagingCamera->transform_.translate_ += offset;
+		stagingCamera->transform_.rotate_.y = rotateY;
+
+		// 演出用カメラ配列に追加
+		deadStagingCameras_.push_back(std::move(stagingCamera));
+	}
+
+	// 演出用カメラに切り替え
+	deadStagingCameras_[0]->UseThisCamera();
+
+	// カメラ切り替えタイマーを開始
+	switchCameraTimer_.Start(kCameraSwitchTime_);
+
+	// 死亡時カメラ演出の開始
+	isDeadStaging_ = true;
+}
+
+void Enemy::DeadCameraStaging()
+{
+	// カメラ切り替えタイマー終了時
+	if (switchCameraTimer_.GetIsFinish()) {
+		// 表示するカメラ番号の加算
+		displayCameraNumber_++;
+
+		// 表示カメラ番号が死亡演出用のカメラ数を超過しているときは早期リターン
+		if (displayCameraNumber_ >= kDeadStagingCameraCount_) { 
+			// 演出終了
+			isDeadStaging_ = false;
+			return; 
+		}
+
+		// そうではない場合配列内の該当するカメラを使用する
+		deadStagingCameras_[displayCameraNumber_]->UseThisCamera();
+		// カメラ切り替えタイマーを再度開始
+		switchCameraTimer_.Start(kCameraSwitchTime_);
+	}
+
+	deadStagingCameras_[displayCameraNumber_]->fov_ += 0.00025f;
+
+	// タイマーの更新
+	switchCameraTimer_.Update();
 }
 
 void Enemy::ResetStunParticle()

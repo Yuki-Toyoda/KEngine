@@ -63,7 +63,8 @@ public: // メンバ関数
 	/// ヒットストップの開始関数
 	/// </summary>
 	/// <param name="hitStopTime">ヒットストップする秒数</param>
-	void StartHitStop(const float hitStopTime);
+	/// <param name="timeScale">再生速度</param>
+	void StartHitStop(const float hitStopTime, float timeScale = 0.0f);
 
 	/// <summary>
 	/// ヒットストップの更新関数
@@ -74,6 +75,16 @@ public: // メンバ関数
 	/// 落ち影更新関数
 	/// </summary>
 	void ShadowUpdate();
+
+	/// <summary>
+	/// 死亡演出時のカメラのセットアップ関数
+	/// </summary>
+	void SetUpDeadCameraStaging();
+
+	/// <summary>
+	/// 死亡時のカメラ演出関数
+	/// </summary>
+	void DeadCameraStaging();
 
 public: // アクセッサ等
 
@@ -110,6 +121,12 @@ public: // アクセッサ等
 	/// </summary>
 	/// <returns>左腕のワールド座標</returns>
 	Vector3 GetLeftArmPosition() { return armTransform_L_.GetWorldPos(); }
+
+	/// <summary>
+	/// 死亡演出トリガーのゲッター
+	/// </summary>
+	/// <returns>死亡演出状態</returns>
+	bool GetIsDeadStaging() { return isDeadStaging_; }
 
 	/// <summary>
 	/// 死亡状態セッター
@@ -207,7 +224,22 @@ private: // メンバ変数
 	// ヒットストップ用タイマー
 	KLib::DeltaTimer hitStopTimer_{};
 	// とどめを指した場合のヒットストップ秒数
-	float finishHitStopTime_ = 0.5f;
+	float finishHitStopTime_ = 5.0f;
+	// 死亡時のアニメーション速度
+	float deadStagingAnimSpeed_ = 0.1f;
+
+	// 死亡時のカメラ演出中かのフラグ
+	bool isDeadStaging_ = false;
+	// 死亡時の演出カメラ
+	std::vector<Camera*> deadStagingCameras_{};
+	// カメラ数
+	const int32_t kDeadStagingCameraCount_ = 1;
+	// 表示中カメラ番号
+	int32_t displayCameraNumber_ = 0;
+	// カメラ切り替え用タイマー
+	KLib::DeltaTimer switchCameraTimer_{};
+	// カメラ切り替え秒数
+	float kCameraSwitchTime_ = 0.0f;
 
 	// 身体のトランスフォーム
 	WorldTransform bodyTransform_{};

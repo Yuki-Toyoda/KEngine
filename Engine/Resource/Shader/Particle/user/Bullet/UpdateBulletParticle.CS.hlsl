@@ -13,7 +13,7 @@ void main( uint3 DTid : SV_DispatchThreadID )
         if (gParticles[particleIndex].currentTime < gParticles[particleIndex].lifeTime)
         {
             // 生存時間加算
-            gParticles[particleIndex].currentTime += perFrame.deltaTime;
+            gParticles[particleIndex].currentTime += (perFrame.deltaTime * perFrame.timeScale);
             
             // 透明度を生存時間で徐々に下げる
             float32_t alpha = 1.0f - (gParticles[particleIndex].currentTime * rcp(gParticles[particleIndex].lifeTime));

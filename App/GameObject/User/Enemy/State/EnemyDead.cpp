@@ -16,6 +16,9 @@ void EnemyDead::Init()
 		enemy_->GetStunParticle()->SetIsEnd(true);
 	}
 
+	// 全パーティクルの再生再開
+	ParticleManager::GetInstance()->SetTimeScale(1.0f);
+
 	// ループを切れる
 	anim_->isLoop_ = false;
 	// 敵のアニメーションを変更

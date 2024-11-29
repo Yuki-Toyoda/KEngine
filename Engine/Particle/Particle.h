@@ -58,9 +58,9 @@ private: // サブクラス
 	/// パーティクル情報構造体
 	/// </summary>
 	struct InfoData {
-		int32_t instanceCount;	// パーティクル生成数
-		int32_t isBillboard;	// ビルボードを行うか
-		float padding[2];		// パディング回避用
+		int32_t instanceCount;		// パーティクル生成数
+		int32_t isBillboard;		// ビルボードを行うか
+		float	padding[2];			// パディング回避用
 	};
 
 public: // コンストラクタ等
@@ -103,7 +103,8 @@ public: // メンバ関数
 	/// <summary>
 	/// 更新関数
 	/// </summary>
-	void Update();
+	/// <param name="TimeScale">ゲーム内速度</param>
+	void Update(const float TimeScale);
 
 	/// <summary>
 	/// 描画関数

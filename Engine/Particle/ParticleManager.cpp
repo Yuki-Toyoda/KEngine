@@ -39,8 +39,12 @@ ParticleManager& ParticleManager::Init()
 	perFrameDataBuffer_ = std::make_unique<ConstantBuffer<PerFrame>>();	// 生成
 	perFrameDataBuffer_->Init(device_);									// 初期化
 	// フレーム時間計測
+	perFrameDataBuffer_->data_->timeScale = 1.0f;			// ゲーム速度
 	perFrameDataBuffer_->data_->deltaTime = 1.0f / 60.0f;	// 1フレーム秒数
 	perFrameDataBuffer_->data_->time = 0.0f;				// 経過秒数リセット
+
+	// パーティクルを更新する状態に戻す
+	isUpdateAllParticles_ = true;
 
 	// 自身を返す
 	return *this;
@@ -72,9 +76,6 @@ void ParticleManager::Update()
 		return false;
 	});
 
-	// 更新を行わない状態の場合早期リターン
-	if (!isUpdateAllParticles_) { return; }
-
 	// ルートシグネチャをセットする
 	cmdList_->SetComputeRootSignature(root_.GetRootSignature());
 
@@ -88,10 +89,13 @@ void ParticleManager::Update()
 			p->ExecuteInit();
 		}
 
+		// 更新を行わない状態の場合、初期化を行った後次へ
+		if (!isUpdateAllParticles_) { continue; }
+
 		// フレーム時間計測用バッファをコマンドリストにセットする
 		cmdList_->SetComputeRootConstantBufferView(2, perFrameDataBuffer_->GetGPUView());
 		// 更新処理
-		p->Update();
+		p->Update(perFrameDataBuffer_->data_->timeScale);
 	}
 
 	// フレーム時間加算

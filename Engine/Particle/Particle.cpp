@@ -76,7 +76,7 @@ void Particle::ExecuteInit()
 	isInit_ = true;
 }
 
-void Particle::Update()
+void Particle::Update(const float TimeScale)
 {
 	// 更新を行わない状態の場合早期リターン
 	if (!isUpdate_) { return; }
@@ -99,7 +99,7 @@ void Particle::Update()
 	cmdList_->Dispatch(1, 1, 1);
 
 	// エミッタの秒数を加算する
-	emitterDataBuffer_->data_->frequencyTime += 1.0f / 60.0f;
+	emitterDataBuffer_->data_->frequencyTime += (1.0f / 60.0f) * TimeScale;
 	// 秒数が射出可能秒数を超えていた場合
 	if (emitterDataBuffer_->data_->frequency <= emitterDataBuffer_->data_->frequencyTime) {
 		// エミッタの秒数をリセット
@@ -119,8 +119,8 @@ void Particle::Update()
 	// 　バリア定義
 	D3D12_RESOURCE_BARRIER barrier{};
 	// バリアの設定を行う
-	barrier.Type		  = D3D12_RESOURCE_BARRIER_TYPE_UAV;		  // バリアのタイプ設定
-	barrier.Flags		  = D3D12_RESOURCE_BARRIER_FLAG_NONE;		  // フラッグ設定
+	barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_UAV;		  // バリアのタイプ設定
+	barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;		  // フラッグ設定
 	barrier.UAV.pResource = particleBuffer_.get()->GetResource(); // バリアを張る対象リソース
 	// バリアを張る
 	cmdList_->ResourceBarrier(1, &barrier);
@@ -143,6 +143,9 @@ void Particle::Update()
 	if (timer_.GetIsFinish() && !isEndless_) {
 		isEnd_ = true;
 	}
+
+	// タイマーの速度設定
+	timer_.SetTimerSpeed(TimeScale);
 
 	// タイマー更新
 	timer_.Update();

@@ -13,12 +13,12 @@ void main( uint3 DTid : SV_DispatchThreadID )
         if (gParticles[particleIndex].currentTime < gParticles[particleIndex].lifeTime)
         {
             // 座標に速度を加算する
-            gParticles[particleIndex].translate += gParticles[particleIndex].velocity;
+            gParticles[particleIndex].translate += gParticles[particleIndex].velocity * perFrame.timeScale;
             // 生存時間加算
-            gParticles[particleIndex].currentTime += perFrame.deltaTime;
+            gParticles[particleIndex].currentTime += (perFrame.deltaTime * perFrame.timeScale);
             
             // Z軸回転をかける
-            gParticles[particleIndex].rotate.z += 0.035f;
+            gParticles[particleIndex].rotate.z += 0.035f * perFrame.timeScale;
             
             // 大きさを徐々に小さくする
             float32_t scale = gParticles[particleIndex].scale.z * (1.0f - (gParticles[particleIndex].currentTime * rcp(gParticles[particleIndex].lifeTime)));

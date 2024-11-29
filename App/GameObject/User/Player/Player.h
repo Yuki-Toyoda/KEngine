@@ -60,7 +60,8 @@ public: // その他関数
 	/// ヒットストップの開始関数
 	/// </summary>
 	/// <param name="hitStopTime">ヒットストップする秒数</param>
-	void StartHitStop(const float hitStopTime);
+	/// <param name="timeScale">再生速度</param>
+	void StartHitStop(const float hitStopTime, const float timeScale = 0.0f);
 
 	/// <summary>
 	/// ヒットストップの更新関数

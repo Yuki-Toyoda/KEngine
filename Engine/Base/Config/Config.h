@@ -21,7 +21,7 @@ namespace KEngine::Config {
 	/// </summary>
 	namespace Rendering {
 		// 複数描画最大数
-		static const UINT kMaxMultiRendering = 22;
+		static const UINT kMaxMultiRendering = 44;
 
 		// 構造体バッファ最大数
 		static const uint32_t kMaxBuffer  = 10000;

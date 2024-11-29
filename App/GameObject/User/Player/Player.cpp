@@ -144,16 +144,19 @@ void Player::Update()
 		canAction_ = false;
 	}
 
+	// 死亡演出中は
+	if (enemy_->GetIsDeadStaging()) {
+		// 帯の表示
+		sprites_["UpperObi"]->scale_.y = KLib::Lerp<float>(sprites_["UpperObi"]->scale_.y, 75.0f, 0.1f);
+		sprites_["LowerObi"]->scale_.y = KLib::Lerp<float>(sprites_["LowerObi"]->scale_.y, 75.0f, 0.1f);
+	}
+
 	// 行動可能状態でない場合早期リターン
 	if (!canAction_) {
 		// 強制待機状態に
 		if (GetStateName() != "Root") {
 			ChangeState(std::make_unique<Root>());
 		}
-
-		// 帯の非表示を行う
-		sprites_["UpperObi"]->scale_.y = KLib::Lerp<float>(sprites_["UpperObi"]->scale_.y, 0.0f, 0.2f);
-		sprites_["LowerObi"]->scale_.y = KLib::Lerp<float>(sprites_["LowerObi"]->scale_.y, 0.0f, 0.2f);
 		return;
 	}
 
@@ -283,13 +286,13 @@ void Player::ChangeState(std::unique_ptr<IState> newState)
 	state_ = std::move(newState);
 }
 
-void Player::StartHitStop(const float hitStopTime)
+void Player::StartHitStop(const float hitStopTime, const float timeScale)
 {
 	// ヒットストップ秒数が0以下の場合早期リターン
 	if (hitStopTime <= 0.0f) { return; }
 
 	// プレイヤーアニメーションの再生速度を指定
-	skiningModels_["Player"]->animationManager_.SetAnimationSpeed(0.0f);
+	skiningModels_["Player"]->animationManager_.SetAnimationSpeed(timeScale);
 	// 軌跡座標の更新を停止
 	SwordLine_->SetIsUpdateTrail(false);
 	// ヒットストップタイマー開始

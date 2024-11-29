@@ -54,7 +54,8 @@ public: // 機能関数群
 	/// ヒットストップの開始関数
 	/// </summary>
 	/// <param name="hitStopTime">ヒットストップする秒数</param>
-	void StartHitStop(const float hitStopTime);
+	/// <param name="timeScale">再生速度</param>
+	void StartHitStop(const float hitStopTime, const float timeScale = 0.0f);
 
 	/// <summary>
 	/// ヒットストップの更新関数
@@ -104,11 +105,14 @@ private: // メンバ変数
 	// 加速度
 	const float kAcceleration_ = 0.035f;
 
+	// 速度
+	float timeScale_ = 1.0f;
+
 	// 落ち影のワールドトランスフォーム
 	WorldTransform shadowTransform_{};
 	// 落ち影のスケール補間値
-	float maxShadowScale = 1.85f;
-	float minShadowScale = 1.5f;
+	float maxShadowScale = 0.85f;
+	float minShadowScale = 0.5f;
 	// 敵のY座標閾値
 	float maxHeight_ = 5.0f;
 
@@ -123,7 +127,7 @@ private: // メンバ変数
 	// ヒットストップ用タイマー
 	KLib::DeltaTimer hitStopTimer_{};
 	// ヒットストップ倍率
-	float hitStopTimeAcceleration_ = 5.0f;
+	float hitStopTimeAcceleration_ = 3.0f;
 
 	// プレイヤーの座標
 	const WorldTransform* player_ = nullptr;

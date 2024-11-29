@@ -7,7 +7,7 @@ void EnemyBullet::Init()
 {
 	// 落ち影用トランスフォームの初期化
 	shadowTransform_.Init();
-	shadowTransform_.SetParent(&transform_);
+	shadowTransform_.SetParent(&transform_, 0b011);
 
 	// メッシュを追加
 	AddNormalModel("EnemyBullet", &transform_, "./Engine/Resource/Samples/Sphere", "Sphere.obj");
@@ -74,10 +74,9 @@ void EnemyBullet::Update()
 	if (isHitStop_) {
 		HitStopUpdate();
 	}
-	else {
-		// 弾を移動させる
-		transform_.translate_ = transform_.translate_ + velocity_;
-	}
+
+	// 弾を移動させる
+	transform_.translate_ = transform_.translate_ + (velocity_ * timeScale_);
 
 	// 落ち影更新
 	ShadowUpdate();
@@ -182,7 +181,7 @@ void EnemyBullet::ShadowUpdate()
 {
 	// 敵の高さを元に影の大きさを調整
 	float shadowScale = KLib::Lerp<float>(maxShadowScale, minShadowScale, transform_.translate_.y, maxHeight_);
-	shadowTransform_.scale_ = { shadowScale, 1.0f, shadowScale };
+	shadowTransform_.scale_ = transform_.scale_ + Vector3(shadowScale, 1.0f, shadowScale);
 
 	// 高さは自動調整
 	shadowTransform_.translate_.y = -(transform_.GetWorldPos().y) + 0.05f;
@@ -191,12 +190,18 @@ void EnemyBullet::ShadowUpdate()
 void EnemyBullet::DeleteBullet()
 {
 	// パーティクルの停止
-	sparkParticle_->transform_.SetParent(nullptr);
-	sparkParticle_->SetIsEnd(true);
-	bulletParticle_->transform_.SetParent(nullptr);
-	bulletParticle_->SetIsEnd(true);
-	trailParticle_->transform_.SetParent(nullptr);
-	trailParticle_->SetIsEnd(true);
+	if (sparkParticle_ != nullptr) {
+		sparkParticle_->transform_.SetParent(nullptr);
+		sparkParticle_->SetIsEnd(true);
+	}
+	if (bulletParticle_ != nullptr) {
+		bulletParticle_->transform_.SetParent(nullptr);
+		bulletParticle_->SetIsEnd(true);
+	}
+	if (trailParticle_ != nullptr) {
+		trailParticle_->transform_.SetParent(nullptr);
+		trailParticle_->SetIsEnd(true);
+	}
 
 	// 削除
 	Destroy();
@@ -238,7 +243,7 @@ void EnemyBullet::PlayHitParticle()
 	hitDebris->emitterDataBuffer_->data_->frequencyTime = 5.0f;
 }
 
-void EnemyBullet::StartHitStop(const float hitStopTime)
+void EnemyBullet::StartHitStop(const float hitStopTime, const float timeScale)
 {
 	// ヒットストップ秒数が0以下の場合早期リターン
 	if (hitStopTime <= 0.0f) { return; }
@@ -247,8 +252,9 @@ void EnemyBullet::StartHitStop(const float hitStopTime)
 	hitStopTimer_.Start(hitStopTime);
 	// 弾パーティクルの再生を停止
 	bulletParticle_->SetIsUpdate(false);
-	// 雷パーティクルの再生を停止
-	sparkParticle_->SetIsUpdate(false);
+
+	// 速度取得
+	timeScale_ = timeScale;
 
 	// ヒットストップ中状態に
 	isHitStop_ = true;
@@ -260,10 +266,11 @@ void EnemyBullet::HitStopUpdate()
 	if (hitStopTimer_.GetIsFinish()) {
 		// 弾パーティクルの再生を再開
 		bulletParticle_->SetIsUpdate(true);
-		// 雷パーティクルの再生を再開
-		sparkParticle_->SetIsUpdate(true);
 		// ヒットストップ状態終了
 		isHitStop_ = false;
+
+		// 速度リセット
+		timeScale_ = 1.0f;
 	}
 
 	// ヒットストップタイマーの更新

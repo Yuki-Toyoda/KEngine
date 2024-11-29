@@ -14,8 +14,10 @@ class ParticleManager
 	/// フレーム時間計算用
 	/// </summary>
 	struct PerFrame {
-		float time;
-		float deltaTime;
+		float timeScale = 1.0f; // 現在のタイムスケール
+		float time;				// 現在秒数
+		float deltaTime;		// デルタタイム
+		float padding;
 	};
 
 private: // コンストラクタ等
@@ -95,6 +97,12 @@ public: // アクセッサ等
 	/// </summary>
 	/// <param name="isUpdate">更新するか否か</param>
 	void SetIsUpdateAllParticles(const bool isUpdate) { isUpdateAllParticles_ = isUpdate; }
+
+	/// <summary>
+	/// タイムスケールのセッター
+	/// </summary>
+	/// <param name="timeScale">設定する速度</param>
+	void SetTimeScale(const float timeScale) { perFrameDataBuffer_->data_->timeScale = timeScale; }
 
 private: // メンバ変数
 

@@ -28,6 +28,7 @@ struct EmitterSphere
 
 struct PerFrame
 {
+    float32_t timeScale;
     float32_t time;
     float32_t deltaTime;
 };
