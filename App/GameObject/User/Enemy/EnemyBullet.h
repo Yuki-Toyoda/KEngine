@@ -122,6 +122,8 @@ private: // メンバ変数
 	bool isHitStop_ = false;
 	// ヒットストップ用タイマー
 	KLib::DeltaTimer hitStopTimer_{};
+	// ヒットストップ倍率
+	float hitStopTimeAcceleration_ = 5.0f;
 
 	// プレイヤーの座標
 	const WorldTransform* player_ = nullptr;

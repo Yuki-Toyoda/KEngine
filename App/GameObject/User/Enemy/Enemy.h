@@ -161,6 +161,12 @@ public: // アクセッサ等
 	/// </summary>
 	void ResetStunParticle();
 
+	/// <summary>
+	/// ダウン状態から起き上がらない状態のゲッター
+	/// </summary>
+	/// <returns>ダウン状態から起き上がらないか</returns>
+	bool GetIsNeverDown() { return isNeverDown_; }
+
 private: // メンバ変数
 
 	// ゲームマネージャー
@@ -249,5 +255,9 @@ private: // メンバ変数
 	/// デバック用変数群
 	// 攻撃を行うか
 	bool isAttack_ = true;
+	// 一度ダウンしたら起き上がらない
+	bool isNeverDown_ = false;
+	// 敵のHP無限
+	bool isInfiniteHP_ = false;
 };
 

@@ -70,6 +70,10 @@ void Enemy::Init()
 
 	// デバッグ時は攻撃を行わないように
 	//isAttack_ = false;
+	// 一度ダウンした場合起き上がらないように
+	isNeverDown_ = false;
+	// 無限HP
+	isInfiniteHP_ = true;
 
 #endif // _DEBUG
 
@@ -235,13 +239,24 @@ void Enemy::Update()
 
 void Enemy::DisplayImGui()
 {
+	// 攻撃行動を行うかの切り替え
+	ImGui::Checkbox("is Attack", &isAttack_);
+	// 無限HPか
+	ImGui::Checkbox("InfiniteHP", &isInfiniteHP_);
+	// 一度ダウンしたら起き上がらないか
+	ImGui::Checkbox("isNeverDown", &isNeverDown_);
+
 	transform_.DisplayImGui();
+
+	// 強制ダウン状態にする
+	if (ImGui::Button("Down")) {
+		ChangeState(std::make_unique<EnemyDown>());
+	}
 
 	bodyTransform_.DisplayImGuiWithTreeNode("BodyTransform");
 	headTransform_.DisplayImGuiWithTreeNode("HeadTransform");
 	armTransform_R_.DisplayImGuiWithTreeNode("Arm_R_Transform");
 	armTransform_L_.DisplayImGuiWithTreeNode("Arm_L_Transform");
-
 	shadowTransform_.DisplayImGuiWithTreeNode("Shadow");
 
 	enemyAnim_->DisplayImGui();
@@ -251,65 +266,6 @@ void Enemy::DisplayImGui()
 	// 落ち影関係の調整
 	ImGui::DragFloat("MaxShadowScale", &maxShadowScale, 0.01f, 0.05f);
 	ImGui::DragFloat("MinShadowScale", &minShadowScale, 0.01f, 0.01f);
-
-	// アニメーションの読み込みパラメータ変更
-	if (ImGui::TreeNode("ChangeReadParameter")) {
-		if (ImGui::Button("Idle")) {
-			enemyAnim_->ChangeParameter("Enemy_Idle", true);
-		}
-		if (ImGui::Button("Charge")) {
-			enemyAnim_->ChangeParameter("Enemy_Charge", true);
-		}
-		if (ImGui::Button("Charging")) {
-			enemyAnim_->ChangeParameter("Enemy_Charging", true);
-		}
-		if (ImGui::Button("Shot")) {
-			enemyAnim_->ChangeParameter("Enemy_Shot", true);
-		}
-		if (ImGui::Button("Rally")) {
-			enemyAnim_->ChangeParameter("Enemy_Rally", true);
-		}
-		if (ImGui::Button("Down")) {
-			enemyAnim_->ChangeParameter("Enemy_Down", true);
-		}
-		if (ImGui::Button("Downing")) {
-			enemyAnim_->ChangeParameter("Enemy_Downing", true);
-		}
-		if (ImGui::Button("Damage")) {
-			enemyAnim_->ChangeParameter("Enemy_Damage", true);
-		}
-		if (ImGui::Button("Dead")) {
-			enemyAnim_->ChangeParameter("Enemy_Dead", true);
-		}
-		ImGui::TreePop();
-	}
-
-	// 発射時の行動でない場合
-	if (state_->GetStateName() != "Shot") {
-		// ボタンを押したら行動を設定
-		if (ImGui::Button("PlayShot")) {
-			ChangeState(std::make_unique<EnemyShot>());
-		}
-	}
-
-	// 発射時の行動でない場合
-	if (state_->GetStateName() != "Down") {
-		// ボタンを押したら行動を設定
-		if (ImGui::Button("PlayDown")) {
-			ChangeState(std::make_unique<EnemyDown>());
-		}
-	}
-
-	// 発射時の行動でない場合
-	if (state_->GetStateName() != "Dead") {
-		// ボタンを押したら行動を設定
-		if (ImGui::Button("PlayDead")) {
-			ChangeState(std::make_unique<EnemyDead>());
-		}
-	}
-
-	// 攻撃行動を行うかの切り替え
-	ImGui::Checkbox("is Attack", &isAttack_);
 
 	// プレイヤーとの距離を表示
 	float d = Vector3::Length(toPlayerDistance_);
@@ -418,8 +374,11 @@ void Enemy::OnCollision(Collider* collider)
 	if (collider->GetColliderName() == "Sword") {
 		// ダウン中かつダウン状態であれば
 		if (hitCoolTimeTimer_.GetIsFinish() && state_->GetStateName() == "Down" && player_->GetIsAttacking()) {
-			// HPを減らす
-			hp_ -= player_->GetComboManager()->GetDamage();
+			// 無限HPでない場合のみHPを減らす
+			if (!isInfiniteHP_) {
+				// HPを減らす
+				hp_ -= player_->GetComboManager()->GetDamage();
+			}
 			// クールタイムタイマー開始
 			hitCoolTimeTimer_.Start(kHitCoolTime_);
 
@@ -432,7 +391,7 @@ void Enemy::OnCollision(Collider* collider)
 				StartHitStop(finishHitStopTime_);
 
 				// ブラー演出を開始
-				player_->GetFollowCamera()->StartParryBlur(0.05f, 0.45f, 0.055f);
+				player_->GetFollowCamera()->StartParryBlur(0.01f, 0.65f, 0.065f);
 			}
 			else {
 				// ヒットストップ開始

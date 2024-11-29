@@ -268,7 +268,7 @@ void Player::OnCollisionEnter(Collider* collider)
 	// プレイヤーの剣と衝突していたら
 	if (collider->GetColliderName() == "Bullet" && GetStateName() == "Attack") {
 		// パリィ演出を開始
-		followCamera_->StartParryBlur(0.05f, 0.3f, 0.055f);
+		followCamera_->StartParryBlur(0.00f, 0.5f, 0.055f);
 	}
 }
 

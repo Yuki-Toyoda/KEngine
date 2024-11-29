@@ -113,8 +113,8 @@ void EnemyBullet::OnCollisionEnter(Collider* collider)
 		// プレイヤーの取得
 		Player* p = GameObjectManager::GetInstance()->GetGameObject<Player>("Player");
 		// ヒットストップ開始
-		StartHitStop(p->GetComboManager()->GetHitStopTime());
-		p->StartHitStop(p->GetComboManager()->GetHitStopTime());
+		StartHitStop(p->GetComboManager()->GetHitStopTime() * hitStopTimeAcceleration_);
+		p->StartHitStop(p->GetComboManager()->GetHitStopTime() * hitStopTimeAcceleration_);
 
 		// 素振りの効果音の再生
 		Audio::GetInstance()->PlayWave(counterSound_);

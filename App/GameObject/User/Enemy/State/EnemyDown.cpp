@@ -45,6 +45,17 @@ void EnemyDown::Update()
 		}
 	}
 
+	if (anim_->GetReadingParameterName() == "Enemy_Damage") {// ループを行う
+		if (anim_->isEnd_) {
+			anim_->isLoop_ = true;
+			// 敵のアニメーションを変更
+			anim_->ChangeParameter("Enemy_Downing", true);
+		}
+	}
+
+	// 起き上がらない状態であれば早期リターン
+	if (enemy_->GetIsNeverDown()) { return; }
+
 	// 再生中のパラメータがダウン中アニメーション中なら
 	if (anim_->GetReadingParameterName() == "Enemy_Downing" || anim_->GetReadingParameterName() == "Enemy_Damage") {
 		// タイマーが終了時
@@ -60,14 +71,6 @@ void EnemyDown::Update()
 			enemy_->ChangeState(std::make_unique<EnemyRoot>());
 			// これ以降の処理を無視
 			return;
-		}
-
-		if (anim_->GetReadingParameterName() == "Enemy_Damage") {// ループを行う
-			if (anim_->isEnd_) {
-				anim_->isLoop_ = true;
-				// 敵のアニメーションを変更
-				anim_->ChangeParameter("Enemy_Downing", true);
-			}
 		}
 
 		// タイマーの更新

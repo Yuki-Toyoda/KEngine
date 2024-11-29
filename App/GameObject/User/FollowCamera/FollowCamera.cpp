@@ -371,6 +371,9 @@ void FollowCamera::ParryBlurUpdate()
 			KLib::Lerp<float>(ppProcessor_.radialBlur_.data_.blurStrength, parryBlurStrength_, parryBlurTimer_.GetProgress());
 	}
 	else if(!isParryEndStaging_){
+		// ブラーの強度を固定
+		ppProcessor_.radialBlur_.data_.blurStrength = parryBlurStrength_;
+
 		// 終了演出開始
 		isParryEndStaging_ = true;
 		// パリィ演出タイマーを再度開始する
