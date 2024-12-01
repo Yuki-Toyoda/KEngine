@@ -69,14 +69,11 @@ void Enemy::Init()
 #ifdef _DEBUG // デバッグ時のみ行う
 
 	// デバッグ時は攻撃を行わないように
-	//isAttack_ = false;
+	isAttack_ = false;
 	// 一度ダウンした場合起き上がらないように
 	isNeverDown_ = false;
 	// 無限HP
-	//isInfiniteHP_ = true;
-
-	// HPを1に
-	hp_ = 1;
+	isInfiniteHP_ = true;
 
 #endif // _DEBUG
 
@@ -379,7 +376,7 @@ void Enemy::OnCollision(Collider* collider)
 	}
 
 	// 剣と衝突していたら
-	if (collider->GetColliderName() == "Sword") {
+	if (collider->GetColliderName() == "Sword" || collider->GetColliderName() == "PlayerCollider") {
 		// 下記条件の場合早期リターン
 		// 1. プレイヤーが攻撃中でない
 		// 2. ヒットクールタイムが終了している

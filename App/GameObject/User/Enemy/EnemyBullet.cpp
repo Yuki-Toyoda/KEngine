@@ -104,22 +104,32 @@ void EnemyBullet::OnCollisionEnter(Collider* collider)
 		// プレイヤーの取得
 		Player* p = GameObjectManager::GetInstance()->GetGameObject<Player>("Player");
 
-		// 敵の取得
-		Enemy* e = GameObjectManager::GetInstance()->GetGameObject<Enemy>("Enemy");
+		// プレイヤーが攻撃中の場合
+		if (p->GetIsAttacking()) {
+			// 敵の取得
+			Enemy* e = GameObjectManager::GetInstance()->GetGameObject<Enemy>("Enemy");
 
-		// ベクトルを敵の方向へ変更
-		SetVelocity(false, e->GetRallyCount());
-		isReturn_ = true;
+			// ベクトルを敵の方向へ変更
+			SetVelocity(false, e->GetRallyCount());
+			isReturn_ = true;
 
-		// 命中パーティクル再生
-		PlayHitParticle();
+			// 命中パーティクル再生
+			PlayHitParticle();
 
-		// ヒットストップ開始
-		StartHitStop(p->GetComboManager()->GetHitStopTime() * hitStopTimeAcceleration_);
-		p->StartHitStop(p->GetComboManager()->GetHitStopTime() * hitStopTimeAcceleration_);
+			// ヒットストップ開始
+			StartHitStop(p->GetComboManager()->GetHitStopTime() * hitStopTimeAcceleration_);
+			p->StartHitStop(p->GetComboManager()->GetHitStopTime() * hitStopTimeAcceleration_);
 
-		// 素振りの効果音の再生
-		Audio::GetInstance()->PlayWave(counterSound_);
+			// 素振りの効果音の再生
+			Audio::GetInstance()->PlayWave(counterSound_);
+		}
+		else { // 攻撃中でない場合
+			// 命中パーティクル再生
+			PlayHitParticle();
+
+			// ダメージ処理を行う
+			p->HitDamage(transform_.translate_);
+		}
 	}
 
 	// ボスと衝突したら
