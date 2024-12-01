@@ -182,52 +182,52 @@ void FollowCamera::ZForcusUpdate()
 			// ロックオン時の座標を計算
 			lockOnTranslate_ = targetPos - (sub / 2.0f);
 
-			// 方向ベクトルを元にプレイヤーがいる角度を求める
-			targetAngleY_ = std::atan2(sub.x, sub.z);
-
-			// ロックオン方向の設定
-			if (!lockOnDirectionSetUp_) {
-				// 目標角度が負方向であれば
-				if (targetAngleY_ < 0.0f) {
-					isRightLockOn_ = false;
-				}
-				else {
-					isRightLockOn_ = true;
-				}
-				// セットアップ済み
-				lockOnDirectionSetUp_ = true;
-			}
+			// 回転方向を指定
+			targetAngleY_ = transform_.rotate_.y;
 
 			// オフセットのY軸を0に
 			offset_.y = 0.0f;
 			offset_.z = -Vector3::Length(sub / 1.75f) + kOffset_.z;
 
-			// どちらに角度を補正するかで処理を変更する
-			if (isRightLockOn_) {
-				kOffsetRotate_ = KLib::Lerp<float>(-0.55f, -0.15f, offset_.z, -27.0f);
-			}
-			else {
-				kOffsetRotate_ = KLib::Lerp<float>(0.55f, 0.15f, offset_.z, -27.0f);
-			}
-
-			// 目標角度にオフセット分を加算する
-			targetAngleY_ += kOffsetRotate_;
 			Matrix4x4 rotateMat =
 				Matrix4x4::MakeRotateY(-std::atan2(sub.x, sub.z));
 			Vector3 subA = sub * rotateMat;
 			targetAngleX_ = std::atan2(-subA.y, subA.z) / 3.5f;
-			if (targetAngleX_ < -0.1f) {
-				targetAngleX_ = -0.1f;
+			// x軸の回転角度が一定値を上回った場合
+			if (targetAngleX_ > maxLockOnControllAngleX_) {
+				targetAngleX_ = maxLockOnControllAngleX_;
+			}
+			if (targetAngleX_ < minLockOnControllAngleX_) {
+				targetAngleX_ = minLockOnControllAngleX_;
 			}
 
 			// 角度補正速度を設定
-			correctionSpeed_ = zEnemyForcusCorrectionSpeed_;
+			correctionSpeed_ = zStartForcusCorrectionSpeed_;
 
 			// 回転させる
-			transform_.rotate_.x = KLib::LerpShortAngle(transform_.rotate_.x, targetAngleX_, zEnemyForcusCorrectionSpeed_);
+			transform_.rotate_.x = KLib::LerpShortAngle(transform_.rotate_.x, targetAngleX_, correctionSpeed_);
 			transform_.rotate_.y = KLib::LerpShortAngle(transform_.rotate_.y, targetAngleY_, correctionSpeed_);
+
+			float addZOffset = 0.0f;
+
+			// X軸方向の回転でオフセットを変更する
+			if (transform_.rotate_.x > 0.0f) {
+				offset_.y = KLib::Lerp<float>(minLockOnHeight_, maxLockOnHeight_, transform_.rotate_.x, maxLockOnControllAngleX_);
+				addZOffset += KLib::Lerp<float>(minAddLockOnXAngleZOffset_, maxAddLockOnXAngleZOffset_, transform_.rotate_.x, maxLockOnControllAngleX_);
+			}
+			// Y軸方向の回転でオフセットを変更する
+			directionOffset_ = std::abs(transform_.rotate_.y - targetAngleY_);
+			addZOffset += KLib::Lerp<float>(minAddLockOnYAngleZOffset_, maxAddLockOnYAngleZOffset_, directionOffset_, 2.75f);
+
+			// 敵との距離によってオフセットを変更する
+			addZOffset += KLib::Lerp<float>(minAddLockOnDistanceZOffset_, maxAddLockOnDistanceZOffset_, std::abs(Vector3::Length(sub)), 40.0f);
+
+			offset_.z += addZOffset;
 		}
 		else {
+			// 角度補正速度を設定
+			correctionSpeed_ = zEnemyForcusCorrectionSpeed_;
+
 			// 操作可能状態に
 			isCanControll_ = true;
 		}

@@ -179,7 +179,10 @@ private: // メンバ変数
 	// 通常時カメラ角度補正速度
 	const float normalCorrectionSpeed_ = 0.005f;
 	// Z注目時のカメラ角度補正速度
+	const float zStartForcusCorrectionSpeed_ = 0.1f;
+	// Z注目時のカメラ角度補正速度
 	const float zForcusCorrectionSpeed_ = 0.25f;
+
 	// Z注目で敵をロックオンしたときのカメラ角度補正速度
 	const float zEnemyForcusCorrectionSpeed_ = 0.25f;
 
