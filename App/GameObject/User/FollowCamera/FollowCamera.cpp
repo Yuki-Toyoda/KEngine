@@ -110,7 +110,7 @@ void FollowCamera::UpdateTarget()
 	if (target_) {
 		if (lockOn_->GetIsLockOn()) {
 			// 遷移後の座標を求める
-			interTarget_ = KLib::Lerp<Vector3>(interTarget_, lockOnTranslate_, trackingDelay_);
+			interTarget_ = KLib::Lerp<Vector3>(interTarget_, lockOnTranslate_, 0.1f);
 		}
 		else {
 			// 遷移後の座標を求める
