@@ -143,6 +143,9 @@ private: // メンバ変数
 
 	float minlerpOffsetY_ = 1.5f;
 
+	// ロックオン時のZ軸オフセットの距離割合
+	float zOffsetRatio_ = 1.75f;
+
 	// ロックオン時のカメラ操作時の最大X軸アングル
 	float maxLockOnControllAngleX_ = 0.75f;
 	float minLockOnControllAngleX_ = -0.15f;
@@ -196,6 +199,8 @@ private: // メンバ変数
 	Vector3 interTarget_ = {};
 	// カメラの追従遅延量
 	const float trackingDelay_ = 0.35f;
+	// Z注目時の追従遅延量
+	const float zForcusTrackingDelay_ = 0.1f;
 
 	// Z注目有効トリガー
 	bool enableZForcus_ = false;
@@ -211,6 +216,8 @@ private: // メンバ変数
 	// オフセット
 	const Vector3 kOffset_ = { 0.0f, 2.0f, -10.0f };
 	Vector3 offset_ = kOffset_;
+	// 補間時のターゲット用オフセット
+	Vector3 targetOffset_ = kOffset_;
 
 	// ロックオン時の回転角
 	float kOffsetRotate_ = 0.05f;

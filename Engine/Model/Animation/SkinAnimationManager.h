@@ -86,6 +86,12 @@ public: // アクセッサ等
 	float GetPlayingAnimationProgress();
 
 	/// <summary>
+	/// アニメーション再生速度ゲッター
+	/// </summary>
+	/// <param name="animName">アニメーション名（何も入力されていなければ再生中アニメーションを指定）</param>
+	/// <returns></returns>
+	float GetAnimationSpeed(const std::string& animName = "");
+	/// <summary>
 	/// アニメーション再生速度セッター
 	/// </summary>
 	/// <param name="speed">再生速度</param>

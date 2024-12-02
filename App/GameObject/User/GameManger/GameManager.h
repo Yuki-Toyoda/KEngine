@@ -86,6 +86,14 @@ public: // アクセッサ等
 	/// <returns>フェード演出の実行状態</returns>
 	bool GetIsFadeStaging() { return isFadeStaging_; }
 
+public: // デバッグ機能用アクセッサ
+
+	/// <summary>
+	/// デバッグ用のタイムスケールゲッター
+	/// </summary>
+	/// <returns>デバッグ用タイムスケール</returns>
+	float GetDebugTimeScale() { return d_TimeScale_; }
+
 private: // 機能関数群
 
 	/// <summary>
@@ -144,5 +152,16 @@ private: // メンバ変数
 	float currentFadeAlpha_ = 0.0f;
 	// フェード演出用タイマー
 	KLib::DeltaTimer fadeTimer_{};
+
+#pragma region デバッグ用変数
+
+	// デバッグ状態の有効化フラグ
+	bool enableDebug_ = false;
+	// デバッグ用タイムスケール
+	float d_TimeScale_ = 1.0f;
+
+#pragma endregion
+
+	// デバッグ用変数群
 };
 

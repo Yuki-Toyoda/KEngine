@@ -68,6 +68,17 @@ void GameManager::Update()
 
 void GameManager::DisplayImGui()
 {
+	// デバッグの有効化状態チェックボックス
+	ImGui::Checkbox("Enable Debug", &enableDebug_);
+	// テキスト表示
+	if (enableDebug_) { // デバッグが有効であるとき
+		ImGui::Text("Press 'SELECT' Enable Debug");
+	}
+	else { // デバッグが有効でないとき
+		ImGui::Text("Press 'SELECT' Disable Debug");
+	}
+	ImGui::NewLine(); // 改行
+
 	// ゲームの状態表示
 	ImGui::Checkbox("Is GameStart", &isGameStart_);
 	ImGui::Checkbox("Is GameEnd", &isGameEnd_);

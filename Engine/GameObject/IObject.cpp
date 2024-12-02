@@ -35,24 +35,24 @@ void IObject::PreInitialize(std::string name, Tag tag)
 void IObject::PreUpdate()
 {
 	// 回転角のリセット
-	if (transform_.rotate_.x >= (float)std::numbers::pi * 2.0f) {
+	if (transform_.rotate_.x >= (float)std::numbers::pi) {
 		transform_.rotate_.x -= (float)std::numbers::pi * 2.0f;
 	}
-	if (transform_.rotate_.x <= -(float)std::numbers::pi * 2.0f) {
+	if (transform_.rotate_.x <= -(float)std::numbers::pi) {
 		transform_.rotate_.x += (float)std::numbers::pi * 2.0f;
 	}
 
-	if (transform_.rotate_.y >= (float)std::numbers::pi * 2.0f) {
+	if (transform_.rotate_.y >= (float)std::numbers::pi) {
 		transform_.rotate_.y -= (float)std::numbers::pi * 2.0f;
 	}
-	if (transform_.rotate_.y <= -(float)std::numbers::pi * 2.0f) {
+	if (transform_.rotate_.y <= -(float)std::numbers::pi) {
 		transform_.rotate_.y += (float)std::numbers::pi * 2.0f;
 	}
 
-	if (transform_.rotate_.z >= (float)std::numbers::pi * 2.0f) {
+	if (transform_.rotate_.z >= (float)std::numbers::pi) {
 		transform_.rotate_.z -= (float)std::numbers::pi * 2.0f;
 	}
-	if (transform_.rotate_.z <= -(float)std::numbers::pi * 2.0f) {
+	if (transform_.rotate_.z <= -(float)std::numbers::pi) {
 		transform_.rotate_.z += (float)std::numbers::pi * 2.0f;
 	}
 }

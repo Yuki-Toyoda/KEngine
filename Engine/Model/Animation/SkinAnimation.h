@@ -129,10 +129,15 @@ public: // アクセッサ等
 	float GetProgress() const;
 
 	/// <summary>
+	/// アニメーションの再生速度ゲッター
+	/// </summary>
+	/// <returns>アニメーション再生速度</returns>
+	float GetAnimationSpeed() { return animationSpeed_; }
+	/// <summary>
 	/// アニメーション再生速度セッター
 	/// </summary>
 	/// <param name="speed">アニメーション再生速度</param>
-	void SetIsAnimationSpeed(const float speed) { animationSpeed_ = speed; }
+	void SetAnimationSpeed(const float speed) { animationSpeed_ = speed; }
 
 private: // プライベートなメンバ関数
 

@@ -52,6 +52,9 @@ void FollowCamera::Update()
 		ControllUpdate();
 	}
 
+	// オフセットを線形補間で動かす
+	offset_ = KLib::Lerp<Vector3>(offset_, targetOffset_, 0.1f);
+
 	// 追従対象の更新
 	UpdateTarget();
 
@@ -87,6 +90,7 @@ void FollowCamera::DisplayImGui()
 	ImGui::DragFloat("maxAddLockOnDistanceZOffset", &maxAddLockOnDistanceZOffset_, 0.001f);
 	ImGui::DragFloat("minAddLockOnDistanceZOffset", &minAddLockOnDistanceZOffset_, 0.001f);
 
+	ImGui::DragFloat("DirectionOffset", &directionOffset_);
 	ImGui::DragFloat("RotateOffset", &kOffsetRotate_);
 }
 
@@ -110,7 +114,7 @@ void FollowCamera::UpdateTarget()
 	if (target_) {
 		if (lockOn_->GetIsLockOn()) {
 			// 遷移後の座標を求める
-			interTarget_ = KLib::Lerp<Vector3>(interTarget_, lockOnTranslate_, 0.1f);
+			interTarget_ = KLib::Lerp<Vector3>(interTarget_, lockOnTranslate_, zForcusTrackingDelay_);
 		}
 		else {
 			// 遷移後の座標を求める
@@ -186,33 +190,20 @@ void FollowCamera::ZForcusUpdate()
 			targetAngleY_ = transform_.rotate_.y;
 
 			// オフセットのY軸を0に
-			offset_.y = 0.0f;
-			offset_.z = -Vector3::Length(sub / 1.75f) + kOffset_.z;
-
-			Matrix4x4 rotateMat =
-				Matrix4x4::MakeRotateY(-std::atan2(sub.x, sub.z));
-			Vector3 subA = sub * rotateMat;
-			targetAngleX_ = std::atan2(-subA.y, subA.z) / 3.5f;
-			// x軸の回転角度が一定値を上回った場合
-			if (targetAngleX_ > maxLockOnControllAngleX_) {
-				targetAngleX_ = maxLockOnControllAngleX_;
-			}
-			if (targetAngleX_ < minLockOnControllAngleX_) {
-				targetAngleX_ = minLockOnControllAngleX_;
-			}
+			targetOffset_.y = 0.0f;
+			targetOffset_.z = -Vector3::Length(sub / zOffsetRatio_) + kOffset_.z;
 
 			// 角度補正速度を設定
 			correctionSpeed_ = zStartForcusCorrectionSpeed_;
 
 			// 回転させる
-			transform_.rotate_.x = KLib::LerpShortAngle(transform_.rotate_.x, targetAngleX_, correctionSpeed_);
 			transform_.rotate_.y = KLib::LerpShortAngle(transform_.rotate_.y, targetAngleY_, correctionSpeed_);
 
 			float addZOffset = 0.0f;
 
 			// X軸方向の回転でオフセットを変更する
 			if (transform_.rotate_.x > 0.0f) {
-				offset_.y = KLib::Lerp<float>(minLockOnHeight_, maxLockOnHeight_, transform_.rotate_.x, maxLockOnControllAngleX_);
+				targetOffset_.y = KLib::Lerp<float>(minLockOnHeight_, maxLockOnHeight_, transform_.rotate_.x, maxLockOnControllAngleX_);
 				addZOffset += KLib::Lerp<float>(minAddLockOnXAngleZOffset_, maxAddLockOnXAngleZOffset_, transform_.rotate_.x, maxLockOnControllAngleX_);
 			}
 			// Y軸方向の回転でオフセットを変更する
@@ -222,7 +213,7 @@ void FollowCamera::ZForcusUpdate()
 			// 敵との距離によってオフセットを変更する
 			addZOffset += KLib::Lerp<float>(minAddLockOnDistanceZOffset_, maxAddLockOnDistanceZOffset_, std::abs(Vector3::Length(sub)), 40.0f);
 
-			offset_.z += addZOffset;
+			targetOffset_.z += addZOffset;
 		}
 		else {
 			// 角度補正速度を設定
@@ -245,8 +236,8 @@ void FollowCamera::ZForcusUpdate()
 			transform_.rotate_.y = KLib::LerpShortAngle(transform_.rotate_.y, targetAngleY_, correctionSpeed_);
 
 			// 位置を元に戻す
-			offset_.y = KLib::Lerp<float>(offset_.y, kOffset_.y, correctionSpeed_);
-			offset_.z = KLib::Lerp<float>(offset_.z, kOffset_.z, correctionSpeed_);
+			targetOffset_.y = KLib::Lerp<float>(offset_.y, kOffset_.y, correctionSpeed_);
+			targetOffset_.z = KLib::Lerp<float>(offset_.z, kOffset_.z, correctionSpeed_);
 		}
 		else {
 			// 操作可能状態に
@@ -302,12 +293,12 @@ void FollowCamera::ControllUpdate()
 	}
 
 	if (transform_.rotate_.x < 0.0f) {
-		offset_.z = KLib::Lerp<float>(kOffset_.z, minlerpOffsetZ_, transform_.rotate_.x, -0.2f);
-		offset_.y = KLib::Lerp<float>(kOffset_.y, minlerpOffsetY_, transform_.rotate_.x, -0.2f);
+		targetOffset_.z = KLib::Lerp<float>(kOffset_.z, minlerpOffsetZ_, transform_.rotate_.x, -0.2f);
+		targetOffset_.y = KLib::Lerp<float>(kOffset_.y, minlerpOffsetY_, transform_.rotate_.x, -0.2f);
 	}
 	else {
-		offset_.z = KLib::Lerp<float>(kOffset_.z, maxlerpOffsetZ_, transform_.rotate_.x, maxControllAngleX_);
-		offset_.y = kOffset_.y;
+		targetOffset_.z = KLib::Lerp<float>(kOffset_.z, maxlerpOffsetZ_, transform_.rotate_.x, maxControllAngleX_);
+		targetOffset_.y = kOffset_.y;
 	}
 }
 
@@ -328,8 +319,8 @@ void FollowCamera::ForcusControllUpdate()
 	targetAngleY_ = std::atan2(sub.x, sub.z);
 
 	// オフセットのY軸を0に
-	offset_.y = 0.0f;
-	offset_.z = -Vector3::Length(sub / 1.75f) + kOffset_.z;
+	targetOffset_.y = 0.0f;
+	targetOffset_.z = -Vector3::Length(sub / zOffsetRatio_) + kOffset_.z;
 
 	// 右スティックの入力を取得
 	Vector3 rStickInput = input_->GetJoyStickInput(1);
@@ -349,17 +340,49 @@ void FollowCamera::ForcusControllUpdate()
 
 	// X軸方向の回転でオフセットを変更する
 	if (transform_.rotate_.x > 0.0f) {
-		offset_.y = KLib::Lerp<float>(minLockOnHeight_, maxLockOnHeight_, transform_.rotate_.x, maxLockOnControllAngleX_);
+		targetOffset_.y = KLib::Lerp<float>(minLockOnHeight_, maxLockOnHeight_, transform_.rotate_.x, maxLockOnControllAngleX_);
 		addZOffset += KLib::Lerp<float>(minAddLockOnXAngleZOffset_, maxAddLockOnXAngleZOffset_, transform_.rotate_.x, maxLockOnControllAngleX_);
 	}
 	// Y軸方向の回転でオフセットを変更する
-	directionOffset_ = std::abs(transform_.rotate_.y - targetAngleY_);
-	addZOffset += KLib::Lerp<float>(minAddLockOnYAngleZOffset_, maxAddLockOnYAngleZOffset_, directionOffset_, 2.75f);
+	float rotateY = transform_.rotate_.y;
+	float targetY = targetAngleY_;
+
+	if (rotateY < targetY) {
+		if (targetY + std::abs(rotateY) > static_cast<float>(std::numbers::pi)) {
+			rotateY = std::abs(rotateY);
+			if (rotateY > targetY) {
+				directionOffset_ = rotateY - targetY;
+			}
+			else {
+				directionOffset_ = targetY - rotateY;
+			}
+		}
+		else {
+			directionOffset_ = targetY - rotateY;
+		}
+		
+	}
+	else {
+		if (rotateY + std::abs(targetY) > static_cast<float>(std::numbers::pi)) {
+			targetY = std::abs(targetY);
+			if (rotateY > targetY) {
+				directionOffset_ = rotateY - targetY;
+			}
+			else {
+				directionOffset_ = targetY - rotateY;
+			}
+		}
+		else {
+			directionOffset_ = rotateY - targetY;
+		}
+	}
+
+	addZOffset += KLib::Lerp<float>(minAddLockOnYAngleZOffset_, maxAddLockOnYAngleZOffset_, directionOffset_, static_cast<float>(std::numbers::pi));
 
 	// 敵との距離によってオフセットを変更する
 	addZOffset += KLib::Lerp<float>(minAddLockOnDistanceZOffset_, maxAddLockOnDistanceZOffset_, std::abs(Vector3::Length(sub)), 40.0f);
 
-	offset_.z += addZOffset;
+	targetOffset_.z += addZOffset;
 }
 
 void FollowCamera::ParryBlurUpdate()
