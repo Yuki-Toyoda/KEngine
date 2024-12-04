@@ -164,7 +164,7 @@ void EnemyBullet::OnCollisionEnter(Collider* collider)
 	}
 }
 
-void EnemyBullet::SetVelocity(const bool& isPlayer, const int32_t& rallyCount)
+void EnemyBullet::SetVelocity(const bool isPlayer, const int32_t rallyCount)
 {
 	// 差分ベクトル格納用
 	Vector3 sub = Vector3(0.0f, 0.0f, 0.0f);

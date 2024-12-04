@@ -56,13 +56,13 @@ public: // アクセッサ等
 	/// 目標角度セッター
 	/// </summary>
 	/// <param name="targetAngle">目標角度</param>
-	void SetTargetAngle(const float& targetAngle) { targetAngleY_ = targetAngle; }
+	void SetTargetAngle(const float targetAngle) { targetAngleY_ = targetAngle; }
 
 	/// <summary>
 	/// カメラの角度補正速度セッター
 	/// </summary>
 	/// <param name="correctionSpeed">カメラの角度補正速度</param>
-	void SetCorrectionSpeed(const float& correctionSpeed) { correctionSpeed_ = correctionSpeed; }
+	void SetCorrectionSpeed(const float correctionSpeed) { correctionSpeed_ = correctionSpeed; }
 
 	/// <summary>
 	/// オフセットなしのビュー行列のゲッター

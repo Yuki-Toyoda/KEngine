@@ -81,13 +81,13 @@ public: // アクセッサ等
 	/// </summary>
 	/// <param name="isPlayer">プレイヤーに向けたベクトルか</param>
 	/// <param name="rallyCount">打ち返し回数</param>
-	void SetVelocity(const bool& isPlayer, const int32_t& rallyCount);
+	void SetVelocity(const bool isPlayer, const int32_t rallyCount);
 
 	/// <summary>
 	/// 跳ね返し状態のセッター
 	/// </summary>
 	/// <param name="isReturn">跳ね返したか</param>
-	void SetIsReturn(bool isReturn) { isReturn_ = isReturn; }
+	void SetIsReturn(const bool isReturn) { isReturn_ = isReturn; }
 	/// <summary>
 	/// 跳ね返し状態のゲッター
 	/// </summary>
