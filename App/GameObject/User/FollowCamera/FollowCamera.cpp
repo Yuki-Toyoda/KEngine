@@ -347,6 +347,7 @@ void FollowCamera::ForcusControllUpdate()
 	float rotateY = transform_.rotate_.y;
 	float targetY = targetAngleY_;
 
+	// 回転角の超過判定
 	if (rotateY < targetY) {
 		if (targetY + std::abs(rotateY) > static_cast<float>(std::numbers::pi)) {
 			rotateY = std::abs(rotateY);

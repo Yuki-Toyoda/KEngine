@@ -68,9 +68,6 @@ void EnemyShot::Update()
 	if (anim_->GetReadingParameterName() == "Enemy_Shot") {
 		// アニメーションが終了しているなら
 		if (anim_->isEnd_) {
-			// 弾の軌跡パーティクルの再生
-			bullet_->PlayTrailParticle();
-
 			// 行動を変更
 			enemy_->ChangeState(std::make_unique<EnemyRoot>());
 			// それ以降の処理を無視

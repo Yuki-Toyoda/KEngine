@@ -271,9 +271,30 @@ void Player::OnCollisionEnter(Collider* collider)
 {
 	// プレイヤーの剣と衝突していたら
 	if (collider->GetColliderName() == "Bullet" && GetStateName() == "Attack") {
+		// 敵弾取得
+		EnemyBullet* bullet = GameObjectManager::GetInstance()->GetGameObject<EnemyBullet>("EnemyBullet");
+
+		if (bullet->GetIsReturn()) { return; }
+
 		// パリィ演出を開始
 		followCamera_->StartParryBlur(0.00f, 0.5f, 0.055f);
 	}
+
+	// 敵のコライダーと衝突している場合
+	//if (collider->GetColliderName() == "Boss") {
+	//	// 敵の取得
+	//	Enemy* e = GameObjectManager::GetInstance()->GetGameObject<Enemy>("Enemy");
+	//	// 敵のコライダー半径の取得
+	//	float radius = e->GetColliderRadius();
+
+	//	// 移動方向と反対ベクトルを求めるベクトルを求める
+	//	Vector3 invVec = Vector3::Normalize(transform_.translate_ - e->transform_.translate_);
+	//	invVec.y = 0.0f;
+	//	// その方向に半径分押し出し
+	//	transform_.translate_ += invVec * ((radius / 2.0f) + (colliderRadius_ / 2.0f));
+
+	//	followCamera_->Update();
+	//}
 }
 
 void Player::ChangeState(std::unique_ptr<IState> newState)

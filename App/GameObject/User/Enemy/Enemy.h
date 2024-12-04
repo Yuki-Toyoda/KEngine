@@ -184,6 +184,12 @@ public: // アクセッサ等
 	/// <returns>ダウン状態から起き上がらないか</returns>
 	bool GetIsNeverDown() { return isNeverDown_; }
 
+	/// <summary>
+	/// コライダー半径のゲッター
+	/// </summary>
+	/// <returns>コライダー半径</returns>
+	float GetColliderRadius() { return colliderRadius_; }
+
 private: // メンバ変数
 
 	// ゲームマネージャー

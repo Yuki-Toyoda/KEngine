@@ -35,6 +35,9 @@ void EnemyBullet::Init()
 	bulletParticle_->emitterDataBuffer_->data_->frequency = 0.0f;
 	bulletParticle_->emitterDataBuffer_->data_->frequencyTime = 0.25f;
 
+	// 軌跡パーティクルの再生
+	PlayTrailParticle();
+
 	// 球のコライダー追加
 	AddColliderSphere("Bullet", &transform_.translate_, &transform_.scale_.x);
 
