@@ -1,3 +1,4 @@
+[![DebugBuild](https://github.com/Yuki-Toyoda/KEngine/actions/workflows/DebugBuild.yml/badge.svg?branch=WPO_00_dev)](https://github.com/Yuki-Toyoda/KEngine/actions/workflows/DebugBuild.yml)
 # 就職作品 : **VS ファントム**
 ## この作品について
 この作品は、「**ゼルダの伝説 風のタクト**」に登場する中ボス、「**ファントムガノン**」との戦いを再現するために開発している作品です。[^1]  
