@@ -109,7 +109,7 @@ void GameManager::DisplayImGui()
 	}
 }
 
-void GameManager::StartFade(int fadeState, const float fadeTime)
+void GameManager::StartFade(const int fadeState, const float fadeTime)
 {
 	// フェード演出中トリガーを取得
 	isFadeStaging_ = true;

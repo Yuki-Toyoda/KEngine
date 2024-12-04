@@ -41,7 +41,7 @@ public: // メンバ関数
 	/// </summary>
 	/// <param name="fadeState">フェードイン、アウトを選択</param>
 	/// <param name="fadeTime">何秒かけてフェード演出をするか</param>
-	void StartFade(int fadeState, const float fadeTime);
+	void StartFade(const int fadeState, const float fadeTime);
 
 public: // アクセッサ等
 
