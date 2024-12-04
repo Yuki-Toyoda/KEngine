@@ -77,3 +77,5 @@
 原作のエフェクトはパーティクルのような粒子を飛ばしているわけではなく、エフェクト画像を描いているため、それを再現したいと考えています。  
 
 ![Particle_Game](https://github.com/user-attachments/assets/e842a223-9cb4-441a-a34b-466cc888086d)
+
+[![DebugBuild](https://github.com/Yuki-Toyoda/KEngine/actions/workflows/DebugBuild.yml/badge.svg?branch=WPO_00_dev)](https://github.com/Yuki-Toyoda/KEngine/actions/workflows/DebugBuild.yml)
