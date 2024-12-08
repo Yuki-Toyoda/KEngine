@@ -134,6 +134,9 @@ private: // メンバ変数
 	bool isCanControll_ = true;
 	// カメラ操作感度
 	Vector2 sensitivity_ = { 0.025f, 0.025f };
+	// 操作時のスティックデッドゾーン
+	const float deadZone_ = 0.25f;
+
 	// カメラ操作時の最大X軸アングル
 	float maxControllAngleX_ = 0.8f;
 	float minControllAngleX_ = -0.5f;

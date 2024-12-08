@@ -280,6 +280,11 @@ void FollowCamera::ControllUpdate()
 
 	// 右スティックの入力を取得
 	Vector3 rStickInput = input_->GetJoyStickInput(1);
+	// デットゾーン以上に入力されていない場合入力無効
+	if (Vector3::Length(rStickInput) < deadZone_) {
+		rStickInput = Vector3::kZero;
+	}
+
 	// カメラを回転させる
 	transform_.rotate_.y += rStickInput.x * sensitivity_.x;
 	transform_.rotate_.x -= rStickInput.z * sensitivity_.y;
@@ -324,6 +329,11 @@ void FollowCamera::ForcusControllUpdate()
 
 	// 右スティックの入力を取得
 	Vector3 rStickInput = input_->GetJoyStickInput(1);
+	// デットゾーン以上に入力されていない場合入力無効
+	if (Vector3::Length(rStickInput) < deadZone_) {
+		rStickInput = Vector3::kZero;
+	}
+
 	// カメラを回転させる
 	transform_.rotate_.y += rStickInput.x * sensitivity_.x;
 	transform_.rotate_.x -= rStickInput.z * sensitivity_.y;
