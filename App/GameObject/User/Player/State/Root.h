@@ -30,8 +30,13 @@ private: // メンバ変数
 
 	// 移動速度
 	const float kMaxSpeed_ = 0.15f;
-
+	// Z注目時の移動速度
 	const float kMaxZforcusSpeed_ = 0.1f;
+
+	// 待機アニメーションへの遷移秒数
+	const float idleAnimTransitionTime_ = 0.25f;
+	// Z注目時のアニメーションへの遷移秒数
+	const float zForcusIdleAnimTrainsitionTime_ = 0.25f;
 
 	// 現在の移動速度
 	Vector3 speed_ = Vector3();
