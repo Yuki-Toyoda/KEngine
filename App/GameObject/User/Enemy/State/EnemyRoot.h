@@ -32,5 +32,8 @@ private: // メンバ変数
 	// 最高高度への補間スピード
 	const float klerpSpeed_ = 0.01f;
 
+	// 待機アニメーションへの遷移秒数
+	const float idleAnimTransitionTime_ = 0.25f;
+
 };
 

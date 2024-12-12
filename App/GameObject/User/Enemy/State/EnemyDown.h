@@ -34,6 +34,8 @@ private: // メンバ変数
 	// ダウン秒数
 	const float kMaxDownTime_ = 5.0f;
 
+	// 落下状態へ移行するアニメーションの進行度割合
+	const float transitionFallStateProgress_ = 0.35f;
 	// 落下させるか
 	bool isFalling_ = false;
 

@@ -36,5 +36,7 @@ private: // メンバ変数
 	// 移動先座標
 	Vector3 movePosition_ = {};
 
+	// 移動にかかる秒数
+	const float moveTime_ = 2.5f;
 };
 

@@ -41,7 +41,7 @@ void EnemyShot::Update()
 			// アニメーションのループを行う
 			anim_->isLoop_ = true;
 			// 次のアニメーションを設定
-			anim_->ChangeParameter("Enemy_Charging", 0.1f, true);
+			anim_->ChangeParameter("Enemy_Charging", chargeAnimTransitionTime_, true);
 		}
 	}
 
@@ -52,7 +52,7 @@ void EnemyShot::Update()
 			// アニメーションのループを行う
 			anim_->isLoop_ = false;
 			// 次のアニメーションを設定
-			anim_->ChangeParameter("Enemy_Shot", 0.1f, true);
+			anim_->ChangeParameter("Enemy_Shot", shotAnimTransitionTime_, true);
 			// プレイヤーに向かって弾を発射する
 			bullet_->SetVelocity(true, enemy_->GetRallyCount());
 

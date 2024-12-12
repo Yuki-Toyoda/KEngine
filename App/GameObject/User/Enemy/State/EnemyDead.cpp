@@ -50,8 +50,8 @@ void EnemyDead::Update()
 	for (std::map<std::string, NormalModel*>::const_iterator it = enemy_->normalModels_.cbegin(); it != enemy_->normalModels_.cend(); ++it) {
 		// マテリアルに色を適用
 		it->second->materials_[1].dissolveStrength_ = enemy_->GetColor().w;
-		it->second->materials_[1].dissolveEdgeColor_ = { 0.0f, 1.0f, 0.75f };
-		it->second->materials_[1].dissolveEdgeThreshold_ = 0.025f;
+		it->second->materials_[1].dissolveEdgeColor_ = deadDissolveEdgeColor_;
+		it->second->materials_[1].dissolveEdgeThreshold_ = deadDissolveEdgeThreshold_;
 	}
 
 	// アニメーションが終了していたら

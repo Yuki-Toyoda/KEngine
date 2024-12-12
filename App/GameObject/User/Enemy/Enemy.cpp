@@ -284,9 +284,6 @@ void Enemy::OnCollisionEnter(Collider* collider)
 		// 弾がプレイヤーが跳ね返した状態でない場合早期リターン
 		if (!b->GetIsReturn()) { return; }
 
-		// 弾を跳ね返せたかどうかの一時フラグ
-		bool isRally = false;
-
 		// ラリー回数が最大回数を超過している場合
 		if (rallyCount_ > kMaxRallyCount_) {
 			// 弾に命中パーティクル再生を指示

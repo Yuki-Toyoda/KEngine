@@ -32,5 +32,10 @@ private: // メンバ変数
 	Camera* camera_ = nullptr;
 	// フェードアウト開始フラグ
 	bool isFadeOut_ = false;
+
+	// ディゾルブ時のエッジ色
+	const Vector3 deadDissolveEdgeColor_ = { 0.0f, 1.0f, 0.75f };
+	// ディゾルブを光らせる閾値
+	const float deadDissolveEdgeThreshold_ = 0.025f;
 };
 

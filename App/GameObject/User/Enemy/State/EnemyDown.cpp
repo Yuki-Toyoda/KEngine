@@ -32,7 +32,8 @@ void EnemyDown::Update()
 
 	// 再生中のパラメータがダウンアニメーション中なら
 	if (anim_->GetReadingParameterName() == "Enemy_Down" || anim_->GetReadingParameterName() == "Enemy_Damage") {
-		if (anim_->GetAnimationProgress() >= 0.35f) {
+		// 一定のアニメーション進行度へ達した時点で落下させる
+		if (anim_->GetAnimationProgress() >= transitionFallStateProgress_) {
 			isFalling_ = true;
 		}
 

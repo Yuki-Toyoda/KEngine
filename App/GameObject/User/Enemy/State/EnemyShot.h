@@ -37,5 +37,11 @@ private: // メンバ変数
 	// 発射するまでの時間
 	const float kMinShotTime_ = 1.5f; // 最小
 	const float kMaxShotTime_ = 2.5f; // 最大
+
+	// チャージアニメーションへの遷移秒数
+	const float chargeAnimTransitionTime_ = 0.1f;
+	// 発射アニメーションへの遷移秒数
+	const float shotAnimTransitionTime_ = 0.1f;
+
 };
 

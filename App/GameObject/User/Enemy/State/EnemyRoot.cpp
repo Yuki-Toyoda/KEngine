@@ -9,7 +9,7 @@ void EnemyRoot::Init()
 	// ループを行う
 	anim_->isLoop_ = true;
 	// アニメーションを変更
-	anim_->ChangeParameter("Enemy_Idle", 0.25f, true);
+	anim_->ChangeParameter("Enemy_Idle", idleAnimTransitionTime_, true);
 }
 
 void EnemyRoot::Update()
@@ -19,7 +19,7 @@ void EnemyRoot::Update()
 		// ループを切る
 		if (anim_->isEnd_) {
 			anim_->isLoop_ = true;
-			anim_->ChangeParameter("Enemy_Idle", 0.15f, true);
+			anim_->ChangeParameter("Enemy_Idle", idleAnimTransitionTime_, true);
 		}
 	}
 
