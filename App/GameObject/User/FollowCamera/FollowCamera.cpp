@@ -93,7 +93,7 @@ void FollowCamera::DisplayImGui()
 	ImGui::DragFloat("DirectionOffset", &directionOffset_);
 }
 
-void FollowCamera::StartParryBlur(const float stagingTime, const float endStagingTime, const float blurStrength)
+void FollowCamera::StartBlur(const float stagingTime, const float endStagingTime, const float blurStrength)
 {
 	// ブラー演出中状態に
 	isParryStaging_ = true;

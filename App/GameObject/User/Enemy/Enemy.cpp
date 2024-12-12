@@ -107,8 +107,8 @@ void Enemy::Init()
 	enemyParticle_ = ParticleManager::GetInstance()->CreateNewParticle("Enemy", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.0f, true);
 	enemyParticle_->model_->materials_[1].tex_ = TextureManager::Load("EnemyParticle.png");
 	enemyParticle_->model_->materials_[1].enableLighting_ = false;
-	enemyParticle_->transform_.translate_ = bodyTransform_.translate_;
-	enemyParticle_->transform_.translate_.y -= 1.0f;
+	enemyParticle_->transform_.SetParent(&bodyTransform_);
+	enemyParticle_->transform_.translate_.y -= -0.9f;
 	enemyParticle_->emitterDataBuffer_->data_->count = 25;
 	enemyParticle_->emitterDataBuffer_->data_->frequency = 0.1f;
 	enemyParticle_->emitterDataBuffer_->data_->frequencyTime = 0.1f;
@@ -125,14 +125,7 @@ void Enemy::Update()
 		targetAngle_ = std::atan2(toPlayerDistance_.x, toPlayerDistance_.z);
 
 		// 目標角度に向かって徐々に補間
-		transform_.rotate_.y = KLib::LerpShortAngle(transform_.rotate_.y, targetAngle_, 0.1f);
-	}
-
-	// 敵パーティクルが存在する場合
-	if (enemyParticle_ != nullptr) {
-		// エミッタの位置調整
-		enemyParticle_->transform_.translate_ = bodyTransform_.GetWorldPos();
-		enemyParticle_->transform_.translate_.y -= 0.9f;
+		transform_.rotate_.y = KLib::LerpShortAngle(transform_.rotate_.y, targetAngle_, angleCorrectSpeed);
 	}
 
 	// 死亡演出の更新
@@ -174,18 +167,16 @@ void Enemy::Update()
 		return;
 	}
 
-	// ダウン状態および射撃状態で無ければ
-	if (state_->GetStateName() != "Down" && state_->GetStateName() != "Shot") {
+	// ダウン状態および射撃状態で無い、かつ同じ行動状態でない場合
+	std::string stateName = state_->GetStateName();
+	if (stateName != "Down" && stateName != "Shot" && stateName != "Move") {
+		// プレイヤーとの距離ベクトルの長さを求める
+		float distance = Vector3::Length(toPlayerDistance_);
 
-		if (state_->GetStateName() != "Move") {
-			// プレイヤーとの距離ベクトルの長さを求める
-			float distance = Vector3::Length(toPlayerDistance_);
-
-			// 距離距離が一定値以下であれば
-			if (distance <= 10.0f) {
-				// 敵が移動する
-				ChangeState(std::make_unique<EnemyMove>());
-			}
+		// 距離が一定値以下であれば
+		if (distance <= minPlayerDistance_) {
+			// 敵が移動する
+			ChangeState(std::make_unique<EnemyMove>());
 		}
 	}
 
@@ -283,88 +274,70 @@ void Enemy::DisplayImGui()
 void Enemy::OnCollisionEnter(Collider* collider)
 {
 	// 死亡している場合早期リターン
-	if (isDead_) {
-		return;
-	}
+	if (isDead_) { return; }
 
 	// 弾と衝突していたら
 	if (collider->GetColliderName() == "Bullet") {
+		// 弾の取得
 		EnemyBullet* b = GameObjectManager::GetInstance()->GetGameObject<EnemyBullet>("EnemyBullet");
-		if (b->GetIsReturn()) {
-			// ラリー回数が最大数を超えていなければ
-			if (rallyCount_ <= kMaxRallyCount_) {
-				int percent = KLib::Random(rallyCount_, 6);
-				if (rallyCount_ == 1) {
-					percent = 0;
-				}
 
-				if (percent == 6) {
-					// 命中パーティクル再生
-					Particle* hit = ParticleManager::GetInstance()->CreateNewParticle("Hit", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.5f);
-					hit->model_->materials_[1].tex_ = TextureManager::Load("BulletHitEffect.png");
-					hit->model_->materials_[1].enableLighting_ = false;
-					hit->transform_.SetParent(&bodyTransform_);
-					hit->emitterDataBuffer_->data_->count = 1;
-					hit->emitterDataBuffer_->data_->frequency = 1.0f;
-					hit->emitterDataBuffer_->data_->frequencyTime = 3.0f;
+		// 弾がプレイヤーが跳ね返した状態でない場合早期リターン
+		if (!b->GetIsReturn()) { return; }
 
-					// 麻痺パーティクル再生
-					stunParticle_ = ParticleManager::GetInstance()->CreateNewParticle("BulletSpark", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.0f, true);
-					stunParticle_->model_->materials_[1].tex_ = TextureManager::Load("BulletSparkParticle.png");
-					stunParticle_->model_->materials_[1].enableLighting_ = false;
-					stunParticle_->transform_.SetParent(&bodyTransform_);
-					stunParticle_->emitterDataBuffer_->data_->count = 3;
-					stunParticle_->emitterDataBuffer_->data_->frequency = 0.01f;
-					stunParticle_->emitterDataBuffer_->data_->frequencyTime = 0.25f;
+		// 弾を跳ね返せたかどうかの一時フラグ
+		bool isRally = false;
 
-					// ダウン状態に
-					ChangeState(std::make_unique<EnemyDown>());
+		// ラリー回数が最大回数を超過している場合
+		if (rallyCount_ > kMaxRallyCount_) {
+			// 弾に命中パーティクル再生を指示
+			b->PlayHitParticle();
 
-					// 衝突した弾を破壊
-					b->DeleteBullet();
+			// ダウン状態に
+			ChangeState(std::make_unique<EnemyDown>());
 
-					// ラリー回数リセット
-					rallyCount_ = 0;
-				}
-				else {
-					// アニメーションを変更
-					// ループを切る
-					enemyAnim_->isLoop_ = false;
-					enemyAnim_->ChangeParameter("Enemy_Rally", true);
-					// ラリー回数加算
-					rallyCount_++;
-				}
+			// 衝突した弾を破壊
+			b->DeleteBullet();
 
-			}
-			else {
-				// 命中パーティクル再生
-				Particle* hit = ParticleManager::GetInstance()->CreateNewParticle("EnemyHit", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.5f);
-				hit->model_->materials_[1].tex_ = TextureManager::Load("BulletHitEffect.png");
-				hit->model_->materials_[1].enableLighting_ = false;
-				hit->transform_.SetParent(&bodyTransform_);
-				hit->emitterDataBuffer_->data_->count = 1;
-				hit->emitterDataBuffer_->data_->frequency = 1.0f;
-				hit->emitterDataBuffer_->data_->frequencyTime = 3.0f;
+			// ラリー回数リセット
+			rallyCount_ = 0;
 
-				// 麻痺パーティクル再生
-				stunParticle_ = ParticleManager::GetInstance()->CreateNewParticle("BulletSpark", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.0f, true);
-				stunParticle_->model_->materials_[1].tex_ = TextureManager::Load("BulletSparkParticle.png");
-				stunParticle_->model_->materials_[1].enableLighting_ = false;
-				stunParticle_->transform_.SetParent(&bodyTransform_);
-				stunParticle_->emitterDataBuffer_->data_->count = 3;
-				stunParticle_->emitterDataBuffer_->data_->frequency = 0.01f;
-				stunParticle_->emitterDataBuffer_->data_->frequencyTime = 0.25f;
-
-				// ダウン状態に
-				ChangeState(std::make_unique<EnemyDown>());
-
-				// 衝突した弾を破壊
-				b->DeleteBullet();
-
-				// ラリー回数リセット
-				rallyCount_ = 0;
-			}
+			// 早期リターン
+			return;
 		}
+
+		// 現在のラリー回数 ~ 最大ラリー回数までのランダムな値をとる
+		int percent = KLib::Random(rallyCount_, kMaxRallyCount_);
+		// 最大ラリー回数と一致していた場合
+		if (percent == kMaxRallyCount_) {
+			// 弾に命中パーティクル再生を指示
+			b->PlayHitParticle();
+
+			// 麻痺パーティクルの再生
+			PlayStunParticle();
+
+			// ダウン状態に
+			ChangeState(std::make_unique<EnemyDown>());
+
+			// 衝突した弾を破壊
+			b->DeleteBullet();
+
+			// ラリー回数リセット
+			rallyCount_ = 0;
+
+			// 早期リターン
+			return;
+		}
+
+		/// ここまで来たら敵のラリー成功
+		// 弾に命中パーティクル再生を指示
+		b->PlayHitParticle();
+
+		// ループを切る
+		enemyAnim_->isLoop_ = false;
+		// アニメーションを変更
+		enemyAnim_->ChangeParameter("Enemy_Rally", true);
+		// ラリー回数加算
+		rallyCount_++;
 	}
 }
 
@@ -400,7 +373,7 @@ void Enemy::OnCollision(Collider* collider)
 			StartHitStop(finishHitStopTime_, deadStagingAnimSpeed_);
 
 			// ブラー演出を開始
-			player_->GetFollowCamera()->StartParryBlur(0.01f, 1.5f, 0.065f);
+			player_->GetFollowCamera()->StartBlur(finishBlurStagingTime_, finishBlurEndTime_, finishBlurStrength_);
 
 			// 死亡時の演出用カメラのセットアップ
 			SetUpDeadCameraStaging();
@@ -418,23 +391,7 @@ void Enemy::OnCollision(Collider* collider)
 		enemyAnim_->isLoop_ = false;
 		enemyAnim_->ChangeParameter("Enemy_Damage", true);
 
-		// 命中パーティクル再生
-		Particle* hit = ParticleManager::GetInstance()->CreateNewParticle("Hit", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.5f);
-		hit->model_->materials_[1].tex_ = TextureManager::Load("HitEffect.png");
-		hit->model_->materials_[1].enableLighting_ = false;
-		hit->transform_.SetParent(&bodyTransform_);
-		hit->emitterDataBuffer_->data_->count = 1;
-		hit->emitterDataBuffer_->data_->frequency = 1.0f;
-		hit->emitterDataBuffer_->data_->frequencyTime = 3.0f;
-
-		// 命中破片パーティクル再生
-		Particle* hitDebris = ParticleManager::GetInstance()->CreateNewParticle("HitDebris", "./Engine/Resource/Samples/Plane", "Plane.obj", 1.0f);
-		hitDebris->model_->materials_[1].tex_ = TextureManager::Load("HitDebrisEffect.png");
-		hitDebris->model_->materials_[1].enableLighting_ = false;
-		hitDebris->transform_.translate_ = transform_.translate_;
-		hitDebris->emitterDataBuffer_->data_->count = 10;
-		hitDebris->emitterDataBuffer_->data_->frequency = 3.0f;
-		hitDebris->emitterDataBuffer_->data_->frequencyTime = 5.0f;
+		
 
 		// ダメージ効果音の再生
 		Audio::GetInstance()->PlayWave(damageSound_);
@@ -528,7 +485,7 @@ void Enemy::ShadowUpdate()
 	shadowTransform_.scale_ = { shadowScale, 1.0f, shadowScale };
 
 	// 高さは自動調整
-	shadowTransform_.translate_.y = -(transform_.GetWorldPos().y) + 0.05f;
+	shadowTransform_.translate_.y = -(transform_.GetWorldPos().y) + shadowHeight_;
 }
 
 void Enemy::SetUpDeadCameraStaging()
@@ -565,9 +522,6 @@ void Enemy::SetUpDeadCameraStaging()
 		// カメラ座標を動かす
 		stagingCamera->transform_.translate_ += offset;
 		stagingCamera->transform_.rotate_.y = rotateY;
-
-		// 演出用カメラ配列に追加
-		deadStagingCameras_.push_back(std::move(stagingCamera));
 	}
 
 	// 演出用カメラに切り替え
@@ -600,14 +554,47 @@ void Enemy::DeadCameraStaging()
 		switchCameraTimer_.Start(kCameraSwitchTime_);
 	}
 
-	deadStagingCameras_[displayCameraNumber_]->fov_ += 0.00025f;
+	deadStagingCameras_[displayCameraNumber_]->fov_ += deadstagingAddFOV_;
 
 	// タイマーの更新
 	switchCameraTimer_.Update();
+}
+
+void Enemy::PlayStunParticle()
+{
+	// 麻痺パーティクル再生
+	stunParticle_ = ParticleManager::GetInstance()->CreateNewParticle("BulletSpark", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.0f, true);
+	stunParticle_->model_->materials_[1].tex_ = TextureManager::Load("BulletSparkParticle.png");
+	stunParticle_->model_->materials_[1].enableLighting_ = false;
+	stunParticle_->transform_.SetParent(&bodyTransform_);
+	stunParticle_->emitterDataBuffer_->data_->count = 3;
+	stunParticle_->emitterDataBuffer_->data_->frequency = 0.01f;
+	stunParticle_->emitterDataBuffer_->data_->frequencyTime = 0.25f;
 }
 
 void Enemy::ResetStunParticle()
 {
 	// スタンパーティクルインスタンスをnullptrに
 	stunParticle_ = nullptr;
+}
+
+void Enemy::PlayDamageParticle()
+{
+	// 命中パーティクル再生
+	Particle* hit = ParticleManager::GetInstance()->CreateNewParticle("Hit", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.5f);
+	hit->model_->materials_[1].tex_ = TextureManager::Load("HitEffect.png");
+	hit->model_->materials_[1].enableLighting_ = false;
+	hit->transform_.SetParent(&bodyTransform_);
+	hit->emitterDataBuffer_->data_->count = 1;
+	hit->emitterDataBuffer_->data_->frequency = 1.0f;
+	hit->emitterDataBuffer_->data_->frequencyTime = 3.0f;
+
+	// 命中破片パーティクル再生
+	Particle* hitDebris = ParticleManager::GetInstance()->CreateNewParticle("HitDebris", "./Engine/Resource/Samples/Plane", "Plane.obj", 1.0f);
+	hitDebris->model_->materials_[1].tex_ = TextureManager::Load("HitDebrisEffect.png");
+	hitDebris->model_->materials_[1].enableLighting_ = false;
+	hitDebris->transform_.translate_ = transform_.translate_;
+	hitDebris->emitterDataBuffer_->data_->count = 10;
+	hitDebris->emitterDataBuffer_->data_->frequency = 3.0f;
+	hitDebris->emitterDataBuffer_->data_->frequencyTime = 5.0f;
 }

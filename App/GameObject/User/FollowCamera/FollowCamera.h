@@ -79,7 +79,7 @@ public: // 機能関数群
 	/// <param name="blurStrength">ブラーの強さ</param>
 	/// <param name="endStagingTime">演出の終了時間</param>
 	/// <param name="blurStrength">ブラー強さ</param>
-	void StartParryBlur(const float stagingTime, const float endStagingTime, const float blurStrength);
+	void StartBlur(const float stagingTime, const float endStagingTime, const float blurStrength);
 
 private: // プライベートなメンバ関数
 

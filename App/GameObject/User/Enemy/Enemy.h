@@ -169,6 +169,10 @@ public: // アクセッサ等
 	void SetCanAttack(const bool canAttack) { canAttack_ = canAttack; }
 
 	/// <summary>
+	/// 麻痺パーティクルの再生関数
+	/// </summary>
+	void PlayStunParticle();
+	/// <summary>
 	/// 麻痺パーティクルゲッター
 	/// </summary>
 	/// <returns>麻痺パーティクル</returns>
@@ -177,6 +181,11 @@ public: // アクセッサ等
 	/// 麻痺パーティクル停止関数
 	/// </summary>
 	void ResetStunParticle();
+
+	/// <summary>
+	/// ダメージパーティクルの再生関数
+	/// </summary>
+	void PlayDamageParticle();
 
 	/// <summary>
 	/// ダウン状態から起き上がらない状態のゲッター
@@ -233,6 +242,10 @@ private: // メンバ変数
 	float finishHitStopTime_ = 5.0f;
 	// 死亡時のアニメーション速度
 	float deadStagingAnimSpeed_ = 0.1f;
+	// とどめ時のブラーの演出時間
+	const float finishBlurStagingTime_ = 0.01f;
+	const float finishBlurEndTime_ = 1.5f;
+	const float finishBlurStrength_ = 0.065f;
 
 	// 死亡時のカメラ演出中かのフラグ
 	bool isDeadStaging_ = false;
@@ -246,6 +259,9 @@ private: // メンバ変数
 	KLib::DeltaTimer switchCameraTimer_{};
 	// カメラ切り替え秒数
 	float kCameraSwitchTime_ = 0.0f;
+
+	// 死亡演出中のFOV加算値
+	const float deadstagingAddFOV_ = 0.00025f;
 
 	// 身体のトランスフォーム
 	WorldTransform bodyTransform_{};
@@ -268,11 +284,15 @@ private: // メンバ変数
 	float minShadowScale = 1.75f;
 	// 敵のY座標閾値
 	float maxHeight_ = 4.0f;
+	// 影高さ
+	const float shadowHeight_ = 0.05f;
 
 	// プレイヤー座標
 	const WorldTransform* playerPos_ = nullptr;
 	// プレイヤーへの角度
 	float targetAngle_ = 0.0f;
+	// 目標角度への補正スピード
+	float angleCorrectSpeed = 0.1f;
 
 	// 攻撃可能状態か
 	bool canAttack_ = false;
@@ -280,10 +300,12 @@ private: // メンバ変数
 	// ラリー回数記録用
 	int32_t rallyCount_ = 0;
 	// ラリーを行う最大回数
-	const int32_t kMaxRallyCount_ = 5;
+	const int32_t kMaxRallyCount_ = 6;
 
 	// プレイヤーとの距離
 	Vector3 toPlayerDistance_ = {};
+	// 移動行動に移る際の最小距離
+	const float minPlayerDistance_ = 10.0f;
 
 	// 敵パーティクル
 	Particle* enemyParticle_ = nullptr;

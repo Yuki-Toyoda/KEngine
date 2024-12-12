@@ -277,7 +277,7 @@ void Player::OnCollisionEnter(Collider* collider)
 		if (bullet->GetIsReturn()) { return; }
 
 		// パリィ演出を開始
-		followCamera_->StartParryBlur(parryBlurStartTime_, parryBlurEndTime_, parryBlurStrength_);
+		followCamera_->StartBlur(parryBlurStartTime_, parryBlurEndTime_, parryBlurStrength_);
 	}
 }
 
