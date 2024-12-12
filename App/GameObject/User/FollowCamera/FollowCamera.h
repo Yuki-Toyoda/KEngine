@@ -181,6 +181,8 @@ private: // メンバ変数
 
 	// 目標角度への補正スピード
 	float correctionSpeed_ = 0.035f;
+	// 目標角度への補正終了閾値
+	const float angleCorrectThreshold_ = 0.1f;
 
 	// 通常時カメラ角度補正速度
 	const float normalCorrectionSpeed_ = 0.005f;
@@ -221,9 +223,8 @@ private: // メンバ変数
 	Vector3 offset_ = kOffset_;
 	// 補間時のターゲット用オフセット
 	Vector3 targetOffset_ = kOffset_;
-
-	// ロックオン時の回転角
-	float kOffsetRotate_ = 0.05f;
+	// オフセットの補正速度
+	const float offsetCorrectSpeed_ = 0.1f;
 
 	// ロックオン中のビネット補間値
 	float vignetteT_		= 0.025f;

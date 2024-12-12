@@ -53,7 +53,7 @@ void FollowCamera::Update()
 	}
 
 	// オフセットを線形補間で動かす
-	offset_ = KLib::Lerp<Vector3>(offset_, targetOffset_, 0.1f);
+	offset_ = KLib::Lerp<Vector3>(offset_, targetOffset_, offsetCorrectSpeed_);
 
 	// 追従対象の更新
 	UpdateTarget();
@@ -91,7 +91,6 @@ void FollowCamera::DisplayImGui()
 	ImGui::DragFloat("minAddLockOnDistanceZOffset", &minAddLockOnDistanceZOffset_, 0.001f);
 
 	ImGui::DragFloat("DirectionOffset", &directionOffset_);
-	ImGui::DragFloat("RotateOffset", &kOffsetRotate_);
 }
 
 void FollowCamera::StartParryBlur(const float stagingTime, const float endStagingTime, const float blurStrength)
@@ -128,7 +127,7 @@ void FollowCamera::UpdateTarget()
 		Matrix4x4 rotateMat = Matrix4x4::MakeRotate(transform_.rotate_);
 
 		// 遷移後の座標を求める
-		Vector3 interTargetA = Vector3(0.0f, 0.0f, 0.0f);
+		Vector3 interTargetA = Vector3{};
 		interTargetA = KLib::Lerp<Vector3>(target_->translate_, interTargetA, trackingDelay_);
 		noOffsetTransform_.translate_ = KLib::Lerp<Vector3>(target_->translate_, interTargetA, trackingDelay_) + (kOffset_ * rotateMat);
 	}
@@ -177,13 +176,13 @@ void FollowCamera::ZForcusUpdate()
 	// ロックオンが有効になっている場合
 	if (lockOn_->EnableLockOn()) {
 		// 目標角度になるまでは補正を行う
-		if (std::abs(transform_.rotate_.y - targetAngleY_) > 0.1f && !isCanControll_) {
+		if (std::abs(transform_.rotate_.y - targetAngleY_) > angleCorrectThreshold_ && !isCanControll_) {
 			// ロックオン対象の座標
 			Vector3 targetPos = lockOn_->target_->transform_.translate_;
 			// 追従対象からロックオン対象への差分ベクトル
 			Vector3 sub = targetPos - target_->translate_;
 
-			// ロックオン時の座標を計算
+			// ロックオン時の座標は距離ベクトルの半分地点
 			lockOnTranslate_ = targetPos - (sub / 2.0f);
 
 			// 回転方向を指定
@@ -199,7 +198,7 @@ void FollowCamera::ZForcusUpdate()
 			// 回転させる
 			transform_.rotate_.y = KLib::LerpShortAngle(transform_.rotate_.y, targetAngleY_, correctionSpeed_);
 
-			float addZOffset = 0.0f;
+			float addZOffset{};
 
 			// X軸方向の回転でオフセットを変更する
 			if (transform_.rotate_.x > 0.0f) {
@@ -230,7 +229,7 @@ void FollowCamera::ZForcusUpdate()
 		correctionSpeed_ = zForcusCorrectionSpeed_;
 
 		// 目標角度になるまでは補正を行う
-		if (std::abs(transform_.rotate_.y - targetAngleY_) > 0.1f && !isCanControll_) {
+		if (std::abs(transform_.rotate_.y - targetAngleY_) > angleCorrectThreshold_ && !isCanControll_) {
 			// 回転させる
 			transform_.rotate_.x = KLib::LerpShortAngle(transform_.rotate_.x, targetAngleX_, correctionSpeed_);
 			transform_.rotate_.y = KLib::LerpShortAngle(transform_.rotate_.y, targetAngleY_, correctionSpeed_);
@@ -317,7 +316,7 @@ void FollowCamera::ForcusControllUpdate()
 	// 追従対象からロックオン対象への差分ベクトル
 	Vector3 sub = targetPos - target_->translate_;
 
-	// ロックオン時の座標を計算
+	// ロックオン時の座標は距離ベクトルの半分地点
 	lockOnTranslate_ = targetPos - (sub / 2.0f);
 
 	// 方向ベクトルを元にプレイヤーがいる角度を求める
