@@ -19,7 +19,7 @@ void Player::Init()
 	// コライダー用のトランスフォームの初期化
 	colliderTransform_.Init();
 	colliderTransform_.SetParent(&transform_);
-	colliderTransform_.translate_.y += 1.0f;
+	colliderTransform_.translate_.y += colliderHeight_;
 
 	// 落ち影用トランスフォームの初期化
 	shadowTransform_.Init();
@@ -30,7 +30,7 @@ void Player::Init()
 	AddSkiningModel("Sword", &weaponTransform_, "./Resources/Sword", "Sword.gltf");
 	// 落ち影用モデル
 	AddNormalModel("Shadow", &shadowTransform_, "./Resources/DropShadow", "DropShadow.obj");
-	normalModels_["Shadow"]->materials_[1].color_ = Vector4(0.0f, 0.0f, 0.0f, 0.5f);
+	normalModels_["Shadow"]->materials_[1].color_ = shadowColor_;
 
 	// 待機アニメーションの再生
 	skiningModels_["Player"]->animationManager_.PlayAnimation("00_Idle", 0.0f, true);
@@ -38,7 +38,7 @@ void Player::Init()
 	skiningModels_["Player"]->SetBoneParent("WeaponAnchor", &weaponTransform_);
 
 	// 剣の鏡面反射を有効にする
-	skiningModels_["Sword"]->materials_[1].environmentCoefficient_ = 0.85f;
+	skiningModels_["Sword"]->materials_[1].environmentCoefficient_ = swordEnvironmentMapStrength_;
 	// ブルームエフェクトを際立たせるためにライティング無効
 	skiningModels_["Sword"]->materials_[1].enableLighting_ = false;
 
@@ -48,7 +48,7 @@ void Player::Init()
 
 	// 攻撃用の線の追加
 	SwordLine_ = std::make_unique<Line>();
-	SwordLine_->Init("AttackLine", {0.0f, 0.0f, 0.0f}, {0.35f, 0.35f}, 1.0f);
+	SwordLine_->Init("AttackLine", linePosition_, lineThickness_, lineLength_);
 	SwordLine_->SetParent(&weaponTransform_);
 	SwordLine_->AddCollider("Sword", this);
 	SwordLine_->rotate_.z					= (float)std::numbers::pi;
@@ -78,7 +78,7 @@ void Player::Init()
 		// ハートスプライト名の取得
 		std::string hert = "Hert" + std::to_string(i);
 		AddSprite(hert, hertUITranslate_[i], hertUISize_[i], TextureManager::Load("./Resources", "Hert.png"));
-		sprites_[hert]->color_ = { 1.0f, 0.0f, 0.15f, 1.0f };
+		sprites_[hert]->color_ = fillHertColor_;
 		sprites_[hert]->isActive_ = false;
 	}
 
@@ -147,8 +147,8 @@ void Player::Update()
 	// 死亡演出中は
 	if (enemy_->GetIsDeadStaging()) {
 		// 帯の表示
-		sprites_["UpperObi"]->scale_.y = KLib::Lerp<float>(sprites_["UpperObi"]->scale_.y, 75.0f, 0.1f);
-		sprites_["LowerObi"]->scale_.y = KLib::Lerp<float>(sprites_["LowerObi"]->scale_.y, 75.0f, 0.1f);
+		sprites_["UpperObi"]->scale_.y = KLib::Lerp<float>(sprites_["UpperObi"]->scale_.y, maxObiSizeY_, obiCorrectSpeed_);
+		sprites_["LowerObi"]->scale_.y = KLib::Lerp<float>(sprites_["LowerObi"]->scale_.y, maxObiSizeY_, obiCorrectSpeed_);
 	}
 
 	// 行動可能状態でない場合早期リターン
@@ -164,15 +164,15 @@ void Player::Update()
 	float& trailAlpha = SwordLine_->trailMaterial_.color_.w;
 	// 攻撃中は軌跡を表示させる
 	if (isAttacking_) {
-		trailAlpha = KLib::Lerp(trailAlpha, 1.0f, 0.2f);
+		trailAlpha = KLib::Lerp(trailAlpha, maxTrailAlpha_, startAppearTrailCorrectSpeed_);
 	}
 	else {
 		// 攻撃中でない場合は軌跡を徐々に消す
-		if (trailAlpha <= 0.01f) {
-			trailAlpha = 0.0f;
+		if (trailAlpha <= trailAlphaThresold_) {
+			trailAlpha = minTrailAlpha_;
 		}
 		else {
-			trailAlpha = KLib::Lerp(trailAlpha, 0.0f, 0.3f);
+			trailAlpha = KLib::Lerp(trailAlpha, minTrailAlpha_, endAppearTrailCorrectSpeed_);
 		}
 	}
 
@@ -206,13 +206,13 @@ void Player::Update()
 		// Z注目有効時かつ敵が死亡していない場合
 		if (followCamera_->GetEnableZForcus()) {
 			// ロックオン中は帯を表示
-			sprites_["UpperObi"]->scale_.y = KLib::Lerp<float>(sprites_["UpperObi"]->scale_.y, 75.0f, 0.1f);
-			sprites_["LowerObi"]->scale_.y = KLib::Lerp<float>(sprites_["LowerObi"]->scale_.y, 75.0f, 0.1f);
+			sprites_["UpperObi"]->scale_.y = KLib::Lerp<float>(sprites_["UpperObi"]->scale_.y, maxObiSizeY_, obiCorrectSpeed_);
+			sprites_["LowerObi"]->scale_.y = KLib::Lerp<float>(sprites_["LowerObi"]->scale_.y, maxObiSizeY_, obiCorrectSpeed_);
 		}
 		else {
 			// ロックオンをしていない場合帯を非表示
-			sprites_["UpperObi"]->scale_.y = KLib::Lerp<float>(sprites_["UpperObi"]->scale_.y, 0.0f, 0.2f);
-			sprites_["LowerObi"]->scale_.y = KLib::Lerp<float>(sprites_["LowerObi"]->scale_.y, 0.0f, 0.2f);
+			sprites_["UpperObi"]->scale_.y = KLib::Lerp<float>(sprites_["UpperObi"]->scale_.y, 0.0f, obiCorrectSpeed_);
+			sprites_["LowerObi"]->scale_.y = KLib::Lerp<float>(sprites_["LowerObi"]->scale_.y, 0.0f, obiCorrectSpeed_);
 		}
 	}
 
@@ -277,24 +277,8 @@ void Player::OnCollisionEnter(Collider* collider)
 		if (bullet->GetIsReturn()) { return; }
 
 		// パリィ演出を開始
-		followCamera_->StartParryBlur(0.00f, 0.5f, 0.055f);
+		followCamera_->StartParryBlur(parryBlurStartTime_, parryBlurEndTime_, parryBlurStrength_);
 	}
-
-	// 敵のコライダーと衝突している場合
-	//if (collider->GetColliderName() == "Boss") {
-	//	// 敵の取得
-	//	Enemy* e = GameObjectManager::GetInstance()->GetGameObject<Enemy>("Enemy");
-	//	// 敵のコライダー半径の取得
-	//	float radius = e->GetColliderRadius();
-
-	//	// 移動方向と反対ベクトルを求めるベクトルを求める
-	//	Vector3 invVec = Vector3::Normalize(transform_.translate_ - e->transform_.translate_);
-	//	invVec.y = 0.0f;
-	//	// その方向に半径分押し出し
-	//	transform_.translate_ += invVec * ((radius / 2.0f) + (colliderRadius_ / 2.0f));
-
-	//	followCamera_->Update();
-	//}
 }
 
 void Player::ChangeState(std::unique_ptr<IState> newState)
@@ -310,8 +294,8 @@ void Player::ChangeState(std::unique_ptr<IState> newState)
 
 void Player::StartHitStop(const float hitStopTime, const float timeScale)
 {
-	// ヒットストップ秒数が0以下の場合早期リターン
-	if (hitStopTime <= 0.0f) { return; }
+	// ヒットストップ秒数が0以下の場合、ゲーム速度が0.0の場合早期リターン
+	if (hitStopTime <= 0.0f || timeScale != 0.0f) { return; }
 
 	// プレイヤーアニメーションの再生速度を指定
 	skiningModels_["Player"]->animationManager_.SetAnimationSpeed(timeScale);
@@ -319,8 +303,6 @@ void Player::StartHitStop(const float hitStopTime, const float timeScale)
 	hitStopTimer_.Start(hitStopTime);
 	// ヒットストップ中状態に
 	isHitStop_ = true;
-
-	if (timeScale != 0.0f) { return; }
 
 	// 軌跡座標の更新を停止
 	SwordLine_->SetIsUpdateTrail(false);
@@ -353,7 +335,7 @@ void Player::HitDamage(const Vector3& translate)
 		// スプライト配列探査用
 		std::string hert = "Hert" + std::to_string(hp_);
 		// スプライトの色を変更
-		sprites_[hert]->color_ = { 0.15f, 0.15f, 0.15f, 1.0f };
+		sprites_[hert]->color_ = loseHertColor_;
 
 		// 弾の座標からプレイヤーの方向ベクトルを求める
 		Vector3 sub = translate - transform_.translate_;
@@ -383,5 +365,5 @@ void Player::ShadowUpdate()
 	// プレイヤーのHipボーンと同じ座標に
 	shadowTransform_.translate_ = hipBonePosition;
 	// 高さは自動調整
-	shadowTransform_.translate_.y = -(transform_.GetWorldPos().y) + 0.01f;
+	shadowTransform_.translate_.y = -(transform_.GetWorldPos().y) + shadowHeight_;
 }

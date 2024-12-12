@@ -23,7 +23,7 @@ void Root::Update()
 	// 移動中フラグをfalse
 	isMoving_ = false;
 
-	// スティックの方向を元に移動ベクトルを求める
+	// 左スティックの方向を元に移動ベクトルを求める
 	Vector3 move = input_->GetJoyStickInput(0);
 
 	// 移動ベクトルが一定の長さになっていれば
@@ -34,10 +34,10 @@ void Root::Update()
 	else {
 		// ロックオンが有効でないとき
 		if (!player_->GetFollowCamera()->GetEnableZForcus()) {
-			player_->skiningModels_["Player"]->animationManager_.PlayAnimation("00_Idle", 0.25f, true, true);
+			player_->skiningModels_["Player"]->animationManager_.PlayAnimation("00_Idle", idleAnimTransitionTime_, true, true);
 		}
 		else { // 有効時
-			player_->skiningModels_["Player"]->animationManager_.PlayAnimation("02_LockOnIdle", 0.15f, true, true);
+			player_->skiningModels_["Player"]->animationManager_.PlayAnimation("02_LockOnIdle", zForcusIdleAnimTrainsitionTime_, true, true);
 		}
 	}
 
@@ -47,6 +47,7 @@ void Root::Update()
 	// プレイヤーに追従カメラがセットされている場合
 	if (player_->GetFollowCamera() != nullptr) {
 
+		// プレイヤーの真後ろに追従するように目標角度を選定
 		if (move.z != -1.0f && !player_->GetFollowCamera()->GetEnableZForcus()) {
 			player_->GetFollowCamera()->SetTargetAngle(player_->transform_.rotate_.y);
 		}
@@ -70,26 +71,26 @@ void Root::Update()
 
 	// ロックオンが有効でないとき
 	if (!player_->GetFollowCamera()->GetEnableZForcus()) {
-		player_->skiningModels_["Player"]->animationManager_.PlayAnimation("01_Run", 0.25f, true, true);
+		player_->skiningModels_["Player"]->animationManager_.PlayAnimation("01_Run", runAnimTransitionTime_, true, true);
 	}
 	else { // 有効時
 		// 横移動をしていない場合
 		if (move.x < latralMovementThreshold_ && move.x > -latralMovementThreshold_) {
 			// 移動ベクトルが前方方向だった場合
 			if (move.z > 0.0f) {
-				player_->skiningModels_["Player"]->animationManager_.PlayAnimation("01_Run", 0.1f, true, true);
+				player_->skiningModels_["Player"]->animationManager_.PlayAnimation("01_Run", runAnimTransitionTime_, true, true);
 			}
 			else { // 後方だった場合
-				player_->skiningModels_["Player"]->animationManager_.PlayAnimation("03_LockOnMoveBack", 0.15f, true, true);
+				player_->skiningModels_["Player"]->animationManager_.PlayAnimation("03_LockOnMoveBack", zForcusRunAnimTrainsitionTime_, true, true);
 			}
 		}
 		else {
 			// 右方向に移動している場合
 			if (move.x > 0.0f) {
-				player_->skiningModels_["Player"]->animationManager_.PlayAnimation("04_LockOnMoveRight", 0.15f, true, true);
+				player_->skiningModels_["Player"]->animationManager_.PlayAnimation("04_LockOnMoveRight", zForcusRunAnimTrainsitionTime_, true, true);
 			}
 			else if (move.x < 0.0f) { // 左方向に移動している場合
-				player_->skiningModels_["Player"]->animationManager_.PlayAnimation("05_LockOnMoveLeft", 0.15f, true, true);
+				player_->skiningModels_["Player"]->animationManager_.PlayAnimation("05_LockOnMoveLeft", zForcusRunAnimTrainsitionTime_, true, true);
 			}
 		}
 	}
@@ -107,7 +108,7 @@ void Root::Update()
 
 	// プレイヤーを移動方向に回転させる
 	if (player_->transform_.rotate_.y != targetAngle_ && !player_->GetFollowCamera()->GetEnableZForcus()) {
-		player_->transform_.rotate_.y = KLib::LerpShortAngle(player_->transform_.rotate_.y, targetAngle_, 0.1f);
+		player_->transform_.rotate_.y = KLib::LerpShortAngle(player_->transform_.rotate_.y, targetAngle_, targetAngleConrrectSpeed_);
 	}
 
 	// 移動ベクトルに基づいてプレイヤーを動かす
@@ -116,5 +117,5 @@ void Root::Update()
 
 void Root::DisplayImGui()
 {
-	ImGui::DragFloat3("Move", &speed_.x, 0.0f);
+	
 }

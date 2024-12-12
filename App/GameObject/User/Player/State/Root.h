@@ -35,8 +35,15 @@ private: // メンバ変数
 
 	// 待機アニメーションへの遷移秒数
 	const float idleAnimTransitionTime_ = 0.25f;
-	// Z注目時のアニメーションへの遷移秒数
+	// 走りアニメーションへの遷移秒数
+	const float runAnimTransitionTime_ = 0.15f;
+	// Z注目時の待機アニメーションへの遷移秒数
 	const float zForcusIdleAnimTrainsitionTime_ = 0.25f;
+	//Z注目時の待機アニメーションへの遷移秒数
+	const float zForcusRunAnimTrainsitionTime_ = 0.25f;
+
+	// 目標角度への選定速度
+	const float targetAngleConrrectSpeed_ = 0.1f;
 
 	// 現在の移動速度
 	Vector3 speed_ = Vector3();

@@ -15,7 +15,6 @@ void Damage::Init()
 	player_->GetSwordLine()->GetCollider()->SetIsActive(false);
 
 	// 速度を求める
-	velocity_ = { 0.0f, 0.0f, -0.1f };
 	Matrix4x4 rotateMat = Matrix4x4::MakeRotateY(player_->transform_.rotate_.y);
 	velocity_ = (velocity_ * rotateMat);
 
@@ -30,7 +29,7 @@ void Damage::Init()
 		c->UseThisCamera();
 
 		// 体力UI非表示
-		for (int i = 0; i < 6; i++) {
+		for (int i = 0; i < player_->GetMaxHP(); i++) {
 			// ハートスプライト名の取得
 			std::string hert = "Hert" + std::to_string(i);
 			player_->sprites_[hert]->isActive_ = false;
@@ -42,7 +41,7 @@ void Damage::Init()
 	}
 
 	// ダメージアニメーションを再生
-	player_->skiningModels_["Player"]->animationManager_.PlayAnimation("06_Damage", 0.1f);
+	player_->skiningModels_["Player"]->animationManager_.PlayAnimation("06_Damage");
 }
 
 void Damage::Update()
@@ -57,7 +56,7 @@ void Damage::Update()
 		// アニメーション終了時
 		if (!player_->skiningModels_["Player"]->animationManager_.GetIsPlayingAnimation("06_Damage")) {
 			// 待機状態に移行
-			player_->ChangeState(std::make_unique<Root>());
+			player_->ChangeState(std::make_unique<Recovery>());
 			// 以降の処理を無視
 			return;
 		}
@@ -67,22 +66,22 @@ void Damage::Update()
 	}
 
 	// カメラのポストプロセスの強さをだんだん上げてく
-	c->ppProcessor_.hsvFilter_.hsv_.saturation = KLib::Lerp<float>(0.0f, -1.0f, KLib::EaseInQuad(player_->skiningModels_["Player"]->animationManager_.GetPlayingAnimationProgress()));
-	c->ppProcessor_.gaussian_.intensity_ = KLib::Lerp<float>(0.0f, 3.0f, KLib::EaseInQuad(player_->skiningModels_["Player"]->animationManager_.GetPlayingAnimationProgress()));
+	c->ppProcessor_.hsvFilter_.hsv_.saturation = KLib::Lerp<float>(0.0f, targetSaturation_, KLib::EaseInQuad(player_->skiningModels_["Player"]->animationManager_.GetPlayingAnimationProgress()));
+	c->ppProcessor_.gaussian_.intensity_ = KLib::Lerp<float>(0.0f, targetBlurStrength_, KLib::EaseInQuad(player_->skiningModels_["Player"]->animationManager_.GetPlayingAnimationProgress()));
 
 	// アニメーションが再生されていない状態かつ死亡状態でないとき
 	if (!player_->skiningModels_["Player"]->animationManager_.GetIsPlayingAnimation() && !player_->GetIsDead()) {
 		// 死亡状態に
 		player_->SetIsDead(true);
 		// 演出用にタイマーを開始
-		timer_.Start(1.5f);
+		timer_.Start(deadStagingTime_);
 	}
 
 	// 死亡時
 	if (player_->GetIsDead()) {
 		if (!timer_.GetIsFinish()) {
 			// カメラを徐々に後ろに
-			c->transform_.translate_.z -= 0.0025f;
+			c->transform_.translate_.z += cameraMoveSpeed_;
 		}
 		timer_.Update();
 	}

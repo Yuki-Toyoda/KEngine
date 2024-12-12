@@ -31,8 +31,5 @@ private: // メンバ変数
 	// コンボマネージャー本体
 	ComboManager* comboManager_ = nullptr;
 
-	// 回転斬りのチャージへの移行閾値
-	const float chargeTransitionThreshold_ = 0.6f;
-	const float slashTransitionThreshold_ = 0.8f;
 };
 

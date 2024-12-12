@@ -127,6 +127,12 @@ public: // アクセッサ等
 	int32_t GetHP() { return hp_; }
 
 	/// <summary>
+	/// 最大体力ゲッター
+	/// </summary>
+	/// <returns>最大体力</returns>
+	int32_t GetMaxHP() { return maxHP_; }
+
+	/// <summary>
 	/// コンボマネージャーゲッター
 	/// </summary>
 	/// <returns>コンボマネージャー</returns>
@@ -209,6 +215,13 @@ private: // メンバ変数
 	WorldTransform weaponTransform_;
 	// 攻撃判定用線
 	std::unique_ptr <Line> SwordLine_;
+	// 線初期座標
+	const Vector3 linePosition_{};
+	// 線太さ
+	const Vector2 lineThickness_ = { 0.35f, 0.35f };
+	// 線長さ
+	const float lineLength_ = 1.0f;
+
 	// 攻撃可能か
 	bool canAttack_ = true;
 	// 攻撃中か
@@ -216,14 +229,30 @@ private: // メンバ変数
 	// 攻撃が命中したか
 	bool isHit_ = false;
 
+	// 剣の環境マップ強度
+	const float swordEnvironmentMapStrength_ = 0.85f;
+
+	// 軌跡補間速度
+	const float startAppearTrailCorrectSpeed_ = 0.2f;
+	const float endAppearTrailCorrectSpeed_ = 0.3f;
+	// 軌跡透明度
+	const float maxTrailAlpha_ = 1.0f;
+	const float minTrailAlpha_ = 0.0f;
+	// 軌跡の強制透過閾値
+	const float trailAlphaThresold_ = 0.01f;
+
 	// 落ち影のワールドトランスフォーム
 	WorldTransform shadowTransform_{};
 	// 落ち影のスケール補間値
-	float maxShadowScale = 2.0f;
-	float minShadowScale = 0.25f;
+	const float maxShadowScale = 2.0f;
+	const float minShadowScale = 0.25f;
 	// HipボーンのY座標閾値
-	float minHipBoneHeight_ = 0.0f;
-	float maxHipBoneHeight_ = 2.0f;
+	const float minHipBoneHeight_ = 0.0f;
+	const float maxHipBoneHeight_ = 2.0f;
+	// 落ち影の高さ
+	const float shadowHeight_ = 0.01f;
+	// 影色
+	const Vector4 shadowColor_ = { 0.0f, 0.0f, 0.0f, 0.5f };
 
 	// 最大HP
 	static const int32_t maxHP_ = 6;
@@ -235,6 +264,14 @@ private: // メンバ変数
 	// 体力UI
 	Vector2 hertUITranslate_[maxHP_]; // 座標
 	Vector2 hertUISize_[maxHP_];	  // サイズ
+	// 体力UIカラー
+	const Vector4 fillHertColor_ = { 1.0f, 0.0f, 0.15f, 1.0f };
+	const Vector4 loseHertColor_ = { 0.15f, 0.15f, 0.15f, 1.0f };
+
+	// 帯UIY軸サイズ
+	const float maxObiSizeY_ = 75.0f;
+	// 帯展開速度
+	const float obiCorrectSpeed_ = 0.1f;
 
 	// ヒットクールタイムタイマー
 	KLib::DeltaTimer hitCoolTimeTimer_;
@@ -246,6 +283,12 @@ private: // メンバ変数
 	// ヒットストップタイマー
 	KLib::DeltaTimer hitStopTimer_{};
 
+	// パリィ時のブラー演出時間
+	const float parryBlurStartTime_ = 0.0f; // 開始
+	const float parryBlurEndTime_	= 0.5f; // 終了
+	// パリィ時のブラー強さ
+	const float parryBlurStrength_	= 0.055f;
+
 	// 追従対象の目標角度
 	float targetAngle_ = 0.0f;
 
@@ -255,6 +298,8 @@ private: // メンバ変数
 	Vector3 colliderWorldPos_;
 	// コライダー半径
 	float colliderRadius_ = 0.25f;
+	// コライダー高さ
+	const float colliderHeight_ = 1.0f;
 
 	// 行動状態格納変数
 	std::unique_ptr<IState> state_;

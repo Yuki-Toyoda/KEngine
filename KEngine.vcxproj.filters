@@ -392,9 +392,6 @@
     <ClCompile Include="App\Game.cpp">
       <Filter>App</Filter>
     </ClCompile>
-    <ClCompile Include="App\GameObject\User\Player\State\RotatingSlashCharge.cpp">
-      <Filter>App\GameObject\User\Player\State</Filter>
-    </ClCompile>
     <ClCompile Include="App\GameObject\User\Player\Combo\Action.cpp">
       <Filter>App\GameObject\User\Player\Combo</Filter>
     </ClCompile>
@@ -888,9 +885,6 @@
     </ClInclude>
     <ClInclude Include="App\Game.h">
       <Filter>App</Filter>
-    </ClInclude>
-    <ClInclude Include="App\GameObject\User\Player\State\RotatingSlashCharge.h">
-      <Filter>App\GameObject\User\Player\State</Filter>
     </ClInclude>
     <ClInclude Include="App\GameObject\User\Player\Combo\Action.h">
       <Filter>App\GameObject\User\Player\Combo</Filter>

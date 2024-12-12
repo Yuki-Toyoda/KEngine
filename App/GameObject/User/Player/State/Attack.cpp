@@ -1,6 +1,5 @@
 #include "Attack.h"
 #include "Root.h"
-#include "RotatingSlashCharge.h"
 #include "App/GameObject/User/Player/Player.h"
 #include "App/GameObject/User/FollowCamera/FollowCamera.h"
 #include "App/GameObject/User/LockOn/LockOn.h"
