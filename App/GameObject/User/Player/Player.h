@@ -291,6 +291,8 @@ private: // メンバ変数
 
 	// 追従対象の目標角度
 	float targetAngle_ = 0.0f;
+	// 目標角度への補正スピード
+	const float angleCorrectSpeed_ = 0.1f;
 
 	// コライダー座標
 	WorldTransform colliderTransform_;

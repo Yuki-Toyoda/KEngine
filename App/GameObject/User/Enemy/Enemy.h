@@ -292,7 +292,7 @@ private: // メンバ変数
 	// プレイヤーへの角度
 	float targetAngle_ = 0.0f;
 	// 目標角度への補正スピード
-	float angleCorrectSpeed = 0.1f;
+	const float angleCorrectSpeed = 0.1f;
 
 	// 攻撃可能状態か
 	bool canAttack_ = false;

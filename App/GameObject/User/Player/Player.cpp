@@ -200,7 +200,7 @@ void Player::Update()
 			targetAngle_ = std::atan2(sub.x, sub.z);
 
 			// 身体を回転させる
-			transform_.rotate_.y = KLib::LerpShortAngle(transform_.rotate_.y, targetAngle_, 0.1f);
+			transform_.rotate_.y = KLib::LerpShortAngle(transform_.rotate_.y, targetAngle_, angleCorrectSpeed_);
 		}
 
 		// Z注目有効時かつ敵が死亡していない場合
@@ -312,7 +312,7 @@ void Player::HitStopUpdate()
 {
 	// ヒットストップタイマー終了時
 	if (hitStopTimer_.GetIsFinish()) {
-		// プレイヤーアニメーションの再生速度を指定
+		// プレイヤーアニメーションの再生速度等速へリセット
 		skiningModels_["Player"]->animationManager_.SetAnimationSpeed(1.0f);
 		// 軌跡座標の更新を再開
 		SwordLine_->SetIsUpdateTrail(true);
