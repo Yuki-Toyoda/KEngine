@@ -183,7 +183,7 @@ void GameManager::GameStateUpdate()
 		// 終了演出の開始フラグ
 		if (!isEndStaging_) {
 			// フェードアウト開始
-			StartFade(FADEOUT, 1.5f);
+			StartFade(FADEOUT, deadFadeOutStagingTime_);
 
 			// 終了演出フラグをtrue
 			isEndStaging_ = true;

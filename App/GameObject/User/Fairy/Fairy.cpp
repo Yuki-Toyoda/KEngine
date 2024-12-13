@@ -41,7 +41,7 @@ void Fairy::UpdateTarget()
 		Matrix4x4 rotateMat = Matrix4x4::MakeRotate(transform_.rotate_);
 
 		// 遷移後の座標を求める
-		Vector3 interTargetA = Vector3(0.0f, 0.0f, 0.0f);
+		Vector3 interTargetA = Vector3{};
 		interTargetA = KLib::Lerp<Vector3>(target_->translate_, interTargetA, trackingDelay_);
 		noOffsetTransform_.translate_ = KLib::Lerp<Vector3>(target_->translate_, interTargetA, trackingDelay_) + (kOffset_ * rotateMat);
 	}

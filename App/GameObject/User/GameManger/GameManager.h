@@ -153,6 +153,9 @@ private: // メンバ変数
 	// フェード演出用タイマー
 	KLib::DeltaTimer fadeTimer_{};
 
+	// 死亡時のフェードアウト演出時間
+	const float deadFadeOutStagingTime_ = 1.5f;
+
 #pragma region デバッグ用変数
 
 	// デバッグ状態の有効化フラグ
