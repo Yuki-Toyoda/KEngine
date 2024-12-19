@@ -108,7 +108,7 @@ void Enemy::Init()
 	enemyParticle_->model_->materials_[1].tex_ = TextureManager::Load("EnemyParticle.png");
 	enemyParticle_->model_->materials_[1].enableLighting_ = false;
 	enemyParticle_->transform_.SetParent(&bodyTransform_);
-	enemyParticle_->transform_.translate_.y -= -0.9f;
+	enemyParticle_->transform_.translate_.y -= 0.9f;
 	enemyParticle_->emitterDataBuffer_->data_->count = 25;
 	enemyParticle_->emitterDataBuffer_->data_->frequency = 0.1f;
 	enemyParticle_->emitterDataBuffer_->data_->frequencyTime = 0.1f;

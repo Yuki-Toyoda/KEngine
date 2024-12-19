@@ -404,9 +404,6 @@
     <ClCompile Include="App\GameObject\User\Player\State\Recovery.cpp">
       <Filter>App\GameObject\User\Player\State</Filter>
     </ClCompile>
-    <ClCompile Include="Externals\imgui\implot.cpp" />
-    <ClCompile Include="Externals\imgui\implot_demo.cpp" />
-    <ClCompile Include="Externals\imgui\implot_items.cpp" />
     <ClCompile Include="Engine\Audio\Audio.cpp">
       <Filter>Engine\Audio</Filter>
     </ClCompile>
@@ -415,6 +412,15 @@
     </ClCompile>
     <ClCompile Include="Engine\Utility\Animation\AnimationManager.cpp">
       <Filter>Engine\Utility\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Externals\imgui\implot.cpp">
+      <Filter>Externals\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Externals\imgui\implot_demo.cpp">
+      <Filter>Externals\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Externals\imgui\implot_items.cpp">
+      <Filter>Externals\ImGui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -898,8 +904,6 @@
     <ClInclude Include="App\GameObject\User\Player\State\Recovery.h">
       <Filter>App\GameObject\User\Player\State</Filter>
     </ClInclude>
-    <ClInclude Include="Externals\imgui\implot.h" />
-    <ClInclude Include="Externals\imgui\implot_internal.h" />
     <ClInclude Include="Engine\Audio\Audio.h">
       <Filter>Engine\Audio</Filter>
     </ClInclude>
@@ -917,6 +921,12 @@
     </ClInclude>
     <ClInclude Include="Engine\Utility\Angle\Angle.h">
       <Filter>Engine\Utility\Angle</Filter>
+    </ClInclude>
+    <ClInclude Include="Externals\imgui\implot.h">
+      <Filter>Externals\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Externals\imgui\implot_internal.h">
+      <Filter>Externals\ImGui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1520,16 +1530,36 @@
     <FxCompile Include="Engine\Resource\Shader\Trail\Trail.VS.hlsl">
       <Filter>Engine\Resource\Shader</Filter>
     </FxCompile>
-    <FxCompile Include="Engine\Resource\Shader\Particle\user\BulletSpark\UpdateBulletSparkParticle.CS.hlsl" />
-    <FxCompile Include="Engine\Resource\Shader\Particle\user\BulletSpark\EmitBulletSparkParticle.CS.hlsl" />
-    <FxCompile Include="Engine\Resource\Shader\Particle\user\Enemy\EmitEnemyParticle.CS.hlsl" />
-    <FxCompile Include="Engine\Resource\Shader\Particle\user\Enemy\UpdateEnemyParticle.CS.hlsl" />
-    <FxCompile Include="Engine\Resource\Shader\Particle\user\HitDebris\EmitHitDebrisParticle.CS.hlsl" />
-    <FxCompile Include="Engine\Resource\Shader\Particle\user\HitDebris\UpdateHitDebrisParticle.CS.hlsl" />
-    <FxCompile Include="Engine\Resource\Shader\Particle\user\Bullet\EmitBulletParticle.CS.hlsl" />
-    <FxCompile Include="Engine\Resource\Shader\Particle\user\Bullet\UpdateBulletParticle.CS.hlsl" />
-    <FxCompile Include="Engine\Resource\Shader\Particle\user\BulletTrail\EmitBulletTrailParticle.CS.hlsl" />
-    <FxCompile Include="Engine\Resource\Shader\Particle\user\BulletTrail\UpdateBulletTrailParticle.CS.hlsl" />
+    <FxCompile Include="Engine\Resource\Shader\Particle\user\Bullet\EmitBulletParticle.CS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\Particle\user\BulletSpark\EmitBulletSparkParticle.CS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\Particle\user\BulletTrail\EmitBulletTrailParticle.CS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\Particle\user\Enemy\EmitEnemyParticle.CS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\Particle\user\HitDebris\EmitHitDebrisParticle.CS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\Particle\user\Bullet\UpdateBulletParticle.CS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\Particle\user\BulletSpark\UpdateBulletSparkParticle.CS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\Particle\user\BulletTrail\UpdateBulletTrailParticle.CS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\Particle\user\Enemy\UpdateEnemyParticle.CS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Engine\Resource\Shader\Particle\user\HitDebris\UpdateHitDebrisParticle.CS.hlsl">
+      <Filter>Engine\Resource\Shader</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Externals\imgui\LICENSE.txt">
