@@ -364,6 +364,9 @@ void Enemy::OnCollision(Collider* collider)
 		// プレイヤーに攻撃が命中したことを伝える
 		player_->SetIsHit(true);
 
+		// ダメージパーティクルの再生
+		PlayDamageParticle();
+
 		// とどめの場合固定秒数でヒットストップ
 		if (hp_ <= 0) {
 			player_->StartHitStop(finishHitStopTime_, deadStagingAnimSpeed_);
@@ -519,6 +522,9 @@ void Enemy::SetUpDeadCameraStaging()
 		// カメラ座標を動かす
 		stagingCamera->transform_.translate_ += offset;
 		stagingCamera->transform_.rotate_.y = rotateY;
+
+		// カメラ配列に追加
+		deadStagingCameras_.push_back(stagingCamera);
 	}
 
 	// 演出用カメラに切り替え

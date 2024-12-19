@@ -151,15 +151,6 @@ void Player::Update()
 		sprites_["LowerObi"]->scale_.y = KLib::Lerp<float>(sprites_["LowerObi"]->scale_.y, maxObiSizeY_, obiCorrectSpeed_);
 	}
 
-	// 行動可能状態でない場合早期リターン
-	if (!canAction_) {
-		// 強制待機状態に
-		if (GetStateName() != "Root") {
-			ChangeState(std::make_unique<Root>());
-		}
-		return;
-	}
-
 	// 軌跡a値
 	float& trailAlpha = SwordLine_->trailMaterial_.color_.w;
 	// 攻撃中は軌跡を表示させる
@@ -179,6 +170,14 @@ void Player::Update()
 	// 線の更新
 	SwordLine_->Update();
 
+	// 行動可能状態でない場合早期リターン
+	if (!canAction_) {
+		// 強制待機状態に
+		if (GetStateName() != "Root") {
+			ChangeState(std::make_unique<Root>());
+		}
+		return;
+	}
 
 	// ヒットストップ中であれば更新関数呼び出しからの早期リターン
 	if (isHitStop_) { 
@@ -294,8 +293,8 @@ void Player::ChangeState(std::unique_ptr<IState> newState)
 
 void Player::StartHitStop(const float hitStopTime, const float timeScale)
 {
-	// ヒットストップ秒数が0以下の場合、ゲーム速度が0.0の場合早期リターン
-	if (hitStopTime <= 0.0f || timeScale != 0.0f) { return; }
+	// ヒットストップ秒数が0以下の場合早期リターン
+	if (hitStopTime <= 0.0f) { return; }
 
 	// プレイヤーアニメーションの再生速度を指定
 	skiningModels_["Player"]->animationManager_.SetAnimationSpeed(timeScale);
@@ -303,6 +302,9 @@ void Player::StartHitStop(const float hitStopTime, const float timeScale)
 	hitStopTimer_.Start(hitStopTime);
 	// ヒットストップ中状態に
 	isHitStop_ = true;
+
+	// ゲーム速度が0の場合更新を停止
+	if (timeScale > 0.0f) { return; }
 
 	// 軌跡座標の更新を停止
 	SwordLine_->SetIsUpdateTrail(false);
