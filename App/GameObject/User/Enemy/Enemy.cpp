@@ -9,7 +9,7 @@ void Enemy::Init()
 {
 	// 身体用トランスフォームの初期化
 	bodyTransform_.Init();
-	bodyTransform_.translate_.y += 1.5f;
+	bodyTransform_.translate_.y += 2.0f;
 	bodyTransform_.SetParent(&transform_, 0b011);
 
 	//武器用のトランスフォームの初期化
@@ -61,7 +61,7 @@ void Enemy::Init()
 	enemyParticle_->model_->materials_[1].tex_ = TextureManager::Load("EnemyParticle.png");
 	enemyParticle_->model_->materials_[1].enableLighting_ = false;
 	enemyParticle_->transform_.SetParent(&bodyTransform_);
-	enemyParticle_->transform_.translate_.y -= 1.0f;
+	enemyParticle_->transform_.translate_.y -= 1.5f;
 	enemyParticle_->emitterDataBuffer_->data_->count = 25;
 	enemyParticle_->emitterDataBuffer_->data_->frequency = 0.1f;
 	enemyParticle_->emitterDataBuffer_->data_->frequencyTime = 0.1f;

@@ -178,7 +178,7 @@ void FollowCamera::ZForcusUpdate()
 		// 目標角度になるまでは補正を行う
 		if (std::abs(transform_.rotate_.y - targetAngleY_) > angleCorrectThreshold_ && !isCanControll_) {
 			// ロックオン対象の座標
-			Vector3 targetPos = lockOn_->target_->transform_.translate_;
+			Vector3 targetPos = Vector3(lockOn_->target_->transform_.translate_.x, lockOn_->target_->transform_.translate_.y + 2.0f, lockOn_->target_->transform_.translate_.z);
 			// 追従対象からロックオン対象への差分ベクトル
 			Vector3 sub = targetPos - target_->translate_;
 
@@ -196,6 +196,7 @@ void FollowCamera::ZForcusUpdate()
 			correctionSpeed_ = zStartForcusCorrectionSpeed_;
 
 			// 回転させる
+			transform_.rotate_.x = KLib::LerpShortAngle(transform_.rotate_.x, targetAngleX_, correctionSpeed_);
 			transform_.rotate_.y = KLib::LerpShortAngle(transform_.rotate_.y, targetAngleY_, correctionSpeed_);
 
 			float addZOffset{};
@@ -312,7 +313,7 @@ void FollowCamera::ForcusControllUpdate()
 	if (!isCanControll_) { return; }
 
 	// ロックオン対象の座標
-	Vector3 targetPos = lockOn_->target_->transform_.translate_;
+	Vector3 targetPos = Vector3(lockOn_->target_->transform_.translate_.x, lockOn_->target_->transform_.translate_.y + 2.0f, lockOn_->target_->transform_.translate_.z);
 	// 追従対象からロックオン対象への差分ベクトル
 	Vector3 sub = targetPos - target_->translate_;
 

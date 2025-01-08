@@ -27,15 +27,8 @@ void EnemyRoot::Update()
 		enemy_->SetCanAttack(true);
 	}
 
-	// 最高高度に達していない場合
-	if (enemy_->transform_.translate_.y < kHeight_) {
-		// 最高高度に線形補間を行う
-		enemy_->transform_.translate_.y = KLib::Lerp<float>(enemy_->transform_.translate_.y, kHeight_, KLib::EaseOutQuad(klerpSpeed_));
-	}
-	else {
-		// 超過している場合最高高度に補間を行う
-		enemy_->transform_.translate_.y = kHeight_;
-	}
+	// 最高高度に線形補間を行う
+	enemy_->transform_.translate_.y = KLib::Lerp<float>(enemy_->transform_.translate_.y, kHeight_, KLib::EaseOutQuad(klerpSpeed_));
 }
 
 void EnemyRoot::DisplayImGui()
