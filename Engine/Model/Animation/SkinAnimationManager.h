@@ -80,6 +80,12 @@ public: // アクセッサ等
 	bool GetIsPlayingAnimation(const std::string& animName);
 
 	/// <summary>
+	/// 再生中アニメーション名のゲッター
+	/// </summary>
+	/// <returns>再生中アニメーション名</returns>
+	std::string GetPlayingAnimationName() { return playingAnimName_; }
+
+	/// <summary>
 	/// 再生中アニメーションの進捗度ゲッター
 	/// </summary>
 	/// <returns>再生中アニメーションの進捗(0.0 ~ 1.0)</returns>

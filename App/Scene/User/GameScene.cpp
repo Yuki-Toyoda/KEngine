@@ -33,7 +33,7 @@ void GameScene::Init(){
 	// 敵生成
 	enemy_ = gameObjectManager_->CreateInstance<Enemy>("Enemy", IObject::TagEnemy);
 	// 敵の初期座標
-	enemy_->transform_.translate_ = { 0.0f, 1.5f, 10.0f };
+	enemy_->transform_.translate_ = { 0.0f, 1.0f, 7.5f };
 	// プレイヤーの座標を敵に渡し続ける
 	enemy_->SetPlayerPos(&player_->transform_);
 	// プレイヤーに敵をセット

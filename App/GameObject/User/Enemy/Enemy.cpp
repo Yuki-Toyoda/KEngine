@@ -7,69 +7,23 @@
 
 void Enemy::Init()
 {
-	// アニメーションマネージャの取得
-	animManager_ = AnimationManager::GetInstance();
-
-	// 各種ワールドトランスフォームの初期化
+	// 身体用トランスフォームの初期化
 	bodyTransform_.Init();
-	// 親子付け
+	bodyTransform_.translate_.y += 1.5f;
 	bodyTransform_.SetParent(&transform_, 0b011);
-	headTransform_.Init();
-	headTransform_.SetParent(&bodyTransform_, 0b111);
-	headTransform_.translate_ = { 0.0f, 1.1f, 0.0f };
-	armTransform_R_.Init();
-	armTransform_R_.SetParent(&bodyTransform_, 0b111);
-	armTransform_R_.translate_ = { 0.0f, 1.0f, 0.0f };
-	armTransform_L_.Init();
-	armTransform_L_.SetParent(&bodyTransform_, 0b111);
-	armTransform_L_.translate_ = { 0.0f, 1.0f, 0.0f };
+
+	//武器用のトランスフォームの初期化
+	weaponTransform_.Init();
+	weaponTransform_.SetParent(&transform_);
 
 	// 落ち影用トランスフォームの初期化
 	shadowTransform_.Init();
 	shadowTransform_.SetParent(&transform_);
 
-	// アニメーションパラメータの生成
-
-	// 待機状態
-	CreateParameter("Enemy_Idle");
-	// 弾発射までのチャージアニメーション
-	CreateParameter("Enemy_Charge");
-	// 弾発射までのチャージ中
-	CreateParameter("Enemy_Charging");
-	// 弾発射のアニメーション
-	CreateParameter("Enemy_Shot");
-	// 弾の跳ね返しアニメーション
-	CreateParameter("Enemy_Rally");
-	// ダウンモーション
-	CreateParameter("Enemy_Down");
-	// ダウン中モーション
-	CreateParameter("Enemy_Downing");
-	// ダメージアニメーション
-	CreateParameter("Enemy_Damage");
-	// 死亡アニメーション
-	CreateParameter("Enemy_Dead");
-
-	// アニメーションの作成
-	enemyAnim_ = AnimationManager::GetInstance()->CreateAnimation("EnemyAnimation", "Enemy_Idle");
-	enemyAnim_->AddAnimationKeys<Vector3>("Body_Scale", &bodyTransform_.scale_);
-	enemyAnim_->AddAnimationKeys<Vector3>("Body_Rotate", &bodyTransform_.rotate_);
-	enemyAnim_->AddAnimationKeys<Vector3>("Body_Translate", &bodyTransform_.translate_);
-	enemyAnim_->AddAnimationKeys<Vector3>("Head_Scale", &headTransform_.scale_);
-	enemyAnim_->AddAnimationKeys<Vector3>("Head_Rotate", &headTransform_.rotate_);
-	enemyAnim_->AddAnimationKeys<Vector3>("Head_Translate", &headTransform_.translate_);
-	enemyAnim_->AddAnimationKeys<Vector3>("Arm_R_Scale", &armTransform_R_.scale_);
-	enemyAnim_->AddAnimationKeys<Vector3>("Arm_R_Rotate", &armTransform_R_.rotate_);
-	enemyAnim_->AddAnimationKeys<Vector3>("Arm_R_Translate", &armTransform_R_.translate_);
-	enemyAnim_->AddAnimationKeys<Vector3>("Arm_L_Scale", &armTransform_L_.scale_);
-	enemyAnim_->AddAnimationKeys<Vector3>("Arm_L_Rotate", &armTransform_L_.rotate_);
-	enemyAnim_->AddAnimationKeys<Vector3>("Arm_L_Translate", &armTransform_L_.translate_);
-	enemyAnim_->AddAnimationKeys<Vector3>("Translate", &transform_.translate_);
-	enemyAnim_->AddAnimationKeys <float> ("Alpha", &color_.w);
-
 #ifdef _DEBUG // デバッグ時のみ行う
 
 	// デバッグ時は攻撃を行わないように
-	isAttack_ = false;
+	//isAttack_ = false;
 	// 一度ダウンした場合起き上がらないように
 	isNeverDown_ = false;
 	// 無限HP
@@ -77,20 +31,19 @@ void Enemy::Init()
 
 #endif // _DEBUG
 
-	// ループ状態にする
-	enemyAnim_->isLoop_ = true;
-	// この状態で再生
-	enemyAnim_->Play();
-
 	// メッシュを追加
-	AddNormalModel("Body", &bodyTransform_, "./Resources/Enemy", "Body.obj");
-	AddNormalModel("Head", &headTransform_, "./Resources/Enemy", "Head.obj");
-	AddNormalModel("Arm_R", &armTransform_R_, "./Resources/Enemy", "Arm_R.obj");
-	AddNormalModel("Arm_L", &armTransform_L_, "./Resources/Enemy", "Arm_L.obj");
+	AddSkiningModel("Enemy", &transform_, "./Resources/Enemy", "Enemy_Anim.gltf");
+	AddSkiningModel("Sword", &weaponTransform_, "./Resources/EnemySword", "EnemySword.gltf");
 
 	// 落ち影用モデル
 	AddNormalModel("Shadow", &shadowTransform_, "./Resources/DropShadow", "DropShadow.obj");
 	normalModels_["Shadow"]->materials_[1].color_ = Vector4(0.0f, 0.0f, 0.0f, 0.5f);
+
+	// 待機アニメーションの再生
+	skiningModels_["Enemy"]->animationManager_.PlayAnimation("Idle", true);
+
+	// 武器を左手に追従するようにする
+	skiningModels_["Enemy"]->SetBoneParent("WeaponAnchor", &weaponTransform_);
 
 	// 球のコライダー追加
 	AddColliderSphere("Boss", &worldPos_, &colliderRadius_);
@@ -108,7 +61,7 @@ void Enemy::Init()
 	enemyParticle_->model_->materials_[1].tex_ = TextureManager::Load("EnemyParticle.png");
 	enemyParticle_->model_->materials_[1].enableLighting_ = false;
 	enemyParticle_->transform_.SetParent(&bodyTransform_);
-	enemyParticle_->transform_.translate_.y -= 0.9f;
+	enemyParticle_->transform_.translate_.y -= 1.0f;
 	enemyParticle_->emitterDataBuffer_->data_->count = 25;
 	enemyParticle_->emitterDataBuffer_->data_->frequency = 0.1f;
 	enemyParticle_->emitterDataBuffer_->data_->frequencyTime = 0.1f;
@@ -207,18 +160,6 @@ void Enemy::Update()
 		}
 	}
 
-	// 行動変更クールタイムタイマー更新
-	if (enemyAnim_->GetReadingParameterName() == "Enemy_Rally") {
-		if (enemyAnim_->isLoop_) {
-			enemyAnim_->isLoop_ = false;
-		}
-
-		if (enemyAnim_->isEnd_) {
-			// 行動変更
-			ChangeState(std::make_unique<EnemyRoot>());
-		}
-	}
-
 	// ヒットクールタイムタイマー更新
 	hitCoolTimeTimer_.Update();
 	// 行動変更クールタイムタイマー更新
@@ -230,7 +171,7 @@ void Enemy::Update()
 	}
 
 	// ワールド座標の取得
-	worldPos_ = transform_.GetWorldPos();
+	worldPos_ = bodyTransform_.GetWorldPos();
 }
 
 void Enemy::DisplayImGui()
@@ -250,12 +191,9 @@ void Enemy::DisplayImGui()
 	}
 
 	bodyTransform_.DisplayImGuiWithTreeNode("BodyTransform");
-	headTransform_.DisplayImGuiWithTreeNode("HeadTransform");
-	armTransform_R_.DisplayImGuiWithTreeNode("Arm_R_Transform");
-	armTransform_L_.DisplayImGuiWithTreeNode("Arm_L_Transform");
 	shadowTransform_.DisplayImGuiWithTreeNode("Shadow");
 
-	enemyAnim_->DisplayImGui();
+	//enemyAnim_->DisplayImGui();
 
 	ImGui::DragInt("HP", &hp_);
 
@@ -329,10 +267,14 @@ void Enemy::OnCollisionEnter(Collider* collider)
 		// 弾に命中パーティクル再生を指示
 		b->PlayHitParticle();
 
-		// ループを切る
-		enemyAnim_->isLoop_ = false;
-		// アニメーションを変更
-		enemyAnim_->ChangeParameter("Enemy_Rally", true);
+		//// ループを切る
+		//enemyAnim_->isLoop_ = false;
+		//// アニメーションを変更
+		//enemyAnim_->ChangeParameter("Enemy_Rally", true);
+
+		// ラリーアニメーションの再生
+		skiningModels_["Enemy"]->animationManager_.PlayAnimation("Rally", 0.1f, false);
+
 		// ラリー回数加算
 		rallyCount_++;
 	}
@@ -387,11 +329,8 @@ void Enemy::OnCollision(Collider* collider)
 			StartHitStop(player_->GetComboManager()->GetHitStopTime());
 		}
 
-		// ループを切る
-		enemyAnim_->isLoop_ = false;
-		enemyAnim_->ChangeParameter("Enemy_Damage", true);
-
-		
+		// ダメージアニメーションの再生
+		skiningModels_["Enemy"]->animationManager_.PlayAnimation("Damage", false);
 
 		// ダメージ効果音の再生
 		Audio::GetInstance()->PlayWave(damageSound_);
@@ -418,31 +357,10 @@ void Enemy::OnCollisionExit(Collider* collider)
 	}
 }
 
-void Enemy::CreateParameter(const std::string& name)
-{
-	// パラメータの生成
-	animManager_->CreateAnimationParameter(name);
-	animManager_->AddSelectAnimationKeys<Vector3>(name, "Body_Scale");
-	animManager_->AddSelectAnimationKeys<Vector3>(name, "Body_Rotate");
-	animManager_->AddSelectAnimationKeys<Vector3>(name, "Body_Translate");
-	animManager_->AddSelectAnimationKeys<Vector3>(name, "Head_Scale");
-	animManager_->AddSelectAnimationKeys<Vector3>(name, "Head_Rotate");
-	animManager_->AddSelectAnimationKeys<Vector3>(name, "Head_Translate");
-	animManager_->AddSelectAnimationKeys<Vector3>(name, "Arm_R_Scale");
-	animManager_->AddSelectAnimationKeys<Vector3>(name, "Arm_R_Rotate");
-	animManager_->AddSelectAnimationKeys<Vector3>(name, "Arm_R_Translate");
-	animManager_->AddSelectAnimationKeys<Vector3>(name, "Arm_L_Scale");
-	animManager_->AddSelectAnimationKeys<Vector3>(name, "Arm_L_Rotate");
-	animManager_->AddSelectAnimationKeys<Vector3>(name, "Arm_L_Translate");
-	animManager_->AddSelectAnimationKeys<Vector3>(name, "Translate");
-	animManager_->AddSelectAnimationKeys<float>(name, "Alpha");
-
-}
-
 void Enemy::ChangeState(std::unique_ptr<IEnemyState> newState)
 {
 	// 共通初期化を行う
-	newState->PreInit(this, enemyAnim_);
+	newState->PreInit(this);
 	// 初期化を行う
 	newState->Init();
 
@@ -455,8 +373,8 @@ void Enemy::StartHitStop(const float hitStopTime, float timeScale)
 	// ヒットストップ秒数が0以下の場合早期リターン
 	if (hitStopTime <= 0.0f) { return; }
 
-	// 再生中アニメーションの再生を停止
-	enemyAnim_->SetAnimationSpeed(timeScale);
+	// 再生中アニメーションの再生速度を調整
+	skiningModels_["Enemy"]->animationManager_.SetAnimationSpeed(timeScale);
 	// ヒットストップタイマー開始
 	hitStopTimer_.Start(hitStopTime);
 	// ヒットストップ中状態に
@@ -467,8 +385,8 @@ void Enemy::HitStopUpdate()
 {
 	// ヒットストップタイマー終了時
 	if (hitStopTimer_.GetIsFinish()) {
-		// 再生中アニメーションの再生を再開
-		enemyAnim_->SetAnimationSpeed(1.0f);
+		// 再生中アニメーションの再生速度リセット
+		skiningModels_["Enemy"]->animationManager_.SetAnimationSpeed(1.0f);
 
 		// ヒットストップ状態終了
 		isHitStop_ = false;

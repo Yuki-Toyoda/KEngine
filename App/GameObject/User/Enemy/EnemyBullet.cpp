@@ -39,7 +39,7 @@ void EnemyBullet::Init()
 	PlayTrailParticle();
 
 	// 球のコライダー追加
-	AddColliderSphere("Bullet", &transform_.translate_, &transform_.scale_.x);
+	AddColliderSphere("Bullet", &colliderPos_, &transform_.scale_.x);
 
 	// 効果音読み込み
 	counterSound_ = Audio::GetInstance()->LoadWave("./Resources/Audio/SE/Counter.mp3");
@@ -47,6 +47,9 @@ void EnemyBullet::Init()
 
 void EnemyBullet::Update()
 {
+	// 行列のペアレントを行う
+	transform_.SetWorldMat(parentMat_);
+
 	// 線形補間でサイズを大きく
 	transform_.scale_ = KLib::Lerp<Vector3>(transform_.scale_, { 1.0f, 1.0f, 1.0f }, 0.05f);
 
@@ -93,6 +96,9 @@ void EnemyBullet::Update()
 	if (transform_.translate_.y >= 10.0f) {
 		DeleteBullet();
 	}
+
+	// 当たり判定の座標更新
+	colliderPos_ = transform_.GetWorldPos();
 }
 
 void EnemyBullet::DisplayImGui()
@@ -188,6 +194,24 @@ void EnemyBullet::SetVelocity(const bool isPlayer, const int32_t rallyCount)
 	else {
 		velocity_ = sub * (speed_ + kAcceleration_ * (float)rallyCount);
 	}
+}
+
+void EnemyBullet::ParentPosition(Matrix4x4* mat, WorldTransform* wt)
+{
+	// 行列の取得
+	parentMat_ = mat;
+	// 該当するトランスフォームに親子付け
+	transform_.SetParent(wt);
+}
+
+void EnemyBullet::UnParent()
+{
+	// 親子付け解除
+	parentMat_ = nullptr;
+	// ワールド座標に補正しておく
+	transform_.translate_ = transform_.GetWorldPos();
+	// 親子付け解除
+	transform_.SetParent(nullptr);
 }
 
 void EnemyBullet::ShadowUpdate()

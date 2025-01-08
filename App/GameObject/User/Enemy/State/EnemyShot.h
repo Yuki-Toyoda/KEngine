@@ -32,6 +32,9 @@ private: // メンバ変数
 	// 発射する弾
 	EnemyBullet* bullet_ = nullptr;
 
+	// 左腕行列
+	Matrix4x4 leftArmMatrix_{};
+
 	// 発射するまでのタイマー
 	KLib::DeltaTimer timer_;
 	// 発射するまでの時間

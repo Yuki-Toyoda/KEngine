@@ -94,6 +94,17 @@ public: // アクセッサ等
 	/// <returns>跳ね返しているのか</returns>
 	bool GetIsReturn() { return isReturn_; }
 
+	/// <summary>
+	/// 弾と特定のボーンを親子付けする関数
+	/// </summary>
+	/// <param name="mat">親子付けするボーン行列</param>
+	/// <param name="wt">親子付けするワールドトランスフォーム</param>
+	void ParentPosition(Matrix4x4* mat, WorldTransform* wt);
+	/// <summary>
+	/// 親子付けの解除関数
+	/// </summary>
+	void UnParent();
+
 private: // メンバ変数
 
 	// 発射ベクトル
@@ -114,7 +125,7 @@ private: // メンバ変数
 	float maxShadowScale = 0.85f;
 	float minShadowScale = 0.5f;
 	// 敵のY座標閾値
-	float maxHeight_ = 5.0f;
+	float maxHeight_ = 15.0f;
 
 	// プレイヤーへ発射されているか
 	bool isPlayer_ = false;
@@ -134,9 +145,15 @@ private: // メンバ変数
 	// 敵の座標
 	const WorldTransform* enemy_ = nullptr;
 
+	// 指定座標との親子付け用行列
+	Matrix4x4* parentMat_ = nullptr;
+
 	// Dissolveの演出用フラグ
 	bool isDissolving_ = false;
 	bool isSwitchDissolving_ = false;
+
+	// 当たり判定用ワールド座標
+	Vector3 colliderPos_{};
 
 	// 雷パーティクル
 	Particle* sparkParticle_ = nullptr;

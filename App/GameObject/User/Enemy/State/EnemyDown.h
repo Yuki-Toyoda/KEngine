@@ -29,7 +29,7 @@ private: // メンバ変数
 	// 最高高度への補間スピード
 	const float klerpSpeed_ = 0.015f;
 	// 高度
-	const float kHeight_ = 1.5f;
+	const float kHeight_ = 0.0f;
 
 	// ダウン秒数
 	const float kMaxDownTime_ = 5.0f;

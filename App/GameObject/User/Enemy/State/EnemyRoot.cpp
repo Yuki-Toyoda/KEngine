@@ -6,20 +6,18 @@ void EnemyRoot::Init()
 	// 行動名称の設定
 	stateName_ = "Root";
 
-	// ループを行う
-	anim_->isLoop_ = true;
-	// アニメーションを変更
-	anim_->ChangeParameter("Enemy_Idle", idleAnimTransitionTime_, true);
+	// 待機アニメーションの再生
+	enemy_->skiningModels_["Enemy"]->animationManager_.PlayAnimation("Idle", 0.25f, true);
 }
 
 void EnemyRoot::Update()
 {
-	// アニメーションを変更
-	if (anim_->GetReadingParameterName() != "Enemy_Idle") {
-		// ループを切る
-		if (anim_->isEnd_) {
-			anim_->isLoop_ = true;
-			anim_->ChangeParameter("Enemy_Idle", idleAnimTransitionTime_, true);
+	// 待機アニメーションが再生中でないとき
+	if (enemy_->skiningModels_["Enemy"]->animationManager_.GetPlayingAnimationName() != "Idle") {
+		// アニメーション終了まで待機して待機アニメーションを再生する
+		if (!enemy_->skiningModels_["Enemy"]->animationManager_.GetIsPlayingAnimation()) {
+			// 待機アニメーションの再生
+			enemy_->skiningModels_["Enemy"]->animationManager_.PlayAnimation("Idle", 0.25f, true);
 		}
 	}
 

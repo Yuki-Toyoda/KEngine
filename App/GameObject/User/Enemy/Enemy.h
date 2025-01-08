@@ -1,6 +1,5 @@
 #pragma once
 #include "Engine/GameObject/IObject.h"
-#include "Engine/Utility/Animation/AnimationManager.h"
 #include "State/EnemyStateList.h"
 #include "Engine/Utility/Random/Random.h"
 
@@ -46,12 +45,6 @@ public: // メンバ関数
 	/// </summary>
 	/// <param name="collider"></param>
 	void OnCollisionExit(Collider* collider) override;
-
-	/// <summary>
-	/// パラメータを作成する
-	/// </summary>
-	/// <param name="name">作成するパラメータ</param>
-	void CreateParameter(const std::string& name);
 
 	/// <summary>
 	/// 行動状態変更関数
@@ -120,7 +113,7 @@ public: // アクセッサ等
 	/// 左腕のワールド座標ゲッター
 	/// </summary>
 	/// <returns>左腕のワールド座標</returns>
-	Vector3 GetLeftArmPosition() { return armTransform_L_.GetWorldPos(); }
+	Vector3 GetLeftArmPosition() { return transform_.GetWorldPos() + skiningModels_["Enemy"]->GetBonePosition("Hand.L"); }
 
 	/// <summary>
 	/// 死亡演出トリガーのゲッター
@@ -199,6 +192,12 @@ public: // アクセッサ等
 	/// <returns>コライダー半径</returns>
 	float GetColliderRadius() { return colliderRadius_; }
 
+	/// <summary>
+	/// 身体のワールドトランスフォームゲッター
+	/// </summary>
+	/// <returns>身体のワールドトランスフォーム</returns>
+	WorldTransform* GetBodyTransform() { return &bodyTransform_; }
+
 private: // メンバ変数
 
 	// ゲームマネージャー
@@ -212,11 +211,6 @@ private: // メンバ変数
 
 	// フィールドの範囲外に出ていないか
 	bool isFieldOut_ = false;
-
-	// アニメーションマネージャ
-	AnimationManager* animManager_ = nullptr;
-	// 敵アニメーション
-	MyAnimation* enemyAnim_{};
 
 	// 行動
 	std::unique_ptr<IEnemyState> state_;
@@ -265,12 +259,8 @@ private: // メンバ変数
 
 	// 身体のトランスフォーム
 	WorldTransform bodyTransform_{};
-	// 頭のトランスフォーム
-	WorldTransform headTransform_{};
-	// 右腕のトランスフォーム
-	WorldTransform armTransform_R_{};
-	// 左腕のトランスフォーム
-	WorldTransform armTransform_L_{};
+	// 武器のトランスフォーム
+	WorldTransform weaponTransform_{};
 
 	// 当たり判定ワールド座標
 	Vector3 worldPos_{};
@@ -283,7 +273,7 @@ private: // メンバ変数
 	float maxShadowScale = 2.5f;
 	float minShadowScale = 1.75f;
 	// 敵のY座標閾値
-	float maxHeight_ = 4.0f;
+	float maxHeight_ = 3.0f;
 	// 影高さ
 	const float shadowHeight_ = 0.05f;
 

@@ -26,9 +26,9 @@ public: // メンバ関数
 private: // メンバ変数
 
 	// 攻撃可能高度
-	const float kCanAttackHeight_ = 3.7f;
+	const float kCanAttackHeight_ = 2.5f;
 	// 最高高度
-	const float kHeight_ = 4.0f;
+	const float kHeight_ = 3.0f;
 	// 最高高度への補間スピード
 	const float klerpSpeed_ = 0.01f;
 

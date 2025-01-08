@@ -19,10 +19,9 @@ void EnemyDead::Init()
 	// 全パーティクルの再生再開
 	ParticleManager::GetInstance()->SetTimeScale(1.0f);
 
-	// ループを切れる
-	anim_->isLoop_ = false;
-	// 敵のアニメーションを変更
-	anim_->ChangeParameter("Enemy_Dead", true);
+	// 死亡アニメーションを再生 (ToDo : 現在仮置き、待機アニメーションを再生)
+	enemy_->skiningModels_["Enemy"]->animationManager_.PlayAnimation("Dead");
+	enemy_->transform_.translate_ = { 0.0f, 0.0f, -0.5f };
 	enemy_->transform_.rotate_.y = 0.037f;
 
 	// プレイヤー強制移動
@@ -46,16 +45,33 @@ void EnemyDead::Init()
 
 void EnemyDead::Update()
 {
-	// 全通常モデルを透明に
-	for (std::map<std::string, NormalModel*>::const_iterator it = enemy_->normalModels_.cbegin(); it != enemy_->normalModels_.cend(); ++it) {
-		// マテリアルに色を適用
-		it->second->materials_[1].dissolveStrength_ = enemy_->GetColor().w;
-		it->second->materials_[1].dissolveEdgeColor_ = deadDissolveEdgeColor_;
-		it->second->materials_[1].dissolveEdgeThreshold_ = deadDissolveEdgeThreshold_;
+	// アニメーションが終了していたら
+	if (!enemy_->skiningModels_["Enemy"]->animationManager_.GetIsPlayingAnimation()) {
+		// ディゾルブ演出が開始していなければ
+		if (!isStartDissolveStaging_) {
+			// 演出タイマー開始
+			dissolveStagingTimer_.Start(dissolveStagingTime_);
+			// ディゾルブ演出開始フラグTrue
+			isStartDissolveStaging_ = true;
+		}
 	}
 
-	// アニメーションが終了していたら
-	if (anim_->isEnd_) {
+	// ディゾルブ演出が開始されている場合
+	if (isStartDissolveStaging_) {
+		// 全モデルをディゾルブで消していく
+		for (std::map<std::string, SkiningModel*>::const_iterator it = enemy_->skiningModels_.cbegin(); it != enemy_->skiningModels_.cend(); ++it) {
+			// マテリアルに色を適用
+			it->second->materials_[0].dissolveStrength_ = dissolveStagingTimer_.GetProgress();
+			it->second->materials_[0].dissolveEdgeColor_ = deadDissolveEdgeColor_;
+			it->second->materials_[0].dissolveEdgeThreshold_ = deadDissolveEdgeThreshold_;
+		}
+
+		// ディゾルブ演出タイマー更新
+		dissolveStagingTimer_.Update();
+	}
+
+	// ディゾルブ演出が終了、かつディゾルブ演出が開始されている場合
+	if (dissolveStagingTimer_.GetIsFinish() && isStartDissolveStaging_) {
 		// 死亡状態に
 		enemy_->SetIsDead(true);
 	}
