@@ -34,6 +34,8 @@ void Enemy::Init()
 	// メッシュを追加
 	AddSkiningModel("Enemy", &transform_, "./Resources/Enemy", "Enemy_Anim.gltf");
 	AddSkiningModel("Sword", &weaponTransform_, "./Resources/EnemySword", "EnemySword.gltf");
+	skiningModels_["Enemy"]->materials_[0].enableLighting_ = false;
+	skiningModels_["Sword"]->materials_[0].enableLighting_ = false;
 
 	// 落ち影用モデル
 	AddNormalModel("Shadow", &shadowTransform_, "./Resources/DropShadow", "DropShadow.obj");
@@ -44,6 +46,8 @@ void Enemy::Init()
 
 	// 武器を左手に追従するようにする
 	skiningModels_["Enemy"]->SetBoneParent("WeaponAnchor", &weaponTransform_);
+	// 身体の辺り判定を上半身に追従させる
+	skiningModels_["Enemy"]->SetBoneParent("LowerBody", &bodyTransform_);
 
 	// 球のコライダー追加
 	AddColliderSphere("Boss", &worldPos_, &colliderRadius_);
@@ -514,7 +518,7 @@ void Enemy::PlayDamageParticle()
 	Particle* hitDebris = ParticleManager::GetInstance()->CreateNewParticle("HitDebris", "./Engine/Resource/Samples/Plane", "Plane.obj", 1.0f);
 	hitDebris->model_->materials_[1].tex_ = TextureManager::Load("HitDebrisEffect.png");
 	hitDebris->model_->materials_[1].enableLighting_ = false;
-	hitDebris->transform_.translate_ = transform_.translate_;
+	hitDebris->transform_.SetParent(&bodyTransform_);
 	hitDebris->emitterDataBuffer_->data_->count = 10;
 	hitDebris->emitterDataBuffer_->data_->frequency = 3.0f;
 	hitDebris->emitterDataBuffer_->data_->frequencyTime = 5.0f;

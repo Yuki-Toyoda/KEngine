@@ -43,6 +43,6 @@ private: // メンバ変数
 	// ディゾルブ時間計測用タイマー
 	KLib::DeltaTimer dissolveStagingTimer_{};
 	// ディゾルブ演出定数
-	const float dissolveStagingTime_ = 3.0f;
+	const float dissolveStagingTime_ = 5.0f;
 };
 
