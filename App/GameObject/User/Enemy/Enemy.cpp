@@ -23,7 +23,7 @@ void Enemy::Init()
 #ifdef _DEBUG // デバッグ時のみ行う
 
 	// デバッグ時は攻撃を行わないように
-	//isAttack_ = false;
+	isAttack_ = false;
 	// 一度ダウンした場合起き上がらないように
 	isNeverDown_ = false;
 	// 無限HP
@@ -196,8 +196,6 @@ void Enemy::DisplayImGui()
 
 	bodyTransform_.DisplayImGuiWithTreeNode("BodyTransform");
 	shadowTransform_.DisplayImGuiWithTreeNode("Shadow");
-
-	//enemyAnim_->DisplayImGui();
 
 	ImGui::DragInt("HP", &hp_);
 

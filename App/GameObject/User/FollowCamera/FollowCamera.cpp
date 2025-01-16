@@ -334,9 +334,12 @@ void FollowCamera::ForcusControllUpdate()
 		rStickInput = Vector3::kZero;
 	}
 
+	cameraSensitivity_.x = KLib::Lerp<float>(cameraSensitivity_.x, rStickInput.x, sensitivityAcceleration_);
+	cameraSensitivity_.y = KLib::Lerp<float>(cameraSensitivity_.y, rStickInput.z, sensitivityAcceleration_);
+
 	// カメラを回転させる
-	transform_.rotate_.y += rStickInput.x * sensitivity_.x;
-	transform_.rotate_.x -= rStickInput.z * sensitivity_.y;
+	transform_.rotate_.y += cameraSensitivity_.x * sensitivity_.x;
+	transform_.rotate_.x -= cameraSensitivity_.y * sensitivity_.y;
 
 	// x軸の回転角度が一定値を上回った場合
 	if (transform_.rotate_.x > maxLockOnControllAngleX_) {
@@ -346,6 +349,7 @@ void FollowCamera::ForcusControllUpdate()
 		transform_.rotate_.x = minLockOnControllAngleX_;
 	}
 
+	// Z軸オフセットの調整
 	float addZOffset = 0.0f;
 
 	// X軸方向の回転でオフセットを変更する

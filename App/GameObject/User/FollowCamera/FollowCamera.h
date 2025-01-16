@@ -132,8 +132,12 @@ private: // メンバ変数
 
 	// カメラ操作可能フラグ
 	bool isCanControll_ = true;
+	// 現在のカメラの操作速度
+	Vector2 cameraSensitivity_{};
 	// カメラ操作感度
 	Vector2 sensitivity_ = { 0.025f, 0.025f };
+	// カメラ操作加速度
+	const float sensitivityAcceleration_ = 0.3f;
 	// 操作時のスティックデッドゾーン
 	const float deadZone_ = 0.25f;
 
@@ -203,9 +207,9 @@ private: // メンバ変数
 	// 追従対象の残像座標
 	Vector3 interTarget_ = {};
 	// カメラの追従遅延量
-	const float trackingDelay_ = 0.35f;
+	const float trackingDelay_ = 0.1f;
 	// Z注目時の追従遅延量
-	const float zForcusTrackingDelay_ = 0.1f;
+	const float zForcusTrackingDelay_ = 0.04f;
 
 	// Z注目有効トリガー
 	bool enableZForcus_ = false;
