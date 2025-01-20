@@ -33,6 +33,12 @@ public: // その他関数
 	void OnCollisionEnter(Collider* collider) override;
 
 	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="collider"></param>
+	void OnCollision(Collider* collider) override;
+
+	/// <summary>
 	/// 衝突していたオブジェクトから離れた時のコールバック関数
 	/// </summary>
 	/// <param name="collider">衝突していたコライダー<</param>

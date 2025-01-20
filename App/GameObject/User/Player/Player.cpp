@@ -116,6 +116,9 @@ void Player::Update()
 	// 落ち影更新
 	ShadowUpdate();
 
+	//コライダーのワールド座標更新
+	colliderWorldPos_ = colliderTransform_.GetWorldPos();
+
 	// ゲーム開始状態のとき
 	if (gameManager_->GetIsGameStart() && !isSetUp_) {
 		// メインカメラを使用
@@ -277,6 +280,23 @@ void Player::OnCollisionEnter(Collider* collider)
 
 		// パリィ演出を開始
 		followCamera_->StartBlur(parryBlurStartTime_, parryBlurEndTime_, parryBlurStrength_);
+	}
+}
+
+void Player::OnCollision(Collider* collider)
+{
+	// 敵との衝突時
+	if (collider->GetColliderName() == "Boss") {
+		// 敵を取得
+		Enemy* enemy = GameObjectManager::GetInstance()->GetGameObject<Enemy>("Enemy");
+		// 敵の衝突判定半径を取得
+		float radius = enemy->GetColliderRadius();
+
+		// 敵からプレイヤーの座標取得
+		Vector3 sub = Vector3::Normalize(colliderTransform_.GetWorldPos() - enemy->GetColliderPos());
+
+		transform_.translate_ = enemy->GetColliderPos() + (sub * (radius + colliderRadius_));
+		transform_.translate_.y = 0.0f;
 	}
 }
 

@@ -51,9 +51,17 @@ void TestObject::DisplayImGui()
 void TestObject::OnCollisionEnter(Collider* collider)
 {
 	collider;
+	normalModels_["TestMesh"]->materials_[0].color_ = { 0.0f, 1.0f, 0.0f, 1.0f };
+}
+
+void TestObject::OnCollision(Collider* collider)
+{
+	collider;
+	normalModels_["TestMesh"]->materials_[0].color_ = { 1.0f, 0.0f, 0.0f, 1.0f };
 }
 
 void TestObject::OnCollisionExit(Collider* collider)
 {
 	collider;
+	normalModels_["TestMesh"]->materials_[0].color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
 }

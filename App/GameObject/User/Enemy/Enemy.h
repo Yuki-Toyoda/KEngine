@@ -187,6 +187,12 @@ public: // アクセッサ等
 	bool GetIsNeverDown() { return isNeverDown_; }
 
 	/// <summary>
+	/// コライダーワールド座標のゲッター
+	/// </summary>
+	/// <returns>コライダーワールド座標</returns>
+	Vector3 GetColliderPos() { return worldPos_; }
+
+	/// <summary>
 	/// コライダー半径のゲッター
 	/// </summary>
 	/// <returns>コライダー半径</returns>

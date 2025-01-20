@@ -9,7 +9,7 @@ void Enemy::Init()
 {
 	// 身体用トランスフォームの初期化
 	bodyTransform_.Init();
-	bodyTransform_.translate_.y += 2.0f;
+	bodyTransform_.translate_.y += 3.0f;
 	bodyTransform_.SetParent(&transform_, 0b011);
 
 	//武器用のトランスフォームの初期化
@@ -73,6 +73,9 @@ void Enemy::Init()
 
 void Enemy::Update()
 {
+	// ワールド座標の取得
+	worldPos_ = bodyTransform_.GetWorldPos();
+
 	// ダウン状態でない場合
 	if (state_->GetStateName() != "Down") {
 		// 差分ベクトルを求める
@@ -268,11 +271,6 @@ void Enemy::OnCollisionEnter(Collider* collider)
 		/// ここまで来たら敵のラリー成功
 		// 弾に命中パーティクル再生を指示
 		b->PlayHitParticle();
-
-		//// ループを切る
-		//enemyAnim_->isLoop_ = false;
-		//// アニメーションを変更
-		//enemyAnim_->ChangeParameter("Enemy_Rally", true);
 
 		// ラリーアニメーションの再生
 		skiningModels_["Enemy"]->animationManager_.PlayAnimation("Rally", 0.1f, false);
