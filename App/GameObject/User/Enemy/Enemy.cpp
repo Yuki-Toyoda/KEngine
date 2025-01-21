@@ -214,13 +214,13 @@ void Enemy::DisplayImGui()
 	ImGui::Checkbox("FieldOut", &isFieldOut_);
 }
 
-void Enemy::OnCollisionEnter(Collider* collider)
+void Enemy::OnCollisionEnter(Collider* target, [[maybe_unused]] Collider* source)
 {
 	// 死亡している場合早期リターン
 	if (isDead_) { return; }
 
 	// 弾と衝突していたら
-	if (collider->GetColliderName() == "Bullet") {
+	if (target->GetColliderName() == "Bullet") {
 		// 弾の取得
 		EnemyBullet* b = GameObjectManager::GetInstance()->GetGameObject<EnemyBullet>("EnemyBullet");
 
@@ -280,7 +280,7 @@ void Enemy::OnCollisionEnter(Collider* collider)
 	}
 }
 
-void Enemy::OnCollision(Collider* collider)
+void Enemy::OnCollision(Collider* target, [[maybe_unused]] Collider* source)
 {
 	// 死亡している場合は早期リターン
 	if (isDead_) {
@@ -288,7 +288,7 @@ void Enemy::OnCollision(Collider* collider)
 	}
 
 	// 剣と衝突していたら
-	if (collider->GetColliderName() == "Sword" || collider->GetColliderName() == "PlayerCollider") {
+	if (target->GetColliderName() == "Sword" || target->GetColliderName() == "PlayerCollider") {
 		// 下記条件の場合早期リターン
 		// 1. プレイヤーが攻撃中でない
 		// 2. ヒットクールタイムが終了している
@@ -337,13 +337,13 @@ void Enemy::OnCollision(Collider* collider)
 	}
 
 	// フィールドと衝突している場合
-	if (collider->GetColliderName() == "Level") {
+	if (target->GetColliderName() == "Level") {
 		// フィールド内に存在する
 		isFieldOut_ = false;
 	}
 }
 
-void Enemy::OnCollisionExit(Collider* collider)
+void Enemy::OnCollisionExit(Collider* target, [[maybe_unused]] Collider* source)
 {
 	// 死亡していなければ
 	if (isDead_) {
@@ -351,7 +351,7 @@ void Enemy::OnCollisionExit(Collider* collider)
 	}
 
 	// フィールドから離れた場合
-	if (collider->GetColliderName() == "Level") {
+	if (target->GetColliderName() == "Level") {
 		// フィールド外に出ている
 		isFieldOut_ = true;
 	}

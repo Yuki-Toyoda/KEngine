@@ -29,20 +29,23 @@ public: // その他関数
 	/// <summary>
 	/// 衝突した瞬間にコールバックされる関数
 	/// </summary>
-	/// <param name="collider">衝突したコライダー</param>
-	void OnCollisionEnter(Collider* collider) override;
+	/// <param name="target">衝突した対象のコライダー</param>
+	/// <param name="source">衝突した自分のコライダー</param>
+	void OnCollisionEnter(Collider* target, Collider* source) override;
 
 	/// <summary>
-	/// 
+	/// 衝突時コールバック関数
 	/// </summary>
-	/// <param name="collider"></param>
-	void OnCollision(Collider* collider) override;
+	/// <param name="target">衝突した対象のコライダー</param>
+	/// <param name="source">衝突した自分のコライダー</param>
+	void OnCollision(Collider* target, Collider* source) override;
 
 	/// <summary>
 	/// 衝突していたオブジェクトから離れた時のコールバック関数
 	/// </summary>
-	/// <param name="collider">衝突していたコライダー<</param>
-	void OnCollisionExit(Collider* collider) override;
+	/// <param name="target">衝突した対象のコライダー</param>
+	/// <param name="source">衝突した自分のコライダー</param>
+	void OnCollisionExit(Collider* target, Collider* source) override;
 
 private: // プライベートなメンバ変数
 

@@ -269,10 +269,10 @@ void Player::DisplayImGui()
 	IObject::DisplayImGui();
 }
 
-void Player::OnCollisionEnter(Collider* collider)
+void Player::OnCollisionEnter(Collider* target, [[maybe_unused]] Collider* source)
 {
 	// プレイヤーの剣と衝突していたら
-	if (collider->GetColliderName() == "Bullet" && GetStateName() == "Attack") {
+	if (target->GetColliderName() == "Bullet" && GetStateName() == "Attack") {
 		// 敵弾取得
 		EnemyBullet* bullet = GameObjectManager::GetInstance()->GetGameObject<EnemyBullet>("EnemyBullet");
 
@@ -283,10 +283,10 @@ void Player::OnCollisionEnter(Collider* collider)
 	}
 }
 
-void Player::OnCollision(Collider* collider)
+void Player::OnCollision(Collider* target, [[maybe_unused]] Collider* source)
 {
-	// 敵との衝突時
-	if (collider->GetColliderName() == "Boss") {
+	// 敵とプレイヤーのコライダーが衝突した時
+	if (target->GetColliderName() == "Boss" && source->GetColliderName() == "PlayerCollider") {
 		// 敵を取得
 		Enemy* enemy = GameObjectManager::GetInstance()->GetGameObject<Enemy>("Enemy");
 		// 敵の衝突判定半径を取得
@@ -299,7 +299,6 @@ void Player::OnCollision(Collider* collider)
 		transform_.translate_.y = 0.0f;
 	}
 }
-
 void Player::ChangeState(std::unique_ptr<IState> newState)
 {
 	// 共通初期化を行う

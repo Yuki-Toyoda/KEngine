@@ -106,10 +106,10 @@ void EnemyBullet::DisplayImGui()
 
 }
 
-void EnemyBullet::OnCollisionEnter(Collider* collider)
+void EnemyBullet::OnCollisionEnter(Collider* target, [[maybe_unused]] Collider* source)
 {
 	// プレイヤーの剣と衝突している、かつプレイヤーに向かって弾が飛んでいるとき
-	if (collider->GetColliderName() == "Sword" && isPlayer_) {
+	if (target->GetColliderName() == "Sword" && isPlayer_) {
 		// プレイヤーの取得
 		Player* p = GameObjectManager::GetInstance()->GetGameObject<Player>("Player");
 
@@ -142,7 +142,7 @@ void EnemyBullet::OnCollisionEnter(Collider* collider)
 	}
 
 	// ボスと衝突したら
-	if (collider->GetColliderName() == "Boss" && isReturn_) {
+	if (target->GetColliderName() == "Boss" && isReturn_) {
 		Enemy* e = GameObjectManager::GetInstance()->GetGameObject<Enemy>("Enemy");
 		SetVelocity(true, e->GetRallyCount());
 		isReturn_ = false;
@@ -152,13 +152,13 @@ void EnemyBullet::OnCollisionEnter(Collider* collider)
 	}
 
 	// プレイヤー、または床と衝突したら
-	if (collider->GetColliderName() == "PlayerCollider"
-		|| collider->GetGameObject()->GetObjectTag() == TagFloor) {
+	if (target->GetColliderName() == "PlayerCollider"
+		|| target->GetGameObject()->GetObjectTag() == TagFloor) {
 		// プレイヤーの場合ダメージ処理を行う
-		if (collider->GetColliderName() == "PlayerCollider") {
+		if (target->GetColliderName() == "PlayerCollider") {
 			// 命中パーティクル再生
 			PlayHitParticle();
-			
+
 			// プレイヤーを取得
 			Player* p = GameObjectManager::GetInstance()->GetGameObject<Player>("Player");
 			// ダメージ処理を行う
