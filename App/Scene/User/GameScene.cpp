@@ -46,12 +46,6 @@ void GameScene::Init(){
 	lockOn->SetCamera(camera);
 	camera->SetLockOn(lockOn);
 
-	// ナビィ生成
-	Fairy* fairy = nullptr;
-	fairy = gameObjectManager_->CreateInstance<Fairy>("Fairy", IObject::TagPlayer);
-	fairy->SetTarget(&player_->transform_);
-	fairy->SetPlayer(player_);
-
 	// テクスチャ事前読み込み
 	TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png");
 
