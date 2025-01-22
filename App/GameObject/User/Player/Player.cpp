@@ -154,24 +154,8 @@ void Player::Update()
 		sprites_["LowerObi"]->scale_.y = KLib::Lerp<float>(sprites_["LowerObi"]->scale_.y, maxObiSizeY_, obiCorrectSpeed_);
 	}
 
-	// 軌跡a値
-	float& trailAlpha = SwordLine_->trailMaterial_.color_.w;
-	// 攻撃中は軌跡を表示させる
-	if (isAttacking_) {
-		trailAlpha = KLib::Lerp(trailAlpha, maxTrailAlpha_, startAppearTrailCorrectSpeed_);
-	}
-	else {
-		// 攻撃中でない場合は軌跡を徐々に消す
-		if (trailAlpha <= trailAlphaThresold_) {
-			trailAlpha = minTrailAlpha_;
-		}
-		else {
-			trailAlpha = KLib::Lerp(trailAlpha, minTrailAlpha_, endAppearTrailCorrectSpeed_);
-		}
-	}
-
-	// 線の更新
-	SwordLine_->Update();
+	// 軌跡関連の更新
+	TrailUpdate();
 
 	// 行動可能状態でない場合早期リターン
 	if (!canAction_) {
@@ -191,20 +175,11 @@ void Player::Update()
 	// 現在の行動状態の更新を行う
 	state_->Update();
 
+	// 回転補正の処理
+	CorrectDirectionUpdate();
+
 	// 追従カメラがセットされている場合
 	if (followCamera_ != nullptr) {
-		if (followCamera_->GetLockOn()->GetIsLockOn()) {
-			// ロックオン対象の座標
-			Vector3 targetPos = followCamera_->GetLockOn()->target_->transform_.translate_;
-			// 追従対象からロックオン対象への差分ベクトル
-			Vector3 sub = targetPos - transform_.translate_;
-			// 方向ベクトルを元にプレイヤーがいる角度を求める
-			targetAngle_ = std::atan2(sub.x, sub.z);
-
-			// 身体を回転させる
-			transform_.rotate_.y = KLib::LerpShortAngle(transform_.rotate_.y, targetAngle_, angleCorrectSpeed_);
-		}
-
 		// Z注目有効時かつ敵が死亡していない場合
 		if (followCamera_->GetEnableZForcus()) {
 			// ロックオン中は帯を表示
@@ -218,27 +193,8 @@ void Player::Update()
 		}
 	}
 
-	// 攻撃可能か
-	if (state_->GetStateName() != "Damage" && state_->GetStateName() != "Attack" && canAttack_ && !isAttacking_) {
-		// Aボタンを押すと攻撃する
-		if (input_->InspectButton(XINPUT_GAMEPAD_A, TRIGGER)) {
-			// 行動を変更
-			ChangeState(std::make_unique<Attack>());
-
-			// Z注目有効時
-			if (followCamera_->GetEnableZForcus()) {
-				comboManager_.ChangeCombo("LockOn");
-			}
-			else {
-				comboManager_.ChangeCombo("Normal");
-			}
-
-			// デバッグ有効時には表示中コンボへ切り替える
-			if (comboManager_.GetEnableComboDebug()) {
-				comboManager_.ChangeCombo(comboManager_.GetImGuiDisplayName());
-			}
-		}
-	}
+	// 攻撃関係更新
+	AttackUpdate();
 
 	// 命中フラグのリセット
 	isHit_ = false;
@@ -299,6 +255,7 @@ void Player::OnCollision(Collider* target, [[maybe_unused]] Collider* source)
 		transform_.translate_.y = 0.0f;
 	}
 }
+
 void Player::ChangeState(std::unique_ptr<IState> newState)
 {
 	// 共通初期化を行う
@@ -371,6 +328,103 @@ void Player::HitDamage(const Vector3& translate)
 
 		// 命中クールタイムリセット
 		hitCoolTimeTimer_.Start(kHitCoolTime_);
+	}
+}
+
+void Player::TrailUpdate()
+{
+	// 軌跡a値
+	float& trailAlpha = SwordLine_->trailMaterial_.color_.w;
+	// 攻撃中は軌跡を表示させる
+	if (isAttacking_) {
+		trailAlpha = KLib::Lerp(trailAlpha, maxTrailAlpha_, startAppearTrailCorrectSpeed_);
+	}
+	else {
+		// 攻撃中でない場合は軌跡を徐々に消す
+		if (trailAlpha <= trailAlphaThresold_) {
+			trailAlpha = minTrailAlpha_;
+		}
+		else {
+			trailAlpha = KLib::Lerp(trailAlpha, minTrailAlpha_, endAppearTrailCorrectSpeed_);
+		}
+	}
+
+	// 線の更新
+	SwordLine_->Update();
+}
+
+void Player::AttackUpdate()
+{
+	// 下記条件の場合早期リターン
+	// 1. プレイヤーがダメージを受けている状態
+	// 2. 攻撃中状態
+	// 3. 攻撃可能状態でない
+	// 4. 攻撃中である
+	if (state_->GetStateName() == "Damage" || 
+		state_->GetStateName() == "Attack" || 
+		!canAttack_ || 
+		isAttacking_) { return; }
+
+	// Aボタンを押すと攻撃する
+	if (input_->InspectButton(XINPUT_GAMEPAD_A, TRIGGER)) {
+		// 敵との距離を計測
+		float toEnemyDistance = std::abs(Vector3::Length(enemy_->transform_.translate_ - transform_.translate_));
+		// 敵との距離が補正閾値内だった場合
+		if (toEnemyDistance <= correctDirectionDistance_) {
+			// 回転補正を行う
+			isCorrectingToEnemy_ = true;
+		}
+
+		// 行動を変更
+		ChangeState(std::make_unique<Attack>());
+
+		// Z注目有効時
+		if (followCamera_->GetEnableZForcus()) {
+			comboManager_.ChangeCombo("LockOn");
+		}
+		else {
+			comboManager_.ChangeCombo("Normal");
+		}
+
+		// デバッグ有効時には表示中コンボへ切り替える
+		if (comboManager_.GetEnableComboDebug()) {
+			comboManager_.ChangeCombo(comboManager_.GetImGuiDisplayName());
+		}
+	}
+}
+
+void Player::CorrectDirectionUpdate()
+{
+	// 敵に対して補正をかけない状態であれば
+	if (!isCorrectingToEnemy_) { 
+		// ロックオン中でない場合早期リターン
+		if (!followCamera_->GetLockOn()->GetIsLockOn()) { return; }
+
+		// ロックオン対象の座標
+		Vector3 targetPos = followCamera_->GetLockOn()->target_->transform_.translate_;
+		// 追従対象からロックオン対象への差分ベクトル
+		Vector3 sub = targetPos - transform_.translate_;
+		// 方向ベクトルを元にプレイヤーがいる角度を求める
+		targetAngle_ = std::atan2(sub.x, sub.z);
+		// 身体を回転させる
+		transform_.rotate_.y = KLib::LerpShortAngle(transform_.rotate_.y, targetAngle_, angleCorrectSpeed_);
+
+		// この時点で終了
+		return; 
+	}
+
+	// 敵がいる方向ベクトルを求める
+	enemyDirection_ = enemy_->transform_.translate_ - transform_.translate_;
+	// 敵がいる方向を求める
+	targetAngle_ = std::atan2(enemyDirection_.x, enemyDirection_.z);
+	// 閾値を超えるまで補正を続ける
+	if (std::abs(transform_.rotate_.y - targetAngle_) > angleCorrectThreshold_){
+		// 身体を回転させる
+		transform_.rotate_.y = KLib::LerpShortAngle(transform_.rotate_.y, targetAngle_, toEnemyCorrectSpeed_);
+	}
+	else {
+		// 補正終了
+		isCorrectingToEnemy_ = false;
 	}
 }
 

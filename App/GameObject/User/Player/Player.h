@@ -83,6 +83,20 @@ public: // その他関数
 	void HitDamage(const Vector3& translate);
 
 	/// <summary>
+	/// 軌跡更新関数
+	/// </summary>
+	void TrailUpdate();
+
+	/// <summary>
+	/// 攻撃関係更新関数
+	/// </summary>
+	void AttackUpdate();
+	/// <summary>
+	/// 攻撃時の回転補正更新関数
+	/// </summary>
+	void CorrectDirectionUpdate();
+
+	/// <summary>
 	/// 落ち影更新関数
 	/// </summary>
 	void ShadowUpdate();
@@ -237,6 +251,16 @@ private: // メンバ変数
 	// 攻撃が命中したか
 	bool isHit_ = false;
 
+	// 現在敵に向けて補正をかけているのか
+	bool isCorrectingToEnemy_ = false;
+	// 敵がいる向きを保存
+	Vector3 enemyDirection_{};
+	// 攻撃時に回転補正をかける場合の距離
+	const float correctDirectionDistance_ = 5.0f;
+	// 回転補正を終了する閾値
+	const float angleCorrectThreshold_ = 0.05f;
+	// 敵がいる方向に補正する際の速度
+	const float toEnemyCorrectSpeed_ = 0.25f;
 	// 剣の環境マップ強度
 	const float swordEnvironmentMapStrength_ = 0.85f;
 
