@@ -33,7 +33,7 @@ void EnemyDead::Init()
 	p->SetCanAction(false);
 	
 	// 待機アニメーション再生
-	p->skiningModels_["Player"]->animationManager_.PlayAnimation("00_Idle", 0.0f, true);
+	p->skiningModels_["Player"]->animationManager_.PlayAnimation("Idle", 0.0f, true);
 
 	// カメラ移動
 	camera_ = GameObjectManager::GetInstance()->CreateInstance<Camera>("StagingCamera", IObject::TagCamera);

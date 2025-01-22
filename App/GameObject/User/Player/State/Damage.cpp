@@ -41,7 +41,7 @@ void Damage::Init()
 	}
 
 	// ダメージアニメーションを再生
-	player_->skiningModels_["Player"]->animationManager_.PlayAnimation("06_Damage");
+	player_->skiningModels_["Player"]->animationManager_.PlayAnimation("Damage");
 }
 
 void Damage::Update()
@@ -54,7 +54,7 @@ void Damage::Update()
 	// プレイヤーのHPが0以下でないとき
 	if (player_->GetHP() > 0) {
 		// アニメーション終了時
-		if (!player_->skiningModels_["Player"]->animationManager_.GetIsPlayingAnimation("06_Damage")) {
+		if (!player_->skiningModels_["Player"]->animationManager_.GetIsPlayingAnimation("Damage")) {
 			// 待機状態に移行
 			player_->ChangeState(std::make_unique<Recovery>());
 			// 以降の処理を無視

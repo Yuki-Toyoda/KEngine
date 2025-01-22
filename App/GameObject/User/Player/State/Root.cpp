@@ -34,10 +34,10 @@ void Root::Update()
 	else {
 		// ロックオンが有効でないとき
 		if (!player_->GetFollowCamera()->GetEnableZForcus()) {
-			player_->skiningModels_["Player"]->animationManager_.PlayAnimation("00_Idle", idleAnimTransitionTime_, true, true);
+			player_->skiningModels_["Player"]->animationManager_.PlayAnimation("Idle", idleAnimTransitionTime_, true, true);
 		}
 		else { // 有効時
-			player_->skiningModels_["Player"]->animationManager_.PlayAnimation("02_LockOnIdle", zForcusIdleAnimTrainsitionTime_, true, true);
+			player_->skiningModels_["Player"]->animationManager_.PlayAnimation("LockOnIdle", zForcusIdleAnimTrainsitionTime_, true, true);
 		}
 	}
 
@@ -71,26 +71,26 @@ void Root::Update()
 
 	// ロックオンが有効でないとき
 	if (!player_->GetFollowCamera()->GetEnableZForcus()) {
-		player_->skiningModels_["Player"]->animationManager_.PlayAnimation("01_Run", runAnimTransitionTime_, true, true);
+		player_->skiningModels_["Player"]->animationManager_.PlayAnimation("Run", runAnimTransitionTime_, true, true);
 	}
 	else { // 有効時
 		// 横移動をしていない場合
 		if (move.x < latralMovementThreshold_ && move.x > -latralMovementThreshold_) {
 			// 移動ベクトルが前方方向だった場合
 			if (move.z > 0.0f) {
-				player_->skiningModels_["Player"]->animationManager_.PlayAnimation("01_Run", runAnimTransitionTime_, true, true);
+				player_->skiningModels_["Player"]->animationManager_.PlayAnimation("Run", runAnimTransitionTime_, true, true);
 			}
 			else { // 後方だった場合
-				player_->skiningModels_["Player"]->animationManager_.PlayAnimation("03_LockOnMoveBack", zForcusRunAnimTrainsitionTime_, true, true);
+				player_->skiningModels_["Player"]->animationManager_.PlayAnimation("LockOnMoveBack", zForcusRunAnimTrainsitionTime_, true, true);
 			}
 		}
 		else {
 			// 右方向に移動している場合
 			if (move.x > 0.0f) {
-				player_->skiningModels_["Player"]->animationManager_.PlayAnimation("04_LockOnMoveRight", zForcusRunAnimTrainsitionTime_, true, true);
+				player_->skiningModels_["Player"]->animationManager_.PlayAnimation("LockOnMoveRight", zForcusRunAnimTrainsitionTime_, true, true);
 			}
 			else if (move.x < 0.0f) { // 左方向に移動している場合
-				player_->skiningModels_["Player"]->animationManager_.PlayAnimation("05_LockOnMoveLeft", zForcusRunAnimTrainsitionTime_, true, true);
+				player_->skiningModels_["Player"]->animationManager_.PlayAnimation("LockOnMoveLeft", zForcusRunAnimTrainsitionTime_, true, true);
 			}
 		}
 	}

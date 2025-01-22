@@ -33,7 +33,7 @@ void Player::Init()
 	normalModels_["Shadow"]->materials_[1].color_ = shadowColor_;
 
 	// 待機アニメーションの再生
-	skiningModels_["Player"]->animationManager_.PlayAnimation("00_Idle", 0.0f, true);
+	skiningModels_["Player"]->animationManager_.PlayAnimation("Idle", 0.0f, true);
 	// 武器を左手に追従するようにする
 	skiningModels_["Player"]->SetBoneParent("WeaponAnchor", &weaponTransform_);
 

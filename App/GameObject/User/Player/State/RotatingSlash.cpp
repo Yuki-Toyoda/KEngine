@@ -12,15 +12,15 @@ void RotatingSlash::Init()
 	// コライダー有効
 	player_->GetSwordLine()->isActive_ = true;
 
-	if (!player_->skiningModels_["Player"]->animationManager_.GetIsPlayingAnimation("14_RotateSlash")) {
-		player_->skiningModels_["Player"]->animationManager_.PlayAnimation("14_RotateSlash", 0.0f, false);
+	if (!player_->skiningModels_["Player"]->animationManager_.GetIsPlayingAnimation("RotateSlash")) {
+		player_->skiningModels_["Player"]->animationManager_.PlayAnimation("RotateSlash", 0.0f, false);
 	}
 }
 
 void RotatingSlash::Update()
 {
 	// 回転斬りアニメーションの再生が終了している場合
-	if (!player_->skiningModels_["Player"]->animationManager_.GetIsPlayingAnimation("14_RotateSlash")) {
+	if (!player_->skiningModels_["Player"]->animationManager_.GetIsPlayingAnimation("RotateSlash")) {
 		// プレイヤーのステートを再設定
 		player_->ChangeState(std::make_unique<Root>());
 

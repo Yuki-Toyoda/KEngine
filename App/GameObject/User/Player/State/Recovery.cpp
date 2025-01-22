@@ -8,13 +8,13 @@ void Recovery::Init()
 	stateName_ = "Recovery";
 
 	// 復帰アニメーションの再生
-	player_->skiningModels_["Player"]->animationManager_.PlayAnimation("07_Recovery");
+	player_->skiningModels_["Player"]->animationManager_.PlayAnimation("Recovery");
 }
 
 void Recovery::Update()
 {
 	// 復帰アニメーションが終了している場合
-	if (!player_->skiningModels_["Player"]->animationManager_.GetIsPlayingAnimation("07_Recovery")) {
+	if (!player_->skiningModels_["Player"]->animationManager_.GetIsPlayingAnimation("Recovery")) {
 		// 待機状態に移行
 		player_->ChangeState(std::make_unique<Root>());
 		// 以降の処理を無視
