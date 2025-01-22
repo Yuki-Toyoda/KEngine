@@ -33,7 +33,7 @@
         "VerticalSlashA : 0 - MoveVector": [
             0.0,
             0.0,
-            0.5
+            0.25
         ],
         "VerticalSlashA : 0 - NextComboName": "Hit",
         "VerticalSlashA : 0 - SpecialConditionName": "IsHit",
@@ -53,7 +53,7 @@
         "VerticalSlashB : 1 - MoveVector": [
             0.0,
             0.0,
-            0.5
+            0.25
         ],
         "VerticalSlashB : 1 - NextComboName": "Hit",
         "VerticalSlashB : 1 - SpecialConditionName": "IsHit",
@@ -73,7 +73,7 @@
         "VerticalSlashC : 2 - MoveVector": [
             0.0,
             0.0,
-            0.5
+            0.25
         ],
         "VerticalSlashC : 2 - NextComboName": "Hit",
         "VerticalSlashC : 2 - SpecialConditionName": "IsHit",

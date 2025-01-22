@@ -20,7 +20,7 @@
         "HorizontalSlashA : 0 - MoveVector": [
             0.0,
             0.0,
-            0.5
+            0.25
         ],
         "HorizontalSlashA : 0 - NextComboName": "Hit",
         "HorizontalSlashA : 0 - SpecialConditionName": "IsHit",
@@ -40,7 +40,7 @@
         "HorizontalSlashB : 1 - MoveVector": [
             0.0,
             0.0,
-            0.5
+            0.25
         ],
         "HorizontalSlashB : 1 - NextComboName": "Hit",
         "HorizontalSlashB : 1 - SpecialConditionName": "IsHit",
@@ -60,7 +60,7 @@
         "HorizontalSlashC : 2 - MoveVector": [
             0.0,
             0.0,
-            0.5
+            0.25
         ],
         "HorizontalSlashC : 2 - NextComboName": "Hit",
         "HorizontalSlashC : 2 - SpecialConditionName": "IsHit",
