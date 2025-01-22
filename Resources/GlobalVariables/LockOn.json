@@ -29,6 +29,12 @@
         "VerticalSlashA : 0 - IsActionEndFromMove": 1,
         "VerticalSlashA : 0 - IsAttack": 1,
         "VerticalSlashA : 0 - IsStandByfromAnimEnd": 1,
+        "VerticalSlashA : 0 - MoveTime": 0.15000000596046448,
+        "VerticalSlashA : 0 - MoveVector": [
+            0.0,
+            0.0,
+            0.5
+        ],
         "VerticalSlashA : 0 - NextComboName": "Hit",
         "VerticalSlashA : 0 - SpecialConditionName": "IsHit",
         "VerticalSlashA : 0 - StunTime": 0.25,
@@ -43,6 +49,12 @@
         "VerticalSlashB : 1 - IsActionEndFromMove": 1,
         "VerticalSlashB : 1 - IsAttack": 1,
         "VerticalSlashB : 1 - IsStandByfromAnimEnd": 1,
+        "VerticalSlashB : 1 - MoveTime": 0.15000000596046448,
+        "VerticalSlashB : 1 - MoveVector": [
+            0.0,
+            0.0,
+            0.5
+        ],
         "VerticalSlashB : 1 - NextComboName": "Hit",
         "VerticalSlashB : 1 - SpecialConditionName": "IsHit",
         "VerticalSlashB : 1 - StunTime": 0.25,
@@ -57,6 +69,12 @@
         "VerticalSlashC : 2 - IsActionEndFromMove": 1,
         "VerticalSlashC : 2 - IsAttack": 1,
         "VerticalSlashC : 2 - IsStandByfromAnimEnd": 1,
+        "VerticalSlashC : 2 - MoveTime": 0.15000000596046448,
+        "VerticalSlashC : 2 - MoveVector": [
+            0.0,
+            0.0,
+            0.5
+        ],
         "VerticalSlashC : 2 - NextComboName": "Hit",
         "VerticalSlashC : 2 - SpecialConditionName": "IsHit",
         "VerticalSlashC : 2 - StunTime": 0.25,
@@ -71,6 +89,12 @@
         "VerticalSlashD : 3 - IsActionEndFromMove": 0,
         "VerticalSlashD : 3 - IsAttack": 1,
         "VerticalSlashD : 3 - IsStandByfromAnimEnd": 1,
+        "VerticalSlashD : 3 - MoveTime": 0.15000000596046448,
+        "VerticalSlashD : 3 - MoveVector": [
+            0.0,
+            0.0,
+            0.5
+        ],
         "VerticalSlashD : 3 - NextComboName": "",
         "VerticalSlashD : 3 - SpecialConditionName": "",
         "VerticalSlashD : 3 - StunTime": 0.5

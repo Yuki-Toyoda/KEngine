@@ -36,6 +36,16 @@ void Action::Init(ComboManager* manager)
 		attackStart_ = false;
 	}
 
+	// 移動量と移動秒数が0以外だった場合
+	if (moveTime_ != 0.0f || moveVector_ != Vector3::kZero) {
+		// 移動タイマー開始
+		moveTimer_.Start(moveTime_);
+		// 移動開始
+		isMoving_ = true;
+		// 移動開始地点の取得
+		startPos_ = player_->transform_.translate_;
+	}
+
 	// 攻撃していない状態に
 	player_->SetIsAttacking(false);
 	// 指定されたアニメーションの再生
@@ -64,6 +74,9 @@ void Action::Update()
 		// 攻撃判定の更新
 		AttackJudgeUpdate();
 	}
+
+	// 移動系更新
+	MoveUpdate();
 
 	// コンボ変更を行う条件を満たしている場合
 	if (specialCondition_ && *specialCondition_) {
@@ -117,6 +130,11 @@ void Action::DisplayImGui()
 		ImGui::DragFloat("HitStopTime", &hitStopTime_, 0.01f, 0.0f);
 	}
 
+	// 移動量の設定
+	ImGui::DragFloat3("MoveVector", &moveVector_.x, 0.01f);
+	// 移動秒数の設定
+	ImGui::DragFloat("MoveTime", &moveTime_, 0.01f, 0.0f);
+
 	// 移動した際のアクション終了設定
 	ImGui::Checkbox("IsActionEndFromMove", &isActionEndFromMove_);
 
@@ -154,6 +172,8 @@ void Action::AddParam()
 	gv->AddItem(comboName_, actionName + " - AttackLength", attackLength_);
 	gv->AddItem(comboName_, actionName + " - AttackStartTime", attackStartTime_);
 	gv->AddItem(comboName_, actionName + " - AttackEndTime", attackEndTime_);
+	gv->AddItem(comboName_, actionName + " - MoveVector", moveVector_);
+	gv->AddItem(comboName_, actionName + " - MoveTime", moveTime_);
 	gv->AddItem(comboName_, actionName + " - HitStopTime", hitStopTime_);
 	gv->AddItem(comboName_, actionName + " - IsActionEndFromMove", isActionEndFromMove_);
 	gv->AddItem(comboName_, actionName + " - InputCondition", inputCondition_);
@@ -178,6 +198,8 @@ void Action::SetValue()
 	gv->SetValue(comboName_, actionName + " - AttackLength", attackLength_);
 	gv->SetValue(comboName_, actionName + " - AttackStartTime", attackStartTime_);
 	gv->SetValue(comboName_, actionName + " - AttackEndTime", attackEndTime_);
+	gv->SetValue(comboName_, actionName + " - MoveVector", moveVector_);
+	gv->SetValue(comboName_, actionName + " - MoveTime", moveTime_);
 	gv->SetValue(comboName_, actionName + " - HitStopTime", hitStopTime_);
 	gv->SetValue(comboName_, actionName + " - IsActionEndFromMove", isActionEndFromMove_);
 	gv->SetValue(comboName_, actionName + " - InputCondition", inputCondition_);
@@ -202,6 +224,8 @@ void Action::ApplyParam()
 	attackLength_			= gv->GetFloatValue(comboName_, actionName + " - AttackLength");
 	attackStartTime_		= gv->GetFloatValue(comboName_, actionName + " - AttackStartTime");
 	attackEndTime_			= gv->GetFloatValue(comboName_, actionName + " - AttackEndTime");
+	moveVector_             = gv->GetVector3Value(comboName_, actionName + " - MoveVector");
+	moveTime_				= gv->GetFloatValue(comboName_, actionName + " - MoveTime");
 	hitStopTime_			= gv->GetFloatValue(comboName_, actionName + " - HitStopTime");
 	isActionEndFromMove_	= gv->GetIntValue(comboName_, actionName + " - IsActionEndFromMove");
 	inputCondition_			= gv->GetIntValue(comboName_, actionName + " - InputCondition");
@@ -228,6 +252,33 @@ void Action::StunCheck()
 		// 硬直時間タイマー更新
 		stunTimer_.Update();
 	}
+}
+
+void Action::MoveUpdate()
+{
+	// 移動していない状態であれば早期リターン
+	if (!isMoving_) { return; }
+
+	// 移動時間タイマーが終了している場合、移動状態解除
+	if (moveTimer_.GetIsFinish()) {
+		// 移動終了
+		isMoving_ = false;
+		// 早期リターン
+		return;
+	}
+
+	// プレイヤーが向いている方向の回転行列を求める
+	Matrix4x4 rotateMat = Matrix4x4::MakeRotateY(player_->transform_.rotate_.y);
+	// 向かうべきベクトルの指定
+	Vector3 move = moveVector_ * rotateMat;
+	// 最終的な移動地点の選定
+	Vector3 endPos = startPos_ + move;
+
+	// 移動処理
+	player_->transform_.translate_ = KLib::Lerp<Vector3>(startPos_, endPos, moveTimer_.GetProgress());
+
+	// 移動タイマーの更新
+	moveTimer_.Update();
 }
 
 void Action::AnimationCheck()

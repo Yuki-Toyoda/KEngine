@@ -158,6 +158,11 @@ private: // 機能関数群
 	void StunCheck();
 
 	/// <summary>
+	/// 移動に関する更新
+	/// </summary>
+	void MoveUpdate();
+
+	/// <summary>
 	/// 次のコンボに移る条件を満たしているか検証する関数
 	/// </summary>
 	void CheckCondition();
@@ -211,6 +216,17 @@ private: // メンバ変数
 
 	// ヒットストップ秒数
 	float hitStopTime_ = 0.0f;
+
+	// アクション時の移動量
+	Vector3 moveVector_{};
+	// 移動開始座標
+	Vector3 startPos_{};
+	// 移動中か
+	bool isMoving_ = false;
+	// 移動にかかる秒数
+	float moveTime_ = 0.0f;
+	// 移動時間制御用タイマー
+	KLib::DeltaTimer moveTimer_{};
 
 	// 移動した際にアクション終了するか
 	bool isActionEndFromMove_ = false;

@@ -15,6 +15,12 @@
         "HitCombo : 1 - IsActionEndFromMove": 1,
         "HitCombo : 1 - IsAttack": 1,
         "HitCombo : 1 - IsStandByfromAnimEnd": 0,
+        "HitCombo : 1 - MoveTime": 0.10000000149011612,
+        "HitCombo : 1 - MoveVector": [
+            0.0,
+            0.0,
+            0.10000000149011612
+        ],
         "HitCombo : 1 - NextComboName": "",
         "HitCombo : 1 - SpecialConditionName": "",
         "HitCombo : 1 - StunTime": 0.5,
@@ -29,6 +35,12 @@
         "HitComboFinish : 2 - IsActionEndFromMove": 0,
         "HitComboFinish : 2 - IsAttack": 1,
         "HitComboFinish : 2 - IsStandByfromAnimEnd": 0,
+        "HitComboFinish : 2 - MoveTime": 0.10000000149011612,
+        "HitComboFinish : 2 - MoveVector": [
+            0.0,
+            0.0,
+            0.25
+        ],
         "HitComboFinish : 2 - NextComboName": "",
         "HitComboFinish : 2 - SpecialConditionName": "",
         "HitComboFinish : 2 - StunTime": 1.0,
@@ -43,6 +55,12 @@
         "HorizontalSlash : 0 - IsActionEndFromMove": 1,
         "HorizontalSlash : 0 - IsAttack": 1,
         "HorizontalSlash : 0 - IsStandByfromAnimEnd": 0,
+        "HorizontalSlash : 0 - MoveTime": 0.15000000596046448,
+        "HorizontalSlash : 0 - MoveVector": [
+            0.0,
+            0.0,
+            0.5
+        ],
         "HorizontalSlash : 0 - NextComboName": "",
         "HorizontalSlash : 0 - SpecialConditionName": "",
         "HorizontalSlash : 0 - StunTime": 0.20000000298023224,

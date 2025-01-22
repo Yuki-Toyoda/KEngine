@@ -16,6 +16,12 @@
         "HorizontalSlashA : 0 - IsActionEndFromMove": 1,
         "HorizontalSlashA : 0 - IsAttack": 1,
         "HorizontalSlashA : 0 - IsStandByfromAnimEnd": 0,
+        "HorizontalSlashA : 0 - MoveTime": 0.15000000596046448,
+        "HorizontalSlashA : 0 - MoveVector": [
+            0.0,
+            0.0,
+            0.5
+        ],
         "HorizontalSlashA : 0 - NextComboName": "Hit",
         "HorizontalSlashA : 0 - SpecialConditionName": "IsHit",
         "HorizontalSlashA : 0 - StunTime": 0.25,
@@ -30,6 +36,12 @@
         "HorizontalSlashB : 1 - IsActionEndFromMove": 1,
         "HorizontalSlashB : 1 - IsAttack": 1,
         "HorizontalSlashB : 1 - IsStandByfromAnimEnd": 0,
+        "HorizontalSlashB : 1 - MoveTime": 0.15000000596046448,
+        "HorizontalSlashB : 1 - MoveVector": [
+            0.0,
+            0.0,
+            0.5
+        ],
         "HorizontalSlashB : 1 - NextComboName": "Hit",
         "HorizontalSlashB : 1 - SpecialConditionName": "IsHit",
         "HorizontalSlashB : 1 - StunTime": 0.25,
@@ -44,6 +56,12 @@
         "HorizontalSlashC : 2 - IsActionEndFromMove": 1,
         "HorizontalSlashC : 2 - IsAttack": 1,
         "HorizontalSlashC : 2 - IsStandByfromAnimEnd": 0,
+        "HorizontalSlashC : 2 - MoveTime": 0.15000000596046448,
+        "HorizontalSlashC : 2 - MoveVector": [
+            0.0,
+            0.0,
+            0.5
+        ],
         "HorizontalSlashC : 2 - NextComboName": "Hit",
         "HorizontalSlashC : 2 - SpecialConditionName": "IsHit",
         "HorizontalSlashC : 2 - StunTime": 0.25,
@@ -58,6 +76,12 @@
         "HorizontalSlashD : 3 - IsActionEndFromMove": 1,
         "HorizontalSlashD : 3 - IsAttack": 1,
         "HorizontalSlashD : 3 - IsStandByfromAnimEnd": 0,
+        "HorizontalSlashD : 3 - MoveTime": 0.15000000596046448,
+        "HorizontalSlashD : 3 - MoveVector": [
+            0.0,
+            0.0,
+            0.5
+        ],
         "HorizontalSlashD : 3 - NextComboName": "",
         "HorizontalSlashD : 3 - SpecialConditionName": "",
         "HorizontalSlashD : 3 - StunTime": 0.5,
