@@ -19,7 +19,7 @@ void EnemyDead::Init()
 	// 全パーティクルの再生再開
 	ParticleManager::GetInstance()->SetTimeScale(1.0f);
 
-	// 死亡アニメーションを再生 (ToDo : 現在仮置き、待機アニメーションを再生)
+	// 死亡アニメーションを再生
 	enemy_->skiningModels_["Enemy"]->animationManager_.PlayAnimation("Dead");
 	enemy_->transform_.translate_ = { 0.0f, 0.0f, -0.5f };
 	enemy_->transform_.rotate_.y = 0.037f;

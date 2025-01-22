@@ -21,8 +21,8 @@ void LockOn::Update()
 
 	// ロックオン対象がいる、かつ対象が破壊されていないとき
 	if (target_ != nullptr && !target_->GetIsDestroy()) {	
-		// ロックオン対象が範囲外だった場合、ロックオンを外す
-		if (IsOutOfRange()) {
+		// ロックオン対象が範囲外だった場合、またはロックオンが不可能な状態になったときロックオンを外す
+		if (IsOutOfRange() || !target_->GetCanLockOn()) {
 			// ロックオン解除
 			DisableLockOn();
 		}
@@ -60,6 +60,9 @@ void LockOn::SerchEnemy()
 	std::list<std::pair<float, const Enemy*>> targets_;
 
 	for (const Enemy* enemy : enemies_) {
+		// ロックオン出来ない状態の場合早期リターン
+		if (!enemy->GetCanLockOn()) { continue; }
+
 		// ワールド座標の取得
 		Vector3 worldPosition = enemy->transform_.GetWorldPos();
 		// ワールドからビュー座標に変換する

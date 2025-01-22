@@ -129,14 +129,24 @@ void Enemy::Update()
 
 	// ダウン状態および射撃状態で無い、かつ同じ行動状態でない場合
 	std::string stateName = state_->GetStateName();
-	if (stateName != "Down" && stateName != "Shot" && stateName != "Move") {
+	if (stateName != "Down" && stateName != "Shot" && stateName != "Move" && stateName != "Hide") {
 		// プレイヤーとの距離ベクトルの長さを求める
 		float distance = Vector3::Length(toPlayerDistance_);
 
 		// 距離が一定値以下であれば
 		if (distance <= minPlayerDistance_) {
-			// 敵が移動する
-			ChangeState(std::make_unique<EnemyMove>());
+			if (moveCount_ >= maxMoveCount_) {
+				// 敵を隠し、距離を取らせる
+				ChangeState(std::make_unique<EnemyHide>());
+				// 移動状態のカウントをリセットする
+				moveCount_ = 0;
+			}
+			else {
+				// 敵が移動する
+				ChangeState(std::make_unique<EnemyMove>());
+				// 移動状態のカウントを加算する
+				moveCount_++;
+			}
 		}
 	}
 
@@ -148,7 +158,7 @@ void Enemy::Update()
 	// 行動変更タイマーが終了している場合
 	if (stateChangeTimer_.GetIsFinish()) {
 		// 待機状態でない場合早期リターン
-		if (state_->GetStateName() == "Down" || state_->GetStateName() == "Shot" || state_->GetStateName() == "Move") {
+		if (state_->GetStateName() != "Root") {
 			return;
 		}
 
@@ -164,6 +174,8 @@ void Enemy::Update()
 			rallyCount_ = 0;
 			// 行動変更タイマーリセット
 			stateChangeTimer_.Start(kStateChangeCoolTime_);
+			// 移動カウントをリセット
+			moveCount_ = 0;
 		}
 	}
 

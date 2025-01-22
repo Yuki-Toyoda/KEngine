@@ -5,3 +5,4 @@
 #include "EnemyDown.h"
 #include "EnemyDead.h"
 #include "EnemyMove.h"
+#include "EnemyHide.h"

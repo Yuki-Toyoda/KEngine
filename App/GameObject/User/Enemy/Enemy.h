@@ -173,6 +173,13 @@ public: // アクセッサ等
 	/// </summary>
 	/// <returns>麻痺パーティクル</returns>
 	Particle* GetStunParticle() { return stunParticle_; }
+
+	/// <summary>
+	/// 敵パーティクルゲッター
+	/// </summary>
+	/// <returns>敵パーティクル</returns>
+	Particle* GetEnemyParticle() { return enemyParticle_; }
+
 	/// <summary>
 	/// 麻痺パーティクル停止関数
 	/// </summary>
@@ -188,6 +195,17 @@ public: // アクセッサ等
 	/// </summary>
 	/// <returns>ダウン状態から起き上がらないか</returns>
 	bool GetIsNeverDown() { return isNeverDown_; }
+
+	/// <summary>
+	/// ロックオン可能状態のゲッター
+	/// </summary>
+	/// <returns>ロックオン可能状態</returns>
+	bool GetCanLockOn() const { return canLockOn_; }
+	/// <summary>
+	/// ロックオン可能状態のセッター
+	/// </summary>
+	/// <param name="canLockOn">ロックオン可能状態</param>
+	void SetCanLockOn(const bool canLockOn) { canLockOn_ = canLockOn; }
 
 	/// <summary>
 	/// コライダーワールド座標のゲッター
@@ -305,6 +323,12 @@ private: // メンバ変数
 	Vector3 toPlayerDistance_ = {};
 	// 移動行動に移る際の最小距離
 	const float minPlayerDistance_ = 10.0f;
+	// 移動行動の繰り返しカウント
+	int32_t moveCount_ = 0;
+	const int32_t maxMoveCount_ = 2;
+
+	// ロックオン可能状態
+	bool canLockOn_ = true;
 
 	// 敵パーティクル
 	Particle* enemyParticle_ = nullptr;

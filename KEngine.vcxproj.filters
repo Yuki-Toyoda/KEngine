@@ -422,6 +422,7 @@
     <ClCompile Include="Externals\imgui\implot_items.cpp">
       <Filter>Externals\ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="App\GameObject\User\Enemy\State\EnemyHide.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App\Scene\SceneList.h">
@@ -928,6 +929,7 @@
     <ClInclude Include="Externals\imgui\implot_internal.h">
       <Filter>Externals\ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="App\GameObject\User\Enemy\State\EnemyHide.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
