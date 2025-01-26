@@ -67,13 +67,13 @@ private: // 各状態での更新関数
 private: // メンバ変数
 
 	// ハイド開始時間
-	const float hideStartTime = 2.5f;
+	const float hideStartTime = 1.5f;
 	// 隠れている時間
 	const float hidingTime = 1.0f;
 	// 出現にかかる秒数
-	const float appearTime = 1.0f;
+	const float appearTime = 0.35f;
 	// 出現後の攻撃待機時間
-	const float waitTime = 0.1f;
+	const float waitTime = 0.65f;
 	// 攻撃時間
 	const float attackTime = 1.0f;
 

@@ -316,13 +316,20 @@ private: // メンバ変数
 
 	// 身体のトランスフォーム
 	WorldTransform bodyTransform_{};
+	// 頭のトランスフォーム
+	WorldTransform headTransform_{};
 	// 武器のトランスフォーム
 	WorldTransform weaponTransform_{};
 
 	// 当たり判定ワールド座標
 	Vector3 worldPos_{};
 	// 当たり判定半径
-	float colliderRadius_ = 1.0f;
+	float colliderRadius_ = 2.0f;
+
+	// 頭用当たり判定ワールド座標
+	Vector3 worldHeadPos_{};
+	// 頭用当たり判定半径
+	float headColliderRadius_ = 1.0f;
 
 	// 落ち影のワールドトランスフォーム
 	WorldTransform shadowTransform_{};

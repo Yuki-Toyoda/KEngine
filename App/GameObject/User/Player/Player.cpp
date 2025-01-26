@@ -99,6 +99,7 @@ void Player::Init()
 	// コンボマネージャーに条件を追加する
 	comboManager_.AddCondition("IsHit", &isHit_); // 攻撃の命中フラグ
 
+
 	// 効果音読み込み
 	SwingSword_ = Audio::GetInstance()->LoadWave("./Resources/Audio/SE/SwingSword.mp3");
 	RotateSlash_ = Audio::GetInstance()->LoadWave("./Resources/Audio/SE/RotateSlash.mp3");
@@ -193,6 +194,8 @@ void Player::Update()
 		}
 	}
 
+	// カウンター攻撃関係更新
+	CounterUpdate();
 	// 攻撃関係更新
 	AttackUpdate();
 
@@ -248,6 +251,9 @@ void Player::OnCollision(Collider* target, [[maybe_unused]] Collider* source)
 
 	// 敵とプレイヤーのコライダーが衝突した時
 	if (target->GetColliderName() == "Boss") {
+		// カウンター状態であれば早期リターン
+		if (GetStateName() == "Counter") { return; }
+
 		// 敵を取得
 		Enemy* enemy = GameObjectManager::GetInstance()->GetGameObject<Enemy>("Enemy");
 		// 敵の衝突判定半径を取得
@@ -266,11 +272,11 @@ void Player::OnCollision(Collider* target, [[maybe_unused]] Collider* source)
 		Enemy* enemy = GameObjectManager::GetInstance()->GetGameObject<Enemy>("Enemy");
 
 		// 敵が近接攻撃中かつ背面攻撃の行動状態の場合
-		if (enemy->GetIsCQCAttack() && enemy->GetStateName() == "HideAttack") {
+		if (enemy->GetIsCQCAttack() && enemy->GetStateName() == "HideAttack" && GetStateName() != "Counter") {
 			// ダメージ処理
 			HitDamage(enemy->transform_.translate_);
 		}
-		else {
+		else if(enemy->GetStateName() == "HideAttack"){
 			// カウンター可能状態に
 			isCanCounter_ = true;
 		}
@@ -374,6 +380,18 @@ void Player::TrailUpdate()
 	SwordLine_->Update();
 }
 
+void Player::CounterUpdate()
+{
+	// カウンター不可能、カウンター攻撃状態の場合早期リターン
+	if (!isCanCounter_ || state_->GetStateName() == "Counter") { return; }
+
+	// Bボタンを押したときにカウンター攻撃を発動
+	if (input_->InspectButton(XINPUT_GAMEPAD_B, TRIGGER)) {
+		// 行動を変更
+		ChangeState(std::make_unique<CounterAttack>());
+	}
+}
+
 void Player::AttackUpdate()
 {
 	// 下記条件の場合早期リターン
@@ -383,6 +401,7 @@ void Player::AttackUpdate()
 	// 4. 攻撃中である
 	if (state_->GetStateName() == "Damage" || 
 		state_->GetStateName() == "Attack" || 
+		state_->GetStateName() == "Counter" || 
 		!canAttack_ || 
 		isAttacking_) { return; }
 
@@ -416,6 +435,9 @@ void Player::AttackUpdate()
 
 void Player::CorrectDirectionUpdate()
 {
+	// 敵への補正を行わない場合早期リターン
+	if (!isCorrectDirection_) { return; }
+
 	// 敵に対して補正をかけない状態であれば
 	if (!isCorrectingToEnemy_) { 
 		// ロックオン中でない場合早期リターン

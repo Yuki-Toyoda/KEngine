@@ -9,8 +9,13 @@ void Enemy::Init()
 {
 	// 身体用トランスフォームの初期化
 	bodyTransform_.Init();
-	bodyTransform_.translate_.y += 3.0f;
+	bodyTransform_.translate_.y += 4.0f;
 	bodyTransform_.SetParent(&transform_, 0b011);
+
+	// 頭用トランスフォーム
+	headTransform_.Init();
+	headTransform_.translate_.y += 5.0f;
+	headTransform_.SetParent(&transform_, 0b011);
 
 	//武器用のトランスフォームの初期化
 	weaponTransform_.Init();
@@ -51,6 +56,8 @@ void Enemy::Init()
 
 	// 球のコライダー追加
 	AddColliderSphere("Boss", &worldPos_, &colliderRadius_);
+	// 頭のコライダー追加
+	//AddColliderSphere("BossHead", &worldHeadPos_, &headColliderRadius_);
 	// 近接攻撃用コライダー追加
 	AddColliderSphere("EnemyAttackCollider", &attackColliderPosition_, &attackColliderRadius_);
 
@@ -77,6 +84,7 @@ void Enemy::Update()
 {
 	// ワールド座標の取得
 	worldPos_ = bodyTransform_.GetWorldPos();
+	worldHeadPos_ = headTransform_.GetWorldPos();
 	// 敵のＹ軸回転から回転行列を生成
 	Matrix4x4 rotateMat = Matrix4x4::MakeRotateY(transform_.rotate_.y);
 	// 近接攻撃コライダーの位置調整
@@ -124,6 +132,7 @@ void Enemy::Update()
 
 	// ワールド座標の取得
 	worldPos_ = bodyTransform_.GetWorldPos();
+	worldHeadPos_ = headTransform_.GetWorldPos();
 	// 敵のＹ軸回転から回転行列を生成
 	rotateMat = Matrix4x4::MakeRotateY(transform_.rotate_.y);
 	// 近接攻撃コライダーの位置調整
@@ -246,7 +255,32 @@ void Enemy::OnCollision(Collider* target, [[maybe_unused]] Collider* source)
 		// 2. ヒットクールタイムが終了している
 		// 3. 敵がダウン中
 		// 4. 衝突元が近接攻撃用コライダーの場合
-		if (!player_->GetIsAttacking() || !hitCoolTimeTimer_.GetIsFinish() || state_->GetStateName() != "Down" || source->GetColliderName() == "EnemyAttackCollider") { return; }
+		if (!player_->GetIsAttacking() || !hitCoolTimeTimer_.GetIsFinish()) { return; }
+
+		// ダウンさせる
+		if (state_->GetStateName() != "Down") {
+			// プレイヤーがカウンター状態でなければ早期リターン
+			if (player_->GetStateName() != "Counter") { return; }
+
+			// クールタイムタイマー開始
+			hitCoolTimeTimer_.Start(kHitCoolTime_);
+
+			// ヒットストップ開始
+			player_->StartHitStop(player_->GetComboManager()->GetHitStopTime());
+			StartHitStop(player_->GetComboManager()->GetHitStopTime());
+
+			// ダメージパーティクルの再生
+			PlayDamageParticle();
+
+			// ダメージ効果音の再生
+			Audio::GetInstance()->PlayWave(damageSound_);
+
+			// ダウン状態に変更
+			ChangeState(std::make_unique<EnemyDown>());
+
+			// 早期リターン
+			return;
+		}
 
 		// 無限HPでない場合のみHPを減らす
 		if (!isInfiniteHP_) {

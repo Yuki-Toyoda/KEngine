@@ -109,6 +109,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="App\GameObject\User\Player\Combo\ComboManager.cpp" />
     <ClCompile Include="App\GameObject\User\Enemy\State\EnemyHide.cpp" />
     <ClCompile Include="App\GameObject\User\Enemy\State\EnemyHideAttack.cpp" />
+    <ClCompile Include="App\GameObject\User\Player\State\CounterAttack.cpp" />
     <ClCompile Include="Engine\PostProcess\Bloom\Bloom.cpp" />
     <ClCompile Include="App\GameObject\User\Enemy\State\EnemyMove.cpp" />
     <ClCompile Include="Engine\Base\Resource\Rendering\RenderResource.cpp" />
@@ -247,6 +248,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="App\GameObject\User\Player\Combo\ComboManager.h" />
     <ClInclude Include="App\GameObject\User\Enemy\State\EnemyHide.h" />
     <ClInclude Include="App\GameObject\User\Enemy\State\EnemyHideAttack.h" />
+    <ClInclude Include="App\GameObject\User\Player\State\CounterAttack.h" />
     <ClInclude Include="Engine\PostProcess\Bloom\Bloom.h" />
     <ClInclude Include="App\GameObject\User\Enemy\State\EnemyMove.h" />
     <ClInclude Include="Engine\Base\Resource\Data\RWStructuredBuffer.h" />

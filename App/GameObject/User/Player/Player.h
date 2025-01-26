@@ -88,6 +88,11 @@ public: // その他関数
 	void TrailUpdate();
 
 	/// <summary>
+	/// カウンター攻撃関数
+	/// </summary>
+	void CounterUpdate();
+
+	/// <summary>
 	/// 攻撃関係更新関数
 	/// </summary>
 	void AttackUpdate();
@@ -170,6 +175,12 @@ public: // アクセッサ等
 	/// </summary>
 	/// <returns>攻撃状態</returns>
 	bool GetIsAttacking() { return isAttacking_; }
+
+	/// <summary>
+	/// 回転補間有効状態
+	/// </summary>
+	/// <param name="isCorrect">補間をするかどうか</param>
+	void SetIsCorrectDirection(const bool isCorrect) { isCorrectDirection_ = isCorrect; }
 
 	/// <summary>
 	/// 命中状態セッター
@@ -329,6 +340,9 @@ private: // メンバ変数
 	float targetAngle_ = 0.0f;
 	// 目標角度への補正スピード
 	const float angleCorrectSpeed_ = 0.1f;
+
+	// 敵方向への補正有効トリガー
+	bool isCorrectDirection_ = true;
 
 	// コライダー座標
 	WorldTransform colliderTransform_;
