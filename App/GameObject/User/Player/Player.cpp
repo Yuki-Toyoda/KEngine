@@ -198,6 +198,8 @@ void Player::Update()
 
 	// 命中フラグのリセット
 	isHit_ = false;
+	// カウンター可能フラグfalse
+	isCanCounter_ = false;
 
 	//コライダーのワールド座標更新
 	colliderWorldPos_ = colliderTransform_.GetWorldPos();
@@ -241,8 +243,11 @@ void Player::OnCollisionEnter(Collider* target, [[maybe_unused]] Collider* sourc
 
 void Player::OnCollision(Collider* target, [[maybe_unused]] Collider* source)
 {
+	// 衝突元がプレイヤーのコライダー以外の場合早期リターンを行う
+	if (source->GetColliderName() != "PlayerCollider") { return; }
+
 	// 敵とプレイヤーのコライダーが衝突した時
-	if (target->GetColliderName() == "Boss" && source->GetColliderName() == "PlayerCollider") {
+	if (target->GetColliderName() == "Boss") {
 		// 敵を取得
 		Enemy* enemy = GameObjectManager::GetInstance()->GetGameObject<Enemy>("Enemy");
 		// 敵の衝突判定半径を取得
@@ -253,6 +258,22 @@ void Player::OnCollision(Collider* target, [[maybe_unused]] Collider* source)
 
 		transform_.translate_ = enemy->GetColliderPos() + (sub * (radius + colliderRadius_));
 		transform_.translate_.y = 0.0f;
+	}
+
+	// 敵の攻撃コライダーとプレイヤーのコライダーが衝突した場合
+	if (target->GetColliderName() == "EnemyAttackCollider" || target->GetColliderName() == "Boss") {
+		// 敵を取得
+		Enemy* enemy = GameObjectManager::GetInstance()->GetGameObject<Enemy>("Enemy");
+
+		// 敵が近接攻撃中かつ背面攻撃の行動状態の場合
+		if (enemy->GetIsCQCAttack() && enemy->GetStateName() == "HideAttack") {
+			// ダメージ処理
+			HitDamage(enemy->transform_.translate_);
+		}
+		else {
+			// カウンター可能状態に
+			isCanCounter_ = true;
+		}
 	}
 }
 
@@ -315,7 +336,7 @@ void Player::HitDamage(const Vector3& translate)
 		// スプライトの色を変更
 		sprites_[hert]->color_ = loseHertColor_;
 
-		// 弾の座標からプレイヤーの方向ベクトルを求める
+		// 渡された座標から反対方向のベクトルを求める
 		Vector3 sub = translate - transform_.translate_;
 		// 角度を求める
 		transform_.rotate_.y = std::atan2(sub.x, sub.z);

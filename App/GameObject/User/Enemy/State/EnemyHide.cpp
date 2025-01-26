@@ -50,7 +50,7 @@ void EnemyHide::Update()
 
 		// プレイヤーから一定の距離を取るように調整
 		sub_ = Vector3::Normalize(enemy_->transform_.translate_ - playerPosition_);
-		sub_.y = enemy_->transform_.translate_.y;
+		sub_.y = 0.0f;
 
 		// 移動座標を求める
 		enemy_->transform_.translate_ = sub_ * 20.0f;

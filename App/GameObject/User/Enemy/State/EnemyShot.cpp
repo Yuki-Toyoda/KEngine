@@ -14,6 +14,9 @@ void EnemyShot::Init()
 
 	// タイマーの初期化
 	timer_.Start(KLib::RandomF(kMinShotTime_, kMaxShotTime_, 2));
+
+	// 回転固定解除
+	enemy_->SetIsRotateLock(false);
 }
 
 void EnemyShot::Update()

@@ -6,6 +6,12 @@ void EnemyRoot::Init()
 	// 行動名称の設定
 	stateName_ = "Root";
 
+	// 近接攻撃状態解除
+	enemy_->SetIsCQCAttack(false);
+
+	// 回転固定解除
+	enemy_->SetIsRotateLock(false);
+
 	// 待機アニメーションの再生
 	enemy_->skiningModels_["Enemy"]->animationManager_.PlayAnimation("Idle", 0.25f, true);
 }

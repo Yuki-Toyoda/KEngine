@@ -73,7 +73,7 @@ private: // メンバ変数
 	// 出現にかかる秒数
 	const float appearTime = 1.0f;
 	// 出現後の攻撃待機時間
-	const float waitTime = 0.35f;
+	const float waitTime = 0.1f;
 	// 攻撃時間
 	const float attackTime = 1.0f;
 
@@ -84,6 +84,11 @@ private: // メンバ変数
 	const Vector3 dissolveEdgeColor_ = { 0.0f, 1.0f, 0.75f };
 	// ディゾルブを光らせる閾値
 	const float dissolveEdgeThreshold_ = 0.025f;
+
+	// 攻撃時の移動スピード
+	const float speed = 0.5f;
+	// 移動時の方向ベクトル
+	Vector3 velocity_{};
 
 	// 進捗
 	int process_ = HIDESTART;

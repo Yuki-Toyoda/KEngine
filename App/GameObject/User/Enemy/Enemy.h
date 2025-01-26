@@ -113,10 +113,22 @@ public: // アクセッサ等
 	void SetPlayerPos(const WorldTransform* playerPos) { playerPos_ = playerPos; }
 
 	/// <summary>
+	/// 現在行動の名前ゲッター
+	/// </summary>
+	/// <returns>現在行動の名前</returns>
+	std::string GetStateName() { return state_->GetStateName(); }
+
+	/// <summary>
 	/// 左腕のワールド座標ゲッター
 	/// </summary>
 	/// <returns>左腕のワールド座標</returns>
 	Vector3 GetLeftArmPosition() { return transform_.GetWorldPos() + skiningModels_["Enemy"]->GetBonePosition("Hand.L"); }
+
+	/// <summary>
+	/// 回転固定状態のセッター
+	/// </summary>
+	/// <param name="isLock">回転固定</param>
+	void SetIsRotateLock(const bool isLock) { isRotateLock_ = isLock; }
 
 	/// <summary>
 	/// 死亡演出トリガーのゲッター
@@ -163,6 +175,17 @@ public: // アクセッサ等
 	/// </summary>
 	/// <param name="canAttack">攻撃可能状態</param>
 	void SetCanAttack(const bool canAttack) { canAttack_ = canAttack; }
+
+	/// <summary>
+	/// 近接攻撃状態セッター
+	/// </summary>
+	/// <param name="isAttack">攻撃状態</param>
+	void SetIsCQCAttack(const bool isAttack) { isCQCAttack_ = isAttack; }
+	/// <summary>
+	/// 近接攻撃状態ゲッター
+	/// </summary>
+	/// <returns>近接攻撃状態</returns>
+	bool GetIsCQCAttack() { return isCQCAttack_; }
 
 	/// <summary>
 	/// 麻痺パーティクルの再生関数
@@ -224,6 +247,13 @@ public: // アクセッサ等
 	/// </summary>
 	/// <returns>身体のワールドトランスフォーム</returns>
 	WorldTransform* GetBodyTransform() { return &bodyTransform_; }
+
+private: // プライベートなメンバ関数
+
+	/// <summary>
+	/// 行動変更に関する更新関数
+	/// </summary>
+	void ChangeStateUpdate();
 
 private: // メンバ変数
 
@@ -310,6 +340,8 @@ private: // メンバ変数
 	float targetAngle_ = 0.0f;
 	// 目標角度への補正スピード
 	const float angleCorrectSpeed = 0.1f;
+	// 敵をプレイヤーの方に向かせるか
+	bool isRotateLock_ = false;
 
 	// 攻撃可能状態か
 	bool canAttack_ = false;
@@ -326,6 +358,15 @@ private: // メンバ変数
 	// 移動行動の繰り返しカウント
 	int32_t moveCount_ = 0;
 	const int32_t maxMoveCount_ = 2;
+
+	// 近接攻撃中か
+	bool isCQCAttack_ = false;
+	// 近接攻撃時の判定座標
+	Vector3 attackColliderPosition_{};
+	// 近接攻撃時の判定大きさ
+	float attackColliderRadius_ = 1.5f;
+	// 近接攻撃当たり判定のオフセット
+	const Vector3 kAttackColliderOffset = { 0.0f, 0.0f, -3.0f };
 
 	// ロックオン可能状態
 	bool canLockOn_ = true;

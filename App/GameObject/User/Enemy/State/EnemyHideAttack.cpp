@@ -17,6 +17,9 @@ void EnemyHideAttack::Init()
 	enemy_->GetEnemyParticle()->emitterDataBuffer_->data_->count = 35;
 	enemy_->GetEnemyParticle()->emitterDataBuffer_->data_->frequency = 0.05f;
 	enemy_->GetEnemyParticle()->emitterDataBuffer_->data_->frequencyTime = 0.05f;
+
+	// 回転固定解除
+	enemy_->SetIsRotateLock(false);
 }
 
 void EnemyHideAttack::Update()
@@ -91,6 +94,9 @@ void EnemyHideAttack::HidingUpdate()
 	// 敵の座標をプレイヤーの後ろに設定
 	enemy_->transform_.translate_ = playerPosition + offset;
 
+	// 移動方向の指定
+	velocity_ = Vector3(0.0f, 0.0f, 1.0f) * rotateMat;
+
 	// 演出タイマー終了時
 	if (stagingTimer_.GetIsFinish()) {
 		// 敵から放出するパーティクルのエミッタを調整
@@ -101,6 +107,9 @@ void EnemyHideAttack::HidingUpdate()
 
 		// ロックオンを可能な状態に
 		enemy_->SetCanLockOn(true);
+
+		// 敵の回転をロック
+		enemy_->SetIsRotateLock(true);
 
 		// 進捗を進める
 		process_++;
@@ -147,6 +156,20 @@ void EnemyHideAttack::WaitUpdate()
 
 void EnemyHideAttack::AttackUpdate()
 {
+	// 現在のアニメーション進捗を取得
+	float animationProgress = enemy_->skiningModels_["Enemy"]->animationManager_.GetPlayingAnimationProgress();
+
+	// アニメーション進捗を元に攻撃判定を付ける
+	if (animationProgress >= 0.25f && animationProgress <= 0.75f) {
+		enemy_->SetIsCQCAttack(true);
+
+		// 攻撃中は移動させる
+		enemy_->transform_.translate_ += velocity_ * speed;
+	}
+	else {
+		enemy_->SetIsCQCAttack(false);
+	}
+
 	// 演出タイマー終了時
 	if (stagingTimer_.GetIsFinish()) {
 		// 待機状態へ

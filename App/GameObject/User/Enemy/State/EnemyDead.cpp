@@ -19,6 +19,9 @@ void EnemyDead::Init()
 	// 全パーティクルの再生再開
 	ParticleManager::GetInstance()->SetTimeScale(1.0f);
 
+	// 近接攻撃状態解除
+	enemy_->SetIsCQCAttack(false);
+
 	// 死亡アニメーションを再生
 	enemy_->skiningModels_["Enemy"]->animationManager_.PlayAnimation("Dead");
 	enemy_->transform_.translate_ = { 0.0f, 0.0f, -0.5f };

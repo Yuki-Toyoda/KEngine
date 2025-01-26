@@ -7,12 +7,18 @@ void EnemyDown::Init()
 	// 行動名設定
 	stateName_ = "Down";
 
+	// 近接攻撃状態解除
+	enemy_->SetIsCQCAttack(false);
+
 	// ダウン開始アニメーションを再生
 	enemy_->skiningModels_["Enemy"]->animationManager_.PlayAnimation("DownStart");
 	enemy_->skiningModels_["Enemy"]->animationManager_.SetAnimationSpeed(1.0f, "DownStart");
 
 	// ダウン時間タイマースタート
 	timer_.Start(kMaxDownTime_);
+
+	// 回転固定解除
+	enemy_->SetIsRotateLock(true);
 }
 
 void EnemyDown::Update()

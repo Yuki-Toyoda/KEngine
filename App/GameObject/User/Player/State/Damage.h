@@ -30,7 +30,7 @@ public: // メンバ関数
 private: // メンバ変数
 
 	// 吹っ飛ばされる速度ベクトル
-	Vector3 velocity_ = { 0.0f, 0.0f, -0.1f };
+	Vector3 velocity_ = { 0.0f, 0.0f, -0.25f };
 	// 演出用カメラ
 	Camera* c = nullptr;
 	// 演出用タイマー

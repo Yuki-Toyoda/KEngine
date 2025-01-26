@@ -37,6 +37,9 @@ void EnemyMove::Init()
 
 	// タイマー起動
 	moveTimer_.Start(2.5f);
+
+	// 回転固定解除
+	enemy_->SetIsRotateLock(false);
 }
 
 void EnemyMove::Update()

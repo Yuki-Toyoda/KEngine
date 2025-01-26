@@ -261,6 +261,10 @@ private: // メンバ変数
 	const float angleCorrectThreshold_ = 0.05f;
 	// 敵がいる方向に補正する際の速度
 	const float toEnemyCorrectSpeed_ = 0.25f;
+
+	// カウンター可能か
+	bool isCanCounter_ = false;
+
 	// 剣の環境マップ強度
 	const float swordEnvironmentMapStrength_ = 0.85f;
 

@@ -51,6 +51,8 @@ void Enemy::Init()
 
 	// 球のコライダー追加
 	AddColliderSphere("Boss", &worldPos_, &colliderRadius_);
+	// 近接攻撃用コライダー追加
+	AddColliderSphere("EnemyAttackCollider", &attackColliderPosition_, &attackColliderRadius_);
 
 	// 行動変更
 	ChangeState(std::make_unique<EnemyRoot>());
@@ -75,9 +77,13 @@ void Enemy::Update()
 {
 	// ワールド座標の取得
 	worldPos_ = bodyTransform_.GetWorldPos();
+	// 敵のＹ軸回転から回転行列を生成
+	Matrix4x4 rotateMat = Matrix4x4::MakeRotateY(transform_.rotate_.y);
+	// 近接攻撃コライダーの位置調整
+	attackColliderPosition_ = bodyTransform_.GetWorldPos() + (kAttackColliderOffset * rotateMat);
 
-	// ダウン状態でない場合
-	if (state_->GetStateName() != "Down") {
+	// 回転を行う場合
+	if (!isRotateLock_) {
 		// 差分ベクトルを求める
 		toPlayerDistance_ = transform_.translate_ - playerPos_->translate_;
 
@@ -110,87 +116,18 @@ void Enemy::Update()
 	// 落ち影更新
 	ShadowUpdate();
 
-	// HPが0になっている場合
-	if (hp_ <= 0 && !isDeadStaging_) {
-		// 死亡時のステートへ変更
-		if (state_->GetStateName() != "Dead") {
-			ChangeState(std::make_unique<EnemyDead>());
-		}
-
-		// 永続パーティクルの終了
-		if (enemyParticle_ != nullptr) {
-			enemyParticle_->SetIsEnd(true);
-			enemyParticle_ = nullptr;
-		}
-
-		// 早期リターン
-		return;
-	}
-
-	// 待機状態である場合
-	std::string stateName = state_->GetStateName();
-	if (stateName == "Root") {
-		// プレイヤーとの距離ベクトルの長さを求める
-		float distance = Vector3::Length(toPlayerDistance_);
-
-		// 距離が一定値以下であれば
-		if (distance <= minPlayerDistance_) {
-			if (moveCount_ >= maxMoveCount_) {
-				// 敵を隠し、距離を取らせる
-				ChangeState(std::make_unique<EnemyHide>());
-				// 移動状態のカウントをリセットする
-				moveCount_ = 0;
-			}
-			else {
-				// 敵が移動する
-				ChangeState(std::make_unique<EnemyMove>());
-				// 移動状態のカウントを加算する
-				moveCount_++;
-			}
-		}
-	}
-
-	// 攻撃を行う状態でなければ早期リターン
-	if (!isAttack_) {
-		return;
-	}
-
-	// 行動変更タイマーが終了している場合
-	if (stateChangeTimer_.GetIsFinish()) {
-		// 待機状態でない場合早期リターン
-		if (state_->GetStateName() != "Root") {
-			return;
-		}
-
-		// 攻撃可能状態で無ければリターン
-		if (!canAttack_) {
-			return;
-		}
-
-		// 弾が生成されていない状態の場合
-		if (GameObjectManager::GetInstance()->GetGameObject<EnemyBullet>("EnemyBullet") == nullptr) {
-			// 敵が弾を撃つ
-			ChangeState(std::make_unique<EnemyShot>());
-			rallyCount_ = 0;
-			// 行動変更タイマーリセット
-			stateChangeTimer_.Start(kStateChangeCoolTime_);
-			// 移動カウントをリセット
-			moveCount_ = 0;
-		}
-	}
+	// 行動変更処理
+	ChangeStateUpdate();
 
 	// ヒットクールタイムタイマー更新
 	hitCoolTimeTimer_.Update();
-	// 行動変更クールタイムタイマー更新
-	if (state_->GetStateName() == "Root"
-		&& GameObjectManager::GetInstance()->GetGameObject<EnemyBullet>("EnemyBullet") == nullptr
-		&& GameObjectManager::GetInstance()->GetGameObject<Player>("Player")->GetStateName() != "Damage") {
-		// 行動変更クールタイムの更新
-		stateChangeTimer_.Update();
-	}
 
 	// ワールド座標の取得
 	worldPos_ = bodyTransform_.GetWorldPos();
+	// 敵のＹ軸回転から回転行列を生成
+	rotateMat = Matrix4x4::MakeRotateY(transform_.rotate_.y);
+	// 近接攻撃コライダーの位置調整
+	attackColliderPosition_ = bodyTransform_.GetWorldPos() + (kAttackColliderOffset * rotateMat);
 }
 
 void Enemy::DisplayImGui()
@@ -299,13 +236,17 @@ void Enemy::OnCollision(Collider* target, [[maybe_unused]] Collider* source)
 		return;
 	}
 
+	// 衝突元が近接攻撃コライダーだった場合早期リターン
+	if (source->GetColliderName() == "EnemyAttackCollider") { return; }
+
 	// 剣と衝突していたら
 	if (target->GetColliderName() == "Sword" || target->GetColliderName() == "PlayerCollider") {
 		// 下記条件の場合早期リターン
 		// 1. プレイヤーが攻撃中でない
 		// 2. ヒットクールタイムが終了している
 		// 3. 敵がダウン中
-		if (!player_->GetIsAttacking() || !hitCoolTimeTimer_.GetIsFinish() || state_->GetStateName() != "Down") { return; }
+		// 4. 衝突元が近接攻撃用コライダーの場合
+		if (!player_->GetIsAttacking() || !hitCoolTimeTimer_.GetIsFinish() || state_->GetStateName() != "Down" || source->GetColliderName() == "EnemyAttackCollider") { return; }
 
 		// 無限HPでない場合のみHPを減らす
 		if (!isInfiniteHP_) {
@@ -530,4 +471,80 @@ void Enemy::PlayDamageParticle()
 	hitDebris->emitterDataBuffer_->data_->count = 10;
 	hitDebris->emitterDataBuffer_->data_->frequency = 3.0f;
 	hitDebris->emitterDataBuffer_->data_->frequencyTime = 5.0f;
+}
+
+void Enemy::ChangeStateUpdate()
+{
+	// HPが0になっている場合
+	if (hp_ <= 0 && !isDeadStaging_) {
+		// 死亡時のステートへ変更
+		if (state_->GetStateName() != "Dead") {
+			ChangeState(std::make_unique<EnemyDead>());
+		}
+
+		// 永続パーティクルの終了
+		if (enemyParticle_ != nullptr) {
+			enemyParticle_->SetIsEnd(true);
+			enemyParticle_ = nullptr;
+		}
+
+		// 早期リターン
+		return;
+	}
+
+	// 待機状態である場合
+	if (state_->GetStateName() == "Root") {
+		// プレイヤーとの距離ベクトルの長さを求める
+		float distance = Vector3::Length(toPlayerDistance_);
+
+		// 距離が一定値以下であれば
+		if (distance <= minPlayerDistance_) {
+			if (moveCount_ >= maxMoveCount_) {
+				// 敵を隠し、距離を取らせる
+				ChangeState(std::make_unique<EnemyHide>());
+				// 移動状態のカウントをリセットする
+				moveCount_ = 0;
+			}
+			else {
+				// 敵が移動する
+				ChangeState(std::make_unique<EnemyMove>());
+				// 移動状態のカウントを加算する
+				moveCount_++;
+			}
+		}
+	}
+
+	// 行動変更タイマーが終了している場合
+	if (stateChangeTimer_.GetIsFinish()) {
+		// 待機状態でない場合早期リターン
+		if (state_->GetStateName() != "Root") {
+			return;
+		}
+
+		// 攻撃可能状態で無ければリターン
+		if (!canAttack_ || !isAttack_) {
+			return;
+		}
+
+		// 弾が生成されていない状態の場合
+		if (GameObjectManager::GetInstance()->GetGameObject<EnemyBullet>("EnemyBullet") == nullptr) {
+			// 敵が弾を撃つ
+			ChangeState(std::make_unique<EnemyHideAttack>());
+			rallyCount_ = 0;
+			// 行動変更タイマーリセット
+			stateChangeTimer_.Start(kStateChangeCoolTime_);
+			// 移動カウントをリセット
+			moveCount_ = 0;
+		}
+	}
+
+	// 行動変更クールタイムタイマー更新
+	if (state_->GetStateName() == "Root"
+		&& GameObjectManager::GetInstance()->GetGameObject<EnemyBullet>("EnemyBullet") == nullptr
+		&& GameObjectManager::GetInstance()->GetGameObject<Player>("Player")->GetStateName() != "Damage"
+		&& isAttack_
+		) {
+		// 行動変更クールタイムの更新
+		stateChangeTimer_.Update();
+	}
 }
