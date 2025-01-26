@@ -21,6 +21,10 @@ void EnemyDead::Init()
 
 	// 近接攻撃状態解除
 	enemy_->SetIsCQCAttack(false);
+	// コライダーの有効状態の切り替え
+	enemy_->SetIsActiveCQCCollider(false);
+	// カウンターを不可能に
+	enemy_->SetIsCanCounter(false);
 
 	// 死亡アニメーションを再生
 	enemy_->skiningModels_["Enemy"]->animationManager_.PlayAnimation("Dead");

@@ -186,6 +186,23 @@ public: // アクセッサ等
 	/// </summary>
 	/// <returns>近接攻撃状態</returns>
 	bool GetIsCQCAttack() { return isCQCAttack_; }
+	
+	/// <summary>
+	/// 近接攻撃コライダーの有効状態のセッター
+	/// </summary>
+	/// <param name="isActive">近接攻撃コライダーの有効状態</param>
+	void SetIsActiveCQCCollider(const bool isActive) { GetCollider("EnemyAttackCollider")->SetIsActive(isActive); }
+
+	/// <summary>
+	/// カウンター可能フラグセッター
+	/// </summary>
+	/// <param name="isCanCounter">カウンター可能か</param>
+	void SetIsCanCounter(const bool isCanCounter) { isCanCounter_ = isCanCounter; }
+	/// <summary>
+	/// カウンター可能フラグ状態ゲッター
+	/// </summary>
+	/// <returns>カウンター可能か</returns>
+	bool GetIsCanCounter() { return isCanCounter_; }
 
 	/// <summary>
 	/// 麻痺パーティクルの再生関数
@@ -368,6 +385,8 @@ private: // メンバ変数
 
 	// 近接攻撃中か
 	bool isCQCAttack_ = false;
+	// カウンター可能フラグ
+	bool isCanCounter_ = false;
 	// 近接攻撃時の判定座標
 	Vector3 attackColliderPosition_{};
 	// 近接攻撃時の判定大きさ

@@ -8,6 +8,10 @@ void EnemyRoot::Init()
 
 	// 近接攻撃状態解除
 	enemy_->SetIsCQCAttack(false);
+	// コライダーの有効状態の切り替え
+	enemy_->SetIsActiveCQCCollider(false);
+	// カウンターを不可能に
+	enemy_->SetIsCanCounter(false);
 
 	// 回転固定解除
 	enemy_->SetIsRotateLock(false);

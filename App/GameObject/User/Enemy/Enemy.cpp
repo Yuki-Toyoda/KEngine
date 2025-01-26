@@ -60,6 +60,7 @@ void Enemy::Init()
 	//AddColliderSphere("BossHead", &worldHeadPos_, &headColliderRadius_);
 	// 近接攻撃用コライダー追加
 	AddColliderSphere("EnemyAttackCollider", &attackColliderPosition_, &attackColliderRadius_);
+	GetCollider("EnemyAttackCollider")->SetIsActive(false);
 
 	// 行動変更
 	ChangeState(std::make_unique<EnemyRoot>());
@@ -232,9 +233,13 @@ void Enemy::OnCollisionEnter(Collider* target, [[maybe_unused]] Collider* source
 
 		// ラリーアニメーションの再生
 		skiningModels_["Enemy"]->animationManager_.PlayAnimation("Rally", 0.1f, false);
+		skiningModels_["Enemy"]->animationManager_.SetAnimationSpeed(1.0f);
 
 		// ラリー回数加算
 		rallyCount_++;
+
+		// 弾を弾く
+		b->SetVelocity(true, rallyCount_);
 	}
 }
 
@@ -266,8 +271,8 @@ void Enemy::OnCollision(Collider* target, [[maybe_unused]] Collider* source)
 			hitCoolTimeTimer_.Start(kHitCoolTime_);
 
 			// ヒットストップ開始
-			player_->StartHitStop(player_->GetComboManager()->GetHitStopTime());
-			StartHitStop(player_->GetComboManager()->GetHitStopTime());
+			player_->StartHitStop(0.5f);
+			StartHitStop(0.5f);
 
 			// ダメージパーティクルの再生
 			PlayDamageParticle();
@@ -560,10 +565,20 @@ void Enemy::ChangeStateUpdate()
 			return;
 		}
 
+		int random = KLib::Random(0, 1);
+
 		// 弾が生成されていない状態の場合
 		if (GameObjectManager::GetInstance()->GetGameObject<EnemyBullet>("EnemyBullet") == nullptr) {
-			// 敵が弾を撃つ
-			ChangeState(std::make_unique<EnemyHideAttack>());
+			if (random == 0) {
+				// 背面攻撃を行う
+				ChangeState(std::make_unique<EnemyHideAttack>());
+				
+			}
+			else {
+				// 敵が弾を撃つ
+				ChangeState(std::make_unique<EnemyShot>());
+			}
+			
 			rallyCount_ = 0;
 			// 行動変更タイマーリセット
 			stateChangeTimer_.Start(kStateChangeCoolTime_);

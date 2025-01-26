@@ -18,6 +18,9 @@ void EnemyHideAttack::Init()
 	enemy_->GetEnemyParticle()->emitterDataBuffer_->data_->frequency = 0.05f;
 	enemy_->GetEnemyParticle()->emitterDataBuffer_->data_->frequencyTime = 0.05f;
 
+	// コライダーの有効状態の切り替え
+	enemy_->SetIsActiveCQCCollider(true);
+
 	// 回転固定解除
 	enemy_->SetIsRotateLock(false);
 }
@@ -108,6 +111,9 @@ void EnemyHideAttack::HidingUpdate()
 		// ロックオンを可能な状態に
 		enemy_->SetCanLockOn(true);
 
+		// カウンター可能状態に
+		enemy_->SetIsCanCounter(true);
+
 		// 敵の回転をロック
 		enemy_->SetIsRotateLock(true);
 
@@ -145,6 +151,9 @@ void EnemyHideAttack::WaitUpdate()
 	if (stagingTimer_.GetIsFinish()) {
 		// 攻撃アニメーション再生開始
 		enemy_->skiningModels_["Enemy"]->animationManager_.SetAnimationSpeed(1.0f);
+
+		// カウンターを不可能に
+		enemy_->SetIsCanCounter(false);
 
 		// 演出タイマーを再度開始
 		stagingTimer_.Start(attackTime);

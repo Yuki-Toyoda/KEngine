@@ -89,10 +89,15 @@ void Player::Init()
 	// Bボタン
 	AddSprite("BButton", { 1185.0f, 75.0f }, { 48.0f ,48.0f }, TextureManager::Load("./Resources/UI/Button", "Button_B.png"));
 
+	AddSprite("EmergencyIcon", {640.0f, 500.0f}, {128.0f, 128.0f}, TextureManager::Load("./Resources/UI/Icon", "EmergencyIcon.png"));
+
 	// ボタン関連UI非表示
 	sprites_["AButton"]->isActive_ = false;
 	sprites_["SwordIcon"]->isActive_ = false;
 	sprites_["BButton"]->isActive_ = false;
+
+	// 危険アイコン非表示
+	sprites_["EmergencyIcon"]->color_ = { 1.0f, 1.0f, 1.0f, 0.0f };
 
 	// コンボマネージャーの初期化
 	comboManager_.Init(this);
@@ -276,7 +281,7 @@ void Player::OnCollision(Collider* target, [[maybe_unused]] Collider* source)
 			// ダメージ処理
 			HitDamage(enemy->transform_.translate_);
 		}
-		else if(enemy->GetStateName() == "HideAttack"){
+		else if(enemy->GetStateName() == "HideAttack" && enemy->GetIsCanCounter()){
 			// カウンター可能状態に
 			isCanCounter_ = true;
 		}
@@ -382,8 +387,19 @@ void Player::TrailUpdate()
 
 void Player::CounterUpdate()
 {
+	// カウンター可能状態ならアイコンを徐々に表示
+	if (isCanCounter_) {
+		sprites_["EmergencyIcon"]->color_.w = KLib::Lerp<float>(sprites_["EmergencyIcon"]->color_.w, 1.0f, 0.2f);
+	}
+	else {
+		sprites_["EmergencyIcon"]->color_.w = KLib::Lerp<float>(sprites_["EmergencyIcon"]->color_.w, 0.0f, 0.1f);
+	}
+
 	// カウンター不可能、カウンター攻撃状態の場合早期リターン
 	if (!isCanCounter_ || state_->GetStateName() == "Counter") { return; }
+
+	// Damage状態の場合早期リターン
+	if (state_->GetStateName() == "Damage") { return; }
 
 	// Bボタンを押したときにカウンター攻撃を発動
 	if (input_->InspectButton(XINPUT_GAMEPAD_B, TRIGGER)) {

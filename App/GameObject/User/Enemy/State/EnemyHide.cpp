@@ -13,6 +13,11 @@ void EnemyHide::Init()
 	// 演出タイマーを開始
 	stagingTimer_.Start(hideStartTime);
 
+	// コライダーの有効状態の切り替え
+	enemy_->SetIsActiveCQCCollider(false);
+	// カウンターを不可能に
+	enemy_->SetIsCanCounter(false);
+
 	// 敵から放出するパーティクルのエミッタを調整
 	enemy_->GetEnemyParticle()->emitterDataBuffer_->data_->count = 35;
 	enemy_->GetEnemyParticle()->emitterDataBuffer_->data_->frequency = 0.05f;

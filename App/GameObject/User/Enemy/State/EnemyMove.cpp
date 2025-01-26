@@ -35,6 +35,11 @@ void EnemyMove::Init()
 	// 移動座標の高さを統一
 	movePosition_.y = KLib::RandomF(3.0f, 4.0f, 2);
 
+	// コライダーの有効状態の切り替え
+	enemy_->SetIsActiveCQCCollider(false);
+	// カウンターを不可能に
+	enemy_->SetIsCanCounter(false);
+
 	// タイマー起動
 	moveTimer_.Start(2.5f);
 

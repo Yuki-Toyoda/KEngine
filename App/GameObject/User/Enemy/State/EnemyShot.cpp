@@ -17,6 +17,10 @@ void EnemyShot::Init()
 
 	// 回転固定解除
 	enemy_->SetIsRotateLock(false);
+	// コライダーの有効状態の切り替え
+	enemy_->SetIsActiveCQCCollider(false);
+	// カウンターを不可能に
+	enemy_->SetIsCanCounter(false);
 }
 
 void EnemyShot::Update()
