@@ -1,10 +1,16 @@
 #pragma once
 #include <cmath>
+#include <ctime>
 
 /// <summary>
 /// ランダムクラス
 /// </summary>
 namespace KLib {
+
+	/// <summary>
+	/// Srandセッター
+	/// </summary>
+	inline void SetSrand() { srand(static_cast<unsigned int>(time(NULL))); }
 
 	// ランダム関数（int型）
 	// 返り値：ランダムの値（int型）

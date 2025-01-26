@@ -6,3 +6,4 @@
 #include "EnemyDead.h"
 #include "EnemyMove.h"
 #include "EnemyHide.h"
+#include "EnemyHideAttack.h"

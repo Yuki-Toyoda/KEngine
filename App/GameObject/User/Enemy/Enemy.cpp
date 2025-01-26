@@ -127,9 +127,9 @@ void Enemy::Update()
 		return;
 	}
 
-	// ダウン状態および射撃状態で無い、かつ同じ行動状態でない場合
+	// 待機状態である場合
 	std::string stateName = state_->GetStateName();
-	if (stateName != "Down" && stateName != "Shot" && stateName != "Move" && stateName != "Hide") {
+	if (stateName == "Root") {
 		// プレイヤーとの距離ベクトルの長さを求める
 		float distance = Vector3::Length(toPlayerDistance_);
 

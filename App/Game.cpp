@@ -5,6 +5,9 @@ void Game::Init()
 	// 基底クラスの初期化を呼び出す
 	KEngineFrameWork::Init();
 
+	// Srandセット
+	KLib::SetSrand();
+
 	// シーンマネージャーにファクトリークラスをセット
 	sceneManager_->SetSceneFactory(std::make_unique<SceneFactory>());
 }
