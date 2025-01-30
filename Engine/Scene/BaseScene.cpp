@@ -52,5 +52,5 @@ void BaseScene::DisplayImGui()
 void BaseScene::SystemModelLoad()
 {
 	// 必須モデルの読み込みをここで行う
-	modelDataManager_->LoadNewModel("./Engine/Resource/Samples/Plane", "Plane.obj");
+	modelDataManager_->LoadNewModel("./Engine/Resource/System/Plane", "Plane.obj");
 }

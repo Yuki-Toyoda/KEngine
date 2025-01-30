@@ -17,6 +17,6 @@ void SampleParticle::DisplayImGui()
 		/*CPUParticleEmitterManager::GetInstance()->CreateEmitter<ICPUParticleEmitter, ICPUParticle>(
 			"SampleParticle", 50, 2,
 			transform_.translate_, 5.0f, 0.5f,
-			modelManager_->CreateParticleModel(modelDataManager_->GetModelData("./Engine/Resource/Samples/Box", "Box.obj"), 50));*/
+			modelManager_->CreateParticleModel(modelDataManager_->GetModelData("./Engine/Resource/System/Box", "Box.obj"), 50));*/
 	};
 }

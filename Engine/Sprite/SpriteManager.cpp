@@ -14,10 +14,10 @@ void SpriteManager::Init()
 	if (modelData_ == nullptr) {
 		// モデルデータの生成を行う
 		modelData_ = std::make_unique<ModelData>();
-		modelData_->Load("./Engine/Resource/Samples/Plane", "Plane.obj");
+		modelData_->Load("./Engine/Resource/System/Plane", "Plane.obj");
 
 		if (modelData_->materials_[0].tex_.GetView() == -1) {
-			modelData_->materials_[0].tex_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "uvChecker.png");
+			modelData_->materials_[0].tex_ = TextureManager::Load("./Engine/Resource/System/Texture", "uvChecker.png");
 			modelData_->materials_[0].color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
 		}
 	}

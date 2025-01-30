@@ -71,7 +71,7 @@ void Enemy::Init()
 	damageSound_ = Audio::GetInstance()->LoadWave("./Resources/Audio/SE/SwordDamage.mp3");
 
 	// 敵パーティクル再生
-	enemyParticle_ = ParticleManager::GetInstance()->CreateNewParticle("Enemy", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.0f, true);
+	enemyParticle_ = ParticleManager::GetInstance()->CreateNewParticle("Enemy", "./Engine/Resource/System/Plane", "Plane.obj", 0.0f, true);
 	enemyParticle_->model_->materials_[1].tex_ = TextureManager::Load("EnemyParticle.png");
 	enemyParticle_->model_->materials_[1].enableLighting_ = false;
 	enemyParticle_->transform_.SetParent(&bodyTransform_);
@@ -476,7 +476,7 @@ void Enemy::DeadCameraStaging()
 void Enemy::PlayStunParticle()
 {
 	// 麻痺パーティクル再生
-	stunParticle_ = ParticleManager::GetInstance()->CreateNewParticle("BulletSpark", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.0f, true);
+	stunParticle_ = ParticleManager::GetInstance()->CreateNewParticle("BulletSpark", "./Engine/Resource/System/Plane", "Plane.obj", 0.0f, true);
 	stunParticle_->model_->materials_[1].tex_ = TextureManager::Load("BulletSparkParticle.png");
 	stunParticle_->model_->materials_[1].enableLighting_ = false;
 	stunParticle_->transform_.SetParent(&bodyTransform_);
@@ -494,7 +494,7 @@ void Enemy::ResetStunParticle()
 void Enemy::PlayDamageParticle()
 {
 	// 命中パーティクル再生
-	Particle* hit = ParticleManager::GetInstance()->CreateNewParticle("Hit", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.5f);
+	Particle* hit = ParticleManager::GetInstance()->CreateNewParticle("Hit", "./Engine/Resource/System/Plane", "Plane.obj", 0.5f);
 	hit->model_->materials_[1].tex_ = TextureManager::Load("HitEffect.png");
 	hit->model_->materials_[1].enableLighting_ = false;
 	hit->transform_.SetParent(&bodyTransform_);
@@ -503,7 +503,7 @@ void Enemy::PlayDamageParticle()
 	hit->emitterDataBuffer_->data_->frequencyTime = 3.0f;
 
 	// 命中破片パーティクル再生
-	Particle* hitDebris = ParticleManager::GetInstance()->CreateNewParticle("HitDebris", "./Engine/Resource/Samples/Plane", "Plane.obj", 1.0f);
+	Particle* hitDebris = ParticleManager::GetInstance()->CreateNewParticle("HitDebris", "./Engine/Resource/System/Plane", "Plane.obj", 1.0f);
 	hitDebris->model_->materials_[1].tex_ = TextureManager::Load("HitDebrisEffect.png");
 	hitDebris->model_->materials_[1].enableLighting_ = false;
 	hitDebris->transform_.SetParent(&bodyTransform_);

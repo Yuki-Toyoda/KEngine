@@ -9,7 +9,7 @@ void NormalModel::Init(ModelData* modelData)
 	// マテリアルの取得
 	materials_ = modelData->materials_;
 	// Dissolve用テクスチャのサンプルを読み込んでおく
-	DissolveTex_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "noise0.png");
+	DissolveTex_ = TextureManager::Load("./Engine/Resource/System/Texture", "noise0.png");
 
 	// トランスフォームの初期化
 	transform_.Init();

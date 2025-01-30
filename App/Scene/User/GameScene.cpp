@@ -39,7 +39,7 @@ void GameScene::Init(){
 	camera->SetLockOn(lockOn);
 
 	// テクスチャ事前読み込み
-	TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png");
+	TextureManager::Load("./Engine/Resource/System/Texture", "circle.png");
 
 	// ゲームマネージャー生成
 	gameManager_ = gameObjectManager_->CreateInstance<GameManager>("GameManager", IObject::TagNone);

@@ -22,7 +22,7 @@ void Camera::Init()
 	// データに値を代入
 	cameraDataBuffer_.data_->DrawMeshlets = isDrawMeshlets_;
 	cameraDataBuffer_.data_->ViewProjection2D = Matrix4x4::MakeOrthGraphic(0.0f, 0.0f, (float)KEngine::Config::Window::KWindowWidth, (float)KEngine::Config::Window::KWindowHeight, 0.0f, 100.0f);
-	cameraDataBuffer_.data_->ToonMapTex = TextureManager::Load("./Engine/Resource/Samples/Texture", "ToonMap.png").GetView();
+	cameraDataBuffer_.data_->ToonMapTex = TextureManager::Load("./Engine/Resource/System/Texture", "ToonMap.png").GetView();
 	cameraDataBuffer_.data_->ToonMapTex -= KEngine::Config::Rendering::kMaxBuffer;
 	pCameraDataBuffer_.data_->ViewMatrix = viewMatrix_;
 

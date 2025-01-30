@@ -10,7 +10,7 @@ void EnemyBullet::Init()
 	shadowTransform_.SetParent(&transform_, 0b011);
 
 	// メッシュを追加
-	AddNormalModel("EnemyBullet", &transform_, "./Engine/Resource/Samples/Sphere", "Sphere.obj");
+	AddNormalModel("EnemyBullet", &transform_, "./Engine/Resource/System/Sphere", "Sphere.obj");
 
 	// 拡縮を0に
 	transform_.scale_ = Vector3(0.0f, 0.0f, 0.0f);
@@ -27,8 +27,8 @@ void EnemyBullet::Init()
 	normalModels_["Shadow"]->materials_[1].color_ = Vector4(0.0f, 0.5f, 3.0f, 0.25f);
 
 	// 弾パーティクル再生
-	bulletParticle_ = ParticleManager::GetInstance()->CreateNewParticle("Bullet", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.0f, true);
-	bulletParticle_->model_->materials_[1].tex_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png");
+	bulletParticle_ = ParticleManager::GetInstance()->CreateNewParticle("Bullet", "./Engine/Resource/System/Plane", "Plane.obj", 0.0f, true);
+	bulletParticle_->model_->materials_[1].tex_ = TextureManager::Load("./Engine/Resource/System/Texture", "circle.png");
 	bulletParticle_->model_->materials_[1].enableLighting_ = false;
 	bulletParticle_->transform_.SetParent(&transform_);
 	bulletParticle_->emitterDataBuffer_->data_->count = 1;
@@ -59,7 +59,7 @@ void EnemyBullet::Update()
 			isDissolving_ = true;
 
 			// 雷パーティクル再生
-			sparkParticle_ = ParticleManager::GetInstance()->CreateNewParticle("BulletSpark", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.0f, true);
+			sparkParticle_ = ParticleManager::GetInstance()->CreateNewParticle("BulletSpark", "./Engine/Resource/System/Plane", "Plane.obj", 0.0f, true);
 			sparkParticle_->model_->materials_[1].tex_ = TextureManager::Load("BulletSparkParticle.png");
 			sparkParticle_->model_->materials_[1].enableLighting_ = false;
 			sparkParticle_->transform_.SetParent(&transform_);
@@ -250,8 +250,8 @@ void EnemyBullet::PlayTrailParticle()
 	if (trailParticle_ != nullptr) { return; }
 
 	// 軌跡パーティクル再生
-	trailParticle_ = ParticleManager::GetInstance()->CreateNewParticle("BulletTrail", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.0f, true);
-	trailParticle_->model_->materials_[1].tex_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "circle.png");
+	trailParticle_ = ParticleManager::GetInstance()->CreateNewParticle("BulletTrail", "./Engine/Resource/System/Plane", "Plane.obj", 0.0f, true);
+	trailParticle_->model_->materials_[1].tex_ = TextureManager::Load("./Engine/Resource/System/Texture", "circle.png");
 	trailParticle_->model_->materials_[1].enableLighting_ = false;
 	trailParticle_->transform_.SetParent(&transform_);
 	trailParticle_->emitterDataBuffer_->data_->count = 1;
@@ -262,7 +262,7 @@ void EnemyBullet::PlayTrailParticle()
 void EnemyBullet::PlayHitParticle()
 {
 	// 命中パーティクル再生
-	Particle* hit = ParticleManager::GetInstance()->CreateNewParticle("Hit", "./Engine/Resource/Samples/Plane", "Plane.obj", 0.5f);
+	Particle* hit = ParticleManager::GetInstance()->CreateNewParticle("Hit", "./Engine/Resource/System/Plane", "Plane.obj", 0.5f);
 	hit->model_->materials_[1].tex_ = TextureManager::Load("BulletHitEffect.png");
 	hit->model_->materials_[1].enableLighting_ = false;
 	hit->transform_ = transform_.translate_;
@@ -271,7 +271,7 @@ void EnemyBullet::PlayHitParticle()
 	hit->emitterDataBuffer_->data_->frequencyTime = 3.0f;
 
 	// 命中破片パーティクル再生
-	Particle* hitDebris = ParticleManager::GetInstance()->CreateNewParticle("HitDebris", "./Engine/Resource/Samples/Plane", "Plane.obj", 1.0f);
+	Particle* hitDebris = ParticleManager::GetInstance()->CreateNewParticle("HitDebris", "./Engine/Resource/System/Plane", "Plane.obj", 1.0f);
 	hitDebris->model_->materials_[1].tex_ = TextureManager::Load("BulletHitDebrisEffect.png");
 	hitDebris->model_->materials_[1].enableLighting_ = false;
 	hitDebris->transform_ = transform_.translate_;

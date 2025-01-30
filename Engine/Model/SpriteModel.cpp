@@ -11,7 +11,7 @@ void SpriteModel::Init(ModelData* modelData)
 	// 頂点データを取得する
 	vertices_ = modelData_->vertices_;
 	// Dissolve用テクスチャのサンプルを読み込んでおく
-	DissolveTex_ = TextureManager::Load("./Engine/Resource/Samples/Texture", "noise0.png");
+	DissolveTex_ = TextureManager::Load("./Engine/Resource/System/Texture", "noise0.png");
 
 	// トランスフォームの初期化
 	transform_.Init();

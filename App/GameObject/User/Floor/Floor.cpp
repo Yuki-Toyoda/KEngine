@@ -4,7 +4,7 @@
 void Floor::Init()
 {
 	// メッシュの追加を行う
-	AddNormalModel("Floor", &transform_, "./Engine/Resource/Samples/Box", "Box.obj");
+	AddNormalModel("Floor", &transform_, "./Engine/Resource/System/Box", "Box.obj");
 	// テクスチャの変更を行う
 	normalModels_["Floor"]->materials_[1].tex_ = TextureManager::Load("./Resources", "GroundTex.png");
 
