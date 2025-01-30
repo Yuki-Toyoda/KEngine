@@ -56,9 +56,6 @@
     <ClCompile Include="App\GameObject\User\Enemy\Enemy.cpp">
       <Filter>App\GameObject\User\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="App\GameObject\User\Enemy\EnemyBullet.cpp">
-      <Filter>App\GameObject\User\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="App\GameObject\User\Enemy\State\EnemyDead.cpp">
       <Filter>App\GameObject\User\Enemy\State</Filter>
     </ClCompile>
@@ -425,8 +422,15 @@
     <ClCompile Include="App\GameObject\User\Enemy\State\EnemyHide.cpp">
       <Filter>App\GameObject\User\Enemy\State</Filter>
     </ClCompile>
-    <ClCompile Include="App\GameObject\User\Enemy\State\EnemyHideAttack.cpp" />
-    <ClCompile Include="App\GameObject\User\Player\State\CounterAttack.cpp" />
+    <ClCompile Include="App\GameObject\User\Player\State\CounterAttack.cpp">
+      <Filter>App\GameObject\User\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="App\GameObject\User\Enemy\EnemyBullet.cpp">
+      <Filter>App\GameObject\User\Enemy\State</Filter>
+    </ClCompile>
+    <ClCompile Include="App\GameObject\User\Enemy\State\EnemyHideAttack.cpp">
+      <Filter>App\GameObject\User\Enemy\State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App\Scene\SceneList.h">
@@ -478,9 +482,6 @@
       <Filter>App\GameObject\User\Player\State</Filter>
     </ClInclude>
     <ClInclude Include="App\GameObject\User\Enemy\Enemy.h">
-      <Filter>App\GameObject\User\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="App\GameObject\User\Enemy\EnemyBullet.h">
       <Filter>App\GameObject\User\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="App\GameObject\User\Enemy\State\EnemyDead.h">
@@ -936,8 +937,15 @@
     <ClInclude Include="App\GameObject\User\Enemy\State\EnemyHide.h">
       <Filter>App\GameObject\User\Enemy\State</Filter>
     </ClInclude>
-    <ClInclude Include="App\GameObject\User\Enemy\State\EnemyHideAttack.h" />
-    <ClInclude Include="App\GameObject\User\Player\State\CounterAttack.h" />
+    <ClInclude Include="App\GameObject\User\Player\State\CounterAttack.h">
+      <Filter>App\GameObject\User\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="App\GameObject\User\Enemy\State\EnemyHideAttack.h">
+      <Filter>App\GameObject\User\Enemy\State</Filter>
+    </ClInclude>
+    <ClInclude Include="App\GameObject\User\Enemy\EnemyBullet.h">
+      <Filter>App\GameObject\User\Enemy\State</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">
