@@ -69,7 +69,7 @@ public: // メンバ関数
 	virtual ~IObject() = default;
 
 	// (ユーザー呼び出し禁止)共通初期化関数
-	void PreInitialize(std::string name, Tag tag);
+	void CommonInit(std::string name, Tag tag);
 	// (ユーザー呼び出し禁止)共通更新関数
 	void PreUpdate();
 	// (ユーザー呼び出し禁止)更新後関数

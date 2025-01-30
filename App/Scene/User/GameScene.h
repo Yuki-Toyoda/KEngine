@@ -10,11 +10,6 @@ class GameScene final : public BaseScene {
 public: // メンバ関数
 
 	/// <summary>
-	/// モデル読み込み関数
-	/// </summary>
-	void LoadModel() override;
-
-	/// <summary>
 	/// 初期化関数
 	/// </summary>
 	void Init() override;

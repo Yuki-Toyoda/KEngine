@@ -1,6 +1,6 @@
 #include "IObject.h"
 
-void IObject::PreInitialize(std::string name, Tag tag)
+void IObject::CommonInit(std::string name, Tag tag)
 {
 	// インスタンス取得
 	modelDataManager_ = ModelDataManager::GetInstance(); // モデルデータマネージャー

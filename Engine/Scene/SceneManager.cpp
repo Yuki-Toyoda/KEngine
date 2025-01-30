@@ -13,7 +13,6 @@ void SceneManager::Init()
 	// シーン初期化
 	currentScene_ = sceneFactory_->CreateScene("Game"); // ゲームシーン生成
 	currentScene_->PreInitialize(); // 共通初期化を行う
-	currentScene_->LoadModel(); // モデル読み込みを行う
 	currentScene_->Init(); // 初期化を行う
 }
 
@@ -40,7 +39,6 @@ void SceneManager::Update()
 		currentScene_ = nextScene_; // 次のシーンを取得
 		nextScene_ = nullptr; // 次のシーンにNULLを代入
 		currentScene_->PreInitialize(); // 取得したシーンの共通初期化を行う
-		currentScene_->LoadModel(); // モデル読み込みを行う
 		currentScene_->Init(); // 取得したシーンの初期化を行う
 		GameObjectManager::GetInstance()->Update(); // ゲームオブジェクトマネージャーの更新
 	}

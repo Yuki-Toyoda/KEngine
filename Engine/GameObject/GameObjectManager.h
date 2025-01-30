@@ -47,7 +47,7 @@ public: // メンバ関数
 	inline SelectObject* CreateInstance(std::string name, IObject::Tag tag) {
 		// オブジェクトを生成
 		std::unique_ptr<SelectObject> newObject = std::make_unique<SelectObject>(); // インスタンスを生成
-		newObject->PreInitialize(name, tag);									    // 初期化
+		newObject->CommonInit(name, tag);									    // 初期化
 
 		// 生成したオブジェクト名をかぶらないように設定
 		// 同名オブジェクト個数計算用

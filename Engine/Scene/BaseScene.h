@@ -24,11 +24,6 @@ public: // メンバ関数
 public: // 純粋仮想関数
 
 	/// <summary>
-	/// モデルロード関数
-	/// </summary>
-	virtual void LoadModel() = 0;
-
-	/// <summary>
 	/// 初期化関数
 	/// </summary>
 	virtual void Init() = 0;
@@ -46,9 +41,9 @@ public: // 純粋仮想関数
 private: // メンバ関数
 
 	/// <summary>
-	/// サンプルモデルの読み込み
+	/// システムに必要なモデルの読み込み
 	/// </summary>
-	void SampleModelLoad();
+	void SystemModelLoad();
 
 public: // パブリックメンバ変数
 

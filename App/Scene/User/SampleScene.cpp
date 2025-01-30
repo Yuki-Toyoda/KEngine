@@ -2,14 +2,6 @@
 #include "Engine/GameObject/SampleList.h"
 #include "Engine/Scene/SceneManager.h"
 
-void SampleScene::LoadModel()
-{
-	// モデルデータマネージャーを使用して事前ロードを行ってください
-	// modelDataManager_->LoadNewModel("モデルまでのファイルパス", "モデル名.拡張子");
-
-	// 新規モデル読み込み処理
-}
-
 void SampleScene::Init()
 {
 	// スカイボックスの初期化
