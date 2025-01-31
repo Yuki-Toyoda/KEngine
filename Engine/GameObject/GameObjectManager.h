@@ -53,6 +53,9 @@ public: // メンバ関数
 		// 同名オブジェクト個数計算用
 		int sameNameCount = 0;
 
+		// 生成するオブジェクトの名前を取得
+		std::string newObjectName = name;
+
 		// 全オブジェクトから同名のオブジェクトがないか探す
 		for (std::unique_ptr<IObject>& object : objects_) {
 			// オブジェクト名を取得
@@ -74,14 +77,15 @@ public: // メンバ関数
 		if (sameNameCount > 0) {
 			// 数字を文字列に変換
 			std::string count = std::to_string((sameNameCount + 1));
-			newObject->SetObjectName(newObject->GetObjectName() + count);
+			newObjectName = newObjectName + count;
+			newObject->SetObjectName(newObjectName);
 		}
-
-		// インスタンス変換用のオブジェクト
-		SelectObject* returnObject = newObject.get();
 
 		// 生成したオブジェクトを追加
 		objects_.push_back(std::move(newObject));
+
+		// インスタンス変換用のオブジェクトをリストから取得
+		SelectObject* returnObject = GetGameObject<SelectObject>(newObjectName);
 
 		// オブジェクトを返す
 		return returnObject;
