@@ -2,6 +2,7 @@
 #include "Engine/Input/Input.h" 
 #include "App/GameObject/User/Player/Combo/ComboManager.h"
 #include "App/GameObject/User/Player/State/StateList.h"
+#include "Engine/GlobalVariables/GlobalVariables.h"
 
 // クラスの前方宣言
 class Player;
@@ -45,7 +46,7 @@ public: // メンバ関数
 	/// ImGuiの表示関数
 	/// </summary>
 	void DisplayImGui();
-
+	
 private: // 機能関数群
 
 	/// <summary>
@@ -67,6 +68,35 @@ private: // 機能関数群
 	/// 回転方向の補正処理
 	/// </summary>
 	void RotateCorrectUpdate();
+
+private: // 書き出し、読み込み機能関数群
+
+	/// <summary>
+	/// パラメータ追加関数
+	/// </summary>
+	void AddParam();
+
+	/// <summary>
+	/// パラメータセット関数
+	/// </summary>
+	void SetValue();
+
+	/// <summary>
+	/// パラメータ適用関数
+	/// </summary>
+	void ApplyParam();
+
+private: // デバッグ機能用関数群
+
+	/// <summary>
+	/// ファイルメニュー関数
+	/// </summary>
+	void FileMenu();
+
+	/// <summary>
+	/// 調整メニュー関数
+	/// </summary>
+	void AdjustMenu();
 
 public: // アクセッサ等
 
@@ -137,22 +167,30 @@ private: // メンバ変数
 	// 敵がいる向きを保存
 	Vector3 enemyDirection_{};
 	// 攻撃時に回転補正をかける場合の距離
-	const float correctDirectionDistance = 5.0f;
+	float correctDirectionDistance = 5.0f;
 	// 回転補正を終了する閾値
-	const float angleCorrectThreshold = 0.05f;
+	float angleCorrectThreshold = 0.05f;
 	// 敵がいる方向に補正する際の速度
-	const float toEnemyCorrectSpeed = 0.25f;
+	float toEnemyCorrectSpeed = 0.25f;
 
 	// カウンター可能か
 	bool isCanCounter_ = false;
 
 	// 軌跡補間速度
-	const float startAppearTrailCorrectSpeed = 0.2f;
-	const float endAppearTrailCorrectSpeed = 0.3f;
+	float startAppearTrailCorrectSpeed = 0.2f;
+	float endAppearTrailCorrectSpeed = 0.3f;
 	// 軌跡透明度
-	const float maxTrailAlpha = 1.0f;
-	const float minTrailAlpha = 0.0f;
-	// 軌跡の強制透過閾値
-	const float trailAlphaThresold = 0.01f;
+	float maxTrailAlpha = 1.0f;
+	float minTrailAlpha = 0.0f;
+	// 軌跡の強制透過を行う閾値
+	float trailAlphaThresold = 0.01f;
+
+	#pragma region デバッグ用変数群
+
+	// ファイル名管理用変数
+	const std::string fileName = "AttackManager";
+
+	#pragma endregion
+
 };
 

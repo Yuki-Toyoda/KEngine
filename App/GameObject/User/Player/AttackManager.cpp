@@ -12,6 +12,11 @@ void AttackManager::Init()
 	comboManager_.Init(player_);
 	// コンボマネージャーに条件を追加する
 	comboManager_.AddCondition("IsHit", &isHit_); // 攻撃の命中フラグ
+
+	// パラメータ追加
+	AddParam();
+	// パラメータ読み込み
+	ApplyParam();
 }
 
 void AttackManager::Update()
@@ -44,6 +49,24 @@ void AttackManager::DisplayImGui()
 {
 	// コンボマネージャーのImGuiの表示
 	comboManager_.DisplayImGui();
+
+	// グローバル変数クラスに現在の値をセットし続ける
+	SetValue();
+
+	// 攻撃マネージャーのImGuiの開始
+	ImGui::Begin("AttackManager", nullptr, ImGuiWindowFlags_MenuBar);
+
+	// メニューバーの開始
+	if (ImGui::BeginMenuBar()) {
+		// ファイルメニューの表示
+		FileMenu();
+		ImGui::EndMenuBar();
+	}
+
+	// 調整メニューの表示
+	AdjustMenu();
+
+	ImGui::End();
 }
 
 void AttackManager::TrailUpdate()
@@ -152,4 +175,99 @@ void AttackManager::RotateCorrectUpdate()
 		// 補正終了
 		isCorrectingToEnemy_ = false;
 	}
+}
+
+void AttackManager::AddParam()
+{
+	// グローバル変数クラスのインスタンス取得
+	GlobalVariables* gv = GlobalVariables::GetInstance();
+
+	// 攻撃関連パラメータをグローバル変数クラスに追加
+	gv->AddItem(fileName, "CorrectDirectionDistance", correctDirectionDistance);
+	gv->AddItem(fileName, "AngleCorrectThreshold", angleCorrectThreshold);
+	gv->AddItem(fileName, "ToEnemyCorrectSpeed", toEnemyCorrectSpeed);
+	gv->AddItem(fileName, "StartAppearTrailCorrectSpeed", startAppearTrailCorrectSpeed);
+	gv->AddItem(fileName, "EndAppearTrailCorrectSpeed", endAppearTrailCorrectSpeed);
+	gv->AddItem(fileName, "MaxTrailAlpha", maxTrailAlpha);
+	gv->AddItem(fileName, "MinTrailAlpha", minTrailAlpha);
+	gv->AddItem(fileName, "TrailAlphaThresold", trailAlphaThresold);
+}
+
+void AttackManager::SetValue()
+{
+	// グローバル変数クラスのインスタンス取得
+	GlobalVariables* gv = GlobalVariables::GetInstance();
+
+	// 攻撃関連パラメータをグローバル変数クラスにセットする
+	gv->SetValue(fileName, "CorrectDirectionDistance", correctDirectionDistance);
+	gv->SetValue(fileName, "AngleCorrectThreshold", angleCorrectThreshold);
+	gv->SetValue(fileName, "ToEnemyCorrectSpeed", toEnemyCorrectSpeed);
+	gv->SetValue(fileName, "StartAppearTrailCorrectSpeed", startAppearTrailCorrectSpeed);
+	gv->SetValue(fileName, "EndAppearTrailCorrectSpeed", endAppearTrailCorrectSpeed);
+	gv->SetValue(fileName, "MaxTrailAlpha", maxTrailAlpha);
+	gv->SetValue(fileName, "MinTrailAlpha", minTrailAlpha);
+	gv->SetValue(fileName, "TrailAlphaThresold", trailAlphaThresold);
+}
+
+void AttackManager::ApplyParam()
+{
+	// グローバル変数クラスのインスタンス取得
+	GlobalVariables* gv = GlobalVariables::GetInstance();
+
+	// 攻撃関連パラメータをグローバル変数クラスから読み込む
+	correctDirectionDistance = gv->GetFloatValue(fileName, "CorrectDirectionDistance");
+	angleCorrectThreshold = gv->GetFloatValue(fileName, "AngleCorrectThreshold");
+	toEnemyCorrectSpeed = gv->GetFloatValue(fileName, "ToEnemyCorrectSpeed");
+	startAppearTrailCorrectSpeed = gv->GetFloatValue(fileName, "StartAppearTrailCorrectSpeed");
+	endAppearTrailCorrectSpeed = gv->GetFloatValue(fileName, "EndAppearTrailCorrectSpeed");
+	maxTrailAlpha = gv->GetFloatValue(fileName, "MaxTrailAlpha");
+	minTrailAlpha = gv->GetFloatValue(fileName, "MinTrailAlpha");
+	trailAlphaThresold = gv->GetFloatValue(fileName, "TrailAlphaThresold");
+}
+
+void AttackManager::FileMenu()
+{
+	// グローバル変数クラスのインスタンス取得
+	GlobalVariables* gv = GlobalVariables::GetInstance();
+
+	// 主に保存や再読み込みを行うメニュー
+	if (ImGui::BeginMenu("File")) {
+		// 保存処理
+		if (ImGui::MenuItem("Save")) {
+			// 攻撃マネージャー用ファイルの保存
+			gv->SaveFile(fileName);
+		}
+
+		// 再読み込み
+		if (ImGui::MenuItem("Load")) {
+			// 値の再読み込みを行う
+			ApplyParam();
+		}
+
+		// メニューの終了
+		ImGui::EndMenu();
+	}
+}
+
+void AttackManager::AdjustMenu()
+{
+	/// 各パラメータの調整
+	ImGui::Text("Adjust");
+	// 攻撃補正に関する調整
+	ImGui::Text("For AttackCorrect");
+	ImGui::DragFloat("CorrectDirectionDistance", &correctDirectionDistance, 0.1f, 0.0f);
+	ImGui::DragFloat("AngleCorrectThreshold", &angleCorrectThreshold, 0.1f, 0.0f);
+	ImGui::DragFloat("ToEnemyCorrectSpeed", &toEnemyCorrectSpeed, 0.1f, 0.0f);
+	// 終了
+	ImGui::NewLine();
+	
+	// 軌跡に関する調整
+	ImGui::Text("For Trail");
+	ImGui::DragFloat("StartAppearTrailCorrectSpeed", &startAppearTrailCorrectSpeed, 0.01f, 0.01f, 1.0f);
+	ImGui::DragFloat("EndAppearTrailCorrectSpeed", &endAppearTrailCorrectSpeed, 0.01f, 0.01f, 1.0f);
+	ImGui::DragFloat("maxTrailAlpha", &maxTrailAlpha, 0.01f, 0.0f, 1.0f);
+	ImGui::DragFloat("minTrailAlpha", &minTrailAlpha, 0.01f, 0.0f, 1.0f);
+	ImGui::DragFloat("TrailAlphaThresold", &trailAlphaThresold, 0.01f, 0.01f, 1.0f);
+	// 終了
+	ImGui::NewLine();
 }

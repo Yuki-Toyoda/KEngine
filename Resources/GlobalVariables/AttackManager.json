@@ -1,0 +1,12 @@
+{
+    "AttackManager": {
+        "AngleCorrectThreshold": 0.05000000074505806,
+        "CorrectDirectionDistance": 5.0,
+        "EndAppearTrailCorrectSpeed": 0.30000001192092896,
+        "MaxTrailAlpha": 1.0,
+        "MinTrailAlpha": 0.0,
+        "StartAppearTrailCorrectSpeed": 0.20000000298023224,
+        "ToEnemyCorrectSpeed": 0.25,
+        "TrailAlphaThresold": 0.009999999776482582
+    }
+}
