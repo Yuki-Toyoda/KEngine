@@ -54,12 +54,34 @@ public: // メンバ関数
 	/// </summary>
 	void DisplayImGui() override;
 
-public: // パブリックメンバ変数
+public: // アクセッサ等
+
+	/// <summary>
+	/// 中心座標セッター
+	/// </summary>
+	/// <param name="hsv">ブラー中心座標</param>
+	void SetCenter(const Vector2& center) { data_.center = center; }
+	/// <summary>
+	/// 中心座標ゲッター
+	/// </summary>
+	/// <returns>中心座標</returns>
+	Vector2 GetCenter()const { return data_.center; }
+
+	/// <summary>
+	/// ブラー強度セッター
+	/// </summary>
+	/// <param name="strength">ブラー強度</param>
+	void SetStrength(const float strength) { data_.blurStrength = strength; }
+	/// <summary>
+	/// ブラー強度ゲッター
+	/// </summary>
+	/// <returns>ブラー強度</returns>
+	float GetStrength() const { return data_.blurStrength; }
+
+private: // メンバ変数
 
 	// ラジアルブラー用データ
 	RadialData data_{};
-
-private: // メンバ変数
 
 	// 定数バッファ
 	ConstantBuffer<RadialData> buffer_;

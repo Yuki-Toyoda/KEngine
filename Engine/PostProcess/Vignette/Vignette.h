@@ -44,12 +44,24 @@ public: // メンバ関数
 	/// </summary>
 	void DisplayImGui() override;
 
-public: // パブリックメンバ変数
+public: // アクセッサ等
+
+	/// <summary>
+	/// 閾値セッター
+	/// </summary>
+	/// <param name="intensity">閾値</param>
+	void SetIntensity(const float intensity) { intensity_ = intensity; }
+
+	/// <summary>
+	/// 強度ゲッター
+	/// </summary>
+	/// <returns>強度</returns>
+	float GetIntensity() const { return intensity_; }
+
+private: // メンバ変数
 
 	// ポストプロセスのかけ具合
 	float intensity_ = 0.0f;
-
-private: // メンバ変数
 
 	// 定数バッファ
 	ConstantBuffer<float> buffer_;

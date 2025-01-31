@@ -283,6 +283,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Base\Resource\Data\StructuredBuffer.h" />
     <ClInclude Include="Engine\Base\Resource\Rendering\IRenderingResource.h" />
     <ClInclude Include="Engine\Model\Component\Vertex.h" />
+    <ClInclude Include="Engine\PostProcess\GaussianFilter\GaussianFilter.h" />
     <ClInclude Include="Engine\Utility\Angle\Angle.h" />
     <ClInclude Include="Engine\Utility\Counter\Counter.h" />
     <ClInclude Include="Engine\Utility\DataSegment\DataSegment.h" />

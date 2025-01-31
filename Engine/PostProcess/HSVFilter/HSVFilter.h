@@ -55,13 +55,23 @@ public: // メンバ関数
 	/// </summary>
 	void DisplayImGui() override;
 
-public: // パブリックメンバ変数
+public: // アクセッサ等
 
-	// HSV色変換
-	HSV hsv_;
+	/// <summary>
+	/// HSVセッター
+	/// </summary>
+	/// <param name="intensity">閾値</param>
+	void SetHSV(const HSV& hsv) { hsv_ = hsv; }
+	/// <summary>
+	/// HSVゲッター
+	/// </summary>
+	/// <returns>HSV</returns>
+	HSV GetHSV() const { return hsv_; }
 
 private: // メンバ変数
 
+	// HSV色変換
+	HSV hsv_;
 
 	ConstantBuffer<HSV> buffer_;
 

@@ -8,7 +8,7 @@ void FollowCamera::Init()
 	Camera::Init();
 
 	// ブルームの閾値を変更しておく
-	ppProcessor_.bloom_.threshold_ = 0.25f;
+	ppProcessor_.bloom_.SetThreshold(0.25f);
 
 	// オフセットなしのトランスフォームの初期化
 	noOffsetTransform_.Init();
@@ -266,10 +266,10 @@ void FollowCamera::ForcusVignetteUpdate()
 {
 	// Z注目有効時にビネットエフェクトを徐々にかける
 	if (enableZForcus_) {
-		ppProcessor_.vignette_.intensity_ = KLib::Lerp<float>(ppProcessor_.vignette_.intensity_, vignetteStrength_, vignetteT_);
+		ppProcessor_.vignette_.SetIntensity(KLib::Lerp<float>(ppProcessor_.vignette_.GetIntensity(), vignetteStrength_, vignetteT_));
 	}
 	else { // 無効時は徐々に下げる
-		ppProcessor_.vignette_.intensity_ = KLib::Lerp<float>(ppProcessor_.vignette_.intensity_, 0.0f, vignetteT_);
+		ppProcessor_.vignette_.SetIntensity(KLib::Lerp<float>(ppProcessor_.vignette_.GetIntensity(), 0.0f, vignetteT_));
 	}
 }
 
@@ -405,12 +405,11 @@ void FollowCamera::ParryBlurUpdate()
 	// パリィ演出タイマーが終了していない場合
 	if (!parryBlurTimer_.GetIsFinish() && !isParryEndStaging_) {
 		// ブラーを徐々に線形補間で強くしていく
-		ppProcessor_.radialBlur_.data_.blurStrength = 
-			KLib::Lerp<float>(ppProcessor_.radialBlur_.data_.blurStrength, parryBlurStrength_, parryBlurTimer_.GetProgress());
+		ppProcessor_.radialBlur_.SetStrength(KLib::Lerp<float>(ppProcessor_.radialBlur_.GetStrength(), parryBlurStrength_, parryBlurTimer_.GetProgress()));
 	}
 	else if(!isParryEndStaging_){
 		// ブラーの強度を固定
-		ppProcessor_.radialBlur_.data_.blurStrength = parryBlurStrength_;
+		ppProcessor_.radialBlur_.SetStrength(parryBlurStrength_);
 
 		// 終了演出開始
 		isParryEndStaging_ = true;
@@ -419,8 +418,7 @@ void FollowCamera::ParryBlurUpdate()
 	}
 	else if (!parryBlurTimer_.GetIsFinish() && isParryEndStaging_) {
 		// ブラーを徐々に線形補間で弱くしていく
-		ppProcessor_.radialBlur_.data_.blurStrength =
-			KLib::Lerp<float>(ppProcessor_.radialBlur_.data_.blurStrength, 0.0f, parryBlurTimer_.GetProgress());
+		ppProcessor_.radialBlur_.SetStrength(KLib::Lerp<float>(ppProcessor_.radialBlur_.GetStrength(), 0.0f, parryBlurTimer_.GetProgress()));
 	}
 	else {
 		// パリィ演出終了

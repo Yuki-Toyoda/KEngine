@@ -66,15 +66,35 @@ public: // アクセッサ等
 	/// <param name="mat">ビュープロジェクションの逆行列</param>
 	void SetViewProjectionInverse(const Matrix4x4& mat) { buffer_.data_->projectionInverse = mat; }
 
-public: // パブリックメンバ変数
+	/// <summary>
+	/// 閾値セッター
+	/// </summary>
+	/// <param name="threshold">閾値</param>
+	void SetThreshold(const float threshold) { threshold_ = threshold; }
+	/// <summary>
+	/// 閾値ゲッター
+	/// </summary>
+	/// <returns>閾値</returns>
+	float GetThreshold() const { return threshold_; }
+
+	/// <summary>
+	/// 色セッター
+	/// </summary>
+	/// <param name="color">色</param>
+	void SetColor(const Vector4& color) { color_ = color; }
+	/// <summary>
+	/// 色ゲッター
+	/// </summary>
+	/// <returns>色</returns>
+	Vector4 GetColor() const { return color_; }
+
+private: // メンバ変数
 
 	// アウトラインのしきい値
 	float threshold_ = 0.5f;
 
 	// アウトライン色
 	Vector4 color_ = { 1.0f, 1.0f, 1.0f, 1.0f };
-
-private: // メンバ変数
 
 	// 定数バッファ
 	ConstantBuffer<Data> buffer_;

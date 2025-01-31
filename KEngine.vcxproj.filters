@@ -946,6 +946,9 @@
     <ClInclude Include="App\GameObject\User\Player\AttackManager.h">
       <Filter>App\GameObject\User\Player</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\PostProcess\GaussianFilter\GaussianFilter.h">
+      <Filter>Engine\Resource\Shader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Externals\imgui\.editorconfig">

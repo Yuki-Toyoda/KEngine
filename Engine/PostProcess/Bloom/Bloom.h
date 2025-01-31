@@ -65,12 +65,24 @@ public: // メンバ関数
 	/// </summary>
 	void DisplayImGui() override;
 
-public: // パブリックメンバ変数
+public: // アクセッサ等
+
+	/// <summary>
+	/// 閾値セッター
+	/// </summary>
+	/// <param name="threshold">閾値</param>
+	void SetThreshold(const float threshold) { threshold_ = threshold; }
+
+	/// <summary>
+	/// 閾値ゲッター
+	/// </summary>
+	/// <returns>閾値</returns>
+	float GetThreshold() const { return threshold_; }
+
+private: // メンバ変数
 
 	// ブルーム閾値
 	float threshold_ = 0.0f;
-
-private: // メンバ変数
 
 	// 定数バッファ
 	ConstantBuffer<float> buffer_;
