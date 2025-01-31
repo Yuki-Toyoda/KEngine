@@ -4,7 +4,7 @@
 #include "State/StateList.h"
 #include "Engine/Utility/Animation/AnimationManager.h"
 #include "Engine/Audio/Audio.h"
-#include "App/GameObject/User/Player/Combo/ComboManager.h"
+#include "AttackManager.h"
 
 // クラスの前方宣言
 class Camera;
@@ -83,21 +83,12 @@ public: // その他関数
 	void HitDamage(const Vector3& translate);
 
 	/// <summary>
-	/// 軌跡更新関数
-	/// </summary>
-	void TrailUpdate();
-
-	/// <summary>
 	/// カウンター攻撃関数
 	/// </summary>
 	void CounterUpdate();
 
 	/// <summary>
-	/// 攻撃関係更新関数
-	/// </summary>
-	void AttackUpdate();
-	/// <summary>
-	/// 攻撃時の回転補正更新関数
+	/// 回転補正処理関数
 	/// </summary>
 	void CorrectDirectionUpdate();
 
@@ -160,33 +151,10 @@ public: // アクセッサ等
 	int32_t GetMaxHP() { return maxHP_; }
 
 	/// <summary>
-	/// コンボマネージャーゲッター
-	/// </summary>
-	/// <returns>コンボマネージャー</returns>
-	ComboManager* GetComboManager() { return &comboManager_; }
-
-	/// <summary>
-	/// 攻撃状態セッター
-	/// </summary>
-	/// <param name="isAttacking">攻撃状態</param>
-	void SetIsAttacking(const bool isAttacking) { isAttacking_ = isAttacking; }
-	/// <summary>
-	/// 攻撃状態ゲッター
-	/// </summary>
-	/// <returns>攻撃状態</returns>
-	bool GetIsAttacking() { return isAttacking_; }
-
-	/// <summary>
 	/// 回転補間有効状態
 	/// </summary>
 	/// <param name="isCorrect">補間をするかどうか</param>
 	void SetIsCorrectDirection(const bool isCorrect) { isCorrectDirection_ = isCorrect; }
-
-	/// <summary>
-	/// 命中状態セッター
-	/// </summary>
-	/// <param name="isHit">命中状態</param>
-	void SetIsHit(const bool isHit) { isHit_ = isHit; }
 
 	/// <summary>
 	/// 剣の当たり判定ゲッター
@@ -199,6 +167,11 @@ public: // アクセッサ等
 	/// </summary>
 	/// <param name="canAction">行動可能状態</param>
 	void SetCanAction(const bool canAction) { canAction_ = canAction; }
+	/// <summary>
+	/// 行動可能状態ゲッター
+	/// </summary>
+	/// <returns>行動可能状態</returns>
+	bool GetCanAction() { return canAction_; }
 
 	/// <summary>
 	/// 死亡状態セッター
@@ -216,6 +189,18 @@ public: // アクセッサ等
 	/// </summary>
 	/// <returns>身体の中心座標</returns>
 	WorldTransform* GetBodyPos() { return &colliderTransform_; }
+
+	/// <summary>
+	/// 攻撃管理マネージャゲッター
+	/// </summary>
+	/// <returns>攻撃管理マネージャ</returns>
+	AttackManager* GetAttackManager() { return attackManager_.get(); }
+
+	/// <summary>
+	/// コンボマネージャーゲッター
+	/// </summary>
+	/// <returns>コンボマネージャー</returns>
+	ComboManager* GetComboManager() { return attackManager_->GetComboManager(); }
 
 public: // パブリックなメンバ変数
 
@@ -241,9 +226,6 @@ private: // メンバ変数
 	// 行動可能か
 	bool canAction_ = false;
 
-	// コンボマネージャー
-	ComboManager comboManager_;
-
 	// 武器のトランスフォーム
 	WorldTransform weaponTransform_;
 	// 攻撃判定用線
@@ -255,38 +237,11 @@ private: // メンバ変数
 	// 線長さ
 	const float lineLength_ = 1.0f;
 
-	// 攻撃可能か
-	bool canAttack_ = true;
-	// 攻撃中か
-	bool isAttacking_ = false;
-	// 攻撃が命中したか
-	bool isHit_ = false;
-
-	// 現在敵に向けて補正をかけているのか
-	bool isCorrectingToEnemy_ = false;
-	// 敵がいる向きを保存
-	Vector3 enemyDirection_{};
-	// 攻撃時に回転補正をかける場合の距離
-	const float correctDirectionDistance_ = 5.0f;
-	// 回転補正を終了する閾値
-	const float angleCorrectThreshold_ = 0.05f;
-	// 敵がいる方向に補正する際の速度
-	const float toEnemyCorrectSpeed_ = 0.25f;
-
-	// カウンター可能か
-	bool isCanCounter_ = false;
-
 	// 剣の環境マップ強度
 	const float swordEnvironmentMapStrength_ = 0.85f;
 
-	// 軌跡補間速度
-	const float startAppearTrailCorrectSpeed_ = 0.2f;
-	const float endAppearTrailCorrectSpeed_ = 0.3f;
-	// 軌跡透明度
-	const float maxTrailAlpha_ = 1.0f;
-	const float minTrailAlpha_ = 0.0f;
-	// 軌跡の強制透過閾値
-	const float trailAlphaThresold_ = 0.01f;
+	// 攻撃管理クラス
+	std::unique_ptr<AttackManager> attackManager_;
 
 	// 落ち影のワールドトランスフォーム
 	WorldTransform shadowTransform_{};

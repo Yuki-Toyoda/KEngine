@@ -10,7 +10,7 @@ void Damage::Init()
 	stateName_ = "Damage";
 	
 	// 攻撃中でない
-	player_->SetIsAttacking(false);
+	player_->GetAttackManager()->SetIsAttacking(false);
 	// コライダー無効
 	player_->GetSwordLine()->GetCollider()->SetIsActive(false);
 

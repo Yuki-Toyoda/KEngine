@@ -114,7 +114,7 @@ void EnemyBullet::OnCollisionEnter(Collider* target, [[maybe_unused]] Collider* 
 		Player* p = GameObjectManager::GetInstance()->GetGameObject<Player>("Player");
 
 		// プレイヤーが攻撃中の場合
-		if (p->GetIsAttacking()) {
+		if (p->GetAttackManager()->GetIsAttacking()) {
 			// 敵の取得
 			Enemy* e = GameObjectManager::GetInstance()->GetGameObject<Enemy>("Enemy");
 

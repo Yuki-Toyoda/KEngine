@@ -28,7 +28,7 @@ void Attack::Update()
 	// コンボ終了時に待機状態に移行する
 	if (comboManager_->GetIsComboEnd()) {
 		// 攻撃中でない
-		player_->SetIsAttacking(false);
+		player_->GetAttackManager()->SetIsAttacking(false);
 
 		// プレイヤーのステートを待機状態へ
 		player_->ChangeState(std::make_unique<Root>());

@@ -428,6 +428,9 @@
     <ClCompile Include="App\GameObject\User\Enemy\State\EnemyHideAttack.cpp">
       <Filter>App\GameObject\User\Enemy\State</Filter>
     </ClCompile>
+    <ClCompile Include="App\GameObject\User\Player\AttackManager.cpp">
+      <Filter>App\GameObject\User\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App\Scene\SceneList.h">
@@ -939,6 +942,9 @@
     </ClInclude>
     <ClInclude Include="App\GameObject\User\Enemy\EnemyBullet.h">
       <Filter>App\GameObject\User\Enemy\State</Filter>
+    </ClInclude>
+    <ClInclude Include="App\GameObject\User\Player\AttackManager.h">
+      <Filter>App\GameObject\User\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

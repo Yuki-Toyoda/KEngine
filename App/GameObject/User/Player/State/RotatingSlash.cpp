@@ -8,7 +8,7 @@ void RotatingSlash::Init()
 	stateName_ = "RotatingSlash";
 
 	// 攻撃中
-	player_->SetIsAttacking(true);
+	player_->GetAttackManager()->SetIsAttacking(true);
 	// コライダー有効
 	player_->GetSwordLine()->isActive_ = true;
 

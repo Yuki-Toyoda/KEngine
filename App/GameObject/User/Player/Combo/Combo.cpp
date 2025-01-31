@@ -84,7 +84,7 @@ void Combo::Update()
 			// コンボ終了
 			isComboEnd_ = true;
 			// コンボ終了時点で攻撃していない設定に
-			player_->SetIsAttacking(false);
+			player_->GetAttackManager()->SetIsAttacking(false);
 		}
 	}
 }

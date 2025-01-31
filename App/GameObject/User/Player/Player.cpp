@@ -46,6 +46,10 @@ void Player::Init()
 	colliderWorldPos_ = colliderTransform_.GetWorldPos();
 	AddColliderSphere("PlayerCollider", &colliderWorldPos_, &colliderRadius_);
 
+	// 攻撃管理マネージャの初期化
+	attackManager_ = std::make_unique<AttackManager>(this);
+	attackManager_->Init();
+
 	// 攻撃用の線の追加
 	SwordLine_ = std::make_unique<Line>();
 	SwordLine_->Init("AttackLine", linePosition_, lineThickness_, lineLength_);
@@ -98,12 +102,7 @@ void Player::Init()
 
 	// 危険アイコン非表示
 	sprites_["EmergencyIcon"]->color_ = { 1.0f, 1.0f, 1.0f, 0.0f };
-
-	// コンボマネージャーの初期化
-	comboManager_.Init(this);
-	// コンボマネージャーに条件を追加する
-	comboManager_.AddCondition("IsHit", &isHit_); // 攻撃の命中フラグ
-
+	sprites_["EmergencyIcon"]->anchorPoint_ = { 0.5f, 0.5f };
 
 	// 効果音読み込み
 	SwingSword_ = Audio::GetInstance()->LoadWave("./Resources/Audio/SE/SwingSword.mp3");
@@ -114,8 +113,8 @@ void Player::Update()
 {
 	#ifdef _DEBUG // デバッグ時のみ実行
 
-	// ImGuiの表示
-	comboManager_.DisplayImGui();
+	// 攻撃管理マネージャのImGuiを表示
+	attackManager_->DisplayImGui();
 
 	#endif // _DEBUG // デバッグ時のみ実行
 
@@ -160,8 +159,12 @@ void Player::Update()
 		sprites_["LowerObi"]->scale_.y = KLib::Lerp<float>(sprites_["LowerObi"]->scale_.y, maxObiSizeY_, obiCorrectSpeed_);
 	}
 
-	// 軌跡関連の更新
-	TrailUpdate();
+	// カウンター関連の更新
+	CounterUpdate();
+	// 攻撃管理マネージャの更新
+	attackManager_->Update();
+	// 剣当たり判定の更新
+	SwordLine_->Update();
 
 	// 行動可能状態でない場合早期リターン
 	if (!canAction_) {
@@ -199,18 +202,11 @@ void Player::Update()
 		}
 	}
 
-	// カウンター攻撃関係更新
-	CounterUpdate();
-	// 攻撃関係更新
-	AttackUpdate();
-
-	// 命中フラグのリセット
-	isHit_ = false;
-	// カウンター可能フラグfalse
-	isCanCounter_ = false;
-
 	//コライダーのワールド座標更新
 	colliderWorldPos_ = colliderTransform_.GetWorldPos();
+
+	// 攻撃管理マネージャの更新後処理
+	attackManager_->PostUpdate();
 
 	// ヒットクールタイム更新
 	hitCoolTimeTimer_.Update();
@@ -283,7 +279,7 @@ void Player::OnCollision(Collider* target, [[maybe_unused]] Collider* source)
 		}
 		else if(enemy->GetStateName() == "HideAttack" && enemy->GetIsCanCounter()){
 			// カウンター可能状態に
-			isCanCounter_ = true;
+			attackManager_->SetIsCanCounter(true);
 		}
 	}
 }
@@ -363,89 +359,14 @@ void Player::HitDamage(const Vector3& translate)
 	}
 }
 
-void Player::TrailUpdate()
-{
-	// 軌跡a値
-	float& trailAlpha = SwordLine_->trailMaterial_.color_.w;
-	// 攻撃中は軌跡を表示させる
-	if (isAttacking_) {
-		trailAlpha = KLib::Lerp(trailAlpha, maxTrailAlpha_, startAppearTrailCorrectSpeed_);
-	}
-	else {
-		// 攻撃中でない場合は軌跡を徐々に消す
-		if (trailAlpha <= trailAlphaThresold_) {
-			trailAlpha = minTrailAlpha_;
-		}
-		else {
-			trailAlpha = KLib::Lerp(trailAlpha, minTrailAlpha_, endAppearTrailCorrectSpeed_);
-		}
-	}
-
-	// 線の更新
-	SwordLine_->Update();
-}
-
 void Player::CounterUpdate()
 {
 	// カウンター可能状態ならアイコンを徐々に表示
-	if (isCanCounter_) {
+	if (attackManager_->GetIsCanCounter()) {
 		sprites_["EmergencyIcon"]->color_.w = KLib::Lerp<float>(sprites_["EmergencyIcon"]->color_.w, 1.0f, 0.2f);
 	}
 	else {
 		sprites_["EmergencyIcon"]->color_.w = KLib::Lerp<float>(sprites_["EmergencyIcon"]->color_.w, 0.0f, 0.1f);
-	}
-
-	// カウンター不可能、カウンター攻撃状態の場合早期リターン
-	if (!isCanCounter_ || state_->GetStateName() == "Counter") { return; }
-
-	// Damage状態の場合早期リターン
-	if (state_->GetStateName() == "Damage") { return; }
-
-	// Bボタンを押したときにカウンター攻撃を発動
-	if (input_->InspectButton(XINPUT_GAMEPAD_B, TRIGGER)) {
-		// 行動を変更
-		ChangeState(std::make_unique<CounterAttack>());
-	}
-}
-
-void Player::AttackUpdate()
-{
-	// 下記条件の場合早期リターン
-	// 1. プレイヤーがダメージを受けている状態
-	// 2. 攻撃中状態
-	// 3. 攻撃可能状態でない
-	// 4. 攻撃中である
-	if (state_->GetStateName() == "Damage" || 
-		state_->GetStateName() == "Attack" || 
-		state_->GetStateName() == "Counter" || 
-		!canAttack_ || 
-		isAttacking_) { return; }
-
-	// Aボタンを押すと攻撃する
-	if (input_->InspectButton(XINPUT_GAMEPAD_A, TRIGGER)) {
-		// 敵との距離を計測
-		float toEnemyDistance = std::abs(Vector3::Length(enemy_->transform_.translate_ - transform_.translate_));
-		// 敵との距離が補正閾値内だった場合
-		if (toEnemyDistance <= correctDirectionDistance_) {
-			// 回転補正を行う
-			isCorrectingToEnemy_ = true;
-		}
-
-		// 行動を変更
-		ChangeState(std::make_unique<Attack>());
-
-		// Z注目有効時
-		if (followCamera_->GetEnableZForcus()) {
-			comboManager_.ChangeCombo("LockOn");
-		}
-		else {
-			comboManager_.ChangeCombo("Normal");
-		}
-
-		// デバッグ有効時には表示中コンボへ切り替える
-		if (comboManager_.GetEnableComboDebug()) {
-			comboManager_.ChangeCombo(comboManager_.GetImGuiDisplayName());
-		}
 	}
 }
 
@@ -455,7 +376,7 @@ void Player::CorrectDirectionUpdate()
 	if (!isCorrectDirection_) { return; }
 
 	// 敵に対して補正をかけない状態であれば
-	if (!isCorrectingToEnemy_) { 
+	if (!attackManager_->GetIsCorrectingToEnemy()) { 
 		// ロックオン中でない場合早期リターン
 		if (!followCamera_->GetLockOn()->GetIsLockOn()) { return; }
 
@@ -470,20 +391,6 @@ void Player::CorrectDirectionUpdate()
 
 		// この時点で終了
 		return; 
-	}
-
-	// 敵がいる方向ベクトルを求める
-	enemyDirection_ = enemy_->transform_.translate_ - transform_.translate_;
-	// 敵がいる方向を求める
-	targetAngle_ = std::atan2(enemyDirection_.x, enemyDirection_.z);
-	// 閾値を超えるまで補正を続ける
-	if (std::abs(transform_.rotate_.y - targetAngle_) > angleCorrectThreshold_){
-		// 身体を回転させる
-		transform_.rotate_.y = KLib::LerpShortAngle(transform_.rotate_.y, targetAngle_, toEnemyCorrectSpeed_);
-	}
-	else {
-		// 補正終了
-		isCorrectingToEnemy_ = false;
 	}
 }
 

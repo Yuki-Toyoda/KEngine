@@ -93,7 +93,7 @@ void CounterAttack::AttackUpdate()
 {
 	if (player_->skiningModels_["Player"]->animationManager_.GetPlayingAnimationProgress() >= 0.25f) {
 		// 攻撃中状態に
-		player_->SetIsAttacking(true);
+		player_->GetAttackManager()->SetIsAttacking(true);
 	}
 
 	// カウンター攻撃アニメーションが終了している場合
@@ -101,7 +101,7 @@ void CounterAttack::AttackUpdate()
 		// 演出用タイマー更新
 		stagingTimer_.Start(endTime);
 		// 攻撃していない状態に
-		player_->SetIsAttacking(false);
+		player_->GetAttackManager()->SetIsAttacking(false);
 		// 次の段階へ
 		progress_++;
 	}

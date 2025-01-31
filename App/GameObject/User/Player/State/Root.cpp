@@ -13,7 +13,7 @@ void Root::Init()
 	targetAngle_ = player_->transform_.rotate_.y;
 
 	// 攻撃状態でない
-	player_->SetIsAttacking(false);
+	player_->GetAttackManager()->SetIsAttacking(false);
 	// コライダー無効
 	player_->GetSwordLine()->GetCollider()->SetIsActive(false);
 }

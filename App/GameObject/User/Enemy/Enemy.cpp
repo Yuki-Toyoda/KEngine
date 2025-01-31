@@ -258,11 +258,10 @@ void Enemy::OnCollision(Collider* target, [[maybe_unused]] Collider* source)
 		// 下記条件の場合早期リターン
 		// 1. プレイヤーが攻撃中でない
 		// 2. ヒットクールタイムが終了している
-		// 3. 敵がダウン中
-		// 4. 衝突元が近接攻撃用コライダーの場合
-		if (!player_->GetIsAttacking() || !hitCoolTimeTimer_.GetIsFinish()) { return; }
+		if (!player_->GetAttackManager()->GetIsAttacking() || 
+			!hitCoolTimeTimer_.GetIsFinish()) { return; }
 
-		// ダウンさせる
+		// ダウンしていない状態であれば
 		if (state_->GetStateName() != "Down") {
 			// プレイヤーがカウンター状態でなければ早期リターン
 			if (player_->GetStateName() != "Counter") { return; }
@@ -296,7 +295,7 @@ void Enemy::OnCollision(Collider* target, [[maybe_unused]] Collider* source)
 		hitCoolTimeTimer_.Start(kHitCoolTime_);
 
 		// プレイヤーに攻撃が命中したことを伝える
-		player_->SetIsHit(true);
+		player_->GetAttackManager()->SetIsHit(true);
 
 		// ダメージパーティクルの再生
 		PlayDamageParticle();

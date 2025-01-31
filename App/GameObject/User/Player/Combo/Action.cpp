@@ -47,7 +47,7 @@ void Action::Init(ComboManager* manager)
 	}
 
 	// 攻撃していない状態に
-	player_->SetIsAttacking(false);
+	player_->GetAttackManager()->SetIsAttacking(false);
 	// 指定されたアニメーションの再生
 	player_->skiningModels_["Player"]->animationManager_.PlayAnimation(animName_, 0.015f);
 	// プレイヤーの攻撃判定の長さを設定
@@ -302,16 +302,16 @@ void Action::AttackJudgeUpdate()
 		// タイマー
 		attackStartTimer_.Update(); 
 		// 攻撃中ではない状態に
-		player_->SetIsAttacking(false);
+		player_->GetAttackManager()->SetIsAttacking(false);
 	}
 	else { // 終了していない場合
 		if (attackEndTimer_.GetIsFinish()) {
 			// 攻撃中ではない状態に
-			player_->SetIsAttacking(false);
+			player_->GetAttackManager()->SetIsAttacking(false);
 		}
 		else {
 			// 攻撃中状態に
-			player_->SetIsAttacking(true);
+			player_->GetAttackManager()->SetIsAttacking(true);
 		}
 		// タイマー
 		attackEndTimer_.Update();
