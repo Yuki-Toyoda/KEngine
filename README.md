@@ -5,25 +5,31 @@
 この作品は、「**ゼルダの伝説 風のタクト**」に登場する中ボス、「**ファントムガノン**」との戦いを再現するために開発している作品です。[^1]  
 開発する上で特に意識していることとして、**ボスとの弾のラリーの気持ちよさ**を意識して開発をしています。
 
-![ラリー時画像](https://github.com/user-attachments/assets/d222ec35-bac4-4247-b28f-42d8221f2e35)
-[作品プレイ映像はこちら](https://youtu.be/x2WuLgSkXnI)
+![ラリー画面_基ゲーム](https://github.com/user-attachments/assets/8018ed61-d699-4987-acbc-a914ad650432)
+[作品プレイ映像はこちら](https://youtu.be/1xP_L53tc8o)
 [^1]: [ファントムガノン戦参考動画](https://www.youtube.com/watch?v=9eoUYuAO9wI)
 ## 作品で実装したもの
 ### - Z注目(ロックオン)
 コントローラーの_左トリガー_を押し込むことで**Z注目**を行います。  
 ロックオンできる対象が画面内にいない場合、プレイヤーの背面にカメラが回り込みます。  
 
-![LockOn](https://github.com/user-attachments/assets/1dfe5a09-fe71-4569-b1f3-29d36c8b93d7)
+![カメラリセット](https://github.com/user-attachments/assets/a252c97a-ab88-483b-8006-35a4c475dd76)
 
-注目時の角度は、ロックオン開始時に**敵がどこにいるか**で変化するようになっています。  
-
-![LockOn](https://github.com/user-attachments/assets/01dbad26-93f9-4654-9049-83f91d2eae4d)
+ロックオン可能な対象が画面内にいる場合、その敵をロックオンします。
+また、ロックオン中のアングルは_右スティック_を使用して**自由に調整**することができます。
+![ロックオン時カメラワーク (2) (1)](https://github.com/user-attachments/assets/5d83fbed-a9b6-4526-882b-9b594f78e92b)
 
 ###  - 敵との弾のラリー
 敵が発射した弾を、**通常攻撃で打ち返す**ことができ、複数回繰り返すと敵が**ダウン**します。  
 ダウンした敵には、攻撃を行うことができます。  
 
-![Rally](https://github.com/user-attachments/assets/703a423b-3174-40a0-8b9f-9247f21ffff9)
+![tama ](https://github.com/user-attachments/assets/4ab9591f-0d24-4b35-834b-7c3712183a03)
+
+###  - 背後攻撃 → カウンター
+敵がプレイヤーの背後に回り込み、攻撃してくる行動です。
+![背後回り込み攻撃](https://github.com/user-attachments/assets/f634ca22-3304-4128-9a37-ad9b15c78722)
+攻撃開始までに_Bボタン_を押すことで**カウンター攻撃**を繰り出し、敵を**即時にダウン**させることができます。
+![カウンター演出](https://github.com/user-attachments/assets/03d2a007-1d2e-4d82-8ab3-e4502eae3d3f)
 
 ###  - コンボ作成システム
 プレイヤーのコンボ攻撃をImGui上から**作成、編集、保存**ができるシステムです。  
@@ -31,7 +37,7 @@
 **再生するアニメーションや、攻撃段数、硬直時間等を編集することが可能**で、保存すると**json形式**のファイルで保存が行われます。  
 コンボ攻撃中、特定の変数の条件を満たした際に指定した任意の別のコンボに切り替えられる機能を実装しています。 
 
-![Combo-Change](https://github.com/user-attachments/assets/162303e7-e680-42fa-af59-950864a3ffb4)
+![ヒットストップ](https://github.com/user-attachments/assets/37c2ad6f-9d63-4dc9-a832-a7ce23c6b6d6)
 
 これには、コンボを管理する`ComboManager`に対して、**条件となる変数を追加**する必要があります。    
 
@@ -61,21 +67,5 @@
 >14. 切り替えるコンボ名称 `文字列`
 
 ## 実装予定、改善予定のもの
-### カメラワークの改善
-現在のカメラワークは、Z注目をした時点で固定されるようになっていますが、原作(風のタクト)では、Z注目中も右スティックでカメラの角度を調整することができます。  
-プレイヤーと弾のラリーをより原作に近いものにするために、下記GIFのようなカメラワークを実装したいと考えています。  
-
- - **見下ろし視点**  
-![CameraWork1 (3)](https://github.com/user-attachments/assets/e3b41a69-870e-4d71-b7c3-2d5c8cdc6ab0)
-
- - **横向き視点**  
-![CameraWork2](https://github.com/user-attachments/assets/e6be8572-8a77-49fb-aa2a-66de16fb3d00)
-
-### エフェクト全般
-現在実装されている命中時のエフェクトや、敵が弾を出す際のチャージエフェクトなどはパーティクルのような粒子を飛ばしているだけのものになっています。  
-
-![Particle](https://github.com/user-attachments/assets/72a0d701-7a5e-4a0d-b5c8-4470f9df8b62)
-
-原作のエフェクトはパーティクルのような粒子を飛ばしているわけではなく、エフェクト画像を描いているため、それを再現したいと考えています。  
-
-![Particle_Game](https://github.com/user-attachments/assets/e842a223-9cb4-441a-a34b-466cc888086d)
+### さらなる要素の追加
+粗方のゲームの流れは完成したため、これからボスの行動やプレイヤーの行動を増やし、様々なことができるボス戦にしたいと考えています。
