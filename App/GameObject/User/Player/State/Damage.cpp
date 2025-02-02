@@ -67,7 +67,7 @@ void Damage::Update()
 
 	// カメラのポストプロセスの強さをだんだん上げてく
 	float saturation = KLib::Lerp<float>(0.0f, targetSaturation_, KLib::EaseInQuad(player_->skiningModels_["Player"]->animationManager_.GetPlayingAnimationProgress()));
-	c->ppProcessor_.hsvFilter_.SetHSV({ 1.0f, saturation, 1.0f });
+	c->ppProcessor_.hsvFilter_.SetHSV({ 0.0f, saturation, 0.0f });
 	c->ppProcessor_.gaussian_.SetIntensity(KLib::Lerp<float>(0.0f, targetBlurStrength_, KLib::EaseInQuad(player_->skiningModels_["Player"]->animationManager_.GetPlayingAnimationProgress())));
 
 	// アニメーションが再生されていない状態かつ死亡状態でないとき
