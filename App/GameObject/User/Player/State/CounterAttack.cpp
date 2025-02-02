@@ -28,6 +28,9 @@ void CounterAttack::Init()
 	// 角度補正を無効に
 	player_->SetIsCorrectDirection(false);
 
+	// 攻撃対象のロックオンを不可能な状態に
+	player_->GetEnemy()->SetCanLockOn(false);
+
 	// プレイヤーが向いてる方向のベクトルを取得
 	Matrix4x4 rotateMat = Matrix4x4::MakeRotateY(player_->transform_.rotate_.y);
 	endPos_ =  enemy_->transform_.translate_ + (Vector3(0.0f, 0.0f, 3.0f) * rotateMat);
@@ -72,11 +75,6 @@ void CounterAttack::MoveUpdate()
 	// プレイヤー座標を移動させる
 	player_->transform_.translate_ = CatmullRomSpline(startControlPos_, startPos_, targetPos_, endPos_, stagingTimer_.GetProgress());
 
-	// 演出タイマーの進捗が8割以上のとき
-	if (stagingTimer_.GetProgress() >= 0.7f && player_->skiningModels_["Player"]->animationManager_.GetPlayingAnimationName() != "CounterAttack") {
-		
-	}
-
 	// 演出用タイマー終了時
 	if (stagingTimer_.GetIsFinish()) {
 		// プレイヤーの攻撃アニメーション再生
@@ -116,6 +114,9 @@ void CounterAttack::EndUpdate()
 	if (stagingTimer_.GetIsFinish()) {
 		// 角度補正を有効に
 		player_->SetIsCorrectDirection(true);
+
+		// 攻撃対象のロックオンを可能な状態に
+		player_->GetEnemy()->SetCanLockOn(true);
 
 		// 待機状態へ移行
 		player_->ChangeState(std::make_unique<Root>());
